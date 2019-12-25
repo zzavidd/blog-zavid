@@ -13,7 +13,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head><Meta {...query}/></Head>
-        <body style={{backgroundColor: 'white'}}>
+        <body>
           <Main />
           <NextScript />
         </body>
@@ -44,7 +44,6 @@ const Meta = ({
     <meta property="og:type" content="website" />
     <meta property="og:url" content={`${domain}${url}`} />
 
-    {/* TODO: Check if this actually works */}
     {/* <meta property="og:image" content={`${cloudinary.url}/${cardImage}`} /> */}
     <meta property="og:image:height" content="800" />
     <meta property="og:image:width" content="800" />

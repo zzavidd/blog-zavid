@@ -25,7 +25,7 @@ server.prepare().then(() => {
 
 app.get(['/', '/home'], function(req, res){
   server.render(req, res, '/home', { 
-    title: 'ZAVID',
+    title: 'Z A V I D',
     description: 'Enter my complex world.',
     url: '/'
   });
