@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Container, Col, Row, Dropdown, Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { toggleTheme } from '~/reducers/actions';
+
+import { InvisibleButton } from '~/components/button.js';
+import { Icon } from '~/components/icon.js';
 
 import css from '~/styles/_partials.scss';
 
@@ -11,9 +14,12 @@ class Header extends Component {
     super();
   }
 
+  switchTheme = () => {
+    this.props.toggleTheme();
+  }
+
   render(){
     const { theme } = this.props;
-    console.log(theme);
 
     return (
       <Navbar className={css[`nav-${theme}`]} expand="lg" sticky="top">
@@ -28,9 +34,17 @@ class Header extends Component {
           <Nav className="ml-auto">
             <Nav.Link href="#">Reveries</Nav.Link>
             <Nav.Link href="#">Epistles</Nav.Link>
+            <Nav.Link href="#">Diary</Nav.Link>
             <Nav.Link href="#">About</Nav.Link>
           </Nav>
         </Navbar.Collapse>
+        <Nav.Item>
+          <InvisibleButton onClick={this.switchTheme}>
+            <Icon
+              name={theme === 'light' ? 'moon' : 'sun'}
+              color={theme === 'light' ? 'black' : 'white'} />
+          </InvisibleButton>
+        </Nav.Item>
       </Navbar>
     );
   }

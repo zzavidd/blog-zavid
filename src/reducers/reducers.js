@@ -1,20 +1,13 @@
 import { combineReducers } from 'redux';
 
-const defaultTheme = {
-  theme: 'light'
-}
+const defaultTheme = 'light';
 
 const themeReducer = (state = defaultTheme, action) => {
   switch (action.type) {
     case 'SET_THEME':
       return action.payload;
     case 'TOGGLE_THEME':
-      if (state.theme === 'light'){
-        state.theme = 'dark';
-      } else {
-        state.theme = 'light';
-      }
-      return state;
+      return state === 'light' ? 'dark' : 'light';
     default:
       return state;
   }

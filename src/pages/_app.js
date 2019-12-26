@@ -10,7 +10,6 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import Header from '~/partials/header.js';
-import { setTheme } from '~/reducers/actions';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -29,12 +28,8 @@ export default class ZAVID extends App {
 
   componentDidMount(){
     const {
-      backgroundImage = 'bg-app.jpg',
-      theme = 'light'
+      backgroundImage = 'bg-app.jpg'
     } = this.props.router.query;
-
-    // Set the theme
-    store.dispatch(setTheme(theme));
   }
 
 

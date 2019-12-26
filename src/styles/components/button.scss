@@ -1,0 +1,5 @@
+.invisibleButton {
+  background: none;
+  border: none;
+  &:focus { outline: none; }
+}
