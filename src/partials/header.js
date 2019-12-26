@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { toggleTheme } from '~/reducers/actions';
 
 import { InvisibleButton } from '~/components/button.js';
 import { Icon } from '~/components/icon.js';
+import { cloudinary } from '~/constants/settings.js';
 
 import css from '~/styles/_partials.scss';
 
@@ -23,28 +24,29 @@ class Header extends Component {
 
     return (
       <Navbar className={css[`nav-${theme}`]} expand="lg" sticky="top">
-        <Navbar.Brand href="/">
-          <img
-            src={``}
-            height="40"
-            alt="ZAVID Logo" />
-        </Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse>
-          <Nav className="ml-auto">
-            <Nav.Link href="#">Reveries</Nav.Link>
-            <Nav.Link href="#">Epistles</Nav.Link>
-            <Nav.Link href="#">Diary</Nav.Link>
-            <Nav.Link href="#">About</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-        <Nav.Item>
-          <InvisibleButton onClick={this.switchTheme}>
-            <Icon
-              name={theme === 'light' ? 'moon' : 'sun'}
-              color={theme === 'light' ? 'black' : 'white'} />
-          </InvisibleButton>
-        </Nav.Item>
+        <Container>
+          <Navbar.Brand href="/">
+            <img
+              src={`${cloudinary.url}/h_40/v1577385731/static/logos/zavid-logo-text-${theme}.png`}
+              alt="ZAVID Logo" />
+          </Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse>
+            <Nav className="justify-content-center">
+              <Nav.Link href="/reveries">Reveries</Nav.Link>
+              <Nav.Link href="#">Epistles</Nav.Link>
+              <Nav.Link href="#">Diary</Nav.Link>
+              <Nav.Link href="#">About</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+          <Nav.Item>
+            <InvisibleButton onClick={this.switchTheme}>
+              <Icon
+                name={theme === 'light' ? 'moon' : 'sun'}
+                color={theme === 'light' ? 'black' : 'white'} />
+            </InvisibleButton>
+          </Nav.Item>
+        </Container>
       </Navbar>
     );
   }

@@ -9,6 +9,7 @@ const handle = server.getRequestHandler();
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mysql = require('mysql');
 const dotenv = require('dotenv').config({path: config });
 const port = parseInt(process.env.PORT, 10) || 3000;
 
@@ -23,26 +24,17 @@ server.prepare().then(() => {
 	});
 });
 
-app.get(['/', '/home'], function(req, res){
-  server.render(req, res, '/home', { 
-    title: 'Z A V I D',
-    description: 'Enter my complex world.',
-    url: '/'
-  });
+/** Initialise MySQL database */
+const conn = mysql.createConnection({
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PWD,
+  database: process.env.MYSQL_NAME,
 });
 
-app.get('/reveries', function(req, res){
-  server.render(req, res, '/reveries', { 
-    title: 'Reveries',
-    description: 'For my deeper ruminations...',
-    url: '/'
-  });
+conn.connect(err => {
+  console.log(err ? err.toString() : 'Connected to ZAVID database.');
 });
 
-app.get('/epistles', function(req, res){
-  server.render(req, res, '/epistles', { 
-    title: 'Reveries',
-    description: 'My messages, written to encourage and enlighten; typically based off of Bible scriptures and transcribed as poetry. Read and be blessed.',
-    url: '/'
-  });
-});
+require('./private/api.js')(app, conn);
+require('./private/routes.js')(app, conn, server);
