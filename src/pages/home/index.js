@@ -5,7 +5,9 @@ export default class Home extends Component {
   render(){
     return (
       <Container>
-        <p style={{color: 'white'}}></p>
+        <p>
+          This is the home of Zavid Egbue.
+        </p>
       </Container>
     )
   }

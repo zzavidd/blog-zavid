@@ -1,7 +1,17 @@
 
+$dark: #383838;
+
 .nav {
   &-light {
-    color: black; }
+    background-color: white;
+    border-bottom: 1px solid $dark;
+    a {
+      color: $dark !important;
+    }}
   &-dark {
-    color: white }
+    background-color: $dark;
+    border-bottom: 1px solid white;
+    a {
+      color: white !important;
+    }}
 }
