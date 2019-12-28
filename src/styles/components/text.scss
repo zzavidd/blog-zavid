@@ -1,0 +1,9 @@
+@import "../_app.scss";
+
+.title {
+  font: {
+    family: $title-font;
+    weight: bold;
+    size: 2em;
+  }
+}

@@ -1,17 +1,20 @@
 
-$dark: #383838;
+@import "_app.scss";
+
+@mixin nav-link($color){
+  color: $color !important;
+  font-family: $title-font;
+  font-size: 1.1em;
+  text-transform: uppercase;
+}
 
 .nav {
   &-light {
     background-color: white;
-    border-bottom: 1px solid $dark;
-    a {
-      color: $dark !important;
-    }}
+    border-bottom: 2px solid $dark;
+    a { @include nav-link(black); }}
   &-dark {
     background-color: $dark;
     border-bottom: 1px solid white;
-    a {
-      color: white !important;
-    }}
+    a { @include nav-link(white); }}
 }
