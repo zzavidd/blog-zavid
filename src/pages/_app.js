@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { Container } from 'react-bootstrap';
 import configureStore from '~/reducers/store.js';
 import App from 'next/app';
 
@@ -10,9 +11,10 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import Header from '~/partials/header.js';
+import Sidebar from '~/partials/sidebar.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '~/styles/_app.scss';
+import css from '~/styles/_app.scss';
 
 library.add(fab, far, fas);
 
@@ -42,7 +44,10 @@ export default class ZAVID extends App {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Header/>
-          <Component {...pageProps} />
+          <Container className={css.app}>
+            <Component {...pageProps} />
+            <Sidebar/>
+          </Container>
         </PersistGate>
       </Provider> 
     );

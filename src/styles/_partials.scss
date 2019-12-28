@@ -1,6 +1,10 @@
 
 @import "_app.scss";
 
+/************
+** HEADER
+************/
+
 @mixin nav-link($color){
   color: $color !important;
   font-family: $title-font;
@@ -17,4 +21,24 @@
     background-color: $dark;
     border-bottom: 1px solid white;
     a { @include nav-link(white); }}
+}
+
+/************
+** SIDEBAR
+************/
+
+@mixin sidebarTemplate($theme) {
+  $imgBorderColor: black;
+  @if $theme == 'dark' { $imgBorderColor: $borderColor; }
+
+  .image {
+    width: 90%;
+    border: 2px solid $imgBorderColor;
+    border-radius: 10px;
+  }
+}
+
+.sidebar {
+  &-light { @include sidebarTemplate('light'); }
+  &-dark { @include sidebarTemplate('dark'); }
 }

@@ -11,3 +11,13 @@ export class Title extends Component {
     )
   }
 }
+
+export class Paragraph extends Component {
+  render(){
+    return (
+      <div className={css.paragraph}>
+        {this.props.children}
+      </div>
+    )
+  }
+}
