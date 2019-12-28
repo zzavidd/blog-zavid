@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css?family=Bree+Serif:400,700|Noto+Serif+KR:400,700&display=swap');
+
+$title-font: 'Bree Serif', serif;
+$body-font: 'Noto Serif KR', serif;
+
+$dark: #202020;
+
+$cloudinary_url: 'https://res.cloudinary.com/zavid/image/upload';
+
+@mixin setBackground($background, $textColor, $image){
+  background: {
+    attachment: fixed;
+    color: $background;
+    repeat: no-repeat;
+    size: cover;
+    image: url($cloudinary_url + $image);
+  };
+  color: $textColor;
+  font-family: $body-font;
+}
+
+:global(.body) {
+  &-light { @include setBackground(white, black, '/v1577490400/static/bg/bg-app-light.jpg'); }
+  &-dark { @include setBackground($dark, white, '/static/bg/bg-app-dark.jpg'); }
+}
+

@@ -15,12 +15,19 @@ class Header extends Component {
     super();
   }
 
-  switchTheme = () => {
-    this.props.toggleTheme();
+  /**
+   * Toggle between light and dark themes.
+   * @param xTheme - The current theme
+   */
+  adjustBackgroundToTheme = (xTheme) => {
+    const yTheme = xTheme === 'light' ? 'dark' : 'light';
+    document.body.classList.remove(`body-${yTheme}`);
+    document.body.classList.add(`body-${xTheme}`);
   }
 
   render(){
-    const { theme } = this.props;
+    const { theme, toggleTheme } = this.props;
+    this.adjustBackgroundToTheme(theme);
 
     return (
       <Navbar className={css[`nav-${theme}`]} expand="lg" sticky="top">
@@ -40,7 +47,7 @@ class Header extends Component {
             </Nav>
           </Navbar.Collapse>
           <Nav.Item>
-            <InvisibleButton onClick={this.switchTheme}>
+            <InvisibleButton onClick={toggleTheme}>
               <Icon
                 name={theme === 'light' ? 'moon' : 'sun'}
                 color={theme === 'light' ? 'black' : 'white'} />
