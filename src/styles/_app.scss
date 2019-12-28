@@ -3,9 +3,15 @@
 $title-font: 'Bree Serif', serif;
 $body-font: 'Noto Serif KR', serif;
 
+$borderColor: rgb(245, 222, 179);
+
 $dark: #202020;
 
 $cloudinary_url: 'https://res.cloudinary.com/zavid/image/upload';
+
+/*****
+** APP
+*****/
 
 @mixin setBackground($background, $textColor, $image){
   background: {
@@ -24,3 +30,7 @@ $cloudinary_url: 'https://res.cloudinary.com/zavid/image/upload';
   &-dark { @include setBackground($dark, white, '/static/bg/bg-app-dark.jpg'); }
 }
 
+.app {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}

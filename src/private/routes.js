@@ -36,4 +36,15 @@ module.exports = (app, conn, server) => {
       url: '/epistles'
     });
   });
+
+  /**
+   * Admin console
+   * @route {GET} /admin
+   */
+  app.get('/admin', function(req, res){
+    server.render(req, res, '/admin', { 
+      title: `Admin Console`,
+      url: '/'
+    });
+  });
 }
