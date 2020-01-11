@@ -1,0 +1,66 @@
+@import "app";
+
+/************
+** index.js
+************/
+
+@mixin tabler($columns...) {
+  padding: 1em 2em;
+  .heading {
+    font-size: 2em;
+    margin-bottom: .5em;}
+  .grid {
+    display: grid;
+    font-size: 1.1em;
+    position: relative;
+    .header, .row {
+      align-items: center;
+      display: grid;
+      grid-template-columns: $columns;
+      padding: .7em 0;
+      span { padding: 0 .5em; word-break: break-word; } }
+    .header {
+      border-bottom: 1px solid rgba(255,255,255,.6);
+      font-family: $title-font; }
+    .row {
+      font-family: $body-font;
+      border-radius: 10px;
+    }
+  }
+}
+
+.postTabler {
+  @include tabler(5% 1fr .5fr 1fr 1fr);
+}
+
+/************
+** post.js
+************/
+
+.container {
+  padding: 1.5em;
+}
+
+.label {
+  font-family: $title-font;
+}
+
+.input {
+  background: none;
+  border: none;
+  border-bottom: 1px solid white;
+  outline: none;
+  color: white;
+  padding: .5em 0;
+  width: 100%;
+}
+
+.textarea {
+  background: none;
+  border: none;
+  border-bottom: 1px solid white;
+  outline: none;
+  color: white;
+  padding: .5em 0;
+  width: 100%;
+}

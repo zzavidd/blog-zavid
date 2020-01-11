@@ -21,26 +21,18 @@ module.exports = {
   /** My email address */
   email: "zavidegbue@gmail.com",
 
-  /**
-   * Abstract function for requests.
-   * @param {string} image - The image in question.
-   * @returns {Boolean} Value indicating whether it's from Cloudinary
-   */
-  request: ({url, method = 'GET', body, headers = {}, onSuccess}) => {
-    headers['Content-Type'] = 'application/json';
-    url = `/api${url}`;
-    
-    fetch(url, { method, body, headers })
-    .then(res => Promise.all([res, res.json()]))
-    .then(([status, response]) => { 
-      if (status.ok){
-        onSuccess(response);
-      } else {
-        console.error(response.message);
-      }
-    }).catch(error => {
-      console.error(error);
-    });
+  theme: {
+    /**
+     * Switches theme and sets the body theme.
+     * @param {string} xTheme - The current set theme.
+     */
+    switch: (xTheme) => {
+      if (xTheme !== 'light' && xTheme !== 'dark') xTheme = 'light';
+      const isLight = xTheme === 'light';
+      const yTheme = isLight ? 'dark' : 'light';
+      document.body.classList.remove(`body-${yTheme}`);
+      document.body.classList.add(`body-${xTheme}`);
+    }
   },
 
   /** The website title */

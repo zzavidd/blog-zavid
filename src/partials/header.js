@@ -6,28 +6,18 @@ import { toggleTheme } from '~/reducers/actions';
 
 import { InvisibleButton } from '~/components/button.js';
 import { Icon } from '~/components/icon.js';
-import { cloudinary } from '~/constants/settings.js';
+import { cloudinary, theme as THEME } from '~/constants/settings.js';
 
-import css from '~/styles/_partials.scss';
+import css from '~/styles/partials.scss';
 
 class Header extends Component {
   constructor(){
     super();
   }
 
-  /**
-   * Toggle between light and dark themes.
-   * @param xTheme - The current theme
-   */
-  adjustBackgroundToTheme = (xTheme) => {
-    const yTheme = xTheme === 'light' ? 'dark' : 'light';
-    document.body.classList.remove(`body-${yTheme}`);
-    document.body.classList.add(`body-${xTheme}`);
-  }
-
   render(){
     const { theme, toggleTheme } = this.props;
-    this.adjustBackgroundToTheme(theme);
+    THEME.switch(theme)
 
     return (
       <Navbar className={css[`nav-${theme}`]} expand="lg" sticky="top">

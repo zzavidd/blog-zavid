@@ -13,8 +13,9 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import Header from '~/partials/header.js';
 import Sidebar from '~/partials/sidebar.js';
 
+import { theme as THEME } from '~/constants/settings.js';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-import css from '~/styles/_app.scss';
 
 library.add(fab, far, fas);
 
@@ -30,23 +31,24 @@ export default class ZAVID extends App {
   }
 
   componentDidMount(){
-    const xTheme = store.getState().theme;
-    const yTheme = xTheme === 'light' ? 'dark' : 'light';
-    document.body.classList.remove(`body-${yTheme}`);
-    document.body.classList.add(`body-${xTheme}`);
+    THEME.switch(store.getState().theme);
   }
 
 
   render() {
-    const { Component, pageProps } = this.props
+    const { Component, pageProps, router } = this.props
+    const { sidebar = true } = router.query;
+
+    const sideBarStyle = { display: 'grid', gridTemplateColumns: '70% 30%' }
+    const style = sidebar ? sideBarStyle : null;
 
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Header/>
-          <Container className={css.app}>
+          <Container style={style}>
             <Component {...pageProps} />
-            <Sidebar/>
+            {sidebar ? <Sidebar/> : null}
           </Container>
         </PersistGate>
       </Provider> 

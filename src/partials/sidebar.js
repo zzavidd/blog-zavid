@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 
 import { Container } from 'react-bootstrap';
 import { Title } from '~/components/text.js';
-import { formatDate } from '~/constants/date.js';
-import { cloudinary, request } from '~/constants/settings.js';
+import { zDate } from 'zavid-modules';
+import { cloudinary } from '~/constants/settings.js';
 
-import css from '~/styles/_partials.scss';
+import { zRequest } from 'zavid-modules';
+
+import css from '~/styles/partials.scss';
 
 class Sidebar extends Component {
   constructor(){
@@ -25,7 +27,7 @@ class Sidebar extends Component {
    * Get 5 most recent posts
    */
   getRecentPosts = () => {
-    request({
+    zRequest({
       url: '/posts?limit=5&order=desc',
       method: 'GET',
       onSuccess: (posts) => {
@@ -46,7 +48,7 @@ class Sidebar extends Component {
           <div key={idx}>
             <h5>{post.title}</h5>
             {previewImage(post)}
-            <small>{formatDate(post.date, true)}</small>
+            <small>{zDate.formatDate(post.date, true)}</small>
             <div>{post.type}</div>
           </div>
         ))}

@@ -29,8 +29,3 @@ $cloudinary_url: 'https://res.cloudinary.com/zavid/image/upload';
   &-light { @include setBackground(white, black, '/v1577490400/static/bg/bg-app-light.jpg'); }
   &-dark { @include setBackground($dark, white, '/static/bg/bg-app-dark.jpg'); }
 }
-
-.app {
-  display: grid;
-  grid-template-columns: 70% 30%;
-}

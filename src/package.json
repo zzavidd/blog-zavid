@@ -29,10 +29,12 @@
     "react-dom": "^16.12.0",
     "react-redux": "^7.1.3",
     "react-responsive": "^8.0.1",
+    "react-textarea-autosize": "^7.1.2",
     "redux": "^4.0.4",
     "redux-persist": "^6.0.0",
     "shebang-loader": "0.0.1",
-    "twilio": "^3.39.1"
+    "twilio": "^3.39.1",
+    "zavid-modules": "^1.2.8"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
