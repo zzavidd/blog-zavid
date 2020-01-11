@@ -1,41 +1,41 @@
-import React, {Component} from 'react';
-import { Container } from 'react-bootstrap';
+import React, { Component } from "react";
+import { Container } from "react-bootstrap";
 
-import { Title, Paragraph } from '~/components/text.js';
-import { cloudinary, request } from '~/constants/settings.js';
+import { Title, Paragraph } from "~/components/text.js";
+import { cloudinary } from "~/constants/settings.js";
 
-import css from '~/styles/reveries.scss';
+import css from "~/styles/pages/reveries.scss";
+import { zRequest } from "zavid-modules";
 
+/** The index page for reveries. */
 export default class Reveries extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       reveries: [],
       isLoaded: false
-    }
+    };
   }
 
   componentDidMount() {
     this.getReveries();
   }
 
-  /**
-   * Get all reveries
-   */
+  /** Get all reveries */
   getReveries = () => {
-    request({
-      url: '/posts/reveries',
-      method: 'GET',
-      onSuccess: (reveries) => {
+    zRequest({
+      url: "/posts/reveries",
+      method: "GET",
+      onSuccess: reveries => {
         this.setState({
           reveries,
           isLoaded: true
         });
       }
     });
-  }
+  };
 
-  render(){
+  render() {
     return (
       <Container className={css.index}>
         {this.state.reveries.map((reverie, idx) => (
@@ -46,7 +46,7 @@ export default class Reveries extends Component {
           </div>
         ))}
       </Container>
-    )
+    );
   }
 }
 
@@ -54,12 +54,13 @@ export default class Reveries extends Component {
  * Retrieve reverie image if exists
  * @param {Object} reverie - Reference reverie to image
  */
-const previewImage = (reverie) => {
+const previewImage = reverie => {
   if (!reverie.image) return null;
   return (
     <img
       src={`${cloudinary.url}/w_1280,h_720/${reverie.image}`}
       alt={reverie.title}
-      className={css.image} />
-  )
-}
+      className={css.image}
+    />
+  );
+};

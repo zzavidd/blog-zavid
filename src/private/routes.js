@@ -43,8 +43,40 @@ module.exports = (app, conn, server) => {
    */
   app.get('/admin', function(req, res){
     server.render(req, res, '/admin', { 
-      title: `Admin Console`,
-      url: '/'
+      title: `Admin Console`
+    });
+  });
+
+  /**
+   * View all posts in admin console
+   * @route {GET} /admin
+   */
+  app.get('/admin/posts', function(req, res){
+    server.render(req, res, '/admin/posts', { 
+      title: `Posts - Admin Console`,
+      sidebar: false
+    });
+  });
+
+  /**
+   * Edit a post
+   * @route {GET} /admin/posts/edit/:id
+   * @param id - ID of the post to be edited
+   */
+  app.get('/admin/posts/edit/:id', function(req, res){
+    const id = req.params.id;
+    const sql = "SELECT * FROM posts WHERE id = ?";
+
+    conn.query(sql, id, function (err, result) {
+      if (err || !result.length) return console.error(err);
+
+      const post = result[0];
+      server.render(req, res, '/admin/posts/crud', { 
+        title: `Edit Post`,
+        operation: 'edit',
+        post,
+        sidebar: false
+      });
     });
   });
 }
