@@ -1,11 +1,13 @@
 import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
 
+import { InvisibleButton } from '~/components/button.js';
+import { ThemedIcon } from '~/components/icon.js';
 import { Title } from '~/components/text.js';
 import { zDate, zRequest } from 'zavid-modules';
 import { cloudinary } from '~/constants/settings.js';
 
-import css from '~/styles/admin.scss';
+import css from '~/styles/pages/admin.scss';
 
 class AdminPosts extends Component {
   constructor(){
@@ -74,7 +76,7 @@ class AdminPosts extends Component {
 
     return (
       <div className={css.postTabler}>
-        <Title className={css.heading}>List of Registered Users</Title>
+        <Title className={css.heading}>All Posts</Title>
         <PostTable/>
       </div>
     );
@@ -85,6 +87,20 @@ class AdminPosts extends Component {
 class Post extends PureComponent {
   render(){
     const { idx, item } = this.props;
+
+    const EditButton = (
+      <InvisibleButton onClick={() => location.href = `/admin/posts/edit/${item.id}`}>
+        <ThemedIcon name={'pen-alt'} />
+      </InvisibleButton>
+    );
+
+    // TODO: Make onClick event functional
+    const DeleteButton = (
+      <InvisibleButton onClick={() => location.href = `/admin/posts/edit/${item.id}`}>
+        <ThemedIcon name={'trash-alt'} />
+      </InvisibleButton>
+    );
+
     return (
       <div key={idx} className={css.row}>
         <span>{item.id}</span>
@@ -92,6 +108,8 @@ class Post extends PureComponent {
         <span>{item.type}</span>
         <span>{zDate.formatDate(item.date, true)}</span>
         <span>{previewImage(item)}</span>
+        <span>{EditButton}</span>
+        <span>{DeleteButton}</span>
       </div>
     )
   }

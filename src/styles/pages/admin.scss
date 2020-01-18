@@ -1,4 +1,4 @@
-@import "app";
+@import "../app";
 
 /************
 ** index.js
@@ -30,7 +30,7 @@
 }
 
 .postTabler {
-  @include tabler(5% 1fr .5fr 1fr 1fr);
+  @include tabler(5% 1fr .5fr 1fr 1fr auto auto);
 }
 
 /************

@@ -30,28 +30,27 @@ export default class ZAVID extends App {
     return { pageProps };
   }
 
-  componentDidMount(){
-    THEME.switch(store.getState().theme);
+  componentDidMount() {
+    THEME.switch(store);
   }
 
-
   render() {
-    const { Component, pageProps, router } = this.props
+    const { Component, pageProps, router } = this.props;
     const { sidebar = true } = router.query;
 
-    const sideBarStyle = { display: 'grid', gridTemplateColumns: '70% 30%' }
+    const sideBarStyle = { display: 'grid', gridTemplateColumns: '70% 30%' };
     const style = sidebar ? sideBarStyle : null;
 
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <Header/>
+          <Header />
           <Container style={style}>
             <Component {...pageProps} />
-            {sidebar ? <Sidebar/> : null}
+            {sidebar ? <Sidebar /> : null}
           </Container>
         </PersistGate>
-      </Provider> 
+      </Provider>
     );
   }
 }
