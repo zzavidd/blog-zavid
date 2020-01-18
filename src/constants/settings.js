@@ -25,6 +25,7 @@ module.exports = {
      * Initalises the body theme.
      * Defaults to LIGHT if theme neither light or dark.
      * @param {string} store - The Redux store containing the theme.
+     * @param {function} setTheme - The reducer function to change the theme.
      */
     initialise: (store, setTheme) => {
       let { theme: currentTheme } = store.getState();
@@ -40,6 +41,11 @@ module.exports = {
       store.dispatch(setTheme(currentTheme));
     },
 
+    /**
+     * Switches the theme on demand.
+     * @param {string} theme - The current theme of the app.
+     * @param {function} setTheme - The reducer function to change the theme.
+     */
     switch: (currentTheme, setTheme) => {
       const oppositeTheme = currentTheme === 'light' ? 'dark' : 'light';
 
