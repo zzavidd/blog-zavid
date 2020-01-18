@@ -3,12 +3,10 @@ import { Col, Container, Row } from 'react-bootstrap';
 
 import Textarea from 'react-textarea-autosize';
 
-import css from '~/styles/admin.scss';
+import css from '~/styles/pages/admin.scss';
 
 export default class PostForm extends Component {
   render(){
-    const { post } = this.props;
-
     const { post, heading, confirmText, onConfirm, onCancel, handlers, operation } = this.props;
     const { handleText, handleDate, handleImage } = handlers;
 

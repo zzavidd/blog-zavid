@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import PostForm from './form';
-import { zHandlers, zRequest } from 'zavid-modules';
+import { zAlerts, zHandlers, zRequest } from 'zavid-modules';
 
 import { isValidPost } from '~/constants/settings.js';
 
@@ -90,14 +90,11 @@ export default class PostCrud extends Component {
       body: data,
       onSuccess: ({slug}) => {
         // TODO: Success alerts on update
-        // const { firstname, lastname, level } = this.state;
-        // const isExecutive = level === 'Executive';
-        // const backPath = slug === null ? '/team' : isExecutive ? `/executives/${slug}` : `/team/member/${slug}`;
-
-        // setAlert({ type: 'success', message: `You've successfully edited the details of ${firstname} ${lastname}.` });
-        // location.href = backPath;
+        const { title } = this.state;
+        zAlerts.setAlert({ type: 'success', message: `You've successfully edited the post titled: ${title}.` });
         location.href = '/admin/posts';
-      }
+      },
+      onError: zAlerts.displayErrorMessage
     });
   }
 
