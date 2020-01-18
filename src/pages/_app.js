@@ -13,6 +13,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import Header from '~/partials/header.js';
 import Sidebar from '~/partials/sidebar.js';
 
+import { setTheme } from '~/reducers/actions.js';
 import { theme as THEME } from '~/constants/settings.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -31,7 +32,7 @@ export default class ZAVID extends App {
   }
 
   componentDidMount() {
-    THEME.switch(store);
+    THEME.initialise(store, setTheme);
   }
 
   render() {

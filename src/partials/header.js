@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { toggleTheme } from '~/reducers/actions';
+import { setTheme } from '~/reducers/actions';
 
 import { InvisibleButton } from '~/components/button.js';
 import { ThemedIcon } from '~/components/icon.js';
-import { cloudinary } from '~/constants/settings.js';
+import { cloudinary, theme as THEME } from '~/constants/settings.js';
 
 import css from '~/styles/partials.scss';
 
@@ -16,7 +16,7 @@ class Header extends Component {
   }
 
   render() {
-    const { theme, toggleTheme } = this.props;
+    const { theme, setTheme } = this.props;
 
     return (
       <Navbar className={css[`nav-${theme}`]} expand='lg' sticky='top'>
@@ -37,7 +37,7 @@ class Header extends Component {
             </Nav>
           </Navbar.Collapse>
           <Nav.Item>
-            <InvisibleButton onClick={toggleTheme}>
+            <InvisibleButton onClick={() => THEME.switch(theme, setTheme)}>
               <ThemedIcon
                 name={theme === 'light' ? 'moon' : 'sun'}
                 color={theme === 'light' ? 'black' : 'white'}
@@ -57,7 +57,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      toggleTheme
+      setTheme
     },
     dispatch
   );
