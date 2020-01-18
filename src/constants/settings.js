@@ -1,5 +1,4 @@
 const dev = process.env.NODE_ENV !== 'production';
-import { setTheme } from '~/reducers/actions';
 
 module.exports = {
   /** The full URLs for each #WOKEWeekly account */
@@ -23,23 +22,32 @@ module.exports = {
 
   theme: {
     /**
-     * Switches theme and sets the body theme.
+     * Initalises the body theme.
      * Defaults to LIGHT if theme neither light or dark.
      * @param {string} store - The Redux store containing the theme.
      */
-    switch: store => {
+    initialise: (store, setTheme) => {
       let { theme: currentTheme } = store.getState();
-      if (currentTheme !== 'light' && currentTheme !== 'dark')
+      if (currentTheme !== 'light' && currentTheme !== 'dark'){
         currentTheme = 'light';
+      }
 
-      const isLight = currentTheme === 'light';
-      const oppositeTheme = isLight ? 'dark' : 'light';
+      const oppositeTheme = currentTheme === 'light' ? 'dark' : 'light';
 
       document.body.classList.remove(`body-${oppositeTheme}`);
       document.body.classList.add(`body-${currentTheme}`);
 
       store.dispatch(setTheme(currentTheme));
-    }
+    },
+
+    switch: (currentTheme, setTheme) => {
+      const oppositeTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+      document.body.classList.remove(`body-${currentTheme}`);
+      document.body.classList.add(`body-${oppositeTheme}`);
+
+      setTheme(oppositeTheme);
+    },
   },
 
   /** The website title */
