@@ -10,12 +10,12 @@ import { cloudinary } from '~/constants/settings.js';
 import css from '~/styles/pages/admin.scss';
 
 class AdminPosts extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       posts: [],
       isLoaded: false
-    }
+    };
   }
 
   componentDidMount() {
@@ -29,16 +29,16 @@ class AdminPosts extends Component {
     zRequest({
       url: '/posts?order=desc',
       method: 'GET',
-      onSuccess: (posts) => {
+      onSuccess: posts => {
         this.setState({
           posts,
           isLoaded: true
         });
       }
     });
-  }
+  };
 
-  render(){
+  render() {
     const { isLoaded, posts } = this.state;
 
     // if (!isLoaded){
@@ -64,7 +64,7 @@ class AdminPosts extends Component {
           <span></span>
           <span></span>
         </div>
-      )
+      );
 
       return (
         <div className={css.grid}>
@@ -77,7 +77,7 @@ class AdminPosts extends Component {
     return (
       <div className={css.postTabler}>
         <Title className={css.heading}>All Posts</Title>
-        <PostTable/>
+        <PostTable />
       </div>
     );
   }
@@ -85,18 +85,22 @@ class AdminPosts extends Component {
 
 // TODO: Bookmark
 class Post extends PureComponent {
-  render(){
+  render() {
     const { idx, item } = this.props;
 
     const EditButton = (
-      <InvisibleButton onClick={() => location.href = `/admin/posts/edit/${item.id}`}>
+      <InvisibleButton
+        onClick={() => (location.href = `/admin/posts/edit/${item.id}`)}
+      >
         <ThemedIcon name={'pen-alt'} />
       </InvisibleButton>
     );
 
     // TODO: Make onClick event functional
     const DeleteButton = (
-      <InvisibleButton onClick={() => location.href = `/admin/posts/edit/${item.id}`}>
+      <InvisibleButton
+        onClick={() => (location.href = `/admin/posts/edit/${item.id}`)}
+      >
         <ThemedIcon name={'trash-alt'} />
       </InvisibleButton>
     );
@@ -111,7 +115,7 @@ class Post extends PureComponent {
         <span>{EditButton}</span>
         <span>{DeleteButton}</span>
       </div>
-    )
+    );
   }
 }
 
@@ -119,15 +123,16 @@ class Post extends PureComponent {
  * Retrieve post image if exists
  * @param {Object} post - Reference post to image
  */
-const previewImage = (post) => {
+const previewImage = post => {
   if (!post.image) return null;
   return (
     <img
       src={`${cloudinary.url}/h_100/${post.image}`}
       alt={post.title}
-      className={css.image} />
-  )
-}
+      className={css.image}
+    />
+  );
+};
 
 const mapStateToProps = state => ({
   theme: state.theme
