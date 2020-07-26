@@ -2,11 +2,6 @@ require('dotenv').config();
 
 module.exports = {
   webpack: function (config) {
-    config.node = {
-      fs: 'empty',
-      child_process: 'empty',
-      module: 'empty',
-    };
     config.module.rules.push({
       test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
       use: {
@@ -17,6 +12,12 @@ module.exports = {
         },
       },
     });
+
+    config.node = {
+      fs: 'empty',
+      child_process: 'empty',
+      module: 'empty',
+    };
 
     config.plugins = config.plugins || [];
     return config;

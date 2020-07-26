@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleTheme } from 'reducers/actions';
+import { setTheme } from 'reducers/actions';
 
 import { InvisibleButton } from 'components/button.js';
 import { ThemedIcon } from 'components/icon.js';
@@ -11,31 +11,40 @@ import css from 'styles/Partials.module.scss';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const theme = useSelector(({theme}) => theme);
+  const theme = useSelector(({ theme }) => theme || 'light');
+
+  const isLightTheme = theme === 'light';
+
+  const switchTheme = () => {
+    const oppositeTheme = isLightTheme ? 'dark' : 'light';
+    dispatch(setTheme(oppositeTheme));
+    document.body.classList.add(`body-${oppositeTheme}`)
+    document.body.classList.remove(`body-${theme}`);
+  };
 
   return (
-    <Navbar className={css[`nav-${theme}`]} expand='lg' sticky='top'>
+    <Navbar className={css[`nav-${theme}`]} expand={'md'} sticky={'top'}>
       <Container>
-        <Navbar.Brand href='/'>
+        <Navbar.Brand href={'/'}>
           <img
             src={`${cloudinary.url}/h_40/v1577385731/static/logos/zavid-logo-text-${theme}.png`}
-            alt='ZAVID Logo'
+            alt={'ZAVID Logo'}
           />
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
-          <Nav className='justify-content-center'>
-            <Nav.Link href='/reveries'>Reveries</Nav.Link>
-            <Nav.Link href='#'>Epistles</Nav.Link>
-            <Nav.Link href='#'>Diary</Nav.Link>
-            <Nav.Link href='#'>About</Nav.Link>
+          <Nav className={'justify-content-center'}>
+            <Nav.Link href={'/reveries'}>Reveries</Nav.Link>
+            <Nav.Link href={'#'}>Epistles</Nav.Link>
+            <Nav.Link href={'#'}>Diary</Nav.Link>
+            <Nav.Link href={'#'}>About</Nav.Link>
           </Nav>
         </Navbar.Collapse>
         <Nav.Item>
-          <InvisibleButton onClick={() => dispatch(toggleTheme(theme))}>
+          <InvisibleButton onClick={switchTheme}>
             <ThemedIcon
-              name={theme === 'light' ? 'moon' : 'sun'}
-              color={theme === 'light' ? 'black' : 'white'}
+              name={isLightTheme ? 'moon' : 'sun'}
+              color={isLightTheme ? '#000' : '#FFF'}
             />
           </InvisibleButton>
         </Nav.Item>

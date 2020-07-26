@@ -13,7 +13,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head><Meta {...query}/></Head>
-        <body>
+        <body className={'body'}>
           <Main />
           <NextScript />
         </body>
@@ -29,7 +29,7 @@ const Meta = ({
   description = '',
   cardImage = '/bg/card-home.jpg'
 }) => (
-  <React.Fragment>
+  <>
 
     {/* Page information */}
     <meta charSet="UTF-8" name="author" content="Zavid Egbue" />
@@ -55,5 +55,5 @@ const Meta = ({
 
     {/* Favicon */}
     {/* <link rel="icon" href={`${cloudinary.url}/public/logos/favicon.jpg`} /> */}
-  </React.Fragment>
+  </>
 )

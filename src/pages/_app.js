@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Container } from 'react-bootstrap';
 import configureStore from '~/reducers/store.js';
@@ -13,9 +13,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import Header from 'partials/header.js';
 import Sidebar from 'partials/sidebar.js';
 
-import { setTheme, toggleTheme } from 'reducers/actions.js';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/scss/bootstrap.scss';
+import 'styles/App.scss';
 
 library.add(fab, far, fas);
 
@@ -43,17 +42,26 @@ export default class ZAVID extends App {
  */
 const ZAVIDApp = ({ Component, pageProps, router }) => {
   const [isLoaded, setLoaded] = useState(false);
-  const dispatch = useDispatch()
+
+  const theme = useSelector(({ theme }) => theme || 'light');
 
   useEffect(() => {
-    dispatch(toggleTheme());
+    loadAppTheme();
+    setLoaded(true);
   }, [isLoaded]);
+
+  const loadAppTheme = () => {
+    const isLightTheme = theme === 'light';
+    const oppositeTheme = isLightTheme ? 'dark' : 'light';
+    document.body.classList.add(`body-${theme}`);
+    document.body.classList.remove(`body-${oppositeTheme}`);
+  };
 
   const { sidebar = true } = router.query;
 
   const style = sidebar
     ? { display: 'grid', gridTemplateColumns: '70% 30%' }
-    : null;
+    : {};
 
   return (
     <>

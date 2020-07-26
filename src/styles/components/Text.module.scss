@@ -1,16 +1,12 @@
-@import "../app.scss";
+@import '../App.scss';
 
 .title {
-  font: {
-    family: $title-font;
-    weight: bold;
-    size: 2em;
-  }
+  font-family: $title-font;
+  font-size: 2em;
+  font-weight: bold;
 }
 
 .paragraph {
-  font: {
-    family: $body-font;
-    size: 1.1em;
-  }
+  font-family: $body-font;
+  font-size: 1.1em;
 }
