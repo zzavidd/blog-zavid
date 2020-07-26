@@ -1,15 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Container } from 'react-bootstrap';
 
-import { zAlerts } from 'zavid-modules';
+const Home = () => {
+  return (
+    <Container>
+      <p>This is the home of Zavid Egbue.</p>
+    </Container>
+  );
+};
 
-export default class Home extends Component {
-  render(){
-    return (
-      <Container>
-        <p>This is the home of Zavid Egbue.</p>
-        <button onClick={() => zAlerts.alert.success('Nice!')}>Yo bro</button>
-      </Container>
-    )
-  }
-}
+export default Home;

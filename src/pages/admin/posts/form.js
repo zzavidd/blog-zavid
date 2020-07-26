@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 // import Textarea from 'react-textarea-autosize';
 import { zForm } from 'zavid-modules';
-import css from '~/styles/app.scss';
 
 const { Label, TextInput, LongTextArea } = zForm;
 

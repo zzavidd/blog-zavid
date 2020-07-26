@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import css from '~/styles/components/text.scss';
+import css from 'styles/components/Text.module.scss';
 
 export class Title extends Component {
   render(){

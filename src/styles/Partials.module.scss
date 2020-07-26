@@ -1,0 +1,60 @@
+@import 'App.scss';
+
+/************
+** HEADER
+************/
+
+%nav-link {
+  font-family: $title-font;
+  font-size: 1.1em;
+  text-transform: uppercase;
+}
+
+.nav {
+  &-light {
+    background-color: #fff;
+    border-bottom: 2px solid $dark;
+
+    a {
+      @extend %nav-link;
+      color: #000;
+    }
+  }
+
+  &-dark {
+    background-color: $dark;
+    border-bottom: 1px solid #fff;
+
+    a {
+      @extend %nav-link;
+      color: #fff;
+    }
+  }
+}
+
+/************
+** SIDEBAR
+************/
+
+@mixin sidebarTemplate($theme) {
+  $imgBorderColor: black;
+  @if $theme == 'dark' {
+    $imgBorderColor: $borderColor;
+  }
+
+  .image {
+    border: 2px solid $imgBorderColor;
+    border-radius: 10px;
+    width: 90%;
+  }
+}
+
+.sidebar {
+  &-light {
+    @include sidebarTemplate('light');
+  }
+
+  &-dark {
+    @include sidebarTemplate('dark');
+  }
+}
