@@ -6,35 +6,68 @@ const dev = process.env.NODE_ENV !== 'production';
 const server = next({ dev });
 const handle = server.getRequestHandler();
 
+const async = require('async');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql');
+const dotenv = require('dotenv').config({ path: './config.env' });
 const port = parseInt(process.env.PORT, 10) || 3000;
-
-require('dotenv').config({path: './config.env' });
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
 
-server.prepare().then(() => {
-	app.get('*', (req, res) => handle(req, res));
-	app.listen(port, (err) => {
-		if (err) throw err;
-		console.log(`ZAVID server running on http://localhost:${port}`);
-	});
+const { setApp } = require('./private/singleton/app');
+const { setKnex } = require('./private/singleton/knex');
+const { setServer } = require('./private/singleton/server');
+
+// Initialise MySQL database
+const knex = require('knex')({
+  client: 'mysql',
+  connection: {
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PWD,
+    database: process.env.MYSQL_NAME
+  }
 });
 
-/** Initialise MySQL database */
-const conn = mysql.createConnection({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PWD,
-  database: process.env.MYSQL_NAME,
-});
+// Check for loaded environment variables
+if (dotenv.error) {
+  throw new Error(`No environment variables loaded.`);
+}
 
-conn.connect(err => {
-  console.log(err ? err.toString() : 'Connected to ZAVID database.');
-});
+startServer();
 
-require('./private/api.js')(app, conn);
-require('./private/routes.js')(app, conn, server);
+function startServer() {
+  async.parallel(
+    [
+      // Start the server
+      function (callback) {
+        server.prepare().then(() => {
+          app.get('*', (req, res) => handle(req, res));
+          app.listen(port, (err) => {
+            if (!err)
+              console.info(`ZAVID server running on http://localhost:${port}`);
+            callback(err, server);
+          });
+        });
+      },
+      // Set database instances
+      function (callback) {
+        setApp(app);
+        setKnex(knex);
+
+        require('./private/api');
+        require('./private/routes');
+
+        callback(null);
+      }
+    ],
+    function (err, server) {
+      if (err) throw err;
+      setServer(server);
+    }
+  );
+}
+
+// require('./private/api.js')(app, conn);
+// require('./private/routes.js')(app, conn, server);

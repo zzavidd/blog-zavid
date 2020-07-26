@@ -1,60 +1,52 @@
-import React, { Component } from "react";
-import { Container } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
+import { Container } from 'react-bootstrap';
 
-import { Title, Paragraph } from "components/text.js";
-import { cloudinary } from "constants/settings.js";
+import { Title, Paragraph } from 'components/text.js';
+import request from 'constants/request.js';
+import { cloudinary } from 'constants/settings.js';
 
-import css from "styles/pages/Reveries.module.scss";
-import { zRequest } from "zavid-modules";
+import css from 'styles/pages/Reveries.module.scss';
 
 /** The index page for reveries. */
-export default class Reveries extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      reveries: [],
-      isLoaded: false
-    };
-  }
+const Reveries = () => {
+  const [reveries, setReveries] = useState([]);
+  const [isLoaded, setLoaded] = useState(false);
 
-  componentDidMount() {
-    this.getReveries();
-  }
+  useEffect(() => {
+    getReveries();
+  }, [isLoaded]);
 
   /** Get all reveries */
-  getReveries = () => {
-    zRequest({
-      url: "/posts/reveries",
-      method: "GET",
-      onSuccess: reveries => {
-        this.setState({
-          reveries,
-          isLoaded: true
-        });
+  const getReveries = () => {
+    request({
+      url: '/api/v1/posts/reveries',
+      method: 'GET',
+      onSuccess: (reveries) => {
+        setReveries(reveries);
+        console.log(reveries);
+        setLoaded(true)
       }
     });
   };
 
-  render() {
-    return (
-      <Container className={css.index}>
-        {this.state.reveries.map((reverie, idx) => (
-          <div key={idx}>
-            <Title>{reverie.title}</Title>
-            {previewImage(reverie)}
-            <Paragraph>{reverie.description}</Paragraph>
-          </div>
-        ))}
-      </Container>
-    );
-  }
-}
+  return (
+    <Container className={css.index}>
+      {reveries.map((reverie, key) => (
+        <div key={key}>
+          <Title>{reverie.title}</Title>
+          <ReverieImage reverie={reverie} />
+          <Paragraph>{reverie.description}</Paragraph>
+        </div>
+      ))}
+    </Container>
+  );
+};
 
 /**
  * Retrieve reverie image if exists
  * @param {Object} reverie - Reference reverie to image
  */
-const previewImage = reverie => {
+const ReverieImage = (reverie) => {
   if (!reverie.image) return null;
   return (
     <img
@@ -64,3 +56,5 @@ const previewImage = reverie => {
     />
   );
 };
+
+export default Reveries;

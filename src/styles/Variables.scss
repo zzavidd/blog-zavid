@@ -10,3 +10,10 @@ $dark: #202020;
 $cloudinary-url: 'https://res.cloudinary.com/zavid/image/upload';
 $bg-image-light: '/static/bg/bg-app-light';
 $bg-image-dark: '/static/bg/bg-app-dark';
+
+/** Media queries */
+$break-sm: 576px;
+$break-md: 768px;
+$break-lg: 992px;
+$break-xl: 1200px;
+$break-xxl: 1408px;
