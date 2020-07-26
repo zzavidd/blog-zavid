@@ -1,13 +1,16 @@
 import React, { Component} from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
-import Textarea from 'react-textarea-autosize';
+// import Textarea from 'react-textarea-autosize';
+import { zForm } from 'zavid-modules';
+import css from '~/styles/app.scss';
 
-import css from '~/styles/pages/admin.scss';
+const { Label, TextInput, LongTextArea } = zForm;
 
-export default class PostForm extends Component {
+class PostForm extends Component {
   render(){
-    const { post, heading, confirmText, onConfirm, onCancel, handlers, operation } = this.props;
+    const { post, heading, confirmText, onConfirm, onCancel, handlers, operation, theme } = this.props;
     const { handleText, handleDate, handleImage } = handlers;
 
     return (
@@ -16,14 +19,22 @@ export default class PostForm extends Component {
 
         <Row>
           <Col md={6}>
-            <label className={css.label}>Title:</label>
-            <input className={css.input} type={'text'} value={post.title} />
+            <Label className={css.label}>Title:</Label>
+            <TextInput
+              name={'title'}
+              className={css.input}
+              value={post.title}
+              onChange={handleText} />
           </Col>
         </Row>
         <Row>
           <Col>
-            <label className={css.label}>Description:</label>
-            <Textarea minRows={4} className={css.textarea} value={post.description} />
+            <Label className={css.label}>Description:</Label>
+            <LongTextArea
+              name={'description'}
+              className={css.textarea}
+              value={post.description}
+              onChange={handleText} />
           </Col>
         </Row>
         <Row>
@@ -36,3 +47,9 @@ export default class PostForm extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  theme: state.theme
+});
+
+export default connect(mapStateToProps)(PostForm);

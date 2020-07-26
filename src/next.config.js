@@ -1,9 +1,8 @@
-require('dotenv').config()
+require('dotenv').config();
 
-const withSass = require("@zeit/next-sass");
-const withCss = require("@zeit/next-css");
-const withPlugins = require("next-compose-plugins");
-const shebang_loader = require('shebang-loader');
+const withSass = require('@zeit/next-sass');
+const withCss = require('@zeit/next-css');
+const withPlugins = require('next-compose-plugins');
 
 module.exports = withPlugins([
   [
@@ -15,26 +14,22 @@ module.exports = withPlugins([
           child_process: 'empty',
           module: 'empty'
         };
-        config.module.rules.push({
-          test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
-          use: {
-            loader: "url-loader",
-            options: {
-              limit: 100000,
-              name: "[name].[ext]",
-            },
+        config.module.rules.push(
+          {
+            test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
+            use: {
+              loader: 'url-loader',
+              options: {
+                limit: 100000,
+                name: '[name].[ext]'
+              }
+            }
           }
-        },
-        {
-          test: /\.(js)$/,
-          use: {
-            loader: 'shebang-loader'
-          }
-        });
+        );
 
-        config.plugins = config.plugins || []
-        return config
-      },
+        config.plugins = config.plugins || [];
+        return config;
+      }
     }
   ],
   [
@@ -43,8 +38,8 @@ module.exports = withPlugins([
       cssModules: true,
       cssLoaderOptions: {
         importLoaders: 1,
-        localIdentName: "[local]___[hash:base64:5]",
-      },
-    },
+        localIdentName: '[local]___[hash:base64:5]'
+      }
+    }
   ]
-])
+]);
