@@ -1,13 +1,13 @@
 import React, { Component, PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import { InvisibleButton } from '~/components/button.js';
-import { ThemedIcon } from '~/components/icon.js';
-import { Title } from '~/components/text.js';
+import { InvisibleButton } from 'components/button.js';
+import { ThemedIcon } from 'components/icon.js';
+import { Title } from 'components/text.js';
 import { zDate, zRequest } from 'zavid-modules';
-import { cloudinary } from '~/constants/settings.js';
+import { cloudinary } from 'constants/settings.js';
 
-import css from '~/styles/pages/admin.scss';
+import css from 'styles/pages/admin.scss';
 
 class AdminPosts extends Component {
   constructor() {

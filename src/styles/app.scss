@@ -7,40 +7,34 @@ $borderColor: rgb(245, 222, 179);
 
 $dark: #202020;
 
-$cloudinaryUrl: 'https://res.cloudinary.com/zavid/image/upload';
+$cloudinary-url: 'https://res.cloudinary.com/zavid/image/upload';
 
-$backgroundLight: '/v1577490400/static/bg/bg-app-light.jpg';
-$backgroundDark: '/static/bg/bg-app-dark.jpg';
+$bg-image-light: '/v1577490400/static/bg/bg-app-light.jpg';
+$bg-image-dark: '/static/bg/bg-app-dark.jpg';
 
 /*****
 ** APP
 *****/
 
-@mixin setBackground($background, $textColor, $image){
+%body {
+  font-family: $body-font;
   background: {
     attachment: fixed;
-    color: $background;
     repeat: no-repeat;
     size: cover;
-    image: url($cloudinaryUrl + $image);
-  };
-  color: $textColor;
-  font-family: $body-font;
-
-  .input {
-    @if $textColor == 'black' {
-      color: black;
-      border-bottom: 1px solid black;
-    } @else {
-      color: white;
-      border-bottom: 1px solid white;
-    }
   }
-  
-  .textarea { @extend .input }
 }
 
-:global(.body) {
-  &-light { @include setBackground(white, black, $backgroundLight); }
-  &-dark { @include setBackground($dark, white, $backgroundDark); }
+.body {
+  &-light {
+    background-image: url($cloudinary-url + $bg-image-light);
+    border-bottom: 1px solid #000;
+    color: #000;
+  }
+
+  &-dark {
+    background-image: url($cloudinary-url + $bg-image-dark);
+    border-bottom: 1px solid #fff;
+    color: #fff;
+  }
 }

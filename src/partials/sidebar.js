@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { Container } from 'react-bootstrap';
-import { Title } from '~/components/text.js';
-import { cloudinary } from '~/constants/settings.js';
+import { Title } from 'components/text.js';
+import { cloudinary } from 'constants/settings.js';
 
 import { zDate, zRequest } from 'zavid-modules';
 
-import css from '~/styles/partials.scss';
+import css from 'styles/Partials.module.scss';
 
 class Sidebar extends Component {
   constructor(){

@@ -1,0 +1,109 @@
+# Configuration
+extends:
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:import/errors
+  - plugin:import/warnings
+  - plugin:jsdoc/recommended
+  - plugin:mocha/recommended
+env:
+  browser: true
+  node: true
+  mocha: true
+  es6: true
+parser: babel-eslint
+parserOptions:
+  sourceType: module
+  ecmaFeatures:
+    jsx: true
+plugins:
+  - react
+  - filenames
+  - import
+  - jsdoc
+  - mocha
+settings:
+  import/resolver:
+    node:
+      moduleDirectory:
+        - 'node_modules'
+        - '.'
+  react:
+    version: detect
+
+# Rules
+rules:
+  # Active rules
+  filenames/match-regex:
+    - error
+    - '^([a-z0-9]+[-|\.]?)+$'
+    - true
+  import/no-unresolved:
+    - error
+  import/order:
+    - warn
+    - groups:
+        - external
+        - builtin
+        - internal
+        - sibling
+      pathGroups:
+        - pattern: 'reducers/**'
+          group: external
+          position: before
+
+        - pattern: 'components/**'
+          group: internal
+          position: after
+        - pattern: 'constants/**'
+          group: internal
+          position: after
+        - pattern: 'pages/**'
+          group: internal
+          position: after
+        - pattern: 'styles/**'
+          group: internal
+          position: after
+      pathGroupsExcludedImportTypes:
+        - internal
+      newlines-between: always
+      alphabetize:
+        order: asc
+        caseInsensitive: true
+  jsdoc/newline-after-description:
+    - warn
+    - never
+  jsdoc/require-jsdoc:
+    - warn
+    - require:
+        FunctionDeclaration: false
+  jsdoc/require-param:
+    - warn
+    - enableFixer: false
+  no-multiple-empty-lines:
+    - warn
+    - max: 1
+  no-unreachable: warn
+  no-unused-vars: warn
+  no-console:
+    - warn
+    - allow:
+        - warn
+        - error
+        - info
+  semi:
+    - error
+    - always
+  spaced-comment:
+    - warn
+    - always
+    - exceptions:
+        - '*'
+
+  # Overridden and disabled rules
+  mocha/handle-done-callback: off
+  no-case-declarations: off
+  no-useless-escape: off
+  quotes: off
+  react/display-name: off
+  react/prop-types: off

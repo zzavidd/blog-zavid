@@ -1,0 +1,16 @@
+# Commas and semi-colons
+trailingComma: "none"
+semi: true
+
+# Tabs
+useTabs: false
+tabWidth: 2
+
+# Brackets
+bracketSpacing: true
+jsxBracketSameLine: true
+arrowParens: "always"
+
+# Quotes
+singleQuote: true
+jsxSingleQuote: false

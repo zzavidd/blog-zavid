@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
 
-import { Title, Paragraph } from "~/components/text.js";
-import { cloudinary } from "~/constants/settings.js";
+import { Title, Paragraph } from "components/text.js";
+import { cloudinary } from "constants/settings.js";
 
-import css from "~/styles/pages/reveries.scss";
+import css from "styles/pages/Reveries.module.scss";
 import { zRequest } from "zavid-modules";
 
 /** The index page for reveries. */

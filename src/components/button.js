@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import css from '~/styles/components/button.scss';
+import React from 'react';
+import css from 'styles/components/Button.module.scss';
 
 export const InvisibleButton = (props) => {
   return (
