@@ -1,8 +1,6 @@
 {
   "scripts": {
     "build": "NODE_ENV=development next build",
-    "start": "NODE_ENV=production next start",
-    "export": "NODE_ENV=production next export",
     "dev": "LOCAL_ENV=true node server.js",
     "prod": "NODE_ENV=production node server.js",
     "test": "mocha"
@@ -32,13 +30,12 @@
     "react-textarea-autosize": "^7.1.2",
     "redux": "^4.0.4",
     "redux-persist": "^6.0.0",
-    "shebang-loader": "0.0.1",
-    "twilio": "^3.39.1",
-    "zavid-modules": "^1.2.8"
+    "zavid-modules": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.8.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-root-import": "^6.2.0",
     "webpack": "^4.33.0"

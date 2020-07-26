@@ -7,7 +7,10 @@ $borderColor: rgb(245, 222, 179);
 
 $dark: #202020;
 
-$cloudinary_url: 'https://res.cloudinary.com/zavid/image/upload';
+$cloudinaryUrl: 'https://res.cloudinary.com/zavid/image/upload';
+
+$backgroundLight: '/v1577490400/static/bg/bg-app-light.jpg';
+$backgroundDark: '/static/bg/bg-app-dark.jpg';
 
 /*****
 ** APP
@@ -19,13 +22,25 @@ $cloudinary_url: 'https://res.cloudinary.com/zavid/image/upload';
     color: $background;
     repeat: no-repeat;
     size: cover;
-    image: url($cloudinary_url + $image);
+    image: url($cloudinaryUrl + $image);
   };
   color: $textColor;
   font-family: $body-font;
+
+  .input {
+    @if $textColor == 'black' {
+      color: black;
+      border-bottom: 1px solid black;
+    } @else {
+      color: white;
+      border-bottom: 1px solid white;
+    }
+  }
+  
+  .textarea { @extend .input }
 }
 
 :global(.body) {
-  &-light { @include setBackground(white, black, '/v1577490400/static/bg/bg-app-light.jpg'); }
-  &-dark { @include setBackground($dark, white, '/static/bg/bg-app-dark.jpg'); }
+  &-light { @include setBackground(white, black, $backgroundLight); }
+  &-dark { @include setBackground($dark, white, $backgroundDark); }
 }

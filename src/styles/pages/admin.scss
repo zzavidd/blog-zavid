@@ -45,22 +45,13 @@
   font-family: $title-font;
 }
 
-.input {
-  background: none;
-  border: none;
-  border-bottom: 1px solid white;
-  outline: none;
-  color: white;
-  padding: .5em 0;
-  width: 100%;
-}
+// .input {
+//   color: inherit;
+//   border-bottom: 1px solid;
+//   border-bottom-color: inherit !important;
+//   font-family: $body-font;
+// }
 
-.textarea {
-  background: none;
-  border: none;
-  border-bottom: 1px solid white;
-  outline: none;
-  color: white;
-  padding: .5em 0;
-  width: 100%;
-}
+// .textarea {
+//   @extend .input;
+// }

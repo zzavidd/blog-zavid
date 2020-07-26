@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 
 import { Container } from 'react-bootstrap';
 import { Title } from '~/components/text.js';
-import { zDate } from 'zavid-modules';
 import { cloudinary } from '~/constants/settings.js';
 
-import { zRequest } from 'zavid-modules';
+import { zDate, zRequest } from 'zavid-modules';
 
 import css from '~/styles/partials.scss';
 
@@ -26,7 +25,7 @@ class Sidebar extends Component {
   /**
    * Get 5 most recent posts
    */
-  getRecentPosts = () => {
+  getRecentPosts() {
     zRequest({
       url: '/posts?limit=5&order=desc',
       method: 'GET',
