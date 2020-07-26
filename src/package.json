@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "NODE_ENV=development next build",
-    "dev": "LOCAL_ENV=true node server.js",
+    "dev": "node server.js",
     "prod": "NODE_ENV=production node server.js",
     "test": "mocha"
   },
@@ -11,11 +11,15 @@
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/react-fontawesome": "^0.1.11",
+    "async": "^3.2.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-graphql": "^0.11.0",
+    "graphql": "^15.3.0",
+    "knex": "^0.21.2",
     "mysql": "^2.18.1",
     "next": "^9.4.4",
     "node-sass": "^4.14.1",
@@ -25,6 +29,7 @@
     "react-redux": "^7.2.1",
     "react-responsive": "^8.1.0",
     "react-textarea-autosize": "^7.1.2",
+    "react-toastify": "^6.0.8",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "zavid-modules": "^2.9.0"

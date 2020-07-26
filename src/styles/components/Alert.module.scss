@@ -1,0 +1,51 @@
+@import '../Variables';
+
+.toast-container {
+  margin: 0 !important;
+  padding: 0 1em !important;
+  width: 100% !important;
+  @media (max-width: $break-sm) {
+    padding: 0.5em 1em !important;
+  }
+}
+
+.toast-message {
+  border-radius: 10px !important;
+  font-family: $body-font !important;
+  font-weight: bold;
+  max-width: 600px;
+  text-align: center;
+  width: 100%;
+
+  @media (max-width: $break-sm) {
+    font-size: 0.9em;
+  }
+}
+
+.toast-transition-fadein {
+  animation-name: fadeIn;
+}
+
+.toast-transition-fadeout {
+  animation-name: fadeOut;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

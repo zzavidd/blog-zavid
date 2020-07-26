@@ -8,13 +8,11 @@
 
   &-light {
     background-image: url($cloudinary-url + $bg-image-light);
-    border-bottom: 1px solid #000;
     color: #000 !important;
   }
   
   &-dark {
     background-image: url($cloudinary-url + $bg-image-dark);
-    border-bottom: 1px solid #fff;
     color: #fff !important;
   }
 }
