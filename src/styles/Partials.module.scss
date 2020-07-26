@@ -1,4 +1,4 @@
-@import 'App.scss';
+@import 'App';
 
 /************
 ** HEADER
@@ -17,7 +17,7 @@
 
     a {
       @extend %nav-link;
-      color: #000;
+      color: #000 !important;
     }
   }
 
@@ -27,7 +27,7 @@
 
     a {
       @extend %nav-link;
-      color: #fff;
+      color: #fff !important;
     }
   }
 }
@@ -39,7 +39,7 @@
 @mixin sidebarTemplate($theme) {
   $imgBorderColor: black;
   @if $theme == 'dark' {
-    $imgBorderColor: $borderColor;
+    $imgBorderColor: $border-color;
   }
 
   .image {

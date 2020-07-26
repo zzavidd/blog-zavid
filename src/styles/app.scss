@@ -1,40 +1,20 @@
-@import url('https://fonts.googleapis.com/css?family=Bree+Serif:400,700|Noto+Serif+KR:400,700&display=swap');
-
-$title-font: 'Bree Serif', serif;
-$body-font: 'Noto Serif KR', serif;
-
-$borderColor: rgb(245, 222, 179);
-
-$dark: #202020;
-
-$cloudinary-url: 'https://res.cloudinary.com/zavid/image/upload';
-
-$bg-image-light: '/v1577490400/static/bg/bg-app-light.jpg';
-$bg-image-dark: '/static/bg/bg-app-dark.jpg';
-
-/*****
-** APP
-*****/
-
-%body {
-  font-family: $body-font;
-  background: {
-    attachment: fixed;
-    repeat: no-repeat;
-    size: cover;
-  }
-}
+@import 'Variables';
 
 .body {
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: $body-font;
+
   &-light {
     background-image: url($cloudinary-url + $bg-image-light);
     border-bottom: 1px solid #000;
-    color: #000;
+    color: #000 !important;
   }
-
+  
   &-dark {
     background-image: url($cloudinary-url + $bg-image-dark);
     border-bottom: 1px solid #fff;
-    color: #fff;
+    color: #fff !important;
   }
 }
