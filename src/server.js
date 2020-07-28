@@ -10,7 +10,7 @@ const async = require('async');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv').config({ path: './config.env' });
-const port = parseInt(process.env.PORT, 10) || 3000;
+const port = parseInt(process.env.PORT, 10) || 4000;
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
@@ -68,6 +68,3 @@ function startServer() {
     }
   );
 }
-
-// require('./private/api.js')(app, conn);
-// require('./private/routes.js')(app, conn, server);
