@@ -3,9 +3,20 @@ import { Container } from 'react-bootstrap';
 
 import { Title, Paragraph } from 'components/text.js';
 import request from 'constants/request.js';
-import { cloudinary } from 'constants/settings.js';
+import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
 
 import css from 'styles/pages/Reveries.module.scss';
+
+const query = `
+{
+  getAllPosts(type: Reverie) {
+    id
+    title,
+    description,
+    image
+  }
+}
+`;
 
 /** The index page for reveries. */
 const Reveries = () => {
@@ -19,26 +30,33 @@ const Reveries = () => {
   /** Get all reveries */
   const getReveries = () => {
     request({
-      url: '/api/v1/posts/reveries',
-      method: 'GET',
-      onSuccess: (reveries) => {
+      query: JSON.stringify({ query }),
+      onSuccess: ({ data }) => {
+        const reveries = data.getAllPosts;
         setReveries(reveries);
-        console.log(reveries);
-        setLoaded(true)
+        setLoaded(true);
       }
     });
   };
 
   return (
-    <Container className={css.index}>
+    <Container className={css['reveries-index']}>
       {reveries.map((reverie, key) => (
-        <div key={key}>
-          <Title>{reverie.title}</Title>
-          <ReverieImage reverie={reverie} />
-          <Paragraph>{reverie.description}</Paragraph>
-        </div>
+        <Reverie reverie={reverie} key={key} />
       ))}
     </Container>
+  );
+};
+
+const Reverie = ({ reverie }) => {
+  return (
+    <div className={css['reveries-index-reverie']}>
+      <Title>{reverie.title}</Title>
+      <ReverieImage reverie={reverie} />
+      <Paragraph className={css['reveries-index-paragraph']} truncate={60}>
+        {reverie.description}
+      </Paragraph>
+    </div>
   );
 };
 
@@ -46,13 +64,14 @@ const Reveries = () => {
  * Retrieve reverie image if exists
  * @param {Object} reverie - Reference reverie to image
  */
-const ReverieImage = (reverie) => {
+const ReverieImage = ({ reverie }) => {
   if (!reverie.image) return null;
   return (
-    <img
-      src={`${cloudinary.url}/w_1280,h_720/${reverie.image}`}
+    <CloudinaryImage
+      src={reverie.image}
       alt={reverie.title}
-      className={css.image}
+      lazy={TRANSFORMATIONS.MEDIUM_WIDE}
+      className={css['reveries-index-image']}
     />
   );
 };

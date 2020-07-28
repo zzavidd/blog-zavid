@@ -1,30 +1,24 @@
 import { alert, setAlert } from 'components/alert.js';
 import { clearUser } from 'reducers/actions';
-import configureStore from 'reducers/store.js';
-
-const { store } = configureStore();
 
 const axios = require('axios');
 
 /**
  * Abstract function for HTTP requests.
  * @param {object} request - The request details.
- * @param {string} request.url - The url to make the request to.
- * @param {string} [request.method] - The method of the request. Defaults to GET.
- * @param {object} [request.body] - The payload for the request.
- * @param {object} [request.headers] - The headers to accompany the request.
+ * @param {object} [request.query] - The GraphQL query for the request.
  * @param {Function} request.onSuccess - Function triggered on successful request.
  * @param {Function} request.onError - Function triggered on successful request.
  * @param {Function} [request.done] - The callback to finish the test.
  */
-export default ({ url, method = 'GET', body, headers = {}, onSuccess }) => {
-  headers['Content-Type'] = 'application/json';
-
+export default ({ query, onSuccess }) => {
   axios({
-    url,
-    method,
-    data: body,
-    headers
+    url: '/api',
+    method: 'POST',
+    data: query,
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
     .then(({ data }) => {
       onSuccess(data);

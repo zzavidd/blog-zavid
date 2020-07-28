@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import { InvisibleButton } from 'components/button.js';
 import { ThemedIcon } from 'components/icon.js';
+import { baseUrl } from 'components/image.js';
 import { Title } from 'components/text.js';
 import { zDate, zRequest } from 'zavid-modules';
-import { cloudinary } from 'constants/settings.js';
 
 import css from 'styles/pages/admin.scss';
 
@@ -127,7 +127,7 @@ const previewImage = post => {
   if (!post.image) return null;
   return (
     <img
-      src={`${cloudinary.url}/h_100/${post.image}`}
+      src={`${baseUrl}/h_100/${post.image}`}
       alt={post.title}
       className={css.image}
     />
