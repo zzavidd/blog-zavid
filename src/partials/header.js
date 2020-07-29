@@ -30,6 +30,7 @@ const Header = () => {
           <CloudinaryImage
             src={`/static/logos/zavid-logo-text-${theme}.png`}
             alt={'ZAVID Logo'}
+            lazy={{ height: 40 }}
           />
         </Navbar.Brand>
         <Navbar.Toggle />

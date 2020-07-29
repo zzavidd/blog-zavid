@@ -1,0 +1,40 @@
+
+type Post {
+  id: Int
+  title: String!
+  datePublished: String
+  description: String
+  image: String
+  slug: String
+  excerpt: String
+  type: PostType
+  createTime: String
+}
+
+enum PostType {
+  Epistle
+  Reverie
+  Poem
+  Page
+}
+
+input PostInput {
+  title: String!
+  datePublished: String
+  description: String
+  image: String
+  slug: String
+  excerpt: String
+  type: PostType
+}
+
+type Query {
+  getAllPosts(limit: Int, random: Boolean, type: PostType): [Post],
+  getSinglePost(id: Int!): Post
+}
+
+type Mutation {
+  createPost(post: PostInput): Post
+  updatePost(id: Int!, post: PostInput): Post
+  deletePost(id: Int!): Post
+}
