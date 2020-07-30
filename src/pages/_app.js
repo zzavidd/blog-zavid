@@ -44,34 +44,27 @@ const ZAVIDApp = ({ Component, pageProps, router }) => {
   const [isLoaded, setLoaded] = useState(false);
 
   const theme = useSelector(({ theme }) => theme || 'light');
+  const { hideSidebar = false } = router.query;
 
   useEffect(() => {
-    loadAppTheme();
+    document.body.classList.add(`body-${theme}`);
     setLoaded(true);
   }, [isLoaded]);
-
-  const loadAppTheme = () => {
-    const isLightTheme = theme === 'light';
-    const oppositeTheme = isLightTheme ? 'dark' : 'light';
-    document.body.classList.add(`body-${theme}`);
-    document.body.classList.remove(`body-${oppositeTheme}`);
-  };
-
-  const { sidebar = true } = router.query;
-
-  const style = sidebar
-    ? { display: 'grid', gridTemplateColumns: '70% 30%' }
-    : {};
 
   return (
     <>
       <Header />
-      <Container style={style}>
+      <div className={hideSidebar ? 'app' : 'app-with-sidebar'}>
         <Component {...pageProps} />
-        {sidebar ? <Sidebar /> : null}
-      </Container>
+        <AppSidebar hideSidebar={hideSidebar} />
+      </div>
     </>
   );
+};
+
+const AppSidebar = ({ hideSidebar }) => {
+  if (hideSidebar) return null;
+  return <Sidebar />;
 };
 
 ZAVID.getInitialProps = async ({ Component, ctx }) => {

@@ -8,6 +8,7 @@
 
   &-light {
     background-image: url($cloudinary-url + $bg-image-light);
+
     * {
       color: #000 !important;
     }
@@ -15,8 +16,25 @@
 
   &-dark {
     background-image: url($cloudinary-url + $bg-image-dark);
+
     * {
       color: #fff !important;
+    }
+  }
+}
+
+.app {
+  padding: 1em 2em;
+
+  &-with-sidebar {
+    @extend .app;
+    display: grid;
+    grid-template-columns: 1fr 30%;
+    margin: 0 auto;
+    max-width: 80%;
+
+    @media (max-width: $break-md) {
+      display: block;
     }
   }
 }

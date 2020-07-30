@@ -1,0 +1,15 @@
+@import '../Variables';
+
+.input {
+  background: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7) !important;
+  border-style: none;
+  font-size: 1.2em;
+  outline: none;
+  padding: 0.4em;
+  width: 100%;
+  @media (max-width: $break-sm) {
+    font-size: 1em;
+    padding: 0.4em 0;
+  }
+}

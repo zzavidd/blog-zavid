@@ -3,7 +3,7 @@ type Post {
   id: Int
   title: String!
   datePublished: String
-  description: String
+  content: String
   image: String
   slug: String
   excerpt: String
@@ -21,7 +21,7 @@ enum PostType {
 input PostInput {
   title: String!
   datePublished: String
-  description: String
+  content: String
   image: String
   slug: String
   excerpt: String
