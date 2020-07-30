@@ -10,7 +10,7 @@ module.exports = {
   isValidPost: (post) => {
     if (!ifExists(post.title.trim(), 'Enter the title of the post.')) return false;
     if (!ifExists(post.type.trim(), 'Select the post type.')) return false;
-    if (!ifExists(post.description, 'Enter the post description.')) return false;
+    if (!ifExists(post.content, 'Enter the post description.')) return false;
     if (!isUnderFileSizeLimit(post.image)) return false;
     return true;
   },

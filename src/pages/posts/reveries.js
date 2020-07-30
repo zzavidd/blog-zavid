@@ -15,7 +15,7 @@ const query = `
   getAllPosts(limit: 3, type: Reverie) {
     id
     title,
-    description,
+    content,
     image
   }
 }
@@ -62,7 +62,7 @@ const Reverie = memo(({ reverie }) => {
         <Title>{reverie.title}</Title>
         <ReverieImage reverie={reverie} />
         <Paragraph className={css['reveries-index-paragraph']} truncate={60}>
-          {reverie.description}
+          {reverie.content}
         </Paragraph>
       </Zoomer>
     </LazyLoader>
