@@ -9,7 +9,7 @@ exports.accounts = {
 };
 
 /** Domain to use dependent on environment */
-exports.domain = dev ? 'http://localhost:3000' : 'https://www.zavidegbue.com';
+exports.domain = dev ? 'http://localhost:4000' : 'https://www.zavidegbue.com';
 
 /** My email address */
 exports.email = 'zavidegbue@gmail.com';
