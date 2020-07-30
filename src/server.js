@@ -38,6 +38,7 @@ if (dotenv.error) {
 startServer();
 
 function startServer() {
+  setServer(server);
   async.parallel(
     [
       // Start the server
@@ -47,7 +48,7 @@ function startServer() {
           app.listen(port, (err) => {
             if (!err)
               console.info(`ZAVID server running on http://localhost:${port}`);
-            callback(err, server);
+            callback(err);
           });
         });
       },
@@ -62,9 +63,8 @@ function startServer() {
         callback(null);
       }
     ],
-    function (err, server) {
+    function (err) {
       if (err) throw err;
-      setServer(server);
     }
   );
 }
