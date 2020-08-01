@@ -1,0 +1,34 @@
+/// Caters responsively to different attributes based on screen size.
+/// @param {string} $attr - The CSS attribute.
+/// @param {any} $default - The default value for the attribute.
+/// @param {any} [$sm] - Optional value for mobile phones.
+/// @param {any} [$md] - Optional value for tablets
+/// @param {any} [$lg] - Optional value for small desktops
+/// @param {any} [$xl] - Optional value for large desktops.
+@mixin responsive($attr, $default, $sm: 0, $md: 0, $lg: 0, $xl: 0) {
+  #{$attr}: $default;
+
+  @if $xl != 0 {
+    @media (max-width: $break-xl) {
+      #{$attr}: $xl;
+    }
+  }
+
+  @if $lg != 0 {
+    @media (max-width: $break-lg) {
+      #{$attr}: $lg;
+    }
+  }
+
+  @if $md != 0 {
+    @media (max-width: $break-md) {
+      #{$attr}: $md;
+    }
+  }
+
+  @if $sm != 0 {
+    @media (max-width: $break-sm) {
+      #{$attr}: $sm;
+    }
+  }
+}

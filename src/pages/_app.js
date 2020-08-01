@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Provider, useSelector } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { Container } from 'react-bootstrap';
-import configureStore from '~/reducers/store.js';
-import App from 'next/app';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import 'bootstrap/scss/bootstrap.scss';
+import App from 'next/app';
+import React, { useEffect, useState } from 'react';
+import { Provider, useSelector } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import Header from 'partials/header.js';
 import Sidebar from 'partials/sidebar.js';
+import configureStore from 'reducers/store.js';
 
-import 'bootstrap/scss/bootstrap.scss';
 import 'styles/App.scss';
 
 library.add(fab, far, fas);
