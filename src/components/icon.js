@@ -1,31 +1,20 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classnames from 'classnames';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-export class Icon extends Component {
-  render() {
-    const { prefix, name, color, style, className } = this.props;
-    return (
-      <FontAwesomeIcon
-        icon={[prefix || 'fas', name]}
-        color={color || 'white'}
-        style={{ marginRight: '0.4em', ...style }}
-        className={className}
-      />
-    );
-  }
-}
+export const Icon = ({ prefix, name, className }) => {
+  return (
+    <FontAwesomeIcon
+      icon={[prefix || 'fas', name]}
+      className={classnames(className, 'icon')}
+    />
+  );
+};
 
-class IThemedIcon extends Component {
-  render() {
-    return (
-      <Icon {...this.props} color={this.props.theme === 'light' ? 'black' : 'white'} />
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-  theme: state.theme
-});
-
-export const ThemedIcon = connect(mapStateToProps)(IThemedIcon);
+export const ThemedIcon = (props) => {
+  const theme = useSelector(({ theme }) => theme);
+  return (
+    <Icon {...props} className={classnames(props.className, `icon-${theme}`)} />
+  );
+};

@@ -94,7 +94,7 @@ export const TextInput = ({ name, value, onChange, placeholder }) => {
 };
 
 export const Select = (props) => {
-  const { name, items, value = '', onChange, placeholder } = props;
+  const { name, items, value = '', onChange, placeholder = '' } = props;
 
   const theme = useSelector(({ theme }) => theme);
 
@@ -110,9 +110,11 @@ export const Select = (props) => {
       onChange={onChange}
       className={css[`select-${theme}`]}
       style={{ color }}>
-      <option value={''} disabled>
-        {placeholder}
-      </option>
+      {placeholder ? (
+        <option value={''} disabled>
+          {placeholder}
+        </option>
+      ) : null}
       {items.map((item, key) => {
         const label = item.label || item;
         const value = item.value || item;
@@ -127,19 +129,29 @@ export const Select = (props) => {
 };
 
 /**
- * A longer text area component.
+ * A single-line {@link Textarea} component.
  * @param {object} props - The component props.
- * @param {string} props.name - The object property this textarea represents.
- * @param {string} props.value - The current text in the textarea.
- * @param {Function} props.onChange - The function called on text change.
- * @param {string} props.placeholder - The placeholder text.
  * @returns {React.Component} The component.
  */
-export const LongTextArea = ({ name, value, onChange, placeholder }) => {
+export const ShortTextArea = (props) => {
+  return <Textarea {...props} minRows={1} />;
+};
+
+/**
+ * A multi-line {@link Textarea} component.
+ * @param {object} props - The component props.
+ * @returns {React.Component} The component.
+ */
+export const LongTextArea = (props) => {
+  return <Textarea {...props} minRows={2} />;
+};
+
+const Textarea = ({ name, value, onChange, placeholder, minRows }) => {
   const theme = useSelector(({ theme }) => theme);
   return (
     <TextareaAutosize
       name={name}
+      minRows={minRows}
       value={value}
       onChange={onChange}
       placeholder={placeholder}

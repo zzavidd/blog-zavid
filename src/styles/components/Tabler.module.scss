@@ -1,0 +1,119 @@
+@import '../App.scss';
+
+.tabler-heading {
+  @include themer(&, border-bottom, 1px solid $dark, 1px solid #fff);
+  @include themer(&, border-top, 1px solid $dark, 1px solid #fff);
+  font-size: 1.8em;
+  margin: 0.5em 1em;
+  padding: 0.5em 0;
+  text-align: center;
+
+  @media (max-width: $break-sm) {
+    border-style: none;
+    font-size: 1.5em;
+    margin: 1em 1em 0;
+    padding: 0;
+    text-align: left;
+  }
+}
+
+.tabler-container {
+  padding: 1em 2em;
+  @media (max-width: $break-md) {
+    padding: 0.5em 1em;
+  }
+}
+
+%row {
+  align-items: center;
+  color: #fff;
+  display: grid;
+  padding: 0.7em 0;
+
+  span {
+    padding: 0 0.5em;
+    word-break: break-word;
+
+    .image {
+      width: 100%;
+    }
+  }
+}
+
+.tabler-header-row {
+  @extend %row;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  font-family: $title-font;
+}
+
+.tabler-grid {
+  display: grid;
+  font-size: 1.1em;
+  position: relative;
+
+  .tabler-item-row {
+    @extend %row;
+    border-radius: 10px;
+    font-family: $body-font;
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+}
+
+.tabler-list {
+  @include responsive(font-size, 1em, $sm: 0.9);
+  color: #fff;
+  display: grid;
+
+  .tabler-item-row {
+    background: rgba(20, 6, 25, 0.3);
+    border: 1px solid #fff;
+    border-radius: 15px;
+    font-family: $body-font;
+    margin: 0.5em 0;
+    padding: 1em;
+    position: relative;
+
+    .tabler-field-mobile {
+      display: grid;
+      grid-template-columns: 2em 1fr;
+      padding-right: 1.5em;
+    }
+
+    .tabler-item-name {
+      @include responsive(font-size, 1.5em, $sm: 1.35em);
+      font-family: $title-font;
+    }
+
+    .tabler-item-index {
+      @include responsive(font-size, 1.5em, $sm: 1.35em);
+      font-family: $title-font;
+      position: absolute;
+      right: 5%;
+      top: 5%;
+    }
+
+    .tabler-item-buttons {
+      bottom: 5%;
+      position: absolute;
+      right: 0;
+    }
+  }
+}
+
+.tabler-loader {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  justify-content: center;
+  min-height: 30vh;
+  width: 100%;
+
+  * {
+    font-family: $body-font;
+    padding-left: 0.5em;
+  }
+}

@@ -1,18 +1,17 @@
 import React, { useState, useEffect, memo } from 'react';
-import { useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
+import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import request from 'constants/request.js';
-import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
-
 import css from 'styles/pages/Reveries.module.scss';
 
 const query = `
 {
-  getAllPosts(limit: 3, type: Reverie) {
+  getAllPosts(type: Reverie) {
     id
     title,
     content,
@@ -21,8 +20,7 @@ const query = `
 }
 `;
 
-/** The index page for reveries. */
-const Reveries = () => {
+const ReveriesList = () => {
   const [reveries, setReveries] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
@@ -35,8 +33,7 @@ const Reveries = () => {
     request({
       query: JSON.stringify({ query }),
       onSuccess: ({ data }) => {
-        const reveries = data.getAllPosts;
-        setReveries(reveries);
+        setReveries(data.getAllPosts);
         setLoaded(true);
       }
     });
@@ -69,12 +66,8 @@ const Reverie = memo(({ reverie }) => {
   );
 });
 
-/**
- * Retrieve reverie image if exists
- * @param {Object} reverie - Reference reverie to image
- */
 const ReverieImage = ({ reverie }) => {
-  const theme = useSelector(({theme}) => theme)
+  const theme = useSelector(({theme}) => theme);
   if (!reverie.image) return null;
   return (
     <CloudinaryImage
@@ -86,4 +79,4 @@ const ReverieImage = ({ reverie }) => {
   );
 };
 
-export default Reveries;
+export default ReveriesList;

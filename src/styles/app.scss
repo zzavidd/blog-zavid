@@ -9,6 +9,7 @@
   height: 100vh;
   transition-duration: 0.8s;
 
+  /// Allow for spacing.
   > div:first-child {
     display: grid;
     grid-template-rows: auto 1fr;
@@ -45,4 +46,9 @@
       display: block;
     }
   }
+}
+
+.icon {
+  @include themer(&, color, $light: #000, $dark: #fff);
+  margin-right: 0.4em;
 }

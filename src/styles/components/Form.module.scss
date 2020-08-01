@@ -42,7 +42,7 @@
 
 /// The label form component.
 .label {
-  @include responsive(font-size, 1.3em, $sm: 1.2em);
+  @include responsive(font-size, 1.2em, $sm: 1.1em);
   display: block;
   font-family: $title-font;
 }
@@ -50,22 +50,18 @@
 /// The base input component.
 %input,
 .input {
+  @include themer(
+    &,
+    border-bottom,
+    $light: 1px solid rgba(0, 0, 0, 0.7),
+    $dark: 1px solid rgba(255, 255, 255, 0.7)
+  );
   background: none;
   border-style: none;
   font-size: 1.2em;
   outline: none;
   padding: 0.4em;
   width: 100%;
-
-  &-light {
-    @extend %input;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.7);
-  }
-
-  &-dark {
-    @extend %input;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-  }
 
   @media (max-width: $break-sm) {
     font-size: 1em;
