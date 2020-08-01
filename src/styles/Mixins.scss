@@ -32,3 +32,20 @@
     }
   }
 }
+
+/// Changes a class' attribute based on the current theme.
+/// @param {string} $class - The reference class.
+/// @param {string} $attr - The CSS attribute.
+/// @param {any} $light - The value when the theme is light.
+/// @param {any} $dark - The value when the theme is dark.
+@mixin themer($class, $attr, $light, $dark) {
+  &-light {
+    @extend #{$class};
+    #{$attr}: $light;
+  }
+
+  &-dark {
+    @extend #{$class};
+    #{$attr}: $dark;
+  }
+}

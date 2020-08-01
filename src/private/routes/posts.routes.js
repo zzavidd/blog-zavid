@@ -23,6 +23,13 @@ router.get('/epistles', function (req, res) {
   });
 });
 
+router.get('/admin/posts', function (req, res) {
+  return server.render(req, res, '/posts/admin', {
+    title: `List of Posts`,
+    hideSidebar: true
+  });
+});
+
 router.get('/admin/posts/add', function (req, res) {
   return server.render(req, res, '/posts/crud', {
     title: `Add New Post`,

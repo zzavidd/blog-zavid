@@ -7,10 +7,11 @@ import {
   Label,
   TextInput,
   Select,
+  ShortTextArea,
   LongTextArea
 } from 'components/form';
 import { Fader } from 'components/transitioner';
-import { POST_TYPES } from 'constants/strings';
+import { ARTICLE_STATUS, POST_TYPES } from 'constants/strings';
 
 const PostForm = (props) => {
   const {
@@ -61,6 +62,28 @@ const PostForm = (props) => {
               value={post.content}
               onChange={handleText}
               placeholder={"Write out the post's content..."}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <Field md={6}>
+            <Label>Status:</Label>
+            <Select
+              name={'status'}
+              items={Object.values(ARTICLE_STATUS)}
+              value={post.status}
+              onChange={handleText}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <Field>
+            <Label>Excerpt:</Label>
+            <ShortTextArea
+              name={'content'}
+              value={post.excerpt}
+              onChange={handleText}
+              placeholder={"Enter the post's excerpt..."}
             />
           </Field>
         </FieldRow>

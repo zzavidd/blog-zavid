@@ -42,10 +42,7 @@ const Header = () => {
         </Navbar.Collapse>
         <Nav.Item>
           <InvisibleButton onClick={switchTheme}>
-            <ThemedIcon
-              name={isLightTheme ? 'moon' : 'sun'}
-              color={isLightTheme ? '#000' : '#FFF'}
-            />
+            <ThemedIcon name={isLightTheme ? 'moon' : 'sun'} />
           </InvisibleButton>
         </Nav.Item>
       </Container>
