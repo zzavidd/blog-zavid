@@ -8,6 +8,7 @@
   width: 100%;
 }
 
+%reveries-index-image,
 .reveries-index-image {
   border-radius: 10px;
   margin: 1em 0;
@@ -15,12 +16,12 @@
   width: 70%;
 
   &-light {
-    @extend .reveries-index-image;
+    @extend %reveries-index-image;
     border: 2px solid $dark;
   }
 
   &-dark {
-    @extend .reveries-index-image;
+    @extend %reveries-index-image;
     border: 2px solid $border-color;
   }
 }

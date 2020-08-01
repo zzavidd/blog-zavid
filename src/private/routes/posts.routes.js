@@ -23,6 +23,14 @@ router.get('/epistles', function (req, res) {
   });
 });
 
+router.get('/admin/posts/add', function (req, res) {
+  return server.render(req, res, '/posts/crud', {
+    title: `Add New Post`,
+    hideSidebar: true,
+    operation: OPERATIONS.CREATE
+  });
+});
+
 router.get('/admin/posts/edit/:id', function (req, res) {
   const { id } = req.params;
   controller.getSinglePost({ id }).then((post) => {

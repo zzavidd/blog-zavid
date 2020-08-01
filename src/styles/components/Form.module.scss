@@ -1,15 +1,94 @@
-@import '../Variables';
+@import '../App.scss';
 
+/// The general form component.
+.form {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+}
+
+.form-content {
+  @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
+  margin: 0 auto;
+  padding: 1em 2em;
+}
+
+.form-bottom-bar {
+  background-color: rgba(0, 0, 0, 0.95);
+  bottom: 0;
+  padding: 0.5em 2em;
+  position: sticky;
+  width: 100%;
+}
+
+.form-buttons-container {
+  @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+
+  button {
+    min-width: 175px;
+    @media (max-width: $break-sm) {
+      min-width: inherit;
+      width: 48%;
+    }
+  }
+}
+
+.form-field {
+  padding: 1em;
+}
+
+/// The label form component.
+.label {
+  @include responsive(font-size, 1.3em, $sm: 1.2em);
+  display: block;
+  font-family: $title-font;
+}
+
+/// The base input component.
+%input,
 .input {
   background: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.7) !important;
   border-style: none;
   font-size: 1.2em;
   outline: none;
   padding: 0.4em;
   width: 100%;
+
+  &-light {
+    @extend %input;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.7);
+  }
+
+  &-dark {
+    @extend %input;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  }
+
   @media (max-width: $break-sm) {
     font-size: 1em;
     padding: 0.4em 0;
+  }
+}
+
+.textarea {
+  &-light {
+    @extend %input-light;
+  }
+
+  &-dark {
+    @extend %input-dark;
+  }
+}
+
+.select {
+  &-light {
+    @extend %input-light;
+  }
+
+  &-dark {
+    @extend %input-dark;
   }
 }

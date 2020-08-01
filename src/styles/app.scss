@@ -1,33 +1,41 @@
 @import 'Variables';
+@import 'Mixins';
 
 .body {
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
   font-family: $body-font;
+  height: 100vh;
+  transition-duration: 0.8s;
+
+  > div:first-child {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100%;
+  }
 
   &-light {
+    background-color: #fff;
     background-image: url($cloudinary-url + $bg-image-light);
 
     * {
-      color: #000 !important;
+      color: #000;
     }
   }
 
   &-dark {
+    background-color: #000;
     background-image: url($cloudinary-url + $bg-image-dark);
 
     * {
-      color: #fff !important;
+      color: #fff;
     }
   }
 }
 
 .app {
-  padding: 1em 2em;
-
   &-with-sidebar {
-    @extend .app;
     display: grid;
     grid-template-columns: 1fr 30%;
     margin: 0 auto;

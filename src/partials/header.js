@@ -1,13 +1,11 @@
 import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { setTheme } from 'reducers/actions';
 
 import { InvisibleButton } from 'components/button.js';
 import { ThemedIcon } from 'components/icon.js';
-
 import { CloudinaryImage } from 'components/image.js';
-
+import { setTheme } from 'reducers/actions';
 import css from 'styles/Partials.module.scss';
 
 const Header = () => {
@@ -25,7 +23,7 @@ const Header = () => {
 
   return (
     <Navbar className={css[`nav-${theme}`]} expand={'md'} sticky={'top'}>
-      <Container>
+      <Container fluid={'lg'}>
         <Navbar.Brand href={'/'}>
           <CloudinaryImage
             src={`/static/logos/zavid-logo-text-${theme}.png`}

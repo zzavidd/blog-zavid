@@ -93,14 +93,14 @@ const Template = ({
   className,
   defaultStyle,
   determinant,
-  notDiv,
+  hollow,
   style,
   transitionStyles
 }) => {
   return (
     <Transition in={determinant} timeout={{}}>
       {(state) => {
-        if (notDiv) {
+        if (hollow) {
           return React.cloneElement(children, {
             style: { ...defaultStyle, ...transitionStyles[state], ...style }
           });
