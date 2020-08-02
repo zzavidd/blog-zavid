@@ -1,5 +1,4 @@
 import { alert, setAlert } from 'components/alert.js';
-import { clearUser } from 'reducers/actions';
 
 const axios = require('axios');
 
@@ -23,13 +22,5 @@ export default ({ query, onSuccess }) => {
     .then(({ data }) => {
       onSuccess(data);
     })
-    .catch((error) => {
-      // const message = error.response ? error.response.data.message : error;
-      // if (message === 'Your access token is expired.') {
-      //   setAlert({ type: 'info', message: `Your session has expired.` });
-      //   setTimeout(() => (location.href = '/'), 500);
-      // } else {
-      //   alert.error(message);
-      // }
-    });
+    .catch((error) => {});
 };

@@ -1,7 +1,7 @@
 @import '../Variables';
 
 .toast-container {
-  margin: 0 !important;
+  margin: 0 auto;
   padding: 0 1em !important;
   width: 100% !important;
   @media (max-width: $break-sm) {
@@ -13,6 +13,7 @@
   border-radius: 10px !important;
   font-family: $body-font !important;
   font-weight: bold;
+  margin: 0 auto;
   max-width: 600px;
   text-align: center;
   width: 100%;
