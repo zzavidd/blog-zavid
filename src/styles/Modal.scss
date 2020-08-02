@@ -1,0 +1,29 @@
+.modal-dialog {
+  &-light .modal-content {
+    background: #fff !important;
+  }
+
+  &-dark .modal-content {
+    background: $dark !important;
+  }
+}
+
+.modal-content {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.modal-body,
+.modal-footer {
+  border-style: none !important;
+}
+
+.modal-footer {
+  flex-wrap: nowrap;
+  padding-top: 0 !important;
+}
+
+.modal-open {
+  overflow-y: auto;
+  padding: 0 !important;
+}

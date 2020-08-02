@@ -37,7 +37,7 @@
 }
 
 .form-field {
-  padding: 1em;
+  @include responsive(padding, 1em, $sm: 0.8em 1em);
 }
 
 /// The label form component.

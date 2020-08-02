@@ -29,6 +29,18 @@ export const CancelButton = (props) => {
 };
 
 /**
+ * A delete button.
+ * @param {object} props - The component props.
+ * @returns {React.Component} The component.
+ */
+export const DeleteButton = (props) => {
+  return (
+    <button {...props} className={css['button-delete']}>
+      {props.children}
+    </button>
+  );
+};
+/**
  * An invisible button.
  * @param {object} props - The component props.
  * @returns {React.Component} The component.

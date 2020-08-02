@@ -100,7 +100,7 @@ export const Select = (props) => {
 
   // Make widgets account for values of '00' (time)
   const selectedValue = value === 0 ? '00' : value;
-  const color = !selectedValue && '#8E8E8E';
+  const color = (!selectedValue && placeholder) && '#8E8E8E';
 
   return (
     <select
