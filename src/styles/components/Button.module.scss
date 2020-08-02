@@ -16,7 +16,7 @@ $delete-active: rgba(255, 0, 0, 0.5);
 /// @param {color} $default - The default color.
 /// @param {color} $hover - The color shown when hovered over.
 /// @param {color} $active - The color shown when clicked.
-@mixin button-configure($default, $hover, $active) {
+@mixin button-designer($default, $hover, $active) {
   background-color: $default;
 
   &:hover {
@@ -29,13 +29,9 @@ $delete-active: rgba(255, 0, 0, 0.5);
   }
 }
 
-/// Placeholder for form buttons.
-%form-buttons {
+%button {
   border: 1px solid #fff;
-  border-radius: 15px;
-  color: #fff !important;
   font-family: $body-font;
-  padding: 1em;
   transition-duration: 0.3s;
   user-select: none;
 
@@ -44,19 +40,33 @@ $delete-active: rgba(255, 0, 0, 0.5);
   }
 }
 
+/// Placeholder for form buttons.
+%form-button {
+  @extend %button;
+  border-radius: 15px;
+  color: #fff !important;
+  padding: 1em;
+}
+
 .button-confirm {
-  @extend %form-buttons;
-  @include button-configure($confirm-default, $confirm-hover, $confirm-active);
+  @extend %form-button;
+  @include button-designer($confirm-default, $confirm-hover, $confirm-active);
 }
 
 .button-cancel {
-  @extend %form-buttons;
-  @include button-configure($cancel-default, $cancel-hover, $cancel-active);
+  @extend %form-button;
+  @include button-designer($cancel-default, $cancel-hover, $cancel-active);
 }
 
 .button-delete {
-  @extend %form-buttons;
-  @include button-configure($delete-default, $delete-hover, $delete-active);
+  @extend %form-button;
+  @include button-designer($delete-default, $delete-hover, $delete-active);
+}
+
+.button-admin {
+  @extend %button;
+  border-radius: 8px;
+  padding: 0.5em;
 }
 
 .invisible-button {

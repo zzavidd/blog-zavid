@@ -1,6 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import css from 'styles/components/Button.module.scss';
+
+/**
+ * The base template for buttons.
+ * @param {object} props - The component props.
+ * @returns {React.Component} The component.
+ */
+const Button = (props) => {
+  const { children, onClick, isRequestPending = false } = props;
+  const [buttonText, setButtonText] = useState(children);
+
+  return (
+    <button
+      {...props}
+      onClick={() => {
+        onClick();
+        setButtonText(isRequestPending ? 'Loading...' : buttonText);
+      }}>
+      {buttonText}
+    </button>
+  );
+};
 
 /**
  * A form confirmation button.
@@ -9,9 +30,9 @@ import css from 'styles/components/Button.module.scss';
  */
 export const ConfirmButton = (props) => {
   return (
-    <button {...props} className={css['button-confirm']}>
+    <Button {...props} className={css['button-confirm']}>
       {props.children}
-    </button>
+    </Button>
   );
 };
 
@@ -22,9 +43,9 @@ export const ConfirmButton = (props) => {
  */
 export const CancelButton = (props) => {
   return (
-    <button {...props} className={css['button-cancel']}>
+    <Button {...props} className={css['button-cancel']}>
       {props.children}
-    </button>
+    </Button>
   );
 };
 
@@ -35,11 +56,25 @@ export const CancelButton = (props) => {
  */
 export const DeleteButton = (props) => {
   return (
-    <button {...props} className={css['button-delete']}>
+    <Button {...props} className={css['button-delete']}>
       {props.children}
-    </button>
+    </Button>
   );
 };
+
+/**
+ * An addition button.
+ * @param {object} props - The component props.
+ * @returns {React.Component} The component.
+ */
+export const AdminButton = (props) => {
+  return (
+    <Button {...props} className={css['button-admin']}>
+      {props.children}
+    </Button>
+  );
+};
+
 /**
  * An invisible button.
  * @param {object} props - The component props.
@@ -47,8 +82,8 @@ export const DeleteButton = (props) => {
  */
 export const InvisibleButton = (props) => {
   return (
-    <button {...props} className={css['invisible-button']}>
+    <Button {...props} className={css['invisible-button']}>
       {props.children}
-    </button>
+    </Button>
   );
 };

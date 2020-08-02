@@ -30,6 +30,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
     datePublished: new Date()
   });
   const [isLoaded, setLoaded] = useState(true);
+  const [isRequestPending, setRequestPending] = useState(false);
   const isCreateOperation = operation === OPERATIONS.CREATE;
 
   const handleText = (event) => {
@@ -52,6 +53,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
 
   const submitPost = () => {
     if (!isValidPost(statePost)) return false;
+    setRequestPending(true);
     graphQLRequest({
       query: JSON.stringify({
         query: createPostQuery,
@@ -64,12 +66,16 @@ const PostCrud = ({ post: currentPost, operation }) => {
           message: `You've successfully added the new post titled **${statePost.title}**.`
         });
         returnToAdminPosts();
+      },
+      onError: () => {
+        setRequestPending(false);
       }
     });
   };
 
   const updatePost = () => {
     if (!isValidPost(statePost)) return false;
+    setRequestPending(true);
     graphQLRequest({
       query: JSON.stringify({
         query: updatePostQuery,
@@ -82,6 +88,9 @@ const PostCrud = ({ post: currentPost, operation }) => {
           message: `You've successfully added the new post titled **${statePost.title}**.`
         });
         returnToAdminPosts();
+      },
+      onError: () => {
+        setRequestPending(false);
       }
     });
   };
@@ -96,6 +105,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
       handleText={handleText}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       cancelFunction={returnToAdminPosts}
+      isRequestPending={isRequestPending}
     />
   );
 };
