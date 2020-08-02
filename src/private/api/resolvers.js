@@ -13,7 +13,7 @@ exports.getAllPosts = ({ limit, random = false, type }) => {
   if (type) query = query.where('type', type);
   if (random) query = query.orderByRaw('RAND()');
   if (limit) query = query.limit(limit);
-  return query.then((posts) => posts);
+  return query.then((posts) => posts).catch((err) => console.error(err));
 };
 
 /**
@@ -28,7 +28,7 @@ exports.getSinglePost = ({ id }) => {
     .from('posts')
     .where('id', id)
     .then(([post]) => post)
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 };
 
 /**
@@ -41,7 +41,8 @@ exports.createPost = ({ post }) => {
   return knex
     .insert(post)
     .into('posts')
-    .then(([id]) => ({ id }));
+    .then(([id]) => ({ id }))
+    .catch((err) => console.error(err));
 };
 
 /**
@@ -55,14 +56,15 @@ exports.updatePost = ({ id, post }) => {
   return knex('posts')
     .update(post)
     .where('id', id)
-    .then(() => resolvers.getSinglePost({ id }))
-    .catch((err) => console.log(err));
+    .then(() => this.getSinglePost({ id }))
+    .catch((err) => console.error(err));
 };
 
 /**
  * Deletes a post from the database.
  * @param {object} args - The arguments.
  * @param {number} args.id - The ID of the post to delete.
+ * @returns {null} No content.
  */
 exports.deletePost = ({ id }) => {
   return knex('posts').where('id', id).del();

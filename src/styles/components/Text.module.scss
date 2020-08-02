@@ -7,6 +7,8 @@
 }
 
 .paragraph {
+  display: inline;
   font-family: $body-font;
   font-size: 1.1em;
+  white-space: pre-line;
 }

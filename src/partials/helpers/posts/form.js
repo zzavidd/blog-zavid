@@ -34,7 +34,7 @@ const PostForm = (props) => {
         confirmFunction={confirmFunction}
         cancelFunction={cancelFunction}>
         <FieldRow>
-          <Field md={6}>
+          <Field sm={8}>
             <Label>Title:</Label>
             <TextInput
               name={'title'}
@@ -43,7 +43,7 @@ const PostForm = (props) => {
               placeholder={'Enter the title'}
             />
           </Field>
-          <Field md={6}>
+          <Field sm={4}>
             <Label>Type:</Label>
             <Select
               name={'type'}

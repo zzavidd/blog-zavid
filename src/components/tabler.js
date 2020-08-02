@@ -112,9 +112,10 @@ const TableHeading = ({ heading }) => {
  * @returns {React.Component} The component.
  */
 const HeaderRow = ({ columns, distribution }) => {
+  const theme = useSelector(({ theme }) => theme);
   return (
     <div
-      className={css['tabler-header-row']}
+      className={css[`tabler-header-row-${theme}`]}
       style={{ gridTemplateColumns: distribution }}>
       {columns.map((column, key) => {
         const [value, options = {}] = column;
