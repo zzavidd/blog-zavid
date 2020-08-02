@@ -1,0 +1,13 @@
+.spacer {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+}
+
+.toolbar {
+  background-color: rgba(0, 0, 0, 0.95);
+  bottom: 0;
+  padding: 0.5em 2em;
+  position: sticky;
+  width: 100%;
+}

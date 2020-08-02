@@ -1,24 +1,9 @@
 @import '../App.scss';
 
-/// The general form component.
 .form {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  height: 100%;
-}
-
-.form-content {
   @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
   margin: 0 auto;
   padding: 1em 2em;
-}
-
-.form-bottom-bar {
-  background-color: rgba(0, 0, 0, 0.95);
-  bottom: 0;
-  padding: 0.5em 2em;
-  position: sticky;
-  width: 100%;
 }
 
 .form-buttons-container {

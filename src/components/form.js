@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import { ConfirmButton, CancelButton } from 'components/button';
+import { Spacer, Toolbar } from 'components/layout';
 import css from 'styles/components/Form.module.scss';
 
 /**
@@ -12,6 +13,7 @@ import css from 'styles/components/Form.module.scss';
  * @param {string} [props.confirmButtonText] - The text displayed on the confirm button.
  * @param {Function} props.confirmFunction - The function called on clicking the confirm button.
  * @param {Function} props.cancelFunction - The function called on clicking the cancel button.
+ * @param {boolean} props.isRequestPending - Indicates whether a request is currently pending.
  * @param {any} props.children - The component children.
  * @returns {React.Component} The component.
  */
@@ -19,20 +21,23 @@ export const Form = ({
   confirmButtonText = 'Submit',
   confirmFunction,
   cancelFunction,
+  isRequestPending,
   children
 }) => {
   return (
-    <div className={css['form']}>
-      <div className={css['form-content']}>{children}</div>
-      <div className={css['form-bottom-bar']}>
+    <Spacer>
+      <div className={css['form']}>{children}</div>
+      <Toolbar className={css['form-bottom-bar']}>
         <div className={css['form-buttons-container']}>
-          <ConfirmButton onClick={confirmFunction}>
+          <ConfirmButton
+            onClick={confirmFunction}
+            isRequestPending={isRequestPending}>
             {confirmButtonText}
           </ConfirmButton>
           <CancelButton onClick={cancelFunction}>Cancel</CancelButton>
         </div>
-      </div>
-    </div>
+      </Toolbar>
+    </Spacer>
   );
 };
 
@@ -100,7 +105,7 @@ export const Select = (props) => {
 
   // Make widgets account for values of '00' (time)
   const selectedValue = value === 0 ? '00' : value;
-  const color = (!selectedValue && placeholder) && '#8E8E8E';
+  const color = !selectedValue && placeholder && '#8E8E8E';
 
   return (
     <select

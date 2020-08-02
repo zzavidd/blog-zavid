@@ -14,13 +14,7 @@ import { Fader } from 'components/transitioner';
 import { ARTICLE_STATUS, POST_TYPES } from 'constants/strings';
 
 const PostForm = (props) => {
-  const {
-    post,
-    handleText,
-    confirmButtonText,
-    confirmFunction,
-    cancelFunction
-  } = props;
+  const { post, handleText } = props;
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -29,10 +23,7 @@ const PostForm = (props) => {
 
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
-      <Form
-        confirmButtonText={confirmButtonText}
-        confirmFunction={confirmFunction}
-        cancelFunction={cancelFunction}>
+      <Form {...props}>
         <FieldRow>
           <Field sm={8}>
             <Label>Title:</Label>
