@@ -1,0 +1,55 @@
+@keyframes #{$rt-namespace}__trackProgress {
+  0% {
+    transform: scaleX(1);
+  }
+
+  100% {
+    transform: scaleX(0);
+  }
+}
+
+.#{$rt-namespace}__progress-bar {
+  background-color: rgba(255, 255, 255, 0.7);
+  bottom: 0;
+  height: 5px;
+  left: 0;
+  opacity: 0.7;
+  position: absolute;
+  transform-origin: left;
+  width: 100%;
+  z-index: $rt-z-index;
+
+  &--animated {
+    animation: #{$rt-namespace}__trackProgress linear 1 forwards;
+  }
+
+  &--controlled {
+    transition: transform 0.2s;
+  }
+
+  &--rtl {
+    left: initial;
+    right: 0;
+    transform-origin: right;
+  }
+
+  &--default {
+    background: $rt-color-progress-default;
+  }
+
+  &--dark {
+    background: $rt-color-progress-dark;
+  }
+
+  &--info {
+  }
+
+  &--success {
+  }
+
+  &--warning {
+  }
+
+  &--error {
+  }
+}
