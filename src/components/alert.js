@@ -1,4 +1,4 @@
-const classNames = require('classnames');
+const classnames = require('classnames');
 const { toast, cssTransition } = require('react-toastify');
 
 const css = require('styles/components/Alert.module.scss');
@@ -21,18 +21,19 @@ const classes = ['alert', css['toast-message']];
 
 exports.alert = {
   success: (message) => {
-    toast(message, { className: classNames('alert-success', classes) });
+    toast(message, { className: classnames('alert-success', classes) });
   },
   error: (message) => {
-    toast(message, { className: classNames('alert-danger', classes) });
+    toast(message, { className: classnames('alert-danger', classes) });
   },
   info: (message) => {
-    toast(message, { className: classNames('alert-info', classes) });
+    toast(message, { className: classnames('alert-info', classes) });
   }
 };
 
 /**
  * Set the alert to be viewed on the next page change.
+ * @param {object} alert - The alert object.
  * @param {string} alert.type - The type of the alert.
  * @param {string} alert.message - The contents of the alert message.
  */

@@ -1,7 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
+import { alert, setAlert } from 'components/alert';
+import graphQLRequest from 'constants/request';
 import { ARTICLE_STATUS, OPERATIONS } from 'constants/strings';
+import { isValidPost } from 'constants/validations';
 import PostForm from 'partials/helpers/posts/form';
+
+const createPostQuery = `
+mutation {
+  createPost(post: PostInput!)
+}
+`;
+
+const updatePostQuery = `
+mutation {
+  updatePost($id: Int!, $post: PostInput!)
+}
+`;
 
 const PostCrud = ({ post: currentPost, operation }) => {
   const [statePost, setPost] = useState({
@@ -29,13 +44,60 @@ const PostCrud = ({ post: currentPost, operation }) => {
         currentPost.status !== ARTICLE_STATUS.PUBLISHED
           ? new Date()
           : currentPost.datePublished;
-          
+
       setPost(Object.assign({}, currentPost, { datePublished }));
     }
     setLoaded(true);
   }, [isLoaded]);
 
-  return <PostForm post={statePost} handleText={handleText} />;
+  const submitPost = () => {
+    if (!isValidPost(statePost)) return false;
+    graphQLRequest({
+      query: JSON.stringify({
+        query: createPostQuery,
+        variables: { post: statePost }
+      }),
+      onSuccess: () => {
+        alert.success();
+        setAlert({
+          type: 'success',
+          message: `You've successfully added the new post titled **${statePost.title}**.`
+        });
+        returnToAdminPosts();
+      }
+    });
+  };
+
+  const updatePost = () => {
+    if (!isValidPost(statePost)) return false;
+    graphQLRequest({
+      query: JSON.stringify({
+        query: updatePostQuery,
+        variables: { id: statePost.id, post: statePost }
+      }),
+      onSuccess: () => {
+        alert.success();
+        setAlert({
+          type: 'success',
+          message: `You've successfully added the new post titled **${statePost.title}**.`
+        });
+        returnToAdminPosts();
+      }
+    });
+  };
+
+  const returnToAdminPosts = () => {
+    location.href = '/admin/posts';
+  };
+
+  return (
+    <PostForm
+      post={statePost}
+      handleText={handleText}
+      confirmFunction={isCreateOperation ? submitPost : updatePost}
+      cancelFunction={returnToAdminPosts}
+    />
+  );
 };
 
 PostCrud.getInitialProps = async ({ query }) => {
