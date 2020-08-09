@@ -1,26 +1,14 @@
+import { useQuery, useMutation, NetworkStatus } from '@apollo/client';
 import React, { useState, useEffect } from 'react';
 import { zText } from 'zavid-modules';
 
+import { alert } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler from 'components/tabler';
-import request from 'constants/request.js';
-
-const getPostsQuery = `
-{
-  getAllPosts {
-    id, title, type, content, status
-  }
-}
-`;
-
-const deletePostQuery = `
-mutation {
-  deletePost($id: Int!)
-}
-`;
+import { GET_POSTS_QUERY, DELETE_POST_QUERY } from 'private/api/queries';
 
 const PostsAdmin = () => {
   const [posts, setPosts] = useState([]);
@@ -28,17 +16,32 @@ const PostsAdmin = () => {
   const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
-  useEffect(() => getPosts(), [isLoaded]);
-
-  const getPosts = () => {
-    request({
-      query: JSON.stringify({ query: getPostsQuery }),
-      onSuccess: ({ data }) => {
-        setPosts(data.getAllPosts);
-        setLoaded(true);
+  const {
+    data,
+    error: queryError,
+    loading: queryLoading,
+    refetch,
+    networkStatus
+  } = useQuery(GET_POSTS_QUERY, {
+    variables: {
+      limit: 10,
+      orderBy: {
+        field: 'id',
+        order: 'DESC'
       }
-    });
-  };
+    },
+    errorPolicy: 'all',
+    notifyOnNetworkStatusChange: true
+  });
+  const [deletePostMutation] = useMutation(DELETE_POST_QUERY);
+
+  useEffect(() => {
+    if (networkStatus === NetworkStatus.refetch) return;
+    if (queryLoading) return;
+    if (queryError) alert.error(queryError);
+    setPosts(data.getAllPosts);
+    setLoaded(true);
+  }, [queryLoading, networkStatus]);
 
   const navigateToCreateForm = () => {
     location.href = '/admin/posts/add';
@@ -46,14 +49,13 @@ const PostsAdmin = () => {
 
   const deletePost = () => {
     const { id, title } = selectedPost;
-    request({
-      query: JSON.stringify({ query: deletePostQuery, variables: { id } }),
-      onSuccess: () => {
+    deletePostMutation({ variables: { id } })
+      .then(() => {
         alert.success(`You've deleted ${title}.`);
         setDeleteModalVisibility(false);
-        getPosts();
-      }
-    });
+        refetch();
+      })
+      .catch(console.error);
   };
 
   return (

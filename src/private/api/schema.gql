@@ -1,16 +1,39 @@
+###############
+# Base Schema
+###############
 
 type Post {
   id: Int
   title: String!
+  type: PostType
   datePublished: String
   content: String
   image: String
   slug: String
   excerpt: String
-  type: PostType
-  status: ArticleStatus
+  status: PostStatus
   createTime: String
 }
+
+type Query {
+  getAllPosts(limit: Int, orderBy: PostOrder, random: Boolean, type: PostType): [Post]
+  getSinglePost(id: Int!): Post
+}
+
+type Mutation {
+  createPost(post: PostInput, isPublish: Boolean): Post
+  updatePost(
+    id: Int!
+    post: PostInput!
+    isPublish: Boolean
+    imagesHaveChanged: Boolean
+  ): Post
+  deletePost(id: Int!): Post
+}
+
+###############
+# Helpers
+###############
 
 enum PostType {
   Epistle
@@ -19,30 +42,38 @@ enum PostType {
   Page
 }
 
-enum ArticleStatus {
+enum PostField {
+  id
+  title
+  type
+  datePublished
+  status
+  createTime
+}
+
+enum PostStatus {
   DRAFT
   PRIVATE
   PUBLISHED
 }
 
+enum Order {
+  ASC
+  DESC
+}
+
 input PostInput {
   title: String!
+  type: PostType
   datePublished: String
   content: String
   image: String
   slug: String
   excerpt: String
-  status: ArticleStatus
-  type: PostType
+  status: PostStatus
 }
 
-type Query {
-  getAllPosts(limit: Int, random: Boolean, type: PostType): [Post],
-  getSinglePost(id: Int!): Post
-}
-
-type Mutation {
-  createPost(post: PostInput): Post
-  updatePost(id: Int!, post: PostInput): Post
-  deletePost(id: Int!): Post
+input PostOrder {
+  field: PostField
+  order: Order
 }

@@ -1,7 +1,7 @@
 const { alert } = require('components/alert.js');
 
 const { limits } = require('./settings');
-const { ARTICLE_STATUS } = require('./strings');
+const { POST_STATUS } = require('./strings');
 
 /**
  * Validation of post submission or update.
@@ -9,19 +9,17 @@ const { ARTICLE_STATUS } = require('./strings');
  * @returns {boolean} True if valid. False with error message if invalid.
  */
 exports.isValidPost = (post) => {
-  const isPublish = post.status === ARTICLE_STATUS.PUBLISHED;
+  const isPublish = post.status === POST_STATUS.PUBLISHED;
 
   if (!ifExists(post.title, 'Enter the post title.')) return false;
+  if (!ifExists(post.type, "Select the post's type.")) return false;
   // if (!isValidImage(post.image, 'post', { mustExist: isPublish }))
   //   return false;
 
   if (isPublish) {
-    if (!ifExists(post.type, "Select the post's category."))
-      return false;
     if (!ifExists(post.content, 'Write out the content of this post.'))
       return false;
-    if (!ifExists(post.excerpt, "Enter the post's excerpt."))
-      return false;
+    if (!ifExists(post.excerpt, "Enter the post's excerpt.")) return false;
   }
 
   return true;
