@@ -1,5 +1,5 @@
 /** The status of the blog articles */
-exports.ARTICLE_STATUS = {
+exports.POST_STATUS = {
   DRAFT: 'DRAFT',
   PRIVATE: 'PRIVATE',
   PUBLISHED: 'PUBLISHED'

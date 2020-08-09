@@ -11,7 +11,7 @@ import {
   LongTextArea
 } from 'components/form';
 import { Fader } from 'components/transitioner';
-import { ARTICLE_STATUS, POST_TYPES } from 'constants/strings';
+import { POST_STATUS, POST_TYPES } from 'constants/strings';
 
 const PostForm = (props) => {
   const { post, handleText } = props;
@@ -61,7 +61,7 @@ const PostForm = (props) => {
             <Label>Status:</Label>
             <Select
               name={'status'}
-              items={Object.values(ARTICLE_STATUS)}
+              items={Object.values(POST_STATUS)}
               value={post.status}
               onChange={handleText}
             />
@@ -71,7 +71,7 @@ const PostForm = (props) => {
           <Field>
             <Label>Excerpt:</Label>
             <ShortTextArea
-              name={'content'}
+              name={'excerpt'}
               value={post.excerpt}
               onChange={handleText}
               placeholder={"Enter the post's excerpt..."}
