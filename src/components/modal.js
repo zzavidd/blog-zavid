@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 
 import { CancelButton, DeleteButton } from 'components/button.js';
 import { Paragraph } from 'components/text.js';
+import css from 'styles/components/Modal.module.scss';
 
 export const Modal = (props) => {
   const { visible, modalHeader, modalBody, modalFooter, onHide } = props;
-  const onlyBody = !modalHeader;
 
   const theme = useSelector(({ theme }) => theme);
 
@@ -18,7 +18,8 @@ export const Modal = (props) => {
 
   const Body = () => {
     return (
-      <IModal.Body style={{ padding: onlyBody ? '1em' : '0 1em' }}>
+      <IModal.Body
+        className={css[modalHeader ? 'modal-body' : 'modal-body-only']}>
         {modalBody}
       </IModal.Body>
     );
@@ -26,7 +27,7 @@ export const Modal = (props) => {
 
   const Footer = () => {
     if (!modalFooter) return null;
-    return <IModal.Footer>{modalFooter}</IModal.Footer>;
+    return <IModal.Footer className={css['modal-footer']}>{modalFooter}</IModal.Footer>;
   };
 
   return (
@@ -53,13 +54,13 @@ export const ConfirmModal = ({
   return (
     <Modal
       visible={visible}
-      onHide={close}
+      onHide={closeFunction}
       modalBody={<Paragraph>{message}</Paragraph>}
       modalFooter={
-        <>
+        <div >
           <DeleteButton onClick={confirmFunction}>{confirmText}</DeleteButton>
           <CancelButton onClick={closeFunction}>Cancel</CancelButton>
-        </>
+        </div>
       }
     />
   );

@@ -48,6 +48,10 @@ const PostCrud = ({ post: currentPost, operation }) => {
     setPost(Object.assign({}, statePost, { [name]: value }));
   };
 
+  const handleDate = (date, name) => {
+    setPost(Object.assign({}, statePost, { [name]: date }));
+  };
+
   useEffect(() => {
     if (!isCreateOperation) {
       // If publishing, set date to right now.
@@ -64,6 +68,9 @@ const PostCrud = ({ post: currentPost, operation }) => {
   useEffect(() => {
     setRequestPending(createLoading);
   }, [createLoading]);
+  useEffect(() => {
+    setRequestPending(updateLoading);
+  }, [updateLoading]);
 
   /**
    * Builds the payload to send via the request.
@@ -145,8 +152,9 @@ const PostCrud = ({ post: currentPost, operation }) => {
   return (
     <PostForm
       post={statePost}
-      handleText={handleText}
+      handlers={{ handleText, handleDate }}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
+      confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
       cancelFunction={returnToAdminPosts}
       isRequestPending={isRequestPending}
     />

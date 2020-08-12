@@ -8,6 +8,8 @@ exports.accounts = {
   linkedin: 'https://www.linkedin.com/in/david-egbue'
 };
 
+exports.creationDate = new Date(2017, 9, 2);
+
 /** Domain to use dependent on environment */
 exports.domain = dev ? 'http://localhost:4000' : 'https://www.zavidegbue.com';
 
