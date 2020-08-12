@@ -3,7 +3,11 @@ import { Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { ConfirmButton, CancelButton } from 'components/button';
+import {
+  ConfirmButton,
+  CancelButton,
+  InvisibleButton
+} from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import css from 'styles/components/Form.module.scss';
 
@@ -81,20 +85,46 @@ export const Label = ({ children }) => {
  * @param {string} props.value - The current text in the input.
  * @param {Function} props.onChange - The function called on text change.
  * @param {string} props.placeholder - The placeholder text.
+ * @param {React.Component} [props.leadingComponent] - A component placed before the input.
+ * @param {React.Component} [props.trailingComponent] - A component placed after the input.
  * @returns {React.Component} The component.
  */
-export const TextInput = ({ name, value, onChange, placeholder }) => {
+export const TextInput = ({
+  name,
+  value,
+  onChange,
+  placeholder,
+  onClick,
+  leadingComponent = null,
+  trailingComponent = null
+}) => {
   const theme = useSelector(({ theme }) => theme);
-  return (
+
+  const Input = () => (
     <input
       name={name}
       type={'text'}
       value={value}
       onChange={onChange}
-      className={css[`input-${theme}`]}
+      className={css[`text-input`]}
       autoComplete={'off'}
       placeholder={placeholder}
+      readOnly={!!onClick}
     />
+  );
+
+  return (
+    <div className={css[`text-input-field-${theme}`]}>
+      {leadingComponent}
+      {onClick ? (
+        <InvisibleButton onClick={onClick} className={css['text-click-input']}>
+          <Input />
+        </InvisibleButton>
+      ) : (
+        <Input />
+      )}
+      {trailingComponent}
+    </div>
   );
 };
 

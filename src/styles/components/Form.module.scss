@@ -32,15 +32,8 @@
   font-family: $title-font;
 }
 
-/// The base input component.
-%input,
-.input {
-  @include themer(
-    &,
-    border-bottom,
-    $light: 1px solid rgba(0, 0, 0, 0.7),
-    $dark: 1px solid rgba(255, 255, 255, 0.7)
-  );
+/// Input components.
+%input {
   background: none;
   border-style: none;
   font-size: 1.2em;
@@ -54,22 +47,90 @@
   }
 }
 
+%themed-input {
+  @extend %input;
+  @include themer(
+    &,
+    border-bottom,
+    $light: 1px solid rgba(0, 0, 0, 0.7),
+    $dark: 1px solid rgba(255, 255, 255, 0.7)
+  );
+}
+
+.text-input-field {
+  @include themer(
+    &,
+    border-bottom,
+    $light: 1px solid rgba(0, 0, 0, 0.7),
+    $dark: 1px solid rgba(255, 255, 255, 0.7)
+  );
+  align-items: center;
+  display: flex;
+  width: 100%;
+
+  .text-input {
+    @extend %input;
+  }
+
+  .text-click-input {
+    width: 100%;
+
+    input {
+      cursor: pointer;
+    }
+  }
+}
+
 .textarea {
   &-light {
-    @extend %input-light;
+    @extend %themed-input-light;
   }
 
   &-dark {
-    @extend %input-dark;
+    @extend %themed-input-dark;
   }
 }
 
 .select {
   &-light {
-    @extend %input-light;
+    @extend %themed-input-light;
   }
 
   &-dark {
-    @extend %input-dark;
+    @extend %themed-input-dark;
+  }
+}
+
+.datepicker-field {
+  align-items: center;
+  display: flex;
+
+  .datepicker {
+    align-items: center;
+    background: initial;
+    border-style: none;
+    cursor: pointer;
+    display: flex;
+    padding: 0;
+    width: 100%;
+  }
+
+  .calendar-icon {
+    margin: 0 0.2em 0 0.4em !important;
+    @media (max-width: $break-md) {
+      margin-right: 0.5em !important;
+    }
+  }
+}
+
+.datepicker-modal {
+  justify-content: space-evenly;
+  padding: 2em;
+
+  select {
+    font-size: 1.4em !important;
+    @media (max-width: $break-md) {
+      font-size: 1.2em !important;
+    }
   }
 }

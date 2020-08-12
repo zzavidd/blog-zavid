@@ -10,11 +10,13 @@ import {
   ShortTextArea,
   LongTextArea
 } from 'components/form';
+import DatePicker from 'components/form/picker/datepicker';
 import { Fader } from 'components/transitioner';
 import { POST_STATUS, POST_TYPES } from 'constants/strings';
 
 const PostForm = (props) => {
-  const { post, handleText } = props;
+  const { post, handlers } = props;
+  const { handleText, handleDate } = handlers;
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -64,6 +66,14 @@ const PostForm = (props) => {
               items={Object.values(POST_STATUS)}
               value={post.status}
               onChange={handleText}
+            />
+          </Field>
+          <Field md={6}>
+            <Label>Date Published:</Label>
+            <DatePicker
+              name={'datePublished'}
+              date={post.datePublished}
+              onConfirm={handleDate}
             />
           </Field>
         </FieldRow>

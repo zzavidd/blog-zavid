@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import React, { useState } from 'react';
 
 import css from 'styles/components/Button.module.scss';
@@ -82,7 +83,7 @@ export const AdminButton = (props) => {
  */
 export const InvisibleButton = (props) => {
   return (
-    <Button {...props} className={css['invisible-button']}>
+    <Button {...props} className={classnames(css['invisible-button'], props.className)}>
       {props.children}
     </Button>
   );
