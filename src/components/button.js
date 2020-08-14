@@ -9,12 +9,12 @@ import css from 'styles/components/Button.module.scss';
  * @returns {React.Component} The component.
  */
 const Button = (props) => {
-  const { children, onClick, isRequestPending = false } = props;
+  const { children, className, onClick, isRequestPending = false } = props;
   const [buttonText, setButtonText] = useState(children);
 
   return (
     <button
-      {...props}
+      className={className}
       onClick={() => {
         onClick();
         setButtonText(isRequestPending ? 'Loading...' : buttonText);

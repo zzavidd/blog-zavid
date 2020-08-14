@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import { alert, setAlert } from 'components/alert';
+import hooks from 'constants/hooks';
 import { POST_STATUS, OPERATIONS } from 'constants/strings';
 import { isValidPost } from 'constants/validations';
 import PostForm from 'partials/helpers/posts/form';
@@ -42,16 +43,6 @@ const PostCrud = ({ post: currentPost, operation }) => {
       currentPost.status !== POST_STATUS.PUBLISHED &&
       statePost.status === POST_STATUS.PUBLISHED;
   }
-
-  const handleText = (event) => {
-    const { name, value } = event.target;
-    setPost(Object.assign({}, statePost, { [name]: value }));
-  };
-
-  const handleDate = (date, name) => {
-    setPost(Object.assign({}, statePost, { [name]: date }));
-    console.log(statePost);
-  };
 
   useEffect(() => {
     if (!isCreateOperation) {
@@ -153,7 +144,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
   return (
     <PostForm
       post={statePost}
-      handlers={{ handleText, handleDate }}
+      handlers={hooks(setPost, statePost)}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
       cancelFunction={returnToAdminPosts}
