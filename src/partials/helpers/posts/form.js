@@ -10,13 +10,14 @@ import {
   ShortTextArea,
   LongTextArea
 } from 'components/form';
+import { FileSelector, ASPECT_RATIO } from 'components/form/fileselector';
 import DatePicker from 'components/form/picker/datepicker';
 import { Fader } from 'components/transitioner';
 import { POST_STATUS, POST_TYPES } from 'constants/strings';
 
 const PostForm = (props) => {
-  const { post, handlers } = props;
-  const { handleText, handleDate } = handlers;
+  const { post, handlers, operation } = props;
+  const { handleText, handleDate, handleFile } = handlers;
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -86,6 +87,17 @@ const PostForm = (props) => {
               value={post.excerpt}
               onChange={handleText}
               placeholder={"Enter the post's excerpt..."}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <Field sm={6}>
+            <Label>Image:</Label>
+            <FileSelector
+              image={post.image}
+              operation={operation}
+              onChange={handleFile}
+              aspectRatio={ASPECT_RATIO.WIDE}
             />
           </Field>
         </FieldRow>

@@ -18,6 +18,8 @@ exports.GET_POSTS_QUERY = gql`
       type
       content
       status
+      image
+      datePublished
     }
   }
 `;

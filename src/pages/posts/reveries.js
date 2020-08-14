@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client';
 import React, { useState, useEffect, memo } from 'react';
 import { Container } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -6,39 +7,34 @@ import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
+import { GET_POSTS_QUERY } from 'private/api/queries';
 import css from 'styles/pages/Reveries.module.scss';
-
-import request from 'constants/request.js';
-
-const query = `
-{
-  getAllPosts(type: Reverie) {
-    id
-    title,
-    content,
-    image
-  }
-}
-`;
 
 const ReveriesList = () => {
   const [reveries, setReveries] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    getReveries();
-  }, [isLoaded]);
+  const {
+    data,
+    error: queryError,
+    loading: queryLoading,
+  } = useQuery(GET_POSTS_QUERY, {
+    variables: {
+      limit: 10,
+      orderBy: {
+        field: 'id',
+        order: 'DESC'
+      },
+      type: 'Reverie'
+    },
+  });
 
-  /** Get all reveries */
-  const getReveries = () => {
-    request({
-      query: JSON.stringify({ query }),
-      onSuccess: ({ data }) => {
-        setReveries(data.getAllPosts);
-        setLoaded(true);
-      }
-    });
-  };
+  useEffect(() => {
+    if (queryLoading) return;
+    if (queryError) alert.error(queryError);
+    setReveries(data.getAllPosts);
+    setLoaded(true);
+  }, [isLoaded, queryLoading]);
 
   return (
     <Container className={css['reveries-index']}>

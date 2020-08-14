@@ -2,7 +2,18 @@
 import React from 'react';
 import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
 
-export const baseUrl = 'https://res.cloudinary.com/zavid/image/upload';
+export const cloudinaryBaseUrl =
+  'https://res.cloudinary.com/zavid/image/upload';
+
+export const validateCloudinaryImage = (image) => {
+  if (!image) return false;
+
+  const regex = new RegExp(/(v[0-9]+|dynamic|static)\//);
+  const match = image.match(regex);
+  if (match === null) return false;
+
+  return image.startsWith(match[0]);
+};
 
 /**
  * Constants for Cloudinary lazy transformations.

@@ -18,5 +18,14 @@ module.exports = (hook, state) => {
     hook(Object.assign({}, state, { [name]: date }));
   };
 
+  /**
+   * Handles the upload of images with a file selector.
+   * @param {string} file - The base64 string of the image.
+   * @param {string} [name] - The name of the element. Default is 'image'.
+   */
+  module.handleFile = (file, name = 'image') => {
+    hook(Object.assign({}, state, { [name]: file }));
+  };
+
   return module;
 };
