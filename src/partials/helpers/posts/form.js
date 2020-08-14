@@ -69,15 +69,7 @@ const PostForm = (props) => {
               onChange={handleText}
             />
           </Field>
-          <Field md={6}>
-            <Label>Date Published:</Label>
-            <DatePicker
-              name={'datePublished'}
-              date={post.datePublished}
-              onConfirm={handleDate}
-              placeholderText={'Select the publish date...'}
-            />
-          </Field>
+          <DatePublishedField post={post} handleDate={handleDate} />
         </FieldRow>
         <FieldRow>
           <Field>
@@ -102,6 +94,25 @@ const PostForm = (props) => {
           </Field>
         </FieldRow>
       </Form>
+    </Fader>
+  );
+};
+
+const DatePublishedField = ({ post, handleDate }) => {
+  return (
+    <Fader
+      determinant={post.status === POST_STATUS.PUBLISHED}
+      duration={200}
+      hollow={true}>
+      <Field md={6}>
+        <Label>Date Published:</Label>
+        <DatePicker
+          name={'datePublished'}
+          date={post.datePublished}
+          onConfirm={handleDate}
+          placeholderText={'Select the publish date...'}
+        />
+      </Field>
     </Fader>
   );
 };
