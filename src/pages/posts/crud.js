@@ -18,7 +18,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
     excerpt: '',
     image: '',
     status: POST_STATUS.DRAFT,
-    datePublished: new Date()
+    datePublished: null
   });
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -50,15 +50,16 @@ const PostCrud = ({ post: currentPost, operation }) => {
 
   const handleDate = (date, name) => {
     setPost(Object.assign({}, statePost, { [name]: date }));
+    console.log(statePost);
   };
 
   useEffect(() => {
     if (!isCreateOperation) {
       // If publishing, set date to right now.
       const datePublished =
-        currentPost.status !== POST_STATUS.PUBLISHED
-          ? new Date()
-          : currentPost.datePublished;
+        currentPost.status === POST_STATUS.PUBLISHED
+          ? currentPost.datePublished
+          : null;
 
       setPost(Object.assign({}, currentPost, { datePublished }));
     }
@@ -90,9 +91,9 @@ const PostCrud = ({ post: currentPost, operation }) => {
 
     // Only have published date if the status is published
     const date =
-      status !== POST_STATUS.PUBLISHED
-        ? null
-        : zDate.formatISODate(datePublished);
+      status === POST_STATUS.PUBLISHED
+        ? zDate.formatISODate(datePublished)
+        : null;
 
     const post = {
       title: title.trim(),
@@ -137,7 +138,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
       .then(() => {
         setAlert({
           type: 'success',
-          message: `You've successfully added the new post titled **${statePost.title}**.`
+          message: `You've successfully updated **${statePost.title}**.`
         });
         returnToAdminPosts();
       })

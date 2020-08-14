@@ -23,6 +23,8 @@ const PostForm = (props) => {
     setLoaded(true);
   }, [isLoaded]);
 
+  console.log(post.datePublished);
+
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
       <Form {...props}>
@@ -74,6 +76,7 @@ const PostForm = (props) => {
               name={'datePublished'}
               date={post.datePublished}
               onConfirm={handleDate}
+              placeholderText={'Select the publish date...'}
             />
           </Field>
         </FieldRow>
