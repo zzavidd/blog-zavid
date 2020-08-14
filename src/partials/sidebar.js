@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
 import { Container } from 'react-bootstrap';
-import { Title } from 'components/text.js';
-import { baseUrl } from 'components/image.js';
-
+import { connect } from 'react-redux';
 import { zDate, zRequest } from 'zavid-modules';
 
+import { baseUrl } from 'components/image.js';
+import { Title } from 'components/text.js';
 import css from 'styles/Partials.module.scss';
 
 class Sidebar extends Component {
@@ -58,7 +56,8 @@ class Sidebar extends Component {
 
 /**
  * Retrieve post image if exists
- * @param {Object} post - Reference post to image
+ * @param {object} post - Reference post to image
+ * @returns {React.Component} The component.
  */
 const previewImage = (post) => {
   if (!post.image) return null;

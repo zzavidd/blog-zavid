@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import InstagramEmbed from 'react-instagram-embed';
+import { useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zText } from 'zavid-modules';
 
