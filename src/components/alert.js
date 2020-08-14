@@ -24,7 +24,9 @@ exports.alert = {
     toast(message, { className: classnames('alert-success', classes) });
   },
   error: (message) => {
-    toast(message.toString(), { className: classnames('alert-danger', classes) });
+    toast(message.toString(), {
+      className: classnames('alert-danger', classes)
+    });
   },
   info: (message) => {
     toast(message, { className: classnames('alert-info', classes) });
