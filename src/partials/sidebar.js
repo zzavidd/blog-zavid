@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { zDate, zRequest } from 'zavid-modules';
 
-import { baseUrl } from 'components/image.js';
+import { cloudinaryBaseUrl } from 'components/image.js';
 import { Title } from 'components/text.js';
 import css from 'styles/Partials.module.scss';
 
@@ -63,7 +63,7 @@ const previewImage = (post) => {
   if (!post.image) return null;
   return (
     <img
-      src={`${baseUrl}/w_1280,h_720/${post.image}`}
+      src={`${cloudinaryBaseUrl}/w_1280,h_720/${post.image}`}
       alt={post.title}
       className={css.image}
     />

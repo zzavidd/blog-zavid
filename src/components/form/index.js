@@ -11,6 +11,8 @@ import {
 import { Spacer, Toolbar } from 'components/layout';
 import css from 'styles/components/Form.module.scss';
 
+export { FileSelector } from './fileselector';
+
 /**
  * A form component.
  * @param {object} props - The component props.
