@@ -8,18 +8,18 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 100000,
-          name: '[name].[ext]',
-        },
-      },
+          name: '[name].[ext]'
+        }
+      }
     });
 
     config.node = {
       fs: 'empty',
       child_process: 'empty',
-      module: 'empty',
+      module: 'empty'
     };
 
     config.plugins = config.plugins || [];
     return config;
-  },
+  }
 };

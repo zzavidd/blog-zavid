@@ -31,10 +31,7 @@ export const CloudinaryImage = ({
   const publicId = version ? `${version}/${src}` : src;
   const { width, height } = lazy || {};
   return (
-    <CloudinaryContext
-      cloudName={'zavid'}
-      className={className}
-      style={style}>
+    <CloudinaryContext cloudName={'zavid'} className={className} style={style}>
       <Image
         publicId={publicId}
         alt={alt}

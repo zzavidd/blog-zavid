@@ -27,7 +27,11 @@ export const Modal = (props) => {
 
   const Footer = () => {
     if (!modalFooter) return null;
-    return <IModal.Footer className={css['modal-footer']}>{modalFooter}</IModal.Footer>;
+    return (
+      <IModal.Footer className={css['modal-footer']}>
+        {modalFooter}
+      </IModal.Footer>
+    );
   };
 
   return (
@@ -57,7 +61,7 @@ export const ConfirmModal = ({
       onHide={closeFunction}
       modalBody={<Paragraph>{message}</Paragraph>}
       modalFooter={
-        <div >
+        <div>
           <DeleteButton onClick={confirmFunction}>{confirmText}</DeleteButton>
           <CancelButton onClick={closeFunction}>Cancel</CancelButton>
         </div>

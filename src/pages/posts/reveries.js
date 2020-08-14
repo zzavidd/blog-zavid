@@ -67,7 +67,7 @@ const Reverie = memo(({ reverie }) => {
 });
 
 const ReverieImage = ({ reverie }) => {
-  const theme = useSelector(({theme}) => theme);
+  const theme = useSelector(({ theme }) => theme);
   if (!reverie.image) return null;
   return (
     <CloudinaryImage

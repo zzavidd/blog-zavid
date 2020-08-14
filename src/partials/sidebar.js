@@ -10,12 +10,12 @@ import { zDate, zRequest } from 'zavid-modules';
 import css from 'styles/Partials.module.scss';
 
 class Sidebar extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       posts: [],
       isLoaded: false
-    }
+    };
   }
 
   componentDidMount() {
@@ -38,7 +38,7 @@ class Sidebar extends Component {
     });
   }
 
-  render(){
+  render() {
     const { theme } = this.props;
     return (
       <Container className={css[`sidebar-${theme}`]}>
@@ -66,11 +66,12 @@ const previewImage = (post) => {
     <img
       src={`${baseUrl}/w_1280,h_720/${post.image}`}
       alt={post.title}
-      className={css.image} />
-  )
-}
+      className={css.image}
+    />
+  );
+};
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   theme: state.theme
 });
 
