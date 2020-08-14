@@ -83,8 +83,8 @@ export const AdminButton = (props) => {
  */
 export const InvisibleButton = (props) => {
   return (
-    <Button {...props} className={classnames(css['invisible-button'], props.className)}>
+    <button {...props} className={classnames(css['invisible-button'], props.className)}>
       {props.children}
-    </Button>
+    </button>
   );
 };

@@ -83,6 +83,7 @@ export const Label = ({ children }) => {
  * @param {object} props - The component props.
  * @param {string} props.name - The object property this input represents.
  * @param {string} props.value - The current text in the input.
+ * @param {Function} props.onClick - The function called on clicking on the input.
  * @param {Function} props.onChange - The function called on text change.
  * @param {string} props.placeholder - The placeholder text.
  * @param {React.Component} [props.leadingComponent] - A component placed before the input.

@@ -14,13 +14,13 @@ import { Modal, ConfirmModal } from 'components/modal.js';
 import { creationDate } from 'constants/settings.js';
 import css from 'styles/components/Form.module.scss';
 
-export default ({ name, date, onConfirm }) => {
+export default ({ name, date, onConfirm, placeholderText }) => {
   return (
     <DatePicker
       name={name}
       date={date}
       onConfirm={onConfirm}
-      placeholderText={'Select the date written.'}
+      placeholderText={placeholderText}
       minDate={creationDate}
       maxDate={new Date()}
       withDayOfWeek
@@ -38,18 +38,19 @@ const DatePicker = (props) => {
   const [datePickerVisible, setDatePickerVisibility] = useState(false);
   const [clearDateModalVisible, setClearDateModalVisibility] = useState(false);
 
+  const {
+    day: initialDay,
+    month: initialMonth,
+    year: initialYear
+  } = extractDates(date);
+
   useEffect(() => {
-    const {
-      day: initialDay,
-      month: initialMonth,
-      year: initialYear
-    } = extractDates(date);
     setDay(initialDay);
     setMonth(initialMonth);
     setYear(initialYear);
   }, [datePickerVisible]);
 
-  /** Clear the date */
+  /** Clear the date. */
   const clearDate = () => {
     onConfirm(null, name);
     setClearDateModalVisibility(false);
@@ -76,7 +77,6 @@ const DatePicker = (props) => {
               setClearDateModalVisibility={setClearDateModalVisibility}
             />
           }
-          readOnly
         />
       </div>
 
