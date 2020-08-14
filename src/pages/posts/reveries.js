@@ -6,8 +6,9 @@ import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
-import request from 'constants/request.js';
 import css from 'styles/pages/Reveries.module.scss';
+
+import request from 'constants/request.js';
 
 const query = `
 {

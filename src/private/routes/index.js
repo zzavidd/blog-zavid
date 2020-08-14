@@ -1,7 +1,6 @@
-const { siteTitle } = require('../../constants/settings');
-
 const postRoutes = require('./posts.routes');
 
+const { siteTitle } = require('../../constants/settings');
 const app = require('../singleton/app').getApp();
 const server = require('../singleton/server').getServer();
 

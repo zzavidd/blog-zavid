@@ -1,5 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { domain } from '~/constants/settings.js';
+import React from 'react';
+
+import { domain } from 'constants/settings.js';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
