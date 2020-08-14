@@ -23,8 +23,6 @@ const PostForm = (props) => {
     setLoaded(true);
   }, [isLoaded]);
 
-  console.log(post.datePublished);
-
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
       <Form {...props}>

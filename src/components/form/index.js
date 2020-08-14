@@ -90,18 +90,28 @@ export const Label = ({ children }) => {
  * @param {React.Component} [props.trailingComponent] - A component placed after the input.
  * @returns {React.Component} The component.
  */
-export const TextInput = ({
-  name,
-  value,
-  onChange,
-  placeholder,
-  onClick,
-  leadingComponent = null,
-  trailingComponent = null
-}) => {
+export const TextInput = (props) => {
   const theme = useSelector(({ theme }) => theme);
+  const { onClick, leadingComponent = null, trailingComponent = null } = props;
 
-  const Input = () => (
+  return (
+    <div className={css[`text-input-field-${theme}`]}>
+      {leadingComponent}
+      {onClick ? (
+        <InvisibleButton onClick={onClick} className={css['text-click-input']}>
+          <Input {...props} />
+        </InvisibleButton>
+      ) : (
+        <Input {...props} />
+      )}
+      {trailingComponent}
+    </div>
+  );
+};
+
+const Input = ({ name, value, onChange, placeholder, onClick }) => {
+  if (value === null) value = '';
+  return (
     <input
       name={name}
       type={'text'}
@@ -112,20 +122,6 @@ export const TextInput = ({
       placeholder={placeholder}
       readOnly={!!onClick}
     />
-  );
-
-  return (
-    <div className={css[`text-input-field-${theme}`]}>
-      {leadingComponent}
-      {onClick ? (
-        <InvisibleButton onClick={onClick} className={css['text-click-input']}>
-          <Input />
-        </InvisibleButton>
-      ) : (
-        <Input />
-      )}
-      {trailingComponent}
-    </div>
   );
 };
 
