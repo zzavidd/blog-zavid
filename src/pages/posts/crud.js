@@ -19,11 +19,11 @@ const PostCrud = ({ post: currentPost, operation }) => {
     excerpt: '',
     image: '',
     status: POST_STATUS.DRAFT,
-    datePublished: null
+    datePublished: null,
+    imageHasChanged: false,
   });
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
-  const [imagesHaveChanged, setImagesChanged] = useState(false);
 
   const [createPostMutation, { loading: createLoading }] = useMutation(
     CREATE_POST_QUERY
@@ -77,7 +77,8 @@ const PostCrud = ({ post: currentPost, operation }) => {
       excerpt,
       image,
       status,
-      datePublished
+      datePublished,
+      imageHasChanged
     } = statePost;
 
     // Only have published date if the status is published
@@ -98,7 +99,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
 
     const payload = { post, isPublish };
     if (!isCreateOperation) {
-      Object.assign(payload, { id, imagesHaveChanged });
+      Object.assign(payload, { id, imageHasChanged });
     }
 
     return payload;

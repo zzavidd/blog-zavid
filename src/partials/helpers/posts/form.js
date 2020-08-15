@@ -41,7 +41,7 @@ const PostForm = (props) => {
             <Label>Type:</Label>
             <Select
               name={'type'}
-              items={Object.values(POST_TYPES)}
+              items={Object.values(POST_TYPES).map((POST) => POST.TITLE)}
               value={post.type}
               onChange={handleText}
               placeholder={'Select post type'}

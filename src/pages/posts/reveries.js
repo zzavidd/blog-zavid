@@ -21,7 +21,7 @@ const ReveriesList = () => {
   } = useQuery(GET_POSTS_QUERY, {
     variables: {
       limit: 10,
-      orderBy: {
+      sort: {
         field: 'id',
         order: 'DESC'
       },

@@ -24,7 +24,8 @@ const PostsAdmin = () => {
     networkStatus
   } = useQuery(GET_POSTS_QUERY, {
     variables: {
-      orderBy: {
+      limit: 10,
+      sort: {
         field: 'id',
         order: 'DESC'
       }
