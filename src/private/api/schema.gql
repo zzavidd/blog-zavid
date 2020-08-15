@@ -16,7 +16,7 @@ type Post {
 }
 
 type Query {
-  getAllPosts(limit: Int, orderBy: PostOrder, random: Boolean, type: PostType): [Post]
+  getAllPosts(limit: Int, sort: PostOrder, type: PostType): [Post]
   getSinglePost(id: Int!): Post
 }
 
@@ -60,6 +60,7 @@ enum PostStatus {
 enum Order {
   ASC
   DESC
+  RANDOM
 }
 
 input PostInput {

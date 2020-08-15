@@ -6,10 +6,22 @@ exports.POST_STATUS = {
 };
 
 exports.POST_TYPES = {
-  REVERIE: 'Reverie',
-  EPISTLE: 'Epistle',
-  POEM: 'Poem',
-  PAGE: 'Page'
+  REVERIE: {
+    TITLE: 'Reverie',
+    DIRECTORY: 'reveries'
+  },
+  EPISTLE: {
+    TITLE: 'Epistle',
+    DIRECTORY: 'epistles'
+  },
+  POEM: {
+    TITLE: 'Poem',
+    DIRECTORY: 'poetry'
+  },
+  PAGE: {
+    TITLE: 'Page',
+    DIRECTORY: 'pages'
+  }
 };
 
 /** The CRUD operations for all entities */

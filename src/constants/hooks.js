@@ -24,7 +24,12 @@ module.exports = (hook, state) => {
    * @param {string} [name] - The name of the element. Default is 'image'.
    */
   module.handleFile = (file, name = 'image') => {
-    hook(Object.assign({}, state, { [name]: file }));
+    hook(
+      Object.assign({}, state, {
+        [name]: file,
+        imageHasChanged: true
+      })
+    );
   };
 
   return module;

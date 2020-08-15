@@ -88,6 +88,7 @@ const ChoosePrompt = ({
           style={{ display: 'none' }}
           onChange={previewImage}
           ref={fileRef}
+          accept={'image/*'}
         />
         <span>{placeholder}</span>
       </label>
@@ -95,7 +96,7 @@ const ChoosePrompt = ({
   );
 };
 
-const ChoiceImage = ({ image, stateImage, onChange, imageRef, setImage }) => {
+const ChoiceImage = ({ stateImage, onChange, imageRef, setImage }) => {
   /** Remove selected image. */
   const removeImage = () => {
     onChange(null);
@@ -104,13 +105,13 @@ const ChoiceImage = ({ image, stateImage, onChange, imageRef, setImage }) => {
 
   return (
     <Zoomer
-      determinant={image !== null}
+      determinant={stateImage !== null}
       duration={400}
       style={{
         display: stateImage ? 'block' : 'none'
       }}>
       <img
-        src={image}
+        src={stateImage}
         alt={'Image preview...'}
         ref={imageRef}
         className={css['fs-image']}

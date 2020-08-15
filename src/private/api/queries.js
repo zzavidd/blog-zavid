@@ -3,14 +3,12 @@ const { gql } = require('@apollo/client');
 exports.GET_POSTS_QUERY = gql`
   query GetAllPosts(
     $limit: Int
-    $orderBy: PostOrder
-    $random: Boolean = false
+    $sort: PostOrder
     $type: PostType
   ) {
     getAllPosts(
       limit: $limit
-      orderBy: $orderBy
-      random: $random
+      sort: $sort
       type: $type
     ) {
       id
