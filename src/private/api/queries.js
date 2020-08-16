@@ -35,13 +35,13 @@ exports.UPDATE_POST_QUERY = gql`
     $id: Int!
     $post: PostInput!
     $isPublish: Boolean
-    $imagesHaveChanged: Boolean
+    $imageHasChanged: Boolean
   ) {
     updatePost(
       id: $id
       post: $post
       isPublish: $isPublish
-      imagesHaveChanged: $imagesHaveChanged
+      imageHasChanged: $imageHasChanged
     ) {
       id
     }

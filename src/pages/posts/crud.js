@@ -20,7 +20,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
     image: '',
     status: POST_STATUS.DRAFT,
     datePublished: null,
-    imageHasChanged: false,
+    imageHasChanged: false
   });
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -52,7 +52,12 @@ const PostCrud = ({ post: currentPost, operation }) => {
           ? currentPost.datePublished
           : null;
 
-      setPost(Object.assign({}, currentPost, { datePublished }));
+      setPost(
+        Object.assign({}, currentPost, {
+          datePublished,
+          imageHasChanged: false
+        })
+      );
     }
     setLoaded(true);
   }, [isLoaded]);
