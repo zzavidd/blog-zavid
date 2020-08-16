@@ -6,7 +6,7 @@
   padding: 1em 2em;
 }
 
-.form-buttons-container {
+.form-footer {
   @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
   display: flex;
   justify-content: space-between;

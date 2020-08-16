@@ -33,8 +33,8 @@ export const Form = ({
   return (
     <Spacer>
       <div className={css['form']}>{children}</div>
-      <Toolbar className={css['form-bottom-bar']}>
-        <div className={css['form-buttons-container']}>
+      <Toolbar>
+        <div className={css['form-footer']}>
           <ConfirmButton
             onClick={confirmFunction}
             isRequestPending={isRequestPending}>

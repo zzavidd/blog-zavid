@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import css from 'styles/components/Button.module.scss';
 
@@ -30,8 +31,9 @@ const Button = (props) => {
  * @returns {React.Component} The component.
  */
 export const ConfirmButton = (props) => {
+  const theme = useSelector(({theme}) => theme);
   return (
-    <Button {...props} className={css['button-confirm']}>
+    <Button {...props} className={css[`button-confirm-${theme}`]}>
       {props.children}
     </Button>
   );
@@ -43,8 +45,9 @@ export const ConfirmButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const CancelButton = (props) => {
+  const theme = useSelector(({theme}) => theme);
   return (
-    <Button {...props} className={css['button-cancel']}>
+    <Button {...props} className={css[`button-cancel-${theme}`]}>
       {props.children}
     </Button>
   );
@@ -56,8 +59,9 @@ export const CancelButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const DeleteButton = (props) => {
+  const theme = useSelector(({theme}) => theme);
   return (
-    <Button {...props} className={css['button-delete']}>
+    <Button {...props} className={css[`button-cancel-${theme}`]}>
       {props.children}
     </Button>
   );
@@ -69,8 +73,9 @@ export const DeleteButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const AdminButton = (props) => {
+  const theme = useSelector(({theme}) => theme);
   return (
-    <Button {...props} className={css['button-admin']}>
+    <Button {...props} className={css[`button-admin-${theme}`]}>
       {props.children}
     </Button>
   );
