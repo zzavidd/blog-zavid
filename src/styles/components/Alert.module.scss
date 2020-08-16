@@ -21,6 +21,10 @@
   @media (max-width: $break-sm) {
     font-size: 0.9em;
   }
+
+  * {
+    color: #000 !important;
+  }
 }
 
 .toast-transition-fadein {
