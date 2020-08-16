@@ -18,6 +18,10 @@ exports.POST_TYPES = {
     TITLE: 'Poem',
     DIRECTORY: 'poetry'
   },
+  MUSING: {
+    TITLE: 'Musing',
+    DIRECTORY: 'musings'
+  },
   PAGE: {
     TITLE: 'Page',
     DIRECTORY: 'pages'

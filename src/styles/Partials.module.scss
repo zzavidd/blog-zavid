@@ -4,14 +4,20 @@
 ** HEADER
 ************/
 
+%nav {
+  transition-duration: 0.8s;
+}
+
 %nav-link {
   font-family: $title-font;
   font-size: 1.1em;
   text-transform: uppercase;
+  transition-duration: 0.8s;
 }
 
 .nav {
   &-light {
+    @extend %nav;
     background-color: #fff;
     border-bottom: 2px solid $dark;
 
@@ -22,6 +28,7 @@
   }
 
   &-dark {
+    @extend %nav;
     background-color: $dark;
     border-bottom: 1px solid #fff;
 

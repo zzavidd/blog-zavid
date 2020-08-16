@@ -117,7 +117,7 @@ const ChoiceImage = ({ stateImage, onChange, imageRef, setImage }) => {
         className={css['fs-image']}
       />
       <InvisibleButton
-        className={css['fs-remove-image-button']}
+        className={css['fs-image-button']}
         onClick={removeImage}>
         <Icon name={'times'} />
       </InvisibleButton>
