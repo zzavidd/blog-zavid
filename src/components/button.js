@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import css from 'styles/components/Button.module.scss';
@@ -10,16 +10,17 @@ import css from 'styles/components/Button.module.scss';
  * @returns {React.Component} The component.
  */
 const Button = (props) => {
-  const { children, className, onClick, isRequestPending = false } = props;
+  const { children, className, onClick, isRequestPending } = props;
   const [buttonText, setButtonText] = useState(children);
+
+  useEffect(() => {
+    setButtonText(isRequestPending ? 'Loading...' : children);
+  }, [isRequestPending]);
 
   return (
     <button
       className={className}
-      onClick={() => {
-        onClick();
-        setButtonText(isRequestPending ? 'Loading...' : buttonText);
-      }}>
+      onClick={onClick}>
       {buttonText}
     </button>
   );
@@ -61,7 +62,7 @@ export const CancelButton = (props) => {
 export const DeleteButton = (props) => {
   const theme = useSelector(({theme}) => theme);
   return (
-    <Button {...props} className={css[`button-cancel-${theme}`]}>
+    <Button {...props} className={css[`button-delete-${theme}`]}>
       {props.children}
     </Button>
   );
