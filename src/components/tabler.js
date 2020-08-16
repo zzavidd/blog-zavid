@@ -163,6 +163,7 @@ const ItemRows = ({ centerAlignedIndices, distribution, items }) => {
  * @returns {React.Component} - The component.
  */
 const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
+  const theme = useSelector(({ theme }) => theme);
   const [isLoaded, setLoaded] = useState(false);
   useEffect(() => {
     forceCheck();
@@ -178,7 +179,7 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
         determinant={isInView}
         duration={500}
         delay={30}
-        className={css['tabler-item-row']}
+        className={css[`tabler-item-row-${theme}`]}
         postTransitions={'background-color .1s ease'}
         style={distribution}>
         {fields

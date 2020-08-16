@@ -38,15 +38,24 @@
 /// @param {string} $attr - The CSS attribute.
 /// @param {any} $light - The value when the theme is light.
 /// @param {any} $dark - The value when the theme is dark.
-@mixin themer($class, $attr, $light, $dark) {
-  &-light {
-    @extend #{$class};
-    #{$attr}: $light;
-  }
-
-  &-dark {
-    @extend #{$class};
-    #{$attr}: $dark;
+/// @param {string} $pseudo - The pseudo class to be selected.
+@mixin themer($class, $attr, $light, $dark, $pseudo: 0) {
+  $values: (
+    light: $light,
+    dark: $dark
+  );
+  @each $theme in $themes {
+    $value: map-get($values, $theme);
+    &-#{$theme} {
+      @extend #{$class};
+      @if $pseudo == 0 {
+        #{$attr}: $value;
+      } @else {
+        &:#{$pseudo} {
+          #{$attr}: $value;
+        }
+      }
+    }
   }
 }
 
