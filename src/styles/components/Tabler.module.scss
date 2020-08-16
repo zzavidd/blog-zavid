@@ -48,21 +48,45 @@
 .tabler-header-row {
   @extend %row;
   @include themer(
-    &,
-    border-bottom,
+    $class: &,
+    $attr: border-bottom,
     $light: 1px solid rgba(0, 0, 0, 0.6),
     $dark: 1px solid rgba(255, 255, 255, 0.6)
   );
   font-family: $title-font;
 }
 
-.tabler-item-row {
+%tabler-item-row {
   @extend %row;
   border-radius: 10px;
   font-family: $body-font;
+}
 
-  &:hover {
-    background-color: #ccc;
+
+// Note: Intentional.
+.tabler-item-row {
+  &-light {
+    @extend %tabler-item-row;
+
+    &:hover {
+      background-color: $dark;
+
+      * {
+        color: #fff !important;
+      }
+    }
+  }
+
+  &-dark {
+    @extend %tabler-item-row;
+
+    &:hover {
+      background-color: #cacaca;
+
+      * {
+        color: #000 !important;
+      }
+    }
   }
 }
 
