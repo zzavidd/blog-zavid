@@ -49,3 +49,41 @@
     #{$attr}: $dark;
   }
 }
+
+/// Configures the colors of a button.
+/// @param {string} $class - The class using this mixin.
+/// @param {color} $base - The base colour of the button.
+@mixin button-designer($class, $base) {
+  $colors: (
+    light: change-color($base, $alpha: 0.9),
+    dark: change-color($base, $alpha: 0.5)
+  );
+  @each $theme in $themes {
+    $color: map-get($colors, $theme);
+    &-#{$theme} {
+      @extend #{$class};
+      background-color: $color;
+
+      &:hover {
+        box-shadow: inset 0 0 100px 100px adjust-color($color, $lightness: 10%);
+      }
+
+      &:active {
+        box-shadow: inset 0 0 100px 100px adjust-color($color, $lightness: 70%);
+        transition-duration: 0.1s;
+      }
+    }
+  }
+}
+
+/// Scales a component on mouse-over.
+/// @param {number} $scale - The scale factor.
+@mixin hover-scale($scale) {
+  @media (min-width: $break-sm) {
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale($scale);
+    }
+  }
+}

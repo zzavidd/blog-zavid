@@ -99,11 +99,18 @@ const PostForm = (props) => {
 };
 
 const DatePublishedField = ({ post, handleDate }) => {
+  const [isVisible, setVisibility] = useState(true);
+
+  useEffect(() => {
+    setVisibility(post.status === POST_STATUS.PUBLISHED);
+  }, [post.status]);
+
   return (
     <Fader
-      determinant={post.status === POST_STATUS.PUBLISHED}
-      duration={200}
-      hollow={true}>
+      determinant={isVisible}
+      duration={400}
+      hollow={true}
+      style={{display: isVisible ? 'block' : 'none'}}>
       <Field md={6}>
         <Label>Date Published:</Label>
         <DatePicker
