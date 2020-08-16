@@ -79,7 +79,7 @@ export const ConfirmModal = ({
       onHide={closeFunction}
       modalBody={<Paragraph>{message}</Paragraph>}
       modalFooter={
-        <div>
+        <div className={css['confirm-modal-buttons']}>
           <DeleteButton onClick={confirmFunction}>{confirmText}</DeleteButton>
           <CancelButton onClick={closeFunction}>Cancel</CancelButton>
         </div>
