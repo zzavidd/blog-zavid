@@ -83,7 +83,7 @@ exports.replaceImage = (id, post, imageHasChanged) => {
 /**
  * Construct slug and filenames.
  * @param {object} post - The post details.
- * * @param {boolean} shouldIncrement - Whether ID should be incremented in filename generation.
+ * @param {boolean} shouldIncrement - Whether the ID should be incremented in filename generation.
  * @returns {Promise} Represents the directory, slug and filename for the post.
  */
 const generateSlugAndFilename = (post, shouldIncrement) => {

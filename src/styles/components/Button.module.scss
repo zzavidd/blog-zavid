@@ -1,31 +1,38 @@
 @import '../Variables';
 
-$confirm-default: rgba(57, 17, 68, 0.5);
-$confirm-hover: rgba(91, 27, 112, 0.5);
-$confirm-active: rgba(28, 8, 34, 0.8);
-
-$cancel-default: rgba(142, 116, 171, 0.5);
-$cancel-hover: rgba(190, 155, 229, 0.3);
-$cancel-active: rgba(173, 127, 224, 0.5);
-
-$delete-default: rgba(220, 0, 0, 0.5);
-$delete-hover: rgba(255, 55, 55, 0.3);
-$delete-active: rgba(255, 0, 0, 0.5);
+$button-confirm: rgb(57, 17, 68);
+$button-cancel: rgb(142, 116, 171);
+$button-delete: rgb(220, 0, 0);
+$button-admin: rgb(206, 206, 206);
 
 /// Configures the colors of a button.
-/// @param {color} $default - The default color.
-/// @param {color} $hover - The color shown when hovered over.
-/// @param {color} $active - The color shown when clicked.
-@mixin button-designer($default, $hover, $active) {
-  background-color: $default;
+/// @param {color} $class - The class using this mixin.
+/// @param {color} $base - The base colour of the button.
+@mixin button-designer($class, $base) {
+  $colors: (
+    light: change-color($base, $alpha: 0.9),
+    dark: change-color($base, $alpha: 0.5)
+  );
+  @each $theme in $themes {
+    $color: map-get($colors, $theme);
+    &-#{$theme} {
+      @extend #{$class};
+      background-color: $color;
 
-  &:hover {
-    box-shadow: inset 0 0 100px 100px $hover;
-  }
+      &:hover {
+        box-shadow: inset 0 0 100px 100px adjust-color($color, $lightness: 10%);
+      }
 
-  &:active {
-    box-shadow: inset 0 0 100px 100px $active;
-    transition-duration: 0.1s;
+      &:active {
+        box-shadow: inset
+          0
+          0
+          100px
+          100px
+          adjust-color($color, $lightness: 70%);
+        transition-duration: 0.1s;
+      }
+    }
   }
 }
 
@@ -40,7 +47,6 @@ $delete-active: rgba(255, 0, 0, 0.5);
   }
 }
 
-/// Placeholder for form buttons.
 %form-button {
   @extend %button;
   border-radius: 15px;
@@ -50,23 +56,24 @@ $delete-active: rgba(255, 0, 0, 0.5);
 
 .button-confirm {
   @extend %form-button;
-  @include button-designer($confirm-default, $confirm-hover, $confirm-active);
+  @include button-designer(&, $button-confirm);
 }
 
 .button-cancel {
   @extend %form-button;
-  @include button-designer($cancel-default, $cancel-hover, $cancel-active);
+  @include button-designer(&, $button-cancel);
 }
 
 .button-delete {
   @extend %form-button;
-  @include button-designer($delete-default, $delete-hover, $delete-active);
+  @include button-designer(&, $button-delete);
 }
 
 .button-admin {
   @extend %button;
+  @include button-designer(&, $button-admin);
   border-radius: 8px;
-  padding: 0.5em;
+  padding: 0.5em 1em;
 }
 
 .invisible-button {

@@ -70,7 +70,8 @@ const PostsAdmin = () => {
             ['Title'],
             ['Type'],
             ['Content'],
-            ['Status']
+            ['Status'],
+            ['Image', { centerAlign: true }]
           ]}
           items={posts.map((post, key) => {
             return [
@@ -82,6 +83,7 @@ const PostsAdmin = () => {
                 { icon: 'heading' }
               ],
               [post.status, { icon: 'heading' }],
+              [post.image, { type: 'image' }],
               [<EditButton id={post.id} key={key} />, { type: 'button' }],
               [
                 <DeleteButton
@@ -94,7 +96,7 @@ const PostsAdmin = () => {
               ]
             ];
           })}
-          distribution={'6% 1fr 10% 1fr 10% 4% 4%'}
+          distribution={'6% 1fr 10% 1fr 10% 8% 4% 4%'}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>Add New Post</AdminButton>
