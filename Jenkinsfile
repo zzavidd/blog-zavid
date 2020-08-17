@@ -1,7 +1,6 @@
 String cwd = 'src'
 
 pipeline {
-  agent { dockerfile true }
   stages {
     stage('Install dependencies') {
       steps {
