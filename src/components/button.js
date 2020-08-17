@@ -18,12 +18,21 @@ const Button = (props) => {
   }, [isRequestPending]);
 
   return (
-    <button
-      className={className}
-      onClick={onClick}>
+    <button className={className} onClick={onClick}>
       {buttonText}
     </button>
   );
+};
+
+/**
+ * A container for spacing child buttons.
+ * @param {object} props - The component props.
+ * @returns {React.Component} The component.
+ */
+export const ButtonSpacer = (props) => {
+  const { children, className } = props;
+  const classes = classnames(css[`button-spacer`], className);
+  return <div className={classes}>{children}</div>;
 };
 
 /**
@@ -32,7 +41,7 @@ const Button = (props) => {
  * @returns {React.Component} The component.
  */
 export const ConfirmButton = (props) => {
-  const theme = useSelector(({theme}) => theme);
+  const theme = useSelector(({ theme }) => theme);
   return (
     <Button {...props} className={css[`button-confirm-${theme}`]}>
       {props.children}
@@ -46,7 +55,7 @@ export const ConfirmButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const CancelButton = (props) => {
-  const theme = useSelector(({theme}) => theme);
+  const theme = useSelector(({ theme }) => theme);
   return (
     <Button {...props} className={css[`button-cancel-${theme}`]}>
       {props.children}
@@ -60,7 +69,7 @@ export const CancelButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const DeleteButton = (props) => {
-  const theme = useSelector(({theme}) => theme);
+  const theme = useSelector(({ theme }) => theme);
   return (
     <Button {...props} className={css[`button-delete-${theme}`]}>
       {props.children}
@@ -74,11 +83,12 @@ export const DeleteButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const AdminButton = (props) => {
-  const theme = useSelector(({theme}) => theme);
+  const theme = useSelector(({ theme }) => theme);
+  const classes = classnames(css[`button-admin-${theme}`], props.className);
   return (
-    <Button {...props} className={css[`button-admin-${theme}`]}>
+    <button {...props} className={classes}>
       {props.children}
-    </Button>
+    </button>
   );
 };
 

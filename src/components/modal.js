@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal as IModal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
-import { CancelButton, DeleteButton } from 'components/button.js';
+import { ButtonSpacer, CancelButton, DeleteButton } from 'components/button.js';
 import { Paragraph } from 'components/text.js';
 import css from 'styles/components/Modal.module.scss';
 
@@ -79,10 +79,10 @@ export const ConfirmModal = ({
       onHide={closeFunction}
       modalBody={<Paragraph>{message}</Paragraph>}
       modalFooter={
-        <div className={css['confirm-modal-buttons']}>
+        <ButtonSpacer>
           <DeleteButton onClick={confirmFunction}>{confirmText}</DeleteButton>
           <CancelButton onClick={closeFunction}>Cancel</CancelButton>
-        </div>
+        </ButtonSpacer>
       }
     />
   );

@@ -1,12 +1,58 @@
 @import '../App.scss';
 
+////////////////////////////////
+/// Form
+////////////////////////////////
+
 .form {
+  display: block;
+}
+
+.form-pv {
+  @include responsive(display, grid, $lg: block);
+  grid-template-columns: repeat(2, 50%);
+}
+
+%form-pane {
+  @media (min-width: $break-md) {
+    height: 100vh;
+    overflow-y: scroll;
+  }
+}
+
+.form-editor {
   @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
   margin: 0 auto;
+  padding: 1em;
+}
+
+.form-editor-pv {
+  @extend %form-pane;
+  margin: 0 auto;
   padding: 1em 2em;
+  width: 100%;
+}
+
+.form-preview {
+  @extend %form-pane;
+  @include responsive(display, block, $md: none);
+  @include themer(&, border-color, #000, #fff);
+  @include themer(
+    $class: &,
+    $attr: background-color,
+    $light: rgba($color: #fff, $alpha: 0.7),
+    $dark: rgba($color: #000, $alpha: 0.7)
+  );
+  border-left: 1px solid;
+  padding: 2em;
 }
 
 .form-footer {
+  @include themer(&, border-color, #000, #fff);
+  border-top: 1px solid;
+}
+
+.form-footer-buttons {
   @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
   display: flex;
   justify-content: space-between;
@@ -19,6 +65,14 @@
       width: 48%;
     }
   }
+}
+
+.form-footer-button-spacer {
+  @include responsive(width, auto, $sm: 100%);
+}
+
+.form-admin-button {
+  @include responsive(display, block, $md: none);
 }
 
 .form-field {
@@ -87,24 +141,22 @@
   }
 }
 
-.textarea {
-  &-light {
-    @extend %themed-input-light;
-  }
-
-  &-dark {
-    @extend %themed-input-dark;
+@mixin theme-extend($class, $target) {
+  @each $theme in $themes {
+    &-#{$theme} {
+      @extend #{$class} !optional;
+      @extend #{$target}-#{$theme};
+    }
   }
 }
 
-.select {
-  &-light {
-    @extend %themed-input-light;
-  }
+.textarea {
+  @include theme-extend(&, '%themed-input');
+  overflow: auto;
+}
 
-  &-dark {
-    @extend %themed-input-dark;
-  }
+.select {
+  @include theme-extend(&, '%themed-input');
 }
 
 ////////////////////////////////
