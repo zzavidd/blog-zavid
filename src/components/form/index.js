@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import {
+  ButtonSpacer,
   ConfirmButton,
   CancelButton,
-  InvisibleButton
+  InvisibleButton,
+  AdminButton
 } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
+import { Paragraph } from 'components/text';
+import { Slider } from 'components/transitioner';
 import css from 'styles/components/Form.module.scss';
 
 export { FileSelector } from './fileselector';
@@ -28,22 +32,74 @@ export const Form = ({
   confirmFunction,
   cancelFunction,
   isRequestPending,
+  previewText = false,
   children
 }) => {
+  const theme = useSelector(({ theme }) => theme);
+  const [isPreviewVisible, setPreviewVisibility] = useState(false);
+
   return (
     <Spacer>
-      <div className={css['form']}>{children}</div>
-      <Toolbar>
-        <div className={css['form-footer']}>
-          <ConfirmButton
-            onClick={confirmFunction}
-            isRequestPending={isRequestPending}>
-            {confirmButtonText}
-          </ConfirmButton>
-          <CancelButton onClick={cancelFunction}>Cancel</CancelButton>
+      <div className={css[isPreviewVisible ? 'form-pv' : 'form']}>
+        <div
+          className={css[isPreviewVisible ? 'form-editor-pv' : 'form-editor']}>
+          {children}
+        </div>
+        <FormPreview
+          isPreviewVisible={isPreviewVisible}
+          previewText={previewText}
+        />
+      </div>
+      <Toolbar className={css[`form-footer-${theme}`]}>
+        <div className={css['form-footer-buttons']}>
+          <FormAdminButton
+            previewText={previewText}
+            setPreviewVisibility={setPreviewVisibility}
+            isPreviewVisible={isPreviewVisible}
+          />
+          <ButtonSpacer className={css['form-footer-button-spacer']}>
+            <ConfirmButton
+              onClick={confirmFunction}
+              isRequestPending={isRequestPending}>
+              {confirmButtonText}
+            </ConfirmButton>
+            <CancelButton onClick={cancelFunction}>Cancel</CancelButton>
+          </ButtonSpacer>
         </div>
       </Toolbar>
     </Spacer>
+  );
+};
+
+const FormPreview = ({ isPreviewVisible, previewText }) => {
+  const theme = useSelector(({ theme }) => theme);
+  return (
+    <Slider
+      determinant={isPreviewVisible}
+      duration={300}
+      direction={'right'}
+      className={css[`form-preview-${theme}`]}
+      style={{display: isPreviewVisible ? 'block' : 'none'}}>
+      <Paragraph>{previewText}</Paragraph>
+    </Slider>
+  );
+};
+
+const FormAdminButton = ({
+  previewText,
+  setPreviewVisibility,
+  isPreviewVisible
+}) => {
+  if (typeof previewText !== 'string') return null;
+
+  const togglePreview = () => {
+    setPreviewVisibility(!isPreviewVisible);
+  };
+
+  return (
+    <AdminButton onClick={togglePreview} className={css['form-admin-button']}>
+      {isPreviewVisible ? 'Hide Preview' : 'Show Preview'}
+    </AdminButton>
   );
 };
 

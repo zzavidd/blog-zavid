@@ -26,7 +26,7 @@ const PostForm = (props) => {
 
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
-      <Form {...props}>
+      <Form {...props} previewText={post.content}>
         <FieldRow>
           <Field sm={8}>
             <Label>Title:</Label>

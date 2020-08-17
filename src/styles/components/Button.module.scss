@@ -53,3 +53,11 @@ $button-admin: rgb(206, 206, 206);
     outline: none;
   }
 }
+
+.button-spacer {
+  display: flex;
+  
+  button {
+    margin-left: 0.4em;
+  }
+}
