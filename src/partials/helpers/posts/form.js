@@ -1,9 +1,12 @@
+import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
+import { alert } from 'components/alert';
 import {
   Form,
   FieldRow,
   Field,
+  DynamicField,
   Label,
   TextInput,
   Select,
@@ -14,15 +17,40 @@ import { FileSelector, ASPECT_RATIO } from 'components/form/fileselector';
 import DatePicker from 'components/form/picker/datepicker';
 import { Fader } from 'components/transitioner';
 import { POST_STATUS, POST_TYPES } from 'constants/strings';
+import { GET_POSTS_QUERY } from 'private/api/queries';
 
 const PostForm = (props) => {
   const { post, handlers, operation } = props;
   const { handleText, handleDate, handleFile } = handlers;
   const [isLoaded, setLoaded] = useState(false);
+  const [domains, setDomains] = useState([]);
+
+  const { data, error: queryError, loading: queryLoading } = useQuery(
+    GET_POSTS_QUERY,
+    {
+      variables: {
+        sort: {
+          field: 'type',
+          order: 'DESC'
+        }
+      }
+    }
+  );
 
   useEffect(() => {
+    if (queryLoading) return;
+    if (queryError) alert.error(queryError);
+
+    const domainList = data.getAllPosts.map(({ id, type, title }) => {
+      return {
+        value: id,
+        label: `${type}: ${title}`
+      };
+    });
+
+    setDomains(domainList);
     setLoaded(true);
-  }, [isLoaded]);
+  }, [queryLoading]);
 
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
@@ -49,6 +77,21 @@ const PostForm = (props) => {
           </Field>
         </FieldRow>
         <FieldRow>
+          <DynamicField
+            md={8}
+            precondition={post.type === POST_TYPES.PAGE.TITLE}
+            dependency={post.type}>
+            <Label>Domain</Label>
+            <Select
+              name={'domainId'}
+              items={domains}
+              value={post.domainId}
+              onChange={handleText}
+              placeholder={'Select page domain'}
+            />
+          </DynamicField>
+        </FieldRow>
+        <FieldRow>
           <Field>
             <Label>Content:</Label>
             <LongTextArea
@@ -69,7 +112,18 @@ const PostForm = (props) => {
               onChange={handleText}
             />
           </Field>
-          <DatePublishedField post={post} handleDate={handleDate} />
+          <DynamicField
+            md={6}
+            precondition={post.status === POST_STATUS.PUBLISHED}
+            dependency={post.status}>
+            <Label>Date Published:</Label>
+            <DatePicker
+              name={'datePublished'}
+              date={post.datePublished}
+              onConfirm={handleDate}
+              placeholderText={'Select the publish date...'}
+            />
+          </DynamicField>
         </FieldRow>
         <FieldRow>
           <Field>
@@ -94,32 +148,6 @@ const PostForm = (props) => {
           </Field>
         </FieldRow>
       </Form>
-    </Fader>
-  );
-};
-
-const DatePublishedField = ({ post, handleDate }) => {
-  const [isVisible, setVisibility] = useState(true);
-
-  useEffect(() => {
-    setVisibility(post.status === POST_STATUS.PUBLISHED);
-  }, [post.status]);
-
-  return (
-    <Fader
-      determinant={isVisible}
-      duration={400}
-      hollow={true}
-      style={{display: isVisible ? 'block' : 'none'}}>
-      <Field md={6}>
-        <Label>Date Published:</Label>
-        <DatePicker
-          name={'datePublished'}
-          date={post.datePublished}
-          onConfirm={handleDate}
-          placeholderText={'Select the publish date...'}
-        />
-      </Field>
     </Fader>
   );
 };

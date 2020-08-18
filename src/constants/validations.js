@@ -1,7 +1,6 @@
 const { alert } = require('components/alert.js');
 
-const { limits } = require('./settings');
-const { POST_STATUS } = require('./strings');
+const { POST_STATUS, POST_TYPES } = require('./strings');
 
 /**
  * Validation of post submission or update.
@@ -10,11 +9,16 @@ const { POST_STATUS } = require('./strings');
  */
 exports.isValidPost = (post) => {
   const isPublish = post.status === POST_STATUS.PUBLISHED;
+  const isPage = post.type === POST_TYPES.PAGE.TITLE;
+  const isReverie = post.type === POST_TYPES.REVERIE.TITLE;
 
   if (!ifExists(post.title, 'Enter the post title.')) return false;
   if (!ifExists(post.type, "Select the post's type.")) return false;
-  // if (!isValidImage(post.image, 'post', { mustExist: isPublish }))
-  //   return false;
+  if (!isValidImage(post.image, 'post', { mustExist: isReverie })) return false;
+
+  if (isPage) {
+    if (!ifExists(post.domainId, "Select this page's domain post.")) return false;
+  }
 
   if (isPublish) {
     if (!ifExists(post.content, 'Write out the content of this post.'))
@@ -56,7 +60,7 @@ const isValidImage = (file, entity, options = {}) => {
 const isUnderFileSizeLimit = (file, options = {}) => {
   if (!file) return true;
 
-  const { reference = 'The file', limit = limits.image } = options;
+  const { reference = 'The file', limit = 2 } = options;
   const size = Buffer.from(file.substring(file.indexOf(',') + 1)).length;
   if (
     ifTrue(

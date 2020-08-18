@@ -188,7 +188,7 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
             let [value, { type, imageOptions = {} }] = field;
 
             switch (type) {
-              case 'image':
+              case TYPE.IMAGE:
                 value = (
                   <CloudinaryImage
                     src={value}
@@ -244,9 +244,9 @@ const MobileView = ({ field }) => {
   if (hideOnMobile) return null;
 
   switch (type) {
-    case 'button':
+    case TYPE.BUTTON:
       return null;
-    case 'image':
+    case TYPE.IMAGE:
       return (
         <CloudinaryImage
           src={value}
@@ -254,7 +254,7 @@ const MobileView = ({ field }) => {
           lazy={imageOptions.lazy}
         />
       );
-    case 'index':
+    case TYPE.INDEX:
       return <div className={css['tabler-item-index']}>{value}</div>;
     default:
       return (
@@ -285,5 +285,11 @@ const CrudButtons = memo(({ fields }) => {
     </div>
   );
 });
+
+export const TYPE = {
+  BUTTON: 'button',
+  IMAGE: 'image',
+  INDEX: 'index'
+};
 
 export default Tabler;

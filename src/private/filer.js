@@ -1,6 +1,7 @@
 const cloudinary = require('cloudinary').v2;
 const { zString } = require('zavid-modules');
 
+const { debug } = require('./api/error');
 const controller = require('./api/resolvers');
 const knex = require('./singleton/knex').getKnex();
 
@@ -17,14 +18,14 @@ cloudinary.config({
  * @param {object} post - The post object.
  * @param {object} [options] - Upload options.
  * @param {boolean} [options.imageHasChanged] - Indicates if images has changed.
- * @param {boolean} [options.shouldIncrement] - Whether ID should be incremented in filename generation.
+ * @param {boolean} [options.isUpdateOperation] - Specifies if operation is update.
  * @returns {Promise} Resolves when function finishes.
  */
-exports.uploadImage = (post, options) => {
-  const { imageHasChanged = true, shouldIncrement = true } = options;
+exports.uploadImage = (post, options = {}) => {
+  const { imageHasChanged = true, isUpdateOperation = true } = options;
   return new Promise((resolve, reject) => {
     Promise.resolve()
-      .then(() => generateSlugAndFilename(post, shouldIncrement))
+      .then(() => generateSlugAndFilename(post, isUpdateOperation))
       .then(({ directory, filename, slug }) => {
         post.slug = slug;
 
@@ -75,36 +76,51 @@ exports.replaceImage = (id, post, imageHasChanged) => {
     .then(() => controller.getSinglePost({ id }))
     .then((post) => this.destroyImage(post.image))
     .then(() =>
-      this.uploadImage(post, { imageHasChanged, shouldIncrement: false })
+      this.uploadImage(post, { imageHasChanged, isUpdateOperation: false })
     )
-    .catch(console.error);
+    .catch(debug);
 };
 
 /**
  * Construct slug and filenames.
  * @param {object} post - The post details.
- * @param {boolean} shouldIncrement - Whether the ID should be incremented in filename generation.
+ * @param {boolean} isUpdateOperation - Specifies if operation is update.
  * @returns {Promise} Represents the directory, slug and filename for the post.
  */
-const generateSlugAndFilename = (post, shouldIncrement) => {
-  return Promise.resolve()
-    .then(() => {
-      return knex('posts')
-        .count('id', { as: 'count' })
-        .where('type', post.type);
-    })
-    .then(([res]) => {
-      const number = (shouldIncrement ? res.count + 1 : res.count)
-        .toString()
-        .padStart(3, '0');
-      const slug = zString.constructCleanSlug(post.title);
-      const filename = `${number}-${slug}`;
+const generateSlugAndFilename = (post, isUpdateOperation) => {
+  const isPage = post.type === POST_TYPES.PAGE.TITLE;
 
-      const directory = Object.values(POST_TYPES).find(
-        (POST) => POST.TITLE === post.type
-      ).DIRECTORY;
+  if (isPage) {
+    return Promise.resolve()
+      .then(() => controller.getSinglePost({ id: post.domainId }))
+      .then((postDomain) => {
+        const slug = `${postDomain.slug}/${zString.constructCleanSlug(post.title)}`;
+        const filename = zString.constructCleanSlug(`${postDomain.title} ${post.title}`);
+        const directory = POST_TYPES.PAGE.DIRECTORY;
 
-      return { directory, filename, slug };
-    })
-    .catch(console.error);
+        return { directory, filename, slug };
+      })
+      .catch(debug);
+  } else {
+    return Promise.resolve()
+      .then(() => {
+        return knex('posts')
+          .count('id', { as: 'count' })
+          .where('type', post.type);
+      })
+      .then(([{ count }]) => {
+        const number = (isUpdateOperation ? count + 1 : count)
+          .toString()
+          .padStart(3, '0');
+        const directory = Object.values(POST_TYPES).find(
+          (POST) => post.type === POST.TITLE
+        ).DIRECTORY;
+        const title = zString.constructCleanSlug(post.title);
+        const slug = `${directory}/${title}`;
+        const filename = `${number}-${title}`;
+
+        return { directory, filename, slug };
+      })
+      .catch(debug);
+  }
 };

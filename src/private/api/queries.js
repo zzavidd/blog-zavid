@@ -18,6 +18,7 @@ exports.GET_POSTS_QUERY = gql`
       status
       image
       datePublished
+      slug
     }
   }
 `;

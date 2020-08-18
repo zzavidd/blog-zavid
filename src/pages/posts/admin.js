@@ -7,7 +7,7 @@ import { AdminButton, InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
-import Tabler from 'components/tabler';
+import Tabler, { TYPE } from 'components/tabler';
 import { GET_POSTS_QUERY, DELETE_POST_QUERY } from 'private/api/queries';
 
 const PostsAdmin = () => {
@@ -24,11 +24,12 @@ const PostsAdmin = () => {
     networkStatus
   } = useQuery(GET_POSTS_QUERY, {
     variables: {
-      limit: 10,
+      // limit: 10,
       sort: {
         field: 'id',
         order: 'DESC'
-      }
+      },
+      // type: 'Reverie'
     },
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true
@@ -75,7 +76,7 @@ const PostsAdmin = () => {
           ]}
           items={posts.map((post, key) => {
             return [
-              [key + 1, { type: 'index' }],
+              [key + 1, { type: TYPE.INDEX }],
               [post.title, { icon: 'heading' }],
               [post.type, { icon: 'heading' }],
               [
@@ -83,8 +84,9 @@ const PostsAdmin = () => {
                 { icon: 'heading' }
               ],
               [post.status, { icon: 'heading' }],
-              [post.image, { type: 'image' }],
-              [<EditButton id={post.id} key={key} />, { type: 'button' }],
+              [post.image, { type: TYPE.IMAGE }],
+              [<LinkButton post={post} key={key} />, { type: TYPE.BUTTON }],
+              [<EditButton id={post.id} key={key} />, { type: TYPE.BUTTON }],
               [
                 <DeleteButton
                   post={post}
@@ -92,11 +94,11 @@ const PostsAdmin = () => {
                   setDeleteModalVisibility={setDeleteModalVisibility}
                   setSelectedPost={setSelectedPost}
                 />,
-                { type: 'button' }
+                { type: TYPE.BUTTON }
               ]
             ];
           })}
-          distribution={'6% 1fr 10% 1fr 10% 8% 4% 4%'}
+          distribution={'6% 1fr 10% 1fr 10% 8% 4% 4% 4%'}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>Add New Post</AdminButton>
@@ -111,6 +113,12 @@ const PostsAdmin = () => {
       />
     </>
   );
+};
+
+const LinkButton = ({ post }) => {
+  if (post.slug === null) return null;
+  const navigateToLink = () => (location.href = `/${post.slug}`);
+  return <InvisibleButton onClick={navigateToLink}><Icon name={'paper-plane'} /></InvisibleButton>;
 };
 
 const EditButton = ({ id }) => {
