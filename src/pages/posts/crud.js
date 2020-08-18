@@ -20,6 +20,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
     image: '',
     status: POST_STATUS.DRAFT,
     datePublished: null,
+    domainId: '',
     imageHasChanged: false
   });
   const [isLoaded, setLoaded] = useState(true);
@@ -83,6 +84,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
       image,
       status,
       datePublished,
+      domainId,
       imageHasChanged
     } = statePost;
 
@@ -99,7 +101,8 @@ const PostCrud = ({ post: currentPost, operation }) => {
       excerpt: excerpt.trim(),
       image,
       status,
-      datePublished: date
+      datePublished: date,
+      domainId: parseInt(domainId)
     };
 
     const payload = { post, isPublish };

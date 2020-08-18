@@ -13,6 +13,7 @@ type Post {
   excerpt: String
   status: PostStatus
   createTime: String
+  domainId: Int
 }
 
 type Query {
@@ -65,13 +66,14 @@ enum Order {
 
 input PostInput {
   title: String!
-  type: PostType
+  type: PostType!
   datePublished: String
   content: String
   image: String
   slug: String
   excerpt: String
   status: PostStatus
+  domainId: Int
 }
 
 input PostOrder {
