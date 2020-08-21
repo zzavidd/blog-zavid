@@ -9,6 +9,8 @@ module.exports = (hook, state) => {
     hook(Object.assign({}, state, { [name]: value }));
   };
 
+  module.handleSelection = module.handleText;
+
   /**
    * Handles the selection of dates.
    * @param {string} date - The date value.

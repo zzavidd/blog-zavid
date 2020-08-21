@@ -1,20 +1,39 @@
-import { useQuery, useMutation, NetworkStatus } from '@apollo/client';
-import React, { useState, useEffect } from 'react';
+import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { zText } from 'zavid-modules';
 
 import { alert } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
+import { Field, FieldRow, Select } from 'components/form';
 import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
-import { GET_POSTS_QUERY, DELETE_POST_QUERY } from 'private/api/queries';
+import { POST_TYPES } from 'constants/strings';
+import { DELETE_POST_QUERY, GET_POSTS_QUERY } from 'private/api/queries';
+import { updatePostFilterSettings } from 'reducers/actions';
+import css from 'styles/pages/Posts.module.scss';
+
+const sortOptions = [
+  { value: 'title', label: 'Sort by Title' },
+  { value: 'type', label: 'Sort by Type' },
+  { value: 'status', label: 'Sort by Status' }
+];
 
 const PostsAdmin = () => {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({});
   const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
+
+  const dispatch = useDispatch();
+  const options = useSelector(({ postFilterOptions }) => postFilterOptions);
+
+  const handleOptionSelection = (event) => {
+    const { name, value } = event.target;
+    dispatch(updatePostFilterSettings({ [name]: value }));
+  };
 
   const {
     data,
@@ -24,12 +43,12 @@ const PostsAdmin = () => {
     networkStatus
   } = useQuery(GET_POSTS_QUERY, {
     variables: {
-      // limit: 10,
+      limit: parseInt(options.limit),
       sort: {
-        field: 'id',
-        order: 'DESC'
+        field: options.field || null,
+        order: options.order
       },
-      // type: 'Reverie'
+      type: options.type || null
     },
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true
@@ -40,13 +59,11 @@ const PostsAdmin = () => {
     if (networkStatus === NetworkStatus.refetch) return;
     if (queryLoading) return;
     if (queryError) alert.error(queryError);
-    setPosts(data.getAllPosts);
-    setLoaded(true);
-  }, [queryLoading, networkStatus]);
 
-  const navigateToCreateForm = () => {
-    location.href = '/admin/posts/add';
-  };
+    const { getAllPosts: postList = [] } = data;
+    setPosts(postList);
+    setLoaded(true);
+  }, [queryLoading, options, networkStatus]);
 
   const deletePost = () => {
     const { id, title } = selectedPost;
@@ -64,7 +81,9 @@ const PostsAdmin = () => {
       <Spacer>
         <Tabler
           heading={'List of Posts'}
-          itemsLoaded={isLoaded}
+          itemsLoaded={
+            isLoaded && !queryLoading && networkStatus !== NetworkStatus.refetch
+          }
           emptyMessage={'No posts found.'}
           columns={[
             ['#', { centerAlign: true }],
@@ -100,9 +119,10 @@ const PostsAdmin = () => {
           })}
           distribution={'6% 1fr 10% 1fr 10% 8% 4% 4% 4%'}
         />
-        <Toolbar>
-          <AdminButton onClick={navigateToCreateForm}>Add New Post</AdminButton>
-        </Toolbar>
+        <BottomToolbar
+          options={options}
+          handleOptionSelection={handleOptionSelection}
+        />
       </Spacer>
       <ConfirmModal
         visible={deleteModalVisible}
@@ -115,10 +135,71 @@ const PostsAdmin = () => {
   );
 };
 
+const BottomToolbar = ({ options, handleOptionSelection }) => {
+  const navigateToCreateForm = () => {
+    location.href = '/admin/posts/add';
+  };
+  return (
+    <Toolbar>
+      <FieldRow>
+        <Field xs={5}>
+          <AdminButton onClick={navigateToCreateForm}>Add New Post</AdminButton>
+        </Field>
+        <Field xs={2}>
+          <FilterDropdown
+            name={'field'}
+            items={sortOptions}
+            value={options.field}
+            onChange={handleOptionSelection}
+            placeholder={'Sort by...'}
+            isPlaceholderSelectable={true}
+          />
+        </Field>
+        <Field xs={1}>
+          <FilterDropdown
+            name={'order'}
+            items={['ASC', 'DESC']}
+            value={options.order}
+            onChange={handleOptionSelection}
+          />
+        </Field>
+        <Field xs={2}>
+          <FilterDropdown
+            name={'type'}
+            items={Object.values(POST_TYPES).map((POST) => POST.TITLE)}
+            value={options.type}
+            onChange={handleOptionSelection}
+            placeholder={'Filter by type...'}
+            isPlaceholderSelectable={true}
+          />
+        </Field>
+        <Field xs={1}>
+          <FilterDropdown
+            name={'limit'}
+            items={[10, 20, 50, 100]}
+            value={options.limit}
+            onChange={handleOptionSelection}
+            placeholder={'Show All'}
+            isPlaceholderSelectable={true}
+          />
+        </Field>
+      </FieldRow>
+    </Toolbar>
+  );
+};
+
+const FilterDropdown = (props) => {
+  return <Select {...props} className={css['post-filter']} isRound={true} />;
+};
+
 const LinkButton = ({ post }) => {
   if (post.slug === null) return null;
   const navigateToLink = () => (location.href = `/${post.slug}`);
-  return <InvisibleButton onClick={navigateToLink}><Icon name={'paper-plane'} /></InvisibleButton>;
+  return (
+    <InvisibleButton onClick={navigateToLink}>
+      <Icon name={'paper-plane'} />
+    </InvisibleButton>
+  );
 };
 
 const EditButton = ({ id }) => {

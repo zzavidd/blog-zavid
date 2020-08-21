@@ -10,7 +10,7 @@ import css from 'styles/Partials.module.scss';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const theme = useSelector(({ theme }) => theme || 'light');
+  const theme = useSelector(({ theme }) => theme);
 
   const isLightTheme = theme === 'light';
 
