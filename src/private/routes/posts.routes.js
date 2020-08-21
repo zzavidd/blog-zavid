@@ -25,15 +25,13 @@ router.get('/epistles', function (req, res) {
 
 router.get('/admin/posts', function (req, res) {
   return server.render(req, res, '/posts/admin', {
-    title: `List of Posts`,
-    hideSidebar: true
+    title: `List of Posts`
   });
 });
 
 router.get('/admin/posts/add', function (req, res) {
   return server.render(req, res, '/posts/crud', {
     title: `Add New Post`,
-    hideSidebar: true,
     operation: OPERATIONS.CREATE
   });
 });
@@ -43,7 +41,6 @@ router.get('/admin/posts/edit/:id', function (req, res) {
   controller.getSinglePost({ id }).then((post) => {
     return server.render(req, res, '/posts/crud', {
       title: `Edit Post`,
-      hideSidebar: true,
       operation: OPERATIONS.UPDATE,
       post
     });

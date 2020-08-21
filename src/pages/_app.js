@@ -10,7 +10,6 @@ import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import Header from 'partials/header.js';
-import Sidebar from 'partials/sidebar.js';
 import configureStore from 'reducers/store.js';
 
 import 'styles/App.scss';
@@ -45,11 +44,10 @@ export default class ZAVID extends App {
  * @param {object} props.router - The server-side router object.
  * @returns {React.Component} - The full page including the header and footer.
  */
-const ZAVIDApp = ({ Component, pageProps, router }) => {
+const ZAVIDApp = ({ Component, pageProps }) => {
   const [isLoaded, setLoaded] = useState(false);
 
   const theme = useSelector(({ theme }) => theme || 'light');
-  const { hideSidebar = false } = router.query;
 
   useEffect(() => {
     document.body.classList.add(`body-${theme}`);
@@ -59,17 +57,11 @@ const ZAVIDApp = ({ Component, pageProps, router }) => {
   return (
     <>
       <Header />
-      <div className={hideSidebar ? 'app' : 'app-with-sidebar'}>
+      <div className={'app'}>
         <Component {...pageProps} />
-        <AppSidebar hideSidebar={hideSidebar} />
       </div>
     </>
   );
-};
-
-const AppSidebar = ({ hideSidebar }) => {
-  if (hideSidebar) return null;
-  return <Sidebar />;
 };
 
 ZAVID.getInitialProps = async ({ Component, ctx }) => {
