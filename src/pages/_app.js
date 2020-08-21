@@ -1,5 +1,4 @@
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
@@ -20,15 +19,6 @@ library.add(fab, far, fas);
 
 const { store, persistor } = configureStore();
 const client = new ApolloClient({
-  // link: onError(({ graphQLErrors = [], networkError }) => {
-  //   if (graphQLErrors)
-  //     graphQLErrors.forEach(({ message, locations, path }) =>
-  //       console.error(
-  //         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-  //       )
-  //     );
-  //   if (networkError) console.error(`[Network error]: ${networkError}`);
-  // }),
   uri: '/api',
   cache: new InMemoryCache()
 });

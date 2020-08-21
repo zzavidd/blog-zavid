@@ -1,18 +1,27 @@
 import { combineReducers } from 'redux';
 
-const defaultTheme = 'light';
-
-const themeReducer = (state = defaultTheme, action) => {
-  switch (action.type) {
+const themeReducer = (state = 'light', { type, payload }) => {
+  switch (type) {
     case 'SET_THEME':
-      return action.payload;
-    case 'TOGGLE_THEME':
-      return state === 'light' ? 'dark' : 'light';
+      return payload || state;
+    default:
+      return state;
+  }
+};
+
+const postReducer = (
+  state = { limit: 20, field: 'id', order: 'DESC', type: null },
+  { type, payload }
+) => {
+  switch (type) {
+    case 'UPDATE_POST_FILTER_SETTINGS':
+      return Object.assign({}, state, payload);
     default:
       return state;
   }
 };
 
 export default combineReducers({
-  theme: themeReducer
+  theme: themeReducer,
+  postFilterOptions: postReducer
 });

@@ -27,6 +27,8 @@ class QueryBuilder {
    * @returns {QueryBuilder} The QueryBuilder object.
    */
   withCondition(field, value) {
+    if (isNull(field)) return this;
+
     if (field && value) this.query.where(field, value);
     return this;
   }
@@ -39,10 +41,18 @@ class QueryBuilder {
    * @returns {QueryBuilder} The QueryBuilder object.
    */
   withOrder({ field, order } = {}) {
+    if (isNull(field)) return this;
+    if (isNull(order)) order = 'ASC';
+
+    const cases = [
+      `CAST((REGEXP_REPLACE(${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
+      `REGEXP_REPLACE(${field}, "[^a-z0-9]+", '') ${order}`
+    ];
+
     if (order === 'RANDOM') {
       this.query.orderByRaw('RAND()');
     } else if (field) {
-      this.query.orderBy(field, order);
+      this.query.orderByRaw(cases.join(', '));
     }
     return this;
   }
@@ -53,6 +63,7 @@ class QueryBuilder {
    * @returns {QueryBuilder} The QueryBuilder object.
    */
   withLimit(limit) {
+    if (isNull(limit)) return this;
     if (limit) this.query.limit(limit);
     return this;
   }
@@ -65,5 +76,9 @@ class QueryBuilder {
     return this.query;
   }
 }
+
+const isNull = (...values) => {
+  return values.some((value) => value === null);
+};
 
 exports.QueryBuilder = QueryBuilder;
