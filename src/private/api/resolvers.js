@@ -71,8 +71,8 @@ exports.createPost = ({ post, isPublish }) => {
 exports.updatePost = ({ id, post, isPublish, imageHasChanged }) => {
   return Promise.resolve()
     .then(() => filer.replaceImage(id, post, imageHasChanged))
-    .then((post) => {
-      return knex('posts').update(post).where('id', id);
+    .then((updatedPost) => {
+      return knex('posts').update(updatedPost).where('id', id);
     })
     .then(() => this.getSinglePost({ id }))
     .catch(debug);

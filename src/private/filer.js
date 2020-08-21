@@ -72,6 +72,7 @@ exports.destroyImage = (image) => {
 };
 
 exports.replaceImage = (id, post, imageHasChanged) => {
+  if (!imageHasChanged) return Promise.resolve(post);
   return Promise.resolve()
     .then(() => controller.getSinglePost({ id }))
     .then((post) => this.destroyImage(post.image))
