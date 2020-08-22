@@ -3,8 +3,10 @@ const router = express.Router();
 
 const { siteTitle } = require('../../constants/settings');
 const { OPERATIONS } = require('../../constants/strings');
+const { PostQueryBuilder } = require('../api/builder');
 const controller = require('../api/resolvers');
 const server = require('../singleton/server').getServer();
+const { renderErrorPage } = require('../error');
 
 router.get('/reveries', function (req, res) {
   return server.render(req, res, '/posts/reveries', {
@@ -13,6 +15,29 @@ router.get('/reveries', function (req, res) {
     url: '/reveries'
   });
 });
+
+router.get(
+  '/reveries/:slug',
+  function (req, res, next) {
+    const { slug } = req.params;
+    Promise.resolve()
+      .then(() => {
+        return new PostQueryBuilder().whereSlug(slug).build();
+      })
+      .then((post) => {
+        console.log(post);
+        return server.render(req, res, '/posts/single', {
+          title: `${post.title} | ${siteTitle}`,
+          description: post.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)
+          ogUrl: `/reveries/${post.slug}`,
+          cardImage: post.image,
+          post
+        });
+      })
+      .catch(next);
+  },
+  renderErrorPage
+);
 
 router.get('/epistles', function (req, res) {
   return server.render(req, res, '/posts/epistles', {

@@ -1,7 +1,7 @@
 const cloudinary = require('cloudinary').v2;
 const { zString } = require('zavid-modules');
 
-const { debug } = require('./api/error');
+const { debug } = require('./error');
 const controller = require('./api/resolvers');
 const knex = require('./singleton/knex').getKnex();
 

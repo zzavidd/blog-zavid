@@ -1,22 +1,31 @@
-const Knex = require('knex');
+const knex = require('../singleton/knex').getKnex();
 
-/** Builds a Knex query with conditions. */
-class QueryBuilder {
+/** Builds a post query with conditions. */
+class PostQueryBuilder {
   /**
    * Query constructor.
-   * @param {Knex} query - The base Knex query.
    */
-  constructor(query) {
-    this.query = query;
+  constructor() {
+    this.query = knex.select().from('posts');
   }
 
   /**
-   * Checks for identifier.
+   * Shorthand for ID condition.
    * @param {number} id - The ID required.
-   * @returns {QueryBuilder} The QueryBuilder object.
+   * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
-  withId(id) {
+  whereId(id) {
     this.query.where('id', id);
+    return this;
+  }
+
+  /**
+   * Shorthand for slug condition.
+   * @param {string} slug - The slug to match.
+   * @returns {PostQueryBuilder} The PostQueryBuilder object.
+   */
+  whereSlug(slug) {
+    this.query.where('slug', slug);
     return this;
   }
 
@@ -24,7 +33,7 @@ class QueryBuilder {
    * Applies a WHERE condition using a field and value.
    * @param {string} [field] - The conditional field.
    * @param {any} [value] - The expected value.
-   * @returns {QueryBuilder} The QueryBuilder object.
+   * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
   withCondition(field, value) {
     if (isNull(field)) return this;
@@ -38,7 +47,7 @@ class QueryBuilder {
    * @param {object} [sort] - The sort details.
    * @param {string} [sort.field] - The field to sort on.
    * @param {string} [sort.order] - The sort order. Either 'ASC', 'DESC' or 'RANDOM'.
-   * @returns {QueryBuilder} The QueryBuilder object.
+   * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
   withOrder({ field, order } = {}) {
     if (isNull(field)) return this;
@@ -60,7 +69,7 @@ class QueryBuilder {
   /**
    * Limits the number of results.
    * @param {number} [limit] - The number of results to be returned.
-   * @returns {QueryBuilder} The QueryBuilder object.
+   * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
   withLimit(limit) {
     if (isNull(limit)) return this;
@@ -70,7 +79,7 @@ class QueryBuilder {
 
   /**
    * Return the built query.
-   * @returns {Knex} The build Knex query.
+   * @returns {knex} The build Knex query.
    */
   build() {
     return this.query;
@@ -81,4 +90,4 @@ const isNull = (...values) => {
   return values.some((value) => value === null);
 };
 
-exports.QueryBuilder = QueryBuilder;
+exports.PostQueryBuilder = PostQueryBuilder;

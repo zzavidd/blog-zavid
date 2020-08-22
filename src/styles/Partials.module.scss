@@ -1,8 +1,8 @@
 @import 'App';
 
-/************
-** HEADER
-************/
+////////////////////////////////
+/// HEADER
+////////////////////////////////
 
 %nav {
   transition-duration: 0.8s;
@@ -39,9 +39,9 @@
   }
 }
 
-/************
-** SIDEBAR
-************/
+////////////////////////////////
+/// SIDEBAR
+////////////////////////////////
 
 @mixin sidebarTemplate($theme) {
   $imgBorderColor: black;
@@ -64,4 +64,24 @@
   &-dark {
     @include sidebarTemplate('dark');
   }
+}
+
+////////////////////////////////
+/// ERROR
+////////////////////////////////
+
+.error-page {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.error-message-container {
+  text-align: center;
+}
+
+.error-message {
+  @include responsive(font-size, 1.2em);
+  padding-bottom: 1em;
 }

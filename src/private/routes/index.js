@@ -6,10 +6,6 @@ const server = require('../singleton/server').getServer();
 
 app.use('/', postRoutes);
 
-/**
- * Home page
- * @route {GET} /home
- */
 app.get(['/', '/home'], function (req, res) {
   return server.render(req, res, '/home', {
     title: siteTitle,
