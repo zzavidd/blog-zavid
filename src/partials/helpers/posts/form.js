@@ -1,7 +1,6 @@
-import { useQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
 
-import { alert } from 'components/alert';
+import React from 'react';
+
 import {
   Form,
   FieldRow,
@@ -17,40 +16,10 @@ import { FileSelector, ASPECT_RATIO } from 'components/form/fileselector';
 import DatePicker from 'components/form/picker/datepicker';
 import { Fader } from 'components/transitioner';
 import { POST_STATUS, POST_TYPES } from 'constants/strings';
-import { GET_POSTS_QUERY } from 'private/api/queries';
 
 const PostForm = (props) => {
-  const { post, handlers, operation } = props;
+  const { post, domains, handlers, operation, isLoaded } = props;
   const { handleText, handleDate, handleFile } = handlers;
-  const [isLoaded, setLoaded] = useState(false);
-  const [domains, setDomains] = useState([]);
-
-  const { data, error: queryError, loading: queryLoading } = useQuery(
-    GET_POSTS_QUERY,
-    {
-      variables: {
-        sort: {
-          field: 'type',
-          order: 'DESC'
-        }
-      }
-    }
-  );
-
-  useEffect(() => {
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
-
-    const domainList = data.getAllPosts.map(({ id, type, title }) => {
-      return {
-        value: id,
-        label: `${type}: ${title}`
-      };
-    });
-
-    setDomains(domainList);
-    setLoaded(true);
-  }, [queryLoading]);
 
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>

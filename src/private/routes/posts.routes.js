@@ -6,7 +6,7 @@ const { OPERATIONS } = require('../../constants/strings');
 const { PostQueryBuilder } = require('../api/builder');
 const controller = require('../api/resolvers');
 const server = require('../singleton/server').getServer();
-const { renderErrorPage } = require('../error');
+const { renderErrorPage, ERRORS } = require('../error');
 
 router.get('/reveries', function (req, res) {
   return server.render(req, res, '/posts/reveries', {
@@ -21,11 +21,35 @@ router.get(
   function (req, res, next) {
     const { slug } = req.params;
     Promise.resolve()
-      .then(() => {
-        return new PostQueryBuilder().whereSlug(slug).build();
+      .then(() => new PostQueryBuilder().whereSlug(slug).build())
+      .then(([post] = []) => {
+        if (!post) return next(ERRORS.NO_REVERIE);
+        return server.render(req, res, '/posts/single', {
+          title: `${post.title} | ${siteTitle}`,
+          description: post.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)
+          ogUrl: `/reveries/${post.slug}`,
+          cardImage: post.image,
+          post
+        });
       })
-      .then((post) => {
-        console.log(post);
+      .catch(next);
+  },
+  renderErrorPage
+);
+
+router.get(
+  '/reveries/:domain/:slug',
+  function (req, res, next) {
+    const { slug } = req.params;
+    Promise.resolve()
+      .then(() => {
+        return new PostQueryBuilder()
+          .whereDomainType('Reverie')
+          .whereSlug(slug)
+          .build();
+      })
+      .then(([post] = []) => {
+        if (!post) return next(ERRORS.NO_REVERIE);
         return server.render(req, res, '/posts/single', {
           title: `${post.title} | ${siteTitle}`,
           description: post.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)

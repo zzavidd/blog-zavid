@@ -16,7 +16,7 @@ exports.getAllPosts = ({ limit, sort, type }) => {
   return Promise.resolve()
     .then(() => {
       return new PostQueryBuilder()
-        .withCondition('type', type)
+        .whereType(type)
         .withOrder(sort)
         .withLimit(limit)
         .build();

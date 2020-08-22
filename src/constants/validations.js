@@ -1,3 +1,4 @@
+const Post = require('classes/post');
 const { alert } = require('components/alert.js');
 
 const { POST_STATUS, POST_TYPES } = require('./strings');
@@ -9,14 +10,13 @@ const { POST_STATUS, POST_TYPES } = require('./strings');
  */
 exports.isValidPost = (post) => {
   const isPublish = post.status === POST_STATUS.PUBLISHED;
-  const isPage = post.type === POST_TYPES.PAGE.TITLE;
   const isReverie = post.type === POST_TYPES.REVERIE.TITLE;
 
   if (!ifExists(post.title, 'Enter the post title.')) return false;
   if (!ifExists(post.type, "Select the post's type.")) return false;
   if (!isValidImage(post.image, 'post', { mustExist: isReverie })) return false;
 
-  if (isPage) {
+  if (Post.default.isPage(post.type)) {
     if (!ifExists(post.domainId, "Select this page's domain post.")) return false;
   }
 
