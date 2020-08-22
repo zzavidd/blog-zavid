@@ -1,4 +1,4 @@
-const { PostQueryBuilder } = require('../../classes/builders/post-query');
+const { PostQueryBuilder } = require('../../classes');
 const { debug } = require('../error');
 
 const filer = require('../filer');

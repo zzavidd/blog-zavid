@@ -74,4 +74,4 @@ class PostQueryBuilder {
   }
 }
 
-exports.PostQueryBuilder = PostQueryBuilder;
+module.exports = PostQueryBuilder;
