@@ -1,44 +1,35 @@
+const { zLogic } = require('zavid-modules');
+
 const knex = require('../singleton/knex').getKnex();
+const { isFalsy } = zLogic;
 
 /** Builds a post query with conditions. */
 class PostQueryBuilder {
-  /**
-   * Query constructor.
-   */
   constructor() {
     this.query = knex.select().from('posts');
   }
 
-  /**
-   * Shorthand for ID condition.
-   * @param {number} id - The ID required.
-   * @returns {PostQueryBuilder} The PostQueryBuilder object.
-   */
   whereId(id) {
+    if (isFalsy(id)) return this;
     this.query.where('id', id);
     return this;
   }
 
-  /**
-   * Shorthand for slug condition.
-   * @param {string} slug - The slug to match.
-   * @returns {PostQueryBuilder} The PostQueryBuilder object.
-   */
-  whereSlug(slug) {
-    this.query.where('slug', slug);
+  whereType(type) {
+    if (isFalsy(type)) return this;
+    this.query.where('type', type);
     return this;
   }
 
-  /**
-   * Applies a WHERE condition using a field and value.
-   * @param {string} [field] - The conditional field.
-   * @param {any} [value] - The expected value.
-   * @returns {PostQueryBuilder} The PostQueryBuilder object.
-   */
-  withCondition(field, value) {
-    if (isNull(field)) return this;
+  whereDomainType(type) {
+    if (isFalsy(type)) return this;
+    this.query.where('domainType', type);
+    return this;
+  }
 
-    if (field && value) this.query.where(field, value);
+  whereSlug(slug) {
+    if (isFalsy(slug)) return this;
+    this.query.where('slug', slug);
     return this;
   }
 
@@ -50,17 +41,16 @@ class PostQueryBuilder {
    * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
   withOrder({ field, order } = {}) {
-    if (isNull(field)) return this;
-    if (isNull(order)) order = 'ASC';
-
-    const cases = [
-      `CAST((REGEXP_REPLACE(${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
-      `REGEXP_REPLACE(${field}, "[^a-z0-9]+", '') ${order}`
-    ];
+    if (isFalsy(field)) return this;
+    if (isFalsy(order)) order = 'ASC';
 
     if (order === 'RANDOM') {
       this.query.orderByRaw('RAND()');
     } else if (field) {
+      const cases = [
+        `CAST((REGEXP_REPLACE(${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
+        `REGEXP_REPLACE(${field}, "[^a-z0-9]+", '') ${order}`
+      ];
       this.query.orderByRaw(cases.join(', '));
     }
     return this;
@@ -72,8 +62,8 @@ class PostQueryBuilder {
    * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
   withLimit(limit) {
-    if (isNull(limit)) return this;
-    if (limit) this.query.limit(limit);
+    if (isFalsy(limit)) return this;
+    this.query.limit(limit);
     return this;
   }
 
@@ -85,9 +75,5 @@ class PostQueryBuilder {
     return this.query;
   }
 }
-
-const isNull = (...values) => {
-  return values.some((value) => value === null);
-};
 
 exports.PostQueryBuilder = PostQueryBuilder;

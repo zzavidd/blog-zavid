@@ -1,8 +1,9 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { zText } from 'zavid-modules';
+import { zLogic, zText } from 'zavid-modules';
 
+import Post from 'classes/post';
 import { alert } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Field, FieldRow, Select } from 'components/form';
@@ -10,12 +11,12 @@ import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
-import { POST_TYPES } from 'constants/strings';
 import { DELETE_POST_QUERY, GET_POSTS_QUERY } from 'private/api/queries';
 import { updatePostFilterSettings } from 'reducers/actions';
 import css from 'styles/pages/Posts.module.scss';
 
 const sortOptions = [
+  { value: 'createTime', label: 'Sort by Creation Time' },
   { value: 'title', label: 'Sort by Title' },
   { value: 'type', label: 'Sort by Type' },
   { value: 'status', label: 'Sort by Status' }
@@ -67,7 +68,8 @@ const PostsAdmin = () => {
 
   const deletePost = () => {
     const { id, title } = selectedPost;
-    deletePostMutation({ variables: { id } })
+    Promise.resolve()
+      .then(() => deletePostMutation({ variables: { id } }))
       .then(() => {
         alert.success(`You've deleted ${title}.`);
         setDeleteModalVisibility(false);
@@ -104,7 +106,10 @@ const PostsAdmin = () => {
               ],
               [post.status, { icon: 'heading' }],
               [post.image, { type: TYPE.IMAGE }],
-              [<LinkButton post={post} key={key} />, { type: TYPE.BUTTON }],
+              [
+                <LinkButton post={post} allPosts={posts} key={key} />,
+                { type: TYPE.BUTTON }
+              ],
               [<EditButton id={post.id} key={key} />, { type: TYPE.BUTTON }],
               [
                 <DeleteButton
@@ -151,8 +156,6 @@ const BottomToolbar = ({ options, handleOptionSelection }) => {
             items={sortOptions}
             value={options.field}
             onChange={handleOptionSelection}
-            placeholder={'Sort by...'}
-            isPlaceholderSelectable={true}
           />
         </Field>
         <Field xs={1}>
@@ -166,7 +169,7 @@ const BottomToolbar = ({ options, handleOptionSelection }) => {
         <Field xs={2}>
           <FilterDropdown
             name={'type'}
-            items={Object.values(POST_TYPES).map((POST) => POST.TITLE)}
+            items={Post.types}
             value={options.type}
             onChange={handleOptionSelection}
             placeholder={'Filter by type...'}
@@ -192,9 +195,30 @@ const FilterDropdown = (props) => {
   return <Select {...props} className={css['post-filter']} isRound={true} />;
 };
 
-const LinkButton = ({ post }) => {
-  if (post.slug === null) return null;
-  const navigateToLink = () => (location.href = `/${post.slug}`);
+const LinkButton = ({ post, allPosts }) => {
+  if (zLogic.isFalsy(post.slug)) return null;
+
+  // TODO: Create URL builder
+  const navigateToLink = () => {
+    let url = '';
+    if (Post.isPage(post.type)) {
+      const base = Post.getDirectory(post.domainType);
+      const domainSlug = Post.findFieldFromPosts(
+        allPosts,
+        post.domainId,
+        'id',
+        'slug'
+      );
+      url += !zLogic.isFalsy(base) ? `/${base}` : '';
+      url += !zLogic.isFalsy(domainSlug) ? `/${domainSlug}` : '';
+      url += `/${post.slug}`;
+    } else {
+      const base = Post.getDirectory(post.type);
+      url = `/${base}/${post.slug}`;
+    }
+    location.href = url;
+  };
+
   return (
     <InvisibleButton onClick={navigateToLink}>
       <Icon name={'paper-plane'} />

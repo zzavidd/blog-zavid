@@ -1,14 +1,18 @@
 /* eslint-disable jsdoc/require-returns */
-import { useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import { alert, setAlert } from 'components/alert';
 import hooks from 'constants/hooks';
-import { POST_STATUS, OPERATIONS } from 'constants/strings';
+import { POST_STATUS, OPERATIONS, POST_TYPES } from 'constants/strings';
 import { isValidPost } from 'constants/validations';
 import PostForm from 'partials/helpers/posts/form';
-import { CREATE_POST_QUERY, UPDATE_POST_QUERY } from 'private/api/queries';
+import {
+  GET_POSTS_QUERY,
+  CREATE_POST_QUERY,
+  UPDATE_POST_QUERY
+} from 'private/api/queries';
 
 const PostCrud = ({ post: currentPost, operation }) => {
   const [statePost, setPost] = useState({
@@ -25,7 +29,22 @@ const PostCrud = ({ post: currentPost, operation }) => {
   });
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
+  const [domains, setDomains] = useState([]);
 
+  // Initialise query variables.
+  const { data, error: queryError, loading: queryLoading } = useQuery(
+    GET_POSTS_QUERY,
+    {
+      variables: {
+        sort: {
+          field: 'type',
+          order: 'DESC'
+        }
+      }
+    }
+  );
+
+  // Initialise mutation functions.
   const [createPostMutation, { loading: createLoading }] = useMutation(
     CREATE_POST_QUERY
   );
@@ -33,9 +52,10 @@ const PostCrud = ({ post: currentPost, operation }) => {
     UPDATE_POST_QUERY
   );
 
+  // Determine operation type.
   const isCreateOperation = operation === OPERATIONS.CREATE;
 
-  // Determine if post is being published
+  // Determine if post is being published.
   let isPublish = false;
   if (isCreateOperation) {
     isPublish = statePost.status === POST_STATUS.PUBLISHED;
@@ -45,80 +65,59 @@ const PostCrud = ({ post: currentPost, operation }) => {
       statePost.status === POST_STATUS.PUBLISHED;
   }
 
-  useEffect(() => {
-    if (!isCreateOperation) {
-      // If publishing, set date to right now.
-      const datePublished =
-        currentPost.status === POST_STATUS.PUBLISHED
-          ? currentPost.datePublished
-          : null;
+  /** Populate the form with post details. */
+  const populateForm = () => {
+    if (isCreateOperation) return;
 
-      setPost(
-        Object.assign({}, currentPost, {
-          datePublished,
-          imageHasChanged: false
-        })
-      );
-    }
+    const datePublished =
+      currentPost.status === POST_STATUS.PUBLISHED
+        ? currentPost.datePublished
+        : null;
+
+    setPost(
+      Object.assign({}, currentPost, {
+        datePublished,
+        imageHasChanged: false
+      })
+    );
+  };
+
+  /** Populate the form with post details. */
+  const loadDomains = () => {
+    if (queryLoading) return;
+    if (queryError) alert.error(queryError);
+
+    const domainList = data.getAllPosts.map(({ id, type, title }) => {
+      return {
+        value: id,
+        label: `${type}: ${title}`,
+        type
+      };
+    });
+
+    setDomains(domainList);
+  };
+
+  useEffect(() => {
+    populateForm();
     setLoaded(true);
   }, [isLoaded]);
 
   useEffect(() => {
-    setRequestPending(createLoading);
-  }, [createLoading]);
+    loadDomains();
+  }, [queryLoading]);
+
   useEffect(() => {
-    setRequestPending(updateLoading);
-  }, [updateLoading]);
-
-  /**
-   * Builds the payload to send via the request.
-   * @returns {object} The post to submit.
-   */
-  const buildPost = () => {
-    const {
-      id,
-      title,
-      content,
-      type,
-      excerpt,
-      image,
-      status,
-      datePublished,
-      domainId,
-      imageHasChanged
-    } = statePost;
-
-    // Only have published date if the status is published
-    const date =
-      status === POST_STATUS.PUBLISHED
-        ? zDate.formatISODate(datePublished)
-        : null;
-
-    const post = {
-      title: title.trim(),
-      content: content.trim(),
-      type,
-      excerpt: excerpt.trim(),
-      image,
-      status,
-      datePublished: date,
-      domainId: parseInt(domainId)
-    };
-
-    const payload = { post, isPublish };
-    if (!isCreateOperation) {
-      Object.assign(payload, { id, imageHasChanged });
-    }
-
-    return payload;
-  };
+    setRequestPending(createLoading || updateLoading);
+  }, [createLoading, updateLoading]);
 
   /** Create new post on server. */
   const submitPost = () => {
     if (!isValidPost(statePost)) return false;
 
-    const variables = buildPost();
-    createPostMutation({ variables })
+    const variables = buildPayload(statePost, domains, isPublish, true);
+    Promise.resolve()
+      .then(() => createPostMutation({ variables }))
       .then(() => {
         setAlert({
           type: 'success',
@@ -133,8 +132,9 @@ const PostCrud = ({ post: currentPost, operation }) => {
   const updatePost = () => {
     if (!isValidPost(statePost)) return false;
 
-    const variables = buildPost();
-    updatePostMutation({ variables })
+    const variables = buildPayload(statePost, domains, isPublish, false);
+    Promise.resolve()
+      .then(() => updatePostMutation({ variables }))
       .then(() => {
         setAlert({
           type: 'success',
@@ -145,14 +145,11 @@ const PostCrud = ({ post: currentPost, operation }) => {
       .catch(alert.error);
   };
 
-  /** Return to the admin page. */
-  const returnToAdminPosts = () => {
-    location.href = '/admin/posts';
-  };
-
   return (
     <PostForm
+      isLoaded={isLoaded}
       post={statePost}
+      domains={domains}
       handlers={hooks(setPost, statePost)}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
@@ -160,6 +157,61 @@ const PostCrud = ({ post: currentPost, operation }) => {
       isRequestPending={isRequestPending}
     />
   );
+};
+
+/**
+ * Builds the payload to send via the request.
+ * @param {object} statePost The post from state.
+ * @param {object[]} domains The list of domains for a page.
+ * @param {boolean} isPublish Indicates if operation is publish.
+ * @param {boolean} isCreateOperation Indicates if operation is create or update.
+ * @returns {object} The post to submit.
+ */
+const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
+  const {
+    id,
+    title,
+    content,
+    type,
+    excerpt,
+    image,
+    status,
+    datePublished,
+    domainId,
+    imageHasChanged
+  } = statePost;
+
+  const post = {
+    title: title.trim(),
+    content: content.trim(),
+    type,
+    excerpt: excerpt.trim(),
+    image,
+    status
+  };
+
+  if (status === POST_STATUS.PUBLISHED) {
+    post.datePublished = zDate.formatISODate(datePublished);
+  }
+
+  if (type === POST_TYPES.PAGE.TITLE) {
+    const id = parseInt(domainId);
+    const domainType = domains.find((domain) => domain.value === id).type;
+    post.domainId = id;
+    post.domainType = domainType;
+  }
+
+  const payload = { post, isPublish };
+  if (!isCreateOperation) {
+    Object.assign(payload, { id, imageHasChanged });
+  }
+
+  return payload;
+};
+
+/** Return to the admin page. */
+const returnToAdminPosts = () => {
+  location.href = '/admin/posts';
 };
 
 PostCrud.getInitialProps = async ({ query }) => {

@@ -90,15 +90,15 @@ exports.replaceImage = (id, post, imageHasChanged) => {
  */
 const generateSlugAndFilename = (post, isUpdateOperation) => {
   const isPage = post.type === POST_TYPES.PAGE.TITLE;
+  const title = zString.constructCleanSlug(post.title);
 
   if (isPage) {
     return Promise.resolve()
       .then(() => controller.getSinglePost({ id: post.domainId }))
       .then((postDomain) => {
-        const slug = `${postDomain.slug}/${zString.constructCleanSlug(post.title)}`;
+        const slug = title;
         const filename = zString.constructCleanSlug(`${postDomain.title} ${post.title}`);
         const directory = POST_TYPES.PAGE.DIRECTORY;
-
         return { directory, filename, slug };
       })
       .catch(debug);
@@ -116,8 +116,7 @@ const generateSlugAndFilename = (post, isUpdateOperation) => {
         const directory = Object.values(POST_TYPES).find(
           (POST) => post.type === POST.TITLE
         ).DIRECTORY;
-        const title = zString.constructCleanSlug(post.title);
-        const slug = `${directory}/${title}`;
+        const slug = title;
         const filename = `${number}-${title}`;
 
         return { directory, filename, slug };
