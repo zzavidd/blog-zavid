@@ -1,4 +1,4 @@
-@import '../App.scss';
+@import '../App';
 
 .tabler-heading {
   @include themer(&, border-bottom, 1px solid $dark, 1px solid #fff);
