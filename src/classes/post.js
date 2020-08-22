@@ -1,5 +1,7 @@
-class Post {
+const { zLogic } = require('zavid-modules');
+const dev = process.env.NODE_ENV !== 'production';
 
+class Post {
   static STATUSES = {
     DRAFT: 'DRAFT',
     PRIVATE: 'PRIVATE',
@@ -38,8 +40,9 @@ class Post {
    * @returns {string} The post's directory name.
    */
   static getDirectory(type) {
-    const post = this.typeList.find((POST) => type === POST.TITLE);
+    const post = Object.values(this.TYPES).find((POST) => type === POST.TITLE);
     const directory = post ? post.DIRECTORY : '';
+    debug(directory, `Could not match type "${type}" to find a directory.`);
     return directory;
   }
 
@@ -54,6 +57,10 @@ class Post {
   static findInPosts(posts, operand, comparand, product) {
     const post = posts.find((post) => operand === post[comparand]);
     const value = post ? post[product] : '';
+    debug(
+      value,
+      `Could not match operand "${operand}" to a post's "${comparand}" to find a "${product}".`
+    );
     return value;
   }
 
@@ -62,12 +69,16 @@ class Post {
   }
 
   static isReverie(type) {
-    return type === this.TYPES.PAGE.TITLE;
+    return type === this.TYPES.REVERIE.TITLE;
   }
 
   static isPublish(status) {
     return status === this.STATUSES.PUBLISHED;
   }
 }
+
+const debug = (value, message) => {
+  if (dev && zLogic.isFalsy(value)) console.warn(message);
+};
 
 module.exports = Post;
