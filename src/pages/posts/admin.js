@@ -169,7 +169,7 @@ const BottomToolbar = ({ options, handleOptionSelection }) => {
         <Field xs={2}>
           <FilterDropdown
             name={'type'}
-            items={Post.types}
+            items={Post.typeList}
             value={options.type}
             onChange={handleOptionSelection}
             placeholder={'Filter by type...'}

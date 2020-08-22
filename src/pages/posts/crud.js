@@ -3,9 +3,10 @@ import { useQuery, useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
+import { Post } from 'classes';
 import { alert, setAlert } from 'components/alert';
 import hooks from 'constants/hooks';
-import { POST_STATUS, OPERATIONS, POST_TYPES } from 'constants/strings';
+import { OPERATIONS } from 'constants/strings';
 import { isValidPost } from 'constants/validations';
 import PostForm from 'partials/helpers/posts/form';
 import {
@@ -22,7 +23,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
     type: '',
     excerpt: '',
     image: '',
-    status: POST_STATUS.DRAFT,
+    status: Post.STATUSES.DRAFT,
     datePublished: null,
     domainId: '',
     imageHasChanged: false
@@ -58,21 +59,19 @@ const PostCrud = ({ post: currentPost, operation }) => {
   // Determine if post is being published.
   let isPublish = false;
   if (isCreateOperation) {
-    isPublish = statePost.status === POST_STATUS.PUBLISHED;
+    isPublish = Post.isPublish(statePost.status);
   } else {
     isPublish =
-      currentPost.status !== POST_STATUS.PUBLISHED &&
-      statePost.status === POST_STATUS.PUBLISHED;
+      !Post.isPublish(currentPost.status) && Post.isPublish(statePost.status);
   }
 
   /** Populate the form with post details. */
   const populateForm = () => {
     if (isCreateOperation) return;
 
-    const datePublished =
-      currentPost.status === POST_STATUS.PUBLISHED
-        ? currentPost.datePublished
-        : null;
+    const datePublished = Post.isPublish(currentPost.status)
+      ? currentPost.datePublished
+      : null;
 
     setPost(
       Object.assign({}, currentPost, {
@@ -190,13 +189,13 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
     status
   };
 
-  if (status === POST_STATUS.PUBLISHED) {
+  if (Post.isPublish(status)) {
     post.datePublished = zDate.formatISODate(datePublished);
   }
 
-  if (type === POST_TYPES.PAGE.TITLE) {
+  if (Post.isPage(type)) {
     const id = parseInt(domainId);
-    const domainType = domains.find((domain) => domain.value === id).type;
+    const domainType = Post.findInPosts(domains, id, 'value', 'type');
     post.domainId = id;
     post.domainType = domainType;
   }
