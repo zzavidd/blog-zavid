@@ -1,4 +1,4 @@
-const { PostQueryBuilder } = require('./builder');
+const { PostQueryBuilder } = require('../../classes/builders/post-query');
 const { debug } = require('../error');
 
 const filer = require('../filer');
@@ -15,7 +15,7 @@ const knex = require('../singleton/knex').getKnex();
 exports.getAllPosts = ({ limit, sort, type }) => {
   return Promise.resolve()
     .then(() => {
-      return new PostQueryBuilder()
+      return new PostQueryBuilder(knex)
         .whereType(type)
         .withOrder(sort)
         .withLimit(limit)
@@ -34,7 +34,7 @@ exports.getAllPosts = ({ limit, sort, type }) => {
 exports.getSinglePost = ({ id }) => {
   return Promise.resolve()
     .then(() => {
-      return new PostQueryBuilder().whereId(id).build();
+      return new PostQueryBuilder(knex).whereId(id).build();
     })
     .then(([post]) => post)
     .catch(debug);
@@ -87,7 +87,7 @@ exports.updatePost = ({ id, post, isPublish, imageHasChanged }) => {
 exports.deletePost = ({ id }) => {
   return Promise.resolve()
     .then(() => {
-      return new PostQueryBuilder().whereId(id).build();
+      return new PostQueryBuilder(knex).whereId(id).build();
     })
     .then(([post]) => {
       return filer.destroyImage(post.image);

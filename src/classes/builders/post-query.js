@@ -1,11 +1,9 @@
 const { zLogic } = require('zavid-modules');
-
-const knex = require('../singleton/knex').getKnex();
 const { isFalsy } = zLogic;
 
 /** Builds a post query with conditions. */
 class PostQueryBuilder {
-  constructor() {
+  constructor(knex) {
     this.query = knex.select().from('posts');
   }
 
@@ -69,7 +67,7 @@ class PostQueryBuilder {
 
   /**
    * Return the built query.
-   * @returns {knex} The build Knex query.
+   * @returns {Knex} The build Knex query.
    */
   build() {
     return this.query;

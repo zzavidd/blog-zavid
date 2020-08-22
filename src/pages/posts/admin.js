@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { zLogic, zText } from 'zavid-modules';
 
-import Post from 'classes/post';
+import { Post, URLBuilder } from 'classes';
 import { alert } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Field, FieldRow, Select } from 'components/form';
@@ -198,25 +198,26 @@ const FilterDropdown = (props) => {
 const LinkButton = ({ post, allPosts }) => {
   if (zLogic.isFalsy(post.slug)) return null;
 
-  // TODO: Create URL builder
   const navigateToLink = () => {
-    let url = '';
+    const url = new URLBuilder();
+
     if (Post.isPage(post.type)) {
       const base = Post.getDirectory(post.domainType);
-      const domainSlug = Post.findFieldFromPosts(
+      const domainSlug = Post.findInPosts(
         allPosts,
         post.domainId,
         'id',
         'slug'
       );
-      url += !zLogic.isFalsy(base) ? `/${base}` : '';
-      url += !zLogic.isFalsy(domainSlug) ? `/${domainSlug}` : '';
-      url += `/${post.slug}`;
+      url.appendSegment(base);
+      url.appendSegment(domainSlug);
+      url.appendSegment(post.slug);
     } else {
       const base = Post.getDirectory(post.type);
-      url = `/${base}/${post.slug}`;
+      url.appendSegment(base);
+      url.appendSegment(post.slug);
     }
-    location.href = url;
+    location.href = url.build();
   };
 
   return (
