@@ -37,4 +37,4 @@ class URLBuilder {
   }
 }
 
-export default URLBuilder;
+module.exports = URLBuilder;
