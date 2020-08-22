@@ -1,11 +1,11 @@
 const cloudinary = require('cloudinary').v2;
 const { zString } = require('zavid-modules');
 
-const { debug } = require('./error');
 const controller = require('./api/resolvers');
+const { debug } = require('./error');
 const knex = require('./singleton/knex').getKnex();
 
-const { POST_TYPES } = require('../constants/strings');
+const { Post } = require('../classes');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -89,7 +89,7 @@ exports.replaceImage = (id, post, imageHasChanged) => {
  * @returns {Promise} Represents the directory, slug and filename for the post.
  */
 const generateSlugAndFilename = (post, isUpdateOperation) => {
-  const isPage = post.type === POST_TYPES.PAGE.TITLE;
+  const isPage = Post.isPage(post.type);
   const title = zString.constructCleanSlug(post.title);
 
   if (isPage) {
@@ -98,7 +98,7 @@ const generateSlugAndFilename = (post, isUpdateOperation) => {
       .then((postDomain) => {
         const slug = title;
         const filename = zString.constructCleanSlug(`${postDomain.title} ${post.title}`);
-        const directory = POST_TYPES.PAGE.DIRECTORY;
+        const directory = Post.TYPES.PAGE.DIRECTORY;
         return { directory, filename, slug };
       })
       .catch(debug);
@@ -113,9 +113,7 @@ const generateSlugAndFilename = (post, isUpdateOperation) => {
         const number = (isUpdateOperation ? count + 1 : count)
           .toString()
           .padStart(3, '0');
-        const directory = Object.values(POST_TYPES).find(
-          (POST) => post.type === POST.TITLE
-        ).DIRECTORY;
+        const directory = Post.getDirectory(post.type);
         const slug = title;
         const filename = `${number}-${title}`;
 

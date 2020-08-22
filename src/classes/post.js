@@ -1,17 +1,44 @@
-const { POST_TYPES } = require('constants/strings');
-const postTypes = Object.values(POST_TYPES);
-
 class Post {
-  /** A list of post types. */
-  static types = Object.values(POST_TYPES).map((POST) => POST.TITLE);
+
+  static STATUSES = {
+    DRAFT: 'DRAFT',
+    PRIVATE: 'PRIVATE',
+    PUBLISHED: 'PUBLISHED'
+  };
+
+  static TYPES = {
+    REVERIE: {
+      TITLE: 'Reverie',
+      DIRECTORY: 'reveries'
+    },
+    EPISTLE: {
+      TITLE: 'Epistle',
+      DIRECTORY: 'epistles'
+    },
+    POEM: {
+      TITLE: 'Poem',
+      DIRECTORY: 'poetry'
+    },
+    MUSING: {
+      TITLE: 'Musing',
+      DIRECTORY: 'musings'
+    },
+    PAGE: {
+      TITLE: 'Page',
+      DIRECTORY: 'pages'
+    }
+  };
+
+  static typeList = Object.values(this.TYPES).map((POST) => POST.TITLE);
+  static statusList = Object.values(this.STATUSES);
 
   /**
-   * Retrieves the post directory name from its name.
-   * @param {string} name The post name.
+   * Retrieves the post directory name from its type.
+   * @param {string} type The post type.
    * @returns {string} The post's directory name.
    */
-  static getDirectory(name) {
-    const post = postTypes.find((POST) => name === POST.TITLE);
+  static getDirectory(type) {
+    const post = this.typeList.find((POST) => type === POST.TITLE);
     const directory = post ? post.DIRECTORY : '';
     return directory;
   }
@@ -30,13 +57,16 @@ class Post {
     return value;
   }
 
-  /**
-   * Checks if post is of type page.
-   * @param {string} type The post type.
-   * @returns {boolean} The page's directory name.
-   */
   static isPage(type) {
-    return type === POST_TYPES.PAGE.TITLE;
+    return type === this.TYPES.PAGE.TITLE;
+  }
+
+  static isReverie(type) {
+    return type === this.TYPES.PAGE.TITLE;
+  }
+
+  static isPublish(status) {
+    return status === this.STATUSES.PUBLISHED;
   }
 }
 

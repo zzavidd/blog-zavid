@@ -1,6 +1,6 @@
-
 import React from 'react';
 
+import { Post } from 'classes';
 import {
   Form,
   FieldRow,
@@ -15,7 +15,6 @@ import {
 import { FileSelector, ASPECT_RATIO } from 'components/form/fileselector';
 import DatePicker from 'components/form/picker/datepicker';
 import { Fader } from 'components/transitioner';
-import { POST_STATUS, POST_TYPES } from 'constants/strings';
 
 const PostForm = (props) => {
   const { post, domains, handlers, operation, isLoaded } = props;
@@ -38,7 +37,7 @@ const PostForm = (props) => {
             <Label>Type:</Label>
             <Select
               name={'type'}
-              items={Object.values(POST_TYPES).map((POST) => POST.TITLE)}
+              items={Post.typeList}
               value={post.type}
               onChange={handleText}
               placeholder={'Select post type'}
@@ -48,7 +47,7 @@ const PostForm = (props) => {
         <FieldRow>
           <DynamicField
             md={8}
-            precondition={post.type === POST_TYPES.PAGE.TITLE}
+            precondition={Post.isPage(post.type)}
             dependency={post.type}>
             <Label>Domain</Label>
             <Select
@@ -76,14 +75,14 @@ const PostForm = (props) => {
             <Label>Status:</Label>
             <Select
               name={'status'}
-              items={Object.values(POST_STATUS)}
+              items={Post.statusList}
               value={post.status}
               onChange={handleText}
             />
           </Field>
           <DynamicField
             md={6}
-            precondition={post.status === POST_STATUS.PUBLISHED}
+            precondition={Post.isPublish(post.status)}
             dependency={post.status}>
             <Label>Date Published:</Label>
             <DatePicker
