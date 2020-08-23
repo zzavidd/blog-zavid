@@ -37,7 +37,6 @@ export const Form = ({
   previewText = false,
   children
 }) => {
-  const theme = useSelector(({ theme }) => theme);
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
 
   return (
@@ -52,7 +51,7 @@ export const Form = ({
           previewText={previewText}
         />
       </div>
-      <Toolbar className={css[`form-footer-${theme}`]}>
+      <Toolbar>
         <div className={css['form-footer-buttons']}>
           <FormAdminButton
             previewText={previewText}

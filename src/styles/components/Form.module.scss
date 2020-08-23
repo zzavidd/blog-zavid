@@ -47,11 +47,6 @@
   padding: 2em;
 }
 
-.form-footer {
-  @include themer(&, border-color, #000, #fff);
-  border-top: 1px solid;
-}
-
 .form-footer-buttons {
   @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
   display: flex;

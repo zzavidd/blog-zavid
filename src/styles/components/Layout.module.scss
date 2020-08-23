@@ -13,8 +13,10 @@
     $light: rgba(255, 255, 255, 0.9),
     $dark: rgba(0, 0, 0, 0.95)
   );
+  @include themer(&, border-color, #000, #fff);
+  @include responsive(padding, 0.5em 2em, $sm: 0.5em 1em);
+  border-top: 1px solid;
   bottom: 0;
-  padding: 0.5em 2em;
   position: sticky;
   transition-duration: 0.8s;
   width: 100%;

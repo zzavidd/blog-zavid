@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import css from 'styles/components/Button.module.scss';
+import { Icon } from './icon';
 
 /**
  * The base template for buttons.
@@ -89,6 +90,19 @@ export const AdminButton = (props) => {
     <button {...props} className={classes}>
       {props.children}
     </button>
+  );
+};
+
+export const BackButton = (props) => {
+  return (
+    <InvisibleButton
+      {...props}
+      className={classnames(css['button-back'], props.className)}>
+      <span>
+        <Icon name={'chevron-left'} />
+      </span>
+      <span>{props.children}</span>
+    </InvisibleButton>
   );
 };
 
