@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const { PostQueryBuilder } = require('../../classes/builders/post-query');
+const { PostQueryBuilder } = require('../../classes');
 const { siteTitle } = require('../../constants/settings');
 const { OPERATIONS } = require('../../constants/strings');
 const controller = require('../api/resolvers');
+const { renderErrorPage, ERRORS } = require('../error');
 const knex = require('../singleton/knex').getKnex();
 const server = require('../singleton/server').getServer();
-const { renderErrorPage, ERRORS } = require('../error');
 
 router.get('/reveries', function (req, res) {
   return server.render(req, res, '/posts/reveries', {
@@ -44,7 +44,7 @@ router.get(
     const { slug } = req.params;
     Promise.resolve()
       .then(() => {
-        return new PostQueryBuilder()
+        return new PostQueryBuilder(knex)
           .whereDomainType('Reverie')
           .whereSlug(slug)
           .build();

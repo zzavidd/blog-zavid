@@ -18,14 +18,14 @@ cloudinary.config({
  * @param {object} post - The post object.
  * @param {object} [options] - Upload options.
  * @param {boolean} [options.imageHasChanged] - Indicates if images has changed.
- * @param {boolean} [options.isUpdateOperation] - Specifies if operation is update.
+ * @param {boolean} [options.isCreateOperation] - Specifies if operation is update.
  * @returns {Promise} Resolves when function finishes.
  */
 exports.uploadImage = (post, options = {}) => {
-  const { imageHasChanged = true, isUpdateOperation = true } = options;
+  const { imageHasChanged = true, isCreateOperation = true } = options;
   return new Promise((resolve, reject) => {
     Promise.resolve()
-      .then(() => generateSlugAndFilename(post, isUpdateOperation))
+      .then(() => generateSlugAndFilename(post, isCreateOperation))
       .then(({ directory, filename, slug }) => {
         post.slug = slug;
 
@@ -72,12 +72,21 @@ exports.destroyImage = (image) => {
 };
 
 exports.replaceImage = (id, post, imageHasChanged) => {
-  if (!imageHasChanged) return Promise.resolve(post);
+  if (!imageHasChanged) {
+    return Promise.resolve()
+      .then(() => generateSlugAndFilename(post, false))
+      .then(({ slug }) => {
+        post.slug = slug;
+        return post;
+      })
+      .catch(debug);
+  }
+
   return Promise.resolve()
     .then(() => controller.getSinglePost({ id }))
     .then((post) => this.destroyImage(post.image))
     .then(() =>
-      this.uploadImage(post, { imageHasChanged, isUpdateOperation: false })
+      this.uploadImage(post, { imageHasChanged, isCreateOperation: false })
     )
     .catch(debug);
 };
@@ -85,10 +94,10 @@ exports.replaceImage = (id, post, imageHasChanged) => {
 /**
  * Construct slug and filenames.
  * @param {object} post - The post details.
- * @param {boolean} isUpdateOperation - Specifies if operation is update.
+ * @param {boolean} isCreateOperation - Specifies if operation is update.
  * @returns {Promise} Represents the directory, slug and filename for the post.
  */
-const generateSlugAndFilename = (post, isUpdateOperation) => {
+const generateSlugAndFilename = (post, isCreateOperation) => {
   const isPage = Post.isPage(post.type);
   const title = zString.constructCleanSlug(post.title);
 
@@ -97,7 +106,9 @@ const generateSlugAndFilename = (post, isUpdateOperation) => {
       .then(() => controller.getSinglePost({ id: post.domainId }))
       .then((postDomain) => {
         const slug = title;
-        const filename = zString.constructCleanSlug(`${postDomain.title} ${post.title}`);
+        const filename = zString.constructCleanSlug(
+          `${postDomain.title} ${post.title}`
+        );
         const directory = Post.TYPES.PAGE.DIRECTORY;
         return { directory, filename, slug };
       })
@@ -110,7 +121,7 @@ const generateSlugAndFilename = (post, isUpdateOperation) => {
           .where('type', post.type);
       })
       .then(([{ count }]) => {
-        const number = (isUpdateOperation ? count + 1 : count)
+        const number = (isCreateOperation ? count + 1 : count)
           .toString()
           .padStart(3, '0');
         const directory = Post.getDirectory(post.type);
