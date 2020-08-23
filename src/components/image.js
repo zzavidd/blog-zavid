@@ -29,9 +29,9 @@ export const TRANSFORMATIONS = {
 
 export const CloudinaryImage = ({
   alt,
-  className,
+  containerClassName,
+  imageClassName,
   lazy,
-  ref,
   src,
   style,
   title,
@@ -42,13 +42,13 @@ export const CloudinaryImage = ({
   const publicId = version ? `${version}/${src}` : src;
   const { width, height } = lazy || {};
   return (
-    <CloudinaryContext cloudName={'zavid'} className={className} style={style}>
+    <CloudinaryContext cloudName={'zavid'} className={containerClassName} style={style}>
       <Image
         publicId={publicId}
         alt={alt}
         title={title}
         width={'100%'}
-        ref={ref}>
+        className={imageClassName}>
         <Transformation width={width} height={height} crop={'lfill'} />
       </Image>
     </CloudinaryContext>

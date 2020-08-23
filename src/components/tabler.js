@@ -192,7 +192,7 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
                 value = (
                   <CloudinaryImage
                     src={value}
-                    className={imageOptions.css}
+                    containerClassName={imageOptions.css}
                     lazy={imageOptions.lazy}
                   />
                 );
@@ -250,7 +250,7 @@ const MobileView = ({ field }) => {
       return (
         <CloudinaryImage
           src={value}
-          className={imageOptions.css}
+          containerClassName={imageOptions.css}
           lazy={imageOptions.lazy}
         />
       );

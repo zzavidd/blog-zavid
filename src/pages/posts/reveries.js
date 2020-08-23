@@ -71,7 +71,7 @@ const ReverieImage = ({ reverie }) => {
       src={reverie.image}
       alt={reverie.title}
       lazy={TRANSFORMATIONS.MEDIUM_WIDE}
-      className={css[`reveries-index-image-${theme}`]}
+      containerClassName={css[`reveries-index-image-${theme}`]}
     />
   );
 };

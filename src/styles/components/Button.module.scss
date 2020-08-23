@@ -45,6 +45,14 @@ $button-admin: rgb(206, 206, 206);
   padding: 0.5em 1em;
 }
 
+.button-back {
+  span {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .invisible-button {
   background: none;
   border-style: none;
@@ -56,7 +64,7 @@ $button-admin: rgb(206, 206, 206);
 
 .button-spacer {
   display: flex;
-  
+
   button {
     margin-left: 0.4em;
   }
