@@ -5,7 +5,7 @@
 type Post {
   id: Int
   title: String!
-  type: PostType
+  type: PostType!
   datePublished: String
   content: String
   image: String
@@ -42,6 +42,7 @@ enum PostType {
   Reverie
   Poem
   Page
+  Musing
 }
 
 enum PostField {
@@ -66,12 +67,12 @@ enum Order {
 }
 
 input PostInput {
+  # No slug
   title: String!
   type: PostType!
   datePublished: String
   content: String
   image: String
-  slug: String
   excerpt: String
   status: PostStatus
   domainId: Int
