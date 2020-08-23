@@ -12,6 +12,7 @@
 }
 
 .post-single-image-container {
+  max-width: 900px;
 }
 
 .post-single-image {
@@ -20,38 +21,6 @@
 
 .post-single-content {
   margin: 1em 0;
-}
-
-%blockquotes {
-  @include responsive(font-size, 4em, $sm: 3.5em);
-  font-family: 'Passion One', cursive;
-  font-style: normal;
-  position: absolute;
-}
-
-.content-blockquotes {
-  @include responsive(font-size, 1.4em, $sm: 1.2em);
-  @include responsive(text-align, left, $sm: center);
-  border-radius: 30px;
-  font-family: $title-font;
-  line-height: 1.2;
-  margin: 0.5em 0;
-  padding: 1em 2.5em;
-  position: relative;
-
-  &::before {
-    @extend %blockquotes;
-    @include responsive(top, -10px, $sm: 0);
-    content: '“';
-    left: 0;
-  }
-
-  &::after {
-    @extend %blockquotes;
-    @include responsive(bottom, -50px, $sm: -30px);
-    content: '”';
-    right: 0;
-  }
 }
 
 .post-filter {

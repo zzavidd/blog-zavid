@@ -83,6 +83,11 @@ export const Paragraph = ({
   );
 };
 
+export const Divider = () => {
+  const theme = useSelector(({ theme }) => theme);
+  return <hr className={css[`horizontal-line-${theme}`]} />;
+};
+
 /**
  * Component for embedding tweets into articles.
  * @param {object} props - The properties.
