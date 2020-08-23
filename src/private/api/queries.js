@@ -1,16 +1,8 @@
 const { gql } = require('@apollo/client');
 
 exports.GET_POSTS_QUERY = gql`
-  query GetAllPosts(
-    $limit: Int
-    $sort: PostOrder
-    $type: PostType
-  ) {
-    getAllPosts(
-      limit: $limit
-      sort: $sort
-      type: $type
-    ) {
+  query GetAllPosts($limit: Int, $sort: PostOrder, $type: PostType) {
+    getAllPosts(limit: $limit, sort: $sort, type: $type) {
       id
       title
       type
@@ -19,6 +11,9 @@ exports.GET_POSTS_QUERY = gql`
       image
       datePublished
       slug
+      createTime
+      domainId
+      domainType
     }
   }
 `;
