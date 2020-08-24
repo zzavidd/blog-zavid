@@ -2,15 +2,48 @@
 
 .title {
   font-family: $title-font;
-  font-size: 2em;
   font-weight: bold;
 }
 
 .paragraph {
+  @include responsive(font-size, 1.3em, $sm: 0.9em);
   display: inline;
   font-family: $body-font;
-  font-size: 1.1em;
   white-space: pre-line;
+}
+
+.paragraph-subheading {
+  @include responsive(font-size, 1.5em, $sm: 1.5em);
+  font-weight: bold;
+  padding: 0.5em 0;
+}
+
+.paragraph-body {
+  line-height: 1.7;
+  margin: 1.3em 0;
+}
+
+.paragraph-hyperlink {
+  $values: (
+    light: #ac1ef3,
+    dark: #d98dff
+  );
+  @each $theme in $themes {
+    $value: map-get($values, $theme);
+    &-#{$theme} {
+      color: $value !important;
+      font-weight: bold;
+
+      &:hover {
+        color: adjust-color($value, $lightness: 10%);
+      }
+
+      &:active {
+        color: adjust-color($value, $lightness: 30%);
+        transition-duration: 0.1s;
+      }
+    }
+  }
 }
 
 %blockquotes {
@@ -21,14 +54,14 @@
 }
 
 .paragraph-blockquote {
-  @include responsive(font-size, 1.4em, $sm: 1.2em);
-  @include responsive(text-align, left, $sm: center);
+  @include responsive(font-size, 1.3em, $sm: 1.3em);
+  @include responsive(padding, 1em 5.5em, $lg: 1em 4em, $sm: 1em 2.5em);
   border-radius: 30px;
   font-family: $title-font;
   line-height: 1.2;
   margin: 0.5em 0;
-  padding: 1em 2.5em;
   position: relative;
+  text-align: center;
 
   &::before {
     @extend %blockquotes;
@@ -45,7 +78,7 @@
   }
 }
 
-.horizontal-line {
+.divider {
   @include themer(&, background-color, $light: #000, $dark: #fff);
   margin: 2em 0;
 }

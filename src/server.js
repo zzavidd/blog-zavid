@@ -46,7 +46,7 @@ function startServer() {
       function (callback) {
         server.prepare().then(() => {
           app.get('*', (req, res) => handle(req, res));
-          app.listen(port, (err) => {
+          app.listen(port, '0.0.0.0', (err) => {
             if (!err)
               console.info(`ZAVID server running on http://localhost:${port}`);
             callback(err);

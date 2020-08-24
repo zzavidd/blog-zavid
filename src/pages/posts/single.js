@@ -1,4 +1,5 @@
 import React from 'react';
+import { zDate } from 'zavid-modules';
 
 import { BackButton } from 'components/button';
 import { CloudinaryImage } from 'components/image';
@@ -9,21 +10,20 @@ import css from 'styles/pages/Posts.module.scss';
 
 const Post = ({ post }) => {
   const shareMessage = `"${post.title}" on ZAVID`;
+  const datePublished = zDate.formatDate(post.datePublished, true);
 
   const navigateBack = () => (location.href = '/reveries');
   return (
     <Spacer>
       <div className={css['post-single']}>
         <Title className={css['post-single-title']}>{post.title}</Title>
-        <div>{post.datePublished}</div>
+        <div className={css['post-single-date']}>{datePublished}</div>
         <CloudinaryImage
           src={post.image}
           containerClassName={css['post-single-image-container']}
           imageClassName={css['post-single-image']}
         />
-        <div className={css['post-single-content']}>
-          <Paragraph>{post.content}</Paragraph>
-        </div>
+        <Paragraph>{post.content}</Paragraph>
         <Divider />
         <ShareBlock message={shareMessage} url={location.href} />
       </div>
