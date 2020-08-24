@@ -6,8 +6,8 @@ const { siteTitle } = require('../../constants/settings');
 const { OPERATIONS } = require('../../constants/strings');
 const controller = require('../api/resolvers');
 const { renderErrorPage, ERRORS } = require('../error');
-const knex = require('../singleton/knex').getKnex();
-const server = require('../singleton/server').getServer();
+const knex = require('../singleton').getKnex();
+const server = require('../singleton').getServer();
 
 router.get('/reveries', function (req, res) {
   return server.render(req, res, '/posts/reveries', {
