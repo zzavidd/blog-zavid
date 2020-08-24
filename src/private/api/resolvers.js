@@ -2,7 +2,7 @@ const { PostQueryBuilder } = require('../../classes');
 const { debug } = require('../error');
 
 const filer = require('../filer');
-const knex = require('../singleton/knex').getKnex();
+const knex = require('../singleton').getKnex();
 
 /**
  * Retrieves all posts from database.

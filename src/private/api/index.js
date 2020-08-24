@@ -6,7 +6,7 @@ const path = require('path');
 
 const resolvers = require('./resolvers');
 
-const app = require('../singleton/app').getApp();
+const app = require('../singleton').getApp();
 
 const typeDefs = fs.readFileSync(path.join(__dirname, 'schema.gql'), 'utf-8');
 const schema = buildSchema(typeDefs);

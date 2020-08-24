@@ -3,7 +3,7 @@ const { zString } = require('zavid-modules');
 
 const controller = require('./api/resolvers');
 const { debug } = require('./error');
-const knex = require('./singleton/knex').getKnex();
+const knex = require('./singleton').getKnex();
 
 const { Post } = require('../classes');
 

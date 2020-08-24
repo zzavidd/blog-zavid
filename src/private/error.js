@@ -1,4 +1,4 @@
-const server = require('./singleton/server').getServer();
+const server = require('./singleton').getServer();
 
 /** Builds a post query with conditions. */
 class ErrorBuilder {

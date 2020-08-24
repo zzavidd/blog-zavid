@@ -16,9 +16,7 @@ const port = parseInt(process.env.PORT, 10) || 4000;
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
 
-const { setApp } = require('./private/singleton/app');
-const { setKnex } = require('./private/singleton/knex');
-const { setServer } = require('./private/singleton/server');
+const { setApp, setKnex, setServer } = require('./private/singleton');
 
 // Initialise MySQL database
 const knex = require('knex')({
