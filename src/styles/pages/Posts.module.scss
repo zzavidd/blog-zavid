@@ -3,24 +3,24 @@
 .post-single {
   @include responsive(width, 60%, $lg: 80%, $md: 90%, $sm: 100%);
   margin: 0 auto;
-  padding: 1em 1.5em;
+  padding: 1em 1.2em;
 }
 
 .post-single-title {
-  @include responsive(font-size, 2.2em, $sm: 1.8em);
-  margin-bottom: 0.5em;
+  @include responsive(font-size, 2.5em, $sm: 1.8em);
+}
+
+.post-single-date {
+  @include responsive(font-size, 1em, $sm: 0.8em);
 }
 
 .post-single-image-container {
+  margin: 1em 0;
   max-width: 900px;
 }
 
 .post-single-image {
   border-radius: 10px;
-}
-
-.post-single-content {
-  margin: 1em 0;
 }
 
 .post-filter {

@@ -60,7 +60,7 @@ export const Paragraph = ({
       blockquote: css['paragraph-blockquote'],
       paragraph: css['paragraph-body'],
       divider: css['paragraph-divider'],
-      hyperlink: css[`link-${theme.toLowerCase()}`],
+      hyperlink: css[`paragraph-hyperlink-${theme}`],
       ...cssOverrides
     },
     socialWrappers: {
@@ -85,7 +85,7 @@ export const Paragraph = ({
 
 export const Divider = () => {
   const theme = useSelector(({ theme }) => theme);
-  return <hr className={css[`horizontal-line-${theme}`]} />;
+  return <hr className={css[`divider-${theme}`]} />;
 };
 
 /**
