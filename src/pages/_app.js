@@ -9,8 +9,8 @@ import React, { useEffect, useState } from 'react';
 import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import configureStore from 'lib/reducers/store.js';
 import Header from 'partials/header.js';
-import configureStore from 'reducers/store.js';
 
 import 'styles/App.scss';
 
