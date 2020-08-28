@@ -11,8 +11,8 @@ import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
+import { updatePostFilterSettings } from 'lib/reducers/actions';
 import { DELETE_POST_QUERY, GET_POSTS_QUERY } from 'private/api/queries';
-import { updatePostFilterSettings } from 'reducers/actions';
 import css from 'styles/pages/Posts.module.scss';
 
 const sortOptions = [

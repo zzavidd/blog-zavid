@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { InvisibleButton } from 'components/button.js';
 import { ThemedIcon } from 'components/icon.js';
 import { CloudinaryImage } from 'components/image.js';
-import { setTheme } from 'reducers/actions';
+import { setTheme } from 'lib/reducers/actions';
 import css from 'styles/Partials.module.scss';
 
 const Header = () => {
