@@ -33,9 +33,9 @@ class PostQueryBuilder {
 
   /**
    * Enables sorting or randomising of the results.
-   * @param {object} [sort] - The sort details.
-   * @param {string} [sort.field] - The field to sort on.
-   * @param {string} [sort.order] - The sort order. Either 'ASC', 'DESC' or 'RANDOM'.
+   * @param {object} [sort] The sort details.
+   * @param {string} [sort.field] The field to sort on.
+   * @param {string} [sort.order] The sort order. Either 'ASC', 'DESC' or 'RANDOM'.
    * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
   withOrder({ field, order } = {}) {
@@ -74,4 +74,11 @@ class PostQueryBuilder {
   }
 }
 
-module.exports = PostQueryBuilder;
+class PostMutationBuilder {
+  constructor(knex, table) {
+    this.query = knex(table);
+  }
+}
+
+exports.PostQueryBuilder = PostQueryBuilder;
+exports.PostMutationBuilder = PostMutationBuilder;

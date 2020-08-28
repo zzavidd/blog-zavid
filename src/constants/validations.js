@@ -1,4 +1,4 @@
-const Post = require('classes/post');
+const { Post } = require('classes');
 const { alert } = require('components/alert.js');
 
 /**
@@ -15,7 +15,8 @@ exports.isValidPost = (post) => {
   if (!isValidImage(post.image, 'post', { mustExist: isReverie })) return false;
 
   if (Post.isPage(post.type)) {
-    if (!ifExists(post.domainId, "Select this page's domain post.")) return false;
+    if (!ifExists(post.domainId, "Select this page's domain post."))
+      return false;
   }
 
   if (isPublish) {

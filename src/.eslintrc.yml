@@ -102,6 +102,8 @@ rules:
 
   # Overridden and disabled rules
   mocha/handle-done-callback: off
+  mocha/no-top-level-hooks: off
+  mocha/no-hooks-for-single-case: off
   no-case-declarations: off
   no-useless-escape: off
   quotes: off
