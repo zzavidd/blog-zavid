@@ -1,6 +1,5 @@
 const { PostQueryBuilder } = require('../../classes');
 const { debug } = require('../error');
-
 const filer = require('../filer');
 const knex = require('../singleton').getKnex();
 

@@ -7,7 +7,6 @@ const dev = process.env.NODE_ENV !== 'production';
 const server = next({ dev });
 const handle = server.getRequestHandler();
 
-const async = require('async');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv').config({ path: './config.env' });
@@ -36,34 +35,19 @@ if (dotenv.error) {
 
 startServer();
 
+require('./private/api');
+require('./private/routes');
+
 function startServer() {
+  setApp(app);
+  setKnex(knex);
   setServer(server);
-  async.parallel(
-    [
-      // Start the server
-      function (callback) {
-        server.prepare().then(() => {
-          app.get('*', (req, res) => handle(req, res));
-          app.listen(port, '0.0.0.0', (err) => {
-            if (!err)
-              console.info(`ZAVID server running on http://localhost:${port}`);
-            callback(err);
-          });
-        });
-      },
-      // Set database instances
-      function (callback) {
-        setApp(app);
-        setKnex(knex);
 
-        require('./private/api');
-        require('./private/routes');
-
-        callback(null);
-      }
-    ],
-    function (err) {
+  server.prepare().then(() => {
+    app.get('*', (req, res) => handle(req, res));
+    app.listen(port, '0.0.0.0', (err) => {
       if (err) throw err;
-    }
-  );
+      console.info(`ZAVID server running on http://localhost:${port}`);
+    });
+  });
 }
