@@ -3,7 +3,7 @@
     "build": "NODE_ENV=development next build",
     "dev": "node server.js",
     "prod": "NODE_ENV=production node server.js",
-    "test": "mocha --no-timeout --dev-testing ./test/**.test.js",
+    "test": "mocha --recursive --no-timeout",
     "lint": "eslint --ignore-path ../.gitignore \"**/*.js\"",
     "prettify": "prettier --ignore-path ../.gitignore --write \"**/*.js\""
   },
@@ -60,6 +60,7 @@
     "eslint-plugin-jsdoc": "^25.4.2",
     "eslint-plugin-mocha": "^7.0.0",
     "eslint-plugin-react": "^7.19.0",
+    "faker": "^5.1.0",
     "mocha": "^8.1.1",
     "prettier": "2.0.5",
     "stylelint": "^13.6.1",
