@@ -8,10 +8,13 @@
 
 .post-single-title {
   @include responsive(font-size, 2.5em, $sm: 1.8em);
+  @include responsive(text-align, left, $sm: center);
 }
 
 .post-single-date {
   @include responsive(font-size, 1em, $sm: 0.8em);
+  @include responsive(text-align, left, $sm: center);
+  @include responsive(padding, 0, $sm: 0.5em 0);
 }
 
 .post-single-image-container {

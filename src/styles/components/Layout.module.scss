@@ -1,5 +1,12 @@
 @import '../App';
 
+.partitioner {
+  @include responsive(width, 80%, $md: 90%, $sm: 100%);
+  @include responsive(display, grid, $lg: block);
+  grid-template-columns: 70% 30%;
+  margin: 0 auto;
+}
+
 .spacer {
   display: grid;
   grid-template-rows: 1fr auto;
