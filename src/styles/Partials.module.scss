@@ -43,27 +43,15 @@
 /// SIDEBAR
 ////////////////////////////////
 
-@mixin sidebarTemplate($theme) {
-  $imgBorderColor: black;
-  @if $theme == 'dark' {
-    $imgBorderColor: $border-color;
-  }
-
-  .image {
-    border: 2px solid $imgBorderColor;
-    border-radius: 10px;
-    width: 90%;
-  }
+.sidebar {
+  
 }
 
-.sidebar {
-  &-light {
-    @include sidebarTemplate('light');
-  }
-
-  &-dark {
-    @include sidebarTemplate('dark');
-  }
+.recent-post-image {
+  @include themer(&, border-color, $dark, $border-color);
+  border: 2px solid;
+  border-radius: 10px;
+  width: 90%;
 }
 
 ////////////////////////////////

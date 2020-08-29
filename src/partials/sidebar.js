@@ -1,77 +1,83 @@
-import React, { Component } from 'react';
+import { useQuery } from '@apollo/client';
+import React, { useState, useEffect, memo } from 'react';
 import { Container } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { zDate, zRequest } from 'zavid-modules';
+import { useSelector } from 'react-redux';
+import { zDate } from 'zavid-modules';
 
-import { cloudinaryBaseUrl } from 'components/image.js';
+import { alert } from 'components/alert.js';
+import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
+import { LazyLoader } from 'components/loader.js';
 import { Title } from 'components/text.js';
+import { Zoomer } from 'components/transitioner.js';
+import { GET_POSTS_QUERY } from 'private/api/queries';
 import css from 'styles/Partials.module.scss';
 
-class Sidebar extends Component {
-  constructor() {
-    super();
-    this.state = {
-      posts: [],
-      isLoaded: false
-    };
-  }
+export const RightSidebar = () => {
+  const theme = useSelector(({ theme }) => theme);
+  const [recentPosts, setRecentPosts] = useState([]);
+  const [isLoaded, setLoaded] = useState(false);
 
-  componentDidMount() {
-    this.getRecentPosts();
-  }
-
-  /**
-   * Get 5 most recent posts
-   */
-  getRecentPosts() {
-    zRequest({
-      url: '/posts?limit=5&order=desc',
-      method: 'GET',
-      onSuccess: (posts) => {
-        this.setState({
-          posts,
-          isLoaded: true
-        });
+  const { data, error: queryError, loading: queryLoading } = useQuery(
+    GET_POSTS_QUERY,
+    {
+      variables: {
+        limit: 4,
+        sort: {
+          field: 'datePublished',
+          order: 'DESC'
+        }
       }
-    });
-  }
+    }
+  );
 
-  render() {
-    const { theme } = this.props;
-    return (
-      <Container className={css[`sidebar-${theme}`]}>
-        <Title>Recent Posts</Title>
-        {this.state.posts.map((post, idx) => (
-          <div key={idx}>
-            <h5>{post.title}</h5>
-            {previewImage(post)}
-            <small>{zDate.formatDate(post.date, true)}</small>
-            <div>{post.type}</div>
-          </div>
-        ))}
-      </Container>
-    );
-  }
-}
+  useEffect(() => {
+    if (queryLoading) return;
+    if (queryError) alert.error(queryError);
+    setRecentPosts(data ? data.getAllPosts : []);
+    setLoaded(true);
+  }, [isLoaded, queryLoading]);
 
-/**
- * Retrieve post image if exists
- * @param {object} post - Reference post to image
- * @returns {React.Component} The component.
- */
-const previewImage = (post) => {
-  if (!post.image) return null;
   return (
-    <img
-      src={`${cloudinaryBaseUrl}/w_1280,h_720/${post.image}`}
-      alt={post.title}
-      className={css.image}
-    />
+    <Container className={css[`sidebar-${theme}`]}>
+      <Title>Recent Posts</Title>
+      {recentPosts.map((post, key) => (
+        <RecentPost post={post} key={key} />
+      ))}
+    </Container>
   );
 };
 
-const mapStateToProps = (state) => ({
-  theme: state.theme
+const RecentPost = memo(({ post }) => {
+  const theme = useSelector(({ theme }) => theme);
+  const [isInView, setInView] = useState(false);
+
+  const datePublished = zDate.formatDate(parseInt(post.datePublished), true);
+  const link = `/reveries/${post.slug}`;
+  return (
+    <a href={link}>
+      <LazyLoader setInView={setInView}>
+        <Zoomer
+          determinant={isInView}
+          duration={400}
+          className={css[`recent-post-unit-${theme}`]}>
+          <Title className={css['recent-post-title']}>{post.title}</Title>
+          <div>{datePublished}</div>
+          <RecentPostImage post={post} />
+        </Zoomer>
+      </LazyLoader>
+    </a>
+  );
 });
 
-export default connect(mapStateToProps)(Sidebar);
+const RecentPostImage = ({ post }) => {
+  const theme = useSelector(({ theme }) => theme);
+  if (!post.image) return null;
+  return (
+    <CloudinaryImage
+      src={post.image}
+      alt={post.title}
+      lazy={TRANSFORMATIONS.MEDIUM_WIDE}
+      containerClassName={css[`recent-post-image-${theme}`]}
+    />
+  );
+};
