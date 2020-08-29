@@ -27,7 +27,7 @@ export const TRANSFORMATIONS = {
   MEDIUM_WIDE: { width: 1280, height: 720 }
 };
 
-export const CloudinaryImage = ({
+export const CloudImage = ({
   alt,
   containerClassName,
   imageClassName,

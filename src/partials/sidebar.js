@@ -1,11 +1,12 @@
 import { useQuery } from '@apollo/client';
 import React, { useState, useEffect, memo } from 'react';
 import { Container } from 'react-bootstrap';
+import { forceCheck } from 'react-lazyload';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
 import { alert } from 'components/alert.js';
-import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
+import { CloudImage, TRANSFORMATIONS } from 'components/image.js';
 import { LazyLoader } from 'components/loader.js';
 import { Title } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
@@ -52,6 +53,10 @@ const RecentPost = memo(({ post }) => {
   const theme = useSelector(({ theme }) => theme);
   const [isInView, setInView] = useState(false);
 
+  useEffect(() => {
+    forceCheck();
+  }, []);
+
   const datePublished = zDate.formatDate(parseInt(post.datePublished), true);
   const link = `/reveries/${post.slug}`;
   return (
@@ -61,9 +66,9 @@ const RecentPost = memo(({ post }) => {
           determinant={isInView}
           duration={400}
           className={css[`recent-post-unit-${theme}`]}>
+          <RecentPostImage post={post} />
           <Title className={css['recent-post-title']}>{post.title}</Title>
           <div>{datePublished}</div>
-          <RecentPostImage post={post} />
         </Zoomer>
       </LazyLoader>
     </a>
@@ -71,10 +76,10 @@ const RecentPost = memo(({ post }) => {
 });
 
 const RecentPostImage = ({ post }) => {
-  const theme = useSelector(({ theme }) => theme);
   if (!post.image) return null;
+  const theme = useSelector(({ theme }) => theme);
   return (
-    <CloudinaryImage
+    <CloudImage
       src={post.image}
       alt={post.title}
       lazy={TRANSFORMATIONS.MEDIUM_WIDE}
