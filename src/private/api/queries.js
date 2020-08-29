@@ -18,7 +18,7 @@ const postFragments = gql`
 `;
 
 exports.GET_POSTS_QUERY = gql`
-  query GetAllPosts($limit: Int, $sort: PostOrder, $type: PostType) {
+  query GetAllPosts($limit: Int, $sort: PostOrder, $type: PostTypeOptions) {
     getAllPosts(limit: $limit, sort: $sort, type: $type) {
       ...PostFields
     }

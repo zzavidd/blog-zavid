@@ -24,9 +24,9 @@ class PostQueryBuilder extends QueryBuilder {
     this.query = knex.select().from('posts');
   }
 
-  whereType(type) {
-    if (isFalsy(type)) return this;
-    this.query.where('type', type);
+  whereType({ include, exclude } = {}) {
+    if (!isFalsy(include)) this.query.whereIn('type', include);
+    if (!isFalsy(exclude)) this.query.whereNotIn('type', exclude);
     return this;
   }
 

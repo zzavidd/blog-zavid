@@ -25,7 +25,8 @@ export const RightSidebar = () => {
         sort: {
           field: 'datePublished',
           order: 'DESC'
-        }
+        },
+        type: { exclude: ['Page', 'Musing'] }
       }
     }
   );

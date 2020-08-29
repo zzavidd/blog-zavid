@@ -27,19 +27,53 @@ describe('Post Tests', function () {
       });
     });
 
-    it('With type', function (finish) {
-      const type = Post.TYPES.REVERIE.TITLE || 'Reverie';
-      fetch(GET_POSTS_QUERY, { variables: { type } }, function ({ data }) {
-        data.getAllPosts.forEach((post) => {
-          assert.equal(post.type, type);
+    describe('With type', function () {
+      it('Including types', function (finish) {
+        const includedTypes = [
+          Post.TYPES.REVERIE.TITLE,
+          Post.TYPES.EPISTLE.TITLE
+        ];
+        const excludedTypes = Post.typeList.filter(function (val) {
+          return includedTypes.indexOf(val) == -1;
         });
-        finish();
+        fetch(
+          GET_POSTS_QUERY,
+          { variables: { type: { include: includedTypes } } },
+          function ({ data }) {
+            data.getAllPosts.forEach((post) => {
+              assert.include(includedTypes, post.type);
+              assert.notInclude(excludedTypes, post.type);
+            });
+            finish();
+          }
+        );
+      });
+
+      it('Excluding types', function (finish) {
+        const excludedTypes = [
+          Post.TYPES.REVERIE.TITLE,
+          Post.TYPES.EPISTLE.TITLE
+        ];
+        const includedTypes = Post.typeList.filter(function (val) {
+          return excludedTypes.indexOf(val) == -1;
+        });
+        fetch(
+          GET_POSTS_QUERY,
+          { variables: { type: { exclude: excludedTypes } } },
+          function ({ data }) {
+            data.getAllPosts.forEach((post) => {
+              assert.include(includedTypes, post.type);
+              assert.notInclude(excludedTypes, post.type);
+            });
+            finish();
+          }
+        );
       });
     });
   });
 
   describe('Create Post', function () {
-    it('', function (finish) {
+    it('Without image', function (finish) {
       const post = new Post().random().build();
 
       Promise.resolve()
@@ -70,7 +104,7 @@ describe('Post Tests', function () {
   });
 
   describe('Update Post', function () {
-    it('', function (finish) {
+    it('Without image', function (finish) {
       const post = new Post().random().build();
       fetch(
         UPDATE_POST_QUERY,
@@ -86,7 +120,7 @@ describe('Post Tests', function () {
   });
 
   describe('Delete Post', function () {
-    it('', function (finish) {
+    it('Successful deletion', function (finish) {
       Promise.resolve()
         .then(() => {
           // Delete the post.

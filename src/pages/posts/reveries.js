@@ -25,7 +25,7 @@ const ReveriesList = () => {
           field: 'datePublished',
           order: 'DESC'
         },
-        type: 'Reverie'
+        type: { include: ['Reverie'] }
       }
     }
   );

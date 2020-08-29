@@ -18,7 +18,7 @@ type Post {
 }
 
 type Query {
-  getAllPosts(limit: Int, sort: PostOrder, type: PostType): [Post]
+  getAllPosts(limit: Int, sort: PostOrder, type: PostTypeOptions): [Post]
   getSinglePost(id: Int!): Post
 }
 
@@ -82,4 +82,9 @@ input PostInput {
 input PostOrder {
   field: PostSortField
   order: Order
+}
+
+input PostTypeOptions {
+  include: [PostType]
+  exclude: [PostType]
 }
