@@ -69,13 +69,8 @@ const PostCrud = ({ post: currentPost, operation }) => {
   const populateForm = () => {
     if (isCreateOperation) return;
 
-    const datePublished = Post.isPublish(currentPost.status)
-      ? currentPost.datePublished
-      : null;
-
     setPost(
       Object.assign({}, currentPost, {
-        datePublished,
         imageHasChanged: false
       })
     );

@@ -47,6 +47,10 @@
   padding: 2em;
 }
 
+.form-preview-text {
+  font-size: 1.1em;
+}
+
 .form-footer-buttons {
   @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
   display: flex;
