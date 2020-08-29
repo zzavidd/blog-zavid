@@ -27,7 +27,7 @@ export const TRANSFORMATIONS = {
   MEDIUM_WIDE: { width: 1280, height: 720 }
 };
 
-export const CloudImage = ({
+export default ({
   alt,
   containerClassName,
   imageClassName,
@@ -43,14 +43,22 @@ export const CloudImage = ({
   const publicId = version ? `${version}/${src}` : src;
   const { width, height } = lazy || {};
   return (
-    <CloudinaryContext cloudName={'zavid'} className={containerClassName} style={style}>
+    <CloudinaryContext
+      cloudName={'zavid'}
+      className={containerClassName}
+      style={style}>
       <Image
         publicId={publicId}
         alt={alt}
         title={title}
         width={'100%'}
         className={imageClassName}>
-        <Transformation width={width} height={height} crop={'lfill'} {...transformations} />
+        <Transformation
+          width={width}
+          height={height}
+          crop={'lfill'}
+          {...transformations}
+        />
       </Image>
     </CloudinaryContext>
   );
