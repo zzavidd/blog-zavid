@@ -81,7 +81,7 @@ const FormPreview = ({ isPreviewVisible, previewText }) => {
       direction={'right'}
       className={css[`form-preview-${theme}`]}
       style={{ display: isPreviewVisible ? 'block' : 'none' }}>
-      <Paragraph>{previewText}</Paragraph>
+      <Paragraph className={css['form-preview-text']}>{previewText}</Paragraph>
     </Slider>
   );
 };
