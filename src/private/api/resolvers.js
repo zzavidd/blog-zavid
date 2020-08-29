@@ -1,5 +1,5 @@
 const { PostQueryBuilder } = require('../../classes');
-const { debug } = require('../error');
+const { debug, ERRORS } = require('../error');
 const filer = require('../filer');
 const knex = require('../singleton').getKnex();
 
@@ -35,7 +35,10 @@ exports.getSinglePost = ({ id }) => {
     .then(() => {
       return new PostQueryBuilder(knex).whereId(id).build();
     })
-    .then(([post]) => post)
+    .then(([post]) => {
+      if (!post) throw ERRORS.NO_POST_WITH_ID(id);
+      return post;
+    })
     .catch(debug);
 };
 
@@ -89,6 +92,7 @@ exports.deletePost = ({ id }) => {
       return new PostQueryBuilder(knex).whereId(id).build();
     })
     .then(([post]) => {
+      if (!post) throw ERRORS.NO_POST_WITH_ID(id);
       return filer.destroyImage(post.image);
     })
     .then(() => {

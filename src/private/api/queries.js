@@ -1,25 +1,42 @@
 const { gql } = require('@apollo/client');
 
-exports.GET_POSTS_QUERY = gql`
-  query GetAllPosts($limit: Int, $sort: PostOrder, $type: PostType) {
-    getAllPosts(limit: $limit, sort: $sort, type: $type) {
-      id
-      title
-      type
-      content
-      status
-      image
-      datePublished
-      slug
-      createTime
-      domainId
-      domainType
-    }
+const postFragments = gql`
+  fragment PostFields on Post {
+    id
+    title
+    type
+    content
+    status
+    image
+    datePublished
+    excerpt
+    slug
+    createTime
+    domainId
+    domainType
   }
 `;
 
+exports.GET_POSTS_QUERY = gql`
+  query GetAllPosts($limit: Int, $sort: PostOrder, $type: PostType) {
+    getAllPosts(limit: $limit, sort: $sort, type: $type) {
+      ...PostFields
+    }
+  }
+  ${postFragments}
+`;
+
+exports.GET_SINGLE_POST_QUERY = gql`
+  query GetSinglePost($id: Int!) {
+    getSinglePost(id: $id) {
+      ...PostFields
+    }
+  }
+  ${postFragments}
+`;
+
 exports.CREATE_POST_QUERY = gql`
-  mutation CreatePost($post: PostInput!, $isPublish: Boolean = false) {
+  mutation CreatePost($post: PostInput!, $isPublish: Boolean) {
     createPost(post: $post, isPublish: $isPublish) {
       id
     }
@@ -39,9 +56,10 @@ exports.UPDATE_POST_QUERY = gql`
       isPublish: $isPublish
       imageHasChanged: $imageHasChanged
     ) {
-      id
+      ...PostFields
     }
   }
+  ${postFragments}
 `;
 
 exports.DELETE_POST_QUERY = gql`

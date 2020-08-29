@@ -45,7 +45,7 @@ enum PostType {
   Musing
 }
 
-enum PostField {
+enum PostSortField {
   id
   title
   type
@@ -80,6 +80,6 @@ input PostInput {
 }
 
 input PostOrder {
-  field: PostField
+  field: PostSortField
   order: Order
 }

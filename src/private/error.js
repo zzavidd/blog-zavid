@@ -23,5 +23,9 @@ exports.renderErrorPage = (err, req, res, next) => {
 
 exports.ERRORS = {
   NO_REVERIE: new ErrorBuilder('No such reverie exists.', 404),
-  NO_PAGE: new ErrorBuilder('No such page exists.', 404)
+  NO_PAGE: new ErrorBuilder('No such page exists.', 404),
+
+  NO_POST_WITH_ID: (id) => {
+    return new ErrorBuilder(`Post with ID '${id}' doesn't exist.`);
+  }
 };

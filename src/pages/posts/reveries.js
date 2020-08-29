@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
+import { alert } from 'components/alert.js';
 import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
@@ -31,7 +32,7 @@ const ReveriesList = () => {
   useEffect(() => {
     if (queryLoading) return;
     if (queryError) alert.error(queryError);
-    setReveries(data.getAllPosts);
+    setReveries(data ? data.getAllPosts : []);
     setLoaded(true);
   }, [isLoaded, queryLoading]);
 
