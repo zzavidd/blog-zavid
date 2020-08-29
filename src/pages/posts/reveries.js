@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
 import { alert } from 'components/alert.js';
-import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
+import { CloudImage, TRANSFORMATIONS } from 'components/image.js';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
@@ -86,7 +86,7 @@ const ReverieImage = ({ reverie }) => {
   const theme = useSelector(({ theme }) => theme);
   if (!reverie.image) return null;
   return (
-    <CloudinaryImage
+    <CloudImage
       src={reverie.image}
       alt={reverie.title}
       lazy={TRANSFORMATIONS.MEDIUM_WIDE}

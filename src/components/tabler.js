@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 
 import { Icon } from 'components/icon.js';
-import { CloudinaryImage } from 'components/image.js';
+import { CloudImage } from 'components/image.js';
 import { LazyLoader } from 'components/loader.js';
 import { Title } from 'components/text.js';
 import { Fader } from 'components/transitioner';
@@ -190,7 +190,7 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
             switch (type) {
               case TYPE.IMAGE:
                 value = (
-                  <CloudinaryImage
+                  <CloudImage
                     src={value}
                     containerClassName={imageOptions.css}
                     lazy={imageOptions.lazy}
@@ -248,7 +248,7 @@ const MobileView = ({ field }) => {
       return null;
     case TYPE.IMAGE:
       return (
-        <CloudinaryImage
+        <CloudImage
           src={value}
           containerClassName={imageOptions.css}
           lazy={imageOptions.lazy}

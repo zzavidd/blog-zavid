@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Switch from 'react-switch';
 
 import { ThemedIcon } from 'components/icon.js';
-import { CloudinaryImage } from 'components/image.js';
+import { CloudImage } from 'components/image.js';
 import { setTheme } from 'lib/reducers/actions';
 import css from 'styles/Partials.module.scss';
 
@@ -25,7 +25,7 @@ const Header = () => {
     <Navbar className={css[`nav-${theme}`]} expand={'md'} sticky={'top'}>
       <Container fluid={'lg'}>
         <Navbar.Brand href={'/'}>
-          <CloudinaryImage
+          <CloudImage
             src={`/static/logos/zavid-logo-text-${theme}.png`}
             alt={'ZAVID Logo'}
             lazy={{ height: 40 }}

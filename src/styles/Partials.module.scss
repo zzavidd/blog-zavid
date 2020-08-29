@@ -44,13 +44,20 @@
 ////////////////////////////////
 
 .sidebar {
-  
+}
+
+.recent-post-unit {
+  @include themer(&, border-color, $dark, $border-color);
+  border-top: 2px solid;
+  padding: 1.2em 0;
+  width: 100%;
 }
 
 .recent-post-image {
   @include themer(&, border-color, $dark, $border-color);
   border: 2px solid;
   border-radius: 10px;
+  overflow: hidden;
   width: 90%;
 }
 
