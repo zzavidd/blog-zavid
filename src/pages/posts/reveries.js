@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/client';
 import React, { useState, useEffect, memo } from 'react';
-import { Container } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
 import { alert } from 'components/alert.js';
 import { CloudImage, TRANSFORMATIONS } from 'components/image.js';
+import { Partitioner } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
@@ -13,7 +13,7 @@ import { RightSidebar } from 'partials/sidebar';
 import { GET_POSTS_QUERY } from 'private/api/queries';
 import css from 'styles/pages/Reveries.module.scss';
 
-const ReveriesList = () => {
+export default () => {
   const [reveries, setReveries] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
@@ -38,14 +38,20 @@ const ReveriesList = () => {
   }, [isLoaded, queryLoading]);
 
   return (
-    <Container className={css['reveries-container']}>
-      <div>
-        {reveries.map((reverie, key) => (
-          <Reverie reverie={reverie} key={key} />
-        ))}
-      </div>
+    <Partitioner>
+      <ReverieList reveries={reveries} />
       <RightSidebar />
-    </Container>
+    </Partitioner>
+  );
+};
+
+const ReverieList = ({ reveries }) => {
+  return (
+    <div className={css['reveries-list']}>
+      {reveries.map((reverie, key) => (
+        <Reverie reverie={reverie} key={key} />
+      ))}
+    </div>
   );
 };
 
@@ -62,7 +68,7 @@ const Reverie = memo(({ reverie }) => {
         duration={400}
         className={css[`reveries-unit-${theme}`]}>
         <Title className={css['reveries-title']}>{reverie.title}</Title>
-        <div>{datePublished}</div>
+        <div className={css['reveries-date']}>{datePublished}</div>
         <a href={link}>
           <ReverieImage reverie={reverie} />
         </a>
@@ -73,8 +79,7 @@ const Reverie = memo(({ reverie }) => {
           }}
           truncate={60}
           moreclass={css['reveries-readmore']}
-          morelink={link}
-          moretext={'Read more...'}>
+          morelink={link}>
           {reverie.content}
         </Paragraph>
       </Zoomer>
@@ -94,5 +99,3 @@ const ReverieImage = ({ reverie }) => {
     />
   );
 };
-
-export default ReveriesList;

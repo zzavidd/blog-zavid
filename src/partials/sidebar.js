@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client';
 import React, { useState, useEffect, memo } from 'react';
-import { Container } from 'react-bootstrap';
 import { forceCheck } from 'react-lazyload';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
@@ -40,12 +39,12 @@ export const RightSidebar = () => {
   }, [isLoaded, queryLoading]);
 
   return (
-    <Container className={css[`sidebar-${theme}`]}>
-      <Title>Recent Posts</Title>
+    <div className={css[`sidebar-${theme}`]}>
+      <Title className={css[`sidebar-title`]}>Recent Posts</Title>
       {recentPosts.map((post, key) => (
         <RecentPost post={post} key={key} />
       ))}
-    </Container>
+    </div>
   );
 };
 
@@ -68,7 +67,9 @@ const RecentPost = memo(({ post }) => {
           className={css[`recent-post-unit-${theme}`]}>
           <RecentPostImage post={post} />
           <Title className={css['recent-post-title']}>{post.title}</Title>
-          <div>{datePublished}</div>
+          <div className={css['recent-post-date']}>
+            {post.type} | {datePublished}
+          </div>
         </Zoomer>
       </LazyLoader>
     </a>

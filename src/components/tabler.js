@@ -2,10 +2,10 @@ import React, { memo, useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { forceCheck } from 'react-lazyload';
 import { useSelector } from 'react-redux';
-import MediaQuery from 'react-responsive';
 
 import { Icon } from 'components/icon.js';
 import { CloudImage } from 'components/image.js';
+import { Responsive } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
 import { Title } from 'components/text.js';
 import { Fader } from 'components/transitioner';
@@ -76,17 +76,25 @@ const Tabler = (props) => {
     <>
       <TableHeading heading={heading} />
       <div className={css['tabler-container']}>
-        <MediaQuery minWidth={576}>
-          <div className={css['tabler-grid']}>
-            <HeaderRow {...props} />
-            <ItemRows {...props} centerAlignedIndices={centerAlignedIndices} />
-          </div>
-        </MediaQuery>
-        <MediaQuery maxWidth={576}>
-          <div className={css['tabler-list']}>
-            <ItemRows {...props} centerAlignedIndices={centerAlignedIndices} />
-          </div>
-        </MediaQuery>
+        <Responsive
+          defaultView={
+            <div className={css['tabler-grid']}>
+              <HeaderRow {...props} />
+              <ItemRows
+                {...props}
+                centerAlignedIndices={centerAlignedIndices}
+              />
+            </div>
+          }
+          mobileView={
+            <div className={css['tabler-list']}>
+              <ItemRows
+                {...props}
+                centerAlignedIndices={centerAlignedIndices}
+              />
+            </div>
+          }
+        />
       </div>
     </>
   );
@@ -203,15 +211,16 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
             const style = { textAlign: isCenterAligned ? 'center' : 'left' };
 
             return (
-              <React.Fragment key={key}>
-                <MediaQuery minWidth={576}>
-                  <span style={style}>{value}</span>
-                </MediaQuery>
-                <MediaQuery maxWidth={576}>
-                  <MobileView field={field} key={key} />
-                  <CrudButtons fields={fields} />
-                </MediaQuery>
-              </React.Fragment>
+              <Responsive
+                key={key}
+                defaultView={<span style={style}>{value}</span>}
+                mobileView={
+                  <>
+                    <MobileView field={field} key={key} />
+                    <CrudButtons fields={fields} />
+                  </>
+                }
+              />
             );
           })}
       </Fader>

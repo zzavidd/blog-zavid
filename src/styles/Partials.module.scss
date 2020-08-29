@@ -39,11 +39,37 @@
   }
 }
 
+.nav-brand {
+  $default: 45px;
+  $small: 35px;
+  @include responsive(height, $default, $sm: $small);
+  @include responsive(width, $default, $sm: $small);
+  transition-duration: 0.5s;
+}
+
+.nav-toggler {
+  @include responsive(font-size, 1.25em, $sm: 1em);
+}
+
 ////////////////////////////////
 /// SIDEBAR
 ////////////////////////////////
 
 .sidebar {
+  @include themer(
+    &,
+    background-color,
+    rgba($color: $dark, $alpha: 0.15),
+    rgba($color: $dark, $alpha: 0.8)
+  );
+  height: fit-content;
+  overflow-y: scroll;
+  padding: 1.2em 1.5em;
+}
+
+.sidebar-title {
+  @include responsive(font-size, 2em, $sm: 1.6em);
+  padding-bottom: 0.5em;
 }
 
 .recent-post-unit {
@@ -51,6 +77,15 @@
   border-top: 2px solid;
   padding: 1.2em 0;
   width: 100%;
+}
+
+.recent-post-title {
+  font-size: 1.2em;
+  padding-top: 0.5em;
+}
+
+.recent-post-date {
+  font-size: 0.8em;
 }
 
 .recent-post-image {

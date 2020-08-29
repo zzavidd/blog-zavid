@@ -1,8 +1,6 @@
 @import '../App';
 
-.reveries-container {
-  @include responsive(width, 60%, $lg: 80%, $md: 90%, $sm: 100%);
-  display: flex;
+.reveries-list {
   padding: 1em 1.5em;
 }
 
@@ -17,6 +15,11 @@
   @include responsive(font-size, 2.2em, $sm: 1.8em);
 }
 
+.reveries-date {
+  @include responsive(font-size, 1em, $sm: 0.8em);
+  @include responsive(padding, 0, $sm: 0.5em 0);
+}
+
 .reveries-image {
   @include themer(&, border-color, $dark, $border-color);
   border: 2px solid;
@@ -28,9 +31,9 @@
 }
 
 .reveries-paragraph {
-  @include responsive(font-size, 1em, $sm: 1.1em);
+  @include responsive(font-size, 0.9em, $sm: 1.1em);
 }
 
 .reveries-readmore {
-  @include responsive(font-size, 1em, $sm: 0.9em);
+  @include responsive(font-size, 1.1em, $sm: 0.9em);
 }

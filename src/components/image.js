@@ -35,6 +35,7 @@ export const CloudImage = ({
   src,
   style,
   title,
+  transformations,
   version
 }) => {
   if (!src) return null;
@@ -49,7 +50,7 @@ export const CloudImage = ({
         title={title}
         width={'100%'}
         className={imageClassName}>
-        <Transformation width={width} height={height} crop={'lfill'} />
+        <Transformation width={width} height={height} crop={'lfill'} {...transformations} />
       </Image>
     </CloudinaryContext>
   );

@@ -6,8 +6,10 @@ $readmore-light: #0063fb;
 $readmore-dark: #87ceeb;
 
 .title {
+  @include responsive(letter-spacing, 0, $sm: -2px);
   font-family: $title-font;
   font-weight: bold;
+  line-height: 1.3;
 }
 
 .paragraph {
