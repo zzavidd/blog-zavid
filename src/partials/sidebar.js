@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
 import { alert } from 'components/alert.js';
-import { CloudImage, TRANSFORMATIONS } from 'components/image.js';
+import CloudImage, { TRANSFORMATIONS } from 'components/image.js';
 import { Title } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { GET_POSTS_QUERY } from 'private/api/queries';

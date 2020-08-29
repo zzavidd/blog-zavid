@@ -4,7 +4,7 @@ import { forceCheck } from 'react-lazyload';
 import { useSelector } from 'react-redux';
 
 import { Icon } from 'components/icon.js';
-import { CloudImage } from 'components/image.js';
+import CloudImage from 'components/image.js';
 import { Responsive } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
 import { Title } from 'components/text.js';

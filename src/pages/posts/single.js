@@ -2,7 +2,7 @@ import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import { BackButton } from 'components/button';
-import { CloudImage } from 'components/image';
+import CloudImage from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Paragraph, Title, Divider } from 'components/text';
