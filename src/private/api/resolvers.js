@@ -1,4 +1,4 @@
-const { PostQueryBuilder } = require('../../classes');
+const { PostQueryBuilder, PostMutationBuilder } = require('../../classes');
 const { debug, ERRORS } = require('../error');
 const filer = require('../filer');
 const knex = require('../singleton').getKnex();
@@ -53,7 +53,7 @@ exports.createPost = ({ post, isPublish }) => {
   return Promise.resolve()
     .then(() => filer.uploadImage(post))
     .then((post) => {
-      return knex.insert(post).into('posts');
+      return new PostMutationBuilder(knex, 'posts').insert(post).build();
     })
     .then(([id]) => {
       return { id };
@@ -74,7 +74,10 @@ exports.updatePost = ({ id, post, isPublish, imageHasChanged }) => {
   return Promise.resolve()
     .then(() => filer.replaceImage(id, post, imageHasChanged))
     .then((updatedPost) => {
-      return knex('posts').update(updatedPost).where('id', id);
+      return new PostMutationBuilder(knex, 'posts')
+        .update(updatedPost)
+        .whereId(id)
+        .build();
     })
     .then(() => this.getSinglePost({ id }))
     .catch(debug);
@@ -96,10 +99,10 @@ exports.deletePost = ({ id }) => {
       return filer.destroyImage(post.image);
     })
     .then(() => {
-      return knex('posts')
-        .where('id', id)
-        .del()
-        .then(() => ({ id }));
+      return new PostMutationBuilder(knex, 'posts').delete(id).build();
+    })
+    .then(() => {
+      return { id };
     })
     .catch(debug);
 };
