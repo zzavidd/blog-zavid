@@ -1,14 +1,21 @@
-const { PostQueryBuilder, PostMutationBuilder } = require('../../classes');
+const {
+  PostQueryBuilder,
+  PostMutationBuilder
+} = require('../../classes/builders/query');
 const { debug, ERRORS } = require('../error');
 const filer = require('../filer');
 const knex = require('../singleton').getKnex();
 
 /**
  * Retrieves all posts from database.
- * @param {object} args - The arguments.
- * @param {number} args.limit - Defines the number of results to return.
- * @param {object} args.sort - Defines which field to use for ordering.
- * @param {string} args.type - The type of post to filter by.
+ * @param {object} args The arguments.
+ * @param {number} args.limit Defines the number of results to return.
+ * @param {object} args.sort Defines how to order the results.
+ * @param {string} args.sort.field The field to sort by.
+ * @param {string} args.sort.order The order. Whether ascending, descending or random.
+ * @param {object} args.type The types to filter by.
+ * @param {string[]} args.type.include The types to include in results.
+ * @param {string[]} args.type.exclude The types to include in results.
  * @returns {object[]} The posts.
  */
 exports.getAllPosts = ({ limit, sort, type }) => {

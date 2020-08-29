@@ -49,7 +49,9 @@ const PostsAdmin = () => {
         field: options.field || null,
         order: options.order
       },
-      type: options.type || null
+      type: {
+        include: options.type ? [options.type] : []
+      }
     },
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true
