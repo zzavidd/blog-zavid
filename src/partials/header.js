@@ -36,6 +36,7 @@ const Header = () => {
           <Nav className={'justify-content-center'}>
             <Nav.Link href={'/reveries'}>Reveries</Nav.Link>
             <Nav.Link href={'#'}>Epistles</Nav.Link>
+            <Nav.Link href={'#'}>Musings</Nav.Link>
             <Nav.Link href={'#'}>Diary</Nav.Link>
             <Nav.Link href={'#'}>About</Nav.Link>
           </Nav>

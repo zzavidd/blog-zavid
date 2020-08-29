@@ -1,5 +1,10 @@
 @import '../App';
 
+$hyperlink-light: #ac1ef3;
+$hyperlink-dark: #d98dff;
+$readmore-light: #0063fb;
+$readmore-dark: #87ceeb;
+
 .title {
   font-family: $title-font;
   font-weight: bold;
@@ -25,8 +30,8 @@
 
 .paragraph-hyperlink {
   $values: (
-    light: #ac1ef3,
-    dark: #d98dff
+    light: $hyperlink-light,
+    dark: $hyperlink-dark
   );
   @each $theme in $themes {
     $value: map-get($values, $theme);
@@ -78,7 +83,43 @@
   }
 }
 
+.paragraph-read-more {
+  $values: (
+    light: $readmore-light,
+    dark: $readmore-dark
+  );
+  @each $theme in $themes {
+    $value: map-get($values, $theme);
+    &-#{$theme} {
+      color: $value !important;
+      cursor: pointer;
+      display: block;
+      margin-top: 0.5em;
+
+      &:hover {
+        color: adjust-color($value, $lightness: 10%);
+        text-decoration: underline;
+      }
+
+      &:active {
+        color: adjust-color($value, $lightness: 30%);
+        transition-duration: 0.1s;
+      }
+
+      * {
+        color: $value !important;
+      }
+    }
+  }
+}
+
 .divider {
   @include themer(&, background-color, $light: #000, $dark: #fff);
   margin: 2em 0;
+}
+
+.vanilla-link {
+  &:hover {
+    text-decoration: none;
+  }
 }

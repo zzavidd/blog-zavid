@@ -70,12 +70,8 @@ const ShareLink = ({ url }) => {
     navigator.clipboard.writeText(url);
     alert.success("Copied this article's link to clipboard!");
   };
-  const classes = classnames(
-    css['copy-link-button'],
-    css.post_share_icons_onhover
-  );
   return (
-    <InvisibleButton className={classes} onClick={copyLink}>
+    <InvisibleButton className={css['copy-link-button']} onClick={copyLink}>
       <div>
         <Icon name={'share'} className={css['copy-link-icon']} />
       </div>

@@ -50,6 +50,7 @@ const Reverie = memo(({ reverie }) => {
   const [isInView, setInView] = useState(false);
 
   const datePublished = zDate.formatDate(parseInt(reverie.datePublished), true);
+  const link = `/reveries/${reverie.slug}`;
   return (
     <LazyLoader setInView={setInView}>
       <Zoomer
@@ -60,8 +61,14 @@ const Reverie = memo(({ reverie }) => {
         <div>{datePublished}</div>
         <ReverieImage reverie={reverie} />
         <Paragraph
-          cssOverrides={{ paragraph: css['reveries-paragraph'] }}
-          truncate={60}>
+          cssOverrides={{
+            paragraph: css['reveries-paragraph'],
+            hyperlink: css['reveries-readmore']
+          }}
+          truncate={60}
+          moreclass={css['reveries-readmore']}
+          morelink={link}
+          moretext={'Read more...'}>
           {reverie.content}
         </Paragraph>
       </Zoomer>
