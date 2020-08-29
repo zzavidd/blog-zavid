@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import Switch from 'react-switch';
 
-import { InvisibleButton } from 'components/button.js';
 import { ThemedIcon } from 'components/icon.js';
 import { CloudinaryImage } from 'components/image.js';
 import { setTheme } from 'lib/reducers/actions';
@@ -42,9 +42,13 @@ const Header = () => {
           </Nav>
         </Navbar.Collapse>
         <Nav.Item>
-          <InvisibleButton onClick={switchTheme}>
-            <ThemedIcon name={isLightTheme ? 'moon' : 'sun'} />
-          </InvisibleButton>
+          <Switch
+            onChange={switchTheme}
+            checked={!isLightTheme}
+            className={css['theme-toggle']}
+            checkedIcon={<ThemedIcon name={'moon'} />}
+            uncheckedIcon={<ThemedIcon name={'sun'} />}
+          />
         </Nav.Item>
       </Container>
     </Navbar>

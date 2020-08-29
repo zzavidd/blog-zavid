@@ -56,3 +56,13 @@
   @include themer(&, color, $light: #000, $dark: #fff);
   margin-right: 0.4em;
 }
+
+.react-switch-bg div {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  svg {
+    margin-right: 0;
+  }
+}
