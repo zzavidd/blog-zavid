@@ -3,8 +3,9 @@ import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
 import { useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
-import { zText } from 'zavid-modules';
+import { zLogic, zText } from 'zavid-modules';
 
+import { Icon } from 'components/icon';
 import css from 'styles/components/Text.module.scss';
 /**
  * A title component for headings.
@@ -71,7 +72,7 @@ export const Paragraph = ({
 
   const ReadMoreLabel = () => {
     if (children && children.length <= truncate) return null;
-    if (!moretext || !morelink) return null;
+    if (zLogic.isFalsy(moretext, morelink)) return null;
     return <ReadMore className={moreclass} link={morelink} text={moretext} />;
   };
 
@@ -80,6 +81,39 @@ export const Paragraph = ({
       <pre className={classes}>{text}</pre>
       <ReadMoreLabel />
     </>
+  );
+};
+
+export const ReadMore = ({ link, text = 'Read more', className }) => {
+  const theme = useSelector(({ theme }) => theme);
+  const classes = classNames(css[`paragraph-read-more-${theme}`], className);
+  return (
+    <VanillaLink href={link}>
+      <div className={classes}>
+        <Icon name={'paper-plane'} className={css['link-icon']} />
+        {text}
+      </div>
+    </VanillaLink>
+  );
+};
+
+export const VanillaLink = ({
+  className,
+  href,
+  children,
+  openNewTab = false
+}) => {
+  const classes = classNames(css['vanilla-link'], className);
+  return (
+    <a
+      className={classes}
+      href={href}
+      {...(openNewTab && {
+        target: '_blank',
+        rel: 'noopener noreferrer'
+      })}>
+      {children}
+    </a>
   );
 };
 
