@@ -1,12 +1,10 @@
 import { useQuery } from '@apollo/client';
-import React, { useState, useEffect, memo } from 'react';
-import { forceCheck } from 'react-lazyload';
+import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
 import { alert } from 'components/alert.js';
 import { CloudImage, TRANSFORMATIONS } from 'components/image.js';
-import { LazyLoader } from 'components/loader.js';
 import { Title } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { GET_POSTS_QUERY } from 'private/api/queries';
@@ -50,28 +48,26 @@ export const RightSidebar = () => {
 
 const RecentPost = memo(({ post }) => {
   const theme = useSelector(({ theme }) => theme);
-  const [isInView, setInView] = useState(false);
+  const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    forceCheck();
+    setLoaded(true);
   }, []);
 
   const datePublished = zDate.formatDate(parseInt(post.datePublished), true);
   const link = `/reveries/${post.slug}`;
   return (
     <a href={link}>
-      <LazyLoader setInView={setInView}>
-        <Zoomer
-          determinant={isInView}
-          duration={400}
-          className={css[`recent-post-unit-${theme}`]}>
-          <RecentPostImage post={post} />
-          <Title className={css['recent-post-title']}>{post.title}</Title>
-          <div className={css['recent-post-date']}>
-            {post.type} | {datePublished}
-          </div>
-        </Zoomer>
-      </LazyLoader>
+      <Zoomer
+        determinant={isLoaded}
+        duration={400}
+        className={css[`recent-post-unit-${theme}`]}>
+        <RecentPostImage post={post} />
+        <Title className={css['recent-post-title']}>{post.title}</Title>
+        <div className={css['recent-post-date']}>
+          {post.type} | {datePublished}
+        </div>
+      </Zoomer>
     </a>
   );
 });

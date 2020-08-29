@@ -13,7 +13,11 @@ const Header = () => {
   const theme = useSelector(({ theme }) => theme);
 
   return (
-    <Navbar className={css[`nav-${theme}`]} expand={'md'} sticky={'top'} variant={theme}>
+    <Navbar
+      className={css[`nav-${theme}`]}
+      expand={'md'}
+      sticky={'top'}
+      variant={theme}>
       <Container fluid={'lg'}>
         <BrandButton />
         <Responsive
@@ -41,7 +45,6 @@ const BrandButton = () => {
       <CloudImage
         containerClassName={css['nav-brand']}
         src={`/static/logos/zavid-head-logo.png`}
-        version={'v1598720977'}
       />
     </Navbar.Brand>
   );
