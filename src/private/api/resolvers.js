@@ -11,18 +11,16 @@ const knex = require('../singleton').getKnex();
  * @param {object} args The arguments.
  * @param {number} args.limit Defines the number of results to return.
  * @param {object} args.sort Defines how to order the results.
- * @param {string} args.sort.field The field to sort by.
- * @param {string} args.sort.order The order. Whether ascending, descending or random.
  * @param {object} args.type The types to filter by.
- * @param {string[]} args.type.include The types to include in results.
- * @param {string[]} args.type.exclude The types to include in results.
+ * @param {object} args.status The statuses to filter by.
  * @returns {object[]} The posts.
  */
-exports.getAllPosts = ({ limit, sort, type }) => {
+exports.getAllPosts = ({ limit, sort, type, status }) => {
   return Promise.resolve()
     .then(() => {
       return new PostQueryBuilder(knex)
         .whereType(type)
+        .whereStatus(status)
         .withOrder(sort)
         .withLimit(limit)
         .build();

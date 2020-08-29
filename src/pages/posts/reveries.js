@@ -3,6 +3,7 @@ import React, { useState, useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
+import { Post } from 'classes';
 import { alert } from 'components/alert.js';
 import CloudImage, { TRANSFORMATIONS } from 'components/image.js';
 import { Partitioner } from 'components/layout';
@@ -25,7 +26,8 @@ export default () => {
           field: 'datePublished',
           order: 'DESC'
         },
-        type: { include: ['Reverie'] }
+        type: { include: [Post.TYPES.REVERIE.TITLE] },
+        status: { include: [Post.STATUSES.PUBLISHED] }
       }
     }
   );
