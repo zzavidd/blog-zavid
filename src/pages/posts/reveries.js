@@ -9,6 +9,7 @@ import { CloudinaryImage, TRANSFORMATIONS } from 'components/image.js';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
+import { RightSidebar } from 'partials/sidebar';
 import { GET_POSTS_QUERY } from 'private/api/queries';
 import css from 'styles/pages/Reveries.module.scss';
 
@@ -38,9 +39,12 @@ const ReveriesList = () => {
 
   return (
     <Container className={css['reveries-container']}>
-      {reveries.map((reverie, key) => (
-        <Reverie reverie={reverie} key={key} />
-      ))}
+      <div>
+        {reveries.map((reverie, key) => (
+          <Reverie reverie={reverie} key={key} />
+        ))}
+      </div>
+      <RightSidebar />
     </Container>
   );
 };
@@ -59,7 +63,9 @@ const Reverie = memo(({ reverie }) => {
         className={css[`reveries-unit-${theme}`]}>
         <Title className={css['reveries-title']}>{reverie.title}</Title>
         <div>{datePublished}</div>
-        <ReverieImage reverie={reverie} />
+        <a href={link}>
+          <ReverieImage reverie={reverie} />
+        </a>
         <Paragraph
           cssOverrides={{
             paragraph: css['reveries-paragraph'],

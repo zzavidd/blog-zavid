@@ -2,6 +2,7 @@
 
 .reveries-container {
   @include responsive(width, 60%, $lg: 80%, $md: 90%, $sm: 100%);
+  display: flex;
   padding: 1em 1.5em;
 }
 
@@ -29,6 +30,7 @@
 .reveries-paragraph {
   @include responsive(font-size, 1em, $sm: 1.1em);
 }
+
 .reveries-readmore {
   @include responsive(font-size, 1em, $sm: 0.9em);
 }
