@@ -1,16 +1,27 @@
 const { zLogic } = require('zavid-modules');
 const { isFalsy } = zLogic;
 
-/** Builds a post query with conditions. */
-class PostQueryBuilder {
-  constructor(knex) {
-    this.query = knex.select().from('posts');
-  }
-
+class QueryBuilder {
   whereId(id) {
     if (isFalsy(id)) return this;
     this.query.where('id', id);
     return this;
+  }
+
+  /**
+   * Return the built query.
+   * @returns {Knex} The build Knex query.
+   */
+  build() {
+    return this.query;
+  }
+}
+
+/** Builds a post query with conditions. */
+class PostQueryBuilder extends QueryBuilder {
+  constructor(knex) {
+    super();
+    this.query = knex.select().from('posts');
   }
 
   whereType(type) {
@@ -64,19 +75,30 @@ class PostQueryBuilder {
     this.query.limit(limit);
     return this;
   }
-
-  /**
-   * Return the built query.
-   * @returns {Knex} The build Knex query.
-   */
-  build() {
-    return this.query;
-  }
 }
 
-class PostMutationBuilder {
+class PostMutationBuilder extends QueryBuilder {
   constructor(knex, table) {
+    super();
     this.query = knex(table);
+  }
+
+  insert(post) {
+    if (isFalsy(post)) throw new Error('No specified post to insert.');
+    this.query.insert(post);
+    return this;
+  }
+
+  update(post) {
+    if (isFalsy(post)) throw new Error('No specified post to update.');
+    this.query.update(post);
+    return this;
+  }
+
+  delete(id) {
+    if (isFalsy(id)) throw new Error('No specified post to delete.');
+    this.query.where('id', id).del();
+    return this;
   }
 }
 
