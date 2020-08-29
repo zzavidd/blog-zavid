@@ -30,6 +30,12 @@ class PostQueryBuilder extends QueryBuilder {
     return this;
   }
 
+  whereStatus({ include, exclude } = {}) {
+    if (!isFalsy(include)) this.query.whereIn('status', include);
+    if (!isFalsy(exclude)) this.query.whereNotIn('status', exclude);
+    return this;
+  }
+
   whereDomainType(type) {
     if (isFalsy(type)) return this;
     this.query.where('domainType', type);

@@ -3,6 +3,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
+import { Post } from 'classes';
 import { alert } from 'components/alert.js';
 import CloudImage, { TRANSFORMATIONS } from 'components/image.js';
 import { Title } from 'components/text.js';
@@ -24,7 +25,8 @@ export const RightSidebar = () => {
           field: 'datePublished',
           order: 'DESC'
         },
-        type: { exclude: ['Page', 'Musing'] }
+        type: { exclude: [Post.TYPES.PAGE.TITLE] },
+        status: { include: [Post.STATUSES.PUBLISHED] }
       }
     }
   );
