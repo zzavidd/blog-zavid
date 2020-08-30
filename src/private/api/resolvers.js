@@ -56,7 +56,7 @@ exports.getSinglePost = ({ id }) => {
  */
 exports.createPost = ({ post, isPublish }) => {
   return Promise.resolve()
-    .then(() => filer.uploadImage(post))
+    .then(() => filer.uploadImages(post))
     .then((post) => {
       return new PostMutationBuilder(knex, 'posts').insert(post).build();
     })
@@ -72,12 +72,12 @@ exports.createPost = ({ post, isPublish }) => {
  * @param {number} args.id - The ID of the post to update.
  * @param {object} args.post - The post object to be updated.
  * @param {boolean} args.isPublish - Indicates if a publish operation.
- * @param {boolean} args.imageHasChanged - Indicates if image has changed.
+ * @param {boolean} args.imagesHaveChanged - Indicates if image has changed.
  * @returns {object} The post after being updated.
  */
-exports.updatePost = ({ id, post, isPublish, imageHasChanged }) => {
+exports.updatePost = ({ id, post, isPublish, imagesHaveChanged }) => {
   return Promise.resolve()
-    .then(() => filer.replaceImage(id, post, imageHasChanged))
+    .then(() => filer.replaceImages(id, post, imagesHaveChanged))
     .then((updatedPost) => {
       return new PostMutationBuilder(knex, 'posts')
         .update(updatedPost)
@@ -101,7 +101,7 @@ exports.deletePost = ({ id }) => {
     })
     .then(([post]) => {
       if (!post) throw ERRORS.NO_POST_WITH_ID(id);
-      return filer.destroyImage(post.image);
+      return filer.destroyImages(post.image);
     })
     .then(() => {
       return new PostMutationBuilder(knex, 'posts').delete(id).build();
