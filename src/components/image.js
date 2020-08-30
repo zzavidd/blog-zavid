@@ -40,7 +40,7 @@ export default ({
 }) => {
   if (!src) return null;
 
-  const publicId = version ? `${version}/${src}` : src;
+  const publicId = version ? `v${version}/${src}` : src;
   const { width, height } = lazy || {};
   return (
     <CloudinaryContext

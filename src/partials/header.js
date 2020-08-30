@@ -45,6 +45,7 @@ const BrandButton = () => {
       <CloudImage
         containerClassName={css['nav-brand']}
         src={`/static/logos/zavid-head-logo.png`}
+        version={1598802245}
       />
     </Navbar.Brand>
   );
