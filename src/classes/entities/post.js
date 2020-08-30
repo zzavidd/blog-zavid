@@ -43,6 +43,16 @@ class Post {
     this.post = {};
   }
 
+  withType(type){
+    this.post.type = type;
+    return this;
+  }
+
+  withStatus(status) {
+    this.post.status = status;
+    return this;
+  }
+
   /**
    * Populates post object with random details.
    * @returns {Post} The post class.
@@ -63,7 +73,7 @@ class Post {
    * Builds the post object.
    * @returns {object} The post object.
    */
-  build(){
+  build() {
     return this.post;
   }
 
@@ -105,31 +115,57 @@ class Post {
 
   /**
    * Eagerly checks if post is of type page.
-   * @param {string} type - The post type.
+   * @param {string|object} input - The post or its type value.
    * @returns {boolean} True if post is PAGE.
    */
-  static isPage(type) {
-    return type === this.TYPES.PAGE.TITLE;
+  static isPage(input) {
+    return checkPostValue(input, 'type', this.TYPES.PAGE.TITLE);
   }
 
   /**
    * Eagerly checks if post is of type reverie.
-   * @param {string} type - The post type.
+   * @param {string|object} input - The post or its type value.
    * @returns {boolean} True if post is REVERIE.
    */
-  static isReverie(type) {
-    return type === this.TYPES.REVERIE.TITLE;
+  static isReverie(input) {
+    return checkPostValue(input, 'type', this.TYPES.REVERIE.TITLE);
+  }
+
+  /**
+   * Checks if submission operation is a draft.
+   * @param {string|object} input - The post or its status value.
+   * @returns {boolean} True if the selected status is DRAFT.
+   */
+  static isDraft(input) {
+    return checkPostValue(input, 'status', this.STATUSES.DRAFT);
+  }
+
+  /**
+   * Checks if submission operation is private.
+   * @param {string|object} input - The post or its status value.
+   * @returns {boolean} True if the selected status is PRIVATE.
+   */
+  static isPrivate(input) {
+    return checkPostValue(input, 'status', this.STATUSES.PRIVATE);
   }
 
   /**
    * Checks if submission operation is going to be published.
-   * @param {string} status - The selected status of the post.
+   * @param {string|object} input - The post or its status value.
    * @returns {boolean} True if the selected status is PUBLISHED.
    */
-  static isPublish(status) {
-    return status === this.STATUSES.PUBLISHED;
+  static isPublish(input) {
+    return checkPostValue(input, 'status', this.STATUSES.PUBLISHED);
   }
 }
+
+const checkPostValue = (input, field, expected) => {
+  if (typeof input === 'object') {
+    return input[field] === expected;
+  } else {
+    return input === expected;
+  }
+};
 
 const getRandom = (list) => {
   const random = Math.floor(Math.random() * list.length);
