@@ -15,7 +15,7 @@
 }
 
 .tabler-heading {
-  @include responsive(font-size, 1.8em, $sm: 1.5em);
+  @include responsive(font-size, 1.8em, $sm: 1.7em);
 }
 
 .tabler-item-count {
@@ -119,6 +119,7 @@
     font-family: $body-font;
     margin: 0.5em 0;
     padding: 1em;
+    position: relative;
   }
 
   .tabler-field-mobile {
@@ -133,8 +134,8 @@
   }
 
   .tabler-item-index {
-    @include responsive(font-size, 1.5em, $sm: 1.35em);
     font-family: $title-font;
+    font-size: 1.1em;
     position: absolute;
     right: 5%;
     top: 5%;
@@ -143,6 +144,11 @@
   .tabler-item-buttons {
     display: flex;
     justify-content: flex-end;
+
+    * {
+      margin: 0 0 0 0.4em;
+      padding: 0;
+    }
   }
 }
 

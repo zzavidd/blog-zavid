@@ -203,7 +203,7 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
           fields={fields}
           centerAlignedIndices={centerAlignedIndices}
         />
-        <CrudButtons fields={fields} />
+        <Responsive mobileView={<CrudButtons fields={fields} />} />
       </Fader>
     </LazyLoader>
   );

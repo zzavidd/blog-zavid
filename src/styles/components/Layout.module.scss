@@ -21,10 +21,21 @@
     $dark: rgba(0, 0, 0, 0.95)
   );
   @include themer(&, border-color, #000, #fff);
-  @include responsive(padding, 0.5em 2em, $sm: 0.5em 1em);
+  @include responsive(padding, 0.5em 2em, $sm: 1em);
   border-top: 1px solid;
   bottom: 0;
   position: sticky;
   transition-duration: 0.8s;
   width: 100%;
+}
+
+.toolbar-toggle {
+  @include themer(&, border-color, #000, #fff);
+  border: 1px solid !important;
+  border-radius: 5px;
+  height: fit-content;
+
+  svg {
+    margin-right: 0;
+  }
 }
