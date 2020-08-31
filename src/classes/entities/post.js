@@ -160,6 +160,8 @@ class Post {
 }
 
 const checkPostValue = (input, field, expected) => {
+  if (zLogic.isFalsy(input)) return false;
+
   if (typeof input === 'object') {
     return input[field] === expected;
   } else {
