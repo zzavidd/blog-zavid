@@ -2,7 +2,9 @@ import classnames from 'classnames';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+import { Responsive } from 'components/layout';
 import css from 'styles/components/Button.module.scss';
+
 import { Icon } from './icon';
 
 /**
@@ -84,12 +86,23 @@ export const DeleteButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const AdminButton = (props) => {
+  const { mobileText, children } = props;
   const theme = useSelector(({ theme }) => theme);
   const classes = classnames(css[`button-admin-${theme}`], props.className);
+
   return (
-    <button {...props} className={classes}>
-      {props.children}
-    </button>
+    <Responsive
+      defaultView={
+        <Button {...props} className={classes}>
+          {children}
+        </Button>
+      }
+      mobileView={
+        <Button {...props} className={classes}>
+          {mobileText || children}
+        </Button>
+      }
+    />
   );
 };
 

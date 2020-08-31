@@ -110,8 +110,12 @@ const FormAdminButton = ({
  * @param {any} props.children - The component children.
  * @returns {React.Component} The component.
  */
-export const FieldRow = ({ children }) => {
-  return <Row>{children}</Row>;
+export const FieldRow = (props) => {
+  return (
+    <Row {...props} className={css['form-field-row']}>
+      {props.children}
+    </Row>
+  );
 };
 
 /**
@@ -164,4 +168,3 @@ export const DynamicField = (props) => {
 export const Label = ({ children }) => {
   return <label className={css['label']}>{children}</label>;
 };
-

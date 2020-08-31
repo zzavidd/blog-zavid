@@ -12,7 +12,7 @@ export default ({
   <>
     {/* Page information */}
     <meta charSet="UTF-8" name="author" content="Zavid Egbue" />
-    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1, width=device-width" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
