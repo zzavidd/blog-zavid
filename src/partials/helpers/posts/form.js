@@ -88,7 +88,7 @@ const PostForm = (props) => {
             <DatePicker
               name={'datePublished'}
               date={post.datePublished}
-              onConfirm={handleDate}
+              onConfirm={(e) => handleDate(e, 'datePublished')}
               placeholderText={'Select the publish date...'}
             />
           </DynamicField>

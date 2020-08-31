@@ -224,7 +224,7 @@ const LinkButton = ({ post, allPosts }) => {
 
     if (Post.isPage(post.type)) {
       const base = Post.getDirectory(post.domainType);
-      const domain = Post.findInPosts(allPosts, post.domainId, 'id', 'slug');
+      const domain = Post.findInPosts(allPosts, post.domainId, 'id').slug;
       url.appendSegment(base);
       url.appendSegment(domain);
       url.appendSegment(post.slug);
