@@ -34,4 +34,8 @@
 .post-admin-image {
   border-radius: 10px;
   overflow: hidden;
+
+  @media (max-width: $break-sm) {
+    margin: 0.5em 0;
+  }
 }

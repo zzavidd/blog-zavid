@@ -107,16 +107,16 @@ const PostsAdmin = () => {
               [
                 post.type,
                 {
-                  icon: 'heading',
+                  icon: 'newspaper',
                   subvalue:
                     post.domainId && `${post.domainId} • ${post.domainType}`
                 }
               ],
               [
                 zText.truncateText(post.content, { limit: 30 }),
-                { icon: 'heading' }
+                { hideOnMobile: true }
               ],
-              [post.status, { icon: 'heading' }],
+              [post.status, { icon: 'lock' }],
               [
                 post.image,
                 {

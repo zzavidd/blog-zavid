@@ -199,51 +199,65 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
         className={css[`tabler-item-row-${theme}`]}
         postTransitions={'background-color .1s ease'}
         style={distribution}>
-        {fields
-          .filter((e) => e)
-          .map((field, key) => {
-            let [value, { type, imageOptions = {}, subvalue }] = field;
-
-            switch (type) {
-              case TYPE.IMAGE:
-                value = (
-                  <CloudImage
-                    src={value}
-                    containerClassName={imageOptions.css}
-                    lazy={imageOptions.lazy}
-                  />
-                );
-                break;
-            }
-
-            const isCenterAligned = centerAlignedIndices.includes(key);
-            const style = { textAlign: isCenterAligned ? 'center' : 'left' };
-
-            return (
-              <Responsive
-                key={key}
-                defaultView={
-                  <DefaultView
-                    style={style}
-                    value={value}
-                    subvalue={subvalue}
-                  />
-                }
-                mobileView={
-                  <>
-                    <MobileView field={field} key={key} />
-                    <CrudButtons fields={fields} />
-                  </>
-                }
-              />
-            );
-          })}
+        <ItemFields
+          fields={fields}
+          centerAlignedIndices={centerAlignedIndices}
+        />
+        <CrudButtons fields={fields} />
       </Fader>
     </LazyLoader>
   );
 });
 
-const DefaultView = ({ style, subvalue, value }) => {
+/**
+ * The fields in the {@see Item} component.
+ * @param {object} props - The component props.
+ * @param {number[]} props.centerAlignedIndices - The list of indices with center-aligned column headers.
+ * @param {TablerField[]} props.fields - Each field in the row.
+ * @returns {React.Component} - The component.
+ */
+const ItemFields = ({ fields, centerAlignedIndices }) => {
+  return fields
+    .filter((e) => e)
+    .map((field, key) => {
+      let [value, { type, imageOptions = {}, subvalue }] = field;
+
+      switch (type) {
+        case TYPE.IMAGE:
+          value = (
+            <CloudImage
+              src={value}
+              containerClassName={imageOptions.css}
+              lazy={imageOptions.lazy}
+            />
+          );
+          break;
+      }
+
+      const isCenterAligned = centerAlignedIndices.includes(key);
+      const style = { textAlign: isCenterAligned ? 'center' : 'left' };
+
+      return (
+        <Responsive
+          key={key}
+          defaultView={
+            <DefaultView style={style} value={value} subvalue={subvalue} />
+          }
+          mobileView={<MobileView field={field} key={key} />}
+        />
+      );
+    });
+};
+
+/**
+ * The default view for each component in {@see ItemFields}.
+ * @param {object} props - The component props.
+ * @param {string} props.value - The value to be displayed.
+ * @param {object} props.style - Styling for the field.
+ * @param {string} [props.subvalue] - A possible subvalue to be displayed under the value.
+ * @returns {React.Component} - The component.
+ */
+const DefaultView = ({ value, style, subvalue }) => {
   if (!subvalue)
     return (
       <span className={css['tabler-item-value']} style={style}>
@@ -260,7 +274,7 @@ const DefaultView = ({ style, subvalue, value }) => {
 };
 
 /**
- * The mobile view for each {@see Item}.
+ * The mobile view for each component in {@see ItemFields}.
  * @param {object} props - The component props.
  * @param {TablerField} props.field - Each field in the row.
  * @returns {React.Component} - The component.
@@ -318,7 +332,7 @@ const CrudButtons = memo(({ fields }) => {
   return (
     <div className={css['tabler-item-buttons']}>
       {fields
-        .filter(([, options]) => options.type === 'button')
+        .filter(([, options]) => options.type === TYPE.BUTTON)
         .map(([button], key) => {
           return <span key={key}>{button}</span>;
         })}
