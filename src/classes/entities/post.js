@@ -105,15 +105,15 @@ class Post {
    * Finds a value from a post which matches a specification in a list of posts.
    * @param {object[]} posts The full list of posts.
    * @param {any} operand The value to compare with.
-   * @param {string} comparand The field used to compare against.
+   * @param {string} field The field used to compare against.
    * @returns {any} The returned value from comparison.
    */
-  static findInPosts(posts, operand, comparand) {
+  static findInPosts(posts, operand, field) {
     const matchingPost =
-      posts.find((post) => operand === post[comparand]) || {};
+      posts.find((post) => operand === post[field]) || {};
     debug(
       matchingPost,
-      `Could not match operand "${operand}" to a post's "${comparand}".`
+      `Could not match operand "${operand}" to a post's "${field}".`
     );
     return matchingPost;
   }

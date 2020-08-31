@@ -1,19 +1,25 @@
 @import '../App';
 
-.tabler-heading {
+.tabler-heading-wrapper {
   @include themer(&, border-bottom, 1px solid $dark, 1px solid #fff);
   @include themer(&, border-top, 1px solid $dark, 1px solid #fff);
-  font-size: 1.8em;
   padding: 0.5em 0;
   text-align: center;
 
   @media (max-width: $break-sm) {
     border-style: none;
-    font-size: 1.5em;
     margin: 1em 1em 0;
     padding: 0;
     text-align: left;
   }
+}
+
+.tabler-heading {
+  @include responsive(font-size, 1.8em, $sm: 1.5em);
+}
+
+.tabler-item-count {
+  @include responsive(font-size, 1em, $sm: 0.8Íem);
 }
 
 .tabler-container {
@@ -33,15 +39,19 @@
   align-items: center;
   display: grid;
   padding: 0.7em 0;
+}
 
-  span {
-    padding: 0 0.5em;
-    word-break: break-word;
+.tabler-item-value {
+  padding: 0 0.5em;
+  word-break: break-word;
 
-    .image {
-      width: 100%;
-    }
+  .image {
+    width: 100%;
   }
+}
+
+.tabler-item-subvalue {
+  font-size: 0.8em;
 }
 
 .tabler-header-row {
@@ -60,7 +70,6 @@
   border-radius: 10px;
   font-family: $body-font;
 }
-
 
 // Note: Intentional.
 .tabler-item-row {

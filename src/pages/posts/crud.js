@@ -81,14 +81,16 @@ const PostCrud = ({ post: currentPost, operation }) => {
     if (queryLoading) return;
     if (queryError) alert.error(queryError);
 
-    const domainList = data.getAllPosts.map(({ id, type, title, datePublished }) => {
-      return {
-        value: id,
-        label: `${type}: ${title}`,
-        type,
-        datePublished: new Date(parseInt(datePublished))
-      };
-    });
+    const domainList = data.getAllPosts.map(
+      ({ id, type, title, datePublished }) => {
+        return {
+          value: id,
+          label: `${type}: ${title}`,
+          type,
+          datePublished: new Date(parseInt(datePublished))
+        };
+      }
+    );
 
     setDomains(domainList);
   };
