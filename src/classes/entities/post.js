@@ -43,13 +43,19 @@ class Post {
     this.post = {};
   }
 
-  withType(type){
+  withType(type) {
     this.post.type = type;
     return this;
   }
 
   withStatus(status) {
     this.post.status = status;
+    return this;
+  }
+
+  withDomain(id, type) {
+    this.post.domainId = id;
+    this.post.domainType = type;
     return this;
   }
 
@@ -100,17 +106,16 @@ class Post {
    * @param {object[]} posts The full list of posts.
    * @param {any} operand The value to compare with.
    * @param {string} comparand The field used to compare against.
-   * @param {string} product The field value to return.
    * @returns {any} The returned value from comparison.
    */
-  static findInPosts(posts, operand, comparand, product) {
-    const post = posts.find((post) => operand === post[comparand]);
-    const value = post ? post[product] : '';
+  static findInPosts(posts, operand, comparand) {
+    const matchingPost =
+      posts.find((post) => operand === post[comparand]) || {};
     debug(
-      value,
-      `Could not match operand "${operand}" to a post's "${comparand}" to find a "${product}".`
+      matchingPost,
+      `Could not match operand "${operand}" to a post's "${comparand}".`
     );
-    return value;
+    return matchingPost;
   }
 
   /**

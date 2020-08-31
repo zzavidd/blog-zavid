@@ -1,9 +1,13 @@
+const { assert } = require('..');
 const { Post } = require('../../classes');
-const { assert } = require('../setup');
+const { comparePosts } = require('../helper/post.helper');
 
 describe('Unit Tests: Post', function () {
   it('Check post type', function (finish) {
-    const reverie = new Post().random().withType(Post.TYPES.REVERIE.TITLE).build();
+    const reverie = new Post()
+      .random()
+      .withType(Post.TYPES.REVERIE.TITLE)
+      .build();
     assert.isTrue(Post.isReverie(reverie));
     assert.isTrue(Post.isReverie(reverie.type));
 
@@ -14,17 +18,35 @@ describe('Unit Tests: Post', function () {
   });
 
   it('Check post status', function (finish) {
-    const draftPost = new Post().random().withStatus(Post.STATUSES.DRAFT).build();
+    const draftPost = new Post()
+      .random()
+      .withStatus(Post.STATUSES.DRAFT)
+      .build();
     assert.isTrue(Post.isDraft(draftPost));
     assert.isTrue(Post.isDraft(draftPost.status));
 
-    const privatePost = new Post().random().withStatus(Post.STATUSES.PRIVATE).build();
+    const privatePost = new Post()
+      .random()
+      .withStatus(Post.STATUSES.PRIVATE)
+      .build();
     assert.isTrue(Post.isPrivate(privatePost));
     assert.isTrue(Post.isPrivate(privatePost.status));
 
-    const publishPost = new Post().random().withStatus(Post.STATUSES.PUBLISHED).build();
+    const publishPost = new Post()
+      .random()
+      .withStatus(Post.STATUSES.PUBLISHED)
+      .build();
     assert.isTrue(Post.isPublish(publishPost));
     assert.isTrue(Post.isPublish(publishPost.status));
+    finish();
+  });
+
+  it('Find post by comparison', function (finish) {
+    const post = new Post().random().build();
+    const posts = [post];
+
+    const matchedPost = Post.findInPosts(posts, post.id, 'id');
+    comparePosts(post, matchedPost);
     finish();
   });
 });

@@ -74,8 +74,8 @@ const Tabler = (props) => {
 
   return (
     <>
-      <TableHeading heading={heading} />
       <div className={css['tabler-container']}>
+        <TableHeading heading={heading} />
         <Responsive
           defaultView={
             <div className={css['tabler-grid']}>

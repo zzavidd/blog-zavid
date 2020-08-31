@@ -81,11 +81,12 @@ const PostCrud = ({ post: currentPost, operation }) => {
     if (queryLoading) return;
     if (queryError) alert.error(queryError);
 
-    const domainList = data.getAllPosts.map(({ id, type, title }) => {
+    const domainList = data.getAllPosts.map(({ id, type, title, datePublished }) => {
       return {
         value: id,
         label: `${type}: ${title}`,
-        type
+        type,
+        datePublished: new Date(parseInt(datePublished))
       };
     });
 
@@ -190,7 +191,7 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
 
   if (Post.isPage(type)) {
     const id = parseInt(domainId);
-    const domainType = Post.findInPosts(domains, id, 'value', 'type');
+    const domainType = Post.findInPosts(domains, id, 'value').type;
     post.domainId = id;
     post.domainType = domainType;
   }

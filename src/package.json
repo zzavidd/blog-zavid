@@ -45,7 +45,7 @@
     "react-visibility-sensor": "^5.1.1",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
-    "zavid-modules": "^3.2.0"
+    "zavid-modules": "^3.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

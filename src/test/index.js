@@ -2,17 +2,10 @@ const { assert } = require('chai');
 const { print } = require('graphql/language/printer');
 const fetch = require('node-fetch');
 
-// const Singleton = require('../private/singleton');
-
-// before(function (done) {
-//   Singleton.startTestServer(done);
-// });
-
-// after(function () {
-//   setTimeout(() => process.exit(0), 2000);
-// });
-
 exports.assert = assert;
+exports.debug = (err) => {
+  throw err;
+};
 exports.fetch = (query, options = {}, test) => {
   const { variables = {}, expectToFail = false } = options;
   return fetch(`http://localhost:4000/api`, {
