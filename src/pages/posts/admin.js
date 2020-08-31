@@ -104,7 +104,14 @@ const PostsAdmin = () => {
             return [
               [key + 1, { type: TYPE.INDEX }],
               [post.title, { icon: 'heading' }],
-              [post.type, { icon: 'heading' }],
+              [
+                post.type,
+                {
+                  icon: 'heading',
+                  subvalue:
+                    post.domainId && `${post.domainId} • ${post.domainType}`
+                }
+              ],
               [
                 zText.truncateText(post.content, { limit: 30 }),
                 { icon: 'heading' }

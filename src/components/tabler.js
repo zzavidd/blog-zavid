@@ -75,7 +75,7 @@ const Tabler = (props) => {
   return (
     <>
       <div className={css['tabler-container']}>
-        <TableHeading heading={heading} />
+        <TableHeading heading={heading} numOfItems={items.length} />
         <Responsive
           defaultView={
             <div className={css['tabler-grid']}>
@@ -104,12 +104,21 @@ const Tabler = (props) => {
  * A component for tabling entities.
  * @param {object} props - The component props.
  * @param {string} props.heading - The heading to be shown above the table.
+ * @param {number} props.numOfItems - The number of items.
  * @returns {React.Component} - The component.
  */
-const TableHeading = ({ heading }) => {
+const TableHeading = ({ heading, numOfItems }) => {
   if (!heading) return null;
   const theme = useSelector(({ theme }) => theme);
-  return <Title className={css[`tabler-heading-${theme}`]}>{heading}</Title>;
+  const plurality = numOfItems === 1 ? 'result' : 'results';
+  return (
+    <div className={css[`tabler-heading-wrapper-${theme}`]}>
+      <Title className={css['tabler-heading']}>{heading}</Title>
+      <div className={css['tabler-item-count']}>
+        {numOfItems} {plurality}
+      </div>
+    </div>
+  );
 };
 
 /**
@@ -193,7 +202,7 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
         {fields
           .filter((e) => e)
           .map((field, key) => {
-            let [value, { type, imageOptions = {} }] = field;
+            let [value, { type, imageOptions = {}, subvalue }] = field;
 
             switch (type) {
               case TYPE.IMAGE:
@@ -213,7 +222,13 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
             return (
               <Responsive
                 key={key}
-                defaultView={<span style={style}>{value}</span>}
+                defaultView={
+                  <DefaultView
+                    style={style}
+                    value={value}
+                    subvalue={subvalue}
+                  />
+                }
                 mobileView={
                   <>
                     <MobileView field={field} key={key} />
@@ -227,6 +242,22 @@ const Item = memo(({ centerAlignedIndices, fields, distribution, index }) => {
     </LazyLoader>
   );
 });
+
+const DefaultView = ({ style, subvalue, value }) => {
+  if (!subvalue)
+    return (
+      <span className={css['tabler-item-value']} style={style}>
+        {value}
+      </span>
+    );
+
+  return (
+    <div className={css['tabler-item-value']}>
+      <span style={style}>{value}</span>
+      <div className={css['tabler-item-subvalue']}>{subvalue}</div>
+    </div>
+  );
+};
 
 /**
  * The mobile view for each {@see Item}.
