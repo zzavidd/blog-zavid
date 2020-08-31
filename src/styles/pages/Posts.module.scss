@@ -3,7 +3,7 @@
 .post-single {
   @include responsive(width, 60%, $lg: 80%, $md: 90%, $sm: 100%);
   margin: 0 auto;
-  padding: 1em 1.2em;
+  padding: 1.8em 1.2em;
 }
 
 .post-single-title {
@@ -17,6 +17,10 @@
   @include responsive(padding, 0, $sm: 0.5em 0);
 }
 
+.post-single-content {
+  @include responsive(font-size, 1.3em, $sm: 1em);
+}
+
 .post-single-image-container {
   border-radius: 10px;
   margin: 1em 0;
@@ -25,6 +29,10 @@
 
 .post-single-image {
   border-radius: 10px;
+}
+
+.post-toolbar-mobile {
+  padding: 0.5em 1em;
 }
 
 .post-toolbar-firstrow {

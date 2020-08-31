@@ -23,7 +23,7 @@ const PostSingle = ({ post }) => {
           containerClassName={css['post-single-image-container']}
           imageClassName={css['post-single-image']}
         />
-        <Paragraph>{post.content}</Paragraph>
+        <Paragraph className={css['post-single-content']}>{post.content}</Paragraph>
         <Divider />
         <ShareBlock message={shareMessage} url={location.href} />
       </div>

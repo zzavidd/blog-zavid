@@ -182,7 +182,7 @@ const BottomToolbar = ({ options, handleOptionSelection }) => {
         </Toolbar>
       }
       mobileView={
-        <Toolbar>
+        <Toolbar className={css['post-toolbar-mobile']}>
           <div className={css['post-toolbar-firstrow']}>
             {TOOLBAR.ADD_BUTTON}
             <ToolbarToggle toggle={toggleFilterVisibility}>
