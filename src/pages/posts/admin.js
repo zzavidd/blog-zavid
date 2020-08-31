@@ -51,6 +51,9 @@ const PostsAdmin = () => {
       },
       type: {
         include: options.type ? [options.type] : []
+      },
+      status: {
+        include: options.status ? [options.status] : []
       }
     },
     errorPolicy: 'all',
@@ -107,7 +110,13 @@ const PostsAdmin = () => {
                 { icon: 'heading' }
               ],
               [post.status, { icon: 'heading' }],
-              [post.image, { type: TYPE.IMAGE }],
+              [
+                post.image,
+                {
+                  type: TYPE.IMAGE,
+                  imageOptions: { css: css['post-admin-image'] }
+                }
+              ],
               [
                 <LinkButton post={post} allPosts={posts} key={key} />,
                 { type: TYPE.BUTTON }
@@ -149,7 +158,7 @@ const BottomToolbar = ({ options, handleOptionSelection }) => {
   return (
     <Toolbar>
       <FieldRow>
-        <Field xs={5}>
+        <Field xs={4}>
           <AdminButton onClick={navigateToCreateForm}>Add New Post</AdminButton>
         </Field>
         <Field xs={2}>
@@ -175,6 +184,16 @@ const BottomToolbar = ({ options, handleOptionSelection }) => {
             value={options.type}
             onChange={handleOptionSelection}
             placeholder={'Filter by type...'}
+            isPlaceholderSelectable={true}
+          />
+        </Field>
+        <Field xs={2}>
+          <FilterDropdown
+            name={'status'}
+            items={Post.statusList}
+            value={options.status}
+            onChange={handleOptionSelection}
+            placeholder={'Filter by status...'}
             isPlaceholderSelectable={true}
           />
         </Field>

@@ -7,22 +7,22 @@ const { alert } = require('components/alert.js');
  * @returns {boolean} True if valid. False with error message if invalid.
  */
 exports.isValidPost = (post) => {
-  const isPublish = Post.isPublish(post.status);
-  const isReverie = Post.isReverie(post.type);
-
   if (!ifExists(post.title, 'Enter the post title.')) return false;
   if (!ifExists(post.type, "Select the post's type.")) return false;
-  if (!isValidImage(post.image, 'post', { mustExist: isReverie })) return false;
+  if (!isValidImage(post.image, 'post', { mustExist: Post.isReverie(post) }))
+    return false;
 
-  if (Post.isPage(post.type)) {
+  if (Post.isPage(post)) {
     if (!ifExists(post.domainId, "Select this page's domain post."))
       return false;
   }
 
-  if (isPublish) {
+  if (Post.isPublish(post)) {
     if (!ifExists(post.content, 'Write out the content of this post.'))
       return false;
-    if (!ifExists(post.excerpt, "Enter the post's excerpt.")) return false;
+    if (Post.isReverie(post)) {
+      if (!ifExists(post.excerpt, "Enter the post's excerpt.")) return false;
+    }
   }
 
   return true;
