@@ -112,8 +112,8 @@
   @include themer(
     &,
     border-bottom,
-    $light: 1px solid rgba(0, 0, 0, 0.7),
-    $dark: 1px solid rgba(255, 255, 255, 0.7)
+    $light: 1px solid $fade-dark,
+    $dark: 1px solid $fade-light
   );
 }
 
@@ -173,12 +173,7 @@
 .select-round {
   @extend %input;
   @extend %select;
-  @include themer(
-    &,
-    border-color,
-    $light: rgba(0, 0, 0, 0.7),
-    $dark: rgba(255, 255, 255, 0.7)
-  );
+  @include themer(&, border-color, $light: $fade-dark, $dark: $fade-light);
   border: 2px solid;
   border-radius: 10px;
   margin-right: 1em;

@@ -1,9 +1,10 @@
 import classnames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 
 import css from 'styles/components/Layout.module.scss';
+
 import { InvisibleButton } from './button';
 
 export const Partitioner = ({ children, className }) => {
@@ -15,11 +16,12 @@ export const Spacer = ({ children }) => {
   return <div className={css['spacer']}>{children}</div>;
 };
 
-export const Toolbar = ({ className, children }) => {
+export const Toolbar = ({ className, children, }) => {
   if (!children) return null;
   const theme = useSelector(({ theme }) => theme);
   const classes = classnames(css[`toolbar-${theme}`], className);
-  return <div className={classes}>{children}</div>;
+
+    return <div className={classes}>{children}</div>;
 };
 
 export const ToolbarToggle = ({ children, toggle }) => {

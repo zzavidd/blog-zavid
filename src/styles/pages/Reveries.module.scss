@@ -1,13 +1,13 @@
 @import '../App';
 
 .reveries-list {
-  padding: 1em 1.5em;
+  padding: 0 1.5em;
 }
 
 .reveries-unit {
   @include themer(&, border-color, $dark, $border-color);
   border-bottom: 2px solid;
-  padding: 1.2em 0;
+  padding: 2em 0;
   width: 100%;
 }
 

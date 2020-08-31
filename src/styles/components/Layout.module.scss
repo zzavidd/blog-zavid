@@ -13,6 +13,10 @@
   height: 100%;
 }
 
+.toolbar-wrapper {
+  padding: 0 1em;
+}
+
 .toolbar {
   @include themer(
     &,
@@ -21,7 +25,7 @@
     $dark: rgba(0, 0, 0, 0.95)
   );
   @include themer(&, border-color, #000, #fff);
-  @include responsive(padding, 0.5em 2em, $sm: 1em);
+  @include responsive(padding, 0.5em 2em, $sm: 0.5em 0);
   border-top: 1px solid;
   bottom: 0;
   position: sticky;
@@ -30,9 +34,15 @@
 }
 
 .toolbar-toggle {
-  @include themer(&, border-color, #000, #fff);
-  border: 1px solid !important;
+  @include themer(
+    &,
+    border-color,
+    $light: rgba(0, 0, 0, 0.7),
+    $dark: rgba(255, 255, 255, 0.7)
+  );
   border-radius: 5px;
+  border-style: solid !important;
+  border-width: 2px !important;
   height: fit-content;
 
   svg {

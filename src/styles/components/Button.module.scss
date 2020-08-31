@@ -41,11 +41,20 @@ $button-admin: rgb(206, 206, 206);
 .button-admin {
   @extend %button;
   @include button-designer(&, $button-admin);
+  @include themer(
+    &,
+    border,
+    $light: 2px solid $fade-dark,
+    $dark: 1px solid $fade-light
+  );
+  @include responsive(font-size, 1em, $sm: 0.9em);
   border-radius: 8px;
   padding: 0.5em 1em;
 }
 
 .button-back {
+  @include responsive(font-size, 1em, $sm: 0.9em);
+
   span {
     &:hover {
       text-decoration: underline;
