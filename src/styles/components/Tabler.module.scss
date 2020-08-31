@@ -8,7 +8,7 @@
 
   @media (max-width: $break-sm) {
     border-style: none;
-    margin: 1em 1em 0;
+    margin: 1em 0 0.5em;
     padding: 0;
     text-align: left;
   }
@@ -19,7 +19,7 @@
 }
 
 .tabler-item-count {
-  @include responsive(font-size, 1em, $sm: 0.8Íem);
+  @include responsive(font-size, 1em, $sm: 0.8em);
 }
 
 .tabler-container {
@@ -29,29 +29,10 @@
   }
 }
 
-.tabler-grid {
-  display: grid;
-  font-size: 1.1em;
-  position: relative;
-}
-
 %row {
   align-items: center;
   display: grid;
   padding: 0.7em 0;
-}
-
-.tabler-item-value {
-  padding: 0 0.5em;
-  word-break: break-word;
-
-  .image {
-    width: 100%;
-  }
-}
-
-.tabler-item-subvalue {
-  font-size: 0.8em;
 }
 
 .tabler-header-row {
@@ -71,32 +52,59 @@
   font-family: $body-font;
 }
 
-// Note: Intentional.
-.tabler-item-row {
-  &-light {
-    @extend %tabler-item-row;
+////////////////////////////////
+/// DEFAULT VIEW
+////////////////////////////////
 
-    &:hover {
-      background-color: $dark;
+.tabler-grid {
+  display: grid;
+  font-size: 1.1em;
+  position: relative;
 
-      * {
-        color: #fff !important;
+  // Note: Intentional.
+  .tabler-item-row {
+    &-light {
+      @extend %tabler-item-row;
+
+      &:hover {
+        background-color: $dark;
+
+        * {
+          color: #fff !important;
+        }
       }
     }
-  }
 
-  &-dark {
-    @extend %tabler-item-row;
+    &-dark {
+      @extend %tabler-item-row;
 
-    &:hover {
-      background-color: #cacaca;
+      &:hover {
+        background-color: #cacaca;
 
-      * {
-        color: #000 !important;
+        * {
+          color: #000 !important;
+        }
       }
     }
   }
 }
+
+.tabler-item-value {
+  padding: 0 0.5em;
+  word-break: break-word;
+
+  .image {
+    width: 100%;
+  }
+}
+
+.tabler-item-subvalue {
+  font-size: 0.8em;
+}
+
+////////////////////////////////
+/// MOBILE VIEW
+////////////////////////////////
 
 .tabler-list {
   @include responsive(font-size, 1em, $sm: 0.9);
@@ -104,38 +112,37 @@
   display: grid;
 
   .tabler-item-row {
+    @include themer('.tabler-item-row', background, #fff, $dark);
     background: rgba(20, 6, 25, 0.3);
     border: 1px solid #fff;
     border-radius: 15px;
     font-family: $body-font;
     margin: 0.5em 0;
     padding: 1em;
-    position: relative;
+  }
 
-    .tabler-field-mobile {
-      display: grid;
-      grid-template-columns: 2em 1fr;
-      padding-right: 1.5em;
-    }
+  .tabler-field-mobile {
+    display: grid;
+    grid-template-columns: 2em 1fr;
+    padding-right: 1.5em;
+  }
 
-    .tabler-item-name {
-      @include responsive(font-size, 1.5em, $sm: 1.35em);
-      font-family: $title-font;
-    }
+  .tabler-item-name {
+    @include responsive(font-size, 1.5em, $sm: 1.35em);
+    font-family: $title-font;
+  }
 
-    .tabler-item-index {
-      @include responsive(font-size, 1.5em, $sm: 1.35em);
-      font-family: $title-font;
-      position: absolute;
-      right: 5%;
-      top: 5%;
-    }
+  .tabler-item-index {
+    @include responsive(font-size, 1.5em, $sm: 1.35em);
+    font-family: $title-font;
+    position: absolute;
+    right: 5%;
+    top: 5%;
+  }
 
-    .tabler-item-buttons {
-      bottom: 5%;
-      position: absolute;
-      right: 0;
-    }
+  .tabler-item-buttons {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
