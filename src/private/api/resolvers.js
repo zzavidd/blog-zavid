@@ -52,11 +52,12 @@ exports.getSinglePost = ({ id }) => {
  * @param {object} args - The arguments.
  * @param {object} args.post - The post object to be inserted.
  * @param {boolean} args.isPublish - Indicates if a publish operation.
+ * @param {boolean} args.isTest - Indicates if testing.
  * @returns {number} The ID of the newly-created post.
  */
-exports.createPost = ({ post, isPublish }) => {
+exports.createPost = ({ post, isPublish, isTest }) => {
   return Promise.resolve()
-    .then(() => filer.uploadImages(post))
+    .then(() => filer.uploadImages(post, { isTest }))
     .then((post) => {
       return new PostMutationBuilder(knex, 'posts').insert(post).build();
     })

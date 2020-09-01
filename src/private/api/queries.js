@@ -42,8 +42,12 @@ exports.GET_SINGLE_POST_QUERY = gql`
 `;
 
 exports.CREATE_POST_QUERY = gql`
-  mutation CreatePost($post: PostInput!, $isPublish: Boolean) {
-    createPost(post: $post, isPublish: $isPublish) {
+  mutation CreatePost(
+    $post: PostInput!
+    $isPublish: Boolean
+    $isTest: Boolean
+  ) {
+    createPost(post: $post, isPublish: $isPublish, isTest: $isTest) {
       id
     }
   }

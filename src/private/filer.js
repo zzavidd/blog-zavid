@@ -22,7 +22,12 @@ cloudinary.config({
  * @returns {Promise} Resolves when function finishes.
  */
 exports.uploadImages = (post, options = {}) => {
-  const { imagesHaveChanged = true, isCreateOperation = true } = options;
+  const {
+    imagesHaveChanged = true,
+    isCreateOperation = true,
+    isTest = false
+  } = options;
+
   return new Promise((resolve, reject) => {
     Promise.resolve()
       .then(() => generateSlugAndFilename(post, isCreateOperation))
@@ -33,11 +38,15 @@ exports.uploadImages = (post, options = {}) => {
         const noImageUpload = !imagesHaveChanged || !post.image;
         if (noImageUpload) return resolve(post);
 
+        const publicId = isTest
+          ? `test/${filename}`
+          : `dynamic/${directory}/${filename}`;
+
         // Upload to cloudinary.
         cloudinary.uploader.upload(
           post.image,
           {
-            public_id: `dynamic/${directory}/${filename}`,
+            public_id: publicId,
             unique_filename: false
           },
           (err, result) => {

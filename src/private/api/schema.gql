@@ -29,7 +29,7 @@ type Query {
 }
 
 type Mutation {
-  createPost(post: PostInput, isPublish: Boolean): Post
+  createPost(post: PostInput, isPublish: Boolean, isTest: Boolean): Post
   updatePost(
     id: Int!
     post: PostInput!
@@ -71,7 +71,6 @@ enum PostStatus {
   PRIVATE
   PUBLISHED
 }
-
 
 input PostInput {
   # No slug

@@ -61,16 +61,19 @@ class Post {
 
   /**
    * Populates post object with random details.
+   * @param {object} options - Random options.
    * @returns {Post} The post class.
    */
-  random() {
+  random(options = {}) {
+    const { withImage = false } = options;
     this.post = {
       title: `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`,
       type: getRandom(typeList),
       content: faker.lorem.paragraphs(),
       excerpt: faker.lorem.sentences(),
       status: getRandom(statusList),
-      datePublished: zDate.formatISODate(faker.date.past())
+      datePublished: zDate.formatISODate(faker.date.past()),
+      image: withImage ? faker.image.image() : null
     };
     return this;
   }
@@ -109,8 +112,7 @@ class Post {
    * @returns {any} The returned value from comparison.
    */
   static findInPosts(posts, operand, field) {
-    const matchingPost =
-      posts.find((post) => operand === post[field]) || {};
+    const matchingPost = posts.find((post) => operand === post[field]) || {};
     debug(
       matchingPost,
       `Could not match operand "${operand}" to a post's "${field}".`
