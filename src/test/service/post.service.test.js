@@ -73,7 +73,7 @@ describe('Service Tests: Post', function () {
   describe('Create Post', function () {
     it('Without image', function (finish) {
       const post = new Post().random().build();
-      submitPost(post, false, (readPost) => {
+      submitPost(post, (readPost) => {
         comparePosts(post, readPost);
         deletePost(readPost.id, finish);
       });
@@ -84,13 +84,13 @@ describe('Service Tests: Post', function () {
         .random({ withImage: true })
         .withType(Post.TYPES.REVERIE.TITLE) // One type for easier cleanup.
         .build();
-
+        
       let publicId;
       let postId;
 
       Promise.resolve()
         .then(() => {
-          return submitPost(post, true, (readPost) => {
+          return submitPost(post, (readPost) => {
             postId = readPost.id;
             publicId = extractPublicId(readPost.image);
           });
@@ -120,19 +120,19 @@ describe('Service Tests: Post', function () {
 
       Promise.resolve()
         .then(() => {
-          return submitPost(draftPost, false, (readPost) => {
+          return submitPost(draftPost, (readPost) => {
             assert.isNull(readPost.slug);
             return deletePost(readPost.id);
           });
         })
         .then(() => {
-          return submitPost(privatePost, false, (readPost) => {
+          return submitPost(privatePost, (readPost) => {
             assert.isNotNull(readPost.slug);
             return deletePost(readPost.id);
           });
         })
         .then(() => {
-          return submitPost(publishedPost, false, (readPost) => {
+          return submitPost(publishedPost, (readPost) => {
             assert.isNotNull(readPost.slug);
             deletePost(readPost.id, finish);
           });
@@ -146,7 +146,7 @@ describe('Service Tests: Post', function () {
       const post = new Post().random().build();
       Promise.resolve()
         .then(() => {
-          return submitPost(post, false);
+          return submitPost(post);
         })
         .then((id) => {
           updatePost(id, post, (updatedPost) => {

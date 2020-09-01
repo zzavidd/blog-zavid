@@ -73,12 +73,11 @@ exports.createPost = ({ post, isPublish, isTest }) => {
  * @param {number} args.id - The ID of the post to update.
  * @param {object} args.post - The post object to be updated.
  * @param {boolean} args.isPublish - Indicates if a publish operation.
- * @param {boolean} args.imageHasChanged - Indicates if image has changed.
  * @returns {object} The post after being updated.
  */
-exports.updatePost = ({ id, post, isPublish, imageHasChanged }) => {
+exports.updatePost = ({ id, post, isPublish }) => {
   return Promise.resolve()
-    .then(() => filer.replaceImages(id, post, imageHasChanged))
+    .then(() => filer.replaceImages(id, post))
     .then((updatedPost) => {
       return new PostMutationBuilder(knex, 'posts')
         .update(updatedPost)

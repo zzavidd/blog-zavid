@@ -17,17 +17,16 @@ cloudinary.config({
 /**
  * Submits a post to the server.
  * @param {object} post The post to submit.
- * @param {boolean} imageHasChanged Flag for image uploads.
  * @param {Function} [assertions] The assertions to make.
  * @returns {Promise} A resolution of the Promise.
  */
-exports.submitPost = (post, imageHasChanged, assertions) => {
+exports.submitPost = (post, assertions) => {
   return Promise.resolve()
     .then(() => {
       // Submit the random post.
       return fetch(
         CREATE_POST_QUERY,
-        { variables: { post, imageHasChanged, isTest: true } },
+        { variables: { post, isTest: true } },
         function ({ data }) {
           const createdPost = data.createPost;
           assert.hasAnyKeys(createdPost, 'id');
@@ -58,7 +57,7 @@ exports.submitPost = (post, imageHasChanged, assertions) => {
 exports.updatePost = (id, post, assertions) => {
   return fetch(
     UPDATE_POST_QUERY,
-    { variables: { id, post, imageHasChanged: false } },
+    { variables: { id, post } },
     function ({ data }) {
       const updatedPost = data.updatePost;
       assert.strictEqual(updatedPost.id, id);
@@ -127,9 +126,16 @@ exports.extractPublicId = (image) => {
   const ex = new Error(`Could not get public ID from ${image}`);
   if (!image) throw ex;
 
+  let match;
   const regex = new RegExp(
-    /^(?:v[0-9]+\/)?((?:dynamic|static|test)\/.*\/.*)(?:\.[a-z]+)$/
+    /^(?:v[0-9]+\/)?((?:dynamic|static|test)\/.*)(?:\.[a-z]+)$/
   );
-  const match = image.match(regex)[1];
+
+  try {
+    match = image.match(regex)[1];
+  } catch {
+    throw new Error(`Image URL '${image}' did not match Cloudinary regex.`);
+  }
+
   return match;
 };

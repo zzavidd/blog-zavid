@@ -73,7 +73,10 @@ class Post {
       excerpt: faker.lorem.sentences(),
       status: getRandom(statusList),
       datePublished: zDate.formatISODate(faker.date.past()),
-      image: withImage ? faker.image.image() : null
+      image: {
+        source: withImage ? faker.image.image() : '',
+        hasChanged: withImage
+      }
     };
     return this;
   }

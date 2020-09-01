@@ -17,16 +17,11 @@ cloudinary.config({
  * Upload post image cloudinary.
  * @param {object} post - The post object.
  * @param {object} [options] - Upload options.
- * @param {boolean} [options.imageHasChanged] - Indicates if images have changed.
  * @param {boolean} [options.isCreateOperation] - Specifies if operation is update.
  * @returns {Promise} Resolves when function finishes.
  */
 exports.uploadImages = (post, options = {}) => {
-  const {
-    imageHasChanged = true,
-    isCreateOperation = true,
-    isTest = false
-  } = options;
+  const { isCreateOperation = true, isTest = false } = options;
 
   return new Promise((resolve, reject) => {
     Promise.resolve()
@@ -35,8 +30,12 @@ exports.uploadImages = (post, options = {}) => {
         post.slug = Post.isDraft(post) ? null : slug;
 
         // Discontinue if image has not changed.
-        const noImageUpload = !imageHasChanged || !post.image;
-        if (noImageUpload) return resolve(post);
+        const { hasChanged, source } = post.image;
+        const noImageUpload = !hasChanged || !source;
+        if (noImageUpload) {
+          post.image = null;
+          return resolve(post);
+        }
 
         const publicId = isTest
           ? `test/${filename}`
@@ -44,7 +43,7 @@ exports.uploadImages = (post, options = {}) => {
 
         // Upload to cloudinary.
         cloudinary.uploader.upload(
-          post.image,
+          source,
           {
             public_id: publicId,
             unique_filename: false
@@ -62,7 +61,7 @@ exports.uploadImages = (post, options = {}) => {
 
 /**
  * Delete post image from cloudinary.
- * @param {string} image - The post image.
+ * @param {string} image - The post image source.
  * @returns {Promise} Resolves when function finishes.
  */
 exports.destroyImages = (image) => {
@@ -80,11 +79,12 @@ exports.destroyImages = (image) => {
   });
 };
 
-exports.replaceImages = (id, post, imageHasChanged) => {
-  if (!imageHasChanged) {
+exports.replaceImages = (id, post) => {
+  if (!post.image.hasChanged) {
     return Promise.resolve()
       .then(() => generateSlugAndFilename(post, false))
       .then(({ slug }) => {
+        post.image = post.image.source;
         post.slug = slug;
         return post;
       })
@@ -94,9 +94,7 @@ exports.replaceImages = (id, post, imageHasChanged) => {
   return Promise.resolve()
     .then(() => controller.getSinglePost({ id }))
     .then((post) => this.destroyImages(post.image))
-    .then(() =>
-      this.uploadImages(post, { imageHasChanged, isCreateOperation: false })
-    )
+    .then(() => this.uploadImages(post, { isCreateOperation: false }))
     .catch(debug);
 };
 
