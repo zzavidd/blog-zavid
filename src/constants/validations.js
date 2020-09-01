@@ -9,7 +9,11 @@ const { alert } = require('components/alert.js');
 exports.isValidPost = (post) => {
   if (!ifExists(post.title, 'Enter the post title.')) return false;
   if (!ifExists(post.type, "Select the post's type.")) return false;
-  if (!isValidImage(post.image, 'post', { mustExist: Post.isReverie(post) }))
+  if (
+    !isValidImage(post.image.source, 'post', {
+      mustExist: Post.isReverie(post)
+    })
+  )
     return false;
 
   if (Post.isPage(post)) {

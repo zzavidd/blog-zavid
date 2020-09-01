@@ -108,7 +108,7 @@ const PostForm = (props) => {
           <Field sm={6}>
             <Label>Image:</Label>
             <FileSelector
-              image={post.image}
+              image={post.image.source}
               operation={operation}
               onChange={handleFile}
               aspectRatio={ASPECT_RATIO.WIDE}

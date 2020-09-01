@@ -22,11 +22,13 @@ const PostCrud = ({ post: currentPost, operation }) => {
     content: '',
     type: '',
     excerpt: '',
-    image: '',
+    image: {
+      source: '',
+      hasChanged: false
+    },
     status: Post.STATUSES.DRAFT,
     datePublished: null,
-    domainId: '',
-    imageHasChanged: false
+    domainId: ''
   });
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -71,7 +73,10 @@ const PostCrud = ({ post: currentPost, operation }) => {
 
     setPost(
       Object.assign({}, currentPost, {
-        imageHasChanged: false
+        image: {
+          source: currentPost.image,
+          hasChanged: false
+        }
       })
     );
   };
@@ -175,7 +180,6 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
     status,
     datePublished,
     domainId,
-    imageHasChanged
   } = statePost;
 
   const post = {
@@ -200,7 +204,7 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
 
   const payload = { post, isPublish };
   if (!isCreateOperation) {
-    Object.assign(payload, { id, imageHasChanged });
+    payload.id = id;
   }
 
   return payload;

@@ -28,8 +28,10 @@ module.exports = (hook, state) => {
   module.handleFile = (file, name = 'image') => {
     hook(
       Object.assign({}, state, {
-        [name]: file,
-        imageHasChanged: true
+        [name]: {
+          source: file,
+          hasChanged: true
+        }
       })
     );
   };
