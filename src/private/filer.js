@@ -17,13 +17,13 @@ cloudinary.config({
  * Upload post image cloudinary.
  * @param {object} post - The post object.
  * @param {object} [options] - Upload options.
- * @param {boolean} [options.imagesHaveChanged] - Indicates if images have changed.
+ * @param {boolean} [options.imageHasChanged] - Indicates if images have changed.
  * @param {boolean} [options.isCreateOperation] - Specifies if operation is update.
  * @returns {Promise} Resolves when function finishes.
  */
 exports.uploadImages = (post, options = {}) => {
   const {
-    imagesHaveChanged = true,
+    imageHasChanged = true,
     isCreateOperation = true,
     isTest = false
   } = options;
@@ -35,7 +35,7 @@ exports.uploadImages = (post, options = {}) => {
         post.slug = Post.isDraft(post) ? null : slug;
 
         // Discontinue if image has not changed.
-        const noImageUpload = !imagesHaveChanged || !post.image;
+        const noImageUpload = !imageHasChanged || !post.image;
         if (noImageUpload) return resolve(post);
 
         const publicId = isTest
@@ -80,8 +80,8 @@ exports.destroyImages = (image) => {
   });
 };
 
-exports.replaceImages = (id, post, imagesHaveChanged) => {
-  if (!imagesHaveChanged) {
+exports.replaceImages = (id, post, imageHasChanged) => {
+  if (!imageHasChanged) {
     return Promise.resolve()
       .then(() => generateSlugAndFilename(post, false))
       .then(({ slug }) => {
@@ -95,7 +95,7 @@ exports.replaceImages = (id, post, imagesHaveChanged) => {
     .then(() => controller.getSinglePost({ id }))
     .then((post) => this.destroyImages(post.image))
     .then(() =>
-      this.uploadImages(post, { imagesHaveChanged, isCreateOperation: false })
+      this.uploadImages(post, { imageHasChanged, isCreateOperation: false })
     )
     .catch(debug);
 };

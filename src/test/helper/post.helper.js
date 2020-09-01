@@ -17,17 +17,17 @@ cloudinary.config({
 /**
  * Submits a post to the server.
  * @param {object} post The post to submit.
- * @param {boolean} imagesHaveChanged Flag for image uploads.
+ * @param {boolean} imageHasChanged Flag for image uploads.
  * @param {Function} [assertions] The assertions to make.
  * @returns {Promise} A resolution of the Promise.
  */
-exports.submitPost = (post, imagesHaveChanged, assertions) => {
+exports.submitPost = (post, imageHasChanged, assertions) => {
   return Promise.resolve()
     .then(() => {
       // Submit the random post.
       return fetch(
         CREATE_POST_QUERY,
-        { variables: { post, imagesHaveChanged, isTest: true } },
+        { variables: { post, imageHasChanged, isTest: true } },
         function ({ data }) {
           const createdPost = data.createPost;
           assert.hasAnyKeys(createdPost, 'id');
@@ -58,7 +58,7 @@ exports.submitPost = (post, imagesHaveChanged, assertions) => {
 exports.updatePost = (id, post, assertions) => {
   return fetch(
     UPDATE_POST_QUERY,
-    { variables: { id, post, imagesHaveChanged: false } },
+    { variables: { id, post, imageHasChanged: false } },
     function ({ data }) {
       const updatedPost = data.updatePost;
       assert.strictEqual(updatedPost.id, id);

@@ -29,7 +29,7 @@ module.exports = (hook, state) => {
     hook(
       Object.assign({}, state, {
         [name]: file,
-        imagesHaveChanged: true
+        imageHasChanged: true
       })
     );
   };

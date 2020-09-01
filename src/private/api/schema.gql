@@ -9,7 +9,7 @@ type Post {
   datePublished: String
   content: String
   image: String
-  # contentImages: [String]
+  contentImages: [String]
   slug: String
   excerpt: String
   status: PostStatus
@@ -34,7 +34,7 @@ type Mutation {
     id: Int!
     post: PostInput!
     isPublish: Boolean
-    imagesHaveChanged: Boolean
+    imageHasChanged: Boolean
   ): Post
   deletePost(id: Int!): Post
 }
@@ -79,7 +79,7 @@ input PostInput {
   datePublished: String
   content: String
   image: String
-  # contentImages: [String]
+  contentImages: [String]
   excerpt: String
   status: PostStatus
   domainId: Int
