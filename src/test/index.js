@@ -1,3 +1,4 @@
+require('dotenv').config({ path: './config.env' });
 const { assert } = require('chai');
 const { print } = require('graphql/language/printer');
 const fetch = require('node-fetch');

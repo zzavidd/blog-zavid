@@ -5,7 +5,9 @@ const {
   submitPost,
   updatePost,
   deletePost,
-  comparePosts
+  comparePosts,
+  retrieveResource,
+  extractPublicId
 } = require('../helper/post.helper');
 
 describe('Service Tests: Post', function () {
@@ -71,10 +73,35 @@ describe('Service Tests: Post', function () {
   describe('Create Post', function () {
     it('Without image', function (finish) {
       const post = new Post().random().build();
-      submitPost(post, (readPost) => {
+      submitPost(post, false, (readPost) => {
         comparePosts(post, readPost);
         deletePost(readPost.id, finish);
       });
+    });
+
+    it('With image', function (finish) {
+      const post = new Post()
+        .random({ withImage: true })
+        .withType(Post.TYPES.REVERIE.TITLE) // One type for easier cleanup.
+        .build();
+
+      let publicId;
+      let postId;
+
+      Promise.resolve()
+        .then(() => {
+          return submitPost(post, true, (readPost) => {
+            postId = readPost.id;
+            publicId = extractPublicId(readPost.image);
+          });
+        })
+        .then(() => retrieveResource(publicId))
+        .then((resources) => {
+          assert.isNotEmpty(resources);
+          assert.strictEqual(resources[0].public_id, publicId);
+          deletePost(postId, finish);
+        })
+        .catch(debug);
     });
 
     it('Different statuses', function (finish) {
@@ -93,19 +120,19 @@ describe('Service Tests: Post', function () {
 
       Promise.resolve()
         .then(() => {
-          return submitPost(draftPost, (readPost) => {
+          return submitPost(draftPost, false, (readPost) => {
             assert.isNull(readPost.slug);
             return deletePost(readPost.id);
           });
         })
         .then(() => {
-          return submitPost(privatePost, (readPost) => {
+          return submitPost(privatePost, false, (readPost) => {
             assert.isNotNull(readPost.slug);
             return deletePost(readPost.id);
           });
         })
         .then(() => {
-          return submitPost(publishedPost, (readPost) => {
+          return submitPost(publishedPost, false, (readPost) => {
             assert.isNotNull(readPost.slug);
             deletePost(readPost.id, finish);
           });
@@ -119,7 +146,7 @@ describe('Service Tests: Post', function () {
       const post = new Post().random().build();
       Promise.resolve()
         .then(() => {
-          return submitPost(post);
+          return submitPost(post, false);
         })
         .then((id) => {
           updatePost(id, post, (updatedPost) => {

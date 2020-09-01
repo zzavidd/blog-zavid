@@ -1,3 +1,5 @@
+const cloudinary = require('cloudinary').v2;
+
 const { assert, fetch } = require('..');
 const {
   GET_SINGLE_POST_QUERY,
@@ -6,23 +8,32 @@ const {
   DELETE_POST_QUERY
 } = require('../../private/api/queries');
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 /**
  * Submits a post to the server.
  * @param {object} post The post to submit.
+ * @param {boolean} imagesHaveChanged Flag for image uploads.
  * @param {Function} [assertions] The assertions to make.
  * @returns {Promise} A resolution of the Promise.
  */
-exports.submitPost = (post, assertions) => {
+exports.submitPost = (post, imagesHaveChanged, assertions) => {
   return Promise.resolve()
     .then(() => {
       // Submit the random post.
-      return fetch(CREATE_POST_QUERY, { variables: { post } }, function ({
-        data
-      }) {
-        const createdPost = data.createPost;
-        assert.hasAnyKeys(createdPost, 'id');
-        return createdPost;
-      });
+      return fetch(
+        CREATE_POST_QUERY,
+        { variables: { post, imagesHaveChanged, isTest: true } },
+        function ({ data }) {
+          const createdPost = data.createPost;
+          assert.hasAnyKeys(createdPost, 'id');
+          return createdPost;
+        }
+      );
     })
     .then((createdPost) => {
       // Retrieve the post and run comparison.
@@ -101,4 +112,24 @@ exports.comparePosts = (submission, output) => {
     new Date(submission.datePublished).getUTCMilliseconds,
     new Date(parseInt(output.datePublished)).getUTCMilliseconds
   );
+};
+
+exports.retrieveResource = (publicId) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.api.resources_by_ids(publicId, function (err, { resources }) {
+      if (err) return reject(err);
+      return resolve(resources);
+    });
+  });
+};
+
+exports.extractPublicId = (image) => {
+  const ex = new Error(`Could not get public ID from ${image}`);
+  if (!image) throw ex;
+
+  const regex = new RegExp(
+    /^(?:v[0-9]+\/)?((?:dynamic|static|test)\/.*\/.*)(?:\.[a-z]+)$/
+  );
+  const match = image.match(regex)[1];
+  return match;
 };
