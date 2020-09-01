@@ -5,7 +5,7 @@ import { zDate } from 'zavid-modules';
 
 import { Post } from 'classes';
 import { alert } from 'components/alert.js';
-import CloudImage, { TRANSFORMATIONS } from 'components/image.js';
+import CloudImage from 'components/image.js';
 import { Partitioner } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
@@ -96,7 +96,6 @@ const ReverieImage = ({ reverie }) => {
     <CloudImage
       src={reverie.image}
       alt={reverie.title}
-      lazy={TRANSFORMATIONS.MEDIUM_WIDE}
       containerClassName={css[`reveries-image-${theme}`]}
     />
   );

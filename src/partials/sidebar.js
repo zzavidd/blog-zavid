@@ -5,7 +5,7 @@ import { zDate } from 'zavid-modules';
 
 import { Post } from 'classes';
 import { alert } from 'components/alert.js';
-import CloudImage, { TRANSFORMATIONS } from 'components/image.js';
+import CloudImage from 'components/image.js';
 import { Title } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { GET_POSTS_QUERY } from 'private/api/queries';
@@ -81,7 +81,6 @@ const RecentPostImage = ({ post }) => {
     <CloudImage
       src={post.image}
       alt={post.title}
-      lazy={TRANSFORMATIONS.MEDIUM_WIDE}
       containerClassName={css[`recent-post-image-${theme}`]}
     />
   );
