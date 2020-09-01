@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 
-import Meta from 'partials/helpers/app/meta';
+import Meta from 'partials/meta';
 
 export default class AppDocument extends Document {
   render() {
