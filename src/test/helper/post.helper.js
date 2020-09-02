@@ -57,7 +57,7 @@ exports.submitPost = (post, assertions) => {
 exports.updatePost = (id, post, assertions) => {
   return fetch(
     UPDATE_POST_QUERY,
-    { variables: { id, post } },
+    { variables: { id, post, isTest: true } },
     function ({ data }) {
       const updatedPost = data.updatePost;
       assert.strictEqual(updatedPost.id, id);
@@ -126,16 +126,10 @@ exports.extractPublicId = (image) => {
   const ex = new Error(`Could not get public ID from ${image}`);
   if (!image) throw ex;
 
-  let match;
   const regex = new RegExp(
     /^(?:v[0-9]+\/)?((?:dynamic|static|test)\/.*)(?:\.[a-z]+)$/
   );
-
-  try {
-    match = image.match(regex)[1];
-  } catch {
-    throw new Error(`Image URL '${image}' did not match Cloudinary regex.`);
-  }
-
-  return match;
+  const match = image.match(regex);
+  assert.isOk(match);
+  return match[1];
 };

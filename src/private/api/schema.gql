@@ -34,6 +34,7 @@ type Mutation {
     id: Int!
     post: PostInput!
     isPublish: Boolean
+    isTest: Boolean
   ): Post
   deletePost(id: Int!): Post
 }

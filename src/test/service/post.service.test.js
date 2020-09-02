@@ -80,11 +80,8 @@ describe('Service Tests: Post', function () {
     });
 
     it('With image', function (finish) {
-      const post = new Post()
-        .random({ withImage: true })
-        .withType(Post.TYPES.REVERIE.TITLE) // One type for easier cleanup.
-        .build();
-        
+      const post = new Post().random({ withImage: true }).build();
+
       let publicId;
       let postId;
 
@@ -143,15 +140,42 @@ describe('Service Tests: Post', function () {
 
   describe('Update Post', function () {
     it('Without image', function (finish) {
-      const post = new Post().random().build();
+      const postToSubmit = new Post().random().build();
+      const postForUpdate = new Post().random().build();
       Promise.resolve()
         .then(() => {
-          return submitPost(post);
+          return submitPost(postToSubmit);
         })
         .then((id) => {
-          updatePost(id, post, (updatedPost) => {
-            comparePosts(post, updatedPost);
+          updatePost(id, postForUpdate, (updatedPost) => {
+            comparePosts(postForUpdate, updatedPost);
+            assert.strictEqual(id, updatedPost.id);
             deletePost(id, finish);
+          });
+        })
+        .catch(debug);
+    });
+
+    it('With images', function (finish) {
+      const postToSubmit = new Post().random({ withImage: true }).build();
+      const postForUpdate = new Post().random({ withImage: true }).build();
+
+      let postId;
+      let publicIdSubmit;
+      let publicIdUpdate;
+
+      Promise.resolve()
+        .then(() => {
+          return submitPost(postToSubmit, (submittedPost) => {
+            postId = submittedPost.id;
+            publicIdSubmit = extractPublicId(submittedPost.image);
+          });
+        })
+        .then(() => {
+          updatePost(postId, postForUpdate, (updatedPost) => {
+            publicIdUpdate = extractPublicId(updatedPost.image);
+            assert.notEqual(publicIdSubmit, publicIdUpdate);
+            deletePost(postId, finish);
           });
         })
         .catch(debug);

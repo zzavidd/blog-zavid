@@ -79,7 +79,8 @@ exports.destroyImages = (image) => {
   });
 };
 
-exports.replaceImages = (id, post) => {
+exports.replaceImages = (id, post, options) => {
+  const { isTest = false } = options;
   if (!post.image.hasChanged) {
     return Promise.resolve()
       .then(() => generateSlugAndFilename(post, false))
@@ -94,7 +95,7 @@ exports.replaceImages = (id, post) => {
   return Promise.resolve()
     .then(() => controller.getSinglePost({ id }))
     .then((post) => this.destroyImages(post.image))
-    .then(() => this.uploadImages(post, { isCreateOperation: false }))
+    .then(() => this.uploadImages(post, { isCreateOperation: false, isTest }))
     .catch(debug);
 };
 
