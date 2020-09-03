@@ -1,5 +1,7 @@
 const faker = require('faker');
 const { zDate, zLogic, zString } = require('zavid-modules');
+
+const { isObject, isString } = require('../../lib/helpers');
 const dev = process.env.NODE_ENV !== 'production';
 
 /** The map of post statuses. */
@@ -62,10 +64,13 @@ class Post {
   /**
    * Populates post object with random details.
    * @param {object} options - Random options.
+   * @param {boolean} options.withImage - Include a cover image.
+   * @param {number} options.numberOfContentImages - Include a specified number of content images.
    * @returns {Post} The post class.
    */
   random(options = {}) {
-    const { withImage = false } = options;
+    const { withImage = false, numberOfContentImages = 0 } = options;
+
     this.post = {
       title: `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`,
       type: getRandom(typeList),
@@ -76,7 +81,11 @@ class Post {
       image: {
         source: withImage ? faker.image.image() : '',
         hasChanged: withImage
-      }
+      },
+      contentImages: new Array(numberOfContentImages).fill({
+        source: faker.image.image(),
+        hasChanged: true
+      })
     };
     return this;
   }
@@ -94,6 +103,27 @@ class Post {
 
   static typeList = typeList;
   static statusList = statusList;
+
+  /**
+   * Concatenate post images and return as a single list.
+   * @param {object} post - The post object containing images.
+   * @returns {object[]} The list of images information object.
+   */
+  static collateImages(post) {
+    const validImageUpload =
+      !zLogic.isFalsy(post.image) && isObject(post.image);
+
+    if (validImageUpload) post.image.isCover = true;
+
+    const images = [post.image].concat(post.contentImages).filter((image) => {
+      if (image) {
+        if (isObject(image) && image.source) return true;
+        if (isString(image)) return true;
+      }
+      return false;
+    });
+    return images;
+  }
 
   /**
    * Retrieves the post directory name from its type.
@@ -172,7 +202,7 @@ class Post {
 const checkPostValue = (input, field, expected) => {
   if (zLogic.isFalsy(input)) return false;
 
-  if (typeof input === 'object') {
+  if (isObject(input)) {
     return input[field] === expected;
   } else {
     return input === expected;

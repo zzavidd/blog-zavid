@@ -8,7 +8,7 @@ const postFragments = gql`
     content
     status
     image
-    # contentImages
+    contentImages
     datePublished
     excerpt
     slug

@@ -9,7 +9,7 @@ type Post {
   datePublished: String
   content: String
   image: String
-  # contentImages: [String]
+  contentImages: [String]
   slug: String
   excerpt: String
   status: PostStatus
@@ -79,7 +79,7 @@ input PostInput {
   datePublished: String
   content: String
   image: ImageState
-  # contentImages: [String]
+  contentImages: [ImageState]
   excerpt: String
   status: PostStatus
   domainId: Int
