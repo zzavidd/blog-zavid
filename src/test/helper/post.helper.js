@@ -40,8 +40,9 @@ exports.submitPost = (post, assertions) => {
         GET_SINGLE_POST_QUERY,
         { variables: { id: createdPost.id } },
         function ({ data }) {
-          if (assertions) assertions(data.getSinglePost);
-          return data.getSinglePost.id;
+          const returnedPost = data.getSinglePost;
+          if (assertions) assertions(returnedPost);
+          return returnedPost.id;
         }
       );
     });

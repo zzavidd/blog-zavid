@@ -6,7 +6,7 @@ describe('Unit Tests: Post', function () {
   describe('Object methods', function () {
     it('Test random construction', function (finish) {
       const post = new Post().random({ numberOfContentImages: 4 }).build();
-      assert.lengthOf(post.contentImages, 4);
+      isArrayOfLength(post.contentImages, 4);
       finish();
     });
   });
@@ -59,22 +59,47 @@ describe('Unit Tests: Post', function () {
       finish();
     });
 
+    it('Parse post', function (finish) {
+      const post = new Post()
+        .random({ withImage: true, numberOfContentImages: 2 })
+        .build();
+
+      let images;
+
+      post.contentImages = JSON.stringify(post.contentImages);
+      images = Post.parse(post).contentImages;
+      isArrayOfLength(images, 2);
+
+      post.contentImages = null;
+      images = Post.parse(post).contentImages;
+      assert.isNull(images);
+
+      post.contentImages = '';
+      images = Post.parse(post).contentImages;
+      assert.isNull(images);
+
+      finish();
+    });
+
     it('Collate images', function (finish) {
       const post = new Post()
         .random({ withImage: true, numberOfContentImages: 2 })
         .build();
 
       let images = Post.collateImages(post);
-      assert.isArray(images);
-      assert.lengthOf(images, 3);
+      isArrayOfLength(images, 3);
 
       // If main image is null.
       post.image = null;
       images = Post.collateImages(post);
-      assert.isArray(images);
-      assert.lengthOf(images, 2);
-      
+      isArrayOfLength(images, 2);
+
       finish();
     });
   });
 });
+
+const isArrayOfLength = (array, number) => {
+  assert.isArray(array);
+  assert.lengthOf(array, number);
+};

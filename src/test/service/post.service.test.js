@@ -80,7 +80,7 @@ describe('Service Tests: Post', function () {
     });
 
     it('With image', function (finish) {
-      const post = new Post().random({ withImage: true }).build();
+      const post = new Post().random({ withImage: true, numberOfContentImages: 2 }).build();
 
       let publicId;
       let postId;
@@ -157,8 +157,8 @@ describe('Service Tests: Post', function () {
     });
 
     it('With images', function (finish) {
-      const postToSubmit = new Post().random({ withImage: true }).build();
-      const postForUpdate = new Post().random({ withImage: true }).build();
+      const postToSubmit = new Post().random({ withImage: true, numberOfContentImages: 2 }).build();
+      const postForUpdate = new Post().random({ withImage: true, numberOfContentImages: 2 }).build();
 
       let postId;
       let publicIdSubmit;

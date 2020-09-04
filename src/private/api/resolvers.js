@@ -26,7 +26,9 @@ exports.getAllPosts = ({ limit, sort, type, status }) => {
         .withLimit(limit)
         .build()
     )
-    .then((posts) => posts)
+    .then((posts) => {
+      return posts.map((post) => Post.parse(post));
+    })
     .catch(debug);
 };
 
@@ -41,6 +43,7 @@ exports.getSinglePost = ({ id }) => {
     .then(() => new PostQueryBuilder(knex).whereId(id).build())
     .then(([post]) => {
       if (!post) throw ERRORS.NO_POST_WITH_ID(id);
+      post = Post.parse(post);
       return post;
     })
     .catch(debug);

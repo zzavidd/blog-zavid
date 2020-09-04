@@ -79,7 +79,7 @@ exports.uploadImages = (post, options = {}) => {
               }
             });
 
-            post.contentImages = contentImages.length ? contentImages : null;
+            post.contentImages = contentImages.length ? JSON.stringify(contentImages) : null;
             resolve(post);
           }
         );

@@ -105,11 +105,32 @@ class Post {
   static statusList = statusList;
 
   /**
+   * Ensure a post object is able to be operated on.
+   * @param {object} post The post object.
+   * @returns {object} The parsed post object.
+   */
+  static parse(post) {
+    const images = post.contentImages;
+    if (zLogic.isFalsy(images)) {
+      post.contentImages = null;
+      return post;
+    }
+
+    try {
+      if (isString(images)) post.contentImages = JSON.parse(images);
+    } catch {
+      post.contentImages = null;
+    }
+    return post;
+  }
+
+  /**
    * Concatenate post images and return as a single list.
    * @param {object} post - The post object containing images.
-   * @returns {object[]} The list of images information object.
+   * @returns {object[]|string[]} The list of images.
    */
   static collateImages(post) {
+    post = this.parse(post);
     const validImageUpload =
       !zLogic.isFalsy(post.image) && isObject(post.image);
 
