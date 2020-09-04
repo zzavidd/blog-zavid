@@ -89,7 +89,7 @@ exports.deletePost = (id, assertions) => {
       return fetch(
         GET_SINGLE_POST_QUERY,
         { variables: { id }, expectToFail: true },
-        function ({ data, errors }) {
+        function ({ errors }) {
           assert.isOk(errors);
           if (assertions) assertions();
         }

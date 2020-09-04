@@ -57,6 +57,7 @@ exports.getSinglePost = ({ id }) => {
  * @param {boolean} args.isTest - Indicates if testing.
  * @returns {number} The ID of the newly-created post.
  */
+// eslint-disable-next-line no-unused-vars
 exports.createPost = ({ post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.uploadImages(post, { isTest }))
@@ -74,6 +75,7 @@ exports.createPost = ({ post, isPublish, isTest }) => {
  * @param {boolean} args.isTest - Indicates if testing.
  * @returns {object} The post after being updated.
  */
+// eslint-disable-next-line no-unused-vars
 exports.updatePost = ({ id, post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.replaceImages(id, post, { isTest }))

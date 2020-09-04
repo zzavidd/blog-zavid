@@ -10,7 +10,7 @@ class QueryBuilder {
 
   /**
    * Return the built query.
-   * @returns {Knex} The build Knex query.
+   * @returns {string} The build Knex query.
    */
   build() {
     return this.query;
