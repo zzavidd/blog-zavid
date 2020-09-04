@@ -9,12 +9,6 @@ const { alert } = require('components/alert.js');
 exports.isValidPost = (post) => {
   if (!ifExists(post.title, 'Enter the post title.')) return false;
   if (!ifExists(post.type, "Select the post's type.")) return false;
-  if (
-    !isValidImage(post.image.source, 'post', {
-      mustExist: Post.isReverie(post)
-    })
-  )
-    return false;
 
   if (Post.isPage(post)) {
     if (!ifExists(post.domainId, "Select this page's domain post."))
@@ -22,6 +16,12 @@ exports.isValidPost = (post) => {
   }
 
   if (Post.isPublish(post)) {
+    if (
+      !isValidImage(post.image.source, 'post', {
+        mustExist: Post.isReverie(post)
+      })
+    )
+      return false;
     if (!ifExists(post.content, 'Write out the content of this post.'))
       return false;
     if (Post.isReverie(post)) {
