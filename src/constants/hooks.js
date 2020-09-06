@@ -36,5 +36,20 @@ module.exports = (hook, state) => {
     );
   };
 
+  module.handleContentImages = (file, i) => {
+    const contentImages = state.contentImages || {};
+
+    contentImages[`image${i}`] = {
+      source: file,
+      hasChanged: true
+    };
+
+    hook(
+      Object.assign({}, state, {
+        contentImages
+      })
+    );
+  };
+
   return module;
 };

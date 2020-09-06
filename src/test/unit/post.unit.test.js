@@ -94,6 +94,9 @@ describe('Unit Tests: Post', function () {
       images = Post.collateImages(post);
       isArrayOfLength(images, 2);
 
+      images = Post.collateImages(post, { includeNulls: true });
+      isArrayOfLength(images, 3);
+
       finish();
     });
   });

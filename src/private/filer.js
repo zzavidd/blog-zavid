@@ -35,11 +35,21 @@ exports.uploadImages = (post, options = {}) => {
           : `dynamic/${directory}/${filename}`;
         const images = Post.collateImages(post);
 
+        // Discontinue if no images.
+        if (!images.length) {
+          post.image = null;
+          post.contentImages = null;
+          return resolve(post);
+        }
+
         async.transform(
           images,
           function (acc, image, key, callback) {
             const { hasChanged, source, isCover } = image;
-            if (!hasChanged) return callback(null);
+            if (!hasChanged) {
+              acc[key] = source;
+              return callback(null);
+            }
 
             const contentImageKey = key.toString().padStart(2, '0');
             const publicId = isCover ? uri : `${uri}-${contentImageKey}`;
@@ -51,35 +61,31 @@ exports.uploadImages = (post, options = {}) => {
                 unique_filename: false
               },
               (err, result) => {
-                acc[key] = result;
-                callback(err);
+                if (err) return callback(err);
+                const { version, public_id, format } = result;
+                acc[key] = `v${version}/${public_id}.${format}`;
+                callback(null);
               }
             );
           },
           function (err, results) {
             if (err) return reject(err);
 
-            // Discontinue if no images.
-            if (!results.length) {
-              post.image = null;
-              post.contentImages = null;
-              return resolve(post);
-            }
-
-            const contentImageRegex = new RegExp(/^.*\-[0-9]{2}$/);
+            const contentImageRegex = new RegExp(/.*\-[0-9]{2}\.[a-z]+/);
             const contentImages = [];
 
+            // Store return image information in post object.
             results.forEach((result) => {
-              const { version, public_id, format } = result;
-              if (contentImageRegex.test(public_id)) {
-                const contentImage = `v${version}/${public_id}.${format}`;
-                contentImages.push(contentImage);
+              if (contentImageRegex.test(result)) {
+                contentImages.push(result);
               } else {
-                post.image = `v${version}/${public_id}.${format}`;
+                post.image = result;
               }
             });
 
-            post.contentImages = contentImages.length ? JSON.stringify(contentImages) : null;
+            post.contentImages = contentImages.length
+              ? JSON.stringify(contentImages)
+              : null;
             resolve(post);
           }
         );
@@ -132,10 +138,12 @@ exports.replaceImages = (id, post, options) => {
   return Promise.resolve()
     .then(() => controller.getSinglePost({ id }))
     .then((postInDb) => {
-      const imagesInRequest = Post.collateImages(post);
+      const imagesInRequest = Post.collateImages(post, { includeNulls: true });
       const imagesInDb = Post.collateImages(postInDb);
 
       const promises = [];
+
+      // Delete images which have changed.
       imagesInRequest.forEach((image, key) => {
         const shouldDeleteImage =
           image.hasChanged && key <= imagesInDb.length - 1;
@@ -177,7 +185,8 @@ const generateSlugAndFilename = (post, isCreateOperation) => {
       .then(() => {
         return knex('posts')
           .count('id', { as: 'count' })
-          .where('type', post.type);
+          .where('type', post.type)
+          .where('status', 'PUBLISHED');
       })
       .then(([{ count }]) => {
         const number = (isCreateOperation ? count + 1 : count)

@@ -26,6 +26,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
       source: '',
       hasChanged: false
     },
+    contentImages: {},
     status: Post.STATUSES.DRAFT,
     datePublished: null,
     domainId: ''
@@ -71,12 +72,28 @@ const PostCrud = ({ post: currentPost, operation }) => {
   const populateForm = () => {
     if (isCreateOperation) return;
 
+    const image = {
+      source: currentPost.image,
+      hasChanged: false
+    };
+
+    // Transform array of images into map values.
+    let contentImages = {};
+    try {
+      currentPost.contentImages.forEach((value, i) => {
+        contentImages[`image${i}`] = {
+          source: value,
+          hasChanged: false
+        };
+      });
+    } catch {
+      contentImages = null;
+    }
+
     setPost(
       Object.assign({}, currentPost, {
-        image: {
-          source: currentPost.image,
-          hasChanged: false
-        }
+        image,
+        contentImages
       })
     );
   };
@@ -152,6 +169,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
       isLoaded={isLoaded}
       post={statePost}
       domains={domains}
+      isCreateOperation={isCreateOperation}
       handlers={hooks(setPost, statePost)}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
@@ -177,9 +195,10 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
     type,
     excerpt,
     image,
+    contentImages,
     status,
     datePublished,
-    domainId,
+    domainId
   } = statePost;
 
   const post = {
@@ -188,6 +207,7 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
     type,
     excerpt: excerpt.trim(),
     image,
+    contentImages: contentImages ? Object.values(contentImages) : null,
     status
   };
 

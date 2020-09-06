@@ -127,9 +127,13 @@ class Post {
   /**
    * Concatenate post images and return as a single list.
    * @param {object} post - The post object containing images.
+   * @param {object} [options] - Options for image collation.
+   * @param {boolean} [options.includeNulls] - Include null values when collating images.
    * @returns {object[]|string[]} The list of images.
    */
-  static collateImages(post) {
+  static collateImages(post, options = {}) {
+    const { includeNulls = false } = options;
+
     post = this.parse(post);
     const validImageUpload =
       !zLogic.isFalsy(post.image) && isObject(post.image);
@@ -137,6 +141,7 @@ class Post {
     if (validImageUpload) post.image.isCover = true;
 
     const images = [post.image].concat(post.contentImages).filter((image) => {
+      if (includeNulls) return true;
       if (image) {
         if (isObject(image) && image.source) return true;
         if (isString(image)) return true;
