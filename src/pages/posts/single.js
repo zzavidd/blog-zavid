@@ -15,11 +15,11 @@ const PostSingle = ({ post }) => {
   const navigateBack = () => (location.href = '/reveries');
 
   const substitutions = {};
-  const contentImages = post.contentImages || [];
-
-  contentImages.forEach(({ image }, key) => {
+  const contentImages = JSON.parse(post.contentImages) || [];
+  contentImages.forEach((image, key) => {
     substitutions[`image${key + 1}`] = `![](${cloudinaryBaseUrl}/${image})`;
   });
+
   return (
     <Spacer>
       <div className={css['post-single']}>

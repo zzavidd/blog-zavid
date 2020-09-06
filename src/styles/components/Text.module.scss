@@ -115,6 +115,16 @@ $readmore-dark: #87ceeb;
   }
 }
 
+.paragraph-image-full {
+  margin: 1.5em 0;
+  max-width: 500px;
+  width: 100%;
+
+  img {
+    width: 100%;
+  }
+}
+
 .divider {
   @include themer(&, background-color, $light: #000, $dark: #fff);
   margin: 2em 0;
