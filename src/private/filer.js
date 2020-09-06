@@ -146,7 +146,7 @@ exports.replaceImages = (id, post, options) => {
       // Delete images which have changed.
       imagesInRequest.forEach((image, key) => {
         const shouldDeleteImage =
-          image.hasChanged && key <= imagesInDb.length - 1;
+          image && image.hasChanged && key <= imagesInDb.length - 1;
         if (shouldDeleteImage) {
           const imageToDelete = imagesInDb[key];
           promises.push(this.destroyImage(imageToDelete));

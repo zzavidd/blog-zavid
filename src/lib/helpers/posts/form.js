@@ -14,6 +14,7 @@ import {
 } from 'components/form';
 import { FileSelector, ASPECT_RATIO } from 'components/form/fileselector';
 import DatePicker from 'components/form/picker/datepicker';
+import { cloudinaryBaseUrl } from 'components/image';
 import { Fader } from 'components/transitioner';
 import css from 'styles/pages/Posts.module.scss';
 
@@ -23,9 +24,18 @@ const PostForm = (props) => {
   const { post, domains, handlers, isCreateOperation, isLoaded } = props;
   const { handleText, handleDate, handleFile, handleContentImages } = handlers;
 
+  const substitutions = {};
+  const contentImages = Object.values(post.contentImages || []);
+  contentImages
+    .filter((e) => e)
+    .forEach(({ source }, key) => {
+      if (!source.startsWith('data')) source = `${cloudinaryBaseUrl}/${source}`;
+      substitutions[`image${key + 1}`] = `![](${source})`;
+    });
+
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
-      <Form {...props} previewText={post.content}>
+      <Form {...props} previewText={post.content} substitutions={substitutions}>
         <FieldRow>
           <Field sm={8}>
             <Label>Title:</Label>

@@ -3,7 +3,7 @@ import { zDate, zLogic } from 'zavid-modules';
 
 import { Post } from 'classes';
 import { BackButton } from 'components/button';
-import CloudImage from 'components/image';
+import CloudImage, { cloudinaryBaseUrl } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Paragraph, Title, Divider } from 'components/text';
@@ -13,6 +13,13 @@ const PostSingle = ({ post }) => {
   const shareMessage = `"${post.title}" on ZAVID`;
 
   const navigateBack = () => (location.href = '/reveries');
+
+  const substitutions = {};
+  const contentImages = post.contentImages || [];
+
+  contentImages.forEach(({ image }, key) => {
+    substitutions[`image${key + 1}`] = `![](${cloudinaryBaseUrl}/${image})`;
+  });
   return (
     <Spacer>
       <div className={css['post-single']}>
@@ -23,7 +30,11 @@ const PostSingle = ({ post }) => {
           containerClassName={css['post-single-image-container']}
           imageClassName={css['post-single-image']}
         />
-        <Paragraph className={css['post-single-content']}>{post.content}</Paragraph>
+        <Paragraph
+          className={css['post-single-content']}
+          substitutions={substitutions}>
+          {post.content}
+        </Paragraph>
         <Divider />
         <ShareBlock message={shareMessage} url={location.href} />
       </div>
