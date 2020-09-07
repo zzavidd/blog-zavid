@@ -24,7 +24,7 @@ export const TextInput = (props) => {
     <div className={css[`text-input-field-${theme}`]}>
       {leadingComponent}
       {onClick ? (
-        <InvisibleButton onClick={onClick}>
+        <InvisibleButton onClick={onClick} className={css[`text-click-input`]}>
           <Input {...props} type={'text'} />
         </InvisibleButton>
       ) : (
