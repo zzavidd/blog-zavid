@@ -178,7 +178,6 @@ const ContentImages = ({ post, isCreateOperation, handleContentImages }) => {
         isCreateOperation={isCreateOperation}
         onChange={(img) => handleContentImages(img, i)}
         aspectRatio={ASPECT_RATIO.WIDE}
-        // className={css['content-images-selector']}
       />
     );
   }
