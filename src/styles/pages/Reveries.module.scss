@@ -21,6 +21,7 @@
 }
 
 .reveries-image {
+  @include hover-scale(1.05);
   @include themer(&, border-color, $dark, $border-color);
   border: 2px solid;
   border-radius: 10px;
