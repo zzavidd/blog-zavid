@@ -13,6 +13,7 @@ exports.accounts = {
 exports.creationDate = new Date(2017, 9, 2);
 
 /** The date this blog was redeveloped. */
+// TODO: To change on launch
 exports.redevelopmentDate = new Date(2020, 9, 2);
 
 /** Domain to use dependent on environment. */
