@@ -55,10 +55,7 @@
   }
 }
 
-// .content-images-wrapper {
-//   display: flex;
-// }
-
-// .content-images-selector {
-//   width: 50%;
-// }
+.content-images-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+}

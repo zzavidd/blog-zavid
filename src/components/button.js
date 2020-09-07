@@ -93,14 +93,14 @@ export const AdminButton = (props) => {
   return (
     <Responsive
       defaultView={
-        <Button {...props} className={classes}>
+        <button {...props} className={classes}>
           {children}
-        </Button>
+        </button>
       }
       mobileView={
-        <Button {...props} className={classes}>
+        <button {...props} className={classes}>
           {mobileText || children}
-        </Button>
+        </button>
       }
     />
   );
