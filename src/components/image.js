@@ -8,7 +8,7 @@ export const cloudinaryBaseUrl =
 export const validateCloudinaryImage = (image) => {
   if (!image) return false;
 
-  const regex = new RegExp(/(v[0-9]+|dynamic|static)\//);
+  const regex = new RegExp(/(v[0-9]+|dynamic|static|test)\//);
   const match = image.match(regex);
   if (match === null) return false;
 

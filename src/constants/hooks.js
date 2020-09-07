@@ -28,8 +28,25 @@ module.exports = (hook, state) => {
   module.handleFile = (file, name = 'image') => {
     hook(
       Object.assign({}, state, {
-        [name]: file,
-        imagesHaveChanged: true
+        [name]: {
+          source: file,
+          hasChanged: true
+        }
+      })
+    );
+  };
+
+  module.handleContentImages = (file, i) => {
+    const contentImages = state.contentImages || {};
+
+    contentImages[`image${i}`] = {
+      source: file,
+      hasChanged: true
+    };
+
+    hook(
+      Object.assign({}, state, {
+        contentImages
       })
     );
   };

@@ -8,7 +8,6 @@ import {
   validateCloudinaryImage
 } from 'components/image.js';
 import { Zoomer } from 'components/transitioner.js';
-import { OPERATIONS } from 'constants/strings.js';
 import css from 'styles/components/Form.module.scss';
 
 export const ASPECT_RATIO = {
@@ -17,13 +16,13 @@ export const ASPECT_RATIO = {
 };
 
 export const FileSelector = (props) => {
-  const { className, image, operation } = props;
+  const { className, image, isCreateOperation } = props;
 
   const [sImage, setImage] = useState(image);
   const imageRef = useRef(null);
 
   useEffect(() => {
-    if (operation === OPERATIONS.CREATE) return;
+    if (isCreateOperation) return;
 
     if (validateCloudinaryImage(image)) {
       const cloudPath = `${cloudinaryBaseUrl}/${image}`;
@@ -49,7 +48,7 @@ const ChoosePrompt = ({
   onChange,
   image,
   imageRef,
-  placeholder = 'Choose a image...',
+  placeholder = 'Choose an image...',
   setImage
 }) => {
   if (image) return null;
@@ -77,22 +76,20 @@ const ChoosePrompt = ({
   };
 
   return (
-    <>
-      <label
-        className={css['fs-image-text']}
-        style={{
-          padding: aspectRatio
-        }}>
-        <input
-          type={'file'}
-          style={{ display: 'none' }}
-          onChange={previewImage}
-          ref={fileRef}
-          accept={'image/*'}
-        />
-        <span>{placeholder}</span>
-      </label>
-    </>
+    <label
+      className={css['fs-image-text']}
+      style={{
+        padding: aspectRatio
+      }}>
+      <input
+        type={'file'}
+        style={{ display: 'none' }}
+        onChange={previewImage}
+        ref={fileRef}
+        accept={'image/*'}
+      />
+      <span>{placeholder}</span>
+    </label>
   );
 };
 
@@ -116,9 +113,7 @@ const ChoiceImage = ({ stateImage, onChange, imageRef, setImage }) => {
         ref={imageRef}
         className={css['fs-image']}
       />
-      <InvisibleButton
-        className={css['fs-image-button']}
-        onClick={removeImage}>
+      <InvisibleButton className={css['fs-image-button']} onClick={removeImage}>
         <Icon name={'times'} />
       </InvisibleButton>
     </Zoomer>

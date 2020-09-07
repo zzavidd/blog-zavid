@@ -169,7 +169,7 @@ const LinkButton = ({ post, allPosts }) => {
       url.appendSegment(post.slug);
     }
 
-    location.href = url.build();
+    window.open(url.build());
   };
 
   return (

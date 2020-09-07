@@ -1,7 +1,8 @@
 const {
+  Post,
   PostQueryBuilder,
   PostMutationBuilder
-} = require('../../classes/builders/query');
+} = require('../../classes');
 const { debug, ERRORS } = require('../error');
 const filer = require('../filer');
 const knex = require('../singleton').getKnex();
@@ -17,15 +18,17 @@ const knex = require('../singleton').getKnex();
  */
 exports.getAllPosts = ({ limit, sort, type, status }) => {
   return Promise.resolve()
-    .then(() => {
-      return new PostQueryBuilder(knex)
+    .then(() =>
+      new PostQueryBuilder(knex)
         .whereType(type)
         .whereStatus(status)
         .withOrder(sort)
         .withLimit(limit)
-        .build();
+        .build()
+    )
+    .then((posts) => {
+      return posts.map((post) => Post.parse(post));
     })
-    .then((posts) => posts)
     .catch(debug);
 };
 
@@ -37,11 +40,10 @@ exports.getAllPosts = ({ limit, sort, type, status }) => {
  */
 exports.getSinglePost = ({ id }) => {
   return Promise.resolve()
-    .then(() => {
-      return new PostQueryBuilder(knex).whereId(id).build();
-    })
+    .then(() => new PostQueryBuilder(knex).whereId(id).build())
     .then(([post]) => {
       if (!post) throw ERRORS.NO_POST_WITH_ID(id);
+      post = Post.parse(post);
       return post;
     })
     .catch(debug);
@@ -55,15 +57,12 @@ exports.getSinglePost = ({ id }) => {
  * @param {boolean} args.isTest - Indicates if testing.
  * @returns {number} The ID of the newly-created post.
  */
+// eslint-disable-next-line no-unused-vars
 exports.createPost = ({ post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.uploadImages(post, { isTest }))
-    .then((post) => {
-      return new PostMutationBuilder(knex, 'posts').insert(post).build();
-    })
-    .then(([id]) => {
-      return { id };
-    })
+    .then((post) => new PostMutationBuilder(knex, 'posts').insert(post).build())
+    .then(([id]) => ({ id }))
     .catch(debug);
 };
 
@@ -73,18 +72,19 @@ exports.createPost = ({ post, isPublish, isTest }) => {
  * @param {number} args.id - The ID of the post to update.
  * @param {object} args.post - The post object to be updated.
  * @param {boolean} args.isPublish - Indicates if a publish operation.
- * @param {boolean} args.imagesHaveChanged - Indicates if image has changed.
+ * @param {boolean} args.isTest - Indicates if testing.
  * @returns {object} The post after being updated.
  */
-exports.updatePost = ({ id, post, isPublish, imagesHaveChanged }) => {
+// eslint-disable-next-line no-unused-vars
+exports.updatePost = ({ id, post, isPublish, isTest }) => {
   return Promise.resolve()
-    .then(() => filer.replaceImages(id, post, imagesHaveChanged))
-    .then((updatedPost) => {
-      return new PostMutationBuilder(knex, 'posts')
+    .then(() => filer.replaceImages(id, post, { isTest }))
+    .then((updatedPost) =>
+      new PostMutationBuilder(knex, 'posts')
         .update(updatedPost)
         .whereId(id)
-        .build();
-    })
+        .build()
+    )
     .then(() => this.getSinglePost({ id }))
     .catch(debug);
 };
@@ -97,18 +97,18 @@ exports.updatePost = ({ id, post, isPublish, imagesHaveChanged }) => {
  */
 exports.deletePost = ({ id }) => {
   return Promise.resolve()
-    .then(() => {
-      return new PostQueryBuilder(knex).whereId(id).build();
-    })
+    .then(() => new PostQueryBuilder(knex).whereId(id).build())
     .then(([post]) => {
       if (!post) throw ERRORS.NO_POST_WITH_ID(id);
-      return filer.destroyImages(post.image);
+
+      const promises = [];
+      const images = Post.collateImages(post);
+      images.forEach((image) => {
+        promises.push(filer.destroyImage(image));
+      });
+      return Promise.all(promises);
     })
-    .then(() => {
-      return new PostMutationBuilder(knex, 'posts').delete(id).build();
-    })
-    .then(() => {
-      return { id };
-    })
+    .then(() => new PostMutationBuilder(knex, 'posts').delete(id).build())
+    .then(() => ({ id }))
     .catch(debug);
 };
