@@ -41,7 +41,6 @@ export default class ZAVID extends App {
  * @param {object} props - The inherited props from the Next App.
  * @param {object} props.Component - The current component in view.
  * @param {object} props.pageProps - The properties for each page.
- * @param {object} props.router - The server-side router object.
  * @returns {React.Component} - The full page including the header and footer.
  */
 const ZAVIDApp = ({ Component, pageProps }) => {

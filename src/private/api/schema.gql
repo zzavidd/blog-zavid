@@ -6,10 +6,11 @@ type Post {
   id: Int
   title: String!
   type: PostType!
+  typeId: Int
   datePublished: String
   content: String
   image: String
-  # contentImages: [String]
+  contentImages: [String]
   slug: String
   excerpt: String
   status: PostStatus
@@ -34,7 +35,7 @@ type Mutation {
     id: Int!
     post: PostInput!
     isPublish: Boolean
-    imagesHaveChanged: Boolean
+    isTest: Boolean
   ): Post
   deletePost(id: Int!): Post
 }
@@ -76,10 +77,11 @@ input PostInput {
   # No slug
   title: String!
   type: PostType!
+  typeId: Int
   datePublished: String
   content: String
-  image: String
-  # contentImages: [String]
+  image: ImageState
+  contentImages: [ImageState]
   excerpt: String
   status: PostStatus
   domainId: Int
@@ -99,4 +101,9 @@ input PostTypeOptions {
 input PostStatusOptions {
   include: [PostStatus]
   exclude: [PostStatus]
+}
+
+input ImageState {
+  source: String
+  hasChanged: Boolean
 }

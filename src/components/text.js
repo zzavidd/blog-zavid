@@ -56,7 +56,6 @@ export const Paragraph = ({
       subheading: css['paragraph-subheading'],
       image: {
         full: css['paragraph-image-full'],
-        float: css['paragraph-image-float']
       },
       blockquote: css['paragraph-blockquote'],
       paragraph: css['paragraph-body'],

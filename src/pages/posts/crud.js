@@ -21,12 +21,16 @@ const PostCrud = ({ post: currentPost, operation }) => {
     title: '',
     content: '',
     type: '',
+    typeId: 1,
     excerpt: '',
-    image: '',
+    image: {
+      source: '',
+      hasChanged: false
+    },
+    contentImages: {},
     status: Post.STATUSES.DRAFT,
     datePublished: null,
-    domainId: '',
-    imagesHaveChanged: false
+    domainId: ''
   });
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -69,11 +73,32 @@ const PostCrud = ({ post: currentPost, operation }) => {
   const populateForm = () => {
     if (isCreateOperation) return;
 
+    const image = {
+      source: currentPost.image,
+      hasChanged: false
+    };
+
+    // Transform array of images into map values.
+    let contentImages = {};
+    try {
+      currentPost.contentImages.forEach((value, i) => {
+        contentImages[`image${i}`] = {
+          source: value,
+          hasChanged: false
+        };
+      });
+    } catch {
+      contentImages = null;
+    }
+
     setPost(
       Object.assign({}, currentPost, {
-        imagesHaveChanged: false
+        image,
+        contentImages
       })
     );
+
+    // setDefaultTypeId();
   };
 
   /** Populate the form with post details. */
@@ -93,6 +118,17 @@ const PostCrud = ({ post: currentPost, operation }) => {
     );
 
     setDomains(domainList);
+  };
+
+  const setDefaultTypeId = (e) => {
+    const selectedType = e.target.value;
+    const postsOfType = domains.filter(({ type }) => selectedType === type);
+    setPost(
+      Object.assign({}, statePost, {
+        type: selectedType,
+        typeId: postsOfType.length + 1
+      })
+    );
   };
 
   useEffect(() => {
@@ -147,7 +183,8 @@ const PostCrud = ({ post: currentPost, operation }) => {
       isLoaded={isLoaded}
       post={statePost}
       domains={domains}
-      handlers={hooks(setPost, statePost)}
+      isCreateOperation={isCreateOperation}
+      handlers={{ ...hooks(setPost, statePost), setDefaultTypeId }}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
       cancelFunction={returnToAdminPosts}
@@ -170,12 +207,13 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
     title,
     content,
     type,
+    typeId,
     excerpt,
     image,
+    contentImages,
     status,
     datePublished,
-    domainId,
-    imagesHaveChanged
+    domainId
   } = statePost;
 
   const post = {
@@ -184,23 +222,26 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
     type,
     excerpt: excerpt.trim(),
     image,
+    contentImages: contentImages ? Object.values(contentImages) : null,
     status
   };
 
-  if (Post.isPublish(status)) {
+  if (Post.isPublish(post)) {
     post.datePublished = zDate.formatISODate(datePublished);
   }
 
-  if (Post.isPage(type)) {
+  if (Post.isPage(post)) {
     const id = parseInt(domainId);
     const domainType = Post.findInPosts(domains, id, 'value').type;
     post.domainId = id;
     post.domainType = domainType;
+  } else {
+    post.typeId = typeId;
   }
 
   const payload = { post, isPublish };
   if (!isCreateOperation) {
-    Object.assign(payload, { id, imagesHaveChanged });
+    payload.id = id;
   }
 
   return payload;

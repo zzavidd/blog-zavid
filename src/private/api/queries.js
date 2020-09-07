@@ -5,10 +5,11 @@ const postFragments = gql`
     id
     title
     type
+    typeId
     content
     status
     image
-    # contentImages
+    contentImages
     datePublished
     excerpt
     slug
@@ -58,13 +59,13 @@ exports.UPDATE_POST_QUERY = gql`
     $id: Int!
     $post: PostInput!
     $isPublish: Boolean
-    $imagesHaveChanged: Boolean
+    $isTest: Boolean
   ) {
     updatePost(
       id: $id
       post: $post
       isPublish: $isPublish
-      imagesHaveChanged: $imagesHaveChanged
+      isTest: $isTest
     ) {
       ...PostFields
     }

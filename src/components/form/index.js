@@ -26,6 +26,7 @@ export * from './textarea';
  * @param {Function} props.cancelFunction - The function called on clicking the cancel button.
  * @param {boolean} props.isRequestPending - Indicates whether a request is currently pending.
  * @param {string} props.previewText - The text to be shown in the preview.
+ * @param {object} props.substitutions - The expected text substitutions (e.g. images).
  * @param {any} props.children - The component children.
  * @returns {React.Component} The component.
  */
@@ -35,6 +36,7 @@ export const Form = ({
   cancelFunction,
   isRequestPending,
   previewText = false,
+  substitutions,
   children
 }) => {
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
@@ -49,6 +51,7 @@ export const Form = ({
         <FormPreview
           isPreviewVisible={isPreviewVisible}
           previewText={previewText}
+          substitutions={substitutions}
         />
       </div>
       <Toolbar>
@@ -72,7 +75,7 @@ export const Form = ({
   );
 };
 
-const FormPreview = ({ isPreviewVisible, previewText }) => {
+const FormPreview = ({ isPreviewVisible, previewText, substitutions }) => {
   const theme = useSelector(({ theme }) => theme);
   return (
     <Slider
@@ -81,7 +84,11 @@ const FormPreview = ({ isPreviewVisible, previewText }) => {
       direction={'right'}
       className={css[`form-preview-${theme}`]}
       style={{ display: isPreviewVisible ? 'block' : 'none' }}>
-      <Paragraph className={css['form-preview-text']}>{previewText}</Paragraph>
+      <Paragraph
+        className={css['form-preview-text']}
+        substitutions={substitutions}>
+        {previewText}
+      </Paragraph>
     </Slider>
   );
 };

@@ -73,24 +73,21 @@ describe('Service Tests: Post', function () {
   describe('Create Post', function () {
     it('Without image', function (finish) {
       const post = new Post().random().build();
-      submitPost(post, false, (readPost) => {
+      submitPost(post, (readPost) => {
         comparePosts(post, readPost);
         deletePost(readPost.id, finish);
       });
     });
 
     it('With image', function (finish) {
-      const post = new Post()
-        .random({ withImage: true })
-        .withType(Post.TYPES.REVERIE.TITLE) // One type for easier cleanup.
-        .build();
+      const post = new Post().random({ withImage: true, numberOfContentImages: 2 }).build();
 
       let publicId;
       let postId;
 
       Promise.resolve()
         .then(() => {
-          return submitPost(post, true, (readPost) => {
+          return submitPost(post, (readPost) => {
             postId = readPost.id;
             publicId = extractPublicId(readPost.image);
           });
@@ -120,19 +117,19 @@ describe('Service Tests: Post', function () {
 
       Promise.resolve()
         .then(() => {
-          return submitPost(draftPost, false, (readPost) => {
+          return submitPost(draftPost, (readPost) => {
             assert.isNull(readPost.slug);
             return deletePost(readPost.id);
           });
         })
         .then(() => {
-          return submitPost(privatePost, false, (readPost) => {
+          return submitPost(privatePost, (readPost) => {
             assert.isNotNull(readPost.slug);
             return deletePost(readPost.id);
           });
         })
         .then(() => {
-          return submitPost(publishedPost, false, (readPost) => {
+          return submitPost(publishedPost, (readPost) => {
             assert.isNotNull(readPost.slug);
             deletePost(readPost.id, finish);
           });
@@ -143,15 +140,42 @@ describe('Service Tests: Post', function () {
 
   describe('Update Post', function () {
     it('Without image', function (finish) {
-      const post = new Post().random().build();
+      const postToSubmit = new Post().random().build();
+      const postForUpdate = new Post().random().build();
       Promise.resolve()
         .then(() => {
-          return submitPost(post, false);
+          return submitPost(postToSubmit);
         })
         .then((id) => {
-          updatePost(id, post, (updatedPost) => {
-            comparePosts(post, updatedPost);
+          updatePost(id, postForUpdate, (updatedPost) => {
+            comparePosts(postForUpdate, updatedPost);
+            assert.strictEqual(id, updatedPost.id);
             deletePost(id, finish);
+          });
+        })
+        .catch(debug);
+    });
+
+    it('With images', function (finish) {
+      const postToSubmit = new Post().random({ withImage: true, numberOfContentImages: 2 }).build();
+      const postForUpdate = new Post().random({ withImage: true, numberOfContentImages: 2 }).build();
+
+      let postId;
+      let publicIdSubmit;
+      let publicIdUpdate;
+
+      Promise.resolve()
+        .then(() => {
+          return submitPost(postToSubmit, (submittedPost) => {
+            postId = submittedPost.id;
+            publicIdSubmit = extractPublicId(submittedPost.image);
+          });
+        })
+        .then(() => {
+          updatePost(postId, postForUpdate, (updatedPost) => {
+            publicIdUpdate = extractPublicId(updatedPost.image);
+            assert.notEqual(publicIdSubmit, publicIdUpdate);
+            deletePost(postId, finish);
           });
         })
         .catch(debug);

@@ -24,23 +24,32 @@ export const TextInput = (props) => {
     <div className={css[`text-input-field-${theme}`]}>
       {leadingComponent}
       {onClick ? (
-        <InvisibleButton onClick={onClick} className={css['text-click-input']}>
-          <Input {...props} />
+        <InvisibleButton onClick={onClick}>
+          <Input {...props} type={'text'} />
         </InvisibleButton>
       ) : (
-        <Input {...props} />
+        <Input {...props} type={'text'} />
       )}
       {trailingComponent}
     </div>
   );
 };
 
-const Input = ({ name, value, onChange, placeholder, onClick }) => {
+export const NumberInput = (props) => {
+  const theme = useSelector(({ theme }) => theme);
+  return (
+    <div className={css[`text-input-field-${theme}`]}>
+      <Input {...props} type={'number'} min={1} />
+    </div>
+  );
+};
+
+const Input = ({ name, type, value, onChange, placeholder, onClick }) => {
   if (value === null) value = '';
   return (
     <input
       name={name}
-      type={'text'}
+      type={type}
       value={value}
       onChange={onChange}
       className={css[`text-input`]}
