@@ -4,7 +4,6 @@ const { zString } = require('zavid-modules');
 
 const controller = require('./api/resolvers');
 const { debug } = require('./error');
-const knex = require('./singleton').getKnex();
 
 const { Post } = require('../classes');
 
@@ -18,21 +17,18 @@ cloudinary.config({
  * Upload post image cloudinary.
  * @param {object} post - The post object.
  * @param {object} [options] - Upload options.
- * @param {boolean} [options.isCreateOperation] - Specifies if operation is update.
+ * @param {boolean} [options.isTest] - Specifies if operation is a test.
  * @returns {Promise} Resolves when function finishes.
  */
 exports.uploadImages = (post, options = {}) => {
-  const { isCreateOperation = true, isTest = false } = options;
+  const { isTest = false } = options;
 
   return new Promise((resolve, reject) => {
     Promise.resolve()
-      .then(() => generateSlugAndFilename(post, isCreateOperation))
+      .then(() => generateSlugAndFilename(post))
       .then(({ directory, filename, slug }) => {
         post.slug = Post.isDraft(post) ? null : slug;
 
-        const uri = isTest
-          ? `test/${filename}`
-          : `dynamic/${directory}/${filename}`;
         const images = Post.collateImages(post);
 
         // Discontinue if no images.
@@ -50,6 +46,12 @@ exports.uploadImages = (post, options = {}) => {
               acc[key] = source;
               return callback(null);
             }
+
+            const uri = isTest
+              ? `test/${filename}`
+              : isCover
+              ? `dynamic/${directory}/${filename}`
+              : `dynamic/${directory}/content/${filename}`;
 
             const contentImageKey = key.toString().padStart(2, '0');
             const publicId = isCover ? uri : `${uri}-${contentImageKey}`;
@@ -154,7 +156,7 @@ exports.replaceImages = (id, post, options) => {
       });
       return Promise.all(promises);
     })
-    .then(() => this.uploadImages(post, { isCreateOperation: false, isTest }))
+    .then(() => this.uploadImages(post, { isTest }))
     .catch(debug);
 };
 
@@ -164,7 +166,7 @@ exports.replaceImages = (id, post, options) => {
  * @param {boolean} isCreateOperation - Specifies if operation is update.
  * @returns {Promise} Represents the directory, slug and filename for the post.
  */
-const generateSlugAndFilename = (post, isCreateOperation) => {
+const generateSlugAndFilename = (post) => {
   const isPage = Post.isPage(post.type);
   const title = zString.constructCleanSlug(post.title);
 
@@ -183,17 +185,9 @@ const generateSlugAndFilename = (post, isCreateOperation) => {
   } else {
     return Promise.resolve()
       .then(() => {
-        return knex('posts')
-          .count('id', { as: 'count' })
-          .where('type', post.type)
-          .where('status', 'PUBLISHED');
-      })
-      .then(([{ count }]) => {
-        const number = (isCreateOperation ? count + 1 : count)
-          .toString()
-          .padStart(3, '0');
         const directory = Post.getDirectory(post.type);
         const slug = title;
+        const number = post.typeId.toString().padStart(3, '0');
         const filename = `${number}-${title}`;
 
         return { directory, filename, slug };

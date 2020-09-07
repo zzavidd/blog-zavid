@@ -8,6 +8,7 @@ import {
   DynamicField,
   Label,
   TextInput,
+  NumberInput,
   Select,
   ShortTextArea,
   LongTextArea
@@ -22,13 +23,20 @@ const NUMBER_OF_CONTENT_IMAGES = 6;
 
 const PostForm = (props) => {
   const { post, domains, handlers, isCreateOperation, isLoaded } = props;
-  const { handleText, handleDate, handleFile, handleContentImages } = handlers;
+  const {
+    handleText,
+    handleDate,
+    handleFile,
+    handleContentImages,
+    setDefaultTypeId
+  } = handlers;
 
   const substitutions = {};
   const contentImages = Object.values(post.contentImages || []);
   contentImages
     .filter((e) => e)
     .forEach(({ source }, key) => {
+      if (!source) return;
       if (!source.startsWith('data')) source = `${cloudinaryBaseUrl}/${source}`;
       substitutions[`image${key + 1}`] = `![](${source})`;
     });
@@ -37,7 +45,7 @@ const PostForm = (props) => {
     <Fader determinant={isLoaded} duration={500} hollow={true}>
       <Form {...props} previewText={post.content} substitutions={substitutions}>
         <FieldRow>
-          <Field sm={8}>
+          <Field sm={7}>
             <Label>Title:</Label>
             <TextInput
               name={'title'}
@@ -46,14 +54,23 @@ const PostForm = (props) => {
               placeholder={'Enter the title'}
             />
           </Field>
-          <Field sm={4}>
+          <Field sm={3}>
             <Label>Type:</Label>
             <Select
               name={'type'}
               items={Post.typeList}
               value={post.type}
-              onChange={handleText}
+              onChange={setDefaultTypeId}
               placeholder={'Select post type'}
+            />
+          </Field>
+          <Field sm={2}>
+            <Label>Type ID:</Label>
+            <NumberInput
+              name={'typeId'}
+              value={post.typeId}
+              onChange={handleText}
+              placeholder={'Type ID'}
             />
           </Field>
         </FieldRow>

@@ -10,11 +10,18 @@ exports.isValidPost = (post) => {
   if (!ifExists(post.title, 'Enter the post title.')) return false;
   if (!ifExists(post.type, "Select the post's type.")) return false;
 
+  // Ensure type ID if post is NOT a DRAFT nor a PAGE.
+  if (!Post.isDraft(post) && !Post.isPage(post)) {
+    if (!ifExists(post.typeId, "Set the post's type number.")) return false;
+  }
+
+  // Ensure page domain ID is set if post is PAGE.
   if (Post.isPage(post)) {
     if (!ifExists(post.domainId, "Select this page's domain post."))
       return false;
   }
 
+  // Ensure post image, content and excerpt is PUBLISHED.
   if (Post.isPublish(post)) {
     if (
       !isValidImage(post.image.source, 'post', {

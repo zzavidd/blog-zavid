@@ -5,6 +5,7 @@ const postFragments = gql`
     id
     title
     type
+    typeId
     content
     status
     image

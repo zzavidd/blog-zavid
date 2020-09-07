@@ -127,17 +127,17 @@
   align-items: center;
   display: flex;
   width: 100%;
+}
 
-  .text-input {
-    @extend %input;
-  }
+.text-input {
+  @extend %input;
+}
 
-  .text-click-input {
-    width: 100%;
+.text-click-input {
+  width: 100%;
 
-    input {
-      cursor: pointer;
-    }
+  input {
+    cursor: pointer;
   }
 }
 

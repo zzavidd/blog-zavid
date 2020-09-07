@@ -21,6 +21,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
     title: '',
     content: '',
     type: '',
+    typeId: 1,
     excerpt: '',
     image: {
       source: '',
@@ -96,6 +97,8 @@ const PostCrud = ({ post: currentPost, operation }) => {
         contentImages
       })
     );
+
+    // setDefaultTypeId();
   };
 
   /** Populate the form with post details. */
@@ -115,6 +118,17 @@ const PostCrud = ({ post: currentPost, operation }) => {
     );
 
     setDomains(domainList);
+  };
+
+  const setDefaultTypeId = (e) => {
+    const selectedType = e.target.value;
+    const postsOfType = domains.filter(({ type }) => selectedType === type);
+    setPost(
+      Object.assign({}, statePost, {
+        type: selectedType,
+        typeId: postsOfType.length + 1
+      })
+    );
   };
 
   useEffect(() => {
@@ -170,7 +184,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
       post={statePost}
       domains={domains}
       isCreateOperation={isCreateOperation}
-      handlers={hooks(setPost, statePost)}
+      handlers={{ ...hooks(setPost, statePost), setDefaultTypeId }}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
       cancelFunction={returnToAdminPosts}
@@ -193,6 +207,7 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
     title,
     content,
     type,
+    typeId,
     excerpt,
     image,
     contentImages,
@@ -211,15 +226,17 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
     status
   };
 
-  if (Post.isPublish(status)) {
+  if (Post.isPublish(post)) {
     post.datePublished = zDate.formatISODate(datePublished);
   }
 
-  if (Post.isPage(type)) {
+  if (Post.isPage(post)) {
     const id = parseInt(domainId);
     const domainType = Post.findInPosts(domains, id, 'value').type;
     post.domainId = id;
     post.domainType = domainType;
+  } else {
+    post.typeId = typeId;
   }
 
   const payload = { post, isPublish };

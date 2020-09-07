@@ -6,6 +6,7 @@ type Post {
   id: Int
   title: String!
   type: PostType!
+  typeId: Int
   datePublished: String
   content: String
   image: String
@@ -76,6 +77,7 @@ input PostInput {
   # No slug
   title: String!
   type: PostType!
+  typeId: Int
   datePublished: String
   content: String
   image: ImageState
