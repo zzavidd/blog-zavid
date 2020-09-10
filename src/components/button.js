@@ -87,8 +87,6 @@ export const DeleteButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const AdminButton = (props) => {
-
-  console.log(readCookie('zAuth'));
   if (!readCookie('zAuth')) return null;
 
   const { mobileText, children } = props;

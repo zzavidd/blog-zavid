@@ -12,10 +12,10 @@ const { domain } = require('../constants/settings');
 
 app.use(
   expressSession({
-    name: 'zAuth',
+    name: process.env.SESSION_NAME,
     cookie: {
       httpOnly: false,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 2 * 60 * 60 * 1000,
       secure: !isDev
     },
     secret: process.env.SESSION_SECRET,
