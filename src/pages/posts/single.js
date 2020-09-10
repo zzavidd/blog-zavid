@@ -2,7 +2,7 @@ import React from 'react';
 import { zDate, zLogic } from 'zavid-modules';
 
 import { Post } from 'classes';
-import { BackButton } from 'components/button';
+import { BackButton, AdminButton } from 'components/button';
 import CloudImage, { cloudinaryBaseUrl } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
@@ -11,8 +11,6 @@ import css from 'styles/pages/Posts.module.scss';
 
 const PostSingle = ({ post }) => {
   const shareMessage = `"${post.title}" on ZAVID`;
-
-  const navigateBack = () => (location.href = '/reveries');
 
   const substitutions = {};
   const contentImages = JSON.parse(post.contentImages) || [];
@@ -38,12 +36,16 @@ const PostSingle = ({ post }) => {
         <Divider />
         <ShareBlock message={shareMessage} url={location.href} />
       </div>
-      <Toolbar>
-        <BackButton onClick={navigateBack}>Back to Reveries</BackButton>
+      <Toolbar spaceChildren={true}>
+        <BackButton onClick={navigateToReveries}>Back to Reveries</BackButton>
+        <AdminButton onClick={() => navigateToEdit(post.id)}>Edit This Reverie</AdminButton>
       </Toolbar>
     </Spacer>
   );
 };
+
+const navigateToReveries = () => (location.href = '/reveries');
+const navigateToEdit = (id) => (location.href = `/admin/posts/edit/${id}`);
 
 const PostDate = ({ post }) => {
   if (zLogic.isFalsy(post, post.datePublished)) return null;
