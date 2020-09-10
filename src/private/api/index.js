@@ -4,7 +4,7 @@ const async = require('async');
 const fs = require('fs');
 const path = require('path');
 
-const resolvers = require('./resolvers');
+const resolvers = require('./resolvers/post.resolvers');
 
 const app = require('../singleton').getApp();
 

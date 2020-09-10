@@ -2,7 +2,7 @@ const async = require('async');
 const cloudinary = require('cloudinary').v2;
 const { zString } = require('zavid-modules');
 
-const resolvers = require('./api/resolvers');
+const resolvers = require('./api/resolvers/post.resolvers');
 const { debug } = require('./error');
 
 const { Post } = require('../classes');
