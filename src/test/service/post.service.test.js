@@ -1,6 +1,6 @@
 const { assert, debug, fetch } = require('..');
 const { Post } = require('../../classes');
-const { GET_POSTS_QUERY } = require('../../private/api/queries');
+const { GET_POSTS_QUERY } = require('../../private/api/queries/post.queries');
 const {
   submitPost,
   updatePost,

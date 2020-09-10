@@ -8,7 +8,7 @@ import { alert } from 'components/alert.js';
 import CloudImage from 'components/image.js';
 import { Title } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
-import { GET_POSTS_QUERY } from 'private/api/queries';
+import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
 import css from 'styles/Partials.module.scss';
 
 export const RightSidebar = () => {

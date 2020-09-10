@@ -10,7 +10,7 @@ class ErrorBuilder {
 }
 
 exports.debug = (err) => {
-  throw new Error(err);
+  throw err;
 };
 
 // eslint-disable-next-line no-unused-vars

@@ -6,7 +6,7 @@ const {
   CREATE_POST_QUERY,
   UPDATE_POST_QUERY,
   DELETE_POST_QUERY
-} = require('../../private/api/queries');
+} = require('../../private/api/queries/post.queries');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,

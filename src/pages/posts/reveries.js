@@ -12,7 +12,7 @@ import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { RightSidebar } from 'partials/sidebar';
-import { GET_POSTS_QUERY } from 'private/api/queries';
+import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
 import css from 'styles/pages/Reveries.module.scss';
 
 export default () => {

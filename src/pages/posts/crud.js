@@ -13,7 +13,7 @@ import {
   GET_POSTS_QUERY,
   CREATE_POST_QUERY,
   UPDATE_POST_QUERY
-} from 'private/api/queries';
+} from 'private/api/queries/post.queries';
 
 const PostCrud = ({ post: currentPost, operation }) => {
   const [statePost, setPost] = useState({

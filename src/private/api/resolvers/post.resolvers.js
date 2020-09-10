@@ -2,10 +2,10 @@ const {
   Post,
   PostQueryBuilder,
   PostMutationBuilder
-} = require('../../classes');
-const { debug, ERRORS } = require('../error');
-const filer = require('../filer');
-const knex = require('../singleton').getKnex();
+} = require('../../../classes');
+const { debug, ERRORS } = require('../../error');
+const filer = require('../../filer');
+const knex = require('../../singleton').getKnex();
 
 /**
  * Retrieves all posts from database.
