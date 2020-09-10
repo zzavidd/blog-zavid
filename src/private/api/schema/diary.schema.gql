@@ -1,0 +1,41 @@
+###############
+# Base Schema
+###############
+
+type DiaryEntry {
+  id: Int
+  date: String
+  content: String
+  slug: String
+  status: DiaryStatus
+}
+
+type Query {
+  diaryEntries(): [DiaryEntry]
+  diaryEntry(id: Int!): Post
+}
+
+type Mutation {
+  createDiaryEntry(entry: DiaryEntry): DiaryEntry
+  updateDiaryEntry(
+    id: Int!
+    entry: DiaryEntry!
+  ): Post
+  deleteDiaryEntry(id: Int!): DiaryEntry
+}
+
+###############
+# Helpers
+###############
+
+enum DiaryStatus {
+  DRAFT
+  PRIVATE
+  PUBLISHED
+}
+
+input DiaryInput {
+  date: String
+  content: String
+  status: DiaryStatus
+}
