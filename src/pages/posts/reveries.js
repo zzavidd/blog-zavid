@@ -5,8 +5,9 @@ import { zDate } from 'zavid-modules';
 
 import { Post } from 'classes';
 import { alert } from 'components/alert.js';
+import { AdminButton } from 'components/button';
 import CloudImage from 'components/image.js';
-import { Partitioner } from 'components/layout';
+import { Partitioner, Spacer, Toolbar } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
@@ -40,12 +41,19 @@ export default () => {
   }, [isLoaded, queryLoading]);
 
   return (
-    <Partitioner>
-      <ReverieList reveries={reveries} />
-      <RightSidebar />
-    </Partitioner>
+    <Spacer>
+      <Partitioner>
+        <ReverieList reveries={reveries} />
+        <RightSidebar />
+      </Partitioner>
+      <Toolbar spaceChildren={true}>
+        <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
+      </Toolbar>
+    </Spacer>
   );
 };
+
+const navigateToPostAdmin = () => (location.href = '/admin/posts');
 
 const ReverieList = ({ reveries }) => {
   return (

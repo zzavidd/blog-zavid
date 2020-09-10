@@ -45,7 +45,7 @@ const PostSingle = ({ post }) => {
 };
 
 const navigateToReveries = () => (location.href = '/reveries');
-const navigateToEdit = (id) => (location.href = `/admin.posts/edit/${id}`);
+const navigateToEdit = (id) => (location.href = `/admin/posts/edit/${id}`);
 
 const PostDate = ({ post }) => {
   if (zLogic.isFalsy(post, post.datePublished)) return null;

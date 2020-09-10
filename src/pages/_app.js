@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import configureStore from 'lib/reducers/store.js';
+import configureStore from 'lib/reducers.js';
 import Header from 'partials/header.js';
 
 import 'styles/App.scss';

@@ -11,7 +11,7 @@ import { Spacer } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
 import BottomToolbar from 'lib/helpers/posts/toolbar';
-import { updatePostFilterSettings } from 'lib/reducers/actions';
+import { updatePostFilterSettings } from 'lib/reducers';
 import { DELETE_POST_QUERY, GET_POSTS_QUERY } from 'private/api/queries';
 import css from 'styles/pages/Posts.module.scss';
 
