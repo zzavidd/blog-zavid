@@ -9,6 +9,7 @@ const knex = require('../singleton').getKnex();
 
 /**
  * Retrieves all posts from database.
+ * @param {object} parent Return value of the parent field.
  * @param {object} args The arguments.
  * @param {number} args.limit Defines the number of results to return.
  * @param {object} args.sort Defines how to order the results.
@@ -16,7 +17,7 @@ const knex = require('../singleton').getKnex();
  * @param {object} args.status The statuses to filter by.
  * @returns {object[]} The posts.
  */
-exports.getAllPosts = ({ limit, sort, type, status }) => {
+const getAllPosts = (parent, { limit, sort, type, status }) => {
   return Promise.resolve()
     .then(() =>
       new PostQueryBuilder(knex)
@@ -34,11 +35,12 @@ exports.getAllPosts = ({ limit, sort, type, status }) => {
 
 /**
  * Retrieves a single post given a specified ID from the database.
+ * @param {object} parent Return value of the parent field.
  * @param {object} args - The arguments.
  * @param {number} args.id - The ID of the post to retrieve.
  * @returns {object} The post matching the specified ID.
  */
-exports.getSinglePost = ({ id }) => {
+const getSinglePost = (parent, { id }) => {
   return Promise.resolve()
     .then(() => new PostQueryBuilder(knex).whereId(id).build())
     .then(([post]) => {
@@ -51,6 +53,7 @@ exports.getSinglePost = ({ id }) => {
 
 /**
  * Inserts a new post into the database.
+ * @param {object} parent Return value of the parent field.
  * @param {object} args - The arguments.
  * @param {object} args.post - The post object to be inserted.
  * @param {boolean} args.isPublish - Indicates if a publish operation.
@@ -58,7 +61,7 @@ exports.getSinglePost = ({ id }) => {
  * @returns {number} The ID of the newly-created post.
  */
 // eslint-disable-next-line no-unused-vars
-exports.createPost = ({ post, isPublish, isTest }) => {
+const createPost = (parent, { post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.uploadImages(post, { isTest }))
     .then((post) => new PostMutationBuilder(knex, 'posts').insert(post).build())
@@ -68,6 +71,7 @@ exports.createPost = ({ post, isPublish, isTest }) => {
 
 /**
  * Updates the fields of a post into the database.
+ * @param {object} parent Return value of the parent field.
  * @param {object} args - The arguments.
  * @param {number} args.id - The ID of the post to update.
  * @param {object} args.post - The post object to be updated.
@@ -76,7 +80,7 @@ exports.createPost = ({ post, isPublish, isTest }) => {
  * @returns {object} The post after being updated.
  */
 // eslint-disable-next-line no-unused-vars
-exports.updatePost = ({ id, post, isPublish, isTest }) => {
+const updatePost = (parent, { id, post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.replaceImages(id, post, { isTest }))
     .then((updatedPost) =>
@@ -91,11 +95,12 @@ exports.updatePost = ({ id, post, isPublish, isTest }) => {
 
 /**
  * Deletes a post from the database.
+ * @param {object} parent Return value of the parent field.
  * @param {object} args - The arguments.
  * @param {number} args.id - The ID of the post to delete.
  * @returns {number} The ID of the deleted post.
  */
-exports.deletePost = ({ id }) => {
+const deletePost = (parent, { id }) => {
   return Promise.resolve()
     .then(() => new PostQueryBuilder(knex).whereId(id).build())
     .then(([post]) => {
@@ -111,4 +116,16 @@ exports.deletePost = ({ id }) => {
     .then(() => new PostMutationBuilder(knex, 'posts').delete(id).build())
     .then(() => ({ id }))
     .catch(debug);
+};
+
+module.exports = {
+  Query: {
+    getAllPosts,
+    getSinglePost
+  },
+  Mutation: {
+    createPost,
+    updatePost,
+    deletePost
+  }
 };

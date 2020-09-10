@@ -2,7 +2,7 @@ const async = require('async');
 const cloudinary = require('cloudinary').v2;
 const { zString } = require('zavid-modules');
 
-const controller = require('./api/resolvers');
+const resolvers = require('./api/resolvers');
 const { debug } = require('./error');
 
 const { Post } = require('../classes');
@@ -138,7 +138,7 @@ exports.replaceImages = (id, post, options) => {
   const { isTest = false } = options;
 
   return Promise.resolve()
-    .then(() => controller.getSinglePost({ id }))
+    .then(() => resolvers.Query.getSinglePost(undefined, { id }))
     .then((postInDb) => {
       const imagesInRequest = Post.collateImages(post, { includeNulls: true });
       const imagesInDb = Post.collateImages(postInDb);
@@ -172,7 +172,9 @@ const generateSlugAndFilename = (post) => {
 
   if (isPage) {
     return Promise.resolve()
-      .then(() => controller.getSinglePost({ id: post.domainId }))
+      .then(() =>
+        resolvers.Query.getSinglePost(undefined, { id: post.domainId })
+      )
       .then((postDomain) => {
         const slug = title;
         const filename = zString.constructCleanSlug(
