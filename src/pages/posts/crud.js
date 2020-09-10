@@ -8,7 +8,7 @@ import { alert, setAlert } from 'components/alert';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
 import { isValidPost } from 'constants/validations';
-import PostForm from 'lib/helpers/posts/form';
+import PostForm from 'lib/helpers/pages/posts/form';
 import {
   GET_POSTS_QUERY,
   CREATE_POST_QUERY,
