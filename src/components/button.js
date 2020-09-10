@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Responsive } from 'components/layout';
+import { readCookie } from 'lib/cookies';
 import css from 'styles/components/Button.module.scss';
 
 import { Icon } from './icon';
@@ -86,6 +87,10 @@ export const DeleteButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const AdminButton = (props) => {
+
+  console.log(readCookie('zAuth'));
+  if (!readCookie('zAuth')) return null;
+
   const { mobileText, children } = props;
   const theme = useSelector(({ theme }) => theme);
   const classes = classnames(css[`button-admin-${theme}`], props.className);

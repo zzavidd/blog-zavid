@@ -6,7 +6,7 @@ import Switch from 'react-switch';
 import { ThemedIcon } from 'components/icon.js';
 import CloudImage from 'components/image.js';
 import { Responsive } from 'components/layout';
-import { setTheme } from 'lib/reducers/actions';
+import { setTheme } from 'lib/reducers';
 import css from 'styles/Partials.module.scss';
 
 const Header = () => {

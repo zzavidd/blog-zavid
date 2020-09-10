@@ -16,12 +16,16 @@ export const Spacer = ({ children }) => {
   return <div className={css['spacer']}>{children}</div>;
 };
 
-export const Toolbar = ({ className, children, }) => {
+export const Toolbar = ({ className, children, spaceChildren }) => {
   if (!children) return null;
   const theme = useSelector(({ theme }) => theme);
-  const classes = classnames(css[`toolbar-${theme}`], className);
+  const classes = classnames(
+    css[`toolbar-${theme}`],
+    spaceChildren ? css['toolbar-spaced'] : null,
+    className
+  );
 
-    return <div className={classes}>{children}</div>;
+  return <div className={classes}>{children}</div>;
 };
 
 export const ToolbarToggle = ({ children, toggle }) => {
