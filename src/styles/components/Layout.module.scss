@@ -33,6 +33,11 @@
   width: 100%;
 }
 
+.toolbar-spaced {
+  display: flex;
+  justify-content: space-between;
+}
+
 .toolbar-toggle {
   @include themer(
     &,

@@ -67,7 +67,7 @@ const ShareLinkedin = ({ message, url }) => {
 const ShareLink = ({ url }) => {
   const copyLink = () => {
     navigator.clipboard.writeText(url);
-    alert.success("Copied this article's link to clipboard!");
+    alert.success("Copied this post's link to clipboard!");
   };
   return (
     <InvisibleButton className={css['copy-link-button']} onClick={copyLink}>

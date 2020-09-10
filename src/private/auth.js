@@ -6,11 +6,18 @@ const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const app = require('./singleton').getApp();
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const { domain } = require('../constants/settings');
 
 app.use(
   expressSession({
-    cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },
+    name: 'zAuth',
+    cookie: {
+      httpOnly: false,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: !isDev
+    },
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
@@ -35,11 +42,16 @@ passport.use(
       callbackURL: `${domain}/login/redirect`,
       passReqToCallback: true
     },
-    function (request, accessToken, refreshToken, profile, done) {
-      return done(
-        null,
-        profile.id === process.env.GOOGLE_ACCOUNT_ID ? profile : false
-      );
+    function (req, accessToken, refreshToken, profile, done) {
+      const isZavid = profile.id === process.env.GOOGLE_ACCOUNT_ID;
+      if (isZavid) {
+        done(null, profile);
+      } else {
+        req.session.destroy((err) => {
+          if (err) console.error(err);
+          done(null, false);
+        });
+      }
     }
   )
 );
