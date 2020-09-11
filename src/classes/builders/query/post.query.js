@@ -1,21 +1,7 @@
 const { zLogic } = require('zavid-modules');
 const { isFalsy } = zLogic;
 
-class QueryBuilder {
-  whereId(id) {
-    if (isFalsy(id)) return this;
-    this.query.where('id', id);
-    return this;
-  }
-
-  /**
-   * Return the built query.
-   * @returns {string} The build Knex query.
-   */
-  build() {
-    return this.query;
-  }
-}
+const QueryBuilder = require('.');
 
 /** Builds a post query with conditions. */
 class PostQueryBuilder extends QueryBuilder {

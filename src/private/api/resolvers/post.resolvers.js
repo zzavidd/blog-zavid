@@ -89,7 +89,7 @@ const updatePost = (parent, { id, post, isPublish, isTest }) => {
         .whereId(id)
         .build()
     )
-    .then(() => this.getSinglePost({ id }))
+    .then(() => getSinglePost(undefined, { id }))
     .catch(debug);
 };
 

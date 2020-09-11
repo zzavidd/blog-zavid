@@ -1,11 +1,11 @@
 const { assert } = require('..');
-const { Post } = require('../../classes');
+const { Post, PostBuilder } = require('../../classes');
 const { comparePosts } = require('../helper/post.helper');
 
 describe('Unit Tests: Post', function () {
   describe('Object methods', function () {
     it('Test random construction', function (finish) {
-      const post = new Post().random({ numberOfContentImages: 4 }).build();
+      const post = new PostBuilder().random({ numberOfContentImages: 4 }).build();
       isArrayOfLength(post.contentImages, 4);
       finish();
     });
@@ -13,35 +13,35 @@ describe('Unit Tests: Post', function () {
 
   describe('Static methods', function () {
     it('Check post type', function (finish) {
-      const reverie = new Post()
+      const reverie = new PostBuilder()
         .random()
         .withType(Post.TYPES.REVERIE.TITLE)
         .build();
       assert.isTrue(Post.isReverie(reverie));
       assert.isTrue(Post.isReverie(reverie.type));
 
-      const page = new Post().random().withType(Post.TYPES.PAGE.TITLE).build();
+      const page = new PostBuilder().random().withType(Post.TYPES.PAGE.TITLE).build();
       assert.isTrue(Post.isPage(page));
       assert.isTrue(Post.isPage(page.type));
       finish();
     });
 
     it('Check post status', function (finish) {
-      const draftPost = new Post()
+      const draftPost = new PostBuilder()
         .random()
         .withStatus(Post.STATUSES.DRAFT)
         .build();
       assert.isTrue(Post.isDraft(draftPost));
       assert.isTrue(Post.isDraft(draftPost.status));
 
-      const privatePost = new Post()
+      const privatePost = new PostBuilder()
         .random()
         .withStatus(Post.STATUSES.PRIVATE)
         .build();
       assert.isTrue(Post.isPrivate(privatePost));
       assert.isTrue(Post.isPrivate(privatePost.status));
 
-      const publishPost = new Post()
+      const publishPost = new PostBuilder()
         .random()
         .withStatus(Post.STATUSES.PUBLISHED)
         .build();
@@ -51,7 +51,7 @@ describe('Unit Tests: Post', function () {
     });
 
     it('Find post by comparison', function (finish) {
-      const post = new Post().random().build();
+      const post = new PostBuilder().random().build();
       const posts = [post];
 
       const matchedPost = Post.findInPosts(posts, post.id, 'id');
@@ -60,7 +60,7 @@ describe('Unit Tests: Post', function () {
     });
 
     it('Parse post', function (finish) {
-      const post = new Post()
+      const post = new PostBuilder()
         .random({ withImage: true, numberOfContentImages: 2 })
         .build();
 
@@ -82,7 +82,7 @@ describe('Unit Tests: Post', function () {
     });
 
     it('Collate images', function (finish) {
-      const post = new Post()
+      const post = new PostBuilder()
         .random({ withImage: true, numberOfContentImages: 2 })
         .build();
 
