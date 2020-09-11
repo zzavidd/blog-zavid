@@ -1,13 +1,15 @@
+const PostBuilder = require('./builders/post.builder');
 const {
   PostQueryBuilder,
   PostMutationBuilder
-} = require('./builders/query');
-const URLBuilder = require('./builders/url');
-const Post = require('./entities/post');
+} = require('./builders/query/post.query');
+const URLBuilder = require('./builders/url.builder');
+const Post = require('./static/post.static');
 
 module.exports = {
   Post,
-  URLBuilder,
+  PostBuilder,
   PostQueryBuilder,
-  PostMutationBuilder
+  PostMutationBuilder,
+  URLBuilder,
 };

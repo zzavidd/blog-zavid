@@ -1,5 +1,5 @@
 const { assert, debug, fetch } = require('..');
-const { Post } = require('../../classes');
+const { Post, PostBuilder } = require('../../classes');
 const { GET_POSTS_QUERY } = require('../../private/api/queries/post.queries');
 const {
   submitPost,
@@ -72,7 +72,7 @@ describe('Service Tests: Post', function () {
 
   describe('Create Post', function () {
     it('Without image', function (finish) {
-      const post = new Post().random().build();
+      const post = new PostBuilder().random().build();
       submitPost(post, (readPost) => {
         comparePosts(post, readPost);
         deletePost(readPost.id, finish);
@@ -80,7 +80,7 @@ describe('Service Tests: Post', function () {
     });
 
     it('With image', function (finish) {
-      const post = new Post().random({ withImage: true, numberOfContentImages: 2 }).build();
+      const post = new PostBuilder().random({ withImage: true, numberOfContentImages: 2 }).build();
 
       let publicId;
       let postId;
@@ -102,15 +102,15 @@ describe('Service Tests: Post', function () {
     });
 
     it('Different statuses', function (finish) {
-      const draftPost = new Post()
+      const draftPost = new PostBuilder()
         .random()
         .withStatus(Post.STATUSES.DRAFT)
         .build();
-      const privatePost = new Post()
+      const privatePost = new PostBuilder()
         .random()
         .withStatus(Post.STATUSES.PRIVATE)
         .build();
-      const publishedPost = new Post()
+      const publishedPost = new PostBuilder()
         .random()
         .withStatus(Post.STATUSES.PUBLISHED)
         .build();
@@ -140,8 +140,8 @@ describe('Service Tests: Post', function () {
 
   describe('Update Post', function () {
     it('Without image', function (finish) {
-      const postToSubmit = new Post().random().build();
-      const postForUpdate = new Post().random().build();
+      const postToSubmit = new PostBuilder().random().build();
+      const postForUpdate = new PostBuilder().random().build();
       Promise.resolve()
         .then(() => {
           return submitPost(postToSubmit);
@@ -157,8 +157,8 @@ describe('Service Tests: Post', function () {
     });
 
     it('With images', function (finish) {
-      const postToSubmit = new Post().random({ withImage: true, numberOfContentImages: 2 }).build();
-      const postForUpdate = new Post().random({ withImage: true, numberOfContentImages: 2 }).build();
+      const postToSubmit = new PostBuilder().random({ withImage: true, numberOfContentImages: 2 }).build();
+      const postForUpdate = new PostBuilder().random({ withImage: true, numberOfContentImages: 2 }).build();
 
       let postId;
       let publicIdSubmit;
