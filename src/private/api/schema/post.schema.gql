@@ -19,7 +19,7 @@ type Post {
   domainType: PostType
 }
 
-type Query {
+extend type Query {
   getAllPosts(
     limit: Int
     sort: PostSortOptions
@@ -29,7 +29,7 @@ type Query {
   getSinglePost(id: Int!): Post
 }
 
-type Mutation {
+extend type Mutation {
   createPost(post: PostInput, isPublish: Boolean, isTest: Boolean): Post
   updatePost(
     id: Int!

@@ -10,17 +10,18 @@ type DiaryEntry {
   status: DiaryStatus
 }
 
-type Query {
-  diaryEntries(): [DiaryEntry]
-  diaryEntry(id: Int!): Post
+extend type Query {
+  diaryEntries: [DiaryEntry]
+  diaryEntry(id: Int!): DiaryEntry
 }
 
-type Mutation {
-  createDiaryEntry(entry: DiaryEntry): DiaryEntry
+extend type Mutation {
+  createDiaryEntry(entry: DiaryInput, isPublish: Boolean): DiaryEntry
   updateDiaryEntry(
     id: Int!
-    entry: DiaryEntry!
-  ): Post
+    entry: DiaryInput!
+    isPublish: Boolean
+  ): DiaryEntry
   deleteDiaryEntry(id: Int!): DiaryEntry
 }
 
@@ -29,7 +30,6 @@ type Mutation {
 ###############
 
 enum DiaryStatus {
-  DRAFT
   PRIVATE
   PUBLISHED
 }
