@@ -1,6 +1,7 @@
 const { zLogic } = require('zavid-modules');
 
-const { isObject, isString } = require('../../lib/helpers');
+const { isObject, isString, getRandom, checkPostValue } = require('../../lib/helpers');
+const { Publishable } = require('../super');
 const dev = process.env.NODE_ENV !== 'production';
 
 /** The map of post statuses. */
@@ -38,7 +39,7 @@ const POST_TYPES = {
 const typeList = Object.values(POST_TYPES).map((POST) => POST.TITLE);
 const statusList = Object.values(POST_STATUSES);
 
-class Post {
+class Post extends Publishable {
   static STATUSES = POST_STATUSES;
   static TYPES = POST_TYPES;
 
@@ -47,10 +48,6 @@ class Post {
 
   static randomType() {
     return getRandom(this.typeList);
-  }
-
-  static randomStatus() {
-    return getRandom(this.statusList);
   }
 
   /**
@@ -154,40 +151,7 @@ class Post {
   static isDraft(input) {
     return checkPostValue(input, 'status', this.STATUSES.DRAFT);
   }
-
-  /**
-   * Checks if submission operation is private.
-   * @param {string|object} input - The post or its status value.
-   * @returns {boolean} True if the selected status is PRIVATE.
-   */
-  static isPrivate(input) {
-    return checkPostValue(input, 'status', this.STATUSES.PRIVATE);
-  }
-
-  /**
-   * Checks if submission operation is going to be published.
-   * @param {string|object} input - The post or its status value.
-   * @returns {boolean} True if the selected status is PUBLISHED.
-   */
-  static isPublish(input) {
-    return checkPostValue(input, 'status', this.STATUSES.PUBLISHED);
-  }
 }
-
-const checkPostValue = (input, field, expected) => {
-  if (zLogic.isFalsy(input)) return false;
-
-  if (isObject(input)) {
-    return input[field] === expected;
-  } else {
-    return input === expected;
-  }
-};
-
-const getRandom = (list) => {
-  const random = Math.floor(Math.random() * list.length);
-  return list[random];
-};
 
 const debug = (value, message) => {
   if (dev && zLogic.isFalsy(value)) console.warn(message);
