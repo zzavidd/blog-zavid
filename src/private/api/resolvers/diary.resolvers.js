@@ -10,7 +10,7 @@ const knex = require('../../singleton').getKnex();
 const getAllDiaryEntries = (parent, args) => {
   return Promise.resolve()
     .then(() => knex.select().from('diary'))
-    .then((entries) => entries)
+    .then((diaryEntries) => diaryEntries)
     .catch(debug);
 };
 
