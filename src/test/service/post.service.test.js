@@ -1,13 +1,12 @@
 const { assert, debug, fetch } = require('..');
 const { Post, PostBuilder } = require('../../classes');
 const { GET_POSTS_QUERY } = require('../../private/api/queries/post.queries');
+const { retrieveResource, extractPublicId } = require('../helper');
 const {
   submitPost,
   updatePost,
   deletePost,
-  comparePosts,
-  retrieveResource,
-  extractPublicId
+  comparePosts
 } = require('../helper/post.helper');
 
 describe('Service Tests: Post', function () {
@@ -80,7 +79,9 @@ describe('Service Tests: Post', function () {
     });
 
     it('With image', function (finish) {
-      const post = new PostBuilder().random({ withImage: true, numberOfContentImages: 2 }).build();
+      const post = new PostBuilder()
+        .random({ withImage: true, numberOfContentImages: 2 })
+        .build();
 
       let publicId;
       let postId;
@@ -157,8 +158,12 @@ describe('Service Tests: Post', function () {
     });
 
     it('With images', function (finish) {
-      const postToSubmit = new PostBuilder().random({ withImage: true, numberOfContentImages: 2 }).build();
-      const postForUpdate = new PostBuilder().random({ withImage: true, numberOfContentImages: 2 }).build();
+      const postToSubmit = new PostBuilder()
+        .random({ withImage: true, numberOfContentImages: 2 })
+        .build();
+      const postForUpdate = new PostBuilder()
+        .random({ withImage: true, numberOfContentImages: 2 })
+        .build();
 
       let postId;
       let publicIdSubmit;

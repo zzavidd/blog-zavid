@@ -1,3 +1,5 @@
+import { Publishable } from 'classes/super';
+
 /** The map of post statuses. */
 const DIARY_STATUSES = {
   PRIVATE: 'PRIVATE',
@@ -6,18 +8,7 @@ const DIARY_STATUSES = {
 
 const statusList = Object.values(DIARY_STATUSES);
 
-class DiaryEntry {
-  constructor() {
-    this.entry = {};
-  }
-
-  /**
-   * Builds the diary entry object.
-   * @returns {object} The diary entry object.
-   */
-  build() {
-    return this.entry;
-  }
+class Diary extends Publishable {
 
   static STATUSES = DIARY_STATUSES;
   static statusList = statusList;
@@ -32,4 +23,4 @@ class DiaryEntry {
   }
 }
 
-export default DiaryEntry;
+export default Diary;
