@@ -1,7 +1,7 @@
 const faker = require('faker');
-const { zDate, zString } = require('zavid-modules');
+const { zDate } = require('zavid-modules');
 
-const Diary = require('../static/diary.static');
+const Diary = require('../../static/diary.static');
 
 /** The class for Diary objects and methods. */
 class DiaryEntryBuilder {
@@ -26,3 +26,5 @@ class DiaryEntryBuilder {
     return this.post;
   }
 }
+
+module.exports = DiaryEntryBuilder;

@@ -6,6 +6,7 @@ const resolvers = [diaryResolvers, postResolvers];
 const Query = {};
 const Mutation = {};
 
+// For merging all queries and mutations.
 resolvers.forEach((resolver) => {
   Object.assign(Query, resolver.Query);
   Object.assign(Mutation, resolver.Mutation);

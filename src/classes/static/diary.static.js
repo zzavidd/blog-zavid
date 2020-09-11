@@ -1,4 +1,4 @@
-import { Publishable } from 'classes/super';
+const { Publishable } = require('./super');
 
 /** The map of post statuses. */
 const DIARY_STATUSES = {
@@ -9,7 +9,6 @@ const DIARY_STATUSES = {
 const statusList = Object.values(DIARY_STATUSES);
 
 class Diary extends Publishable {
-
   static STATUSES = DIARY_STATUSES;
   static statusList = statusList;
 
@@ -23,4 +22,4 @@ class Diary extends Publishable {
   }
 }
 
-export default Diary;
+module.exports = Diary;

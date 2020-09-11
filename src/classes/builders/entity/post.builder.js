@@ -1,7 +1,7 @@
 const faker = require('faker');
 const { zDate, zString } = require('zavid-modules');
 
-const Post = require('../static/post.static');
+const Post = require('../../static/post.static');
 
 /** The class for Post objects and methods. */
 class PostBuilder {
