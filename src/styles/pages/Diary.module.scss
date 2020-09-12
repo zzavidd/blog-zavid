@@ -1,0 +1,36 @@
+@import '../App';
+
+.diary-page {
+  padding: 1.5em;
+}
+
+.diary-grid {
+  @include responsive(
+    grid-template-columns,
+    repeat(5, 20%),
+    $xxl: repeat(4, 25%),
+    $xl: repeat(3, calc(100% / 3)),
+    $lg: repeat(2, 50%),
+    $md: 100%
+  );
+  display: grid;
+  padding: 1em 0;
+}
+
+.diary-entry {
+  @include responsive(margin, 1em, $md: 1em 0);
+}
+
+.diary-entry-title {
+  @include responsive(font-size, 1.5em, $sm: 1.3em);
+  letter-spacing: -1px;
+  padding-bottom: 0.5em;
+}
+
+.diary-entry-paragraph {
+  @include responsive(font-size, 0.9em, $sm: 1em);
+}
+
+.diary-entry-readmore {
+  @include responsive(font-size, 1em, $sm: 0.9em);
+}

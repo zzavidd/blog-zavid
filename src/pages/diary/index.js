@@ -1,0 +1,85 @@
+import { useQuery } from '@apollo/client';
+import React, { memo, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { zDate } from 'zavid-modules';
+
+import { alert } from 'components/alert.js';
+import { AdminButton } from 'components/button';
+import { Spacer, Toolbar } from 'components/layout';
+import { LazyLoader } from 'components/loader.js';
+import { Paragraph, Title } from 'components/text.js';
+import { Zoomer } from 'components/transitioner.js';
+import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
+import css from 'styles/pages/Diary.module.scss';
+
+const DIARY_HEADING = `Zavid's Diary`;
+const DIARY_PREMISE = `Every day or two, I'll transparently scribe my thoughts and feelings.`;
+
+export default () => {
+  const theme = useSelector(({ theme }) => theme);
+  const [diaryEntries, setDiaryEntries] = useState([]);
+  const [isLoaded, setLoaded] = useState(false);
+
+  const { data, error: queryError, loading: queryLoading } = useQuery(
+    GET_DIARY_QUERY
+  );
+
+  useEffect(() => {
+    if (queryLoading) return;
+    if (queryError) alert.error(queryError);
+    setDiaryEntries(data ? data.diaryEntries : []);
+    setLoaded(true);
+  }, [isLoaded, queryLoading]);
+
+  return (
+    <Spacer>
+      <div className={css['diary-page']}>
+        <Title className={css['page-heading']}>{DIARY_HEADING}</Title>
+        <div className={css[`page-intro-${theme}`]}>{DIARY_PREMISE}</div>
+        <DiaryGrid diaryEntries={diaryEntries} />
+      </div>
+      <Toolbar spaceChildren={true}>
+        <AdminButton onClick={navigateToDiaryAdmin}>Diary Admin</AdminButton>
+      </Toolbar>
+    </Spacer>
+  );
+};
+
+const navigateToDiaryAdmin = () => (location.href = '/admin/diary');
+
+const DiaryGrid = ({ diaryEntries }) => {
+  return (
+    <div className={css['diary-grid']}>
+      {diaryEntries.map((diaryEntry, key) => (
+        <DiaryEntry diaryEntry={diaryEntry} key={key} />
+      ))}
+    </div>
+  );
+};
+
+const DiaryEntry = memo(({ diaryEntry }) => {
+  const [isInView, setInView] = useState(false);
+
+  const title = zDate.formatDate(parseInt(diaryEntry.date), true);
+  const link = `/diary/${diaryEntry.slug}`;
+  return (
+    <LazyLoader setInView={setInView}>
+      <Zoomer
+        determinant={isInView}
+        duration={400}
+        className={css[`diary-entry`]}>
+        <Title className={css['diary-entry-title']}>{title}</Title>
+        <Paragraph
+          cssOverrides={{
+            paragraph: css['diary-entry-paragraph'],
+            hyperlink: css['diary-entry-readmore']
+          }}
+          truncate={40}
+          moreclass={css['diary-entry-readmore']}
+          morelink={link}>
+          {diaryEntry.content}
+        </Paragraph>
+      </Zoomer>
+    </LazyLoader>
+  );
+});

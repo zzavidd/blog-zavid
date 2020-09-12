@@ -66,3 +66,17 @@
     margin-right: 0;
   }
 }
+
+.page-heading {
+  @include responsive(font-size, 2.5em, $sm: 2.1em);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.page-intro {
+  @include responsive(font-size, 1.4em, $sm: 1em);
+  @include themer(&, border-color, $light: #000, $dark: #fff);
+  border-bottom: 1px solid;
+  padding-bottom: 1em;
+  text-align: center;
+}
