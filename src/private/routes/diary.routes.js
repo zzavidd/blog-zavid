@@ -23,9 +23,13 @@ router.get(
   '/diary/:slug',
   function (req, res, next) {
     const { slug } = req.params;
-    Promise.resolve()
-      .then(() => new DiaryQueryBuilder(knex).whereSlug(slug).build())
-      .then(([diaryEntry] = []) => {
+
+    Promise.all([
+      new DiaryQueryBuilder(knex).whereSlug(slug).build(),
+      new DiaryQueryBuilder(knex).getPreviousEntry(slug).build(),
+      new DiaryQueryBuilder(knex).getNextEntry(slug).build()
+    ])
+      .then(([[diaryEntry], [previousDiaryEntry], [nextDiaryEntry]]) => {
         if (!diaryEntry) return next(ERRORS.NO_ENTITY('reverie'));
         const date = zDate.formatDate(diaryEntry.date, true);
 
@@ -33,7 +37,9 @@ router.get(
           title: `Diary: ${date} | ${siteTitle}`,
           description: diaryEntry.content, // TODO: Deal with absence of excerpt (e.g. pages)
           ogUrl: `/diary/${diaryEntry.slug}`,
-          diaryEntry
+          diaryEntry,
+          previousDiaryEntry,
+          nextDiaryEntry
         });
       })
       .catch(next);
