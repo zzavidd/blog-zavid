@@ -11,8 +11,8 @@ const diaryFragments = gql`
 `;
 
 exports.GET_DIARY_QUERY = gql`
-  query GetAllDiaryEntries {
-    diaryEntries {
+  query GetAllDiaryEntries($status: DiaryStatusOptions) {
+    diaryEntries(status: $status) {
       ...DiaryFields
     }
   }

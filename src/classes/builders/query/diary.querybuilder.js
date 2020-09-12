@@ -13,6 +13,12 @@ class DiaryQueryBuilder extends QueryBuilder {
     this.query.where('slug', slug);
     return this;
   }
+
+  whereStatus({ include, exclude } = {}) {
+    if (!isFalsy(include)) this.query.whereIn('status', include);
+    if (!isFalsy(exclude)) this.query.whereNotIn('status', exclude);
+    return this;
+  }
 }
 
 class DiaryMutationBuilder extends MutationBuilder {

@@ -11,7 +11,7 @@ type DiaryEntry {
 }
 
 extend type Query {
-  diaryEntries: [DiaryEntry]
+  diaryEntries(status: DiaryStatusOptions): [DiaryEntry]
   diaryEntry(id: Int!): DiaryEntry
 }
 
@@ -32,6 +32,11 @@ extend type Mutation {
 enum DiaryStatus {
   PRIVATE
   PUBLISHED
+}
+
+input DiaryStatusOptions {
+  include: [DiaryStatus]
+  exclude: [DiaryStatus]
 }
 
 input DiaryInput {
