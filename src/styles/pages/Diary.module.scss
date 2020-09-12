@@ -7,8 +7,7 @@
 .diary-grid {
   @include responsive(
     grid-template-columns,
-    repeat(5, 20%),
-    $xxl: repeat(4, 25%),
+    repeat(4, 25%),
     $xl: repeat(3, calc(100% / 3)),
     $lg: repeat(2, 50%),
     $md: 100%
@@ -33,12 +32,4 @@
 
 .diary-entry-readmore {
   @include responsive(font-size, 1em, $sm: 0.9em);
-}
-
-////////////////////////////////
-/// SINGLE
-////////////////////////////////
-
-.diary-entry-single-page {
-  
 }
