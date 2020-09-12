@@ -40,6 +40,20 @@ exports.isValidPost = (post) => {
 };
 
 /**
+ * Validation of diary entry submission or update.
+ * @param {object} diaryEntry Diary entry information to be validated.
+ * @returns {boolean} True if valid. False with error message if invalid.
+ */
+exports.isValidDiaryEntry = (diaryEntry) => {
+  if (
+    !ifExists(diaryEntry.content, 'Write out the content of this diary entry.')
+  )
+    return false;
+
+  return true;
+};
+
+/**
  * Ensure submitted file meets requirements.
  * @param {string} file - Base64 string of file to be uploaded.
  * @param {string} entity - The entity this file represents.
