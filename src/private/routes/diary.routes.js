@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
+const { DiaryQueryBuilder } = require('../../classes');
 const { siteTitle } = require('../../constants/settings');
 const { OPERATIONS } = require('../../constants/strings');
 const resolvers = require('../api/resolvers/diary.resolvers');
-const { DiaryQueryBuilder } = require('../classes');
 const { renderErrorPage, ERRORS } = require('../error');
 const knex = require('../singleton').getKnex();
 const server = require('../singleton').getServer();
@@ -61,3 +61,5 @@ router.get('/admin/diary/edit/:id', function (req, res) {
     });
   });
 });
+
+module.exports = router;
