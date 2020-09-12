@@ -31,11 +31,23 @@
   position: sticky;
   transition-duration: 0.8s;
   width: 100%;
-}
 
-.toolbar-spaced {
-  display: flex;
-  justify-content: space-between;
+  &-spaced {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-with-back {
+    @media (max-width: $break-sm) {
+      padding-right: 0.5em;
+    }
+  }
+
+  &-no-back {
+    @media (max-width: $break-sm) {
+      padding: 0.5em;
+    }
+  }
 }
 
 .toolbar-toggle {

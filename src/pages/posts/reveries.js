@@ -46,7 +46,7 @@ export default () => {
         <ReverieList reveries={reveries} />
         <RightSidebar />
       </Partitioner>
-      <Toolbar spaceChildren={true}>
+      <Toolbar spaceItems={true}>
         <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
       </Toolbar>
     </Spacer>
