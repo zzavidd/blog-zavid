@@ -53,7 +53,7 @@ router.get('/admin/diary/add', function (req, res) {
 
 router.get('/admin/diary/edit/:id', function (req, res) {
   const { id } = req.params;
-  resolvers.Query.getSinglePost(undefined, { id }).then((diaryEntry) => {
+  resolvers.Query.diaryEntry(undefined, { id }).then((diaryEntry) => {
     return server.render(req, res, '/diary/crud', {
       title: `Edit Diary Entry`,
       operation: OPERATIONS.UPDATE,
