@@ -105,7 +105,7 @@ export default () => {
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>
-            Add New Diary Entry
+            Add New Entry
           </AdminButton>
         </Toolbar>
       </Spacer>

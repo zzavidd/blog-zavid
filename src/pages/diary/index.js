@@ -3,6 +3,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
+import { Diary } from 'classes';
 import { alert } from 'components/alert.js';
 import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
@@ -21,7 +22,12 @@ export default () => {
   const [isLoaded, setLoaded] = useState(false);
 
   const { data, error: queryError, loading: queryLoading } = useQuery(
-    GET_DIARY_QUERY
+    GET_DIARY_QUERY,
+    {
+      variables: {
+        status: { include: [Diary.STATUSES.PUBLISHED] }
+      }
+    }
   );
 
   useEffect(() => {
