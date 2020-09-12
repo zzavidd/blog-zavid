@@ -36,9 +36,11 @@ const PostSingle = ({ post }) => {
         <Divider />
         <ShareBlock message={shareMessage} url={location.href} />
       </div>
-      <Toolbar spaceChildren={true}>
+      <Toolbar spaceItems={true} hasBackButton={true}>
         <BackButton onClick={navigateToReveries}>Back to Reveries</BackButton>
-        <AdminButton onClick={() => navigateToEdit(post.id)}>Edit This Reverie</AdminButton>
+        <AdminButton onClick={() => navigateToEdit(post.id)}>
+          Edit Reverie
+        </AdminButton>
       </Toolbar>
     </Spacer>
   );

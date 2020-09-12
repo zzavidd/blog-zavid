@@ -38,7 +38,7 @@ export default () => {
         <div className={css[`page-intro-${theme}`]}>{DIARY_PREMISE}</div>
         <DiaryGrid diaryEntries={diaryEntries} />
       </div>
-      <Toolbar spaceChildren={true}>
+      <Toolbar spaceItems={true}>
         <AdminButton onClick={navigateToDiaryAdmin}>Diary Admin</AdminButton>
       </Toolbar>
     </Spacer>

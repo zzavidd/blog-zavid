@@ -16,12 +16,22 @@ export const Spacer = ({ children }) => {
   return <div className={css['spacer']}>{children}</div>;
 };
 
-export const Toolbar = ({ className, children, spaceChildren }) => {
+/**
+ * Bottom toolbar for items
+ * @param {object} props The properties.
+ * @param {string} props.className The toolbar class.
+ * @param {React.Component[]} props.children The toolbar items.
+ * @param {boolean} props.spaceItems Indicates whether items should be spaced.
+ * @param {boolean} props.hasBackButton Indicates if toolbar contains back button.
+ * @returns {React.Component} The component.
+ */
+export const Toolbar = ({ className, children, spaceItems, hasBackButton }) => {
   if (!children) return null;
   const theme = useSelector(({ theme }) => theme);
   const classes = classnames(
     css[`toolbar-${theme}`],
-    spaceChildren ? css['toolbar-spaced'] : null,
+    spaceItems ? css['toolbar-spaced'] : null,
+    hasBackButton ? css['toolbar-with-back'] : css['toolbar-no-back'],
     className
   );
 
