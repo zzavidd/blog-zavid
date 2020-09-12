@@ -17,9 +17,10 @@ import { InvisibleButton } from './button';
 import { Icon } from './icon';
 
 export default (props) => {
+  const { headline = 'Share This Post' } = props;
   return (
     <div className={css['share-block']}>
-      <div className={css['share-title']}>Share This Post:</div>
+      <div className={css['share-title']}>{headline}:</div>
       <div className={css['share-buttons']}>
         <ShareFacebook {...props} />
         <ShareTwitter {...props} />

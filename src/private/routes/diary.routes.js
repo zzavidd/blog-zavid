@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const { zDate } = require('zavid-modules');
+
 const { DiaryQueryBuilder } = require('../../classes');
 const { siteTitle } = require('../../constants/settings');
 const { OPERATIONS } = require('../../constants/strings');
@@ -25,9 +27,10 @@ router.get(
       .then(() => new DiaryQueryBuilder(knex).whereSlug(slug).build())
       .then(([diaryEntry] = []) => {
         if (!diaryEntry) return next(ERRORS.NO_ENTITY('reverie'));
+        const date = zDate.formatDate(diaryEntry.date, true);
 
-        return server.render(req, res, '/posts/single', {
-          title: `Diary: ${diaryEntry.title} | ${siteTitle}`,
+        return server.render(req, res, '/diary/single', {
+          title: `Diary: ${date} | ${siteTitle}`,
           description: diaryEntry.content, // TODO: Deal with absence of excerpt (e.g. pages)
           ogUrl: `/diary/${diaryEntry.slug}`,
           diaryEntry
