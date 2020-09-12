@@ -8,8 +8,8 @@ class DiaryQueryBuilder extends QueryBuilder {
 }
 
 class DiaryMutationBuilder extends MutationBuilder {
-  constructor(knex, table) {
-    super(knex, table, 'diary entry');
+  constructor(knex) {
+    super(knex, 'diary', 'diary entry');
   }
 }
 

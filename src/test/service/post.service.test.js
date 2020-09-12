@@ -116,25 +116,21 @@ describe('Service Tests: Post', function () {
         .withStatus(Post.STATUSES.PUBLISHED)
         .build();
 
-      Promise.resolve()
-        .then(() => {
-          return submitPost(draftPost, (readPost) => {
-            assert.isNull(readPost.slug);
-            return deletePost(readPost.id);
-          });
+      Promise.all([
+        submitPost(draftPost, (readPost) => {
+          assert.isNull(readPost.slug);
+          return deletePost(readPost.id);
+        }),
+        submitPost(privatePost, (readPost) => {
+          assert.isNotNull(readPost.slug);
+          return deletePost(readPost.id);
+        }),
+        submitPost(publishedPost, (readPost) => {
+          assert.isNotNull(readPost.slug);
+          deletePost(readPost.id);
         })
-        .then(() => {
-          return submitPost(privatePost, (readPost) => {
-            assert.isNotNull(readPost.slug);
-            return deletePost(readPost.id);
-          });
-        })
-        .then(() => {
-          return submitPost(publishedPost, (readPost) => {
-            assert.isNotNull(readPost.slug);
-            deletePost(readPost.id, finish);
-          });
-        })
+      ])
+        .then(() => finish())
         .catch(debug);
     });
   });

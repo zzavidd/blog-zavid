@@ -9,11 +9,21 @@ class DiaryEntryBuilder {
     this.entry = {};
   }
 
+  withDate(date) {
+    this.entry.date = date;
+    return this;
+  }
+
+  withStatus(status) {
+    this.entry.status = status;
+    return this;
+  }
+
   random() {
     this.entry = {
       content: faker.lorem.paragraphs(),
       date: zDate.formatISODate(faker.date.past()),
-      status: Diary.randomStatus(),
+      status: Diary.randomStatus()
     };
     return this;
   }
@@ -23,7 +33,7 @@ class DiaryEntryBuilder {
    * @returns {object} The diary entry object.
    */
   build() {
-    return this.post;
+    return this.entry;
   }
 }
 

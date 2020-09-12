@@ -69,8 +69,8 @@ class PostQueryBuilder extends QueryBuilder {
 }
 
 class PostMutationBuilder extends MutationBuilder {
-  constructor(knex, table) {
-    super(knex, table, 'post');
+  constructor(knex) {
+    super(knex, 'posts', 'post');
   }
 }
 

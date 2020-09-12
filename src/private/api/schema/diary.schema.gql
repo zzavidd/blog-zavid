@@ -3,7 +3,7 @@
 ###############
 
 type DiaryEntry {
-  id: Int
+  id: Int!
   date: String
   content: String
   slug: String
@@ -16,10 +16,10 @@ extend type Query {
 }
 
 extend type Mutation {
-  createDiaryEntry(entry: DiaryInput, isPublish: Boolean): DiaryEntry
+  createDiaryEntry(diaryEntry: DiaryInput!, isPublish: Boolean): DiaryEntry
   updateDiaryEntry(
     id: Int!
-    entry: DiaryInput!
+    diaryEntry: DiaryInput!
     isPublish: Boolean
   ): DiaryEntry
   deleteDiaryEntry(id: Int!): DiaryEntry
@@ -35,7 +35,7 @@ enum DiaryStatus {
 }
 
 input DiaryInput {
-  date: String
   content: String
+  date: String
   status: DiaryStatus
 }

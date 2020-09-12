@@ -7,6 +7,8 @@ const { debug, ERRORS } = require('../../error');
 const filer = require('../../filer');
 const knex = require('../../singleton').getKnex();
 
+const ENTITY_NAME = 'post';
+
 /**
  * Retrieves all posts from database.
  * @param {object} parent Return value of the parent field.
@@ -44,7 +46,7 @@ const getSinglePost = (parent, { id }) => {
   return Promise.resolve()
     .then(() => new PostQueryBuilder(knex).whereId(id).build())
     .then(([post]) => {
-      if (!post) throw ERRORS.NO_POST_WITH_ID(id);
+      if (!post) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
       post = Post.parse(post);
       return post;
     })
@@ -64,13 +66,13 @@ const getSinglePost = (parent, { id }) => {
 const createPost = (parent, { post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.uploadImages(post, { isTest }))
-    .then((post) => new PostMutationBuilder(knex, 'posts').insert(post).build())
+    .then((post) => new PostMutationBuilder(knex).insert(post).build())
     .then(([id]) => ({ id }))
     .catch(debug);
 };
 
 /**
- * Updates the fields of a post into the database.
+ * Updates the fields of a post in the database.
  * @param {object} parent Return value of the parent field.
  * @param {object} args - The arguments.
  * @param {number} args.id - The ID of the post to update.
@@ -84,10 +86,7 @@ const updatePost = (parent, { id, post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.replaceImages(id, post, { isTest }))
     .then((updatedPost) =>
-      new PostMutationBuilder(knex, 'posts')
-        .update(updatedPost)
-        .whereId(id)
-        .build()
+      new PostMutationBuilder(knex).update(updatedPost).whereId(id).build()
     )
     .then(() => getSinglePost(undefined, { id }))
     .catch(debug);
@@ -104,7 +103,7 @@ const deletePost = (parent, { id }) => {
   return Promise.resolve()
     .then(() => new PostQueryBuilder(knex).whereId(id).build())
     .then(([post]) => {
-      if (!post) throw ERRORS.NO_POST_WITH_ID(id);
+      if (!post) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
 
       const promises = [];
       const images = Post.collateImages(post);
@@ -113,7 +112,7 @@ const deletePost = (parent, { id }) => {
       });
       return Promise.all(promises);
     })
-    .then(() => new PostMutationBuilder(knex, 'posts').delete(id).build())
+    .then(() => new PostMutationBuilder(knex).delete(id).build())
     .then(() => ({ id }))
     .catch(debug);
 };

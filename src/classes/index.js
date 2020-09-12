@@ -1,4 +1,5 @@
 const { PostBuilder, DiaryEntryBuilder } = require('./builders/entity');
+const ErrorBuilder = require('./builders/error.builder');
 const {
   PostQueryBuilder,
   PostMutationBuilder,
@@ -19,5 +20,6 @@ module.exports = {
   DiaryQueryBuilder,
   DiaryMutationBuilder,
 
+  ErrorBuilder,
   URLBuilder
 };

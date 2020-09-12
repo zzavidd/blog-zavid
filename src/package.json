@@ -3,7 +3,7 @@
     "build": "NODE_ENV=development next build",
     "dev": "node server.js",
     "prod": "NODE_ENV=production node server.js",
-    "test": "mocha --recursive --no-timeout",
+    "test": "npm run test:unit && npm run test:service",
     "test:unit": "mocha --recursive --no-timeout ./test/unit",
     "test:service": "mocha --recursive --no-timeout ./test/service",
     "lint": "eslint --ignore-path ../.gitignore \"**/*.js\"",

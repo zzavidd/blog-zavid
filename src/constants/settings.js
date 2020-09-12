@@ -9,12 +9,12 @@ exports.accounts = {
   snapchat: 'https://www.snapchat.com/add/zzavidd'
 };
 
-/** The date this blog was founded. */
-exports.creationDate = new Date(2017, 9, 2);
+/** The date this blog was founded. Month is 0-indexed. */
+exports.creationDate = new Date(2017, 8, 2);
 
-/** The date this blog was redeveloped. */
+/** The date this blog was redeveloped. Month is 0-indexed. */
 // TODO: To change on launch
-exports.redevelopmentDate = new Date(2020, 9, 2);
+exports.redevelopmentDate = new Date(2020, 8, 2);
 
 /** Domain to use dependent on environment. */
 exports.domain = dev ? 'http://localhost:4000' : 'https://www.zavidegbue.com';
@@ -24,3 +24,6 @@ exports.email = 'zavidegbue@gmail.com';
 
 /** The website title. */
 exports.siteTitle = 'Z A V I D';
+
+/** /the date of Zavid's birthday. Month is 0-indexed. */
+exports.zavidBirthday = new Date(1996, 11, 2);

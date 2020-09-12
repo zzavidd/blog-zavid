@@ -1,7 +1,7 @@
 const { gql } = require('@apollo/client');
 
 const diaryFragments = gql`
-  fragment DiaryFields on Diary {
+  fragment DiaryFields on DiaryEntry {
     id
     date
     content
@@ -11,8 +11,8 @@ const diaryFragments = gql`
 `;
 
 exports.GET_DIARY_QUERY = gql`
-  query GetAllDiaryEntries() {
-    diaryEntries() {
+  query GetAllDiaryEntries {
+    diaryEntries {
       ...DiaryFields
     }
   }
@@ -29,8 +29,8 @@ exports.GET_SINGLE_DIARY_QUERY = gql`
 `;
 
 exports.CREATE_DIARY_QUERY = gql`
-  mutation CreateDiaryEntry($entry: DiaryInput!, $isPublish: Boolean) {
-    createDiaryEntry(entry: $entry, isPublish: $isPublish) {
+  mutation CreateDiaryEntry($diaryEntry: DiaryInput!, $isPublish: Boolean) {
+    createDiaryEntry(diaryEntry: $diaryEntry, isPublish: $isPublish) {
       id
     }
   }
@@ -39,10 +39,10 @@ exports.CREATE_DIARY_QUERY = gql`
 exports.UPDATE_DIARY_QUERY = gql`
   mutation UpdateDiaryEntry(
     $id: Int!
-    $entry: DiaryInput!
+    $diaryEntry: DiaryInput!
     $isPublish: Boolean
   ) {
-    updateDiaryEntry(id: $id, entry: $entry, isPublish: $isPublish) {
+    updateDiaryEntry(id: $id, diaryEntry: $diaryEntry, isPublish: $isPublish) {
       ...DiaryFields
     }
   }
