@@ -13,7 +13,7 @@ import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
 import css from 'styles/pages/Diary.module.scss';
 
 const DIARY_HEADING = `Zavid's Diary`;
-const DIARY_PREMISE = `Every day or two, I'll transparently scribe my thoughts and feelings.`;
+const DIARY_PREMISE = `Every day or two, I'll transparently scribe my thoughts and feelings. Maybe speak about a friend I miss, maybe highlight a stranger who's been on my mind.\n\nWill that help abate small talk now that people have the answer to "how have you been?" readily accessible? I could dream.`;
 
 export default () => {
   const theme = useSelector(({ theme }) => theme);
