@@ -15,7 +15,7 @@ const ENTITY_NAME = 'diary entry';
  * @param {object} args.status The status to filter diary entries by.
  * @returns {object[]} The posts.
  */
-const getAllDiaryEntries = (parent, {status}) => {
+const getAllDiaryEntries = (parent, { status }) => {
   return Promise.resolve()
     .then(() => new DiaryQueryBuilder(knex).whereStatus(status).build())
     .then((diaryEntries) => diaryEntries)
