@@ -1,13 +1,6 @@
 const server = require('./singleton').getServer();
 
-/** Builds a post query with conditions. */
-class ErrorBuilder {
-  constructor(message, status) {
-    this.error = new Error(message);
-    if (status) this.error.status = status;
-    return this.error;
-  }
-}
+const { ErrorBuilder } = require('../classes');
 
 exports.debug = (err) => {
   throw err;
@@ -21,11 +14,11 @@ exports.renderErrorPage = (err, req, res, next) => {
   server.render(req, res, errorPage, { message });
 };
 
-exports.ERRORS = {
+exports = {
   NO_REVERIE: new ErrorBuilder('No such reverie exists.', 404),
   NO_PAGE: new ErrorBuilder('No such page exists.', 404),
 
-  NO_POST_WITH_ID: (id) => {
-    return new ErrorBuilder(`Post with ID '${id}' doesn't exist.`);
+  NONEXISTENT_ID: (id, entity) => {
+    return new ErrorBuilder(`There exists no ${entity} with ID '${id}'.`);
   }
 };
