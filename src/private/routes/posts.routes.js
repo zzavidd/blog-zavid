@@ -24,7 +24,7 @@ router.get(
     Promise.resolve()
       .then(() => new PostQueryBuilder(knex).whereSlug(slug).build())
       .then(([post] = []) => {
-        if (!post) return next(ERRORS.NO_REVERIE);
+        if (!post) return next(ERRORS.NO_ENTITY('reverie'));
         return server.render(req, res, '/posts/single', {
           title: `${post.title} | ${siteTitle}`,
           description: post.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)
@@ -50,7 +50,7 @@ router.get(
           .build();
       })
       .then(([post] = []) => {
-        if (!post) return next(ERRORS.NO_REVERIE);
+        if (!post) return next(ERRORS.NO_ENTITY('reverie'));
         return server.render(req, res, '/posts/single', {
           title: `${post.title} | ${siteTitle}`,
           description: post.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)
@@ -88,7 +88,7 @@ router.get('/admin/posts/add', function (req, res) {
 
 router.get('/admin/posts/edit/:id', function (req, res) {
   const { id } = req.params;
-  resolvers.Query.getSinglePost({ id }).then((post) => {
+  resolvers.Query.getSinglePost(undefined, { id }).then((post) => {
     return server.render(req, res, '/posts/crud', {
       title: `Edit Post`,
       operation: OPERATIONS.UPDATE,

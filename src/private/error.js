@@ -15,9 +15,9 @@ exports.renderErrorPage = (err, req, res, next) => {
 };
 
 exports = {
-  NO_REVERIE: new ErrorBuilder('No such reverie exists.', 404),
-  NO_PAGE: new ErrorBuilder('No such page exists.', 404),
-
+  NO_ENTITY: (entity) => {
+    new ErrorBuilder(`No such ${entity} exists.`, 404);
+  },
   NONEXISTENT_ID: (id, entity) => {
     return new ErrorBuilder(`There exists no ${entity} with ID '${id}'.`);
   }
