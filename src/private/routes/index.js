@@ -6,7 +6,6 @@ const app = require('../singleton').getApp();
 const server = require('../singleton').getServer();
 
 app.use('/', [adminRoutes, postRoutes]);
-// app.use('/admin', checkAuthentication);
 
 app.get(['/', '/home'], function (req, res) {
   return server.render(req, res, '/home', {
