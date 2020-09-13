@@ -1,0 +1,5 @@
+@import '../App';
+
+.pref-title {
+  @include responsive(font-size, 2em, $sm: 1.5em);
+}

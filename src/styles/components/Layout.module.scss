@@ -1,5 +1,11 @@
 @import '../App';
 
+.container {
+  @include responsive(width, 60%, $lg: 80%, $md: 90%, $sm: 100%);
+  margin: 0 auto;
+  padding: 1.8em 1.2em;
+}
+
 .partitioner {
   @include responsive(width, 70%, $xxl: 80%, $md: 90%, $sm: 100%);
   @include responsive(display, grid, $lg: block);

@@ -1,9 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
+const { SubscriberQueryBuilder } = require('../../classes');
+const { siteTitle } = require('../../constants/settings');
 const { OPERATIONS } = require('../../constants/strings');
-const resolvers = require('../api/resolvers/subscriber.resolvers');
+const knex = require('../singleton').getKnex();
 const server = require('../singleton').getServer();
+
+router.get('/subscriptions/:token', function (req, res) {
+  const { token } = req.params;
+  new SubscriberQueryBuilder(knex)
+    .whereToken(token)
+    .build()
+    .then(([subscriber]) => {
+      return server.render(req, res, '/subscribers/subscriptions', {
+        title: `Subscription Preferences | ${siteTitle}`,
+        subscriber
+      });
+    });
+});
 
 router.get('/admin/subscribers', function (req, res) {
   return server.render(req, res, '/subscribers/admin', {
@@ -20,13 +35,16 @@ router.get('/admin/subscribers/add', function (req, res) {
 
 router.get('/admin/subscribers/edit/:id', function (req, res) {
   const { id } = req.params;
-  resolvers.Query.subscriber(undefined, { id }).then((subscriber) => {
-    return server.render(req, res, '/subscribers/crud', {
-      title: `Edit Subscriber`,
-      operation: OPERATIONS.UPDATE,
-      subscriber
+  new SubscriberQueryBuilder(knex)
+    .whereId(id)
+    .build()
+    .then((subscriber) => {
+      return server.render(req, res, '/subscribers/crud', {
+        title: `Edit Subscriber`,
+        operation: OPERATIONS.UPDATE,
+        subscriber
+      });
     });
-  });
 });
 
 module.exports = router;

@@ -7,6 +7,11 @@ import css from 'styles/components/Layout.module.scss';
 
 import { InvisibleButton } from './button';
 
+export const Container = ({ children, className }) => {
+  const classes = classnames(css['container'], className);
+  return <div className={classes}>{children}</div>;
+};
+
 export const Partitioner = ({ children, className }) => {
   const classes = classnames(css['partitioner'], className);
   return <div className={classes}>{children}</div>;
