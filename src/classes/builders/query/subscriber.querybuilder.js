@@ -5,6 +5,11 @@ class SubscriberQueryBuilder extends QueryBuilder {
   constructor(knex) {
     super(knex, 'subscribers');
   }
+
+  whereToken(token) {
+    this.query.where('token', token);
+    return this;
+  }
 }
 
 class SubscriberMutationBuilder extends MutationBuilder {
