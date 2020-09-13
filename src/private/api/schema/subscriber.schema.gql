@@ -1,0 +1,45 @@
+###############
+# Base Schema
+###############
+
+type Subscriber {
+  id: Int!
+  email: String!
+  firstname: String
+  lastname: String
+  subscriptions: Subscriptions!
+  token: String
+  createTime: String
+}
+
+extend type Query {
+  subscribers: [Subscriber]
+  subscriber(id: Int!): Subscriber
+}
+
+extend type Mutation {
+  createSubscriber(subscriber: SubscriberInput!): Subscriber
+  updateSubscriber(id: Int!, subscriber: SubscriberInput!): Subscriber
+  deleteSubscriber(id: Int!): Subscriber
+}
+
+###############
+# Helpers
+###############
+
+input SubscriberInput {
+  email: String!
+  firstname: String
+  lastname: String
+  subscriptions: SubscriptionsInput
+}
+
+type Subscriptions {
+  reveries: Boolean
+  diary: Boolean
+}
+
+input SubscriptionsInput {
+  reveries: Boolean!
+  diary: Boolean!
+}

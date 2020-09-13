@@ -6,6 +6,7 @@
     "test": "npm run test:unit && npm run test:service",
     "test:unit": "mocha --recursive --no-timeout ./test/unit",
     "test:service": "mocha --recursive --no-timeout ./test/service",
+    "test-spec": "mocha --no-timeout",
     "lint": "eslint --ignore-path ../.gitignore \"**/*.js\"",
     "prettify": "prettier --ignore-path ../.gitignore --write \"**/*.js\""
   },
@@ -51,6 +52,7 @@
     "react-visibility-sensor": "^5.1.1",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
+    "uuid": "^8.3.0",
     "zavid-modules": "^3.2.2"
   },
   "devDependencies": {

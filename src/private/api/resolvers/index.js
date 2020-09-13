@@ -1,7 +1,8 @@
 const diaryResolvers = require('./diary.resolvers');
 const postResolvers = require('./post.resolvers');
+const subscriberResolvers = require('./subscriber.resolvers');
 
-const resolvers = [diaryResolvers, postResolvers];
+const resolvers = [diaryResolvers, postResolvers, subscriberResolvers];
 
 const Query = {};
 const Mutation = {};

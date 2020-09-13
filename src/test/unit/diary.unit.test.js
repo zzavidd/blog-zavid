@@ -2,7 +2,7 @@ const { assert } = require('..');
 const { Diary, DiaryEntryBuilder } = require('../../classes');
 const { zavidBirthday } = require('../../constants/settings');
 
-describe('Unit Tests: Post', function () {
+describe('Unit Tests: Diary', function () {
   describe('Object methods', function () {
     it('Test random construction', function (finish) {
       const diaryEntry = new DiaryEntryBuilder().random().build();

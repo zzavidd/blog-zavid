@@ -7,4 +7,4 @@ exports.OPERATIONS = {
 exports.SUBSCRIPTIONS = {
   REVERIES: 'reveries',
   DIARY: 'diary'
-}
+};
