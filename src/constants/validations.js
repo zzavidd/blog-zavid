@@ -54,6 +54,18 @@ exports.isValidDiaryEntry = (diaryEntry) => {
 };
 
 /**
+ * Validation of subscriber submission or update.
+ * @param {object} subscriber Subscriber information to be validated.
+ * @returns {boolean} True if valid. False with error message if invalid.
+ */
+exports.isValidSubscriber = (subscriber) => {
+  if (!ifExists(subscriber.email, `Enter the subscriber's email address.`))
+    return false;
+
+  return true;
+};
+
+/**
  * Ensure submitted file meets requirements.
  * @param {string} file - Base64 string of file to be uploaded.
  * @param {string} entity - The entity this file represents.

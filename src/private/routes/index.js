@@ -1,12 +1,13 @@
 const diaryRoutes = require('./diary.routes');
-const postRoutes = require('./posts.routes');
+const postRoutes = require('./post.routes');
+const subscriberRoutes = require('./subscriber.routes');
 
 const { siteTitle } = require('../../constants/settings');
 const authRoutes = require('../auth');
 const app = require('../singleton').getApp();
 const server = require('../singleton').getServer();
 
-app.use('/', [authRoutes, diaryRoutes, postRoutes]);
+app.use('/', [authRoutes, diaryRoutes, postRoutes, subscriberRoutes]);
 
 app.get(['/', '/home'], function (req, res) {
   return server.render(req, res, '/home', {

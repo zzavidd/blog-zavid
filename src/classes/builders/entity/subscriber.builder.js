@@ -1,6 +1,6 @@
 const faker = require('faker');
 
-const { SUBSCRIPTIONS } = require('../../../constants/strings');
+const Subscriber = require('../../static/subscriber.static');
 
 /** The class for building Subscriber objects. */
 class SubscriberBuilder {
@@ -10,7 +10,7 @@ class SubscriberBuilder {
 
   random() {
     const subscriptions = {};
-    Object.values(SUBSCRIPTIONS).forEach((type) => {
+    Object.values(Subscriber.SUBSCRIPTIONS).forEach((type) => {
       subscriptions[type] = faker.random.boolean();
     });
 

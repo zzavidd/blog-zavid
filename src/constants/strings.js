@@ -3,8 +3,3 @@ exports.OPERATIONS = {
   CREATE: 'add',
   UPDATE: 'edit'
 };
-
-exports.SUBSCRIPTIONS = {
-  REVERIES: 'reveries',
-  DIARY: 'diary'
-};

@@ -1,4 +1,11 @@
+const SUBSCRIPTIONS = {
+  REVERIES: 'reveries',
+  DIARY: 'diary'
+};
+
 class Subscriber {
+  static SUBSCRIPTIONS = SUBSCRIPTIONS;
+
   /**
    * Ensure a subscriber object is able to be operated on.
    * @param {object} subscriber The subscriber object.
@@ -11,6 +18,24 @@ class Subscriber {
       subscriber.subscriptions = {};
     }
     return subscriber;
+  }
+
+  static subscriptionsToString(subscriber) {
+    const subscriptions = Object.entries(subscriber.subscriptions)
+      .filter(([key]) => !key.startsWith('_'))
+      .map(([key, value]) => {
+        return `${key}: ${value}\n`;
+      });
+
+    return subscriptions;
+  }
+
+  static defaultSubscriptions() {
+    const subscriptions = {};
+    Object.values(Subscriber.SUBSCRIPTIONS).forEach((type) => {
+      subscriptions[type] = true;
+    });
+    return subscriptions;
   }
 }
 
