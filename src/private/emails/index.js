@@ -2,16 +2,16 @@ const async = require('async');
 const ejs = require('ejs');
 const htmlToText = require('html-to-text');
 const nodemailer = require('nodemailer');
+const { v4: uuidv4 } = require('uuid');
 const { zDate, zText } = require('zavid-modules');
 
-const { Subscriber, SubscriberQueryBuilder } = require('../../classes');
+const { SubscriberQueryBuilder } = require('../../classes');
 const {
   accounts,
   cloudinaryBaseUrl,
   copyright,
   domain
 } = require('../../constants/settings.js');
-const { debug } = require('../error');
 const knex = require('../singleton').getKnex();
 
 const isDev = process.env.NODE_ENV !== 'production';
@@ -34,7 +34,10 @@ const htmlToTextOptions = {
   wordwrap: 80
 };
 /** The email address of the recipient in development. */
-const testRecipient = process.env.ETHEREAL_EMAIL;
+const testRecipient = {
+  email: process.env.ETHEREAL_EMAIL,
+  token: uuidv4()
+};
 
 /** Initialise the mail transporter */
 const transporter = nodemailer.createTransport({
@@ -52,46 +55,9 @@ const transporter = nodemailer.createTransport({
  * @returns {Promise} A resolved Promise.
  */
 exports.notifyNewPost = (post) => {
-  return new Promise((resolve, reject) => {
-    const { title, type, typeId, content, datePublished, image, slug } = post;
-    const subject = `New ${type} (#${typeId}) "${title}"`;
+  const { title, type, typeId, content, datePublished, image, slug } = post;
+  const subject = `New ${type} (#${typeId}) "${title}"`;
 
-    ejs.renderFile(
-      __dirname + '/templates/post.ejs',
-      {
-        post: Object.assign({}, post, {
-          content: zText.truncateText(content),
-          slug: `${domain}/reveries/${slug}`,
-          datePublished: zDate.formatDate(datePublished, true),
-          image: `${cloudinaryBaseUrl}/w_768,c_lfill/${image}`
-        }),
-        ...ejsLocals
-      },
-      null,
-      function (err, data) {
-        if (err) return reject(err);
-        Promise.resolve()
-          .then(() => {
-            return sendMailToAllSubscribers(
-              Subscriber.SUBSCRIPTIONS[type],
-              subject,
-              data
-            );
-          })
-          .then(() => resolve());
-      }
-    );
-  });
-};
-
-/**
- * Send email to all subscribers.
- * @param {string} type - The type of subscription.
- * @param {string} subject - The subject of the email.
- * @param {string} message - The content of the message.
- * @returns {Promise} A resolved Promise.
- */
-const sendMailToAllSubscribers = (type, subject, message) => {
   return new Promise((resolve, reject) => {
     Promise.resolve()
       .then(() => new SubscriberQueryBuilder(knex).build())
@@ -102,27 +68,29 @@ const sendMailToAllSubscribers = (type, subject, message) => {
           : subscribers.map((subscriber) => {
               const subscriptions = JSON.parse(subscriber.subscriptions);
               const isSubscribed = subscriptions[type];
-              if (isSubscribed) return subscriber.email;
+              if (isSubscribed) return subscriber;
             });
 
         // Send email to shortlisted subscribers on mailing list
         async.each(
           mailList,
           function (recipient, callback) {
-            transporter.sendMail(
+            ejs.renderFile(
+              __dirname + '/templates/post.ejs',
               {
-                from: `ZAVID <${process.env.EMAIL_USER}>`,
-                to: recipient,
-                subject,
-                html: message,
-                text: htmlToText.fromString(message, htmlToTextOptions)
+                post: Object.assign({}, post, {
+                  content: zText.truncateText(content),
+                  slug: `${domain}/reveries/${slug}`,
+                  datePublished: zDate.formatDate(datePublished, true),
+                  image: `${cloudinaryBaseUrl}/w_768,c_lfill/${image}`
+                }),
+                subscriber: recipient,
+                ...ejsLocals
               },
-              function (err, info) {
+              null,
+              function (err, message) {
                 if (err) return callback(err);
-                console.info(
-                  `Preview URL: ${nodemailer.getTestMessageUrl(info)}`
-                );
-                callback(null);
+                sendMailToSubscriber(recipient, subject, message, callback);
               }
             );
           },
@@ -134,7 +102,23 @@ const sendMailToAllSubscribers = (type, subject, message) => {
             resolve();
           }
         );
-      })
-      .catch(debug);
+      });
   });
+};
+
+const sendMailToSubscriber = (recipient, subject, message, callback) => {
+  transporter.sendMail(
+    {
+      from: `ZAVID <${process.env.EMAIL_USER}>`,
+      to: recipient.email,
+      subject,
+      html: message,
+      text: htmlToText.fromString(message, htmlToTextOptions)
+    },
+    function (err, info) {
+      if (err) return callback(err);
+      console.info(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`);
+      callback(null);
+    }
+  );
 };
