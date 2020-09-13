@@ -2,8 +2,9 @@
 import React from 'react';
 import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
 
-export const cloudinaryBaseUrl =
-  'https://res.cloudinary.com/zavid/image/upload';
+import { cloudinaryBaseUrl as url } from 'constants/settings';
+
+export const cloudinaryBaseUrl = url;
 
 export const validateCloudinaryImage = (image) => {
   if (!image) return false;

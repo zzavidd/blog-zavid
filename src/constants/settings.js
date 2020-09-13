@@ -9,6 +9,9 @@ exports.accounts = {
   snapchat: 'https://www.snapchat.com/add/zzavidd'
 };
 
+/** The base URL for Cloudinary media. */
+exports.cloudinaryBaseUrl = 'https://res.cloudinary.com/zavid/image/upload';
+
 /** The date this blog was founded. Month is 0-indexed. */
 exports.creationDate = new Date(2017, 8, 2);
 
@@ -18,9 +21,6 @@ exports.redevelopmentDate = new Date(2020, 8, 2);
 
 /** Domain to use dependent on environment. */
 exports.domain = dev ? 'http://localhost:4000' : 'https://www.zavidegbue.com';
-
-/** My email address. */
-exports.email = 'zavidegbue@gmail.com';
 
 /** The website title. */
 exports.siteTitle = 'Z A V I D';
