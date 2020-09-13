@@ -22,5 +22,6 @@
       </a>
     </div>
   </div>
-  <%- include("partials/footer.ejs", { url: post.slug }) %>
+  <%- include("partials/footer.ejs", { url: post.slug, token: subscriber.token
+  }) %>
 </body>
