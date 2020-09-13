@@ -14,10 +14,7 @@ exports.fetch = (query, options = {}, test) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: print(query), variables })
   })
-    .then((res) => {
-      assert.equal(res.status, 200);
-      return res.json();
-    })
+    .then((res) => res.json())
     .then(({ data, errors }) => {
       if (!expectToFail) {
         assert.isNotOk(errors);
