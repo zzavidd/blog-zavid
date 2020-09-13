@@ -12,13 +12,13 @@ const {
  * @param {Function} [assertions] The assertions to make.
  * @returns {Promise} A resolution of the Promise.
  */
-exports.submitPost = (post, assertions) => {
+exports.submitPost = (post, assertions, isPublish = false) => {
   return Promise.resolve()
     .then(() => {
       // Submit the random post.
       return fetch(
         CREATE_POST_QUERY,
-        { variables: { post, isTest: true } },
+        { variables: { post, isPublish, isTest: true } },
         function ({ data }) {
           const createdPost = data.createPost;
           assert.hasAnyKeys(createdPost, 'id');
@@ -47,10 +47,10 @@ exports.submitPost = (post, assertions) => {
  * @param {Function} [assertions] The assertions to make.
  * @returns {Promise} A resolution of the Promise.
  */
-exports.updatePost = (id, post, assertions) => {
+exports.updatePost = (id, post, assertions, isPublish = false) => {
   return fetch(
     UPDATE_POST_QUERY,
-    { variables: { id, post, isTest: true } },
+    { variables: { id, post, isPublish, isTest: true } },
     function ({ data }) {
       const updatedPost = data.updatePost;
       assert.strictEqual(updatedPost.id, id);

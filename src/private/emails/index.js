@@ -4,20 +4,22 @@ const htmlToText = require('html-to-text');
 const nodemailer = require('nodemailer');
 const { zDate, zText } = require('zavid-modules');
 
-const { Subscriber } = require('../../classes');
+const { Subscriber, SubscriberQueryBuilder } = require('../../classes');
 const {
   accounts,
   cloudinaryBaseUrl,
   copyright,
   domain
 } = require('../../constants/settings.js');
-const knex = require('../singleton/knex').getKnex();
+const { debug } = require('../error');
+const knex = require('../singleton').getKnex();
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 /** A map of variables used in all EJS emails */
 const ejsLocals = {
   accounts,
+  cloudinaryBaseUrl,
   copyright,
   domain
 };
@@ -36,45 +38,50 @@ const testRecipient = process.env.ETHEREAL_EMAIL;
 
 /** Initialise the mail transporter */
 const transporter = nodemailer.createTransport({
-  host: 'mail.privateemail.com',
-  port: 465,
+  host: process.env[isDev ? 'ETHEREAL_HOST' : 'EMAIL_HOST'],
+  port: process.env[isDev ? 'ETHEREAL_PORT' : 'EMAIL_PORT'],
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PWD
+    user: process.env[isDev ? 'ETHEREAL_EMAIL' : 'EMAIL_USER'],
+    pass: process.env[isDev ? 'ETHEREAL_PWD' : 'EMAIL_PWD']
   }
 });
 
 /**
  * Send an email to all subscribers of new reverie.
  * @param {object} post - The post details.
- * @param {object} options - The callback options for this function.
- * @param {Function} [options.callback] - The callback function called on completion.
- * @param {object} [options.params] - The parameters sent via the callback.
+ * @returns {Promise} A resolved Promise.
  */
-exports.notifyNewReverie = (post, options) => {
-  const { title, content, datePublished, image, slug } = post;
-  const subject = `New Reverie: "${title}"`;
+exports.notifyNewPost = (post) => {
+  return new Promise((resolve, reject) => {
+    const { title, type, typeId, content, datePublished, image, slug } = post;
+    const subject = `New ${type} (#${typeId}) "${title}"`;
 
-  ejs.renderFile(
-    __dirname + '/templates/reverie.ejs',
-    {
-      post: Object.assign({}, post, {
-        content: zText.truncateText(content),
-        slug: `${domain}/reveries/${slug}`,
-        datePublished: zDate.formatDate(datePublished, true),
-        image: `${cloudinaryBaseUrl}/w_768,c_lfill/${image}`
-      }),
-      ...ejsLocals
-    },
-    function (err, data) {
-      sendMailToAllSubscribers(
-        Subscriber.SUBSCRIPTIONS.REVERIES,
-        subject,
-        data,
-        options
-      );
-    }
-  );
+    ejs.renderFile(
+      __dirname + '/templates/post.ejs',
+      {
+        post: Object.assign({}, post, {
+          content: zText.truncateText(content),
+          slug: `${domain}/reveries/${slug}`,
+          datePublished: zDate.formatDate(datePublished, true),
+          image: `${cloudinaryBaseUrl}/w_768,c_lfill/${image}`
+        }),
+        ...ejsLocals
+      },
+      null,
+      function (err, data) {
+        if (err) return reject(err);
+        Promise.resolve()
+          .then(() => {
+            return sendMailToAllSubscribers(
+              Subscriber.SUBSCRIPTIONS[type],
+              subject,
+              data
+            );
+          })
+          .then(() => resolve());
+      }
+    );
+  });
 };
 
 /**
@@ -82,50 +89,52 @@ exports.notifyNewReverie = (post, options) => {
  * @param {string} type - The type of subscription.
  * @param {string} subject - The subject of the email.
  * @param {string} message - The content of the message.
- * @param {object} [options] - The callback options for this function.
- * @param {Function} [options.callback] - The callback function called on completion.
- * @param {object} [options.params] - The parameters sent via the callback.
+ * @returns {Promise} A resolved Promise.
  */
-const sendMailToAllSubscribers = (type, subject, message, options = {}) => {
-  const { callback, emailText, params } = options;
+const sendMailToAllSubscribers = (type, subject, message) => {
+  return new Promise((resolve, reject) => {
+    Promise.resolve()
+      .then(() => new SubscriberQueryBuilder(knex).build())
+      .then((subscribers) => {
+        // Retrieve list of subscribers to corresponding type
+        const mailList = isDev
+          ? [testRecipient]
+          : subscribers.map((subscriber) => {
+              const subscriptions = JSON.parse(subscriber.subscriptions);
+              const isSubscribed = subscriptions[type];
+              if (isSubscribed) return subscriber.email;
+            });
 
-  const query = knex.select().from('subscribers');
-  query.asCallback(function (err, results) {
-    // Retrieve list of subscribers to corresponding type
-    const mailList = isDev
-      ? [testRecipient]
-      : results.map((subscriber) => {
-          const subscriptions = JSON.parse(subscriber.subscriptions);
-          const isSubscribed = subscriptions[type];
-          if (isSubscribed) return subscriber.email;
-        });
-
-    // Send email to shortlisted subscribers on mailing list
-    async.each(
-      mailList,
-      function (recipient, callback) {
-        transporter.sendMail(
-          {
-            from: `ZAVID <${process.env.EMAIL_USER}>`,
-            to: recipient,
-            subject,
-            html: message,
-            text: htmlToText.fromString(
-              message,
-              Object.assign({}, htmlToTextOptions, emailText)
-            )
+        // Send email to shortlisted subscribers on mailing list
+        async.each(
+          mailList,
+          function (recipient, callback) {
+            transporter.sendMail(
+              {
+                from: `ZAVID <${process.env.EMAIL_USER}>`,
+                to: recipient,
+                subject,
+                html: message,
+                text: htmlToText.fromString(message, htmlToTextOptions)
+              },
+              function (err, info) {
+                if (err) return callback(err);
+                console.info(
+                  `Preview URL: ${nodemailer.getTestMessageUrl(info)}`
+                );
+                callback(null);
+              }
+            );
           },
           function (err) {
-            callback(err);
+            if (err) return reject(err);
+            console.info(
+              `Emails: "${subject}" email sent to ${mailList.length} subscribers.`
+            );
+            resolve();
           }
         );
-      },
-      function (err) {
-        console.info(
-          `Emails: "${subject}" email sent to ${mailList.length} subscribers.`
-        );
-        if (callback) callback(err, params);
-      }
-    );
+      })
+      .catch(debug);
   });
 };

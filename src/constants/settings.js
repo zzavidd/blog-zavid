@@ -12,6 +12,9 @@ exports.accounts = {
 /** The base URL for Cloudinary media. */
 exports.cloudinaryBaseUrl = 'https://res.cloudinary.com/zavid/image/upload';
 
+/** The copyright declaration. */
+exports.copyright = `\u00A9 ${new Date().getFullYear()} ZAVID`;
+
 /** The date this blog was founded. Month is 0-indexed. */
 exports.creationDate = new Date(2017, 8, 2);
 
