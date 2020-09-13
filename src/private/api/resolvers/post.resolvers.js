@@ -3,9 +3,14 @@ const {
   PostQueryBuilder,
   PostMutationBuilder
 } = require('../../../classes');
+const emails = require('../../emails');
 const { debug, ERRORS } = require('../../error');
 const filer = require('../../filer');
 const knex = require('../../singleton').getKnex();
+
+const emailsOn =
+  process.env.NODE_ENV === 'production' || process.argv.includes('--emails');
+console.warn(`Emails are turned ${emailsOn ? 'on' : 'off'}.`);
 
 const ENTITY_NAME = 'post';
 
@@ -66,8 +71,15 @@ const getSinglePost = (parent, { id }) => {
 const createPost = (parent, { post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.uploadImages(post, { isTest }))
-    .then((post) => new PostMutationBuilder(knex).insert(post).build())
-    .then(([id]) => ({ id }))
+    .then((post) => {
+      return Promise.all([
+        new PostMutationBuilder(knex).insert(post).build(),
+        isPublish && emailsOn ? emails.notifyNewPost(post) : null
+      ]);
+    })
+    .then(([[id]]) => {
+      return { id };
+    })
     .catch(debug);
 };
 
@@ -85,9 +97,12 @@ const createPost = (parent, { post, isPublish, isTest }) => {
 const updatePost = (parent, { id, post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.replaceImages(id, post, { isTest }))
-    .then((updatedPost) =>
-      new PostMutationBuilder(knex).update(updatedPost).whereId(id).build()
-    )
+    .then((updatedPost) => {
+      return Promise.all([
+        new PostMutationBuilder(knex).update(updatedPost).whereId(id).build(),
+        isPublish && emailsOn ? emails.notifyNewPost(updatedPost) : null
+      ]);
+    })
     .then(() => getSinglePost(undefined, { id }))
     .catch(debug);
 };

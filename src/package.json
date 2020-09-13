@@ -6,6 +6,7 @@
     "test": "npm run test:unit && npm run test:service",
     "test:unit": "mocha --recursive --no-timeout ./test/unit",
     "test:service": "mocha --recursive --no-timeout ./test/service",
+    "test:mock": "mocha --recursive --no-timeout ./test/mocks",
     "test-spec": "mocha --no-timeout",
     "lint": "eslint --ignore-path ../.gitignore \"**/*.js\"",
     "prettify": "prettier --ignore-path ../.gitignore --write \"**/*.js\""
@@ -30,6 +31,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "graphql": "^15.3.0",
+    "html-to-text": "^5.1.1",
     "knex": "^0.21.2",
     "mysql": "^2.18.1",
     "next": "^9.4.4",

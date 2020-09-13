@@ -11,7 +11,7 @@ const {
 } = require('../helper/subscriber.helper');
 
 describe('Service Tests: Subscriber', function () {
-  describe('Get All Subscriber Entries', function () {
+  describe('Get All Subscribers', function () {
     it('All', function (finish) {
       fetch(GET_SUBSCRIBERS_QUERY, {}, function ({ data }) {
         assert.isOk(data.subscribers);
