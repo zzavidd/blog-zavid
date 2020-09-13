@@ -4,18 +4,20 @@ const htmlToText = require('html-to-text');
 const nodemailer = require('nodemailer');
 const { zDate, zText } = require('zavid-modules');
 
+const { Subscriber } = require('../../classes');
 const {
+  accounts,
   cloudinaryBaseUrl,
   copyright,
   domain
 } = require('../../constants/settings.js');
-const { SUBSCRIPTIONS } = require('../../constants/strings.js');
 const knex = require('../singleton/knex').getKnex();
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 /** A map of variables used in all EJS emails */
 const ejsLocals = {
+  accounts,
   copyright,
   domain
 };
@@ -65,7 +67,12 @@ exports.notifyNewReverie = (post, options) => {
       ...ejsLocals
     },
     function (err, data) {
-      sendMailToAllSubscribers(SUBSCRIPTIONS.REVERIES, subject, data, options);
+      sendMailToAllSubscribers(
+        Subscriber.SUBSCRIPTIONS.REVERIES,
+        subject,
+        data,
+        options
+      );
     }
   );
 };
