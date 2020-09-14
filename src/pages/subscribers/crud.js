@@ -18,10 +18,12 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
     id: 0,
     email: '',
     firstname: '',
-    lastname: '',
-    subscriptions: Subscriber.defaultSubscriptions()
+    lastname: ''
   });
-  const [isLoaded, setLoaded] = useState(true);
+  const [preferences, setPreferences] = useState(
+    Subscriber.defaultSubscriptions()
+  );
+  const [isLoaded, setLoaded] = useState(false);
   const [isRequestPending, setRequestPending] = useState(false);
 
   // Initialise mutation functions.
@@ -39,6 +41,7 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
   const populateForm = () => {
     if (isCreateOperation) return;
     setSubscriber(serverSubscriber);
+    setPreferences(serverSubscriber.subscriptions);
   };
 
   useEffect(() => {
@@ -54,7 +57,7 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
   const submitSubscriber = () => {
     if (!isValidSubscriber(clientSubscriber)) return false;
 
-    const variables = buildPayload(clientSubscriber, true);
+    const variables = buildPayload(clientSubscriber, preferences, true);
     Promise.resolve()
       .then(() => createSubscriberMutation({ variables }))
       .then(() => {
@@ -71,7 +74,7 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
   const updateSubscriber = () => {
     if (!isValidSubscriber(clientSubscriber)) return false;
 
-    const variables = buildPayload(clientSubscriber, false);
+    const variables = buildPayload(clientSubscriber, preferences, false);
     Promise.resolve()
       .then(() => updateSubscriberMutation({ variables }))
       .then(() => {
@@ -88,7 +91,8 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
     <SubscriberForm
       isLoaded={isLoaded}
       subscriber={clientSubscriber}
-      handlers={hooks(setSubscriber, clientSubscriber)}
+      preferences={preferences}
+      handlers={{ ...hooks(setSubscriber, clientSubscriber), setPreferences }}
       confirmFunction={isCreateOperation ? submitSubscriber : updateSubscriber}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
       cancelFunction={returnToSubscriberAdmin}
@@ -103,8 +107,8 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
  * @param {boolean} isCreateOperation Indicates if operation is create or update.
  * @returns {object} The subscriber to submit.
  */
-const buildPayload = (clientSubscriber, isCreateOperation) => {
-  const { id, email, firstname, lastname, subscriptions } = clientSubscriber;
+const buildPayload = (clientSubscriber, subscriptions, isCreateOperation) => {
+  const { id, email, firstname, lastname } = clientSubscriber;
 
   const subscriber = {
     email: email.trim(),

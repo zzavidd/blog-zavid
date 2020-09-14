@@ -1,13 +1,13 @@
 import { useMutation } from '@apollo/client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { alert, setAlert } from 'components/alert';
 import { ConfirmButton, InvisibleButton } from 'components/button';
-import { Checkbox } from 'components/form/checkbox';
 import { Container } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import { Title } from 'components/text';
+import PreferenceChecks from 'lib/helpers/pages/subscribers/preferences';
 import {
   UPDATE_SUBSCRIBER_QUERY,
   DELETE_SUBSCRIBER_QUERY
@@ -64,6 +64,7 @@ const SubscriptionPreferences = ({ subscriber }) => {
       <Container>
         <Title className={css['pref-title']}>Subscription Preferences</Title>
         <div className={css['pref-email']}>{subscriber.email}</div>
+        <div className={css['pref-checks-intro']}>You are subscribed to my:</div>
         <PreferenceChecks
           preferences={preferences}
           setPreferences={setPreferences}
@@ -87,35 +88,6 @@ const SubscriptionPreferences = ({ subscriber }) => {
         closeFunction={() => setDeleteModalVisibility(false)}
       />
     </>
-  );
-};
-
-const PreferenceChecks = ({ preferences, setPreferences }) => {
-  const checkPreference = (e) => {
-    const { name, checked } = e.target;
-    setPreferences(
-      Object.assign({}, preferences, {
-        [name]: checked
-      })
-    );
-  };
-
-  const checks = Object.entries(preferences).map(([label, checked], key) => {
-    return (
-      <Checkbox
-        key={key}
-        name={label}
-        label={label}
-        checked={checked}
-        onChange={checkPreference}
-      />
-    );
-  });
-  return (
-    <div className={css['pref-checks']}>
-      <div className={css['pref-checks-intro']}>You are subscribed to:</div>
-      <div className={css['pref-checks-checkboxes']}>{checks}</div>
-    </div>
   );
 };
 

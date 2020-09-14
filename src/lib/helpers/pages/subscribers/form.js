@@ -3,9 +3,11 @@ import React from 'react';
 import { Form, FieldRow, Field, Label, TextInput } from 'components/form';
 import { Fader } from 'components/transitioner';
 
+import PreferenceChecks from './preferences';
+
 export default (props) => {
-  const { subscriber, handlers, isLoaded } = props;
-  const { handleText } = handlers;
+  const { subscriber, preferences, handlers, isLoaded } = props;
+  const { handleText, setPreferences } = handlers;
 
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
@@ -38,6 +40,15 @@ export default (props) => {
               value={subscriber.lastname}
               onChange={handleText}
               placeholder={'Enter the last name'}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <Field>
+            <Label>Preferences:</Label>
+            <PreferenceChecks
+              preferences={preferences}
+              setPreferences={setPreferences}
             />
           </Field>
         </FieldRow>

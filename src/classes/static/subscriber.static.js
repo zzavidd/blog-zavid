@@ -20,16 +20,6 @@ class Subscriber {
     return subscriber;
   }
 
-  static subscriptionsToString(subscriber) {
-    const subscriptions = Object.entries(subscriber.subscriptions)
-      .filter(([key]) => !key.startsWith('_'))
-      .map(([key, value]) => {
-        return `${key}: ${value}\n`;
-      });
-
-    return subscriptions;
-  }
-
   static defaultSubscriptions() {
     const subscriptions = {};
     Object.values(Subscriber.SUBSCRIPTIONS).forEach((type) => {
