@@ -55,10 +55,10 @@
     &-#{$theme} {
       @extend #{$class};
       @if $pseudo == 0 {
-        #{$attr}: $value;
+        #{$attr}: $value !important;
       } @else {
         &:#{$pseudo} {
-          #{$attr}: $value;
+          #{$attr}: $value !important;
         }
       }
     }

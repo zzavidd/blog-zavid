@@ -7,8 +7,8 @@ const subscriberFragments = gql`
     firstname
     lastname
     subscriptions {
-      reveries
-      diary
+      Reveries
+      Diary
     }
     token
     createTime

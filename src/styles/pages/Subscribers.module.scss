@@ -1,5 +1,34 @@
 @import '../App';
 
 .pref-title {
-  @include responsive(font-size, 2em, $sm: 1.5em);
+  @include responsive(font-size, 2em, $sm: 1.8em);
+}
+
+.pref-email {
+  @include responsive(font-size, 1.2em, $sm: 1.1em);
+  font-style: italic;
+  padding: 0.5em 0;
+}
+
+.pref-checks {
+  margin: 1em 0 2em;
+
+  &-intro {
+    @include responsive(font-size, 1.1em, $sm: 1em);
+  }
+
+  &-checkboxes {
+    margin: 1em 0;
+  }
+}
+
+.pref-update-button {
+  display: block;
+}
+
+.pref-unsubscribe-button {
+  @include themer(&, color, $light: #391144e6, $dark: $hyperlink-dark);
+  display: block;
+  margin: 1.5em 0;
+  text-decoration: underline;
 }

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { SubscriberQueryBuilder } = require('../../classes');
+const { Subscriber, SubscriberQueryBuilder } = require('../../classes');
 const { siteTitle } = require('../../constants/settings');
 const { OPERATIONS } = require('../../constants/strings');
 const knex = require('../singleton').getKnex();
@@ -13,9 +13,10 @@ router.get('/subscriptions/:token', function (req, res) {
     .whereToken(token)
     .build()
     .then(([subscriber]) => {
+      if (!subscriber) return res.redirect('/');
       return server.render(req, res, '/subscribers/subscriptions', {
         title: `Subscription Preferences | ${siteTitle}`,
-        subscriber
+        subscriber: Subscriber.parse(subscriber)
       });
     });
 });
