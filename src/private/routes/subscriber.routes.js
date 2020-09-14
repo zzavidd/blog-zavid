@@ -39,11 +39,11 @@ router.get('/admin/subscribers/edit/:id', function (req, res) {
   new SubscriberQueryBuilder(knex)
     .whereId(id)
     .build()
-    .then((subscriber) => {
+    .then(([subscriber]) => {
       return server.render(req, res, '/subscribers/crud', {
         title: `Edit Subscriber`,
         operation: OPERATIONS.UPDATE,
-        subscriber
+        subscriber: Subscriber.parse(subscriber)
       });
     });
 });

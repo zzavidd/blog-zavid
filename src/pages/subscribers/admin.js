@@ -75,7 +75,7 @@ export default () => {
               [subscriber.firstname, { icon: 'user', hideIfEmpty: true }],
               [subscriber.lastname, { icon: 'user', hideIfEmpty: true }],
               [
-                Subscriber.subscriptionsToString(subscriber),
+                showSubscriptionPreferences(subscriber.subscriptions),
                 { icon: 'check-square', hideIfEmpty: true }
               ],
               [
@@ -93,7 +93,7 @@ export default () => {
               ]
             ];
           })}
-          distribution={'6% 1fr 1fr 1fr 30% 4% 4%'}
+          distribution={'6% 1fr 0.7fr 0.7fr 30% 4% 4%'}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>
@@ -108,6 +108,25 @@ export default () => {
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
+    </>
+  );
+};
+
+const showSubscriptionPreferences = (subscriptions) => {
+  return (
+    <>
+      {Object.entries(subscriptions)
+        .filter(([key]) => !key.startsWith('_'))
+        .map(([label, checked], key) => {
+          if (checked) {
+            return (
+              <div key={key}>
+                <Icon name={'check'} />
+                {label}
+              </div>
+            );
+          }
+        })}
     </>
   );
 };
