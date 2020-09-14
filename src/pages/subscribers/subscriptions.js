@@ -19,15 +19,8 @@ const SubscriptionPreferences = ({ subscriber }) => {
 
   const [preferences, setPreferences] = useState(subscriber.subscriptions);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
-  const [isRequestPending, setRequestPending] = useState(false);
+  const [updateSubscriberMutation] = useMutation(UPDATE_SUBSCRIBER_QUERY);
   const [deleteSubscriberMutation] = useMutation(DELETE_SUBSCRIBER_QUERY);
-  const [updateSubscriberMutation, { loading: updateLoading }] = useMutation(
-    UPDATE_SUBSCRIBER_QUERY
-  );
-
-  useEffect(() => {
-    setRequestPending(updateLoading);
-  }, [updateLoading]);
 
   const updateSubscriptionPreferences = () => {
     const { id, firstname, lastname, email } = subscriber;
@@ -77,7 +70,6 @@ const SubscriptionPreferences = ({ subscriber }) => {
         />
         <ConfirmButton
           onClick={updateSubscriptionPreferences}
-          isRequestPending={isRequestPending}
           className={css['pref-update-button']}>
           Update Preferences
         </ConfirmButton>
