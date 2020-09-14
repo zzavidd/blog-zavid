@@ -1,6 +1,6 @@
 const SUBSCRIPTIONS = {
-  REVERIES: 'reveries',
-  DIARY: 'diary'
+  REVERIES: 'Reveries',
+  DIARY: 'Diary'
 };
 
 class Subscriber {

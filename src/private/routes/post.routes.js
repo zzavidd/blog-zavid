@@ -54,7 +54,7 @@ router.get(
         return server.render(req, res, '/posts/single', {
           title: `${post.title} | ${siteTitle}`,
           description: post.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)
-          ogUrl: `/reveries/${post.slug}`,
+          ogUrl: `/reveries/${post.slug}`, // Correct URL for domain
           cardImage: post.image,
           post
         });

@@ -35,11 +35,11 @@ input SubscriberInput {
 }
 
 type Subscriptions {
-  reveries: Boolean
-  diary: Boolean
+  Reveries: Boolean
+  Diary: Boolean
 }
 
 input SubscriptionsInput {
-  reveries: Boolean!
-  diary: Boolean!
+  Reveries: Boolean!
+  Diary: Boolean!
 }
