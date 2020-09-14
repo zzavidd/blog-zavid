@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import { checkAlert } from 'components/alert.js';
 import configureStore from 'lib/reducers.js';
 import Header from 'partials/header.js';
 
@@ -50,6 +51,7 @@ const ZAVIDApp = ({ Component, pageProps }) => {
 
   useEffect(() => {
     document.body.classList.add(`body-${theme}`);
+    checkAlert();
     setLoaded(true);
   }, [isLoaded]);
 

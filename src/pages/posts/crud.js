@@ -15,8 +15,8 @@ import {
   UPDATE_POST_QUERY
 } from 'private/api/queries/post.queries';
 
-const PostCrud = ({ post: currentPost, operation }) => {
-  const [statePost, setPost] = useState({
+const PostCrud = ({ post: serverPost, operation }) => {
+  const [clientPost, setPost] = useState({
     id: 0,
     title: '',
     content: '',
@@ -63,10 +63,10 @@ const PostCrud = ({ post: currentPost, operation }) => {
   // Determine if post is being published.
   let isPublish = false;
   if (isCreateOperation) {
-    isPublish = Post.isPublish(statePost.status);
+    isPublish = Post.isPublish(clientPost.status);
   } else {
     isPublish =
-      !Post.isPublish(currentPost.status) && Post.isPublish(statePost.status);
+      !Post.isPublish(serverPost.status) && Post.isPublish(clientPost.status);
   }
 
   /** Populate the form with post details. */
@@ -74,14 +74,14 @@ const PostCrud = ({ post: currentPost, operation }) => {
     if (isCreateOperation) return;
 
     const image = {
-      source: currentPost.image,
+      source: serverPost.image,
       hasChanged: false
     };
 
     // Transform array of images into map values.
     let contentImages = {};
     try {
-      currentPost.contentImages.forEach((value, i) => {
+      serverPost.contentImages.forEach((value, i) => {
         contentImages[`image${i}`] = {
           source: value,
           hasChanged: false
@@ -92,7 +92,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
     }
 
     setPost(
-      Object.assign({}, currentPost, {
+      Object.assign({}, serverPost, {
         image,
         contentImages
       })
@@ -124,7 +124,7 @@ const PostCrud = ({ post: currentPost, operation }) => {
     const selectedType = e.target.value;
     const postsOfType = domains.filter(({ type }) => selectedType === type);
     setPost(
-      Object.assign({}, statePost, {
+      Object.assign({}, clientPost, {
         type: selectedType,
         typeId: postsOfType.length + 1
       })
@@ -146,15 +146,15 @@ const PostCrud = ({ post: currentPost, operation }) => {
 
   /** Create new post on server. */
   const submitPost = () => {
-    if (!isValidPost(statePost)) return false;
+    if (!isValidPost(clientPost)) return false;
 
-    const variables = buildPayload(statePost, domains, isPublish, true);
+    const variables = buildPayload(clientPost, domains, isPublish, true);
     Promise.resolve()
       .then(() => createPostMutation({ variables }))
       .then(() => {
         setAlert({
           type: 'success',
-          message: `You've successfully added the new post titled **${statePost.title}**.`
+          message: `You've successfully added the new post titled "${clientPost.title}".`
         });
         returnToAdminPosts();
       })
@@ -163,15 +163,15 @@ const PostCrud = ({ post: currentPost, operation }) => {
 
   /** Update post on server. */
   const updatePost = () => {
-    if (!isValidPost(statePost)) return false;
+    if (!isValidPost(clientPost)) return false;
 
-    const variables = buildPayload(statePost, domains, isPublish, false);
+    const variables = buildPayload(clientPost, domains, isPublish, false);
     Promise.resolve()
       .then(() => updatePostMutation({ variables }))
       .then(() => {
         setAlert({
           type: 'success',
-          message: `You've successfully updated **${statePost.title}**.`
+          message: `You've successfully updated "${clientPost.title}".`
         });
         returnToAdminPosts();
       })
@@ -181,10 +181,10 @@ const PostCrud = ({ post: currentPost, operation }) => {
   return (
     <PostForm
       isLoaded={isLoaded}
-      post={statePost}
+      post={clientPost}
       domains={domains}
       isCreateOperation={isCreateOperation}
-      handlers={{ ...hooks(setPost, statePost), setDefaultTypeId }}
+      handlers={{ ...hooks(setPost, clientPost), setDefaultTypeId }}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
       cancelFunction={returnToAdminPosts}
@@ -195,13 +195,13 @@ const PostCrud = ({ post: currentPost, operation }) => {
 
 /**
  * Builds the payload to send via the request.
- * @param {object} statePost The post from state.
+ * @param {object} clientPost The post from state.
  * @param {object[]} domains The list of domains for a page.
  * @param {boolean} isPublish Indicates if operation is publish.
  * @param {boolean} isCreateOperation Indicates if operation is create or update.
  * @returns {object} The post to submit.
  */
-const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
+const buildPayload = (clientPost, domains, isPublish, isCreateOperation) => {
   const {
     id,
     title,
@@ -214,7 +214,7 @@ const buildPayload = (statePost, domains, isPublish, isCreateOperation) => {
     status,
     datePublished,
     domainId
-  } = statePost;
+  } = clientPost;
 
   const post = {
     title: title.trim(),

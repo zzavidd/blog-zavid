@@ -80,7 +80,7 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
       .then(() => {
         setAlert({
           type: 'success',
-          message: `You've successfully updated the subscriber with email **${clientSubscriber.email}**.`
+          message: `You've successfully updated the subscriber with email: ${clientSubscriber.email}.`
         });
         returnToSubscriberAdmin();
       })

@@ -1,7 +1,6 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
-import { Subscriber } from 'classes/static';
 import { alert } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
@@ -45,7 +44,7 @@ export default () => {
     Promise.resolve()
       .then(() => deleteSubscriberMutation({ variables: { id } }))
       .then(() => {
-        alert.success(`You've deleted the subscriber with email **${email}**.`);
+        alert.success(`You've deleted the subscriber with email: ${email}.`);
         setDeleteModalVisibility(false);
         refetch();
       })
