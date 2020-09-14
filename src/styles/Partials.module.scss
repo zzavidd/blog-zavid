@@ -21,7 +21,7 @@
     background-color: #fff;
     border-bottom: 2px solid $dark;
 
-    a {
+    a:not(.nav-link-disabled) {
       @extend %nav-link;
       color: #000 !important;
     }
@@ -32,11 +32,17 @@
     background-color: $dark;
     border-bottom: 1px solid #fff;
 
-    a {
+    a:not(.nav-link-disabled) {
       @extend %nav-link;
       color: #fff !important;
     }
   }
+}
+
+.nav-link-disabled {
+  @extend %nav-link;
+  color: rgba(0, 0, 0, 0.3);
+  text-decoration: line-through;
 }
 
 .nav-brand {

@@ -58,14 +58,22 @@ const NavigationLinks = () => {
       <Navbar.Collapse>
         <Nav className={'justify-content-center'}>
           <Nav.Link href={'/reveries'}>Reveries</Nav.Link>
-          <Nav.Link href={'#'}>Epistles</Nav.Link>
-          <Nav.Link href={'#'}>Poetry</Nav.Link>
-          <Nav.Link href={'#'}>Musings</Nav.Link>
           <Nav.Link href={'/diary'}>Diary</Nav.Link>
+          <DisabledNavLink>Epistles</DisabledNavLink>
+          <DisabledNavLink>Poetry</DisabledNavLink>
+          <DisabledNavLink>Musings</DisabledNavLink>
           <Nav.Link href={'#'}>About</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </>
+  );
+};
+
+const DisabledNavLink = ({ children }) => {
+  return (
+    <Nav.Link href={'#'} className={css['nav-link-disabled']} disabled>
+      {children}
+    </Nav.Link>
   );
 };
 
