@@ -16,8 +16,36 @@
   padding: 1em 0;
 }
 
+%diary-entry {
+  @include responsive(padding, 1.5em, $md: 1em 0);
+  border-radius: 15px;
+  cursor: pointer;
+}
+
 .diary-entry {
-  @include responsive(margin, 1em, $md: 1em 0);
+  &-light {
+    @extend %diary-entry;
+
+    &:hover {
+      background-color: $dark;
+
+      * {
+        color: #fff !important;
+      }
+    }
+  }
+
+  &-dark {
+    @extend %diary-entry;
+
+    &:hover {
+      background-color: #cacaca;
+
+      * {
+        color: #000 !important;
+      }
+    }
+  }
 }
 
 .diary-entry-title {

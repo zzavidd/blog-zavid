@@ -64,6 +64,7 @@ const DiaryGrid = ({ diaryEntries }) => {
 };
 
 const DiaryEntry = memo(({ diaryEntry }) => {
+  const theme = useSelector(({ theme }) => theme);
   const [isInView, setInView] = useState(false);
 
   const title = zDate.formatDate(parseInt(diaryEntry.date), true);
@@ -73,7 +74,8 @@ const DiaryEntry = memo(({ diaryEntry }) => {
       <Zoomer
         determinant={isInView}
         duration={400}
-        className={css[`diary-entry`]}>
+        className={css[`diary-entry-${theme}`]}
+        postTransitions={'background-color .4s ease'}>
         <Title className={css['diary-entry-title']}>{title}</Title>
         <Paragraph
           cssOverrides={{
