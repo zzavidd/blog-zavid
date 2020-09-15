@@ -94,7 +94,7 @@
 /// Scales a component on mouse-over.
 /// @param {number} $scale - The scale factor.
 @mixin hover-scale($scale) {
-  @media (min-width: $break-sm) {
+  @media (min-width: $break-md) {
     transition: transform 0.2s ease-in-out;
 
     &:hover {

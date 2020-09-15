@@ -9,10 +9,17 @@
 }
 
 %nav-link {
+  @include hover-scale(1.1);
   font-family: $title-font;
   font-size: 1.1em;
   text-transform: uppercase;
   transition-duration: 0.8s;
+
+  @media (min-width: $break-md) {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .nav {
