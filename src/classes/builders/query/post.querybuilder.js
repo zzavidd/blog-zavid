@@ -3,10 +3,15 @@ const { isFalsy } = zLogic;
 
 const { QueryBuilder, MutationBuilder } = require('./super');
 
+const Post = require('../../static/post.static');
+
+const TABLE_NAME = 'posts';
+
 /** Builds a post query with conditions. */
 class PostQueryBuilder extends QueryBuilder {
   constructor(knex) {
-    super(knex, 'posts');
+    super(knex, TABLE_NAME);
+    this.knex = knex;
   }
 
   whereType({ include, exclude } = {}) {
@@ -30,6 +35,30 @@ class PostQueryBuilder extends QueryBuilder {
   whereSlug(slug) {
     if (isFalsy(slug)) return this;
     this.query.where('slug', slug);
+    return this;
+  }
+
+  getPreviousPost(typeId, type) {
+    const field = 'typeId';
+    this.query.where(
+      field,
+      this.knex(TABLE_NAME).max(field).where(field, '<', typeId).andWhere({
+        status: Post.STATUSES.PUBLISHED,
+        type
+      })
+    );
+    return this;
+  }
+
+  getNextPost(typeId, type) {
+    const field = 'typeId';
+    this.query.where(
+      field,
+      this.knex(TABLE_NAME).min(field).where(field, '>', typeId).andWhere({
+        status: Post.STATUSES.PUBLISHED,
+        type
+      })
+    );
     return this;
   }
 

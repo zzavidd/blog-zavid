@@ -328,3 +328,52 @@
     }
   }
 }
+
+////////////////////////////////
+/// Timelime
+////////////////////////////////
+
+.timeline {
+  @include responsive(font-size, 1.1em, $sm: 0.7em);
+  @include responsive(align-items, flex-start, $sm: flex-end);
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  margin-top: 2.5em;
+}
+
+.timeline-previous {
+  .timeline-content {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.timeline-next {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+
+  .timeline-content {
+    align-items: center;
+    display: flex;
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+
+  svg {
+    margin-left: 0.4em;
+  }
+}
+
+.timeline-image-container {
+  margin: 0.5em 1.4em 0;
+  max-width: 150px;
+
+  .timeline-image {
+    border-radius: 10px;
+  }
+}
+
+.timeline-text {
+  padding: 0 0.5em;
+}

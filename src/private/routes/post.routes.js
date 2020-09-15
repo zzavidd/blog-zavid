@@ -21,16 +21,27 @@ router.get(
   '/reveries/:slug',
   function (req, res, next) {
     const { slug } = req.params;
+
     Promise.resolve()
       .then(() => new PostQueryBuilder(knex).whereSlug(slug).build())
-      .then(([post] = []) => {
-        if (!post) return next(ERRORS.NO_ENTITY('reverie'));
+      .then(([reverie]) => {
+        const { type, typeId } = reverie;
+        return Promise.all([
+          Promise.resolve(reverie),
+          new PostQueryBuilder(knex).getPreviousPost(typeId, type).build(),
+          new PostQueryBuilder(knex).getNextPost(typeId, type).build()
+        ]);
+      })
+      .then(([reverie, [previousReverie], [nextReverie]]) => {
+        if (!reverie) return next(ERRORS.NO_ENTITY('reverie'));
         return server.render(req, res, '/posts/single', {
-          title: `${post.title} | ${siteTitle}`,
-          description: post.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)
-          ogUrl: `/reveries/${post.slug}`,
-          cardImage: post.image,
-          post
+          title: `${reverie.title} | ${siteTitle}`,
+          description: reverie.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)
+          ogUrl: `/reveries/${reverie.slug}`,
+          cardImage: reverie.image,
+          post: reverie,
+          previousPost: previousReverie,
+          nextPost: nextReverie
         });
       })
       .catch(next);
