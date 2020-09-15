@@ -87,9 +87,9 @@ const DiaryCrud = ({ diaryEntry: serverDiaryEntry, operation }) => {
       .then(() => {
         setAlert({
           type: 'success',
-          message: `You've successfully updated the diary entry for **${zDate.formatDate(
+          message: `You've successfully updated the diary entry for ${zDate.formatDate(
             clientDiaryEntry.date
-          )}**.`
+          )}.`
         });
         returnToDiaryAdmin();
       })

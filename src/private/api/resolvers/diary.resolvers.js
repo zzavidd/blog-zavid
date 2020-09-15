@@ -3,8 +3,11 @@ const {
   DiaryQueryBuilder,
   DiaryMutationBuilder
 } = require('../../../classes');
+const emails = require('../../emails');
 const { debug, ERRORS } = require('../../error');
 const knex = require('../../singleton').getKnex();
+
+const { emailsOn } = require('./common');
 
 const ENTITY_NAME = 'diary entry';
 
@@ -51,7 +54,10 @@ const createDiaryEntry = (parent, { diaryEntry, isPublish }) => {
   return Promise.resolve()
     .then(() => {
       diaryEntry.slug = Diary.generateSlug(diaryEntry);
-      return new DiaryMutationBuilder(knex).insert(diaryEntry).build();
+      return Promise.all([
+        new DiaryMutationBuilder(knex).insert(diaryEntry).build(),
+        isPublish && emailsOn ? emails.notifyNewDiaryEntry(diaryEntry) : null
+      ]);
     })
     .then(([id]) => ({ id }))
     .catch(debug);
@@ -70,10 +76,10 @@ const updateDiaryEntry = (parent, { id, diaryEntry, isPublish }) => {
   return Promise.resolve()
     .then(() => {
       diaryEntry.slug = Diary.generateSlug(diaryEntry);
-      return new DiaryMutationBuilder(knex)
-        .update(diaryEntry)
-        .whereId(id)
-        .build();
+      return Promise.all([
+        new DiaryMutationBuilder(knex).update(diaryEntry).whereId(id).build(),
+        isPublish && emailsOn ? emails.notifyNewDiaryEntry(diaryEntry) : null
+      ]);
     })
     .then(() => getSingleDiaryEntry(undefined, { id }))
     .catch(debug);

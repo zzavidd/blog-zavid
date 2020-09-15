@@ -2,14 +2,13 @@
 
 <body class="container-fluid email">
   <header class="container header">
-    New <%= post.type %> on ZAVID.
+    New diary entry on ZAVID.
   </header>
   <div class="container email-content">
     <table>
       <tr>
         <td class="heading">
-          <h1 class="post-title"><%= post.title %></h1>
-          <div><%= post.datePublished %></div>
+          <h1 class="post-title">Diary: <%= diaryEntry.date %></h1>
         </td>
         <td class="signature-cell">
           <img
@@ -21,20 +20,16 @@
       </tr>
     </table>
 
-    <img
-      src="<%= post.image %>"
-      alt="<%= post.title %>"
-      class="content-image"
-    />
-
-    <p><%= post.content %></p>
+    <% diaryEntry.content.split('\n').forEach((paragraph) => { %>
+      <p><%= paragraph %></p>
+    <% }) %>
 
     <div class="button-container">
-      <a href="<%= post.slug %>" class="button">
-        Read Full Post
+      <a href="<%= diaryEntry.slug %>" class="button">
+        View On Site
       </a>
     </div>
   </div>
-  <%- include("partials/footer.ejs", { url: post.slug, token: subscriber.token
-  }) %>
+  <%- include("partials/footer.ejs", { url: diaryEntry.slug, token:
+  subscriber.token }) %>
 </body>

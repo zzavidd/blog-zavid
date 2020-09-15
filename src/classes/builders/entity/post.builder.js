@@ -39,7 +39,7 @@ class PostBuilder {
       title: `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`,
       type: Post.randomType(),
       typeId: faker.random.number(),
-      content: faker.lorem.paragraphs(),
+      content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
       excerpt: faker.lorem.sentences(),
       status: Post.randomStatus(),
       datePublished: zDate.formatISODate(faker.date.past()),
