@@ -48,10 +48,10 @@ exports.submitDiaryEntry = (diaryEntry, assertions) => {
  * @param {Function} [assertions] The assertions to make.
  * @returns {Promise} A resolution of the Promise.
  */
-exports.updateDiaryEntry = (id, diaryEntry, assertions) => {
+exports.updateDiaryEntry = (id, diaryEntry, assertions, isPublish = false) => {
   return fetch(
     UPDATE_DIARY_QUERY,
-    { variables: { id, diaryEntry, isTest: true } },
+    { variables: { id, diaryEntry, isPublish, isTest: true } },
     function ({ data }) {
       const updatedDiaryEntry = data.updateDiaryEntry;
       assert.strictEqual(updatedDiaryEntry.id, id);

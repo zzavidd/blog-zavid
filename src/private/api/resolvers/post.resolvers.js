@@ -8,9 +8,7 @@ const { debug, ERRORS } = require('../../error');
 const filer = require('../../filer');
 const knex = require('../../singleton').getKnex();
 
-const emailsOn =
-  process.env.NODE_ENV === 'production' || process.argv.includes('--emails');
-console.warn(`Emails are turned ${emailsOn ? 'on' : 'off'}.`);
+const { emailsOn } = require('./common');
 
 const ENTITY_NAME = 'post';
 

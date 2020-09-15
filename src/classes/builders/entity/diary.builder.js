@@ -21,7 +21,7 @@ class DiaryEntryBuilder {
 
   random() {
     this.entry = {
-      content: faker.lorem.paragraphs(),
+      content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
       date: zDate.formatISODate(faker.date.past()),
       status: Diary.randomStatus()
     };
