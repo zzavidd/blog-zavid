@@ -59,28 +59,3 @@
   display: grid;
   grid-template-columns: repeat(4, 25%);
 }
-
-.timeline {
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-}
-
-.timeline-previous {
-  align-items: center;
-  display: flex;
-}
-
-.timeline-next {
-  align-items: center;
-  display: flex;
-  flex-direction: row-reverse;
-  text-align: right;
-
-  svg {
-    margin-left: 0.4em;
-  }
-}
-
-.timeline-text {
-  padding: 0 0.5em;
-}

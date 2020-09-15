@@ -4,10 +4,12 @@ const { QueryBuilder, MutationBuilder } = require('./super');
 
 const Diary = require('../../static/diary.static');
 
+const TABLE_NAME = 'diary';
+
 /** Builds a post query with conditions. */
 class DiaryQueryBuilder extends QueryBuilder {
   constructor(knex) {
-    super(knex, 'diary');
+    super(knex, TABLE_NAME);
     this.knex = knex;
   }
 
@@ -26,9 +28,9 @@ class DiaryQueryBuilder extends QueryBuilder {
   getPreviousEntry(slug) {
     this.query.where(
       'slug',
-      this.knex('diary')
+      this.knex(TABLE_NAME)
         .min('slug')
-        .where('slug', '<', slug)
+        .where('slug', '<', slug) // Less than because dealing with dates
         .andWhere('status', Diary.STATUSES.PUBLISHED)
     );
     return this;
@@ -37,9 +39,9 @@ class DiaryQueryBuilder extends QueryBuilder {
   getNextEntry(slug) {
     this.query.where(
       'slug',
-      this.knex('diary')
+      this.knex(TABLE_NAME)
         .max('slug')
-        .where('slug', '>', slug)
+        .where('slug', '>', slug) // Greater than because dealing with dates
         .andWhere('status', Diary.STATUSES.PUBLISHED)
     );
     return this;
@@ -48,7 +50,7 @@ class DiaryQueryBuilder extends QueryBuilder {
 
 class DiaryMutationBuilder extends MutationBuilder {
   constructor(knex) {
-    super(knex, 'diary', 'diary entry');
+    super(knex, TABLE_NAME, 'diary entry');
   }
 }
 

@@ -21,28 +21,24 @@ export const validateCloudinaryImage = (image) => {
  * Size: s = small, m = medium
  * Shape: s = square, w = wide
  */
-export const TRANSFORMATIONS = {
-  SMALL_SQUARE: { width: 400, height: 400 },
-  SMALL_WIDE: { width: 640, height: 360 },
-  MEDIUM_SMALL: { width: 800, height: 800 },
-  MEDIUM_WIDE: { width: 1280, height: 720 }
+export const ASPECT_RATIO = {
+  SQUARE: '1:1',
+  WIDE: '16:9'
 };
 
 export default ({
   alt,
+  aspectRatio,
   containerClassName,
   imageClassName,
-  lazy,
   src,
   style,
   title,
-  transformations,
   version
 }) => {
   if (!src) return null;
 
   const publicId = version ? `v${version}/${src}` : src;
-  const { width, height } = lazy || {};
   return (
     <CloudinaryContext
       cloudName={'zavid'}
@@ -54,12 +50,7 @@ export default ({
         title={title}
         width={'100%'}
         className={imageClassName}>
-        <Transformation
-          width={width}
-          height={height}
-          crop={'lfill'}
-          {...transformations}
-        />
+        <Transformation aspectRatio={aspectRatio} crop={'lfill'} />
       </Image>
     </CloudinaryContext>
   );

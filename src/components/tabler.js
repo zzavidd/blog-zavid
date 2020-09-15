@@ -228,7 +228,6 @@ const ItemFields = ({ fields, centerAlignedIndices }) => {
             <CloudImage
               src={value}
               containerClassName={imageOptions.css}
-              lazy={imageOptions.lazy}
             />
           );
           break;
@@ -305,7 +304,6 @@ const MobileView = ({ field }) => {
         <CloudImage
           src={value}
           containerClassName={imageOptions.css}
-          lazy={imageOptions.lazy}
         />
       );
     case TYPE.INDEX:

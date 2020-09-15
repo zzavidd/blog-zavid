@@ -7,9 +7,10 @@ import CloudImage, { cloudinaryBaseUrl } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Paragraph, Title, Divider } from 'components/text';
+import Timeline, { TIMELINE_TYPE } from 'components/timeline';
 import css from 'styles/pages/Posts.module.scss';
 
-const PostSingle = ({ post }) => {
+const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
   const shareMessage = `"${post.title}" on ZAVID`;
 
   const substitutions = {};
@@ -33,6 +34,19 @@ const PostSingle = ({ post }) => {
           substitutions={substitutions}>
           {post.content}
         </Paragraph>
+        <Timeline
+          type={TIMELINE_TYPE.REVERIE}
+          previous={{
+            slug: previousPost.slug,
+            image: previousPost.image,
+            label: previousPost.title
+          }}
+          next={{
+            slug: nextPost.slug,
+            image: nextPost.image,
+            label: nextPost.title
+          }}
+        />
         <Divider />
         <ShareBlock message={shareMessage} url={location.href} />
       </div>
