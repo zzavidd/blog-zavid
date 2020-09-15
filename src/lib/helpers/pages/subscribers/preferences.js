@@ -6,7 +6,6 @@ import css from 'styles/pages/Subscribers.module.scss';
 export default ({ preferences = {}, setPreferences }) => {
   const checkPreference = (e) => {
     const { name, checked } = e.target;
-    console.log(name, checked);
     setPreferences(
       Object.assign({}, preferences, {
         [name]: checked
