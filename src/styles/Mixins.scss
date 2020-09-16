@@ -10,31 +10,31 @@
 
   @if $xxl != 0 {
     @media (max-width: $break-xxl) {
-      #{$attr}: $xxl;
+      #{$attr}: $xxl !important;
     }
   }
 
   @if $xl != 0 {
     @media (max-width: $break-xl) {
-      #{$attr}: $xl;
+      #{$attr}: $xl !important;
     }
   }
 
   @if $lg != 0 {
     @media (max-width: $break-lg) {
-      #{$attr}: $lg;
+      #{$attr}: $lg !important;
     }
   }
 
   @if $md != 0 {
     @media (max-width: $break-md) {
-      #{$attr}: $md;
+      #{$attr}: $md !important;
     }
   }
 
   @if $sm != 0 {
     @media (max-width: $break-sm) {
-      #{$attr}: $sm;
+      #{$attr}: $sm !important;
     }
   }
 }
