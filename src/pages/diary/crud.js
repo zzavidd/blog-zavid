@@ -5,6 +5,7 @@ import { zDate } from 'zavid-modules';
 
 import { Diary } from 'classes';
 import { alert, setAlert } from 'components/alert';
+import { ConfirmModal } from 'components/modal';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
 import { isValidDiaryEntry } from 'constants/validations';
@@ -19,10 +20,11 @@ const DiaryCrud = ({ diaryEntry: serverDiaryEntry, operation }) => {
     id: 0,
     content: '',
     date: new Date(),
-    status: Diary.STATUSES.DRAFT
+    status: Diary.STATUSES.PRIVATE
   });
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
+  const [isPublishModalVisible, setPublishModalVisibility] = useState(false);
 
   // Initialise mutation functions.
   const [createDiaryEntryMutation, { loading: createLoading }] = useMutation(
@@ -96,16 +98,37 @@ const DiaryCrud = ({ diaryEntry: serverDiaryEntry, operation }) => {
       .catch(alert.error);
   };
 
+  const confirmText = `${isCreateOperation ? 'Submit' : 'Update'}${
+    isPublish ? ' & Publish' : ''
+  }`;
+  const absoluteConfirm = isCreateOperation
+    ? submitDiaryEntry
+    : updateDiaryEntry;
+  const confirmFunction = isPublish
+    ? () => setPublishModalVisibility(true)
+    : absoluteConfirm;
+
   return (
-    <DiaryEntryForm
-      isLoaded={isLoaded}
-      diaryEntry={clientDiaryEntry}
-      handlers={hooks(setDiaryEntry, clientDiaryEntry)}
-      confirmFunction={isCreateOperation ? submitDiaryEntry : updateDiaryEntry}
-      confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
-      cancelFunction={returnToDiaryAdmin}
-      isRequestPending={isRequestPending}
-    />
+    <>
+      <DiaryEntryForm
+        isLoaded={isLoaded}
+        diaryEntry={clientDiaryEntry}
+        handlers={hooks(setDiaryEntry, clientDiaryEntry)}
+        confirmFunction={confirmFunction}
+        confirmButtonText={confirmText}
+        cancelFunction={returnToDiaryAdmin}
+        isRequestPending={isRequestPending}
+      />
+      <ConfirmModal
+        visible={isPublishModalVisible}
+        message={
+          "By publishing this diary entry, you'll be notifying all subscribers of this new release. Confirm that you want to publish."
+        }
+        confirmFunction={absoluteConfirm}
+        confirmText={'Confirm'}
+        closeFunction={() => setPublishModalVisibility(false)}
+      />
+    </>
   );
 };
 

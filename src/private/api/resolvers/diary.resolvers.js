@@ -59,7 +59,7 @@ const createDiaryEntry = (parent, { diaryEntry, isPublish }) => {
         isPublish && emailsOn ? emails.notifyNewDiaryEntry(diaryEntry) : null
       ]);
     })
-    .then(([id]) => ({ id }))
+    .then(([[id]]) => ({ id }))
     .catch(debug);
 };
 

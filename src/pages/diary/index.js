@@ -8,7 +8,7 @@ import { alert } from 'components/alert.js';
 import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
-import { Paragraph, Title } from 'components/text.js';
+import { Paragraph, Title, VanillaLink } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
 import css from 'styles/pages/Diary.module.scss';
@@ -71,23 +71,25 @@ const DiaryEntry = memo(({ diaryEntry }) => {
   const link = `/diary/${diaryEntry.slug}`;
   return (
     <LazyLoader setInView={setInView}>
-      <Zoomer
-        determinant={isInView}
-        duration={400}
-        className={css[`diary-entry-${theme}`]}
-        postTransitions={'background-color .4s ease'}>
-        <Title className={css['diary-entry-title']}>{title}</Title>
-        <Paragraph
-          cssOverrides={{
-            paragraph: css['diary-entry-paragraph'],
-            hyperlink: css['diary-entry-readmore']
-          }}
-          truncate={40}
-          moreclass={css['diary-entry-readmore']}
-          morelink={link}>
-          {diaryEntry.content}
-        </Paragraph>
-      </Zoomer>
+      <VanillaLink href={link}>
+        <Zoomer
+          determinant={isInView}
+          duration={400}
+          className={css[`diary-entry-${theme}`]}
+          postTransitions={'background-color .4s ease'}>
+          <Title className={css['diary-entry-title']}>{title}</Title>
+          <Paragraph
+            cssOverrides={{
+              paragraph: css['diary-entry-paragraph'],
+              hyperlink: css['diary-entry-readmore']
+            }}
+            truncate={40}
+            moreclass={css['diary-entry-readmore']}
+            morelink={link}>
+            {diaryEntry.content}
+          </Paragraph>
+        </Zoomer>
+      </VanillaLink>
     </LazyLoader>
   );
 });

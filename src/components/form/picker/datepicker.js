@@ -82,6 +82,7 @@ const DatePicker = (props) => {
 
       <Modal
         visible={datePickerVisible}
+        onHide={() => setDatePickerVisibility(false)}
         modalBody={
           <DatePickerBody
             {...props}
