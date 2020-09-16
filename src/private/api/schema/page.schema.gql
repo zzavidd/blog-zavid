@@ -1,0 +1,39 @@
+###############
+# Base Schema
+###############
+
+type Page {
+  id: Int!
+  title: String!
+  content: String
+  excerpt: String
+  slug: String
+  editTitle: String!
+  editPlaceholderText: String
+  lastModified: String
+}
+
+extend type Query {
+  pages: [Page]
+  page(id: Int!): Page
+}
+
+extend type Mutation {
+  createPage(page: PageInput!): Page
+  updatePage(id: Int!, page: PageInput!): Page
+  deletePage(id: Int!): Page
+}
+
+###############
+# Helpers
+###############
+
+input PageInput {
+  title: String!
+  content: String
+  excerpt: String!
+  slug: String!
+  editTitle: String!
+  editPlaceholderText: String
+  lastModified: String
+}
