@@ -181,7 +181,7 @@
 }
 
 ////////////////////////////////
-/// Checkboxes
+/// Checkbox
 ////////////////////////////////
 
 /* Customize the label (the container) */
@@ -326,6 +326,63 @@
     path {
       color: rgba(0, 0, 0, 0.9) !important;
     }
+  }
+}
+
+////////////////////////////////
+/// Switch
+////////////////////////////////
+
+$switch-height: 20px;
+
+%switch-panel {
+  align-items: center;
+  border-radius: 10px;
+  display: flex;
+  height: 18px;
+  width: 40px;
+}
+
+%switch-dial {
+  align-items: center;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  height: $switch-height;
+  justify-content: center;
+  position: relative;
+  transition-duration: 0.8s;
+  width: $switch-height;
+
+  * {
+    color: #000 !important;
+    font-size: 0.7em;
+    margin: 0;
+  }
+}
+
+/// Light
+.switch-panel-unchecked {
+  @extend %switch-panel;
+  background-color: #e6e6e6;
+  border: 1px solid $dark;
+
+  .switch-dial {
+    @extend %switch-dial;
+    border: 1px solid $dark;
+    left: -2%;
+  }
+}
+
+/// Dark
+.switch-panel-checked {
+  @extend %switch-panel;
+  background-color: #505050;
+
+  .switch-dial {
+    @extend %switch-dial;
+    left: 50%;
   }
 }
 

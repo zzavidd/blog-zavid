@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import Switch from 'react-switch';
 
-import { ThemedIcon } from 'components/icon.js';
+import { Switch } from 'components/form/checkbox.js';
+import { Icon } from 'components/icon.js';
 import CloudImage from 'components/image.js';
 import { Responsive } from 'components/layout';
 import { setTheme } from 'lib/reducers';
@@ -94,9 +94,8 @@ const ThemeSwitcher = () => {
       <Switch
         onChange={switchTheme}
         checked={!isLightTheme}
-        className={css['theme-toggle']}
-        checkedIcon={<ThemedIcon name={'moon'} />}
-        uncheckedIcon={<ThemedIcon name={'sun'} />}
+        checkedIcon={<Icon name={'moon'} />}
+        uncheckedIcon={<Icon name={'sun'} />}
       />
     </Nav.Item>
   );
