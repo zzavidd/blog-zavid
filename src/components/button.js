@@ -19,7 +19,7 @@ const Button = (props) => {
 
   useEffect(() => {
     setButtonText(isRequestPending ? 'Loading...' : children);
-  }, [isRequestPending]);
+  }, [isRequestPending, children]);
 
   return (
     <button className={className} onClick={onClick}>

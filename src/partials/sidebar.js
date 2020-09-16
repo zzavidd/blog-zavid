@@ -6,7 +6,7 @@ import { zDate } from 'zavid-modules';
 import { Post } from 'classes';
 import { alert } from 'components/alert.js';
 import CloudImage from 'components/image.js';
-import { Title } from 'components/text.js';
+import { Title, VanillaLink } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
 import css from 'styles/Partials.module.scss';
@@ -59,7 +59,7 @@ const RecentPost = memo(({ post }) => {
   const datePublished = zDate.formatDate(parseInt(post.datePublished), true);
   const link = `/reveries/${post.slug}`;
   return (
-    <a href={link}>
+    <VanillaLink href={link}>
       <Zoomer
         determinant={isLoaded}
         duration={400}
@@ -70,7 +70,7 @@ const RecentPost = memo(({ post }) => {
           {post.type} | {datePublished}
         </div>
       </Zoomer>
-    </a>
+    </VanillaLink>
   );
 });
 
