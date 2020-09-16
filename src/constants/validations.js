@@ -66,6 +66,18 @@ exports.isValidSubscriber = (subscriber) => {
 };
 
 /**
+ * Validation of page submission or update.
+ * @param {object} page Page information to be validated.
+ * @returns {boolean} True if valid. False with error message if invalid.
+ */
+exports.isValidPage = (page) => {
+  if (!ifExists(page.title, `Enter the page's title.`)) return false;
+  if (!ifExists(page.slug, `Enter the page's title.`)) return false;
+
+  return true;
+};
+
+/**
  * Ensure submitted file meets requirements.
  * @param {string} file - Base64 string of file to be uploaded.
  * @param {string} entity - The entity this file represents.

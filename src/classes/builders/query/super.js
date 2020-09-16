@@ -6,7 +6,7 @@ class QueryBuilder {
   }
 
   whereId(id) {
-    if (isFalsy(id)) return this;
+    if (isFalsy(id)) throw new Error(`No specified ID.`);
     this.query.where('id', id);
     return this;
   }

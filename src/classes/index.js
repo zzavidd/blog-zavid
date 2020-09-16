@@ -5,10 +5,12 @@ const {
 } = require('./builders/entity');
 const ErrorBuilder = require('./builders/error.builder');
 const {
-  PostQueryBuilder,
-  PostMutationBuilder,
   DiaryQueryBuilder,
   DiaryMutationBuilder,
+  PageQueryBuilder,
+  PageMutationBuilder,
+  PostQueryBuilder,
+  PostMutationBuilder,
   SubscriberQueryBuilder,
   SubscriberMutationBuilder
 } = require('./builders/query');
@@ -25,6 +27,9 @@ module.exports = {
   DiaryEntryBuilder,
   DiaryQueryBuilder,
   DiaryMutationBuilder,
+
+  PageQueryBuilder,
+  PageMutationBuilder,
 
   Subscriber,
   SubscriberBuilder,
