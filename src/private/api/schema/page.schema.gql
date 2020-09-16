@@ -8,8 +8,6 @@ type Page {
   content: String
   excerpt: String
   slug: String
-  editTitle: String!
-  editPlaceholderText: String
   lastModified: String
 }
 
@@ -31,9 +29,7 @@ extend type Mutation {
 input PageInput {
   title: String!
   content: String
-  excerpt: String!
+  excerpt: String
   slug: String!
-  editTitle: String!
-  editPlaceholderText: String
   lastModified: String
 }

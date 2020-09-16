@@ -18,9 +18,7 @@ const PageCrud = ({ page: serverPage, operation }) => {
     title: '',
     content: '',
     slug: '',
-    excerpt: '',
-    editTitle: '',
-    editPlaceholderText: ''
+    excerpt: ''
   });
   const [isLoaded, setLoaded] = useState(false);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -105,23 +103,13 @@ const PageCrud = ({ page: serverPage, operation }) => {
  * @returns {object} The page to submit.
  */
 const buildPayload = (clientPage, isCreateOperation) => {
-  const {
-    id,
-    title,
-    content,
-    slug,
-    excerpt,
-    editTitle,
-    editPlaceholderText
-  } = clientPage;
+  const { id, title, content, slug, excerpt } = clientPage;
 
   const page = {
     title: title.trim(),
     content: content.trim(),
     slug: slug.trim(),
-    excerpt: excerpt.trim(),
-    editTitle: editTitle.trim(),
-    editPlaceholderText: editPlaceholderText.trim()
+    excerpt: excerpt.trim()
   };
 
   const payload = { page };
