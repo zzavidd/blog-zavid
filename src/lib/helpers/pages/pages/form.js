@@ -17,7 +17,7 @@ export default (props) => {
 
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
-      <Form {...props}>
+      <Form {...props} previewText={page.content}>
         <FieldRow>
           <Field sm={6}>
             <Label>Title:</Label>
