@@ -61,26 +61,6 @@ export default (props) => {
             />
           </Field>
         </FieldRow>
-        <FieldRow>
-          <Field sm={4}>
-            <Label>Edit Title:</Label>
-            <TextInput
-              name={'editTitle'}
-              value={page.editTitle}
-              onChange={handleText}
-              placeholder={'Enter the edit page title'}
-            />
-          </Field>
-          <Field sm={8}>
-            <Label>Edit Placeholder:</Label>
-            <TextInput
-              name={'editPlaceholderText'}
-              value={page.editPlaceholderText}
-              onChange={handleText}
-              placeholder={'Enter the edit page placeholder text'}
-            />
-          </Field>
-        </FieldRow>
       </Form>
     </Fader>
   );

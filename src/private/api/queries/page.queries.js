@@ -7,8 +7,6 @@ const pageFragments = gql`
     content
     excerpt
     slug
-    editTitle
-    editPlaceholderText
     lastModified
   }
 `;

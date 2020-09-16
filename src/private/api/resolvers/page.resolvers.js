@@ -41,7 +41,10 @@ const getSinglePage = (parent, { id }) => {
  */
 const createPage = (parent, { page }) => {
   return Promise.resolve()
-    .then(() => new PageMutationBuilder(knex).insert(page).build())
+    .then(() => {
+      page.lastModified = new Date();
+      return new PageMutationBuilder(knex).insert(page).build();
+    })
     .then(([id]) => ({ id }))
     .catch(debug);
 };
@@ -56,7 +59,10 @@ const createPage = (parent, { page }) => {
  */
 const updatePage = (parent, { id, page }) => {
   return Promise.resolve()
-    .then(() => new PageMutationBuilder(knex).update(page).whereId(id).build())
+    .then(() => {
+      page.lastModified = new Date();
+      return new PageMutationBuilder(knex).update(page).whereId(id).build();
+    })
     .then(() => getSinglePage(undefined, { id }))
     .catch(debug);
 };
