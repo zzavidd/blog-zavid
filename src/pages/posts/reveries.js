@@ -42,7 +42,7 @@ export default () => {
 
   return (
     <Spacer>
-      <Partitioner>
+      <Partitioner className={css['reverie-page']}>
         <ReverieList reveries={reveries} />
         <RightSidebar />
       </Partitioner>

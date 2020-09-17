@@ -10,6 +10,11 @@ import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { checkAlert } from 'components/alert.js';
+import {
+  CookiePrompt,
+  setCookie,
+  checkCookiePolicyAccepted
+} from 'lib/cookies';
 import configureStore from 'lib/reducers.js';
 import Header from 'partials/header.js';
 
@@ -46,6 +51,9 @@ export default class ZAVID extends App {
  */
 const ZAVIDApp = ({ Component, pageProps }) => {
   const [isLoaded, setLoaded] = useState(false);
+  const [isCookiePolicyAccepted, setCookieAcceptance] = useState(
+    checkCookiePolicyAccepted
+  );
 
   const theme = useSelector(({ theme }) => theme || 'light');
 
@@ -55,12 +63,27 @@ const ZAVIDApp = ({ Component, pageProps }) => {
     setLoaded(true);
   }, [isLoaded]);
 
+  /**
+   * Show the cookies prompt if the cookie policy has not been accepted.
+   * @returns {React.Component}The cookie prompt component. Null if cookies have been accepted.
+   */
+  const CookiePolicyAlert = () => {
+    if (isCookiePolicyAccepted) return null;
+    return (
+      <CookiePrompt
+        acceptCookies={() => {
+          setCookie('cookiesAccepted', true, 365 * 24);
+          setCookieAcceptance(true);
+        }}
+      />
+    );
+  };
+
   return (
     <>
       <Header />
-      <div className={'app'}>
-        <Component {...pageProps} />
-      </div>
+      <Component {...pageProps} />
+      <CookiePolicyAlert />
     </>
   );
 };
