@@ -16,7 +16,7 @@
   /// Allow for spacing.
   > div:first-child {
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto 1fr auto;
     min-height: 100%;
   }
 
@@ -35,19 +35,6 @@
 
     * {
       color: #fff;
-    }
-  }
-}
-
-.app {
-  &-with-sidebar {
-    display: grid;
-    grid-template-columns: 1fr 30%;
-    margin: 0 auto;
-    max-width: 80%;
-
-    @media (max-width: $break-md) {
-      display: block;
     }
   }
 }
@@ -81,4 +68,39 @@
   max-width: 800px;
   padding: 0.5em 0 1em;
   text-align: center;
+}
+
+.cookie-prompt-wrapper {
+  @include responsive(font-size, 1em, $md: 0.8em);
+  background-color: rgba(0, 0, 0, 0.95);
+  bottom: 0%;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0.7em;
+  position: sticky;
+  width: 100%;
+  z-index: 1100;
+
+  .cookie-prompt {
+    @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
+    align-items: center;
+    display: flex;
+
+    span {
+      color: #fff;
+      font-family: $title-font;
+      margin: 0 auto;
+      padding-right: 1em;
+
+      a {
+        color: #fff;
+        text-decoration: underline;
+      }
+    }
+
+    path {
+      color: #fff !important;
+    }
+  }
 }
