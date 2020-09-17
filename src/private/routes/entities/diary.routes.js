@@ -3,13 +3,13 @@ const router = express.Router();
 
 const { zDate } = require('zavid-modules');
 
-const { DiaryQueryBuilder } = require('../../classes');
-const { siteTitle } = require('../../constants/settings');
-const { OPERATIONS } = require('../../constants/strings');
-const resolvers = require('../api/resolvers/diary.resolvers');
-const { renderErrorPage, ERRORS } = require('../error');
-const knex = require('../singleton').getKnex();
-const server = require('../singleton').getServer();
+const { DiaryQueryBuilder } = require('../../../classes');
+const { siteTitle } = require('../../../constants/settings');
+const { OPERATIONS } = require('../../../constants/strings');
+const resolvers = require('../../api/resolvers/diary.resolvers');
+const { renderErrorPage, ERRORS } = require('../../error');
+const knex = require('../../singleton').getKnex();
+const server = require('../../singleton').getServer();
 
 router.get('/diary', function (req, res) {
   return server.render(req, res, '/diary', {

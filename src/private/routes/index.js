@@ -1,7 +1,9 @@
-const diaryRoutes = require('./diary.routes');
-const pageRoutes = require('./page.routes');
-const postRoutes = require('./post.routes');
-const subscriberRoutes = require('./subscriber.routes');
+const diaryRoutes = require('./entities/diary.routes');
+const pageRoutes = require('./entities/page.routes');
+const postRoutes = require('./entities/post.routes');
+const subscriberRoutes = require('./entities/subscriber.routes');
+
+const seoRoutes = require('./seo');
 
 const { siteTitle } = require('../../constants/settings');
 const authRoutes = require('../auth');
@@ -13,6 +15,7 @@ app.use('/', [
   diaryRoutes,
   pageRoutes,
   postRoutes,
+  seoRoutes,
   subscriberRoutes
 ]);
 

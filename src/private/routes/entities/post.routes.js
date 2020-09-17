@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { PostQueryBuilder } = require('../../classes');
-const { siteTitle } = require('../../constants/settings');
-const { OPERATIONS } = require('../../constants/strings');
-const resolvers = require('../api/resolvers/post.resolvers');
-const { renderErrorPage, ERRORS } = require('../error');
-const knex = require('../singleton').getKnex();
-const server = require('../singleton').getServer();
+const { PostQueryBuilder } = require('../../../classes');
+const { siteTitle } = require('../../../constants/settings');
+const { OPERATIONS } = require('../../../constants/strings');
+const { renderErrorPage, ERRORS } = require('../../error');
+const knex = require('../../singleton').getKnex();
+const server = require('../../singleton').getServer();
 
 router.get('/reveries', function (req, res) {
   return server.render(req, res, '/posts/reveries', {
@@ -99,7 +98,10 @@ router.get('/admin/posts/add', function (req, res) {
 
 router.get('/admin/posts/edit/:id', function (req, res) {
   const { id } = req.params;
-  resolvers.Query.getSinglePost(undefined, { id }).then((post) => {
+  new PostQueryBuilder(knex)
+    .whereId(id)
+    .build()
+    .then((post) => {
     return server.render(req, res, '/posts/crud', {
       title: `Edit Post`,
       operation: OPERATIONS.UPDATE,
