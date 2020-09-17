@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const { Subscriber, SubscriberQueryBuilder } = require('../../classes');
-const { siteTitle } = require('../../constants/settings');
-const { OPERATIONS } = require('../../constants/strings');
-const knex = require('../singleton').getKnex();
-const server = require('../singleton').getServer();
+const { Subscriber, SubscriberQueryBuilder } = require('../../../classes');
+const { siteTitle } = require('../../../constants/settings');
+const { OPERATIONS } = require('../../../constants/strings');
+const knex = require('../../singleton').getKnex();
+const server = require('../../singleton').getServer();
 
 router.get('/subscriptions/:token', function (req, res) {
   const { token } = req.params;

@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const { PageQueryBuilder } = require('../../classes');
-const { siteTitle } = require('../../constants/settings');
-const { OPERATIONS } = require('../../constants/strings');
-const knex = require('../singleton').getKnex();
-const server = require('../singleton').getServer();
+const { PageQueryBuilder } = require('../../../classes');
+const { siteTitle } = require('../../../constants/settings');
+const { OPERATIONS } = require('../../../constants/strings');
+const knex = require('../../singleton').getKnex();
+const server = require('../../singleton').getServer();
 
 router.get('/:slug', function (req, res, next) {
   const { slug } = req.params;
