@@ -2,7 +2,6 @@ const diaryRoutes = require('./entities/diary.routes');
 const pageRoutes = require('./entities/page.routes');
 const postRoutes = require('./entities/post.routes');
 const subscriberRoutes = require('./entities/subscriber.routes');
-
 const seoRoutes = require('./seo');
 
 const { siteTitle } = require('../../constants/settings');

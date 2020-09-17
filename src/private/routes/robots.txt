@@ -1,0 +1,8 @@
+User-agent: *
+Disallow:
+
+#Disallow: /admin/*
+#Disallow: /cookies
+#Disallow: /privacy
+
+Sitemap: https://www.zavidegbue.com/sitemap.xml

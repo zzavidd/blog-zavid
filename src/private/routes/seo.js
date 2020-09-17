@@ -16,7 +16,7 @@ const knex = require('../singleton').getKnex();
 
 /** Robots.txt page */
 router.get('/robots.txt', (req, res) =>
-  res.status(200).sendFile(path.resolve('./robots.txt'), {
+  res.status(200).sendFile(path.join(__dirname, 'robots.txt'), {
     headers: {
       'Content-Type': 'text/plain;charset=UTF-8'
     }
