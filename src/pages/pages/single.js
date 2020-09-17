@@ -1,4 +1,5 @@
 import React from 'react';
+import { zDate } from 'zavid-modules';
 
 import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
@@ -7,7 +8,7 @@ import css from 'styles/pages/Posts.module.scss';
 
 const PageSingle = ({ page }) => {
   const substitutions = {
-    lastModified: page.lastModified
+    lastModified: `**${zDate.formatDate(page.lastModified)}**`
   };
 
   return (

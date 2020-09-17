@@ -49,13 +49,19 @@ export const Paragraph = ({
   let text = truncate
     ? zText.truncateText(children, { limit: truncate })
     : children;
-  text = zText.applySubstitutions(text, substitutions);
+
+  try {
+    text = zText.applySubstitutions(text, substitutions);
+  } catch (e) {
+    // Don't apply substitutions.
+  }
+
   text = zText.formatText(text, {
     css: {
       heading: css['paragraph-heading'],
       subheading: css['paragraph-subheading'],
       image: {
-        full: css['paragraph-image-full'],
+        full: css['paragraph-image-full']
       },
       blockquote: css['paragraph-blockquote'],
       paragraph: css['paragraph-body'],
