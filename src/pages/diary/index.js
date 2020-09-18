@@ -10,6 +10,7 @@ import { Spacer, Toolbar } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
 import { Paragraph, Title, VanillaLink } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
+import { ORDER } from 'constants/strings.js';
 import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
 import css from 'styles/pages/Diary.module.scss';
 
@@ -25,7 +26,11 @@ export default () => {
     GET_DIARY_QUERY,
     {
       variables: {
-        status: { include: [Diary.STATUSES.PUBLISHED] }
+        sort: {
+          field: 'date',
+          order: ORDER.DESCENDING
+        },
+        status: { include: [Diary.STATUSES.PUBLISHED] },
       }
     }
   );

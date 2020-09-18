@@ -3,3 +3,9 @@ exports.OPERATIONS = {
   CREATE: 'add',
   UPDATE: 'edit'
 };
+
+exports.ORDER = {
+  ASCENDING: 'ASC',
+  DESCENDING: 'DESC',
+  RANDOM: 'RANDOM'
+};

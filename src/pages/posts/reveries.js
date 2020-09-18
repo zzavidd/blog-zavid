@@ -11,6 +11,7 @@ import { Partitioner, Spacer, Toolbar } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
+import { ORDER } from 'constants/strings.js';
 import { RightSidebar } from 'partials/sidebar';
 import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
 import css from 'styles/pages/Reveries.module.scss';
@@ -25,7 +26,7 @@ export default () => {
       variables: {
         sort: {
           field: 'datePublished',
-          order: 'DESC'
+          order: ORDER.DESCENDING
         },
         type: { include: [Post.TYPES.REVERIE.TITLE] },
         status: { include: [Post.STATUSES.PUBLISHED] }

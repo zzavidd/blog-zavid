@@ -41,12 +41,6 @@ const POST_TYPES = {
   }
 };
 
-const POST_ORDER_OPTIONS = {
-  ASCENDING: 'ASC',
-  DESCENDING: 'DESC',
-  RANDOM: 'RANDOM'
-};
-
 /** Lists for both status and type */
 const typeList = Object.values(POST_TYPES).map((POST) => POST.TITLE);
 const statusList = Object.values(POST_STATUSES);
@@ -57,8 +51,6 @@ class Post extends Publishable {
 
   static typeList = typeList;
   static statusList = statusList;
-
-  static ORDER = POST_ORDER_OPTIONS;
 
   static randomType() {
     return getRandom(this.typeList);

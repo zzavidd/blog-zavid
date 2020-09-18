@@ -28,7 +28,7 @@ const getAllPosts = (parent, { limit, sort, type, status }) => {
       new PostQueryBuilder(knex)
         .whereType(type)
         .whereStatus(status)
-        .withOrder(sort)
+        .withOrder(sort, { forStringsWithNumbers: true })
         .withLimit(limit)
         .build()
     )

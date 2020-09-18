@@ -53,6 +53,17 @@ class DiaryQueryBuilder extends QueryBuilder {
     );
     return this;
   }
+
+  /**
+   * Limits the number of results.
+   * @param {number} [limit] - The number of results to be returned.
+   * @returns {PostQueryBuilder} The PostQueryBuilder object.
+   */
+  withLimit(limit) {
+    if (isFalsy(limit)) return this;
+    this.query.limit(limit);
+    return this;
+  }
 }
 
 class DiaryMutationBuilder extends MutationBuilder {

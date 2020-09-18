@@ -61,12 +61,6 @@ enum PostSortField {
   createTime
 }
 
-enum PostOrder {
-  ASC
-  DESC
-  RANDOM
-}
-
 enum PostStatus {
   DRAFT
   PRIVATE
@@ -90,7 +84,7 @@ input PostInput {
 
 input PostSortOptions {
   field: PostSortField
-  order: PostOrder
+  order: OrderOption
 }
 
 input PostTypeOptions {
