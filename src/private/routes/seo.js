@@ -25,7 +25,7 @@ router.get('/robots.txt', (req, res) =>
 
 /** Sitemap generated page */
 router.get('/sitemap.xml', (req, res) => {
-  const routes = ['/', '/home', '/reveries'];
+  const routes = ['/', '/home', '/reveries', '/diary', '/subscribe'];
 
   const reveries = Promise.resolve()
     .then(() =>

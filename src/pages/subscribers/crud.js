@@ -55,7 +55,7 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
 
   /** Create new subscriber on server. */
   const submitSubscriber = () => {
-    if (!isValidSubscriber(clientSubscriber)) return false;
+    if (!isValidSubscriber(clientSubscriber, true)) return false;
 
     const variables = buildPayload(clientSubscriber, preferences, true);
     Promise.resolve()

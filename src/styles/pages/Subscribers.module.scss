@@ -32,3 +32,25 @@
   margin: 1.5em 0;
   text-decoration: underline;
 }
+
+.user-subscribe-form {
+  @include responsive(width, 45%, $xxl: 60%, $lg: 80%, $sm: 100%);
+  @include responsive(padding, initial, $sm: 1em);
+  margin: 0 auto;
+}
+
+.user-subscribe-title {
+  @include responsive(font-size, 2.2em, $sm: 1.6em);
+  margin-top: 1em;
+}
+
+.user-subscribe-message {
+  @include responsive(font-size, 1.3em, $sm: 1em);
+  margin: 0.5em 0;
+}
+
+.user-subscribe-button {
+  margin: 1em;
+  min-width: 175px;
+  padding: 1.4em;
+}
