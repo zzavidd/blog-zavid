@@ -7,19 +7,20 @@ import {
   Label,
   ShortTextArea,
   LongTextArea,
-  TextInput
+  TextInput,
+  Checkbox
 } from 'components/form';
 import { Fader } from 'components/transitioner';
 
 export default (props) => {
   const { page, handlers, isLoaded } = props;
-  const { handleText } = handlers;
+  const { handleText, handleCheck } = handlers;
 
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
       <Form {...props} previewText={page.content}>
         <FieldRow>
-          <Field sm={6}>
+          <Field sm={5}>
             <Label>Title:</Label>
             <TextInput
               name={'title'}
@@ -28,7 +29,7 @@ export default (props) => {
               placeholder={'Enter the title'}
             />
           </Field>
-          <Field sm={6}>
+          <Field sm={4}>
             <Label>Slug:</Label>
             <TextInput
               name={'slug'}
@@ -36,6 +37,15 @@ export default (props) => {
               onChange={handleText}
               placeholder={'Enter the slug'}
               leadingComponent={<span>/</span>}
+            />
+          </Field>
+          <Field sm={3}>
+            <Label>Just An Embed?</Label>
+            <Checkbox
+              name={'isEmbed'}
+              label={'This page is just embedded text'}
+              checked={page.isEmbed}
+              onChange={handleCheck}
             />
           </Field>
         </FieldRow>

@@ -13,6 +13,7 @@ import { Paragraph } from 'components/text';
 import { Fader, Slider } from 'components/transitioner';
 import css from 'styles/components/Form.module.scss';
 
+export * from './checkbox';
 export * from './fileselector';
 export * from './input';
 export * from './select';

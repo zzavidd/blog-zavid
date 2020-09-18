@@ -20,6 +20,11 @@ module.exports = (hook, state) => {
     hook(Object.assign({}, state, { [name]: date }));
   };
 
+  module.handleCheck = (event) => {
+    const { name, checked } = event.target;
+    hook(Object.assign({}, state, { [name]: checked }));
+  };
+
   /**
    * Handles the upload of images with a file selector.
    * @param {string} file - The base64 string of the image.

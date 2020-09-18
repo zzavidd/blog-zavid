@@ -10,7 +10,9 @@ const server = require('../../singleton').getServer();
 router.get('/:slug', function (req, res, next) {
   const { slug } = req.params;
   Promise.resolve()
-    .then(() => new PageQueryBuilder(knex).whereSlug(slug).build())
+    .then(() =>
+      new PageQueryBuilder(knex).whereSlug(slug).whereIsEmbed(false).build()
+    )
     .then(([page]) => {
       if (!page) return next();
       return server.render(req, res, '/pages/single', {

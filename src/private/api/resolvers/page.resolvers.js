@@ -11,7 +11,11 @@ const ENTITY_NAME = 'page';
 const getAllPages = () => {
   return Promise.resolve()
     .then(() => new PageQueryBuilder(knex).build())
-    .then((pages) => pages)
+    .then((pages) => {
+      return pages.map((page) =>
+        Object.assign({}, page, { isEmbed: page.isEmbed })
+      );
+    })
     .catch(debug);
 };
 
@@ -27,6 +31,7 @@ const getSinglePage = (parent, { id }) => {
     .then(() => new PageQueryBuilder(knex).whereId(id).build())
     .then(([page]) => {
       if (!page) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
+      page = Object.assign({}, page, { isEmbed: page.isEmbed });
       return page;
     })
     .catch(debug);
