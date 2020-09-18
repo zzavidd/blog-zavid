@@ -16,6 +16,7 @@ import {
   checkCookiePolicyAccepted
 } from 'lib/cookies';
 import configureStore from 'lib/reducers.js';
+import Footer from 'partials/footer.js';
 import Header from 'partials/header.js';
 
 import 'styles/App.scss';
@@ -83,6 +84,7 @@ const ZAVIDApp = ({ Component, pageProps }) => {
     <>
       <Header />
       <Component {...pageProps} />
+      <Footer />
       <CookiePolicyAlert />
     </>
   );
