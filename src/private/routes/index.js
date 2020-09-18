@@ -50,3 +50,9 @@ app.get(['/', '/home'], function (req, res) {
     })
     .catch(debug);
 });
+
+app.get('/admin', function (req, res) {
+  return server.render(req, res, '/admin', {
+    title: `Admin Console | ${siteTitle}`
+  });
+});
