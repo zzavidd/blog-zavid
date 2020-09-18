@@ -5,7 +5,7 @@ import { domain } from 'constants/settings';
 
 export default ({
   title = 'Page Not Found',
-  url = '',
+  ogUrl = '',
   description = '',
   cardImage = '/bg/card-home.jpg'
 }) => (
@@ -21,7 +21,7 @@ export default ({
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={`${domain}${url}`} />
+    <meta property="og:url" content={`${domain}${ogUrl}`} />
 
     <meta property="og:image" content={`${cloudinaryBaseUrl}/${cardImage}`} />
     <meta property="og:image:height" content="800" />

@@ -1,5 +1,7 @@
 const { Post } = require('classes');
 const { alert } = require('components/alert.js');
+const { validate: validateEmail } = require('email-validator');
+const { validate } = require('uuid');
 
 /**
  * Validation of post submission or update.
@@ -56,11 +58,24 @@ exports.isValidDiaryEntry = (diaryEntry) => {
 /**
  * Validation of subscriber submission or update.
  * @param {object} subscriber Subscriber information to be validated.
+ * @param {boolean} isAdminOp Indicates if admin operation.
  * @returns {boolean} True if valid. False with error message if invalid.
  */
-exports.isValidSubscriber = (subscriber) => {
-  if (!ifExists(subscriber.email, `Enter the subscriber's email address.`))
-    return false;
+exports.isValidSubscriber = (subscriber, isAdminOp) => {
+  let INVALID_EMAIL, ONLY_LASTNAME;
+
+  if (isAdminOp) {
+    INVALID_EMAIL = "Enter the subscriber's email address.";
+    ONLY_LASTNAME = "Can't have a surname without a first name. ";
+  } else {
+    INVALID_EMAIL = 'Please enter your email address.';
+    ONLY_LASTNAME = "I can't ONLY have your surname!";
+  }
+
+  if (!isValidEmail(subscriber.email, INVALID_EMAIL)) return false;
+  if (subscriber.lastname.trim()) {
+    if (!ifExists(subscriber.firstname, ONLY_LASTNAME)) return false;
+  }
 
   return true;
 };
@@ -74,6 +89,20 @@ exports.isValidPage = (page) => {
   if (!ifExists(page.title, `Enter the page's title.`)) return false;
   if (!ifExists(page.slug, `Enter the page's title.`)) return false;
 
+  return true;
+};
+
+const isValidEmail = (email, message) => {
+  if (!email) {
+    alert.error(message);
+    return false;
+  }
+
+  if (!validateEmail(email)){
+    alert.error("The email address is invalid.");
+    return false;
+  }
+  
   return true;
 };
 

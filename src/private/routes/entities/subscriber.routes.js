@@ -21,6 +21,13 @@ router.get('/subscriptions/:token', function (req, res) {
     });
 });
 
+router.get('/subscribe', function (req, res) {
+  return server.render(req, res, '/subscribers/subscribe', {
+    title: `Subscribe | ${siteTitle}`,
+    ogUrl: '/subscribe'
+  });
+});
+
 router.get('/admin/subscribers', function (req, res) {
   return server.render(req, res, '/subscribers/admin', {
     title: `List of Subscribers`

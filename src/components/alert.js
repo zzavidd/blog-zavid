@@ -3,6 +3,8 @@ const { toast, cssTransition } = require('react-toastify');
 
 const css = require('styles/components/Alert.module.scss');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 toast.configure({
   autoClose: 2500,
   className: css['toast-container'],
@@ -41,6 +43,14 @@ exports.alert = {
  */
 exports.setAlert = ({ type, message }) => {
   sessionStorage.setItem('alert', JSON.stringify({ type, message }));
+};
+
+exports.reportError = (error) => {
+  if (isDev) {
+    this.alert.error(error);
+  } else {
+    this.alert.error('There was a problem. Please try again later.');
+  }
 };
 
 /** Check whether an alert has been set by {@link setAlert}. */

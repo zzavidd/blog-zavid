@@ -46,8 +46,9 @@ export const ButtonSpacer = (props) => {
  */
 export const ConfirmButton = (props) => {
   const theme = useSelector(({ theme }) => theme);
+  const classes = classnames(css[`button-confirm-${theme}`], props.className);
   return (
-    <Button {...props} className={css[`button-confirm-${theme}`]}>
+    <Button {...props} className={classes}>
       {props.children}
     </Button>
   );
