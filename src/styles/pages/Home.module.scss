@@ -28,7 +28,7 @@
   background: rgba($color: #000, $alpha: 0.7);
   display: grid;
   grid-template-columns: repeat(5, 20%);
-  padding: 0 2em;
+  padding: 0.5em 2em;
 
   .random-post {
     @include hover-scale(1.08);

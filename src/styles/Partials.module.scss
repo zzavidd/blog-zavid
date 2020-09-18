@@ -4,10 +4,6 @@
 /// HEADER
 ////////////////////////////////
 
-%nav {
-  transition-duration: 0.8s;
-}
-
 %nav-link {
   @include hover-scale(1.1);
   font-family: $title-font;
@@ -24,9 +20,9 @@
 
 .nav {
   &-light {
-    @extend %nav;
     background-color: #fff;
     border-bottom: 2px solid $dark;
+    transition-duration: 0.8s;
 
     a:not(.nav-link-disabled) {
       @extend %nav-link;
@@ -35,9 +31,9 @@
   }
 
   &-dark {
-    @extend %nav;
     background-color: $dark;
     border-bottom: 1px solid #fff;
+    transition-duration: 0.8s;
 
     a:not(.nav-link-disabled) {
       @extend %nav-link;
@@ -62,7 +58,37 @@
 
 .nav-toggler {
   @include responsive(font-size, 1.25em, $sm: 1em);
-  
+}
+
+////////////////////////////////
+/// FOOTER
+////////////////////////////////
+
+.footer {
+  padding: 1.5em;
+
+  &-light {
+    background-color: #fff;
+    border-top: 2px solid $dark;
+
+    a {
+      color: #000 !important;
+    }
+  }
+
+  &-dark {
+    background-color: #111;
+    border-top: 1px solid #fff;
+
+    a {
+      color: #fff !important;
+    }
+  }
+}
+
+.footer-link {
+  display: block;
+  font-family: $title-font;
 }
 
 ////////////////////////////////

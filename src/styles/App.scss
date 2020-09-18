@@ -16,7 +16,7 @@
   /// Allow for spacing.
   > div:first-child {
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto 1fr auto auto;
     min-height: 100%;
   }
 
