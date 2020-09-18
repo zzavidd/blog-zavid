@@ -83,9 +83,10 @@
   z-index: 1100;
 
   .cookie-prompt {
-    @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
+    @include responsive(width, 50%, $xl: 80%, $lg: 90%, $sm: 100%);
     align-items: center;
     display: flex;
+    padding: 0.5em;
 
     span {
       color: #fff;
@@ -99,8 +100,12 @@
       }
     }
 
-    path {
-      color: #fff !important;
+    svg {
+      font-size: 1.35em;
+
+      path {
+        color: #fff !important;
+      }
     }
   }
 }

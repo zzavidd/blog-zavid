@@ -70,7 +70,6 @@ class PostQueryBuilder extends QueryBuilder {
    * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
   withOrder({ field, order } = {}) {
-    if (isFalsy(field)) return this;
     if (isFalsy(order)) order = 'ASC';
 
     if (order === 'RANDOM') {

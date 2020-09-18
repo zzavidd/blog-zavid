@@ -211,11 +211,6 @@
       }
     }
   }
-
-  /// On mouse-over, add a grey background color.
-  &:hover input ~ .checkbox-mark {
-    background-color: adjust-color($color, $lightness: 20%);
-  }
 }
 
 /* Create a custom checkbox */
@@ -226,6 +221,7 @@
   height: $size;
   left: 0;
   position: absolute;
+  transition-duration: 0.4s;
   top: 3px;
   width: $size;
 
@@ -234,6 +230,7 @@
     content: '';
     display: none;
     position: absolute;
+    transition-duration: 0.8s;
   }
 }
 

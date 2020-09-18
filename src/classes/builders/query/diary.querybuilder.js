@@ -14,7 +14,7 @@ class DiaryQueryBuilder extends QueryBuilder {
   }
 
   whereSlug(slug) {
-    if (isFalsy(slug)) return this;
+    if (isFalsy(slug)) throw new Error(`No slug specified.`);
     this.query.where('slug', slug);
     return this;
   }
@@ -25,7 +25,13 @@ class DiaryQueryBuilder extends QueryBuilder {
     return this;
   }
 
+  getLatestEntry(){
+    this.query.orderBy('date').limit(1);
+    return this;
+  }
+
   getPreviousEntry(slug) {
+    if (isFalsy(slug)) throw new Error(`No slug specified.`);
     this.query.where(
       'slug',
       this.knex(TABLE_NAME)
@@ -37,6 +43,7 @@ class DiaryQueryBuilder extends QueryBuilder {
   }
 
   getNextEntry(slug) {
+    if (isFalsy(slug)) throw new Error(`No slug specified.`);
     this.query.where(
       'slug',
       this.knex(TABLE_NAME)

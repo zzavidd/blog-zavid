@@ -13,6 +13,11 @@ class PageQueryBuilder extends QueryBuilder {
     this.query.where('slug', slug);
     return this;
   }
+
+  whereIsEmbed(isEmbed){
+    this.query.where('isEmbed', isEmbed);
+    return this;
+  }
 }
 
 class PageMutationBuilder extends MutationBuilder {

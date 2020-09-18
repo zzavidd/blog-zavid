@@ -1,0 +1,57 @@
+@import '../App';
+
+.home-page {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 0 1em;
+}
+
+.introduction {
+  height: 100%;
+  padding: 1.5em;
+
+  .introduction-text {
+  }
+}
+
+.latest-diary {
+  border-right: 1px solid #fff;
+  height: 100%;
+  padding: 1em 1.5em;
+}
+
+.latest-diary-title {
+  @include responsive(font-size, 1.7em, $md: 1.3em);
+}
+
+.random-posts {
+  background: rgba($color: #000, $alpha: 0.7);
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
+  padding: 0 2em;
+
+  .random-post {
+    @include hover-scale(1.08);
+    cursor: pointer;
+    margin: 1em;
+  }
+
+  .random-post-title {
+    @include responsive(font-size, 1.3em, $md: 1em);
+    color: #fff;
+  }
+
+  .random-post-date {
+    @include responsive(font-size, 1em, $md: 0.8em);
+    color: #fff;
+  }
+
+  .random-post-image-wrapper {
+    padding: 0.5em 0;
+    width: 100%;
+
+    img {
+      border-radius: 10px;
+    }
+  }
+}

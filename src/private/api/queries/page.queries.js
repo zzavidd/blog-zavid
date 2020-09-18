@@ -7,6 +7,7 @@ const pageFragments = gql`
     content
     excerpt
     slug
+    isEmbed
     lastModified
   }
 `;

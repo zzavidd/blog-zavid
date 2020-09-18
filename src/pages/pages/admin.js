@@ -73,7 +73,10 @@ export default () => {
             return [
               [key + 1, { type: TYPE.INDEX }],
               [page.title, { icon: 'heading' }],
-              [`/${page.slug}`, { icon: 'link' }],
+              [
+                page.slug ? `/${page.slug}` : '',
+                { icon: 'link', hideIfEmpty: true }
+              ],
               [
                 zText.truncateText(page.excerpt, { limit: 30 }),
                 { hideOnMobile: true }

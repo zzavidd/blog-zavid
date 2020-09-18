@@ -8,6 +8,7 @@ type Page {
   content: String
   excerpt: String
   slug: String
+  isEmbed: Boolean
   lastModified: String
 }
 
@@ -30,6 +31,6 @@ input PageInput {
   title: String!
   content: String
   excerpt: String
-  slug: String!
-  lastModified: String
+  slug: String
+  isEmbed: Boolean
 }
