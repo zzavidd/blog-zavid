@@ -2,7 +2,7 @@
 import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
-import { alert, setAlert } from 'components/alert';
+import { setAlert, reportError } from 'components/alert';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
 import { isValidPage } from 'constants/validations';
@@ -64,7 +64,7 @@ const PageCrud = ({ page: serverPage, operation }) => {
         });
         returnToPageAdmin();
       })
-      .catch(alert.error);
+      .catch(reportError);
   };
 
   /** Update page on server. */
@@ -81,7 +81,7 @@ const PageCrud = ({ page: serverPage, operation }) => {
         });
         returnToPageAdmin();
       })
-      .catch(alert.error);
+      .catch(reportError);
   };
 
   return (
