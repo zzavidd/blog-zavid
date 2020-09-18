@@ -61,39 +61,6 @@ class PostQueryBuilder extends QueryBuilder {
     );
     return this;
   }
-
-  /**
-   * Enables sorting or randomising of the results.
-   * @param {object} [sort] The sort details.
-   * @param {string} [sort.field] The field to sort on.
-   * @param {string} [sort.order] The sort order. Either 'ASC', 'DESC' or 'RANDOM'.
-   * @returns {PostQueryBuilder} The PostQueryBuilder object.
-   */
-  withOrder({ field, order } = {}) {
-    if (isFalsy(order)) order = 'ASC';
-
-    if (order === 'RANDOM') {
-      this.query.orderByRaw('RAND()');
-    } else if (field) {
-      const cases = [
-        `CAST((REGEXP_REPLACE(${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
-        `REGEXP_REPLACE(${field}, "[^a-z0-9]+", '') ${order}`
-      ];
-      this.query.orderByRaw(cases.join(', '));
-    }
-    return this;
-  }
-
-  /**
-   * Limits the number of results.
-   * @param {number} [limit] - The number of results to be returned.
-   * @returns {PostQueryBuilder} The PostQueryBuilder object.
-   */
-  withLimit(limit) {
-    if (isFalsy(limit)) return this;
-    this.query.limit(limit);
-    return this;
-  }
 }
 
 class PostMutationBuilder extends MutationBuilder {

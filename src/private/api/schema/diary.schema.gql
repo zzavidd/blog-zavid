@@ -11,7 +11,10 @@ type DiaryEntry {
 }
 
 extend type Query {
-  diaryEntries(status: DiaryStatusOptions): [DiaryEntry]
+  diaryEntries(
+    sort: DiarySortOptions
+    status: DiaryStatusOptions
+  ): [DiaryEntry]
   diaryEntry(id: Int!): DiaryEntry
 }
 
@@ -32,6 +35,17 @@ extend type Mutation {
 enum DiaryStatus {
   PRIVATE
   PUBLISHED
+}
+
+enum DiarySortField {
+  id
+  date
+  status
+}
+
+input DiarySortOptions {
+  field: DiarySortField
+  order: OrderOption
 }
 
 input DiaryStatusOptions {

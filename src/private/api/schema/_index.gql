@@ -5,3 +5,9 @@ type Query {
 type Mutation {
   _empty: String
 }
+
+enum OrderOption {
+  ASC
+  DESC
+  RANDOM
+}

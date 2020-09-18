@@ -15,12 +15,18 @@ const ENTITY_NAME = 'diary entry';
  * Retrieves all diary entries from database.
  * @param {object} parent Return value of the parent field.
  * @param {object} args The arguments.
+ * @param {object} args.sort Defines how to order the results.
  * @param {object} args.status The status to filter diary entries by.
  * @returns {object[]} The posts.
  */
-const getAllDiaryEntries = (parent, { status }) => {
+const getAllDiaryEntries = (parent, { sort, status }) => {
   return Promise.resolve()
-    .then(() => new DiaryQueryBuilder(knex).whereStatus(status).build())
+    .then(() =>
+      new DiaryQueryBuilder(knex)
+        .whereStatus(status)
+        .withOrder(sort)
+        .build()
+    )
     .then((diaryEntries) => diaryEntries)
     .catch(debug);
 };

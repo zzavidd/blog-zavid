@@ -11,6 +11,7 @@ const {
   PostQueryBuilder
 } = require('../../classes');
 const { siteTitle } = require('../../constants/settings');
+const { ORDER } = require('../../constants/strings');
 const authRoutes = require('../auth');
 const { debug } = require('../error');
 const app = require('../singleton').getApp();
@@ -33,7 +34,7 @@ app.get(['/', '/home'], function (req, res) {
     new PostQueryBuilder(knex)
       .whereType({ exclude: [Post.TYPES.PAGE.TITLE] })
       .whereStatus({ include: [Post.STATUSES.PUBLISHED] })
-      .withOrder({ order: Post.ORDER.RANDOM })
+      .withOrder({ order: ORDER.RANDOM })
       .withLimit(5)
       .build()
   ])
