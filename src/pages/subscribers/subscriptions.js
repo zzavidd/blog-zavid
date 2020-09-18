@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { alert, setAlert } from 'components/alert';
+import { alert, setAlert, reportError } from 'components/alert';
 import { ConfirmButton, InvisibleButton } from 'components/button';
 import { Container } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
@@ -41,7 +41,7 @@ const SubscriptionPreferences = ({ subscriber }) => {
           `You've successfully updated your subscription preferences.`
         );
       })
-      .catch(alert.error);
+      .catch(reportError);
   };
 
   const unsubscribe = () => {
@@ -56,7 +56,7 @@ const SubscriptionPreferences = ({ subscriber }) => {
         setDeleteModalVisibility(false);
         location.href = '/';
       })
-      .catch(console.error);
+      .catch(reportError);
   };
 
   return (
@@ -64,7 +64,9 @@ const SubscriptionPreferences = ({ subscriber }) => {
       <Container>
         <Title className={css['pref-title']}>Subscription Preferences</Title>
         <div className={css['pref-email']}>{subscriber.email}</div>
-        <div className={css['pref-checks-intro']}>You are subscribed to my:</div>
+        <div className={css['pref-checks-intro']}>
+          You are subscribed to my:
+        </div>
         <PreferenceChecks
           preferences={preferences}
           setPreferences={setPreferences}

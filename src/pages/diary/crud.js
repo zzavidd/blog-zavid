@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import { Diary } from 'classes';
-import { alert, setAlert } from 'components/alert';
+import { alert, setAlert, reportError } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
@@ -76,7 +76,7 @@ const DiaryCrud = ({ diaryEntry: serverDiaryEntry, operation }) => {
         });
         returnToDiaryAdmin();
       })
-      .catch(alert.error);
+      .catch(reportError);
   };
 
   /** Update diary entry on server. */
@@ -95,7 +95,7 @@ const DiaryCrud = ({ diaryEntry: serverDiaryEntry, operation }) => {
         });
         returnToDiaryAdmin();
       })
-      .catch(alert.error);
+      .catch(reportError);
   };
 
   const confirmText = `${isCreateOperation ? 'Submit' : 'Update'}${

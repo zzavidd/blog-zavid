@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import { Post } from 'classes';
-import { alert, setAlert } from 'components/alert';
+import { alert, setAlert, reportError } from 'components/alert';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
 import { isValidPost } from 'constants/validations';
@@ -158,7 +158,7 @@ const PostCrud = ({ post: serverPost, operation }) => {
         });
         returnToAdminPosts();
       })
-      .catch(alert.error);
+      .catch(reportError);
   };
 
   /** Update post on server. */
@@ -175,7 +175,7 @@ const PostCrud = ({ post: serverPost, operation }) => {
         });
         returnToAdminPosts();
       })
-      .catch(alert.error);
+      .catch(reportError);
   };
 
   return (

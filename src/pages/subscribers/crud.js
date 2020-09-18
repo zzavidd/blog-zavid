@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
 import { Subscriber } from 'classes/static';
-import { alert, setAlert } from 'components/alert';
+import { setAlert, reportError } from 'components/alert';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
 import { isValidSubscriber } from 'constants/validations';
@@ -67,7 +67,7 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
         });
         returnToSubscriberAdmin();
       })
-      .catch(alert.error);
+      .catch(reportError);
   };
 
   /** Update subscriber on server. */
@@ -84,7 +84,7 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
         });
         returnToSubscriberAdmin();
       })
-      .catch(alert.error);
+      .catch(reportError);
   };
 
   return (
