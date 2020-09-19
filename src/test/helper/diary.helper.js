@@ -1,4 +1,4 @@
-const { assert, fetch } = require('..');
+const { assert, debug, fetch } = require('..');
 const { Diary } = require('../../classes');
 const {
   GET_SINGLE_DIARY_QUERY,
@@ -38,7 +38,8 @@ exports.submitDiaryEntry = (diaryEntry, assertions) => {
           return returnedDiaryEntry.id;
         }
       );
-    });
+    })
+    .catch(debug);
 };
 
 /**
@@ -87,7 +88,8 @@ exports.deleteDiaryEntry = (id, assertions) => {
           if (assertions) assertions();
         }
       );
-    });
+    })
+    .catch(debug);
 };
 
 /**

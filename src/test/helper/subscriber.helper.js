@@ -1,6 +1,6 @@
 const { validate: uuidValidate } = require('uuid');
 
-const { assert, fetch } = require('..');
+const { assert, debug, fetch } = require('..');
 const {
   GET_SINGLE_SUBSCRIBER_QUERY,
   CREATE_SUBSCRIBER_QUERY,
@@ -39,7 +39,8 @@ exports.submitSubscriber = (subscriber, assertions) => {
           return returnedSubscriber.id;
         }
       );
-    });
+    })
+    .catch(debug);
 };
 
 /**
@@ -88,7 +89,8 @@ exports.deleteSubscriber = (id, assertions) => {
           if (assertions) assertions();
         }
       );
-    });
+    })
+    .catch(debug);
 };
 
 /**

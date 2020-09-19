@@ -1,4 +1,4 @@
-const { assert, fetch } = require('..');
+const { assert, debug, fetch } = require('..');
 const {
   GET_SINGLE_POST_QUERY,
   CREATE_POST_QUERY,
@@ -37,7 +37,8 @@ exports.submitPost = (post, assertions, isPublish = false) => {
           return returnedPost.id;
         }
       );
-    });
+    })
+    .catch(debug);
 };
 
 /**
@@ -86,7 +87,8 @@ exports.deletePost = (id, assertions) => {
           if (assertions) assertions();
         }
       );
-    });
+    })
+    .catch(debug);
 };
 
 /**
