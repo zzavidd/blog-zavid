@@ -35,7 +35,7 @@ export default ({
       <meta property="og:site_name" content="ZAVID" />
       <meta
         name="google-site-verification"
-        content="Kv9Zk269oRFxqqh7W9amnHVXRsR8qREsGK4dk0a1SQk"
+        content="qgOq7Q6kwa0UjcKwV6p7Z6GkM8W45hn655lE_op91Qw"
       />
       <meta name="twitter:card" content="summary_large_image" />
 
