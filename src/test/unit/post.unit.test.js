@@ -1,6 +1,5 @@
 const { assert } = require('..');
 const { Post, PostBuilder } = require('../../classes');
-const { comparePosts } = require('../helper/post.helper');
 
 describe('Unit Tests: Post', function () {
   describe('Object methods', function () {
@@ -47,15 +46,6 @@ describe('Unit Tests: Post', function () {
         .build();
       assert.isTrue(Post.isPublish(publishPost));
       assert.isTrue(Post.isPublish(publishPost.status));
-      finish();
-    });
-
-    it('Find post by comparison', function (finish) {
-      const post = new PostBuilder().random().build();
-      const posts = [post];
-
-      const matchedPost = Post.findInPosts(posts, post.id, 'id');
-      comparePosts(post, matchedPost);
       finish();
     });
 

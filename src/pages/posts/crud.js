@@ -231,10 +231,7 @@ const buildPayload = (clientPost, domains, isPublish, isCreateOperation) => {
   }
 
   if (Post.isPage(post)) {
-    const id = parseInt(domainId);
-    const domainType = Post.findInPosts(domains, id, 'value').type;
-    post.domainId = id;
-    post.domainType = domainType;
+    post.domainId = parseInt(domainId);
   } else {
     post.typeId = typeId;
   }

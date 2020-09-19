@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { zText } = require('zavid-modules');
 
 const { PostQueryBuilder } = require('../../../classes');
 const { siteTitle } = require('../../../constants/settings');
@@ -12,7 +13,7 @@ router.get('/reveries', function (req, res) {
   return server.render(req, res, '/posts/reveries', {
     title: `Reveries | ${siteTitle}`,
     description: 'For my deeper ruminations...',
-    url: '/reveries'
+    ogUrl: '/reveries'
   });
 });
 
@@ -22,8 +23,14 @@ router.get(
     const { slug } = req.params;
 
     Promise.resolve()
-      .then(() => new PostQueryBuilder(knex).whereSlug(slug).build())
+      .then(() =>
+        new PostQueryBuilder(knex)
+          .whereSlug(slug)
+          .whereType({ exclude: ['Page'] })
+          .build()
+      )
       .then(([reverie]) => {
+        if (!reverie) throw ERRORS.NO_ENTITY('reverie');
         const { type, typeId } = reverie;
         return Promise.all([
           Promise.resolve(reverie),
@@ -32,11 +39,10 @@ router.get(
         ]);
       })
       .then(([reverie, [previousReverie], [nextReverie]]) => {
-        if (!reverie) return next(ERRORS.NO_ENTITY('reverie'));
         return server.render(req, res, '/posts/single', {
           title: `${reverie.title} | ${siteTitle}`,
-          description: reverie.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)
-          ogUrl: `/reveries/${reverie.slug}`,
+          description: reverie.excerpt,
+          ogUrl: `/reveries/${slug}`,
           cardImage: reverie.image,
           post: reverie,
           previousPost: previousReverie,
@@ -51,22 +57,24 @@ router.get(
 router.get(
   '/reveries/:domain/:slug',
   function (req, res, next) {
-    const { slug } = req.params;
+    const { domain, slug } = req.params;
     Promise.resolve()
       .then(() => {
         return new PostQueryBuilder(knex)
           .whereDomainType('Reverie')
+          .whereDomainSlug(domain)
           .whereSlug(slug)
           .build();
       })
-      .then(([post] = []) => {
-        if (!post) return next(ERRORS.NO_ENTITY('reverie'));
+      .then(([page]) => {
+        if (!page) throw ERRORS.NO_ENTITY('page');
+
         return server.render(req, res, '/posts/single', {
-          title: `${post.title} | ${siteTitle}`,
-          description: post.excerpt, // TODO: Deal with absence of excerpt (e.g. pages)
-          ogUrl: `/reveries/${post.slug}`, // Correct URL for domain
-          cardImage: post.image,
-          post
+          title: `${page.title} | ${siteTitle}`,
+          description: page.excerpt || zText.extractExcerpt(page.content),
+          ogUrl: `/reveries/${domain}/${slug}`, // Correct URL for domain
+          cardImage: page.image,
+          post: page
         });
       })
       .catch(next);
@@ -74,14 +82,14 @@ router.get(
   renderErrorPage
 );
 
-router.get('/epistles', function (req, res) {
-  return server.render(req, res, '/posts/epistles', {
-    title: `Epistles | ${siteTitle}`,
-    description:
-      'My messages, written to encourage and enlighten; typically based off of Bible scriptures and transcribed as poetry. Read and be blessed.',
-    url: '/epistles'
-  });
-});
+// router.get('/epistles', function (req, res) {
+//   return server.render(req, res, '/posts/epistles', {
+//     title: `Epistles | ${siteTitle}`,
+//     description:
+//       'My messages, written to encourage and enlighten; typically based off of Bible scriptures and transcribed as poetry. Read and be blessed.',
+//     ogUrl: '/epistles'
+//   });
+// });
 
 router.get('/admin/posts', function (req, res) {
   return server.render(req, res, '/posts/admin', {
@@ -102,12 +110,12 @@ router.get('/admin/posts/edit/:id', function (req, res) {
     .whereId(id)
     .build()
     .then((post) => {
-    return server.render(req, res, '/posts/crud', {
-      title: `Edit Post`,
-      operation: OPERATIONS.UPDATE,
-      post
+      return server.render(req, res, '/posts/crud', {
+        title: `Edit Post`,
+        operation: OPERATIONS.UPDATE,
+        post
+      });
     });
-  });
 });
 
 module.exports = router;

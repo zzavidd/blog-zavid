@@ -3,13 +3,14 @@ const { isFalsy } = require('zavid-modules').zLogic;
 const { ORDER } = require('../../../constants/strings');
 
 class QueryBuilder {
-  constructor(knex, table, isMutation = false) {
+  constructor(knex, table, isMutation) {
     if (!isMutation) this.query = knex.select().from(table);
+    this.table = table;
   }
 
   whereId(id) {
     if (isFalsy(id)) throw new Error(`No specified ID.`);
-    this.query.where('id', id);
+    this.query.where(`${this.table}.id`, id);
     return this;
   }
 
@@ -28,15 +29,14 @@ class QueryBuilder {
     if (order === ORDER.RANDOM) {
       this.query.orderByRaw('RAND()');
     } else if (field) {
-      console.log(forStringsWithNumbers);
       if (forStringsWithNumbers) {
         const cases = [
-          `CAST((REGEXP_REPLACE(${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
-          `REGEXP_REPLACE(${field}, "[^a-z0-9]+", '') ${order}`
+          `CAST((REGEXP_REPLACE(${this.table}.${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
+          `REGEXP_REPLACE(${this.table}.${field}, "[^a-z0-9]+", '') ${order}`
         ];
         this.query.orderByRaw(cases.join(', '));
       } else {
-        this.query.orderBy(field, order);
+        this.query.orderBy(`${this.table}.${field}`, order);
       }
     }
     return this;
@@ -85,7 +85,7 @@ class MutationBuilder extends QueryBuilder {
 
   delete(id) {
     if (isFalsy(id)) throw new Error(`No specified ${this.entity} to delete.`);
-    this.query.where('id', id).del();
+    this.query.where(`${this.table}.id`, id).del();
     return this;
   }
 }

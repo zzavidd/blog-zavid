@@ -116,22 +116,6 @@ class Post extends Publishable {
   }
 
   /**
-   * Finds a value from a post which matches a specification in a list of posts.
-   * @param {object[]} posts The full list of posts.
-   * @param {any} operand The value to compare with.
-   * @param {string} field The field used to compare against.
-   * @returns {any} The returned value from comparison.
-   */
-  static findInPosts(posts, operand, field) {
-    const matchingPost = posts.find((post) => operand === post[field]) || {};
-    debug(
-      matchingPost,
-      `Could not match operand "${operand}" to a post's "${field}".`
-    );
-    return matchingPost;
-  }
-
-  /**
    * Eagerly checks if post is of type page.
    * @param {string|object} input - The post or its type value.
    * @returns {boolean} True if post is PAGE.
