@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -51,13 +52,15 @@ const CloudImage = ({
   );
 };
 
-export const Signature = () => {
+export const Signature = ({ className }) => {
   let theme = useSelector(({ theme }) => theme);
   theme = theme === 'light' ? 'dark' : 'light';
+
+  const classes = classnames('signature', className);
   return (
     <CloudImage
       src={`static/logos/signature-${theme}`}
-      containerClassName={'signature'}
+      containerClassName={classes}
     />
   );
 };

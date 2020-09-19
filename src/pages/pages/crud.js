@@ -111,7 +111,7 @@ const buildPayload = (clientPage, isCreateOperation) => {
     content: content.trim(),
     slug: slug.trim(),
     excerpt: excerpt.trim(),
-    isEmbed
+    isEmbed: new Boolean(isEmbed)
   };
 
   const payload = { page };

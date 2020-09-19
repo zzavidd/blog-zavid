@@ -3,33 +3,61 @@
 .home-page {
   display: grid;
   grid-template-rows: 1fr auto;
-  padding: 0 1em;
+  padding: 2em 1.5em;
 }
 
-.introduction {
-  height: 100%;
-  padding: 1.5em;
+.home-row {
+  margin: 0 0 !important;
+}
+
+.home-field {
+  padding: 0 !important;
+}
+
+.introduction-wrapper {
+  @include responsive(width, 60%, $xl: 80%, $lg: 90%, $sm: 100%);
+  justify-self: center;
 
   .introduction-text {
+    height: 100%;
+
+    .introduction-welcome {
+      @include responsive(font-size, 2.5em, $md: 2em);
+      margin-bottom: 0.5em;
+    }
+
+    .introduction-message {
+      @include responsive(font-size, 1.3em, $md: 1em);
+    }
+  }
+
+  .introduction-signature {
+    @include responsive(max-width, 100%, $xl: 250px, $sm: 150px);
   }
 }
 
 .latest-diary {
-  border-right: 1px solid #fff;
+  @include responsive(padding, 1em 1.5em, $sm: 0.5em 1em);
   height: 100%;
-  padding: 1em 1.5em;
 }
 
 .latest-diary-title {
-  @include responsive(font-size, 1.7em, $md: 1.3em);
+  @include responsive(font-size, 1.7em, $md: 1.4em);
+  @include responsive(letter-spacing, 0, $md: -1px);
+  margin-top: 0.3em;
 }
 
 .random-posts {
+  @include responsive(padding, 0.5em 2em, $md: 0 1em);
+  @include responsive(
+    grid-template-columns,
+    repeat(4, 25%),
+    $lg: repeat(2, 50%),
+    $sm: 100%
+  );
   background: rgba($color: #000, $alpha: 0.7);
   display: grid;
-  grid-template-columns: repeat(5, 20%);
-  padding: 0.5em 2em;
-
+  
   .random-post {
     @include hover-scale(1.08);
     cursor: pointer;
@@ -37,7 +65,8 @@
   }
 
   .random-post-title {
-    @include responsive(font-size, 1.3em, $md: 1em);
+    @include responsive(font-size, 1.3em, $md: 1.1em);
+    @include responsive(letter-spacing, 0, $md: -1px);
     color: #fff;
   }
 

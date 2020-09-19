@@ -121,8 +121,9 @@ const FormAdminButton = ({
  * @returns {React.Component} The component.
  */
 export const FieldRow = (props) => {
+  const classes = classnames(css['form-field-row'], props.className);
   return (
-    <Row {...props} className={css['form-field-row']}>
+    <Row {...props} className={classes}>
       {props.children}
     </Row>
   );

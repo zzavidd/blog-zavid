@@ -35,7 +35,7 @@ app.get(['/', '/home'], function (req, res) {
       .whereType({ exclude: [Post.TYPES.PAGE.TITLE] })
       .whereStatus({ include: [Post.STATUSES.PUBLISHED] })
       .withOrder({ order: ORDER.RANDOM })
-      .withLimit(5)
+      .withLimit(4)
       .build()
   ])
     .then(([[homepage], [latestDiaryEntry], randomPosts]) => {
