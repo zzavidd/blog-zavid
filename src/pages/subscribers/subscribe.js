@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
 import { Subscriber } from 'classes';
-import { alert, setAlert, reportError } from 'components/alert';
+import { alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { FieldRow, Field, Label, TextInput } from 'components/form';
 import { Title } from 'components/text';

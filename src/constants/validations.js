@@ -1,7 +1,6 @@
 const { Post } = require('classes');
 const { alert } = require('components/alert.js');
 const { validate: validateEmail } = require('email-validator');
-const { validate } = require('uuid');
 
 /**
  * Validation of post submission or update.
@@ -72,7 +71,7 @@ exports.isValidSubscriber = (subscriber, isAdminOp) => {
     ONLY_LASTNAME = "I can't ONLY have your surname!";
   }
 
-  if (!isValidEmail(subscriber.email, INVALID_EMAIL)) return false;
+  if (!this.isValidEmail(subscriber.email, INVALID_EMAIL)) return false;
   if (subscriber.lastname.trim()) {
     if (!ifExists(subscriber.firstname, ONLY_LASTNAME)) return false;
   }
@@ -92,7 +91,7 @@ exports.isValidPage = (page) => {
   return true;
 };
 
-const isValidEmail = (email, message) => {
+exports.isValidEmail = (email, message) => {
   if (!email) {
     alert.error(message);
     return false;

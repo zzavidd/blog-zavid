@@ -65,30 +65,34 @@
 ////////////////////////////////
 
 .footer {
-  padding: 1.5em;
+  background-color: #111;
+  border-top: 1px solid #fff;
+  padding: 1em;
 
-  &-light {
-    background-color: #fff;
-    border-top: 2px solid $dark;
-
-    a {
-      color: #000 !important;
-    }
-  }
-
-  &-dark {
-    background-color: #111;
-    border-top: 1px solid #fff;
-
-    a {
-      color: #fff !important;
-    }
+  * {
+    color: #fff !important;
   }
 }
 
 .footer-link {
+  @include responsive(font-size, 1.1em, $md: 1em);
   display: block;
+  font-weight: bold;
+  margin: 0.3em 0;
+}
+
+.footer-copyright {
+  @include responsive(font-size, 1em, $md: 0.9em);
   font-family: $title-font;
+}
+
+.quick-subscribe-input {
+  border-bottom-color: $fade-light !important;
+  margin: 1em 0;
+}
+
+.quick-subscribe-button {
+  min-width: 150px;
 }
 
 ////////////////////////////////
