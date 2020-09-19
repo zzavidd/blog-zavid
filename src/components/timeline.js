@@ -31,7 +31,7 @@ const PrevNextEntity = ({ entity = {}, isPrevious, type }) => {
       <div className={css['timeline-content']}>
         <Icon name={isPrevious ? 'chevron-left' : 'chevron-right'} />
         <div className={css['timeline-text']}>
-          <Title>
+          <Title className={css['timeline-text-heading']}>
             {prefix} {label}
           </Title>
           <div>{entity.label}</div>
