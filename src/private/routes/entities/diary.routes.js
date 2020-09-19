@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { zDate } = require('zavid-modules');
+const { zDate, zText } = require('zavid-modules');
 
 const { DiaryQueryBuilder } = require('../../../classes');
 const { siteTitle } = require('../../../constants/settings');
@@ -35,7 +35,7 @@ router.get(
 
         return server.render(req, res, '/diary/single', {
           title: `Diary: ${date} | ${siteTitle}`,
-          description: diaryEntry.content, // TODO: Deal with absence of excerpt (e.g. pages)
+          description: zText.extractExcerpt(diaryEntry.content),
           ogUrl: `/diary/${diaryEntry.slug}`,
           diaryEntry,
           previousDiaryEntry,
