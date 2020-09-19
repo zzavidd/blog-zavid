@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -20,8 +21,10 @@ export const TextInput = (props) => {
   const theme = useSelector(({ theme }) => theme);
   const { onClick, leadingComponent = null, trailingComponent = null } = props;
 
+  const classes = classnames(css[`text-input-field-${theme}`], props.className);
+
   return (
-    <div className={css[`text-input-field-${theme}`]}>
+    <div className={classes}>
       {leadingComponent}
       {onClick ? (
         <InvisibleButton onClick={onClick} className={css[`text-click-input`]}>
