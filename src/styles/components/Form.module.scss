@@ -397,7 +397,6 @@ $switch-height: 20px;
 ////////////////////////////////
 
 .timeline {
-  @include responsive(font-size, 1.1em, $sm: 0.7em);
   @include responsive(align-items, flex-start, $sm: flex-end);
   display: grid;
   grid-template-columns: repeat(2, 50%);
@@ -438,5 +437,10 @@ $switch-height: 20px;
 }
 
 .timeline-text {
+  @include responsive(font-size, 1.1em, $sm: 0.7em);
   padding: 0 0.5em;
+}
+
+.timeline-text-heading {
+  @include responsive(letter-spacing, 0, $sm: 0.1px);
 }
