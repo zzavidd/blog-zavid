@@ -6,6 +6,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/scss/bootstrap.scss';
 import App from 'next/app';
 import React, { useEffect, useState } from 'react';
+import ReactGA from 'react-ga';
 import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -59,6 +60,9 @@ const ZAVIDApp = ({ Component, pageProps }) => {
   const theme = useSelector(({ theme }) => theme || 'light');
 
   useEffect(() => {
+    ReactGA.initialize('UA-126408615-2');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
     document.body.classList.add(`body-${theme}`);
     checkAlert();
     setLoaded(true);
