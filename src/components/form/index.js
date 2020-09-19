@@ -76,8 +76,9 @@ export const Form = ({
   );
 };
 
-const FormPreview = ({ isPreviewVisible, previewText, substitutions }) => {
+const FormPreview = ({ isPreviewVisible, previewText, substitutions = {} }) => {
   const theme = useSelector(({ theme }) => theme);
+
   return (
     <Slider
       determinant={isPreviewVisible}

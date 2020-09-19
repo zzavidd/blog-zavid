@@ -1,6 +1,6 @@
-/* eslint-disable import/order */
-import React from 'react';
 import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { cloudinaryBaseUrl as url } from 'constants/settings';
 
@@ -16,17 +16,12 @@ export const validateCloudinaryImage = (image) => {
   return image.startsWith(match[0]);
 };
 
-/**
- * Constants for Cloudinary lazy transformations.
- * Size: s = small, m = medium
- * Shape: s = square, w = wide
- */
 export const ASPECT_RATIO = {
   SQUARE: '1:1',
   WIDE: '16:9'
 };
 
-export default ({
+const CloudImage = ({
   alt,
   aspectRatio,
   containerClassName,
@@ -55,3 +50,16 @@ export default ({
     </CloudinaryContext>
   );
 };
+
+export const Signature = () => {
+  let theme = useSelector(({ theme }) => theme);
+  theme = theme === 'light' ? 'dark' : 'light';
+  return (
+    <CloudImage
+      src={`static/logos/signature-${theme}`}
+      containerClassName={'signature'}
+    />
+  );
+};
+
+export default CloudImage;

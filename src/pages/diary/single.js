@@ -2,6 +2,7 @@ import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import { BackButton, AdminButton } from 'components/button';
+import { Signature } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Paragraph, Title, Divider } from 'components/text';
@@ -19,6 +20,7 @@ const DiarySingle = ({ diaryEntry, previousDiaryEntry = {}, nextDiaryEntry = {} 
         <Paragraph className={css['post-single-content']}>
           {diaryEntry.content}
         </Paragraph>
+        <Signature />
         <Timeline
           type={TIMELINE_TYPE.DIARY}
           previous={{
