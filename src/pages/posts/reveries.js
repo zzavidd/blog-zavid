@@ -7,7 +7,7 @@ import { Post } from 'classes';
 import { alert } from 'components/alert.js';
 import { AdminButton } from 'components/button';
 import CloudImage from 'components/image.js';
-import { Partitioner, Spacer, Toolbar } from 'components/layout';
+import { Partitioner, Spacer, Toolbar, Responsive } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
@@ -43,9 +43,16 @@ export default () => {
 
   return (
     <Spacer>
-      <Partitioner className={css['reverie-page']}>
-        <ReverieList reveries={reveries} />
-        <RightSidebar />
+      <Partitioner>
+        <Responsive
+          defaultView={
+            <>
+              <ReverieList reveries={reveries} />
+              <RightSidebar />
+            </>
+          }
+          laptopView={<ReverieList reveries={reveries} />}
+        />
       </Partitioner>
       <Toolbar spaceItems={true}>
         <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>

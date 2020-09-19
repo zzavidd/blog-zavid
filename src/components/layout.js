@@ -54,11 +54,27 @@ export const ToolbarToggle = ({ children, toggle }) => {
   );
 };
 
-export const Responsive = ({ defaultView = null, mobileView = null }) => {
-  return (
-    <>
-      <MediaQuery minWidth={576}>{defaultView}</MediaQuery>
-      <MediaQuery maxWidth={576}>{mobileView}</MediaQuery>
-    </>
-  );
+export const Responsive = ({ defaultView = null, laptopView, tabletView, mobileView }) => {
+  if (laptopView) {
+    return (
+      <>
+        <MediaQuery minWidth={992}>{defaultView}</MediaQuery>
+        <MediaQuery maxWidth={992}>{laptopView}</MediaQuery>
+      </>
+    );
+  } else if (tabletView) {
+    return (
+      <>
+        <MediaQuery minWidth={768}>{defaultView}</MediaQuery>
+        <MediaQuery maxWidth={768}>{tabletView}</MediaQuery>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <MediaQuery minWidth={576}>{defaultView}</MediaQuery>
+        <MediaQuery maxWidth={576}>{mobileView}</MediaQuery>
+      </>
+    );
+  }
 };

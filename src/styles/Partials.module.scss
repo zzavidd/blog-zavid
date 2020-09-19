@@ -66,7 +66,7 @@
 
 @mixin footer-title($margin-bottom) {
   @include responsive(font-size, 1.3em, $md: 1em);
-  letter-spacing: -1px !important;
+  @include responsive(letter-spacing, 0, $sm: -1px);
   margin-bottom: $margin-bottom;
   text-transform: uppercase;
 }
@@ -82,7 +82,7 @@
 }
 
 .footer-field {
-  @media (max-width: $break-lg){
+  @media (max-width: $break-lg) {
     margin-bottom: 1em !important;
   }
 }
