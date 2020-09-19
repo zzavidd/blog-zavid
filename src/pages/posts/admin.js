@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { zLogic, zText } from 'zavid-modules';
 
 import { Post, URLBuilder } from 'classes';
-import { alert } from 'components/alert';
+import { alert, reportError } from 'components/alert';
 import { InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
 import { Spacer } from 'components/layout';
@@ -76,7 +76,7 @@ const PostsAdmin = () => {
         setDeleteModalVisibility(false);
         refetch();
       })
-      .catch(console.error);
+      .catch(reportError);
   };
 
   return (

@@ -19,7 +19,8 @@ router.get('/:slug', function (req, res, next) {
         title: `${page.title} | ${siteTitle}`,
         page
       });
-    });
+    })
+    .catch(next);
 });
 
 router.get('/admin/pages', function (req, res) {

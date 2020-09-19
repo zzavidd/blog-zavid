@@ -2,7 +2,7 @@ import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
-import { alert } from 'components/alert';
+import { alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
@@ -49,7 +49,7 @@ export default () => {
         setDeleteModalVisibility(false);
         refetch();
       })
-      .catch(console.error);
+      .catch(reportError);
   };
 
   return (

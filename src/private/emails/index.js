@@ -12,6 +12,7 @@ const {
   copyright,
   domain
 } = require('../../constants/settings.js');
+const { debug } = require('../../private/error');
 const knex = require('../singleton').getKnex();
 
 const isDev = process.env.NODE_ENV !== 'production';
@@ -144,7 +145,8 @@ const prepareEmail = (entity, type, template, subject) => {
             resolve();
           }
         );
-      });
+      })
+      .catch(debug);
   });
 };
 
