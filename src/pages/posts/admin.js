@@ -12,7 +12,10 @@ import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
 import BottomToolbar from 'lib/helpers/pages/posts/toolbar';
 import { updatePostFilterSettings } from 'lib/reducers';
-import { DELETE_POST_QUERY, GET_POSTS_QUERY } from 'private/api/queries/post.queries';
+import {
+  DELETE_POST_QUERY,
+  GET_POSTS_QUERY
+} from 'private/api/queries/post.queries';
 import css from 'styles/pages/Posts.module.scss';
 
 const PostsAdmin = () => {
@@ -101,8 +104,7 @@ const PostsAdmin = () => {
                 post.type,
                 {
                   icon: 'newspaper',
-                  subvalue:
-                    post.domainId && `${post.domainId} • ${post.domainType}`
+                  subvalue: post.domainId && post.domainTitle
                 }
               ],
               [
@@ -117,10 +119,7 @@ const PostsAdmin = () => {
                   imageOptions: { css: css['post-admin-image'] }
                 }
               ],
-              [
-                <LinkButton post={post} allPosts={posts} key={key} />,
-                { type: TYPE.BUTTON }
-              ],
+              [<LinkButton post={post} key={key} />, { type: TYPE.BUTTON }],
               [<EditButton id={post.id} key={key} />, { type: TYPE.BUTTON }],
               [
                 <DeleteButton
@@ -151,17 +150,16 @@ const PostsAdmin = () => {
   );
 };
 
-const LinkButton = ({ post, allPosts }) => {
+const LinkButton = ({ post }) => {
   if (zLogic.isFalsy(post.slug)) return null;
 
   const navigateToLink = () => {
     const url = new URLBuilder();
 
-    if (Post.isPage(post.type)) {
+    if (Post.isPage(post)) {
       const base = Post.getDirectory(post.domainType);
-      const domain = Post.findInPosts(allPosts, post.domainId, 'id').slug;
       url.appendSegment(base);
-      url.appendSegment(domain);
+      url.appendSegment(post.domainSlug);
       url.appendSegment(post.slug);
     } else {
       const base = Post.getDirectory(post.type);

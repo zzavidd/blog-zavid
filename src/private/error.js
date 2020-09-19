@@ -2,6 +2,10 @@ const server = require('./singleton').getServer();
 
 const { ErrorBuilder } = require('../classes');
 
+const isDev = process.env.NODE_ENV !== 'production';
+
+const PROD_ERR_MESSAGE = 'A problem occurred. Please try again later!';
+
 exports.debug = (err) => {
   throw err;
 };
@@ -9,12 +13,12 @@ exports.debug = (err) => {
 // eslint-disable-next-line no-unused-vars
 exports.renderErrorPage = (err, req, res, next) => {
   console.error(err.toString());
-  const { message, status } = err;
-  const errorPage = status === 404 ? '/404' : '/_error';
+  const errorPage = err.status === 404 ? '/404' : '/_error';
+  const message = isDev ? err.message : PROD_ERR_MESSAGE;
   server.render(req, res, errorPage, { message });
 };
 
-exports = {
+exports.ERRORS = {
   NO_ENTITY: (entity) => {
     new ErrorBuilder(`No such ${entity} exists.`, 404);
   },

@@ -15,7 +15,7 @@ router.get('/diary', function (req, res) {
   return server.render(req, res, '/diary', {
     title: `Diary | ${siteTitle}`,
     description: 'Dear Zavid, how have you been feeling?',
-    url: '/diary'
+    ogUrl: '/diary'
   });
 });
 

@@ -19,9 +19,8 @@ class PostBuilder {
     return this;
   }
 
-  withDomain(id, type) {
+  withDomain(id) {
     this.post.domainId = id;
-    this.post.domainType = type;
     return this;
   }
 

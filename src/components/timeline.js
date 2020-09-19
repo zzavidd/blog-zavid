@@ -11,7 +11,7 @@ export const TIMELINE_TYPE = {
 };
 
 export default ({ type, previous, next }) => {
-  if (!previous && !next) return null;
+  if (!previous.slug && !next.slug) return null;
   return (
     <div className={css['timeline']}>
       <PrevNextEntity type={type} entity={previous} isPrevious={true} />

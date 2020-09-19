@@ -16,7 +16,9 @@ type Post {
   status: PostStatus
   createTime: String
   domainId: Int
+  domainTitle: String
   domainType: PostType
+  domainSlug: String
 }
 
 extend type Query {
@@ -71,7 +73,7 @@ input PostInput {
   # No slug
   title: String!
   type: PostType!
-  typeId: Int
+  typeId: Int!
   datePublished: String
   content: String
   image: ImageState
@@ -79,7 +81,6 @@ input PostInput {
   excerpt: String
   status: PostStatus
   domainId: Int
-  domainType: PostType
 }
 
 input PostSortOptions {

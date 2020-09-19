@@ -15,7 +15,9 @@ const postFragments = gql`
     slug
     createTime
     domainId
+    domainTitle
     domainType
+    domainSlug
   }
 `;
 

@@ -90,7 +90,8 @@ exports.uploadImages = (post, options = {}) => {
             resolve(post);
           }
         );
-      });
+      })
+      .catch(debug);
   });
 };
 
@@ -169,10 +170,9 @@ exports.replaceImages = (id, post, options) => {
  * @returns {Promise} Represents the directory, slug and filename for the post.
  */
 const generateSlugAndFilename = (post) => {
-  const isPage = Post.isPage(post.type);
   const title = zString.constructCleanSlug(post.title);
 
-  if (isPage) {
+  if (Post.isPage(post)) {
     return Promise.resolve()
       .then(() => {
         const {
@@ -190,15 +190,17 @@ const generateSlugAndFilename = (post) => {
       })
       .catch(debug);
   } else {
-    return Promise.resolve()
-      .then(() => {
+    return new Promise((resolve, reject) => {
+      try {
         const directory = Post.getDirectory(post.type);
         const slug = title;
         const number = post.typeId.toString().padStart(3, '0');
         const filename = `${number}-${title}`;
 
-        return { directory, filename, slug };
-      })
-      .catch(debug);
+        resolve({ directory, filename, slug });
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 };
