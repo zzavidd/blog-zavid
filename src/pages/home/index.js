@@ -1,35 +1,55 @@
+import classnames from 'classnames';
 import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import { Post } from 'classes';
 import { Field, FieldRow } from 'components/form';
-import CloudImage, { ASPECT_RATIO } from 'components/image';
-import { Title, Paragraph, VanillaLink } from 'components/text';
+import CloudImage, { ASPECT_RATIO, Signature } from 'components/image';
+import { Title, Paragraph, VanillaLink, Divider } from 'components/text';
+import { redevelopmentDate } from 'constants/settings';
 import css from 'styles/pages/Home.module.scss';
 
 const Home = ({ homeText, latestDiaryEntry, randomPosts }) => {
   return (
-    <div className={css['home-page']}>
-      <FieldRow>
-        <Field xl={4}>
-          <LatestDiaryEntry entry={latestDiaryEntry} />
-        </Field>
-        <Field xl={4}>
-          <Introduction content={homeText} />
-        </Field>
-      </FieldRow>
-      <FieldRow>
+    <>
+      <div className={css['home-page']}>
+        <Introduction content={homeText} />
+        <Divider />
+        <HomeRow>
+          <HomeField lg={6}>
+            <LatestDiaryEntry entry={latestDiaryEntry} />
+          </HomeField>
+          <HomeField lg={6}></HomeField>
+        </HomeRow>
+      </div>
+      <HomeRow>
         <RandomPosts posts={randomPosts} />
-      </FieldRow>
-    </div>
+      </HomeRow>
+    </>
   );
 };
 
-const Introduction = ({content}) => {
+const Introduction = ({ content }) => {
   return (
-    <div className={css['introduction']}>
-      <div className={css['introduction-text']}>{content}</div>
-    </div>
+    <HomeRow className={css['introduction-wrapper']}>
+      <HomeField xl={8}>
+        <div className={css['introduction-text']}>
+          <Title className={css['introduction-welcome']}>
+            You&#39;ve arrived. Welcome.
+          </Title>
+          <Paragraph
+            className={css['introduction-message']}
+            substitutions={{
+              redevelopmentDate: zDate.formatDate(redevelopmentDate, false)
+            }}>
+            {content}
+          </Paragraph>
+        </div>
+      </HomeField>
+      <HomeField xl={4}>
+        <Signature className={css['introduction-signature']} />
+      </HomeField>
+    </HomeRow>
   );
 };
 
@@ -75,6 +95,23 @@ const RandomPosts = ({ posts }) => {
         );
       })}
     </div>
+  );
+};
+
+const HomeRow = (props) => {
+  const classes = classnames(css['home-row'], props.className);
+  return (
+    <FieldRow {...props} className={classes}>
+      {props.children}
+    </FieldRow>
+  );
+};
+
+const HomeField = (props) => {
+  return (
+    <Field {...props} className={css['home-field']}>
+      {props.children}
+    </Field>
   );
 };
 

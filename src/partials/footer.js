@@ -1,12 +1,11 @@
 import { useMutation } from '@apollo/client';
-import classnames from 'classnames';
 import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { Subscriber } from 'classes';
 import { alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
-import { FieldRow, Field, Label, TextInput } from 'components/form';
+import { FieldRow, Field, TextInput } from 'components/form';
 import { Icon } from 'components/icon';
 import { Title, VanillaLink } from 'components/text';
 import { copyright, accounts } from 'constants/settings';
