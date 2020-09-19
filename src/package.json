@@ -1,6 +1,7 @@
 {
   "scripts": {
     "build": "NODE_ENV=development next build",
+    "build:ci": "next build",
     "dev": "node server.js",
     "prod": "NODE_ENV=production node server.js",
     "test": "npm run test:unit && npm run test:service",
