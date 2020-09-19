@@ -3,7 +3,7 @@ import { zDate, zLogic } from 'zavid-modules';
 
 import { Post } from 'classes';
 import { BackButton, AdminButton } from 'components/button';
-import CloudImage, { cloudinaryBaseUrl } from 'components/image';
+import CloudImage, { cloudinaryBaseUrl, Signature } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Paragraph, Title, Divider } from 'components/text';
@@ -34,6 +34,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
           substitutions={substitutions}>
           {post.content}
         </Paragraph>
+        <Signature />
         <Timeline
           type={TIMELINE_TYPE.REVERIE}
           previous={{

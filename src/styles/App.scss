@@ -40,18 +40,7 @@
 }
 
 .icon {
-  @include themer(&, color, $light: #000, $dark: #fff);
   margin-right: 0.4em;
-}
-
-.react-switch-bg div {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-
-  svg {
-    margin-right: 0;
-  }
 }
 
 .page-heading {
@@ -69,6 +58,10 @@
   padding: 0.5em 0 1em;
   text-align: center;
 }
+
+////////////////////////////////
+/// Cookies
+////////////////////////////////
 
 .cookie-prompt-wrapper {
   @include responsive(font-size, 1em, $md: 0.8em);
@@ -108,4 +101,12 @@
       }
     }
   }
+}
+
+////////////////////////////////
+/// Image
+////////////////////////////////
+
+.signature {
+  @include responsive(max-width, 200px, $md: 150px);
 }

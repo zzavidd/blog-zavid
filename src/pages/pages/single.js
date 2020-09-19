@@ -22,7 +22,6 @@ const PageSingle = ({ page }) => {
         </Paragraph>
       </div>
       <Toolbar spaceItems={true} hasBackButton={true}>
-        {/* TODO: (Phase 2) Account for other post types */}
         <AdminButton onClick={() => navigateToEdit(page.id)}>
           Edit Page
         </AdminButton>
