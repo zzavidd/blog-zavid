@@ -64,26 +64,65 @@
 /// FOOTER
 ////////////////////////////////
 
+@mixin footer-title($margin-bottom) {
+  @include responsive(font-size, 1.3em, $md: 1em);
+  letter-spacing: -1px !important;
+  margin-bottom: $margin-bottom;
+  text-transform: uppercase;
+}
+
 .footer {
+  @include responsive(padding, 1em, $lg: 2em 0.5em);
   background-color: #111;
   border-top: 1px solid #fff;
-  padding: 1em;
 
   * {
     color: #fff !important;
   }
 }
 
+.footer-field {
+  @media (max-width: $break-lg){
+    margin-bottom: 1em !important;
+  }
+}
+
+.footer-links-title {
+  @include footer-title(0.5em);
+}
+
 .footer-link {
-  @include responsive(font-size, 1.1em, $md: 1em);
+  @include responsive(font-size, 1.1em, $md: 0.9em);
   display: block;
   font-weight: bold;
   margin: 0.3em 0;
+  width: fit-content;
+}
+
+.footer-socials-title {
+  @include footer-title(1em);
+}
+
+.footer-socials {
+  @include hover-scale(1.07);
+  @include responsive(font-size, 2.5em, $md: 2em);
+  background-color: #000;
+  border-radius: 50%;
+  margin-right: 0.1em;
+  padding: 0.3em 0.45em;
 }
 
 .footer-copyright {
   @include responsive(font-size, 1em, $md: 0.9em);
   font-family: $title-font;
+}
+
+.quick-subscribe-title {
+  @include footer-title(0.5em);
+}
+
+.quick-subscribe-message {
+  @include responsive(font-size, 1em, $md: 0.9em);
 }
 
 .quick-subscribe-input {

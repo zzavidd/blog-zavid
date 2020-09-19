@@ -7,7 +7,9 @@ import { Subscriber } from 'classes';
 import { alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { FieldRow, Field, Label, TextInput } from 'components/form';
-import { copyright } from 'constants/settings';
+import { Icon } from 'components/icon';
+import { Title, VanillaLink } from 'components/text';
+import { copyright, accounts } from 'constants/settings';
 import { isValidEmail } from 'constants/validations';
 import { CREATE_SUBSCRIBER_QUERY } from 'private/api/queries/subscriber.queries';
 import css from 'styles/Partials.module.scss';
@@ -19,24 +21,19 @@ const footerLinks = [
 ];
 
 export default () => {
-  const classes = classnames(css['footer']);
   return (
-    <footer className={classes}>
-      <Container>
+    <footer className={css['footer']}>
+      <Container className={css['footer-container']}>
         <FieldRow>
-          <Field lg={{ span: 4, order: 3 }}>
+          <Field lg={{ span: 5, order: 2 }} className={css['footer-field']}>
+            <SocialPlugs />
+          </Field>
+          <Field lg={{ span: 4, order: 3 }} className={css['footer-field']}>
             <SubscribeForm />
           </Field>
-          <Field lg={{ span: 4, order: 1 }}>
-            {footerLinks.map(({ name, url }, key) => {
-              return (
-                <a key={key} href={url} className={css['footer-link']}>
-                  {name}
-                </a>
-              );
-            })}
+          <Field lg={{ span: 3, order: 1 }} className={css['footer-field']}>
+            <FooterLinks />
           </Field>
-          <Field lg={{ span: 4, order: 2 }}></Field>
         </FieldRow>
         <FieldRow>
           <Field>
@@ -45,6 +42,47 @@ export default () => {
         </FieldRow>
       </Container>
     </footer>
+  );
+};
+
+const FooterLinks = () => {
+  return (
+    <>
+      <Title className={css['footer-links-title']}>INFORMATION</Title>
+      {footerLinks.map(({ name, url }, key) => {
+        return (
+          <a key={key} href={url} className={css['footer-link']}>
+            {name}
+          </a>
+        );
+      })}
+    </>
+  );
+};
+
+const SocialPlugs = () => {
+  return (
+    <div>
+      <Title className={css['footer-socials-title']}>
+        Follow me on socials
+      </Title>
+      <div>
+        <VanillaLink href={accounts.twitter} className={css['footer-socials']}>
+          <Icon name={'twitter'} prefix={'fab'} />
+        </VanillaLink>
+        <VanillaLink
+          href={accounts.instagram}
+          className={css['footer-socials']}>
+          <Icon name={'instagram'} prefix={'fab'} />
+        </VanillaLink>
+        <VanillaLink href={accounts.linkedin} className={css['footer-socials']}>
+          <Icon name={'linkedin'} prefix={'fab'} />
+        </VanillaLink>
+        <VanillaLink href={accounts.snapchat} className={css['footer-socials']}>
+          <Icon name={'snapchat-ghost'} prefix={'fab'} />
+        </VanillaLink>
+      </div>
+    </div>
   );
 };
 
@@ -66,7 +104,6 @@ const SubscribeForm = () => {
     setRequestPending(createLoading);
   }, [createLoading]);
 
-  /** Create new subscriber on server. */
   const subscribeEmail = () => {
     if (!isValidEmail(email)) return false;
 
@@ -99,8 +136,10 @@ const SubscribeForm = () => {
 
   return (
     <div>
-      <Label>Quick Subscribe</Label>
-      <div>And never miss a diary entry nor a post.</div>
+      <Title className={css['quick-subscribe-title']}>Quick Subscribe</Title>
+      <div className={css['quick-subscribe-message']}>
+        And never miss a diary entry nor a post.
+      </div>
       <TextInput
         value={email}
         onChange={(e) => setEmail(e.target.value)}

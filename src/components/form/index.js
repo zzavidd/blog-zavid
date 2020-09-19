@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -133,8 +134,9 @@ export const FieldRow = (props) => {
  * @returns {React.Component} The component.
  */
 export const Field = (props) => {
+  const classes = classnames(css['form-field'], props.className);
   return (
-    <Col {...props} className={css['form-field']}>
+    <Col {...props} className={classes}>
       {props.children}
     </Col>
   );
