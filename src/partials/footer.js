@@ -68,18 +68,18 @@ const SocialPlugs = () => {
       </Title>
       <div>
         <VanillaLink href={accounts.twitter} className={css['footer-socials']}>
-          <Icon name={'twitter'} prefix={'fab'} />
+          <Icon name={'twitter'} prefix={'fab'} withRightSpace={false} />
         </VanillaLink>
         <VanillaLink
           href={accounts.instagram}
           className={css['footer-socials']}>
-          <Icon name={'instagram'} prefix={'fab'} />
+          <Icon name={'instagram'} prefix={'fab'} withRightSpace={false} />
         </VanillaLink>
         <VanillaLink href={accounts.linkedin} className={css['footer-socials']}>
-          <Icon name={'linkedin'} prefix={'fab'} />
+          <Icon name={'linkedin'} prefix={'fab'} withRightSpace={false} />
         </VanillaLink>
         <VanillaLink href={accounts.snapchat} className={css['footer-socials']}>
-          <Icon name={'snapchat-ghost'} prefix={'fab'} />
+          <Icon name={'snapchat-ghost'} prefix={'fab'} withRightSpace={false} />
         </VanillaLink>
       </div>
     </div>

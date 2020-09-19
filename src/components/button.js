@@ -116,7 +116,7 @@ export const BackButton = (props) => {
       {...props}
       className={classnames(css['button-back'], props.className)}>
       <span>
-        <Icon name={'chevron-left'} />
+        <Icon name={'chevron-left'} withRightSpace={true} />
       </span>
       <span>{props.children}</span>
     </InvisibleButton>

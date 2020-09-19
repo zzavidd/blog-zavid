@@ -39,6 +39,12 @@
   }
 }
 
+.icon {
+  &-right-space {
+    margin-right: 0.4em;
+  }
+}
+
 .page-heading {
   @include responsive(font-size, 2.5em, $sm: 2.1em);
   text-align: center;
