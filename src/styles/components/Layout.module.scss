@@ -6,6 +6,10 @@
   padding: 1.8em 1.2em;
 }
 
+.flexer {
+  display: flex;
+}
+
 .partitioner {
   @include responsive(width, 70%, $xxl: 80%, $md: 90%, $sm: 100%);
   @include responsive(display, grid, $lg: block);

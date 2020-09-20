@@ -14,6 +14,12 @@ class QueryBuilder {
     return this;
   }
 
+  exceptId(id){
+    if (isFalsy(id)) return this;
+    this.query.whereNot(`${this.table}.id`, id);
+    return this;
+  }
+
   /**
    * Enables sorting or randomising of the results.
    * @param {object} [sort] The sort details.

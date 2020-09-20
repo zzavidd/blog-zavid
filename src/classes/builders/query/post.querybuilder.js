@@ -3,6 +3,7 @@ const { isFalsy } = zLogic;
 
 const { QueryBuilder, MutationBuilder } = require('./super');
 
+const { ORDER } = require('../../../constants/strings');
 const Post = require('../../static/post.static');
 
 const TABLE_NAME = 'posts';
@@ -54,6 +55,11 @@ class PostQueryBuilder extends QueryBuilder {
   whereDomainSlug(slug) {
     if (isFalsy(slug)) return this;
     this.query.where(`domain.slug`, slug);
+    return this;
+  }
+
+  getLatestPost(){
+    this.query.orderBy('typeId', ORDER.DESCENDING).limit(1);
     return this;
   }
 

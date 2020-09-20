@@ -9,7 +9,7 @@ import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
 import { Paragraph, Title, VanillaLink } from 'components/text.js';
-import { Zoomer } from 'components/transitioner.js';
+import { Fader } from 'components/transitioner.js';
 import { ORDER } from 'constants/strings.js';
 import { isAuthenticated } from 'lib/cookies';
 import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
@@ -65,13 +65,13 @@ const DiaryGrid = ({ diaryEntries }) => {
   return (
     <div className={css['diary-grid']}>
       {diaryEntries.map((diaryEntry, key) => (
-        <DiaryEntry diaryEntry={diaryEntry} key={key} />
+        <DiaryEntry diaryEntry={diaryEntry} idx={key} key={key} />
       ))}
     </div>
   );
 };
 
-const DiaryEntry = memo(({ diaryEntry }) => {
+const DiaryEntry = memo(({ diaryEntry, idx }) => {
   const theme = useSelector(({ theme }) => theme);
   const [isInView, setInView] = useState(false);
 
@@ -80,9 +80,10 @@ const DiaryEntry = memo(({ diaryEntry }) => {
   return (
     <LazyLoader setInView={setInView}>
       <VanillaLink href={link}>
-        <Zoomer
+        <Fader
           determinant={isInView}
-          duration={400}
+          duration={750}
+          delay={(idx * 50) + 50}
           className={css[`diary-entry-${theme}`]}
           postTransitions={'background-color .4s ease'}>
           <Title className={css['diary-entry-title']}>{title}</Title>
@@ -96,7 +97,7 @@ const DiaryEntry = memo(({ diaryEntry }) => {
             morelink={link}>
             {diaryEntry.content}
           </Paragraph>
-        </Zoomer>
+        </Fader>
       </VanillaLink>
     </LazyLoader>
   );

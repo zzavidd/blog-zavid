@@ -12,6 +12,11 @@ export const Container = ({ children, className }) => {
   return <div className={classes}>{children}</div>;
 };
 
+export const Flexer = ({children, className}) => {
+  const classes = classnames(css['flexer'], className);
+  return <div className={classes}>{children}</div>;
+}
+
 export const Partitioner = ({ children, className }) => {
   const classes = classnames(css['partitioner'], className);
   return <div className={classes}>{children}</div>;
@@ -54,8 +59,15 @@ export const ToolbarToggle = ({ children, toggle }) => {
   );
 };
 
-export const Responsive = ({ defaultView = null, laptopView, tabletView, mobileView }) => {
-  if (laptopView) {
+export const Responsive = ({ defaultView = null, xl, laptopView, tabletView, mobileView }) => {
+  if (xl) {
+    return (
+      <>
+        <MediaQuery minWidth={1200}>{defaultView}</MediaQuery>
+        <MediaQuery maxWidth={1200}>{xl}</MediaQuery>
+      </>
+    );
+  } else if (laptopView) {
     return (
       <>
         <MediaQuery minWidth={992}>{defaultView}</MediaQuery>
