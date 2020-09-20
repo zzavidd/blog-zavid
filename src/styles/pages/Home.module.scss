@@ -15,7 +15,7 @@
 }
 
 .introduction-wrapper {
-  @include responsive(width, 60%, $xl: 80%, $lg: 90%, $sm: 100%);
+  @include responsive(width, 80%, $lg: 90%, $sm: 100%);
   justify-self: center;
 
   .introduction-text {

@@ -7,7 +7,7 @@ import 'bootstrap/scss/bootstrap.scss';
 import App from 'next/app';
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useSelector, useDispatch } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { checkAlert } from 'components/alert.js';
@@ -16,7 +16,7 @@ import {
   setCookie,
   checkCookiePolicyAccepted
 } from 'lib/cookies';
-import configureStore from 'lib/reducers.js';
+import configureStore, { setTheme } from 'lib/reducers.js';
 import Footer from 'partials/footer.js';
 import Header from 'partials/header.js';
 
@@ -57,7 +57,14 @@ const ZAVIDApp = ({ Component, pageProps }) => {
     checkCookiePolicyAccepted
   );
 
-  const theme = useSelector(({ theme }) => theme || 'light');
+  const theme = useSelector(({ theme }) => {
+    if (theme !== 'light' && theme !== 'dark') {
+      const dispatch = useDispatch();
+      dispatch(setTheme('light'));
+      return 'light';
+    }
+    return theme;
+  });
 
   useEffect(() => {
     ReactGA.initialize('UA-126408615-2');
