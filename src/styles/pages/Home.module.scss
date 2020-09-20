@@ -14,51 +14,146 @@
   padding: 0 !important;
 }
 
+////////////////////////////////
+/// INTRODUCTION
+////////////////////////////////
+
 .introduction-wrapper {
   @include responsive(width, 80%, $lg: 90%, $sm: 100%);
+  border-bottom: 1px solid;
   justify-self: center;
 
   .introduction-text {
     height: 100%;
+  }
 
-    .introduction-welcome {
-      @include responsive(font-size, 2.5em, $md: 2em);
-      margin-bottom: 0.5em;
-    }
+  .introduction-welcome {
+    @include responsive(font-size, 2.5em, $md: 2em);
+    margin-bottom: 0.5em;
+  }
 
-    .introduction-message {
-      @include responsive(font-size, 1.3em, $md: 1em);
-    }
+  .introduction-message {
+    @include responsive(font-size, 1.3em, $md: 1em);
   }
 
   .introduction-signature {
+    @include responsive(margin, 1em 0 0, $xl: 0 0 0);
     @include responsive(max-width, 100%, $xl: 250px, $sm: 150px);
+    @include responsive(padding, 1em, $xl: 0 0 2em);
   }
 }
 
-.latest-diary {
-  @include responsive(padding, 1em 1.5em, $sm: 0.5em 1em);
+////////////////////////////////
+/// LATEST
+////////////////////////////////
+
+%latest-segment {
+  @include responsive(border-top, none, $xl: 1px solid);
+  @include responsive(padding, 2em, $xl: 2em 1em, $sm: 2em 0);
+  @include responsive(width, $xl: 90%, $sm: 100%);
   height: 100%;
+  margin: 0 auto;
 }
 
-.latest-diary-title {
+%latest-title {
   @include responsive(font-size, 1.7em, $md: 1.4em);
   @include responsive(letter-spacing, 0, $md: -1px);
-  margin-top: 0.3em;
+  margin-top: 0.1em;
 }
 
-.random-posts {
+%latest-icon {
+  @include responsive(font-size, 4.5em, $sm: 4.5em);
+}
+
+%latest-readmore {
+  @include responsive(font-size, 1em, $sm: 0.8em);
+}
+
+.latest-shared-heading {
+  @include responsive(font-size, 1em, $sm: 0.8em);
+}
+
+.latest-diary {
+  @extend %latest-segment;
+
+  .latest-diary-title {
+    @extend %latest-title;
+  }
+
+  .latest-diary-feather {
+    @extend %latest-icon;
+    margin-left: 0.4em;
+  }
+
+  .latest-diary-readmore {
+    @extend %latest-readmore;
+  }
+}
+
+.latest-reverie {
+  @extend %latest-segment;
+  @include responsive(border-left, 1px solid, $xl: none);
+
+  .latest-reverie-icon {
+    @extend %latest-icon;
+    margin-right: 0.3em;
+  }
+
+  .latest-reverie-title {
+    @extend %latest-title;
+  }
+
+  .latest-reverie-date {
+    @include responsive(font-size, 1em, $sm: 0.7em);
+  }
+
+  .latest-reverie-content {
+    @include responsive(font-size, 1.2em, $sm: 0.9em);
+    margin: 0;
+  }
+
+  .latest-reverie-readmore {
+    @extend %latest-readmore;
+  }
+
+  .latest-reverie-image-container {
+    @include responsive(max-width, 350px, $xl: 800px);
+    @include responsive(margin, 0 0 0 1em, $xl: 1em 0);
+
+    .latest-reverie-image {
+      border-radius: 10px;
+    }
+  }
+}
+
+////////////////////////////////
+/// RANDOM POSTS
+////////////////////////////////
+
+.random-posts-wrapper {
   @include responsive(padding, 0.5em 2em, $md: 0 1em);
-  @include responsive(
-    grid-template-columns,
-    repeat(4, 25%),
-    $lg: repeat(2, 50%),
-    $sm: 100%
-  );
   background: rgba($color: #000, $alpha: 0.7);
-  display: grid;
-  
-  .random-post {
+  border-top: 1px solid #fff;
+
+  .random-posts-heading {
+    @include responsive(font-size, 1.3em, $md: 1.1em);
+    @include responsive(letter-spacing, 0, $md: -1px);
+    color: #fff;
+    margin-top: 1em;
+    text-align: center;
+  }
+
+  .random-posts-grid {
+    @include responsive(
+      grid-template-columns,
+      repeat(4, 25%),
+      $lg: repeat(2, 50%),
+      $sm: 100%
+    );
+    display: grid;
+  }
+
+  .random-post-unit {
     @include hover-scale(1.08);
     cursor: pointer;
     margin: 1em;

@@ -6,9 +6,10 @@ const seoRoutes = require('./seo');
 
 const {
   Post,
+  PostQueryBuilder,
+  Diary,
   DiaryQueryBuilder,
-  PageQueryBuilder,
-  PostQueryBuilder
+  PageQueryBuilder
 } = require('../../classes');
 const { siteTitle } = require('../../constants/settings');
 const { ORDER } = require('../../constants/strings');
@@ -28,23 +29,46 @@ app.use('/', [
 ]);
 
 app.get(['/', '/home'], function (req, res) {
-  Promise.all([
-    new PageQueryBuilder(knex).whereSlug('home').build(),
-    new DiaryQueryBuilder(knex).getLatestEntry().build(),
-    new PostQueryBuilder(knex)
+  const getHomeText = new PageQueryBuilder(knex).whereSlug('home').build();
+  const getLatestDiaryEntry = new DiaryQueryBuilder(knex)
+    .whereStatus({ include: [Diary.STATUSES.PUBLISHED] })
+    .getLatestEntry()
+    .build();
+  const getLatestReverie = new PostQueryBuilder(knex)
+    .whereType({
+      include: [Post.TYPES.REVERIE.TITLE]
+    })
+    .whereStatus({ include: [Post.STATUSES.PUBLISHED] })
+    .getLatestPost()
+    .build();
+  const getRandomPosts = (id) => {
+    return new PostQueryBuilder(knex)
       .whereType({ exclude: [Post.TYPES.PAGE.TITLE] })
       .whereStatus({ include: [Post.STATUSES.PUBLISHED] })
+      .exceptId(id)
       .withOrder({ order: ORDER.RANDOM })
       .withLimit(4)
-      .build()
-  ])
-    .then(([[homepage], [latestDiaryEntry], randomPosts]) => {
+      .build();
+  };
+
+  Promise.all([getHomeText, getLatestDiaryEntry, getLatestReverie])
+    .then((results) => {
+      const [[homepage], [latestDiaryEntry], [latestReverie]] = results;
+      return Promise.all([
+        Promise.resolve(homepage),
+        Promise.resolve(latestDiaryEntry),
+        Promise.resolve(latestReverie),
+        getRandomPosts(latestReverie.id)
+      ]);
+    })
+    .then(([homepage, latestDiaryEntry, latestReverie, randomPosts]) => {
       return server.render(req, res, '/home', {
         title: siteTitle,
         description: 'Explore the metaphysical manifestation of my mind.',
         ogUrl: '/',
         homeText: homepage.content,
         latestDiaryEntry,
+        latestReverie,
         randomPosts
       });
     })

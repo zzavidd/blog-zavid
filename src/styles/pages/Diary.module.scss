@@ -26,11 +26,13 @@
   &-light {
     @extend %diary-entry;
 
-    &:hover {
-      background-color: $dark;
+    @media (min-width: $break-md) {
+      &:hover {
+        background-color: $dark;
 
-      * {
-        color: #fff !important;
+        * {
+          color: #fff !important;
+        }
       }
     }
   }
@@ -38,11 +40,13 @@
   &-dark {
     @extend %diary-entry;
 
-    &:hover {
-      background-color: #cacaca;
+    @media (min-width: $break-md) {
+      &:hover {
+        background-color: #cacaca;
 
-      * {
-        color: #000 !important;
+        * {
+          color: #000 !important;
+        }
       }
     }
   }

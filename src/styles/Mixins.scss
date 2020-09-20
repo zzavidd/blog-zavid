@@ -5,8 +5,10 @@
 /// @param {any} [$md] - Optional value for tablets
 /// @param {any} [$lg] - Optional value for small desktops
 /// @param {any} [$xl] - Optional value for large desktops.
-@mixin responsive($attr, $default, $sm: 0, $md: 0, $lg: 0, $xl: 0, $xxl: 0) {
-  #{$attr}: $default;
+@mixin responsive($attr, $default: 0, $sm: 0, $md: 0, $lg: 0, $xl: 0, $xxl: 0) {
+  @if $default != 0 {
+    #{$attr}: $default;
+  }
 
   @if $xxl != 0 {
     @media (max-width: $break-xxl) {
