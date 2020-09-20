@@ -7,7 +7,7 @@ export default ({
   title = 'Page Not Found',
   ogUrl = '',
   description = '',
-  cardImage = 'static/bg/card-home.jpg'
+  cardImage = 'v1600638270/static/bg/card-home.jpg'
 }) => {
   return (
     <>
