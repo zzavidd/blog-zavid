@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { alert } from 'components/alert.js';
 import { InvisibleButton } from 'components/button';
@@ -54,7 +55,8 @@ export const readCookie = (cookieName) => {
 };
 
 export const isAuthenticated = () => {
-  return readCookie('zAuth');
+  const user = useSelector(({ user }) => user);
+  return !!user.id;
 };
 
 export const setCookie = (name, value, hours) => {

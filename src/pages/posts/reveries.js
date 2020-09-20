@@ -56,7 +56,7 @@ export default () => {
         />
       </Partitioner>
       <Toolbar spaceItems={true}>
-      {isAuthenticated && <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>}
+      {isAuthenticated() && <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>}
       </Toolbar>
     </Spacer>
   );

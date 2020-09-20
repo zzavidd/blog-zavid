@@ -51,7 +51,7 @@ export default () => {
         <DiaryGrid diaryEntries={diaryEntries} />
       </div>
       <Toolbar spaceItems={true}>
-        {isAuthenticated && (
+        {isAuthenticated() && (
           <AdminButton onClick={navigateToDiaryAdmin}>Diary Admin</AdminButton>
         )}
       </Toolbar>

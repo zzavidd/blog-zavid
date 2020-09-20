@@ -46,7 +46,7 @@ const DiarySingle = ({
       </div>
       <Toolbar spaceItems={true} hasBackButton={true}>
         <BackButton onClick={navigateToReveries}>Back to Diary</BackButton>
-        {isAuthenticated && (
+        {isAuthenticated() && (
           <AdminButton onClick={() => navigateToEdit(diaryEntry.id)}>
             Edit Diary Entry
           </AdminButton>

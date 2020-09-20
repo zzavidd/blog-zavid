@@ -23,7 +23,7 @@ const PageSingle = ({ page }) => {
         </Paragraph>
       </div>
       <Toolbar spaceItems={true} hasBackButton={true}>
-        {isAuthenticated && (
+        {isAuthenticated() && (
           <AdminButton onClick={() => navigateToEdit(page.id)}>
             Edit Page
           </AdminButton>
