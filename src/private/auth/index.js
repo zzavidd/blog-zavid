@@ -4,13 +4,14 @@ const expressSession = require('express-session');
 const FileStore = require('session-file-store')(expressSession);
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
+
 const path = require('path');
 
+const { domain } = require('../../constants/settings');
 const app = require('../singleton').getApp();
+const server = require('../singleton').getServer();
 
 const isDev = process.env.NODE_ENV !== 'production';
-
-const { domain } = require('../../constants/settings');
 
 app.use(
   expressSession({
@@ -37,7 +38,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(function (id, done) {
-  done(null, {});
+  done(null, {id});
 });
 
 passport.use(
@@ -62,11 +63,10 @@ passport.use(
   )
 );
 
-router.use('/admin', (req, res, next) => {
+router.use('/admin', function (req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    req.session.returnTo = req.originalUrl;
     res.redirect('/login');
   }
 });
@@ -80,11 +80,25 @@ app.get(
 
 app.get(
   '/login/redirect',
-  passport.authenticate('google', { failureRedirect: '/' }),
+  passport.authenticate('google', {
+    failureRedirect: '/logout'
+  }),
   function (req, res) {
-    res.redirect(req.session.returnTo || '/');
-    delete req.session.returnTo;
+    return server.render(req, res, '/admin/redirect', {
+      title: `Redirecting...`,
+      user: req.user
+    });
   }
 );
+
+app.get('/logout', function (req, res) {
+  if (!req.session) res.redirect('/');
+  req.session.destroy(() => {
+    req.logout();
+    server.render(req, res, '/admin/logout', {
+      title: `Redirecting...`
+    });
+  });
+});
 
 module.exports = router;

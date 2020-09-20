@@ -16,6 +16,15 @@ export const updatePostFilterSettings = (settings) => ({
   payload: settings
 });
 
+export const setUser = (user) => ({
+  type: 'SET_USER',
+  payload: user
+});
+
+export const clearUser = () => ({
+  type: 'CLEAR_USER'
+});
+
 /**
  * REDUCERS.
  */
@@ -41,6 +50,17 @@ const postReducer = (
   }
 };
 
+const userReducer = (state = {}, { type, payload }) => {
+  switch (type) {
+    case 'SET_USER':
+      return payload || state;
+    case 'CLEAR_USER':
+      return {};
+    default:
+      return state;
+  }
+};
+
 /**
  * STORE.
  */
@@ -54,7 +74,8 @@ const persistedReducer = persistReducer(
   config,
   combineReducers({
     theme: themeReducer,
-    postFilterOptions: postReducer
+    postFilterOptions: postReducer,
+    user: userReducer
   })
 );
 

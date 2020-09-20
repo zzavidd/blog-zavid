@@ -54,7 +54,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
       </div>
       <Toolbar spaceItems={true} hasBackButton={true}>
         <BackButton onClick={navigateToReveries}>Back to Reveries</BackButton>
-        {isAuthenticated && (
+        {isAuthenticated() && (
           <AdminButton onClick={() => navigateToEdit(post.id)}>
             Edit Reverie
           </AdminButton>
