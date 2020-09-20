@@ -89,13 +89,7 @@ app.get(
   passport.authenticate('google', {
     successRedirect: '/redirect',
     failureRedirect: '/logout'
-  }),
-  function (req, res) {
-    return server.render(req, res, '/admin/redirect', {
-      title: `Redirecting...`,
-      user: req.user
-    });
-  }
+  })
 );
 
 app.get('/logout', function (req, res) {
