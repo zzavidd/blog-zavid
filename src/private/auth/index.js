@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const expressSession = require('express-session');
-// const MySQLStore = require('express-mysql-session')(expressSession);
+const MemoryStore = require('memorystore')(expressSession);
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
@@ -19,14 +19,9 @@ app.use(
       maxAge: 2 * 60 * 60 * 1000,
       secure: !isDev
     },
-    // store: new MySQLStore({
-    //   host: process.env.MYSQL_HOST,
-    //   port: process.env.PORT,
-    //   user: process.env.MYSQL_USER,
-    //   password: process.env.MYSQL_PWD,
-    //   database: process.env.MYSQL_NAME,
-    //   connectionLimit: 2,
-    // }),
+    store: new MemoryStore({
+      checkPeriod: 24 * 60 * 60 * 1000
+    }),
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
@@ -34,16 +29,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-passport.serializeUser((token, done) => {
-  console.info('Serializing Zavid user');
-  done(null, token);
-});
-
-passport.deserializeUser(function (id, done) {
-  console.info('Deserializing Zavid user');
-  done(null, { id });
-});
 
 passport.use(
   new GoogleStrategy(
@@ -56,7 +41,7 @@ passport.use(
     function (req, accessToken, refreshToken, profile, done) {
       const isZavid = profile.id === process.env.GOOGLE_ACCOUNT_ID;
       if (isZavid) {
-        done(null, accessToken);
+        done(null, profile);
       } else {
         req.session.destroy((err) => {
           if (err) console.error(err);
@@ -66,6 +51,16 @@ passport.use(
     }
   )
 );
+
+passport.serializeUser((user, done) => {
+  console.info('Serializing Zavid user');
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  console.info('Deserializing Zavid user');
+  done(null, { id });
+});
 
 router.use('/admin', function (req, res, next) {
   if (req.isAuthenticated()) {
@@ -82,9 +77,17 @@ app.get(
   })
 );
 
+app.get('/redirect', function (req, res) {
+  return server.render(req, res, '/admin/redirect', {
+    title: `Redirecting...`,
+    user: req.user
+  });
+});
+
 app.get(
   '/login/redirect',
   passport.authenticate('google', {
+    successRedirect: '/redirect',
     failureRedirect: '/logout'
   }),
   function (req, res) {
