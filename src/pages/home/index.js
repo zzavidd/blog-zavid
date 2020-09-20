@@ -154,7 +154,7 @@ const LatestReverieParagraph = ({ reverie }) => {
       truncate={60}
       moreclass={css['latest-reverie-readmore']}
       moretext={'Read my latest reverie...'}
-      morelink={`/diary/${reverie.slug}`}>
+      morelink={`/reveries/${reverie.slug}`}>
       {reverie.content}
     </Paragraph>
   );
