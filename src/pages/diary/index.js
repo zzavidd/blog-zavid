@@ -11,6 +11,7 @@ import { LazyLoader } from 'components/loader.js';
 import { Paragraph, Title, VanillaLink } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { ORDER } from 'constants/strings.js';
+import { isAuthenticated } from 'lib/cookies';
 import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
 import css from 'styles/pages/Diary.module.scss';
 
@@ -30,7 +31,7 @@ export default () => {
           field: 'date',
           order: ORDER.DESCENDING
         },
-        status: { include: [Diary.STATUSES.PUBLISHED] },
+        status: { include: [Diary.STATUSES.PUBLISHED] }
       }
     }
   );
@@ -50,7 +51,9 @@ export default () => {
         <DiaryGrid diaryEntries={diaryEntries} />
       </div>
       <Toolbar spaceItems={true}>
-        <AdminButton onClick={navigateToDiaryAdmin}>Diary Admin</AdminButton>
+        {isAuthenticated && (
+          <AdminButton onClick={navigateToDiaryAdmin}>Diary Admin</AdminButton>
+        )}
       </Toolbar>
     </Spacer>
   );

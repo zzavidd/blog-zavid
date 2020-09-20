@@ -5,7 +5,7 @@ import { InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
 import { Fader } from 'components/transitioner.js';
 
-export const CookiePrompt = ({acceptCookies}) => {
+export const CookiePrompt = ({ acceptCookies }) => {
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -51,6 +51,10 @@ export const readCookie = (cookieName) => {
   }
 
   return '';
+};
+
+export const isAuthenticated = () => {
+  return readCookie('zAuth');
 };
 
 export const setCookie = (name, value, hours) => {
