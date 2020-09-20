@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const expressSession = require('express-session');
-const FileStore = require('session-file-store')(expressSession);
+// const MySQLStore = require('express-mysql-session')(expressSession);
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
-
-const path = require('path');
 
 const { domain } = require('../../constants/settings');
 const app = require('../singleton').getApp();
@@ -21,10 +19,14 @@ app.use(
       maxAge: 2 * 60 * 60 * 1000,
       secure: !isDev
     },
-    store: new FileStore({
-      path: path.join(__dirname, 'sessions'),
-      retries: 1
-    }),
+    // store: new MySQLStore({
+    //   host: process.env.MYSQL_HOST,
+    //   port: process.env.PORT,
+    //   user: process.env.MYSQL_USER,
+    //   password: process.env.MYSQL_PWD,
+    //   database: process.env.MYSQL_NAME,
+    //   connectionLimit: 2,
+    // }),
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
@@ -33,12 +35,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
+passport.serializeUser((token, done) => {
+  console.info('Serializing Zavid user');
+  done(null, token);
 });
 
 passport.deserializeUser(function (id, done) {
-  done(null, {id});
+  console.info('Deserializing Zavid user');
+  done(null, { id });
 });
 
 passport.use(
@@ -52,7 +56,7 @@ passport.use(
     function (req, accessToken, refreshToken, profile, done) {
       const isZavid = profile.id === process.env.GOOGLE_ACCOUNT_ID;
       if (isZavid) {
-        done(null, profile);
+        done(null, accessToken);
       } else {
         req.session.destroy((err) => {
           if (err) console.error(err);
