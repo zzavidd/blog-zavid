@@ -8,6 +8,7 @@ import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Paragraph, Title, Divider } from 'components/text';
 import Timeline, { TIMELINE_TYPE } from 'components/timeline';
+import { isAuthenticated } from 'lib/cookies';
 import css from 'styles/pages/Posts.module.scss';
 
 const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
@@ -53,9 +54,11 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
       </div>
       <Toolbar spaceItems={true} hasBackButton={true}>
         <BackButton onClick={navigateToReveries}>Back to Reveries</BackButton>
-        <AdminButton onClick={() => navigateToEdit(post.id)}>
-          Edit Reverie
-        </AdminButton>
+        {isAuthenticated && (
+          <AdminButton onClick={() => navigateToEdit(post.id)}>
+            Edit Reverie
+          </AdminButton>
+        )}
       </Toolbar>
     </Spacer>
   );

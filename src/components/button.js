@@ -88,8 +88,6 @@ export const DeleteButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const AdminButton = (props) => {
-  if (!readCookie('zAuth')) return null;
-
   const { mobileText, children } = props;
   const theme = useSelector(({ theme }) => theme);
   const classes = classnames(css[`button-admin-${theme}`], props.className);

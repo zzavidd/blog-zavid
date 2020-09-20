@@ -4,6 +4,7 @@ import { zDate } from 'zavid-modules';
 import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { Paragraph, Title } from 'components/text';
+import { isAuthenticated } from 'lib/cookies';
 import css from 'styles/pages/Posts.module.scss';
 
 const PageSingle = ({ page }) => {
@@ -22,9 +23,11 @@ const PageSingle = ({ page }) => {
         </Paragraph>
       </div>
       <Toolbar spaceItems={true} hasBackButton={true}>
-        <AdminButton onClick={() => navigateToEdit(page.id)}>
-          Edit Page
-        </AdminButton>
+        {isAuthenticated && (
+          <AdminButton onClick={() => navigateToEdit(page.id)}>
+            Edit Page
+          </AdminButton>
+        )}
       </Toolbar>
     </Spacer>
   );

@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const expressSession = require('express-session');
+const FileStore = require('session-file-store')(expressSession);
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const path = require('path');
 
-const app = require('./singleton').getApp();
+const app = require('../singleton').getApp();
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-const { domain } = require('../constants/settings');
+const { domain } = require('../../constants/settings');
 
 app.use(
   expressSession({
@@ -18,6 +20,10 @@ app.use(
       maxAge: 2 * 60 * 60 * 1000,
       secure: !isDev
     },
+    store: new FileStore({
+      path: path.join(__dirname, 'sessions'),
+      retries: 1
+    }),
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true

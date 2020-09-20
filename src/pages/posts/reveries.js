@@ -12,6 +12,7 @@ import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { ORDER } from 'constants/strings.js';
+import { isAuthenticated } from 'lib/cookies';
 import { RightSidebar } from 'partials/sidebar';
 import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
 import css from 'styles/pages/Reveries.module.scss';
@@ -55,7 +56,7 @@ export default () => {
         />
       </Partitioner>
       <Toolbar spaceItems={true}>
-        <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
+      {isAuthenticated && <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>}
       </Toolbar>
     </Spacer>
   );
