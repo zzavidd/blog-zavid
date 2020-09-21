@@ -89,7 +89,6 @@ app
   .post(passport.authenticate('local'), function (req, res) {
     req.login({ id: process.env.GOOGLE_ACCOUNT_ID }, function (err) {
       if (err) return res.status(400).send(err.toString());
-      console.log(req.user);
       // res.sendStatus(200);
       res.redirect(req.session.returnTo || '/admin');
     });
@@ -121,7 +120,6 @@ app.get('/logout', function (req, res) {
 // );
 
 const checkAuthenticated = (req, res, next) => {
-  console.log(req.user, req.isAuthenticated());
   if (req.isAuthenticated()) {
     next();
   } else {
