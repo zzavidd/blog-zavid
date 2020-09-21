@@ -16,7 +16,7 @@ router.get(
   function (req, res, next) {
     Promise.resolve()
       .then(() => new PageQueryBuilder(knex).whereSlug('diary').build())
-      .then(([diaryPage]) => {
+      .then(([diaryPage = {}]) => {
         return server.render(req, res, '/diary', {
           title: `Diary | ${siteTitle}`,
           description: 'Dear Zavid, how have you been feeling?',
