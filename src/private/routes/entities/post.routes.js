@@ -109,7 +109,8 @@ router.get('/admin/posts/edit/:id', function (req, res) {
   new PostQueryBuilder(knex)
     .whereId(id)
     .build()
-    .then((post) => {
+    .then(([post]) => {
+      if (!post) throw ERRORS.NO_ENTITY('post');
       return server.render(req, res, '/posts/crud', {
         title: `Edit Post`,
         operation: OPERATIONS.UPDATE,

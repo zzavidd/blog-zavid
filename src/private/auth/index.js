@@ -71,12 +71,10 @@ passport.use(
 );
 
 passport.serializeUser(function (user, done) {
-  console.info('Serializing Zavid user');
   done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
-  console.info('Deserializing Zavid user');
   done(null, { id });
 });
 
