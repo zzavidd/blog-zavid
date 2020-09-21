@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
 import { Subscriber } from 'classes/static';
-import { setAlert, reportError } from 'components/alert';
+import { setAlert, reportError, alert } from 'components/alert';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
 import { isValidSubscriber } from 'constants/validations';
@@ -61,11 +61,8 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
     Promise.resolve()
       .then(() => createSubscriberMutation({ variables }))
       .then(() => {
-        setAlert({
-          type: 'success',
-          message: `You've successfully added a new subscriber.`
-        });
-        returnToSubscriberAdmin();
+        alert.success(`You've successfully added a new subscriber.`);
+        clearSubscriberForm();
       })
       .catch(reportError);
   };
@@ -85,6 +82,11 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
         returnToSubscriberAdmin();
       })
       .catch(reportError);
+  };
+
+  const clearSubscriberForm = () => {
+    setSubscriber({ email: '', firstname: '', lastname: '' });
+    setPreferences(Subscriber.defaultSubscriptions());
   };
 
   return (
