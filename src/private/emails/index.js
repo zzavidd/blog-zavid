@@ -79,7 +79,7 @@ exports.notifyNewPost = (post) => {
 exports.notifyNewDiaryEntry = (diaryEntry) => {
   let { date, content, slug } = diaryEntry;
   date = zDate.formatDate(date, true);
-  const subject = `New Diary Entry.`;
+  const subject = `Diary Entry: ${date}`;
 
   const entity = {
     diaryEntry: Object.assign({}, diaryEntry, {
