@@ -58,7 +58,7 @@ exports.checkAlert = () => {
   const notification = JSON.parse(sessionStorage.getItem('alert'));
   if (notification) {
     const { type, message } = notification;
-    this.alert[type](message);
+    if (type && message) this.alert[type](message);
     sessionStorage.clear();
   }
 };

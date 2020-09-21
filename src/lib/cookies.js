@@ -56,7 +56,7 @@ export const readCookie = (cookieName) => {
 
 export const isAuthenticated = () => {
   const user = useSelector(({ user }) => user);
-  return !!user.id;
+  return user.isAuthenticated;
 };
 
 export const setCookie = (name, value, hours) => {
