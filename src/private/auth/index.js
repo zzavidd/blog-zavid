@@ -89,6 +89,10 @@ app
   .post(passport.authenticate('local'), function (req, res) {
     req.login({ id: process.env.GOOGLE_ACCOUNT_ID }, function (err) {
       if (err) return res.status(400).send(err.toString());
+<<<<<<< HEAD
+=======
+      console.log(req.user);
+>>>>>>> 6951bb4cfae99cd0c07bd85dc8db42d1309b4ec3
       // res.sendStatus(200);
       res.redirect(req.session.returnTo || '/admin');
     });
@@ -120,6 +124,10 @@ app.get('/logout', function (req, res) {
 // );
 
 const checkAuthenticated = (req, res, next) => {
+<<<<<<< HEAD
+=======
+  console.log(req.user, req.isAuthenticated());
+>>>>>>> 6951bb4cfae99cd0c07bd85dc8db42d1309b4ec3
   if (req.isAuthenticated()) {
     next();
   } else {
