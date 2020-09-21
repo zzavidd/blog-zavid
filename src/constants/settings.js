@@ -19,8 +19,7 @@ exports.copyright = `\u00A9 ${new Date().getFullYear()} ZAVID`;
 exports.creationDate = new Date(2017, 8, 2);
 
 /** The date this blog was redeveloped. Month is 0-indexed. */
-// TODO: To change on launch
-exports.redevelopmentDate = new Date(2020, 8, 20);
+exports.redevelopmentDate = new Date(2020, 8, 21);
 
 /** Domain to use dependent on environment. */
 exports.domain = dev ? 'http://localhost:4000' : 'https://www.zavidegbue.com';
