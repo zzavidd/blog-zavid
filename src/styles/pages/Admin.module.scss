@@ -28,6 +28,7 @@
   color: #fff !important;
   display: flex;
   justify-content: center;
+  min-height: 100px;
   text-align: center;
 
   &-posts {
@@ -45,4 +46,23 @@
   &-subscribers {
     @include block-colourizer(#414200);
   }
+}
+
+.login-page {
+  align-items: center;
+  display: flex;
+  min-height: 75vh;
+}
+
+.login-form {
+  @include responsive(width, 40%, $xl: 60%, $lg: 80%, $sm: 90%);
+  flex-direction: row;
+}
+
+.login-input {
+  margin: 2em 0;
+}
+
+.login-button {
+  min-width: 175px;
 }

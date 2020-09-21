@@ -3,9 +3,10 @@ const router = express.Router();
 const expressSession = require('express-session');
 const MemoryStore = require('memorystore')(expressSession);
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+// const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
-const { domain } = require('../../constants/settings');
+// const { domain } = require('../../constants/settings');
 const app = require('../singleton').getApp();
 const server = require('../singleton').getServer();
 
@@ -23,36 +24,52 @@ app.use(
       checkPeriod: 24 * 60 * 60 * 1000
     }),
     secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(
-  new GoogleStrategy(
+  // new GoogleStrategy(
+  //   {
+  //     clientID: process.env.GOOGLE_CLIENT_ID,
+  //     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  //     callbackURL: `${domain}/login/redirect`,
+  //     passReqToCallback: true
+  //   },
+  //   function (req, accessToken, refreshToken, profile, done) {
+  //     const isZavid = profile.id === process.env.GOOGLE_ACCOUNT_ID;
+  //     if (isZavid) {
+  //       done(null, profile);
+  //     } else {
+  //       req.session.destroy((err) => {
+  //         if (err) console.error(err);
+  //         done(null, false);
+  //       });
+  //     }
+  //   }
+  // )
+
+  'local',
+  new LocalStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${domain}/login/redirect`,
       passReqToCallback: true
     },
-    function (req, accessToken, refreshToken, profile, done) {
-      const isZavid = profile.id === process.env.GOOGLE_ACCOUNT_ID;
-      if (isZavid) {
-        done(null, profile);
-      } else {
-        req.session.destroy((err) => {
-          if (err) console.error(err);
-          done(null, false);
-        });
+    function (req, username, password, done) {
+      /** Compare passwords with hash */
+      if (password !== process.env.LOCAL_PWD) {
+        return done(null, false);
       }
+
+      /** Everything's okay. Return successful user */
+      return done(null, { id: process.env.GOOGLE_ACCOUNT_ID });
     }
   )
 );
 
-passport.serializeUser((user, done) => {
+passport.serializeUser(function (user, done) {
   console.info('Serializing Zavid user');
   done(null, user.id);
 });
@@ -62,35 +79,21 @@ passport.deserializeUser(function (id, done) {
   done(null, { id });
 });
 
-router.use('/admin', function (req, res, next) {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-});
-
-app.get(
-  '/login',
-  passport.authenticate('google', {
-    scope: ['profile']
+app
+  .route('/login')
+  .get(function (req, res) {
+    return server.render(req, res, '/admin/login', {
+      title: `Login`
+    });
   })
-);
-
-app.get('/redirect', function (req, res) {
-  return server.render(req, res, '/admin/redirect', {
-    title: `Redirecting...`,
-    user: req.user
+  .post(passport.authenticate('local'), function (req, res) {
+    req.login({ id: process.env.GOOGLE_ACCOUNT_ID }, function (err) {
+      if (err) return res.status(400).send(err.toString());
+      console.log(req.user);
+      // res.sendStatus(200);
+      res.redirect(req.session.returnTo || '/admin');
+    });
   });
-});
-
-app.get(
-  '/login/redirect',
-  passport.authenticate('google', {
-    successRedirect: '/redirect',
-    failureRedirect: '/logout'
-  })
-);
 
 app.get('/logout', function (req, res) {
   if (!req.session) res.redirect('/');
@@ -101,5 +104,32 @@ app.get('/logout', function (req, res) {
     });
   });
 });
+
+// app.get('/redirect', function (req, res) {
+//   return server.render(req, res, '/admin/redirect', {
+//     title: `Redirecting...`,
+//     user: req.user
+//   });
+// });
+
+// app.get(
+//   '/login/redirect',
+//   passport.authenticate('google', {
+//     successRedirect: '/redirect',
+//     failureRedirect: '/logout'
+//   })
+// );
+
+const checkAuthenticated = (req, res, next) => {
+  console.log(req.user, req.isAuthenticated());
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    req.session.returnTo = req.originalUrl;
+    res.redirect('/login');
+  }
+};
+
+app.use('/admin', checkAuthenticated);
 
 module.exports = router;
