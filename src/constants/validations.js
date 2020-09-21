@@ -91,7 +91,7 @@ exports.isValidPage = (page) => {
   return true;
 };
 
-exports.isValidEmail = (email, message) => {
+exports.isValidEmail = (email, message = 'Enter a valid email address.') => {
   if (!email) {
     alert.error(message);
     return false;
