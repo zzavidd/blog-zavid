@@ -52,13 +52,17 @@
 }
 
 .page-intro {
-  @include responsive(font-size, 1.1em, $lg: 1em, $sm: 0.85em);
   @include themer(&, border-color, $light: #000, $dark: #fff);
   border-bottom: 1px solid;
   margin: 0 auto;
   max-width: 800px;
   padding: 0.5em 0 1em;
   text-align: center;
+
+  &-paragraph {
+    font-size: 0.85em;
+    margin: 0;
+  }
 }
 
 ////////////////////////////////

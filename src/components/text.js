@@ -122,9 +122,10 @@ export const VanillaLink = ({
   );
 };
 
-export const Divider = () => {
+export const Divider = ({ className }) => {
   const theme = useSelector(({ theme }) => theme);
-  return <hr className={css[`divider-${theme}`]} />;
+  const classes = classNames(css[`divider-${theme}`], className);
+  return <hr className={classes} />;
 };
 
 /**

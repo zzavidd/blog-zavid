@@ -124,6 +124,8 @@ const navigateToCreateForm = () => {
 };
 
 const LinkButton = ({ page }) => {
+  if (page.isEmbed) return true;
+
   const navigateToLink = () => (location.href = `/${page.slug}`);
 
   return (

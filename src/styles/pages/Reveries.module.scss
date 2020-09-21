@@ -1,5 +1,28 @@
 @import '../App';
 
+.reveries-heading {
+  @include responsive(font-size, 2.5em, $sm: 2.1em);
+  margin-top: 0.5em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.reveries-introduction {
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 0.5em 0 1em;
+  text-align: center;
+
+  &-paragraph {
+    font-size: 0.85em;
+    margin: 0;
+  }
+}
+
+.reveries-heading-divider {
+  margin: 0.5em 0;
+}
+
 .reveries-list {
   padding: 0 1.5em;
 }

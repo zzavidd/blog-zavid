@@ -9,7 +9,7 @@ import { AdminButton } from 'components/button';
 import CloudImage from 'components/image.js';
 import { Partitioner, Spacer, Toolbar, Responsive } from 'components/layout';
 import { LazyLoader } from 'components/loader.js';
-import { Title, Paragraph } from 'components/text.js';
+import { Title, Paragraph, Divider } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { ORDER } from 'constants/strings.js';
 import { isAuthenticated } from 'lib/cookies';
@@ -17,7 +17,9 @@ import { RightSidebar } from 'partials/sidebar';
 import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
 import css from 'styles/pages/Reveries.module.scss';
 
-export default () => {
+const REVERIES_HEADING = 'Reveries';
+
+const ReveriesIndex = ({ reveriesIntro }) => {
   const [reveries, setReveries] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
@@ -48,15 +50,19 @@ export default () => {
         <Responsive
           defaultView={
             <>
-              <ReverieList reveries={reveries} />
+              <ReverieList reveries={reveries} reveriesIntro={reveriesIntro} />
               <RightSidebar />
             </>
           }
-          laptopView={<ReverieList reveries={reveries} />}
+          laptopView={
+            <ReverieList reveries={reveries} reveriesIntro={reveriesIntro} />
+          }
         />
       </Partitioner>
       <Toolbar spaceItems={true}>
-      {isAuthenticated() && <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>}
+        {isAuthenticated() && (
+          <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
+        )}
       </Toolbar>
     </Spacer>
   );
@@ -64,13 +70,30 @@ export default () => {
 
 const navigateToPostAdmin = () => (location.href = '/admin/posts');
 
-const ReverieList = ({ reveries }) => {
+const ReveriesHeading = ({ reveriesIntro }) => {
   return (
-    <div className={css['reveries-list']}>
-      {reveries.map((reverie, key) => (
-        <Reverie reverie={reverie} key={key} />
-      ))}
+    <div>
+      <Title className={css['reveries-heading']}>{REVERIES_HEADING}</Title>
+      <div className={css[`reveries-introduction`]}>
+        <Paragraph cssOverrides={{ paragraph: css[`reveries-introduction-paragraph`] }}>
+          {reveriesIntro}
+        </Paragraph>
+      </div>
+      <Divider className={css['reveries-heading-divider']} />
     </div>
+  );
+};
+
+const ReverieList = ({ reveries, reveriesIntro }) => {
+  return (
+    <>
+      <div className={css['reveries-list']}>
+      <ReveriesHeading reveriesIntro={reveriesIntro} />
+        {reveries.map((reverie, key) => (
+          <Reverie reverie={reverie} key={key} />
+        ))}
+      </div>
+    </>
   );
 };
 
@@ -117,3 +140,9 @@ const ReverieImage = ({ reverie }) => {
     />
   );
 };
+
+ReveriesIndex.getInitialProps = async ({ query }) => {
+  return { ...query };
+};
+
+export default ReveriesIndex;

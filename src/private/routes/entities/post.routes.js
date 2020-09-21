@@ -2,20 +2,30 @@ const express = require('express');
 const router = express.Router();
 const { zText } = require('zavid-modules');
 
-const { PostQueryBuilder } = require('../../../classes');
+const { PostQueryBuilder, PageQueryBuilder } = require('../../../classes');
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const { renderErrorPage, ERRORS } = require('../../error');
 const knex = require('../../singleton').getKnex();
 const server = require('../../singleton').getServer();
 
-router.get('/reveries', function (req, res) {
-  return server.render(req, res, '/posts/reveries', {
-    title: `Reveries | ${siteTitle}`,
-    description: 'For my deeper ruminations...',
-    ogUrl: '/reveries'
-  });
-});
+router.get(
+  '/reveries',
+  function (req, res, next) {
+    Promise.resolve()
+      .then(() => new PageQueryBuilder(knex).whereSlug('reveries').build())
+      .then(([reveriePage]) => {
+        return server.render(req, res, '/posts/reveries', {
+          title: `Reveries | ${siteTitle}`,
+          description: 'For my deeper ruminations...',
+          ogUrl: '/reveries',
+          reveriesIntro: reveriePage.content
+        });
+      })
+      .catch(next);
+  },
+  renderErrorPage
+);
 
 router.get(
   '/reveries/:slug',

@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { zDate, zText } = require('zavid-modules');
 
-const { DiaryQueryBuilder } = require('../../../classes');
+const { DiaryQueryBuilder, PageQueryBuilder } = require('../../../classes');
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const resolvers = require('../../api/resolvers/diary.resolvers');
@@ -11,13 +11,23 @@ const { renderErrorPage, ERRORS } = require('../../error');
 const knex = require('../../singleton').getKnex();
 const server = require('../../singleton').getServer();
 
-router.get('/diary', function (req, res) {
-  return server.render(req, res, '/diary', {
-    title: `Diary | ${siteTitle}`,
-    description: 'Dear Zavid, how have you been feeling?',
-    ogUrl: '/diary'
-  });
-});
+router.get(
+  '/diary',
+  function (req, res, next) {
+    Promise.resolve()
+      .then(() => new PageQueryBuilder(knex).whereSlug('diary').build())
+      .then(([diaryPage]) => {
+        return server.render(req, res, '/diary', {
+          title: `Diary | ${siteTitle}`,
+          description: 'Dear Zavid, how have you been feeling?',
+          ogUrl: '/diary',
+          diaryIntro: diaryPage.content
+        });
+      })
+      .catch(next);
+  },
+  renderErrorPage
+);
 
 router.get(
   '/diary/:slug',

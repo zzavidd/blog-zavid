@@ -16,9 +16,8 @@ import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
 import css from 'styles/pages/Diary.module.scss';
 
 const DIARY_HEADING = `Zavid's Diary`;
-const DIARY_PREMISE = `Every day or two, I'll transparently scribe my thoughts and feelings. Maybe speak about a friend I miss, maybe highlight a stranger who's been on my mind.\n\nWill that help abate small talk now that people have the answer to "how have you been?" readily accessible? I could dream.`;
 
-export default () => {
+const DiaryIndex = ({ diaryIntro }) => {
   const theme = useSelector(({ theme }) => theme);
   const [diaryEntries, setDiaryEntries] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
@@ -47,7 +46,9 @@ export default () => {
     <Spacer>
       <div className={css['diary-page']}>
         <Title className={css['page-heading']}>{DIARY_HEADING}</Title>
-        <div className={css[`page-intro-${theme}`]}>{DIARY_PREMISE}</div>
+        <div className={css[`page-intro-${theme}`]}>
+          <Paragraph cssOverrides={{paragraph: css[`page-intro-paragraph`]}}>{diaryIntro}</Paragraph>
+        </div>
         <DiaryGrid diaryEntries={diaryEntries} />
       </div>
       <Toolbar spaceItems={true}>
@@ -83,7 +84,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }) => {
         <Fader
           determinant={isInView}
           duration={750}
-          delay={(idx * 50) + 50}
+          delay={idx * 50 + 50}
           className={css[`diary-entry-${theme}`]}
           postTransitions={'background-color .4s ease'}>
           <Title className={css['diary-entry-title']}>{title}</Title>
@@ -102,3 +103,9 @@ const DiaryEntry = memo(({ diaryEntry, idx }) => {
     </LazyLoader>
   );
 });
+
+DiaryIndex.getInitialProps = async ({ query }) => {
+  return { ...query };
+};
+
+export default DiaryIndex;
