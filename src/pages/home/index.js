@@ -67,6 +67,8 @@ const Introduction = ({ content }) => {
 };
 
 const LatestDiaryEntry = ({ entry }) => {
+  if (!entry) return null;
+
   const [isLoaded, setLoaded] = useState(false);
   useEffect(() => {
     setLoaded(true);

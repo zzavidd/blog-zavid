@@ -12,6 +12,7 @@ const server = require('../singleton').getServer();
 
 const isDev = process.env.NODE_ENV !== 'production';
 
+app.set('trust proxy', 1);
 app.use(
   expressSession({
     name: process.env.SESSION_NAME,
