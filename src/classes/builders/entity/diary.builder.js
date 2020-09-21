@@ -19,6 +19,11 @@ class DiaryEntryBuilder {
     return this;
   }
 
+  withContent(content){
+    this.entry.content = content;
+    return this;
+  }
+
   random() {
     this.entry = {
       content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),

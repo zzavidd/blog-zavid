@@ -83,7 +83,7 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
 
   const entity = {
     diaryEntry: Object.assign({}, diaryEntry, {
-      content,
+      content: zText.deformatText(content, { joinDelimiter: '\n\n'}),
       slug: `${domain}/diary/${slug}`,
       date
     })
