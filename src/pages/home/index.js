@@ -51,7 +51,7 @@ const Introduction = ({ content }) => {
           <Paragraph
             className={css['introduction-message']}
             substitutions={{
-              redevelopmentDate: zDate.formatDate(redevelopmentDate, false)
+              redevelopmentDate: zDate.formatDate(redevelopmentDate, false),
             }}>
             {content}
           </Paragraph>

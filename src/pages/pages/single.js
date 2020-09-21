@@ -4,12 +4,15 @@ import { zDate } from 'zavid-modules';
 import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { Paragraph, Title } from 'components/text';
+import { redevelopmentDate, zavidBirthday } from 'constants/settings';
 import { isAuthenticated } from 'lib/cookies';
 import css from 'styles/pages/Posts.module.scss';
 
 const PageSingle = ({ page }) => {
   const substitutions = {
-    lastModified: `**${zDate.formatDate(page.lastModified)}**`
+    lastModified: `**${zDate.formatDate(page.lastModified)}**`,
+    myAge: zDate.calculateAge(zavidBirthday),
+    redevelopmentDate: zDate.formatDate(redevelopmentDate, false),
   };
 
   return (
