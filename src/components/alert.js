@@ -50,6 +50,7 @@ exports.reportError = (error) => {
     this.alert.error(error);
   } else {
     this.alert.error('There was a problem. Please try again later.');
+    console.error(error);
   }
 };
 
