@@ -1,42 +1,20 @@
 const { Post, PostBuilder } = require('../../classes');
-const { submitPost, updatePost } = require('../helper/post.helper');
+const { updatePost } = require('../helper/post.helper');
 
-const POST_ID = 918;
+const POST_ID = 943;
 
-publishUpdate();
+const post = new PostBuilder()
+  .random()
+  .withType(Post.TYPES.REVERIE.TITLE)
+  .withStatus(Post.STATUSES.PUBLISHED)
+  .build();
 
-function publishSubmit() {
-  const post = new PostBuilder()
-    .random({ withImage: true })
-    .withStatus(Post.STATUSES.PUBLISHED)
-    .build();
-
-  submitPost(
-    post,
-    () => {
-      finish();
-    },
-    true
-  );
-}
-
-function publishUpdate() {
-  const postForUpdate = new PostBuilder()
-    .random({ withImage: true })
-    .withType(Post.TYPES.REVERIE.TITLE)
-    .withStatus(Post.STATUSES.PUBLISHED)
-    .build();
-
-  updatePost(
-    POST_ID,
-    postForUpdate,
-    () => {
-      finish();
-    },
-    true
-  );
-}
-
-function finish() {
-  process.exit(0);
-}
+updatePost(
+  POST_ID,
+  post,
+  () => {
+    console.info('Completed.');
+    process.exit(0);
+  },
+  true
+);

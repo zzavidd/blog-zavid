@@ -50,6 +50,10 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+const typeToSubscription = {
+  Reverie: 'Reveries'
+};
+
 /**
  * Send an email to all subscribers of new post.
  * @param {object} post - The post details.
@@ -68,7 +72,7 @@ exports.notifyNewPost = (post) => {
     })
   };
 
-  return prepareEmail(entity, type, 'post', subject);
+  return prepareEmail(entity, typeToSubscription[type], 'post', subject);
 };
 
 /**
@@ -83,7 +87,7 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
 
   const entity = {
     diaryEntry: Object.assign({}, diaryEntry, {
-      content: zText.deformatText(content, { joinDelimiter: '\n\n'}),
+      content: zText.deformatText(content, { joinDelimiter: '\n\n' }),
       slug: `${domain}/diary/${slug}`,
       date
     })
