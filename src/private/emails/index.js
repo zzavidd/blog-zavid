@@ -2,6 +2,7 @@ const async = require('async');
 const ejs = require('ejs');
 const htmlToText = require('html-to-text');
 const nodemailer = require('nodemailer');
+const ReactDOMServer = require('react-dom/server');
 const { v4: uuidv4 } = require('uuid');
 const { zDate, zText } = require('zavid-modules');
 
@@ -87,7 +88,11 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
 
   const entity = {
     diaryEntry: Object.assign({}, diaryEntry, {
-      content: zText.deformatText(content, { joinDelimiter: '\n\n' }),
+      content: ReactDOMServer.renderToStaticMarkup(zText.formatText(content, {
+        css: {
+          hyperlink: 'hyperlink'
+        }
+      })),
       slug: `${domain}/diary/${slug}`,
       date
     })

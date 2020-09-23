@@ -20,11 +20,7 @@
       </tr>
     </table>
 
-    <div class="diary-content">
-      <% diaryEntry.content.split('\n').forEach((paragraph) => { %>
-      <p><%= paragraph %></p>
-      <% }) %>
-    </div>
+    <div class="diary-content"><%- diaryEntry.content %></div>
 
     <div class="button-container">
       <a href="<%= diaryEntry.slug %>" class="button">
