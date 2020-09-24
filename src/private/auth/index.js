@@ -18,7 +18,7 @@ app.use(
     name: process.env.SESSION_NAME,
     cookie: {
       httpOnly: false,
-      maxAge: 2 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
       secure: !isDev
     },
     store: new MemoryStore({
