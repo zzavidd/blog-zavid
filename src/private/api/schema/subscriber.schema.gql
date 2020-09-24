@@ -13,7 +13,7 @@ type Subscriber {
 }
 
 extend type Query {
-  subscribers: [Subscriber]
+  subscribers(sort: SubscriberSortOptions): [Subscriber]
   subscriber(id: Int!): Subscriber
 }
 
@@ -26,6 +26,16 @@ extend type Mutation {
 ###############
 # Helpers
 ###############
+
+input SubscriberSortOptions {
+  field: SubscriberSortField
+  order: OrderOption
+}
+
+enum SubscriberSortField {
+  id
+  createTime
+}
 
 input SubscriberInput {
   email: String!

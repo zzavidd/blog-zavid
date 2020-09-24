@@ -7,6 +7,7 @@ import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
+import { ORDER } from 'constants/strings';
 import {
   GET_SUBSCRIBERS_QUERY,
   DELETE_SUBSCRIBER_QUERY
@@ -25,6 +26,12 @@ export default () => {
     refetch,
     networkStatus
   } = useQuery(GET_SUBSCRIBERS_QUERY, {
+    variables: {
+      sort: {
+        field: 'createTime',
+        order: ORDER.DESCENDING
+      },
+    },
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true
   });
@@ -69,7 +76,7 @@ export default () => {
           ]}
           items={subscribers.map((subscriber, key) => {
             return [
-              [key + 1, { type: TYPE.INDEX }],
+              [subscribers.length - key, { type: TYPE.INDEX }],
               [subscriber.email, { icon: 'at' }],
               [subscriber.firstname, { icon: 'user', hideIfEmpty: true }],
               [subscriber.lastname, { icon: 'user', hideIfEmpty: true }],

@@ -16,8 +16,8 @@ const subscriberFragments = gql`
 `;
 
 exports.GET_SUBSCRIBERS_QUERY = gql`
-  query GetAllSubscribers {
-    subscribers {
+  query GetAllSubscribers($sort: SubscriberSortOptions) {
+    subscribers(sort: $sort) {
       ...SubscriberFields
     }
   }

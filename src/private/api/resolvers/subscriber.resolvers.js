@@ -12,11 +12,14 @@ const ENTITY_NAME = 'subscriber';
 
 /**
  * Retrieves all subscriber from database.
+ * @param {object} parent Return value of the parent field.
+ * @param {object} args The arguments.
+ * @param {object} args.sort The sort options.
  * @returns {object[]} The posts.
  */
-const getAllSubscribers = () => {
+const getAllSubscribers = (parent, { sort }) => {
   return Promise.resolve()
-    .then(() => new SubscriberQueryBuilder(knex).build())
+    .then(() => new SubscriberQueryBuilder(knex).withOrder(sort).build())
     .then((subscribers) => {
       return subscribers.map((subscriber) => Subscriber.parse(subscriber));
     })
