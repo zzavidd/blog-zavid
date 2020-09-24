@@ -92,7 +92,7 @@ const LatestDiaryEntry = ({ entry }) => {
       </Flexer>
       <Paragraph
         className={css['latest-diary-content']}
-        truncate={60}
+        truncate={80}
         moreclass={css['latest-diary-readmore']}
         moretext={'Read my latest diary entry...'}
         morelink={`/diary/${entry.slug}`}>

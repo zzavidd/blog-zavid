@@ -55,7 +55,7 @@
 }
 
 .reveries-paragraph {
-  @include responsive(font-size, 0.9em, $sm: 1.1em);
+  @include responsive(font-size, 0.9em, $sm: 1.05em);
 }
 
 .reveries-readmore {

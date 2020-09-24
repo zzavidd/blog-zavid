@@ -85,6 +85,11 @@
     margin-left: 0.4em;
   }
 
+  .latest-diary-content {
+    @include responsive(font-size, 1.2em, $sm: 0.9em);
+    margin: 0;
+  }
+
   .latest-diary-readmore {
     @extend %latest-readmore;
   }
