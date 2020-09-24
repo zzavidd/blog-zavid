@@ -3,30 +3,20 @@
 <body class="container-fluid email">
   <header class="container header">
     New diary entry on ZAVID.
+    <a href="<%= diaryEntry.slug %>" class="hyperlink">
+      View on site
+    </a>
   </header>
   <div class="container email-content">
-    <table>
-      <tr>
-        <td class="heading">
-          <h1 class="post-title">Diary: <%= diaryEntry.date %></h1>
-        </td>
-        <td class="signature-cell">
-          <img
-            src="<%= cloudinaryBaseUrl %>/static/logos/signature-light.png"
-            class="signature"
-            alt="Signature"
-          />
-        </td>
-      </tr>
-    </table>
+    <h1 class="post-title">Diary: <%= diaryEntry.date %></h1>
 
     <div class="diary-content"><%- diaryEntry.content %></div>
 
-    <div class="button-container">
-      <a href="<%= diaryEntry.slug %>" class="button">
-        View On Site
-      </a>
-    </div>
+    <img
+      src="<%= cloudinaryBaseUrl %>/static/logos/signature-light.png"
+      class="signature"
+      alt="Signature"
+    />
   </div>
   <%- include("partials/footer.ejs", { url: diaryEntry.slug, token:
   subscriber.token }) %>
