@@ -9,6 +9,7 @@ import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
+import { ORDER } from 'constants/strings';
 import {
   GET_DIARY_QUERY,
   DELETE_DIARY_QUERY
@@ -27,6 +28,12 @@ export default () => {
     refetch,
     networkStatus
   } = useQuery(GET_DIARY_QUERY, {
+    variables: {
+      sort: {
+        field: 'date',
+        order: ORDER.DESCENDING
+      }
+    },
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true
   });
