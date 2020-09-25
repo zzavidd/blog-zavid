@@ -2,6 +2,7 @@ const { isFalsy } = require('zavid-modules').zLogic;
 
 const { QueryBuilder, MutationBuilder } = require('./super');
 
+const { ORDER } = require('../../../constants/strings');
 const Diary = require('../../static/diary.static');
 
 const TABLE_NAME = 'diary';
@@ -26,7 +27,7 @@ class DiaryQueryBuilder extends QueryBuilder {
   }
 
   getLatestEntry(){
-    this.query.orderBy('date').limit(1);
+    this.query.orderBy('date', ORDER.DESCENDING).limit(1);
     return this;
   }
 

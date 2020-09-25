@@ -30,6 +30,19 @@ router.get(
 );
 
 router.get(
+  '/diary/latest',
+  function (req, res, next) {
+    Promise.resolve()
+      .then(() => new DiaryQueryBuilder(knex).getLatestEntry().build())
+      .then(([diaryEntry]) => {
+        res.redirect(`/diary/${diaryEntry.slug}`);
+      })
+      .catch(next);
+  },
+  renderErrorPage
+);
+
+router.get(
   '/diary/:slug',
   function (req, res, next) {
     const { slug } = req.params;
