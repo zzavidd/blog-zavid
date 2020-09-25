@@ -7,7 +7,6 @@ import { Diary } from 'classes';
 import { alert } from 'components/alert.js';
 import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
-import { LazyLoader } from 'components/loader.js';
 import { Paragraph, Title, VanillaLink } from 'components/text.js';
 import { Fader } from 'components/transitioner.js';
 import { ORDER } from 'constants/strings.js';
@@ -47,7 +46,9 @@ const DiaryIndex = ({ diaryIntro }) => {
       <div className={css['diary-page']}>
         <Title className={css['page-heading']}>{DIARY_HEADING}</Title>
         <div className={css[`page-intro-${theme}`]}>
-          <Paragraph cssOverrides={{paragraph: css[`page-intro-paragraph`]}}>{diaryIntro}</Paragraph>
+          <Paragraph cssOverrides={{ paragraph: css[`page-intro-paragraph`] }}>
+            {diaryIntro}
+          </Paragraph>
         </div>
         <DiaryGrid diaryEntries={diaryEntries} />
       </div>
@@ -74,33 +75,35 @@ const DiaryGrid = ({ diaryEntries }) => {
 
 const DiaryEntry = memo(({ diaryEntry, idx }) => {
   const theme = useSelector(({ theme }) => theme);
-  const [isInView, setInView] = useState(false);
+  const [isLoaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, [isLoaded]);
 
   const title = zDate.formatDate(parseInt(diaryEntry.date), true);
   const link = `/diary/${diaryEntry.slug}`;
   return (
-    <LazyLoader setInView={setInView}>
-      <VanillaLink href={link}>
-        <Fader
-          determinant={isInView}
-          duration={750}
-          delay={idx * 50 + 50}
-          className={css[`diary-entry-${theme}`]}
-          postTransitions={'background-color .4s ease'}>
-          <Title className={css['diary-entry-title']}>{title}</Title>
-          <Paragraph
-            cssOverrides={{
-              paragraph: css['diary-entry-paragraph'],
-              hyperlink: css['diary-entry-readmore']
-            }}
-            truncate={40}
-            moreclass={css['diary-entry-readmore']}
-            morelink={link}>
-            {diaryEntry.content}
-          </Paragraph>
-        </Fader>
-      </VanillaLink>
-    </LazyLoader>
+    <VanillaLink href={link}>
+      <Fader
+        determinant={isLoaded}
+        duration={750}
+        delay={idx * 50 + 50}
+        className={css[`diary-entry-${theme}`]}
+        postTransitions={'background-color .4s ease'}>
+        <Title className={css['diary-entry-title']}>{title}</Title>
+        <Paragraph
+          cssOverrides={{
+            paragraph: css['diary-entry-paragraph'],
+            hyperlink: css['diary-entry-readmore']
+          }}
+          truncate={40}
+          moreclass={css['diary-entry-readmore']}
+          morelink={link}>
+          {diaryEntry.content}
+        </Paragraph>
+      </Fader>
+    </VanillaLink>
   );
 });
 
