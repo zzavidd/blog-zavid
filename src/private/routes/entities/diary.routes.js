@@ -3,7 +3,11 @@ const router = express.Router();
 
 const { zDate, zText } = require('zavid-modules');
 
-const { DiaryQueryBuilder, PageQueryBuilder } = require('../../../classes');
+const {
+  Diary,
+  DiaryQueryBuilder,
+  PageQueryBuilder
+} = require('../../../classes');
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const resolvers = require('../../api/resolvers/diary.resolvers');
@@ -33,7 +37,12 @@ router.get(
   '/diary/latest',
   function (req, res, next) {
     Promise.resolve()
-      .then(() => new DiaryQueryBuilder(knex).getLatestEntry().build())
+      .then(() =>
+        new DiaryQueryBuilder(knex)
+          .whereStatus({ include: [Diary.STATUSES.PUBLISHED] })
+          .getLatestEntry()
+          .build()
+      )
       .then(([diaryEntry]) => {
         res.redirect(`/diary/${diaryEntry.slug}`);
       })
