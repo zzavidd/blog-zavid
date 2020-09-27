@@ -7,6 +7,7 @@ const diaryFragments = gql`
     content
     slug
     status
+    entryNumber
   }
 `;
 

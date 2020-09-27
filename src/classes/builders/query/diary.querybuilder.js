@@ -26,8 +26,13 @@ class DiaryQueryBuilder extends QueryBuilder {
     return this;
   }
 
-  getLatestEntry(){
+  getLatestEntry() {
     this.query.orderBy('date', ORDER.DESCENDING).limit(1);
+    return this;
+  }
+
+  getLatestEntryNumber() {
+    this.query.max('entryNumber', { as: 'latestEntryNumber' });
     return this;
   }
 

@@ -7,7 +7,8 @@ import {
   Field,
   Label,
   Select,
-  LongTextArea
+  LongTextArea,
+  NumberInput
 } from 'components/form';
 import DatePicker from 'components/form/picker/datepicker';
 import { Fader } from 'components/transitioner';
@@ -31,13 +32,22 @@ const PostForm = (props) => {
           </Field>
         </FieldRow>
         <FieldRow>
-          <Field md={6}>
+          <Field md={4}>
             <Label>Status:</Label>
             <Select
               name={'status'}
               items={Diary.statusList}
               value={diaryEntry.status}
               onChange={handleText}
+            />
+          </Field>
+          <Field sm={2}>
+            <Label>Entry No.:</Label>
+            <NumberInput
+              name={'entryNumber'}
+              value={diaryEntry.entryNumber}
+              onChange={handleText}
+              placeholder={'No.'}
             />
           </Field>
           <Field md={6}>

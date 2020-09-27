@@ -86,10 +86,17 @@ router.get('/admin/diary', function (req, res) {
 });
 
 router.get('/admin/diary/add', function (req, res) {
-  return server.render(req, res, '/diary/crud', {
-    title: `Add New Diary Entry`,
-    operation: OPERATIONS.CREATE
-  });
+  Promise.resolve()
+    .then(() => {
+      return new DiaryQueryBuilder(knex).getLatestEntryNumber().build();
+    })
+    .then(([{latestEntryNumber}]) => {
+      return server.render(req, res, '/diary/crud', {
+        title: `Add New Diary Entry`,
+        operation: OPERATIONS.CREATE,
+        latestEntryNumber
+      });
+    });
 });
 
 router.get('/admin/diary/edit/:id', function (req, res) {

@@ -8,6 +8,7 @@ type DiaryEntry {
   content: String
   slug: String
   status: DiaryStatus
+  entryNumber: Int
 }
 
 extend type Query {
@@ -57,4 +58,5 @@ input DiaryInput {
   content: String
   date: String
   status: DiaryStatus
+  entryNumber: Int
 }

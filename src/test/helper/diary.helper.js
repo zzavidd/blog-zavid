@@ -13,13 +13,13 @@ const {
  * @param {Function} [assertions] The assertions to make.
  * @returns {Promise} A resolution of the Promise.
  */
-exports.submitDiaryEntry = (diaryEntry, assertions) => {
+exports.submitDiaryEntry = (diaryEntry, assertions, isPublish = false) => {
   return Promise.resolve()
     .then(() => {
       // Submit the random diaryentry.
       return fetch(
         CREATE_DIARY_QUERY,
-        { variables: { diaryEntry } },
+        { variables: { diaryEntry, isPublish } },
         function ({ data }) {
           const createdDiaryEntry = data.createDiaryEntry;
           assert.hasAnyKeys(createdDiaryEntry, 'id');

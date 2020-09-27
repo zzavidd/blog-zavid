@@ -82,9 +82,8 @@ exports.notifyNewPost = (post) => {
  * @returns {Promise} A resolved Promise.
  */
 exports.notifyNewDiaryEntry = (diaryEntry) => {
-  let { date, content, slug } = diaryEntry;
-  date = zDate.formatDate(date, true);
-  const subject = `Diary Entry: ${date}`;
+  const { date, content, slug, entryNumber } = diaryEntry;
+  const subject = `Diary Entry #${entryNumber}`;
 
   const entity = {
     diaryEntry: Object.assign({}, diaryEntry, {
@@ -94,7 +93,7 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
         }
       })),
       slug: `${domain}/diary/${slug}`,
-      date
+      date: zDate.formatDate(date, true)
     })
   };
 

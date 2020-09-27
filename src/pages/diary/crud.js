@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import { Diary } from 'classes';
-import { alert, setAlert, reportError } from 'components/alert';
+import { setAlert, reportError } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
@@ -15,12 +15,17 @@ import {
   UPDATE_DIARY_QUERY
 } from 'private/api/queries/diary.queries';
 
-const DiaryCrud = ({ diaryEntry: serverDiaryEntry, operation }) => {
+const DiaryCrud = ({
+  diaryEntry: serverDiaryEntry,
+  operation,
+  latestEntryNumber = 0
+}) => {
   const [clientDiaryEntry, setDiaryEntry] = useState({
     id: 0,
     content: '',
     date: new Date(),
-    status: Diary.STATUSES.PRIVATE
+    status: Diary.STATUSES.PRIVATE,
+    entryNumber: latestEntryNumber + 1
   });
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -140,12 +145,13 @@ const DiaryCrud = ({ diaryEntry: serverDiaryEntry, operation }) => {
  * @returns {object} The diary entry to submit.
  */
 const buildPayload = (clientDiaryEntry, isPublish, isCreateOperation) => {
-  const { id, content, status, date } = clientDiaryEntry;
+  const { id, content, status, date, entryNumber } = clientDiaryEntry;
 
   const diaryEntry = {
     content: content.trim(),
     date: zDate.formatISODate(date),
-    status
+    status,
+    entryNumber: parseInt(entryNumber)
   };
 
   const payload = { diaryEntry, isPublish };
