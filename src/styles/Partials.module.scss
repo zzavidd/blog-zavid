@@ -61,6 +61,7 @@
 }
 
 .nav-admin-button {
+  @include responsive(margin-left, 1.5em, $lg: 0);
   align-items: center;
   background-color: #5c5c5c;
   border-radius: 50%;

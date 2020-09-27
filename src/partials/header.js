@@ -30,7 +30,7 @@ const Header = () => {
               <AdminButton />
             </>
           }
-          mobileView={
+          tabletView={
             <>
               <ThemeSwitcher />
               <AdminButton />
@@ -76,15 +76,11 @@ const NavigationLinks = () => {
 const AdminButton = () => {
   const theme = useSelector(({ theme }) => theme);
   const navigateToAdmin = () => (location.href = '/admin');
-  const classes = classnames(
-    css[`nav-admin-button`],
-    css[`nav-admin-button-${theme}`]
-  );
   return (
     <Nav.Item>
       <InvisibleButton
         onClick={navigateToAdmin}
-        className={classes}>
+        className={css[`nav-admin-button`]}>
         <Icon name={'lock'} withRightSpace={false} />
       </InvisibleButton>
     </Nav.Item>
