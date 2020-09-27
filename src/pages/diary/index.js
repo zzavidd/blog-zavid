@@ -91,6 +91,9 @@ const DiaryEntry = memo(({ diaryEntry, idx }) => {
         delay={idx * 50 + 50}
         className={css[`diary-entry-${theme}`]}
         postTransitions={'background-color .4s ease'}>
+        <div className={css['diary-entry-pretitle']}>
+          Diary Entry #{diaryEntry.entryNumber}
+        </div>
         <Title className={css['diary-entry-title']}>{title}</Title>
         <Paragraph
           cssOverrides={{

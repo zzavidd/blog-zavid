@@ -1,4 +1,4 @@
-@import '../App';
+@import './Diary.module';
 
 .post-single {
   @include responsive(width, 60%, $lg: 80%, $md: 90%, $sm: 100%);

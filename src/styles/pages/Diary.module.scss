@@ -52,9 +52,13 @@
   }
 }
 
+.diary-entry-pretitle {
+  @include responsive(font-size, 0.9em, $sm: 0.8em);
+}
+
 .diary-entry-title {
   @include responsive(font-size, 1.5em, $sm: 1.3em);
-  letter-spacing: -1px;
+  letter-spacing: -1px !important;
   padding-bottom: 0.5em;
 }
 
@@ -63,5 +67,15 @@
 }
 
 .diary-entry-readmore {
-  @include responsive(font-size, 1em, $sm: 0.9em);
+  @include responsive(font-size, 1em, $sm: 0.8em);
+}
+
+
+.diary-single-pretitle {
+  @include responsive(font-size, 1.2em, $sm: 1em);
+}
+
+.diary-single-title {
+  @include responsive(font-size, 2.5em, $sm: 1.8em);
+  padding-bottom: 0;
 }
