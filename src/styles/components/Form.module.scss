@@ -221,8 +221,8 @@
   height: $size;
   left: 0;
   position: absolute;
-  transition-duration: 0.4s;
   top: 3px;
+  transition-duration: 0.4s;
   width: $size;
 
   /// Create the checkmark/indicator (hidden when not checked)
@@ -343,6 +343,7 @@ $switch-height: 20px;
 %switch-dial {
   align-items: center;
   border-radius: 50%;
+  box-shadow: 0 0 1px 2px $dark;
   cursor: pointer;
   display: flex;
   height: $switch-height;

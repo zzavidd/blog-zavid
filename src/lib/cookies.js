@@ -54,16 +54,15 @@ export const readCookie = (cookieName) => {
   return '';
 };
 
-export const isAuthenticated = () => {
-  const user = useSelector(({ user }) => user);
-  return user.isAuthenticated;
-};
-
 export const setCookie = (name, value, hours) => {
   const date = new Date();
   date.setTime(date.getTime() + hours * 60 * 60 * 1000);
   const expires = `expires=${date.toUTCString()}`;
   document.cookie = `${name}=${value};${expires};path=/`;
+};
+
+export const clearCookie = (name) => {
+  setCookie(name, '', -1);
 };
 
 export const checkCookiePolicyAccepted = (message) => {
@@ -76,4 +75,9 @@ export const checkCookiePolicyAccepted = (message) => {
       return false;
     }
   }
+};
+
+export const isAuthenticated = () => {
+  const user = useSelector(({ user }) => user);
+  return user.isAuthenticated;
 };

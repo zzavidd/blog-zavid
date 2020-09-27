@@ -55,7 +55,7 @@ exports.reportError = (error) => {
 };
 
 /** Check whether an alert has been set by {@link setAlert}. */
-exports.checkAlert = () => {
+exports.checkForSetAlerts = () => {
   const notification = JSON.parse(sessionStorage.getItem('alert'));
   if (notification) {
     const { type, message } = notification;

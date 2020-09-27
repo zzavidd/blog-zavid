@@ -10,13 +10,15 @@ import ReactGA from 'react-ga';
 import { Provider, useSelector, useDispatch } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { checkAlert } from 'components/alert.js';
+import { alert, checkForSetAlerts } from 'components/alert.js';
 import {
   CookiePrompt,
   setCookie,
+  readCookie,
+  clearCookie,
   checkCookiePolicyAccepted
 } from 'lib/cookies';
-import configureStore, { setTheme } from 'lib/reducers.js';
+import configureStore, { setTheme, setUser, clearUser } from 'lib/reducers.js';
 import Footer from 'partials/footer.js';
 import Header from 'partials/header.js';
 
@@ -29,6 +31,9 @@ const client = new ApolloClient({
   uri: '/api',
   cache: new InMemoryCache()
 });
+
+const AUTH_COOKIE = 'justAuthenticated';
+const DEAUTH_COOKIE = 'justDeauthenticated';
 
 export default class ZAVID extends App {
   render() {
@@ -56,10 +61,10 @@ const ZAVIDApp = ({ Component, pageProps }) => {
   const [isCookiePolicyAccepted, setCookieAcceptance] = useState(
     checkCookiePolicyAccepted
   );
+  const dispatch = useDispatch();
 
   const theme = useSelector(({ theme }) => {
     if (theme !== 'light' && theme !== 'dark') {
-      const dispatch = useDispatch();
       dispatch(setTheme('light'));
       return 'light';
     }
@@ -67,11 +72,23 @@ const ZAVIDApp = ({ Component, pageProps }) => {
   });
 
   useEffect(() => {
+    // Initialise Google Analytics
     ReactGA.initialize('UA-126408615-2');
     ReactGA.pageview(window.location.pathname + window.location.search);
 
     document.body.classList.add(`body-${theme}`);
-    checkAlert();
+
+    if (readCookie(AUTH_COOKIE)){
+      dispatch(setUser({ isAuthenticated: true }));
+      alert.success("You've successfully logged in.");
+      clearCookie(AUTH_COOKIE);
+    } else if (readCookie(DEAUTH_COOKIE)){
+      dispatch(clearUser());
+      alert.success("You've successfully logged out.");
+      clearCookie(DEAUTH_COOKIE);
+    }
+
+    checkForSetAlerts();
     setLoaded(true);
   }, [isLoaded]);
 

@@ -1,7 +1,9 @@
+import classnames from 'classnames';
 import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { InvisibleButton } from 'components/button';
 import { Switch } from 'components/form/checkbox.js';
 import { Icon } from 'components/icon.js';
 import CloudImage from 'components/image.js';
@@ -25,11 +27,13 @@ const Header = () => {
             <>
               <NavigationLinks />
               <ThemeSwitcher />
+              <AdminButton />
             </>
           }
           mobileView={
             <>
               <ThemeSwitcher />
+              <AdminButton />
               <NavigationLinks />
             </>
           }
@@ -66,6 +70,24 @@ const NavigationLinks = () => {
         </Nav>
       </Navbar.Collapse>
     </>
+  );
+};
+
+const AdminButton = () => {
+  const theme = useSelector(({ theme }) => theme);
+  const navigateToAdmin = () => (location.href = '/admin');
+  const classes = classnames(
+    css[`nav-admin-button`],
+    css[`nav-admin-button-${theme}`]
+  );
+  return (
+    <Nav.Item>
+      <InvisibleButton
+        onClick={navigateToAdmin}
+        className={classes}>
+        <Icon name={'lock'} withRightSpace={false} />
+      </InvisibleButton>
+    </Nav.Item>
   );
 };
 
