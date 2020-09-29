@@ -89,7 +89,9 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
     diaryEntry: Object.assign({}, diaryEntry, {
       content: ReactDOMServer.renderToStaticMarkup(zText.formatText(content, {
         css: {
-          hyperlink: 'hyperlink'
+          hyperlink: 'hyperlink',
+          ['twitter-button']: 'button',
+          ['instagram-button']: 'button',
         }
       })),
       slug: `${domain}/diary/${slug}`,

@@ -21,15 +21,21 @@ const submitDiary = () => {
 const updateDiary = () => {
   const DIARY_ID = 5;
   const DIARY_CONTENT = `
-  Exercitationem sint vero hic. Culpa rerum omnis magni qui. Ad voluptas dolorum iste tenetur iste eum magnam omnis. Magni rerum laboriosam sunt hic et ut qui.
-   
-  Beatae quo modi maiores nam. **Voluptatem nihil alias placeat qui autem** enim voluptatibus libero accusantium. Quo similique dignissimos et tempore veniam veniam facilis. Recusandae dicta sit enim qui. Dolorum perferendis vel aliquid est. ***Nesciunt magnam voluptates facilis repudiandae ex ab.***
+Exercitationem sint vero hic. Culpa rerum omnis magni qui. Ad voluptas dolorum iste tenetur iste eum magnam omnis. Magni rerum laboriosam sunt hic et ut qui.
   
-  > Et culpa incidunt omnis porro ipsa praesentium.
-  
-  !{Tweet}(1250122883101327361)
-  
-  Assumenda repudiandae non est. Velit rem occaecati autem harum mollitia modi. Et ut vel voluptatibus corporis dicta laboriosam facilis maiores. Consequatur ut beatae eum et consequatur harum. Facilis nihil sunt.
+Beatae quo modi maiores nam. **Voluptatem nihil alias placeat qui autem** enim voluptatibus libero accusantium. Quo similique dignissimos et tempore veniam veniam facilis. Recusandae dicta sit enim qui. Dolorum perferendis vel aliquid est. ***Nesciunt magnam voluptates facilis repudiandae ex ab.***
+
+---
+
+> Et culpa incidunt omnis porro ipsa praesentium.
+
+!{Tweet}(1250122883101327361)
+
+!{Insta}(https://www.instagram.com/p/CFvAEntpN2g/?utm_source=ig_web_copy_link)
+
+!{Soundcloud}(https://soundcloud.com/musiqcity/i-will-taste-medley)
+
+Assumenda repudiandae non est. Velit rem occaecati autem harum mollitia modi. Et ut vel voluptatibus corporis dicta laboriosam facilis maiores. Consequatur ut beatae eum et consequatur harum. Facilis nihil sunt.
   `;
 
   const diaryEntryForUpdate = new DiaryEntryBuilder()
@@ -50,5 +56,5 @@ const updateDiary = () => {
   );
 };
 
-submitDiary();
-// updateDiary();
+// submitDiary();
+updateDiary();
