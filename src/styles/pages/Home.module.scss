@@ -61,6 +61,10 @@
   margin-top: 0.1em;
 }
 
+%latest-date {
+  @include responsive(font-size, 1em, $sm: 0.7em);
+}
+
 %latest-icon {
   @include responsive(font-size, 4.5em, $sm: 4.5em);
 }
@@ -78,6 +82,10 @@
 
   .latest-diary-title {
     @extend %latest-title;
+  }
+
+  .latest-diary-date {
+    @extend %latest-date;
   }
 
   .latest-diary-feather {
@@ -109,7 +117,7 @@
   }
 
   .latest-reverie-date {
-    @include responsive(font-size, 1em, $sm: 0.7em);
+    @extend %latest-date;
   }
 
   .latest-reverie-content {

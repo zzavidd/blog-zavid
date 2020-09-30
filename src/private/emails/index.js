@@ -82,8 +82,8 @@ exports.notifyNewPost = (post) => {
  * @returns {Promise} A resolved Promise.
  */
 exports.notifyNewDiaryEntry = (diaryEntry) => {
-  const { date, content, slug, entryNumber } = diaryEntry;
-  const subject = `Diary Entry #${entryNumber}`;
+  const { title, date, content, slug, entryNumber } = diaryEntry;
+  const subject = `Diary Entry #${entryNumber}: ${title}`;
 
   const entity = {
     diaryEntry: Object.assign({}, diaryEntry, {

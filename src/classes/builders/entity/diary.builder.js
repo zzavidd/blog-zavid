@@ -1,5 +1,5 @@
 const faker = require('faker');
-const { zDate } = require('zavid-modules');
+const { zDate, zString } = require('zavid-modules');
 
 const Diary = require('../../static/diary.static');
 
@@ -26,6 +26,7 @@ class DiaryEntryBuilder {
 
   random() {
     this.entry = {
+      title: zString.toTitleCase(faker.company.catchPhraseNoun()),
       content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
       date: zDate.formatISODate(faker.date.past()),
       status: Diary.randomStatus(),

@@ -21,10 +21,10 @@ const DiarySingle = ({
   return (
     <Spacer>
       <div className={css['post-single']}>
-        <div className={css['diary-single-pretitle']}>
-          Diary Entry #{diaryEntry.entryNumber}
-        </div>
-        <Title className={css['diary-single-title']}>{date}</Title>
+        <Title className={css['diary-single-title']}>
+          Diary Entry #{diaryEntry.entryNumber}: {diaryEntry.title}
+        </Title>
+        <div className={css['diary-single-date']}>{date}</div>
         <Paragraph className={css['post-single-content']}>
           {diaryEntry.content}
         </Paragraph>

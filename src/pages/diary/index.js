@@ -92,7 +92,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }) => {
         className={css[`diary-entry-${theme}`]}
         postTransitions={'background-color .4s ease'}>
         <div className={css['diary-entry-pretitle']}>
-          Diary Entry #{diaryEntry.entryNumber}
+          Diary Entry #{diaryEntry.entryNumber}: {diaryEntry.title}
         </div>
         <Title className={css['diary-entry-title']}>{title}</Title>
         <Paragraph

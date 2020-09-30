@@ -8,6 +8,7 @@ import {
   Label,
   Select,
   LongTextArea,
+  TextInput,
   NumberInput
 } from 'components/form';
 import DatePicker from 'components/form/picker/datepicker';
@@ -32,22 +33,33 @@ const PostForm = (props) => {
           </Field>
         </FieldRow>
         <FieldRow>
-          <Field md={4}>
-            <Label>Status:</Label>
-            <Select
-              name={'status'}
-              items={Diary.statusList}
-              value={diaryEntry.status}
+          <Field sm={9}>
+            <Label>Title:</Label>
+            <TextInput
+              name={'title'}
+              value={diaryEntry.title}
               onChange={handleText}
+              placeholder={'Enter the title'}
             />
           </Field>
-          <Field sm={2}>
+          <Field sm={3}>
             <Label>Entry No.:</Label>
             <NumberInput
               name={'entryNumber'}
               value={diaryEntry.entryNumber}
               onChange={handleText}
               placeholder={'No.'}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <Field md={6}>
+            <Label>Status:</Label>
+            <Select
+              name={'status'}
+              items={Diary.statusList}
+              value={diaryEntry.status}
+              onChange={handleText}
             />
           </Field>
           <Field md={6}>

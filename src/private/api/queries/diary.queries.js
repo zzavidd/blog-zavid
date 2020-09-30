@@ -3,6 +3,7 @@ const { gql } = require('@apollo/client');
 const diaryFragments = gql`
   fragment DiaryFields on DiaryEntry {
     id
+    title
     date
     content
     slug

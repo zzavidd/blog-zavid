@@ -74,6 +74,7 @@ export default () => {
           columns={[
             ['#', { centerAlign: true }],
             ['Date'],
+            ['Title'],
             ['Status'],
             ['Content']
           ]}
@@ -84,9 +85,10 @@ export default () => {
                 zDate.formatDate(parseInt(diaryEntry.date), true),
                 { icon: 'calendar-alt' }
               ],
+              [diaryEntry.title, { icon: 'heading' }],
               [diaryEntry.status, { icon: 'lock' }],
               [
-                zText.truncateText(diaryEntry.content, { limit: 30 }),
+                zText.truncateText(diaryEntry.content, { limit: 20 }),
                 { hideOnMobile: true }
               ],
               [
@@ -108,7 +110,7 @@ export default () => {
               ]
             ];
           })}
-          distribution={'6% 15% 10% 1fr 4% 4% 4%'}
+          distribution={'6% 20% 1fr 10% 30% 4% 4% 4%'}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>

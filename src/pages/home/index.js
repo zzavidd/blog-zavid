@@ -51,7 +51,7 @@ const Introduction = ({ content }) => {
           <Paragraph
             className={css['introduction-message']}
             substitutions={{
-              redevelopmentDate: zDate.formatDate(redevelopmentDate, false),
+              redevelopmentDate: zDate.formatDate(redevelopmentDate, false)
             }}>
             {content}
           </Paragraph>
@@ -86,7 +86,10 @@ const LatestDiaryEntry = ({ entry }) => {
           <div className={css['latest-shared-heading']}>
             Latest Diary Entry:
           </div>
-          <Title className={css['latest-diary-title']}>{date}</Title>
+          <Title className={css['latest-diary-title']}>
+            Diary Entry #{entry.entryNumber}: {entry.title}
+          </Title>
+          <div className={css['latest-diary-date']}>{date}</div>
         </div>
         <Icon name={'feather-alt'} className={css['latest-diary-feather']} />
       </Flexer>

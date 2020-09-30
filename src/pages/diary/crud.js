@@ -22,6 +22,7 @@ const DiaryCrud = ({
 }) => {
   const [clientDiaryEntry, setDiaryEntry] = useState({
     id: 0,
+    title: '',
     content: '',
     date: new Date(),
     status: Diary.STATUSES.PRIVATE,
@@ -145,10 +146,11 @@ const DiaryCrud = ({
  * @returns {object} The diary entry to submit.
  */
 const buildPayload = (clientDiaryEntry, isPublish, isCreateOperation) => {
-  const { id, content, status, date, entryNumber } = clientDiaryEntry;
+  const { id, title, content, status, date, entryNumber } = clientDiaryEntry;
 
   const diaryEntry = {
-    content: content.trim(),
+    title,
+    content,
     date: zDate.formatISODate(date),
     status,
     entryNumber: parseInt(entryNumber)

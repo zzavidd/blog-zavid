@@ -70,12 +70,16 @@
   @include responsive(font-size, 1em, $sm: 0.8em);
 }
 
-
 .diary-single-pretitle {
   @include responsive(font-size, 1.2em, $sm: 1em);
 }
 
 .diary-single-title {
   @include responsive(font-size, 2.5em, $sm: 1.8em);
+  padding-bottom: 0;
+}
+
+.diary-single-date {
+  @include responsive(font-size, 1.3em, $sm: 1em);
   padding-bottom: 0;
 }
