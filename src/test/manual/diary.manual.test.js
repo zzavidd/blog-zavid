@@ -23,7 +23,7 @@ const updateDiary = () => {
   const DIARY_CONTENT = `
 Exercitationem sint vero hic. Culpa rerum omnis magni qui. Ad voluptas dolorum iste tenetur iste eum magnam omnis. Magni rerum laboriosam sunt hic et ut qui.
   
-Beatae quo modi maiores nam. **Voluptatem nihil alias placeat qui autem** enim voluptatibus libero accusantium. Quo similique dignissimos et tempore veniam veniam facilis. Recusandae dicta sit enim qui. Dolorum perferendis vel aliquid est. ***Nesciunt magnam voluptates facilis repudiandae ex ab.***
+Beatae [quo modi maiores](/) nam. **Voluptatem nihil alias placeat qui autem** enim voluptatibus libero accusantium. Quo similique dignissimos et tempore veniam veniam facilis. Recusandae dicta sit enim qui. Dolorum perferendis vel aliquid est. ***Nesciunt magnam voluptates facilis repudiandae ex ab.***
 
 ---
 
