@@ -63,10 +63,9 @@ router.get(
     ])
       .then(([[diaryEntry], [previousDiaryEntry], [nextDiaryEntry]]) => {
         if (!diaryEntry) return next(ERRORS.NO_ENTITY('reverie'));
-        const date = zDate.formatDate(diaryEntry.date, true);
 
         return server.render(req, res, '/diary/single', {
-          title: `Diary: ${date} | ${siteTitle}`,
+          title: `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title} | ${siteTitle}`,
           description: zText.extractExcerpt(diaryEntry.content),
           ogUrl: `/diary/${diaryEntry.slug}`,
           diaryEntry,
