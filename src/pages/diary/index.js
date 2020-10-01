@@ -81,7 +81,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }) => {
     setLoaded(true);
   }, [isLoaded]);
 
-  const title = zDate.formatDate(parseInt(diaryEntry.date), true);
+  const date = zDate.formatDate(parseInt(diaryEntry.date), true);
   const link = `/diary/${diaryEntry.slug}`;
   return (
     <VanillaLink href={link}>
@@ -91,10 +91,10 @@ const DiaryEntry = memo(({ diaryEntry, idx }) => {
         delay={idx * 50 + 50}
         className={css[`diary-entry-${theme}`]}
         postTransitions={'background-color .4s ease'}>
-        <div className={css['diary-entry-pretitle']}>
+        <div className={css['diary-entry-date']}>{date}</div>
+        <Title className={css['diary-entry-title']}>
           Diary Entry #{diaryEntry.entryNumber}: {diaryEntry.title}
-        </div>
-        <Title className={css['diary-entry-title']}>{title}</Title>
+        </Title>
         <Paragraph
           cssOverrides={{
             paragraph: css['diary-entry-paragraph'],
