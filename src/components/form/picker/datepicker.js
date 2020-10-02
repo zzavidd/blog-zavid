@@ -60,7 +60,9 @@ const DatePicker = (props) => {
     <>
       <div className={css['datepicker-field']}>
         <TextInput
-          value={date ? zDate.formatDate(date, withDayOfWeek) : null}
+          value={
+            date ? zDate.formatDate(date, { withWeekday: withDayOfWeek }) : null
+          }
           placeholder={placeholderText}
           onClick={() => setDatePickerVisibility(true)}
           className={css['datepicker']}

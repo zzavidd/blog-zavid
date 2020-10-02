@@ -15,7 +15,7 @@ const DiarySingle = ({
   previousDiaryEntry = {},
   nextDiaryEntry = {}
 }) => {
-  const date = zDate.formatDate(diaryEntry.date, true);
+  const date = zDate.formatDate(diaryEntry.date, { withWeekday: true });
   const shareMessage = `"Diary: ${date}" on ZAVID`;
 
   return (
@@ -33,11 +33,11 @@ const DiarySingle = ({
           type={TIMELINE_TYPE.DIARY}
           previous={{
             slug: previousDiaryEntry.slug,
-            label: zDate.formatDate(previousDiaryEntry.date, true)
+            label: zDate.formatDate(previousDiaryEntry.date, { withWeekday: true })
           }}
           next={{
             slug: nextDiaryEntry.slug,
-            label: zDate.formatDate(nextDiaryEntry.date, true)
+            label: zDate.formatDate(nextDiaryEntry.date, { withWeekday: true })
           }}
         />
         <Divider />

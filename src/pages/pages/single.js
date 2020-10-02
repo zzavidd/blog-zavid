@@ -12,7 +12,7 @@ const PageSingle = ({ page }) => {
   const substitutions = {
     lastModified: `**${zDate.formatDate(page.lastModified)}**`,
     myAge: zDate.calculateAge(zavidBirthday),
-    redevelopmentDate: zDate.formatDate(redevelopmentDate, false),
+    redevelopmentDate: zDate.formatDate(redevelopmentDate),
   };
 
   return (

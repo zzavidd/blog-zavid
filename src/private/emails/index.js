@@ -68,7 +68,7 @@ exports.notifyNewPost = (post) => {
     post: Object.assign({}, post, {
       content: zText.truncateText(content),
       slug: `${domain}/reveries/${slug}`,
-      datePublished: zDate.formatDate(datePublished, true),
+      datePublished: zDate.formatDate(datePublished, { withWeekday: true }),
       image: `${cloudinaryBaseUrl}/w_768,c_lfill/${image}`
     })
   };
@@ -95,7 +95,7 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
         }
       })),
       slug: `${domain}/diary/${slug}`,
-      date: zDate.formatDate(date, true)
+      date: zDate.formatDate(date, { withWeekday: true })
     })
   };
 

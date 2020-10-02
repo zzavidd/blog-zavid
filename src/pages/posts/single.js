@@ -71,7 +71,7 @@ const PostDate = ({ post }) => {
   if (zLogic.isFalsy(post, post.datePublished)) return null;
   if (Post.isPrivate(post)) return null;
 
-  const datePublished = zDate.formatDate(post.datePublished, true);
+  const datePublished = zDate.formatDate(post.datePublished, { withWeekday: true });
   return <div className={css['post-single-date']}>{datePublished}</div>;
 };
 

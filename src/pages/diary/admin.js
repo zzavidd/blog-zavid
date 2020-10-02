@@ -54,7 +54,7 @@ export default () => {
       .then(() => deleteDiaryEntryMutation({ variables: { id } }))
       .then(() => {
         alert.success(
-          `You've deleted the diary entry for ${zDate.formatDate(date, true)}.`
+          `You've deleted the diary entry for ${zDate.formatDate(date, { withWeekday: true })}.`
         );
         setDeleteModalVisibility(false);
         refetch();
@@ -82,7 +82,7 @@ export default () => {
             return [
               [key + 1, { type: TYPE.INDEX }],
               [
-                zDate.formatDate(parseInt(diaryEntry.date), true),
+                zDate.formatDate(parseInt(diaryEntry.date), { withWeekday: true }),
                 { icon: 'calendar-alt' }
               ],
               [diaryEntry.title, { icon: 'heading' }],
@@ -122,7 +122,7 @@ export default () => {
         visible={deleteModalVisible}
         message={`Are you sure you want to delete the diary entry for **${zDate.formatDate(
           parseInt(selectedDiaryEntry.date),
-          true
+          { withWeekday: true }
         )}**?`}
         confirmFunction={deleteDiaryEntry}
         confirmText={'Delete'}

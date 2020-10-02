@@ -101,7 +101,7 @@ const Reverie = memo(({ reverie }) => {
   const theme = useSelector(({ theme }) => theme);
   const [isInView, setInView] = useState(false);
 
-  const datePublished = zDate.formatDate(parseInt(reverie.datePublished), true);
+  const datePublished = zDate.formatDate(parseInt(reverie.datePublished), { withWeekday: true });
   const link = `/reveries/${reverie.slug}`;
   return (
     <LazyLoader setInView={setInView}>

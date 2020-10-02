@@ -51,7 +51,7 @@ const Introduction = ({ content }) => {
           <Paragraph
             className={css['introduction-message']}
             substitutions={{
-              redevelopmentDate: zDate.formatDate(redevelopmentDate, false)
+              redevelopmentDate: zDate.formatDate(redevelopmentDate)
             }}>
             {content}
           </Paragraph>
@@ -74,7 +74,7 @@ const LatestDiaryEntry = ({ entry }) => {
     setLoaded(true);
   }, [isLoaded]);
 
-  const date = zDate.formatDate(entry.date, true);
+  const date = zDate.formatDate(entry.date, { withWeekday: true });
   return (
     <Fader
       determinant={isLoaded}
@@ -139,7 +139,7 @@ const LatestReverie = ({ reverie }) => {
 };
 
 const LatestReverieHeader = ({ reverie }) => {
-  const date = zDate.formatDate(reverie.datePublished, true);
+  const date = zDate.formatDate(reverie.datePublished, { withWeekday: true });
   return (
     <Flexer>
       <Icon name={'book-open'} className={css['latest-reverie-icon']} />
@@ -212,7 +212,7 @@ const RandomPostsGrid = ({ posts }) => {
                 />
                 <Title className={css['random-post-title']}>{post.title}</Title>
                 <div className={css['random-post-date']}>
-                  {post.type} | {zDate.formatDate(post.datePublished, true)}
+                  {post.type} | {zDate.formatDate(post.datePublished, { withWeekday: true })}
                 </div>
               </VanillaLink>
             </Zoomer>
