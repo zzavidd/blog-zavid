@@ -131,7 +131,7 @@ export const Divider = ({ className }) => {
 /**
  * Component for embedding tweets into articles.
  * @param {object} props - The properties.
- * @param {object} props.id - The ID of the tweet
+ * @param {number} props.id - The ID of the tweet
  * @returns {React.Component} The component.
  */
 const EmbeddedTweet = ({ id }) => {
@@ -141,10 +141,10 @@ const EmbeddedTweet = ({ id }) => {
 /**
  * Component for embedding Instagram posts into articles.
  * @param {object} props - The properties.
- * @param {object} props.url - The url of the Instagram post.
- * @param {object} props.hideCaption - The option to hide the post's caption.
+ * @param {string} props.url - The url of the Instagram post.
+ * @param {boolean} props.hideCaption - The option to hide the post's caption.
  * @returns {React.Component} The component.
  */
-const EmbeddedInsta = ({ url, hideCaption = false }) => {
-  return <InstagramEmbed url={url} maxWidth={500} hideCaption={hideCaption} />;
+const EmbeddedInsta = ({ url }) => {
+  return <InstagramEmbed url={url} maxWidth={500} hideCaption={true} />;
 };
