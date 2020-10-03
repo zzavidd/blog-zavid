@@ -10,6 +10,7 @@ import { Icon } from 'components/icon';
 import { Spacer } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
+import { VanillaLink } from 'components/text';
 import BottomToolbar from 'lib/helpers/pages/posts/toolbar';
 import { updatePostFilterSettings } from 'lib/reducers';
 import {
@@ -17,7 +18,6 @@ import {
   GET_POSTS_QUERY
 } from 'private/api/queries/post.queries';
 import css from 'styles/pages/Posts.module.scss';
-import { VanillaLink } from 'components/text';
 
 const PostsAdmin = () => {
   const [posts, setPosts] = useState([]);

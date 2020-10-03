@@ -233,7 +233,7 @@ const buildPayload = (clientPost, domains, isPublish, isCreateOperation) => {
   if (Post.isPage(post)) {
     post.domainId = parseInt(domainId);
   } else {
-    post.typeId = typeId;
+    post.typeId = parseInt(typeId);
   }
 
   const payload = { post, isPublish };
