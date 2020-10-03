@@ -90,6 +90,7 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
       content: ReactDOMServer.renderToStaticMarkup(zText.formatText(content, {
         css: {
           hyperlink: 'hyperlink-content',
+          blockquote: 'blockquote',
           ['twitter-button']: 'button',
           ['instagram-button']: 'button',
         }
