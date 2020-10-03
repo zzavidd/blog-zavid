@@ -146,5 +146,5 @@ const EmbeddedTweet = ({ id }) => {
  * @returns {React.Component} The component.
  */
 const EmbeddedInsta = ({ url }) => {
-  return <InstagramEmbed url={url} maxWidth={500} hideCaption={true} />;
+  return <InstagramEmbed url={url} maxWidth={500} hideCaption={false} />;
 };
