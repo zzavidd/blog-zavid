@@ -17,6 +17,7 @@ import {
   GET_POSTS_QUERY
 } from 'private/api/queries/post.queries';
 import css from 'styles/pages/Posts.module.scss';
+import { VanillaLink } from 'components/text';
 
 const PostsAdmin = () => {
   const [posts, setPosts] = useState([]);
@@ -153,27 +154,25 @@ const PostsAdmin = () => {
 const LinkButton = ({ post }) => {
   if (zLogic.isFalsy(post.slug)) return null;
 
-  const navigateToLink = () => {
-    const url = new URLBuilder();
+  const url = new URLBuilder();
 
-    if (Post.isPage(post)) {
-      const base = Post.getDirectory(post.domainType);
-      url.appendSegment(base);
-      url.appendSegment(post.domainSlug);
-      url.appendSegment(post.slug);
-    } else {
-      const base = Post.getDirectory(post.type);
-      url.appendSegment(base);
-      url.appendSegment(post.slug);
-    }
-
-    window.open(url.build());
-  };
+  if (Post.isPage(post)) {
+    const base = Post.getDirectory(post.domainType);
+    url.appendSegment(base);
+    url.appendSegment(post.domainSlug);
+    url.appendSegment(post.slug);
+  } else {
+    const base = Post.getDirectory(post.type);
+    url.appendSegment(base);
+    url.appendSegment(post.slug);
+  }
+  
+  const link = url.build();
 
   return (
-    <InvisibleButton onClick={navigateToLink}>
+    <VanillaLink href={link}>
       <Icon name={'paper-plane'} />
-    </InvisibleButton>
+    </VanillaLink>
   );
 };
 

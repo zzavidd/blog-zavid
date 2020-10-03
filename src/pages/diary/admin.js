@@ -2,13 +2,13 @@ import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
-import { URLBuilder } from 'classes';
 import { alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
+import { VanillaLink } from 'components/text';
 import { ORDER } from 'constants/strings';
 import {
   GET_DIARY_QUERY,
@@ -54,7 +54,9 @@ export default () => {
       .then(() => deleteDiaryEntryMutation({ variables: { id } }))
       .then(() => {
         alert.success(
-          `You've deleted the diary entry for ${zDate.formatDate(date, { withWeekday: true })}.`
+          `You've deleted the diary entry for ${zDate.formatDate(date, {
+            withWeekday: true
+          })}.`
         );
         setDeleteModalVisibility(false);
         refetch();
@@ -82,7 +84,9 @@ export default () => {
             return [
               [key + 1, { type: TYPE.INDEX }],
               [
-                zDate.formatDate(parseInt(diaryEntry.date), { withWeekday: true }),
+                zDate.formatDate(parseInt(diaryEntry.date), {
+                  withWeekday: true
+                }),
                 { icon: 'calendar-alt' }
               ],
               [diaryEntry.title, { icon: 'heading' }],
@@ -137,17 +141,10 @@ const navigateToCreateForm = () => {
 };
 
 const LinkButton = ({ diaryEntry }) => {
-  const navigateToLink = () => {
-    const url = new URLBuilder();
-    url.appendSegment('diary');
-    url.appendSegment(diaryEntry.slug);
-    window.open(url.build());
-  };
-
   return (
-    <InvisibleButton onClick={navigateToLink}>
+    <VanillaLink href={`/diary/${diaryEntry.slug}`}>
       <Icon name={'paper-plane'} />
-    </InvisibleButton>
+    </VanillaLink>
   );
 };
 
