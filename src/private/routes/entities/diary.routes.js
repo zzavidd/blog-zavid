@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { zDate, zText } = require('zavid-modules');
+const { zText } = require('zavid-modules');
 
 const {
   Diary,

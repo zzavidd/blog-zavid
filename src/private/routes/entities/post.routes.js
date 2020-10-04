@@ -82,7 +82,7 @@ router.get(
         return server.render(req, res, '/posts/single', {
           title: `${page.title} | ${siteTitle}`,
           description: page.excerpt || zText.extractExcerpt(page.content),
-          ogUrl: `/reveries/${domain}/${slug}`, // Correct URL for domain
+          ogUrl: `/reveries/${domain}/${slug}`,
           cardImage: page.image,
           post: page
         });

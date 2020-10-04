@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { zText } = require('zavid-modules');
 
 const { PageQueryBuilder } = require('../../../classes');
 const { siteTitle } = require('../../../constants/settings');
@@ -17,6 +18,8 @@ router.get('/:slug', function (req, res, next) {
       if (!page) return next();
       return server.render(req, res, '/pages/single', {
         title: `${page.title} | ${siteTitle}`,
+        description: zText.extractExcerpt(page.content),
+        ogUrl: `/${slug}`,
         page
       });
     })

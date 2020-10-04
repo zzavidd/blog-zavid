@@ -2,6 +2,7 @@ const diaryRoutes = require('./entities/diary.routes');
 const pageRoutes = require('./entities/page.routes');
 const postRoutes = require('./entities/post.routes');
 const subscriberRoutes = require('./entities/subscriber.routes');
+const linksRoutes = require('./links');
 const seoRoutes = require('./seo');
 
 const {
@@ -24,6 +25,7 @@ app.use('/', [
   diaryRoutes,
   pageRoutes,
   postRoutes,
+  linksRoutes,
   seoRoutes,
   subscriberRoutes
 ]);
@@ -63,7 +65,7 @@ app.get(['/', '/home'], function (req, res) {
     })
     .then(([homepage, latestDiaryEntry, latestReverie, randomPosts]) => {
       return server.render(req, res, '/home', {
-        title: siteTitle,
+        title: `${siteTitle} - A Galaxy Mind in a Universe World`,
         description: 'Explore the metaphysical manifestation of my mind.',
         ogUrl: '/',
         homeText: homepage.content,

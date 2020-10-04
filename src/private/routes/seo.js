@@ -25,7 +25,15 @@ router.get('/robots.txt', (req, res) =>
 
 /** Sitemap generated page */
 router.get('/sitemap.xml', (req, res) => {
-  const routes = ['/', '/home', '/reveries', '/diary', '/subscribe'];
+  const routes = [
+    '/',
+    '/home',
+    '/reveries',
+    '/diary',
+    '/subscribe',
+    '/resources/university-thrival-guide',
+    '/resources/dissertation'
+  ];
 
   const reveries = Promise.resolve()
     .then(() =>
@@ -49,7 +57,7 @@ router.get('/sitemap.xml', (req, res) => {
     });
 
   const pages = Promise.resolve()
-    .then(() => new PageQueryBuilder(knex).build())
+    .then(() => new PageQueryBuilder(knex).whereIsEmbed(false).build())
     .then((pages) => {
       pages.forEach((page) => routes.push(`/${page.slug}`));
     });
