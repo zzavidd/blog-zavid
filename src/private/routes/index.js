@@ -65,7 +65,7 @@ app.get(['/', '/home'], function (req, res) {
     })
     .then(([homepage, latestDiaryEntry, latestReverie, randomPosts]) => {
       return server.render(req, res, '/home', {
-        title: `${siteTitle} - A Galaxy Mind in a Universe World`,
+        title: `${siteTitle}: A Galaxy Mind in a Universe World`,
         description: 'Explore the metaphysical manifestation of my mind.',
         ogUrl: '/',
         homeText: homepage.content,

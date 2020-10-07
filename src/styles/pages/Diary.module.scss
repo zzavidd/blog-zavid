@@ -54,7 +54,7 @@
 
 .diary-entry-title {
   @include responsive(font-size, 1.5em, $sm: 1.3em);
-  letter-spacing: -1px !important;
+  @include responsive(letter-spacing, 0, $sm: -0.5px);
   padding-bottom: 0.5em;
 }
 

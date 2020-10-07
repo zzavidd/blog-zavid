@@ -33,11 +33,11 @@ const DiarySingle = ({
           type={TIMELINE_TYPE.DIARY}
           previous={{
             slug: previousDiaryEntry.slug,
-            label: zDate.formatDate(previousDiaryEntry.date, { withWeekday: true })
+            label: `Diary Entry #${previousDiaryEntry.entryNumber}: ${previousDiaryEntry.title}`
           }}
           next={{
             slug: nextDiaryEntry.slug,
-            label: zDate.formatDate(nextDiaryEntry.date, { withWeekday: true })
+            label: `Diary Entry #${nextDiaryEntry.entryNumber}: ${nextDiaryEntry.title}`
           }}
         />
         <Divider />

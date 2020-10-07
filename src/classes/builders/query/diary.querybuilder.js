@@ -41,7 +41,7 @@ class DiaryQueryBuilder extends QueryBuilder {
     this.query.where(
       'slug',
       this.knex(TABLE_NAME)
-        .min('slug')
+        .max('slug')
         .where('slug', '<', slug) // Less than because dealing with dates
         .andWhere('status', Diary.STATUSES.PUBLISHED)
     );
@@ -53,7 +53,7 @@ class DiaryQueryBuilder extends QueryBuilder {
     this.query.where(
       'slug',
       this.knex(TABLE_NAME)
-        .max('slug')
+        .min('slug')
         .where('slug', '>', slug) // Greater than because dealing with dates
         .andWhere('status', Diary.STATUSES.PUBLISHED)
     );
