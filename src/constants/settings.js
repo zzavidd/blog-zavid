@@ -25,7 +25,7 @@ exports.redevelopmentDate = new Date(2020, 8, 21);
 exports.domain = dev ? 'http://localhost:4000' : 'https://www.zavidegbue.com';
 
 /** The website title. */
-exports.siteTitle = 'Z A V I D';
+exports.siteTitle = 'ZAVID';
 
 /** /the date of Zavid's birthday. Month is 0-indexed. */
 exports.zavidBirthday = new Date(1996, 11, 2);
