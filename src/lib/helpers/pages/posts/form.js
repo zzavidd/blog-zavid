@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { Post } from 'classes';
 import {
@@ -25,11 +26,14 @@ const PostForm = (props) => {
   const { post, domains, handlers, isCreateOperation, isLoaded } = props;
   const {
     handleText,
+    handleTextSave,
     handleDate,
     handleFile,
     handleContentImages,
     setDefaultTypeId
   } = handlers;
+
+  const dispatch = useDispatch();
 
   const substitutions = {};
   const contentImages = Object.values(post.contentImages || []);
@@ -80,7 +84,7 @@ const PostForm = (props) => {
             <LongTextArea
               name={'content'}
               value={post.content}
-              onChange={handleText}
+              onChange={(e) => handleTextSave(e, dispatch)}
               placeholder={"Write out the post's content..."}
             />
           </Field>

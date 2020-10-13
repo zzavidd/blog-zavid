@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { Diary } from 'classes';
 import {
@@ -16,7 +17,9 @@ import { Fader } from 'components/transitioner';
 
 const PostForm = (props) => {
   const { diaryEntry, handlers, isLoaded } = props;
-  const { handleText, handleDate } = handlers;
+  const { handleText, handleTextSave, handleDate } = handlers;
+
+  const dispatch = useDispatch();
 
   return (
     <Fader determinant={isLoaded} duration={500} hollow={true}>
@@ -27,7 +30,7 @@ const PostForm = (props) => {
             <LongTextArea
               name={'content'}
               value={diaryEntry.content}
-              onChange={handleText}
+              onChange={(e) => handleTextSave(e, dispatch)}
               placeholder={'Scribe your thoughts and feelings...'}
             />
           </Field>

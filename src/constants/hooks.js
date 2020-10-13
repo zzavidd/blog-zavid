@@ -1,3 +1,5 @@
+import { saveText } from 'lib/reducers.js';
+
 module.exports = (hook, state) => {
   const module = {};
   /**
@@ -7,6 +9,11 @@ module.exports = (hook, state) => {
   module.handleText = (event) => {
     const { name, value } = event.target;
     hook(Object.assign({}, state, { [name]: value }));
+  };
+
+  module.handleTextSave = (event, dispatch) => {
+    module.handleText(event);
+    dispatch(saveText(event.target.value));
   };
 
   module.handleSelection = module.handleText;

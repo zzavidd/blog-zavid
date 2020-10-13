@@ -25,6 +25,11 @@ export const clearUser = () => ({
   type: 'CLEAR_USER'
 });
 
+export const saveText = (text) => ({
+  type: 'SAVE_TEXT',
+  payload: text
+});
+
 /**
  * REDUCERS.
  */
@@ -61,6 +66,15 @@ const userReducer = (state = {}, { type, payload }) => {
   }
 };
 
+const textReducer = (state = '', { type, payload }) => {
+  switch (type) {
+    case 'SAVE_TEXT':
+      return payload || state;
+    default:
+      return state;
+  }
+};
+
 /**
  * STORE.
  */
@@ -75,7 +89,8 @@ const persistedReducer = persistReducer(
   combineReducers({
     theme: themeReducer,
     postFilterOptions: postReducer,
-    user: userReducer
+    user: userReducer,
+    savedText: textReducer
   })
 );
 
