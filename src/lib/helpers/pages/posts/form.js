@@ -68,7 +68,10 @@ const PostForm = (props) => {
               placeholder={'Select post type'}
             />
           </Field>
-          <Field sm={2}>
+          <DynamicField
+            sm={2}
+            precondition={!Post.isPage(post.type)}
+            dependency={post.type}>
             <Label>Type ID:</Label>
             <NumberInput
               name={'typeId'}
@@ -76,7 +79,7 @@ const PostForm = (props) => {
               onChange={handleText}
               placeholder={'Type ID'}
             />
-          </Field>
+          </DynamicField>
         </FieldRow>
         <FieldRow>
           <Field>
