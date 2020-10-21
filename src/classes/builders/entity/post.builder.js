@@ -9,13 +9,28 @@ class PostBuilder {
     this.post = {};
   }
 
+  withTitle(title){
+    this.post.title = title;
+    return this;
+  }
+
   withType(type) {
     this.post.type = type;
     return this;
   }
 
+  withTypeId(typeId) {
+    this.post.typeId = typeId;
+    return this;
+  }
+
   withStatus(status) {
     this.post.status = status;
+    return this;
+  }
+
+  withDatePublished(date){
+    this.post.datePublished = date;
     return this;
   }
 
@@ -29,7 +44,7 @@ class PostBuilder {
    * @param {object} options - Random options.
    * @param {boolean} options.withImage - Include a cover image.
    * @param {number} options.numberOfContentImages - Include a specified number of content images.
-   * @returns {Post} The post class.
+   * @returns {PostBuilder} The post builder class.
    */
   random(options = {}) {
     const { withImage = false, numberOfContentImages = 0 } = options;
