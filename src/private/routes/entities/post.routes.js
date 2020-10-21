@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { zText } = require('zavid-modules');
 
-const { PostQueryBuilder, PageQueryBuilder } = require('../../../classes');
+const { Post, PostQueryBuilder, PageQueryBuilder } = require('../../../classes');
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const { renderErrorPage, ERRORS } = require('../../error');
@@ -36,7 +36,7 @@ router.get(
       .then(() =>
         new PostQueryBuilder(knex)
           .whereSlug(slug)
-          .whereType({ exclude: ['Page'] })
+          .whereType({ include: [Post.TYPES.REVERIE.TITLE] })
           .build()
       )
       .then(([reverie]) => {
