@@ -38,25 +38,19 @@ class DiaryQueryBuilder extends QueryBuilder {
 
   getPreviousEntry(slug) {
     if (isFalsy(slug)) throw new Error(`No slug specified.`);
-    this.query.where(
-      'slug',
-      this.knex(TABLE_NAME)
-        .max('slug')
-        .where('slug', '<', slug) // Less than because dealing with dates
-        .andWhere('status', Diary.STATUSES.PUBLISHED)
-    );
+    this.query.where({
+      slug: this.knex(TABLE_NAME).max('slug').where('slug', '<', slug),
+      status: Diary.STATUSES.PUBLISHED
+    });
     return this;
   }
 
   getNextEntry(slug) {
     if (isFalsy(slug)) throw new Error(`No slug specified.`);
-    this.query.where(
-      'slug',
-      this.knex(TABLE_NAME)
-        .min('slug')
-        .where('slug', '>', slug) // Greater than because dealing with dates
-        .andWhere('status', Diary.STATUSES.PUBLISHED)
-    );
+    this.query.where({
+      slug: this.knex(TABLE_NAME).min('slug').where('slug', '>', slug),
+      status: Diary.STATUSES.PUBLISHED
+    });
     return this;
   }
 

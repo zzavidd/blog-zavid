@@ -58,32 +58,32 @@ class PostQueryBuilder extends QueryBuilder {
     return this;
   }
 
-  getLatestPost(){
+  getLatestPost() {
     this.query.orderBy('typeId', ORDER.DESCENDING).limit(1);
     return this;
   }
 
   getPreviousPost(typeId, type) {
-    const field = `${TABLE_NAME}.typeId`;
-    this.query.where(
-      field,
-      this.knex(TABLE_NAME).max(field).where(field, '<', typeId).andWhere({
-        status: Post.STATUSES.PUBLISHED,
-        type
-      })
-    );
+    const typeIdField = `${TABLE_NAME}.typeId`;
+    this.query.where({
+      [typeIdField]: this.knex(TABLE_NAME)
+        .max(typeIdField)
+        .where(typeIdField, '<', typeId),
+      [`${TABLE_NAME}.type`]: type,
+      [`${TABLE_NAME}.status`]: Post.STATUSES.PUBLISHED
+    });
     return this;
   }
 
   getNextPost(typeId, type) {
-    const field = `${TABLE_NAME}.typeId`;
-    this.query.where(
-      field,
-      this.knex(TABLE_NAME).min(field).where(field, '>', typeId).andWhere({
-        status: Post.STATUSES.PUBLISHED,
-        type
-      })
-    );
+    const typeIdField = `${TABLE_NAME}.typeId`;
+    this.query.where({
+      [typeIdField]: this.knex(TABLE_NAME)
+        .min(typeIdField)
+        .where(typeIdField, '>', typeId),
+      [`${TABLE_NAME}.type`]: type,
+      [`${TABLE_NAME}.status`]: Post.STATUSES.PUBLISHED
+    });
     return this;
   }
 }
