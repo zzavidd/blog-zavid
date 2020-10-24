@@ -94,6 +94,11 @@ class MutationBuilder extends QueryBuilder {
     this.query.where(`${this.table}.id`, id).del();
     return this;
   }
+
+  truncate(){
+    this.query.truncate();
+    return this;
+  }
 }
 
 exports.QueryBuilder = QueryBuilder;

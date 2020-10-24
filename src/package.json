@@ -4,6 +4,7 @@
     "build:ci": "next build",
     "dev": "node server.js",
     "prod": "NODE_ENV=production node server.js",
+    "ingestion": "node ./test/ingestion",
     "test": "npm run test:unit && npm run test:service",
     "test:unit": "mocha --recursive --no-timeout ./test/unit",
     "test:service": "mocha --recursive --no-timeout ./test/service",
@@ -60,7 +61,7 @@
     "redux-persist": "^6.0.0",
     "sitemap": "^6.3.0",
     "uuid": "^8.3.0",
-    "zavid-modules": "^3.3.4"
+    "zavid-modules": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

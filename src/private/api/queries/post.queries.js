@@ -63,12 +63,7 @@ exports.UPDATE_POST_QUERY = gql`
     $isPublish: Boolean
     $isTest: Boolean
   ) {
-    updatePost(
-      id: $id
-      post: $post
-      isPublish: $isPublish
-      isTest: $isTest
-    ) {
+    updatePost(id: $id, post: $post, isPublish: $isPublish, isTest: $isTest) {
       ...PostFields
     }
   }
@@ -80,5 +75,11 @@ exports.DELETE_POST_QUERY = gql`
     deletePost(id: $id) {
       id
     }
+  }
+`;
+
+exports.TRUNCATE_POST_TABLE_QUERY = gql`
+  mutation TruncatePostTable {
+    truncatePostTable
   }
 `;

@@ -130,6 +130,12 @@ const deletePost = (parent, { id }) => {
     .catch(debug);
 };
 
+const truncatePostTable = () => {
+  Promise.resolve()
+    .then(() => new PostMutationBuilder(knex).truncate().build())
+    .catch(debug);
+};
+
 module.exports = {
   Query: {
     getAllPosts,
@@ -138,6 +144,7 @@ module.exports = {
   Mutation: {
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    truncatePostTable
   }
 };

@@ -20,7 +20,7 @@ exports.fetch = (query, options = {}, test) => {
         assert.isNotOk(errors);
         assert.isOk(data);
       }
-      return test({ data, errors });
+      if (test) return test({ data, errors });
     })
     .catch(console.error);
 };

@@ -60,7 +60,7 @@ app.get(['/', '/home'], function (req, res) {
         Promise.resolve(homepage),
         Promise.resolve(latestDiaryEntry),
         Promise.resolve(latestReverie),
-        getRandomPosts(latestReverie.id)
+        latestReverie ? getRandomPosts(latestReverie.id) : null
       ]);
     })
     .then(([homepage, latestDiaryEntry, latestReverie, randomPosts]) => {

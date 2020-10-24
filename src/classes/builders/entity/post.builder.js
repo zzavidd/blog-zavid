@@ -9,7 +9,7 @@ class PostBuilder {
     this.post = {};
   }
 
-  withTitle(title){
+  withTitle(title) {
     this.post.title = title;
     return this;
   }
@@ -24,12 +24,17 @@ class PostBuilder {
     return this;
   }
 
+  withContent(content) {
+    this.post.content = content;
+    return this;
+  }
+
   withStatus(status) {
     this.post.status = status;
     return this;
   }
 
-  withDatePublished(date){
+  withDatePublished(date) {
     this.post.datePublished = date;
     return this;
   }
@@ -65,6 +70,19 @@ class PostBuilder {
         source: faker.image.image(),
         hasChanged: true
       })
+    };
+    return this;
+  }
+
+  withRandomExcerpt() {
+    this.post.excerpt = faker.lorem.sentences(1);
+    return this;
+  }
+
+  withRandomImage() {
+    this.post.image = {
+      source: faker.image.image(),
+      hasChanged: true
     };
     return this;
   }
