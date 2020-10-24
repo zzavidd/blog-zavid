@@ -7,7 +7,13 @@ describe('Unit Tests: Diary', function () {
   describe('Object methods', function () {
     it('Test random construction', function (finish) {
       const diaryEntry = new DiaryEntryBuilder().random().build();
-      assert.hasAllKeys(diaryEntry, ['content', 'date', 'status']);
+      assert.hasAllKeys(diaryEntry, [
+        'title',
+        'content',
+        'date',
+        'status',
+        'entryNumber'
+      ]);
       finish();
     });
   });
