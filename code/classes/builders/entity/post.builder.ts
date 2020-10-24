@@ -42,12 +42,8 @@ class PostBuilder {
     return this;
   }
 
-  random(options: {
-    withImage: boolean;
-    numberOfContentImages: number;
-  }): PostBuilder {
+  random(options: PostImageOptions = {}): PostBuilder {
     const { withImage = false, numberOfContentImages = 0 } = options;
-
     this.post = {
       title: `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`,
       type: Post.randomType(),
@@ -94,14 +90,19 @@ interface PostDAO {
   status: string;
   excerpt: string;
   datePublished: string | Date;
-  image?: PostImage;
-  contentImages?: PostImage[];
+  image?: String | PostImage;
+  contentImages?: String | String[] | PostImage[];
   domainId?: number;
 }
 
 interface PostImage {
   source: string;
   hasChanged: boolean;
+}
+
+interface PostImageOptions {
+  withImage?: boolean;
+  numberOfContentImages?: number;
 }
 
 module.exports = PostBuilder;
