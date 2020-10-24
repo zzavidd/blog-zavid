@@ -2,8 +2,8 @@
   "scripts": {
     "build": "NODE_ENV=development next build",
     "build:ci": "next build",
-    "dev": "node server.js",
-    "prod": "NODE_ENV=production node server.js",
+    "dev": "node ./src/server.js",
+    "prod": "NODE_ENV=production node ./src/server.js",
     "ingestion": "node ./test/ingestion",
     "test": "npm run test:unit && npm run test:service",
     "test:unit": "mocha --recursive --no-timeout ./test/unit",
