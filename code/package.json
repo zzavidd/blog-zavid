@@ -10,8 +10,8 @@
     "test:service": "mocha --recursive --no-timeout ./test/service",
     "test:mock": "mocha --recursive --no-timeout ./test/mocks",
     "test-spec": "mocha --no-timeout",
-    "lint": "eslint --ignore-path ../.gitignore \"**/*.js\"",
-    "prettify": "prettier --ignore-path ../.gitignore --write \"**/*.js\""
+    "lint": "eslint --ignore-path ../../.gitignore \"**/*.js\"",
+    "prettify": "prettier --ignore-path ../../.gitignore --write \"**/*.js\""
   },
   "dependencies": {
     "@apollo/client": "^3.1.3",
