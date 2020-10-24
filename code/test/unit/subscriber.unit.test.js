@@ -1,5 +1,5 @@
-const { assert } = require('..');
-const { SubscriberBuilder } = require('../../classes');
+const { assert, classes } = require('..');
+const { SubscriberBuilder } = classes;
 
 describe('Unit Tests: Subscriber', function () {
   describe('Object methods', function () {

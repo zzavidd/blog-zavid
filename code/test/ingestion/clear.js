@@ -4,7 +4,7 @@ const cloudinary = require('cloudinary').v2;
 const { fetch } = require('..');
 const {
   TRUNCATE_POST_TABLE_QUERY
-} = require('../../private/api/queries/post.queries');
+} = require('../../src/private/api/queries/post.queries');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,

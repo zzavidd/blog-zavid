@@ -4,7 +4,7 @@ const {
   CREATE_POST_QUERY,
   UPDATE_POST_QUERY,
   DELETE_POST_QUERY
-} = require('../../private/api/queries/post.queries');
+} = require('../../src/private/api/queries/post.queries');
 
 /**
  * Submits a post to the server.

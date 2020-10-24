@@ -1,11 +1,12 @@
 const faker = require('faker');
 const { zDate, zString, zNumber } = require('zavid-modules');
 
-const { fetch } = require('../..');
-const { Post, PostBuilder } = require('../../../classes');
+const { classes, fetch } = require('../..');
 const {
   CREATE_POST_QUERY
-} = require('../../../private/api/queries/post.queries');
+} = require('../../../src/private/api/queries/post.queries');
+
+const { Post, PostBuilder } = classes;
 
 const COUNT = {
   REVERIE: 10,

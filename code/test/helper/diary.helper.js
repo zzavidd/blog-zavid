@@ -1,11 +1,12 @@
-const { assert, debug, fetch } = require('..');
-const { Diary } = require('../../classes');
+const { assert, classes, debug, fetch } = require('..');
 const {
   GET_SINGLE_DIARY_QUERY,
   CREATE_DIARY_QUERY,
   UPDATE_DIARY_QUERY,
   DELETE_DIARY_QUERY
-} = require('../../private/api/queries/diary.queries');
+} = require('../../src/private/api/queries/diary.queries');
+
+const { Diary } = classes;
 
 /**
  * Submits a diary entry to the server.

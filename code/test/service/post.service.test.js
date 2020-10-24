@@ -1,6 +1,5 @@
-const { assert, debug, fetch } = require('..');
-const { Post, PostBuilder } = require('../../classes');
-const { GET_POSTS_QUERY } = require('../../private/api/queries/post.queries');
+const { assert, classes, debug, fetch } = require('..');
+const { GET_POSTS_QUERY } = require('../../src/private/api/queries/post.queries');
 const { retrieveResource, extractPublicId } = require('../helper');
 const {
   submitPost,
@@ -8,6 +7,8 @@ const {
   deletePost,
   comparePosts
 } = require('../helper/post.helper');
+
+const { Post, PostBuilder } = classes;
 
 describe('Service Tests: Post', function () {
   describe('Get All Posts', function () {

@@ -1,9 +1,11 @@
-const { Diary, DiaryEntryBuilder } = require('../../classes');
+const { classes } = require('..');
 const {
   submitDiaryEntry,
   updateDiaryEntry
 } = require('../helper/diary.helper');
 const { zDate } = require('zavid-modules');
+
+const { Diary, DiaryEntryBuilder } = classes;
 
 const submitDiary = () => {
   const diaryEntryForSubmit = new DiaryEntryBuilder().random().build();

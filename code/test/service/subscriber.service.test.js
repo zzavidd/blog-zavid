@@ -1,14 +1,15 @@
-const { assert, debug, fetch } = require('..');
-const { SubscriberBuilder } = require('../../classes');
+const { assert, classes, debug, fetch } = require('..');
 const {
   GET_SUBSCRIBERS_QUERY
-} = require('../../private/api/queries/subscriber.queries');
+} = require('../../src/private/api/queries/subscriber.queries');
 const {
   submitSubscriber,
   updateSubscriber,
   deleteSubscriber,
   compareSubscribers
 } = require('../helper/subscriber.helper');
+
+const { SubscriberBuilder } = classes;
 
 describe('Service Tests: Subscriber', function () {
   describe('Get All Subscribers', function () {

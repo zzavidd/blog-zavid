@@ -1,12 +1,13 @@
-const { assert, debug, fetch } = require('..');
-const { Diary, DiaryEntryBuilder } = require('../../classes');
-const { GET_DIARY_QUERY } = require('../../private/api/queries/diary.queries');
+const { assert, classes, debug, fetch } = require('..');
+const { GET_DIARY_QUERY } = require('../../src/private/api/queries/diary.queries');
 const {
   submitDiaryEntry,
   updateDiaryEntry,
   deleteDiaryEntry,
   compareDiaryEntries
 } = require('../helper/diary.helper');
+
+const { Diary, DiaryEntryBuilder } = classes;
 
 describe('Service Tests: Diary', function () {
   describe('Get All Diary Entries', function () {

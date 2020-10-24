@@ -1,6 +1,7 @@
-const { assert } = require('..');
-const { Diary, DiaryEntryBuilder } = require('../../classes');
-const { zavidBirthday } = require('../../constants/settings');
+const { assert, classes } = require('..');
+const { zavidBirthday } = require('../../src/constants/settings');
+
+const { Diary, DiaryEntryBuilder } = classes;
 
 describe('Unit Tests: Diary', function () {
   describe('Object methods', function () {

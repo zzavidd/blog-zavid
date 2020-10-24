@@ -1,5 +1,7 @@
-const { Post, PostBuilder } = require('../../classes');
+const { classes } = require('..');
 const { updatePost } = require('../helper/post.helper');
+
+const { Post, PostBuilder } = classes;
 
 const POST_ID = 943;
 

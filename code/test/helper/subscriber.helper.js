@@ -6,7 +6,7 @@ const {
   CREATE_SUBSCRIBER_QUERY,
   UPDATE_SUBSCRIBER_QUERY,
   DELETE_SUBSCRIBER_QUERY
-} = require('../../private/api/queries/subscriber.queries');
+} = require('../../src/private/api/queries/subscriber.queries');
 
 /**
  * Submits a subscriber to the server.

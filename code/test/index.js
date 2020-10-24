@@ -4,6 +4,7 @@ const { print } = require('graphql/language/printer');
 const fetch = require('node-fetch');
 
 exports.assert = assert;
+exports.classes = require('../src/classes');
 exports.debug = (err) => {
   throw err;
 };

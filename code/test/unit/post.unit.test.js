@@ -1,5 +1,5 @@
-const { assert } = require('..');
-const { Post, PostBuilder } = require('../../classes');
+const { assert, classes } = require('..');
+const { Post, PostBuilder } = classes;
 
 describe('Unit Tests: Post', function () {
   describe('Object methods', function () {
