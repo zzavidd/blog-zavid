@@ -7,7 +7,7 @@ const {
   Diary,
   DiaryQueryBuilder,
   PageQueryBuilder
-} = require('../../../classes');
+} = require('../../lib').classes;
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const resolvers = require('../../api/resolvers/diary.resolvers');

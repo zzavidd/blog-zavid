@@ -4,7 +4,7 @@ const {
   Subscriber,
   SubscriberQueryBuilder,
   SubscriberMutationBuilder
-} = require('../../../classes');
+} = require('../../lib').classes;
 const { debug, ERRORS } = require('../../error');
 const knex = require('../../singleton').getKnex();
 

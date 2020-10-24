@@ -11,7 +11,7 @@ const {
   Diary,
   DiaryQueryBuilder,
   PageQueryBuilder
-} = require('../../classes');
+} = require('../lib').classes;
 const { siteTitle } = require('../../constants/settings');
 const { ORDER } = require('../../constants/strings');
 const authRoutes = require('../auth');

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { zText } = require('zavid-modules');
 
-const { PageQueryBuilder } = require('../../../classes');
+const { PageQueryBuilder } = require('../../lib').classes;
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const knex = require('../../singleton').getKnex();

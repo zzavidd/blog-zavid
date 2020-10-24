@@ -2,7 +2,7 @@
 import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
-import { Subscriber } from 'classes/static';
+import { Subscriber } from '../classes/static';
 import { setAlert, reportError, alert } from 'components/alert';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';

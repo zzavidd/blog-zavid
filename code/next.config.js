@@ -13,7 +13,7 @@ module.exports = {
           }
         }
       },
-      { test: /\.tsx?$/, loader: 'ts-loader' }
+      //  { test: /\.tsx?$/, loader: 'ts-loader' }
     );
 
     config.node = {
@@ -23,6 +23,8 @@ module.exports = {
     };
 
     config.plugins = config.plugins || [];
+
+    config.resolve.extensions.push('.scss', '.ts', '.tsx');
     return config;
   }
 };

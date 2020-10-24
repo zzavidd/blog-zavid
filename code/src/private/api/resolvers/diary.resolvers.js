@@ -1,13 +1,11 @@
-const {
-  Diary,
-  DiaryQueryBuilder,
-  DiaryMutationBuilder
-} = require('../../../classes');
 const emails = require('../../emails');
+const { classes } = require('../../lib');
 const { debug, ERRORS } = require('../../error');
 const knex = require('../../singleton').getKnex();
 
 const { emailsOn } = require('./common');
+
+const { Diary, DiaryQueryBuilder, DiaryMutationBuilder } = classes;
 
 const ENTITY_NAME = 'diary entry';
 
@@ -22,10 +20,7 @@ const ENTITY_NAME = 'diary entry';
 const getAllDiaryEntries = (parent, { sort, status }) => {
   return Promise.resolve()
     .then(() =>
-      new DiaryQueryBuilder(knex)
-        .whereStatus(status)
-        .withOrder(sort)
-        .build()
+      new DiaryQueryBuilder(knex).whereStatus(status).withOrder(sort).build()
     )
     .then((diaryEntries) => diaryEntries)
     .catch(debug);

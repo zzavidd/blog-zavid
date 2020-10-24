@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { zText } = require('zavid-modules');
 
-const { Post, PostQueryBuilder, PageQueryBuilder } = require('../../../classes');
+const { Post, PostQueryBuilder, PageQueryBuilder } = require('../../lib').classes;
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const { renderErrorPage, ERRORS } = require('../../error');

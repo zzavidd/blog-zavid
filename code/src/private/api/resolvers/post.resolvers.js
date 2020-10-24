@@ -2,7 +2,7 @@ const {
   Post,
   PostQueryBuilder,
   PostMutationBuilder
-} = require('../../../classes');
+} = require('../../lib').classes;
 const emails = require('../../emails');
 const { debug, ERRORS } = require('../../error');
 const filer = require('../../filer');

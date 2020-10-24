@@ -6,7 +6,7 @@ const ReactDOMServer = require('react-dom/server');
 const { v4: uuidv4 } = require('uuid');
 const { zDate, zText } = require('zavid-modules');
 
-const { Subscriber, SubscriberQueryBuilder } = require('../../classes');
+const { Subscriber, SubscriberQueryBuilder } = require('../lib').classes;
 const {
   accounts,
   cloudinaryBaseUrl,

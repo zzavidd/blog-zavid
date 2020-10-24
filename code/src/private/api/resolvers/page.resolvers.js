@@ -1,4 +1,4 @@
-const { PageQueryBuilder, PageMutationBuilder } = require('../../../classes');
+const { PageQueryBuilder, PageMutationBuilder } = require('../../lib').classes;
 const { debug, ERRORS } = require('../../error');
 const knex = require('../../singleton').getKnex();
 

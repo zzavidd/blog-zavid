@@ -4,7 +4,8 @@ const { zString } = require('zavid-modules');
 
 const { debug } = require('./error');
 
-const { Post } = require('../classes');
+const { classes } = require('../lib');
+const { Post } = classes;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,

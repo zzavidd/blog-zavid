@@ -1,4 +1,4 @@
-const faker = require('faker');
+const faker = require('../classes/builders/entity/faker');
 const { zDate, zString, zNumber } = require('zavid-modules');
 
 const { classes, fetch } = require('../..');

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Subscriber, SubscriberQueryBuilder } = require('../../../classes');
+const { Subscriber, SubscriberQueryBuilder } = require('../../lib').classes;
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const knex = require('../../singleton').getKnex();

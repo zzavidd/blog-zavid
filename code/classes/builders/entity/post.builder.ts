@@ -5,53 +5,47 @@ const Post = require('../../static/post.static');
 
 /** The class for Post objects and methods. */
 class PostBuilder {
-  constructor() {
-    this.post = {};
-  }
+  post: PostDAO;
 
-  withTitle(title) {
+  withTitle(title: string): PostBuilder {
     this.post.title = title;
     return this;
   }
 
-  withType(type) {
+  withType(type: string): PostBuilder {
     this.post.type = type;
     return this;
   }
 
-  withTypeId(typeId) {
+  withTypeId(typeId: string): PostBuilder {
     this.post.typeId = typeId;
     return this;
   }
 
-  withContent(content) {
+  withContent(content: string): PostBuilder {
     this.post.content = content;
     return this;
   }
 
-  withStatus(status) {
+  withStatus(status: string): PostBuilder {
     this.post.status = status;
     return this;
   }
 
-  withDatePublished(date) {
+  withDatePublished(date: string | Date): PostBuilder {
     this.post.datePublished = date;
     return this;
   }
 
-  withDomain(id) {
+  withDomain(id: number): PostBuilder {
     this.post.domainId = id;
     return this;
   }
 
-  /**
-   * Populates post object with random details.
-   * @param {object} options - Random options.
-   * @param {boolean} options.withImage - Include a cover image.
-   * @param {number} options.numberOfContentImages - Include a specified number of content images.
-   * @returns {PostBuilder} The post builder class.
-   */
-  random(options = {}) {
+  random(options: {
+    withImage: boolean;
+    numberOfContentImages: number;
+  }): PostBuilder {
     const { withImage = false, numberOfContentImages = 0 } = options;
 
     this.post = {
@@ -74,12 +68,12 @@ class PostBuilder {
     return this;
   }
 
-  withRandomExcerpt() {
+  withRandomExcerpt(): PostBuilder {
     this.post.excerpt = faker.lorem.sentences(1);
     return this;
   }
 
-  withRandomImage() {
+  withRandomImage(): PostBuilder {
     this.post.image = {
       source: faker.image.image(),
       hasChanged: true
@@ -87,13 +81,27 @@ class PostBuilder {
     return this;
   }
 
-  /**
-   * Builds the post object.
-   * @returns {object} The post object.
-   */
   build() {
     return this.post;
   }
+}
+
+interface PostDAO {
+  title: string;
+  type: string;
+  typeId: string;
+  content: string;
+  status: string;
+  excerpt: string;
+  datePublished: string | Date;
+  image?: PostImage;
+  contentImages?: PostImage[];
+  domainId?: number;
+}
+
+interface PostImage {
+  source: string;
+  hasChanged: boolean;
 }
 
 module.exports = PostBuilder;

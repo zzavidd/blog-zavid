@@ -10,7 +10,7 @@ const {
   Diary,
   DiaryQueryBuilder,
   PageQueryBuilder
-} = require('../../classes');
+} = require('../lib').classes;
 const { domain } = require('../../constants/settings.js');
 const knex = require('../singleton').getKnex();
 
