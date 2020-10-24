@@ -1,6 +1,6 @@
 const server = require('./singleton').getServer();
 
-const { classes } = require('../lib');
+const { classes } = require('./lib');
 const { ErrorBuilder } = classes;
 
 const isDev = process.env.NODE_ENV !== 'production';

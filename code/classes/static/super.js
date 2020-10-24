@@ -1,4 +1,4 @@
-const { getRandom, checkPostValue } = require('../../src/lib/helpers');
+const { getRandom, checkPostValue } = require('../helper');
 
 class Publishable {
   static randomStatus() {

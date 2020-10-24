@@ -1,4 +1,4 @@
-const { Post } = require('classes');
+const { Post } = require('../../classes');
 const { alert } = require('components/alert.js');
 const { validate: validateEmail } = require('email-validator');
 

@@ -1,6 +1,6 @@
 const { isFalsy } = require('zavid-modules').zLogic;
 
-const { ORDER } = require('../../../constants/strings');
+const { ORDER } = require('../../../src/constants/strings');
 
 class QueryBuilder {
   constructor(knex, table, isMutation) {

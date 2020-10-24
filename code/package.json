@@ -2,7 +2,7 @@
   "scripts": {
     "build": "NODE_ENV=development next build",
     "build:ci": "next build",
-    "dev": "node src/server.js",
+    "dev": "nodemon",
     "prod": "NODE_ENV=production node src/server.js",
     "ingestion": "node test/ingestion",
     "test": "npm run test:unit && npm run test:service",
@@ -21,8 +21,6 @@
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/react-fontawesome": "^0.1.11",
-    "@types/node": "^14.14.2",
-    "@types/react": "^16.9.53",
     "apollo-server": "^2.17.0",
     "apollo-server-express": "^2.17.0",
     "async": "^3.2.0",
@@ -63,8 +61,6 @@
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "sitemap": "^6.3.0",
-    "ts-loader": "^8.0.7",
-    "typescript": "^4.0.3",
     "uuid": "^8.3.0",
     "zavid-modules": "^3.4.0"
   },
@@ -86,9 +82,12 @@
     "eslint-plugin-react": "^7.19.0",
     "faker": "^5.1.0",
     "mocha": "^8.1.1",
+    "nodemon": "^2.0.6",
     "prettier": "2.0.5",
     "stylelint": "^13.6.1",
     "stylelint-config-sass-guidelines": "^7.0.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3",
     "webpack": "^4.44.0"
   }
 }

@@ -2,7 +2,6 @@ import { useMutation } from '@apollo/client';
 import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 
-import { Subscriber } from 'classes';
 import { alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { FieldRow, Field, TextInput } from 'components/form';
@@ -10,6 +9,7 @@ import { Icon } from 'components/icon';
 import { Title, VanillaLink } from 'components/text';
 import { copyright, accounts } from 'constants/settings';
 import { isValidEmail } from 'constants/validations';
+import { Subscriber } from 'lib/classes';
 import { CREATE_SUBSCRIBER_QUERY } from 'private/api/queries/subscriber.queries';
 import css from 'styles/Partials.module.scss';
 

@@ -2,7 +2,7 @@ const { isFalsy } = require('zavid-modules').zLogic;
 
 const { QueryBuilder, MutationBuilder } = require('./super');
 
-const { ORDER } = require('../../../constants/strings');
+const { ORDER } = require('../../../src/constants/strings');
 const Diary = require('../../static/diary.static');
 
 const TABLE_NAME = 'diary';

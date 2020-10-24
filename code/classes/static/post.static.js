@@ -2,12 +2,7 @@ const { zLogic } = require('zavid-modules');
 
 const { Publishable } = require('./super');
 
-const {
-  isObject,
-  isString,
-  getRandom,
-  checkPostValue
-} = require('../../lib/helpers');
+const { isObject, isString, getRandom, checkPostValue } = require('../helper');
 const dev = process.env.NODE_ENV !== 'production';
 
 /** The map of post statuses. */

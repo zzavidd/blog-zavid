@@ -2,7 +2,6 @@ import classnames from 'classnames';
 import React, { useState, useEffect } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { Post } from 'classes';
 import { Field, FieldRow } from 'components/form';
 import { Icon } from 'components/icon';
 import CloudImage, { ASPECT_RATIO, Signature } from 'components/image';
@@ -10,6 +9,7 @@ import { Flexer, Responsive } from 'components/layout';
 import { Title, Paragraph, VanillaLink } from 'components/text';
 import { Fader, Zoomer } from 'components/transitioner';
 import { redevelopmentDate } from 'constants/settings';
+import { Post } from 'lib/classes';
 import css from 'styles/pages/Home.module.scss';
 
 const Home = ({ homeText, latestDiaryEntry, latestReverie, randomPosts }) => {
