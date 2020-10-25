@@ -1,4 +1,4 @@
-String cwd = 'src'
+String cwd = 'code'
 
 pipeline {
   agent { docker { image 'node:13-alpine' } }
