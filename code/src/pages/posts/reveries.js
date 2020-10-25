@@ -3,7 +3,7 @@ import React, { useState, useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { Post } from 'classes';
+import { Post } from 'lib/classes';
 import { alert } from 'components/alert.js';
 import { AdminButton } from 'components/button';
 import CloudImage from 'components/image.js';

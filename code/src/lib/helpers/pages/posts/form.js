@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Post } from 'classes';
 import {
   Form,
   FieldRow,
@@ -18,6 +17,7 @@ import { FileSelector, ASPECT_RATIO } from 'components/form/fileselector';
 import DatePicker from 'components/form/picker/datepicker';
 import { cloudinaryBaseUrl } from 'components/image';
 import { Fader } from 'components/transitioner';
+import { Post } from 'lib/classes';
 import css from 'styles/pages/Posts.module.scss';
 
 const NUMBER_OF_CONTENT_IMAGES = 6;

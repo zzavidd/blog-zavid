@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { zLogic, zText } from 'zavid-modules';
 
-import { Post, URLBuilder } from 'classes';
+import { Post, URLBuilder } from 'lib/classes';
 import { alert, reportError } from 'components/alert';
 import { InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';

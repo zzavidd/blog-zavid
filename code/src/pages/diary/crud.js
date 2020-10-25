@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { Diary } from 'classes';
+import { Diary } from 'lib/classes';
 import { setAlert, reportError } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
 import hooks from 'constants/hooks';

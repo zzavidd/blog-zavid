@@ -1,7 +1,7 @@
 import React from 'react';
 import { zDate, zLogic } from 'zavid-modules';
 
-import { Post } from 'classes';
+import { Post } from 'lib/classes';
 import { BackButton, AdminButton } from 'components/button';
 import CloudImage, { cloudinaryBaseUrl, Signature } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';

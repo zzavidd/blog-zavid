@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Diary } from 'classes';
 import {
   Form,
   FieldRow,
@@ -14,6 +13,7 @@ import {
 } from 'components/form';
 import DatePicker from 'components/form/picker/datepicker';
 import { Fader } from 'components/transitioner';
+import { Diary } from 'lib/classes';
 
 const PostForm = (props) => {
   const { diaryEntry, handlers, isLoaded } = props;

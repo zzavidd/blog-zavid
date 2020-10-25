@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Post } from 'classes';
+import { Post } from 'lib/classes';
 import { AdminButton } from 'components/button';
 import { Field, FieldRow, Select } from 'components/form';
 import { Icon } from 'components/icon';
