@@ -2,5 +2,5 @@
   "watch": ["classes"],
   "ext": ".ts,.js",
   "ignore": [],
-  "exec": "ts-node ./src/server.js"
+  "exec": "ts-node --project tsconfig.prod.json src/server.js"
 }

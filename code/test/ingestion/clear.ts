@@ -23,5 +23,3 @@ exports.clearAllData = (): Promise<any> => {
       .catch(reject);
   });
 };
-
-export {};

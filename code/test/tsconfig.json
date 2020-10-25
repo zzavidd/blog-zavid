@@ -2,9 +2,8 @@
   "compilerOptions": {
     "allowJs": true,
     "target": "es5",
-    "lib": ["es6"],
     "module": "CommonJS",
     "moduleResolution": "node",
-    "strict": true,
+    "strict": true
   }
 }
