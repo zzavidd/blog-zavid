@@ -12,7 +12,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-exports.clearAllData = () => {
+exports.clearAllData = (): Promise<any> => {
   console.info(`Deleting all data from POST table...`);
   return new Promise((resolve, reject) => {
     Promise.all([
@@ -23,3 +23,5 @@ exports.clearAllData = () => {
       .catch(reject);
   });
 };
+
+export {};

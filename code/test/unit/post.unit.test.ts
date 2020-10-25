@@ -4,7 +4,9 @@ const { Post, PostBuilder } = classes;
 describe('Unit Tests: Post', function () {
   describe('Object methods', function () {
     it('Test random construction', function (finish) {
-      const post = new PostBuilder().random({ numberOfContentImages: 4 }).build();
+      const post = new PostBuilder()
+        .random({ numberOfContentImages: 4 })
+        .build();
       isArrayOfLength(post.contentImages, 4);
       finish();
     });
@@ -19,7 +21,10 @@ describe('Unit Tests: Post', function () {
       assert.isTrue(Post.isReverie(reverie));
       assert.isTrue(Post.isReverie(reverie.type));
 
-      const page = new PostBuilder().random().withType(Post.TYPES.PAGE.TITLE).build();
+      const page = new PostBuilder()
+        .random()
+        .withType(Post.TYPES.PAGE.TITLE)
+        .build();
       assert.isTrue(Post.isPage(page));
       assert.isTrue(Post.isPage(page.type));
       finish();
@@ -92,7 +97,7 @@ describe('Unit Tests: Post', function () {
   });
 });
 
-const isArrayOfLength = (array, number) => {
+const isArrayOfLength = (array: any[], number: number) => {
   assert.isArray(array);
   assert.lengthOf(array, number);
 };

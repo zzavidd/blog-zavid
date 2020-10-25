@@ -5,7 +5,7 @@ const Post = require('../../static/post.static');
 
 /** The class for Post objects and methods. */
 class PostBuilder {
-  post: PostDAO;
+  post: PostDAO = {};
 
   withTitle(title: string): PostBuilder {
     this.post.title = title;
@@ -17,7 +17,7 @@ class PostBuilder {
     return this;
   }
 
-  withTypeId(typeId: string): PostBuilder {
+  withTypeId(typeId: number): PostBuilder {
     this.post.typeId = typeId;
     return this;
   }
@@ -83,13 +83,13 @@ class PostBuilder {
 }
 
 interface PostDAO {
-  title: string;
-  type: string;
-  typeId: string;
-  content: string;
-  status: string;
-  excerpt: string;
-  datePublished: string | Date;
+  title?: string;
+  type?: string;
+  typeId?: number;
+  content?: string;
+  status?: string;
+  excerpt?: string;
+  datePublished?: string | Date;
   image?: String | PostImage;
   contentImages?: String | String[] | PostImage[];
   domainId?: number;

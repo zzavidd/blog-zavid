@@ -1,12 +1,13 @@
-const faker = require('../classes/builders/entity/faker');
+const faker = require('faker');
 const { zDate, zString, zNumber } = require('zavid-modules');
 
-const { classes, fetch } = require('../..');
+const {
+  classes: { Post, PostBuilder },
+  fetch
+} = require('../..');
 const {
   CREATE_POST_QUERY
 } = require('../../../src/private/api/queries/post.queries');
-
-const { Post, PostBuilder } = classes;
 
 const COUNT = {
   REVERIE: 10,
@@ -14,9 +15,8 @@ const COUNT = {
 };
 
 exports.ingestReveries = () => {
-  console.info(`Ingesting ${COUNT.REVERIE} reveries...`);
-
   return ingestPost({
+    startMessage: `Ingesting ${COUNT.EPISTLE} epistles...`,
     quantity: COUNT.REVERIE,
     postOptions: {
       generateTitle: () => faker.company.catchPhrase(),
@@ -28,9 +28,8 @@ exports.ingestReveries = () => {
 };
 
 exports.ingestEpistles = () => {
-  console.info(`Ingesting ${COUNT.EPISTLE} epistles...`);
-
   return ingestPost({
+    startMessage: `Ingesting ${COUNT.EPISTLE} epistles...`,
     quantity: COUNT.EPISTLE,
     postOptions: {
       generateTitle: (i) => {
@@ -43,16 +42,22 @@ exports.ingestEpistles = () => {
   });
 };
 
-const ingestPost = (options) => {
-  const { quantity = 0, postOptions = {} } = options;
+const ingestPost = (options: IngestPostOptions) => {
   const {
-    generateTitle,
-    type,
-    contentThreshold = 1,
-    contentLimit = 3,
-    includeImage = true
-  } = postOptions;
+    startMessage,
+    quantity = 0,
+    postOptions: {
+      generateTitle,
+      type,
+      contentThreshold = 1,
+      contentLimit = 3,
+      includeImage = true
+    }
+  } = options;
+
   return new Promise((resolve, reject) => {
+    console.info(startMessage);
+
     const promises = [];
     let refDate = new Date();
 
@@ -77,13 +82,9 @@ const ingestPost = (options) => {
       const post = postbuilder.build();
 
       promises.push(
-        Promise.resolve()
-          .then(() => {
-            return fetch(CREATE_POST_QUERY, {
-              variables: { post, isTest: true }
-            });
-          })
-          .catch(reject)
+        fetch(CREATE_POST_QUERY, {
+          variables: { post, isTest: true }
+        })
       );
     }
 
@@ -92,3 +93,17 @@ const ingestPost = (options) => {
       .catch(reject);
   });
 };
+
+interface IngestPostOptions {
+  startMessage: string;
+  quantity: number;
+  postOptions: {
+    generateTitle: (index?: number) => string;
+    type: string;
+    contentThreshold: number;
+    contentLimit: number;
+    includeImage?: boolean;
+  };
+}
+
+export {};
