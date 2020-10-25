@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "allowJs": true,
+    "isolatedModules": false,
+    "target": "es5",
+  }
+}
