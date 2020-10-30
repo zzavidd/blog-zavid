@@ -70,7 +70,7 @@ const PostForm = (props) => {
           </Field>
           <DynamicField
             sm={2}
-            precondition={!Post.isPage(post.type)}
+            precondition={!Post.isPage(post)}
             dependency={post.type}>
             <Label>Type ID:</Label>
             <NumberInput
@@ -95,7 +95,7 @@ const PostForm = (props) => {
         <FieldRow>
           <DynamicField
             md={8}
-            precondition={Post.isPage(post.type)}
+            precondition={Post.isPage(post)}
             dependency={post.type}>
             <Label>Domain</Label>
             <Select

@@ -19,14 +19,13 @@ describe('Unit Tests: Post', function () {
         .withType(Post.TYPES.REVERIE.TITLE)
         .build();
       assert.isTrue(Post.isReverie(reverie));
-      assert.isTrue(Post.isReverie(reverie.type));
 
       const page = new PostBuilder()
         .random()
         .withType(Post.TYPES.PAGE.TITLE)
         .build();
       assert.isTrue(Post.isPage(page));
-      assert.isTrue(Post.isPage(page.type));
+      assert.isTrue(Post.isPage(page));
       finish();
     });
 
@@ -36,7 +35,6 @@ describe('Unit Tests: Post', function () {
         .withStatus(Post.STATUSES.DRAFT)
         .build();
       assert.isTrue(Post.isDraft(draftPost));
-      assert.isTrue(Post.isDraft(draftPost.status));
 
       const privatePost = new PostBuilder()
         .random()

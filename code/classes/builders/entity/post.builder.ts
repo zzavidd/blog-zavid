@@ -90,14 +90,15 @@ interface PostDAO {
   status?: string;
   excerpt?: string;
   datePublished?: string | Date;
-  image?: String | PostImage;
-  contentImages?: String | String[] | PostImage[];
+  image?: PostImage | string;
+  contentImages?: PostImage[] | string[] | string;
   domainId?: number;
 }
 
 interface PostImage {
   source: string;
   hasChanged: boolean;
+  isCover?: boolean
 }
 
 interface PostImageOptions {
