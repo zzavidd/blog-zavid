@@ -70,9 +70,10 @@ const createPost = (parent, { post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.uploadImages(post, { isTest }))
     .then((post) => {
+      const shouldNotify = isPublish && !Post.isPage(post) && emailsOn;
       return Promise.all([
         new PostMutationBuilder(knex).insert(post).build(),
-        isPublish && emailsOn ? emails.notifyNewPost(post) : null
+        shouldNotify ? emails.notifyNewPost(post) : null
       ]);
     })
     .then(([[id]]) => {
@@ -96,9 +97,10 @@ const updatePost = (parent, { id, post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.replaceImages(id, post, { isTest }))
     .then((updatedPost) => {
+      const shouldNotify = isPublish && !Post.isPage(post) && emailsOn;
       return Promise.all([
         new PostMutationBuilder(knex).update(updatedPost).whereId(id).build(),
-        isPublish && emailsOn ? emails.notifyNewPost(updatedPost) : null
+        shouldNotify ? emails.notifyNewPost(updatedPost) : null
       ]);
     })
     .then(() => getSinglePost(undefined, { id }))

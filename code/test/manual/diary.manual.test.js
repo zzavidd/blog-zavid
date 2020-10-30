@@ -29,6 +29,10 @@ Beatae [quo modi maiores](/) nam. **Voluptatem nihil alias placeat qui autem** e
 
 ---
 
+![I swear](https://media4.giphy.com/media/LOunc9cOc7x0C3ARtd/giphy.gif?cid=ecf05e4761db58a1692c1b2a998f168d82f81f563a875604&rid=giphy.gif)
+
+Hello my friend.
+
 > Et culpa incidunt omnis porro ipsa praesentium.
 
 !{Tweet}(1250122883101327361)

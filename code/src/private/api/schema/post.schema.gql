@@ -74,7 +74,7 @@ input PostInput {
   # No slug
   title: String!
   type: PostType!
-  typeId: Int!
+  typeId: Int
   datePublished: String
   content: String
   image: ImageState
