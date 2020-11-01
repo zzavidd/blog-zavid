@@ -7,7 +7,7 @@ const {
   compareDiaryEntries
 } = require('../helper/diary.helper');
 
-const { Diary, DiaryEntryBuilder } = classes;
+const { DiaryStatic, DiaryEntryBuilder } = classes;
 
 describe('Service Tests: Diary', function () {
   describe('Get All Diary Entries', function () {
@@ -31,11 +31,11 @@ describe('Service Tests: Diary', function () {
     it('Different statuses', function (finish) {
       const privateDiaryEntry = new DiaryEntryBuilder()
         .random()
-        .withStatus(Diary.STATUS.PRIVATE)
+        .withStatus(DiaryStatic.STATUS.PRIVATE)
         .build();
       const publishedDiaryEntry = new DiaryEntryBuilder()
         .random()
-        .withStatus(Diary.STATUS.PUBLISHED)
+        .withStatus(DiaryStatic.STATUS.PUBLISHED)
         .build();
 
       Promise.all([

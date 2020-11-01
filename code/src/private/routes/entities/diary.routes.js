@@ -4,7 +4,7 @@ const router = express.Router();
 const { zText } = require('zavid-modules');
 
 const {
-  Diary,
+  DiaryStatic,
   DiaryQueryBuilder,
   PageQueryBuilder
 } = require('../../lib').classes;
@@ -39,7 +39,7 @@ router.get(
     Promise.resolve()
       .then(() =>
         new DiaryQueryBuilder(knex)
-          .whereStatus({ include: [Diary.STATUS.PUBLISHED] })
+          .whereStatus({ include: [DiaryStatic.STATUS.PUBLISHED] })
           .getLatestEntry()
           .build()
       )

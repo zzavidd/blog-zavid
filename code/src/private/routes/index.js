@@ -12,7 +12,7 @@ const { debug } = require('../error');
 const {
   PostStatic,
   PostQueryBuilder,
-  Diary,
+  DiaryStatic,
   DiaryQueryBuilder,
   PageQueryBuilder
 } = require('../lib').classes;
@@ -33,7 +33,7 @@ app.use('/', [
 app.get(['/', '/home'], function (req, res) {
   const getHomeText = new PageQueryBuilder(knex).whereSlug('home').build();
   const getLatestDiaryEntry = new DiaryQueryBuilder(knex)
-    .whereStatus({ include: [Diary.STATUS.PUBLISHED] })
+    .whereStatus({ include: [DiaryStatic.STATUS.PUBLISHED] })
     .getLatestEntry()
     .build();
   const getLatestReverie = new PostQueryBuilder(knex)

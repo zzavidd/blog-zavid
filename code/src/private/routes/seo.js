@@ -7,7 +7,7 @@ const path = require('path');
 const {
   PostStatic,
   PostQueryBuilder,
-  Diary,
+  DiaryStatic,
   DiaryQueryBuilder,
   PageQueryBuilder
 } = require('../lib').classes;
@@ -48,7 +48,7 @@ router.get('/sitemap.xml', (req, res) => {
 
   const diaryEntries = Promise.resolve()
     .then(() =>
-      new DiaryQueryBuilder(knex).whereStatus(Diary.STATUS.PUBLISHED).build()
+      new DiaryQueryBuilder(knex).whereStatus(DiaryStatic.STATUS.PUBLISHED).build()
     )
     .then((diaryEntries) => {
       diaryEntries.forEach((diaryEntry) =>

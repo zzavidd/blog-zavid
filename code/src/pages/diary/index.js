@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
+import { DiaryStatic } from 'lib/classes';
 import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { Diary } from 'lib/classes';
 import { alert } from 'components/alert.js';
 import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
@@ -12,7 +12,8 @@ import { Fader } from 'components/transitioner.js';
 import { ORDER } from 'constants/strings.js';
 import { isAuthenticated } from 'lib/cookies';
 import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
-import css from 'styles/pages/Diary.module.scss';
+
+import css from 'styles/pages/DiaryStatic.module.scss';
 
 const DIARY_HEADING = `Zavid's Diary`;
 
@@ -29,7 +30,7 @@ const DiaryIndex = ({ diaryIntro }) => {
           field: 'date',
           order: ORDER.DESCENDING
         },
-        status: { include: [Diary.STATUS.PUBLISHED] }
+        status: { include: [DiaryStatic.STATUS.PUBLISHED] }
       }
     }
   );
