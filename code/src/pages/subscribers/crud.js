@@ -1,12 +1,12 @@
 /* eslint-disable jsdoc/require-returns */
 import { useMutation } from '@apollo/client';
+import { SubscriberStatic } from 'lib/classes';
 import React, { useEffect, useState } from 'react';
 
 import { setAlert, reportError, alert } from 'components/alert';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
 import { isValidSubscriber } from 'constants/validations';
-import { Subscriber } from 'lib/classes';
 import SubscriberForm from 'lib/helpers/pages/subscribers/form';
 import {
   CREATE_SUBSCRIBER_QUERY,
@@ -21,7 +21,7 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
     lastname: ''
   });
   const [preferences, setPreferences] = useState(
-    Subscriber.defaultSubscriptions()
+    SubscriberStatic.defaultSubscriptions()
   );
   const [isLoaded, setLoaded] = useState(false);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -86,7 +86,7 @@ const SubscriberCrud = ({ subscriber: serverSubscriber, operation }) => {
 
   const clearSubscriberForm = () => {
     setSubscriber({ email: '', firstname: '', lastname: '' });
-    setPreferences(Subscriber.defaultSubscriptions());
+    setPreferences(SubscriberStatic.defaultSubscriptions());
   };
 
   return (
