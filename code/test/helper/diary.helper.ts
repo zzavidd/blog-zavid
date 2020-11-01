@@ -1,4 +1,4 @@
-const { assert, classes, debug, fetch } = require('..');
+import { assert, debug, fetch } from '..';
 const {
   GET_SINGLE_DIARY_QUERY,
   CREATE_DIARY_QUERY,
@@ -6,24 +6,22 @@ const {
   DELETE_DIARY_QUERY
 } = require('../../src/private/api/queries/diary.queries');
 
-const { Diary } = classes;
+import { DiaryDAO, DiaryStatic, PostDAO } from '../../classes';
 
-/**
- * Submits a diary entry to the server.
- * @param {object} diaryEntry The diary entry to submit.
- * @param {Function} [assertions] The assertions to make.
- * @returns {Promise} A resolution of the Promise.
- */
-exports.submitDiaryEntry = (diaryEntry, assertions, isPublish = false) => {
+exports.submitDiaryEntry = (
+  diaryEntry: PostDAO,
+  assertions: Function,
+  isPublish: boolean = false
+): Promise<PostDAO> => {
   return Promise.resolve()
     .then(() => {
       // Submit the random diaryentry.
       return fetch(
         CREATE_DIARY_QUERY,
         { variables: { diaryEntry, isPublish } },
-        function ({ data }) {
+        function ({ data }: any) {
           const createdDiaryEntry = data.createDiaryEntry;
-          assert.hasAnyKeys(createdDiaryEntry, 'id');
+          assert.property(createdDiaryEntry, 'id');
           return createdDiaryEntry;
         }
       );
@@ -33,7 +31,7 @@ exports.submitDiaryEntry = (diaryEntry, assertions, isPublish = false) => {
       return fetch(
         GET_SINGLE_DIARY_QUERY,
         { variables: { id: createdDiaryEntry.id } },
-        function ({ data }) {
+        function ({ data }: any) {
           const returnedDiaryEntry = data.diaryEntry;
           if (assertions) assertions(returnedDiaryEntry);
           return returnedDiaryEntry.id;
@@ -43,18 +41,16 @@ exports.submitDiaryEntry = (diaryEntry, assertions, isPublish = false) => {
     .catch(debug);
 };
 
-/**
- * Updates a diary entry on the server.
- * @param {number} id The ID of the diary entry to update.
- * @param {object} diaryEntry The diary entry to update.
- * @param {Function} [assertions] The assertions to make.
- * @returns {Promise} A resolution of the Promise.
- */
-exports.updateDiaryEntry = (id, diaryEntry, assertions, isPublish = false) => {
+exports.updateDiaryEntry = (
+  id: number,
+  diaryEntry: DiaryDAO,
+  assertions: Function,
+  isPublish: boolean = false
+) => {
   return fetch(
     UPDATE_DIARY_QUERY,
     { variables: { id, diaryEntry, isPublish, isTest: true } },
-    function ({ data }) {
+    function ({ data }: any) {
       const updatedDiaryEntry = data.updateDiaryEntry;
       assert.strictEqual(updatedDiaryEntry.id, id);
       if (assertions) assertions(updatedDiaryEntry);
@@ -68,13 +64,13 @@ exports.updateDiaryEntry = (id, diaryEntry, assertions, isPublish = false) => {
  * @param {Function} [assertions] The assertions to make.
  * @returns {Promise} A resolution of the Promise.
  */
-exports.deleteDiaryEntry = (id, assertions) => {
+exports.deleteDiaryEntry = (id: number, assertions: Function) => {
   return Promise.resolve()
     .then(() => {
       // Delete the diary entry.
       return fetch(DELETE_DIARY_QUERY, { variables: { id } }, function ({
         data
-      }) {
+      }: any) {
         const deletedDiaryEntry = data.deleteDiaryEntry;
         assert.property(deletedDiaryEntry, 'id');
       });
@@ -84,7 +80,7 @@ exports.deleteDiaryEntry = (id, assertions) => {
       return fetch(
         GET_SINGLE_DIARY_QUERY,
         { variables: { id }, expectToFail: true },
-        function ({ errors }) {
+        function ({ errors }: any) {
           assert.isOk(errors);
           if (assertions) assertions();
         }
@@ -98,12 +94,12 @@ exports.deleteDiaryEntry = (id, assertions) => {
  * @param {object} request The diary entry submitted from client.
  * @param {object} response The diary entry returned from server.
  */
-exports.compareDiaryEntries = (request, response) => {
+exports.compareDiaryEntries = (request: DiaryDAO, response: DiaryDAO) => {
   assert.strictEqual(request.content, response.content);
   assert.strictEqual(request.status, response.status);
-  assert.strictEqual(Diary.generateSlug(request), response.slug);
+  assert.strictEqual(DiaryStatic.generateSlug(request), response.slug);
   assert.strictEqual(
-    new Date(request.date).getUTCMilliseconds,
-    new Date(parseInt(response.date)).getUTCMilliseconds
+    new Date(request.date as string).getUTCMilliseconds,
+    new Date(parseInt(response.date as string)).getUTCMilliseconds
   );
 };

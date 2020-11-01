@@ -1,16 +1,22 @@
-require('dotenv').config({ path: './config.env' });
-const { assert } = require('chai');
-const { print } = require('graphql/language/printer');
-const fetch = require('node-fetch');
+import * as dotenv from 'dotenv';
+dotenv.config({ path: './config.env' });
 
-exports.assert = assert;
-exports.classes = require('../classes');
-exports.debug = (err: Error) => {
+import { print } from 'graphql/language/printer';
+import { assert } from 'chai';
+import nodeFetch from 'node-fetch';
+
+export * as classes from '../classes';
+export { assert };
+export const debug = (err: Error) => {
   throw err;
 };
-exports.fetch = (query: any, options: FetchOptions = {}, test?: Function) => {
+export const fetch = (
+  query: any,
+  options: FetchOptions = {},
+  test?: Function
+) => {
   const { variables = {}, expectToFail = false } = options;
-  return fetch(`http://localhost:4000/api`, {
+  return nodeFetch(`http://localhost:4000/api`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: print(query), variables })
@@ -31,5 +37,3 @@ interface FetchOptions {
   variables?: any;
   expectToFail?: true;
 }
-
-export {};

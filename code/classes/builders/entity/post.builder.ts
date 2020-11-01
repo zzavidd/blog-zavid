@@ -1,4 +1,4 @@
-import faker from 'faker';
+import * as faker from 'faker';
 import { zDate, zString } from 'zavid-modules';
 
 import { PostStatic } from '../../static';

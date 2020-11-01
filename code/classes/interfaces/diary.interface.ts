@@ -4,6 +4,7 @@ export interface DiaryDAO {
   date?: string | Date
   status?: DiaryStatus
   entryNumber?: number
+  slug?: string
 }
 
 export enum DiaryStatus {

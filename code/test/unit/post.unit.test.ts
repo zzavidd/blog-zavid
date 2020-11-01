@@ -41,14 +41,13 @@ describe('Unit Tests: PostStatic', function () {
         .withStatus(PostStatic.STATUS.PRIVATE)
         .build();
       assert.isTrue(PostStatic.isPrivate(privatePost));
-      assert.isTrue(PostStatic.isPrivate(privatePost.status));
+      assert.isTrue(PostStatic.isPrivate(privatePost));
 
       const publishPost = new PostBuilder()
         .random()
         .withStatus(PostStatic.STATUS.PUBLISHED)
         .build();
       assert.isTrue(PostStatic.isPublish(publishPost));
-      assert.isTrue(PostStatic.isPublish(publishPost.status));
       finish();
     });
 
@@ -95,7 +94,7 @@ describe('Unit Tests: PostStatic', function () {
   });
 });
 
-const isArrayOfLength = (array: any[], number: number) => {
+const isArrayOfLength = (array: any[], number: number): void => {
   assert.isArray(array);
   assert.lengthOf(array, number);
 };

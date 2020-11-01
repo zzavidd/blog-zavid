@@ -1,4 +1,4 @@
-import faker from 'faker';
+import * as faker from 'faker';
 
 import { SubscriberStatic } from '../../static';
 import { SubscriberDAO } from '../../interfaces';

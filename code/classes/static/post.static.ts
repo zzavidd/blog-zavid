@@ -56,7 +56,7 @@ export class PostStatic {
    */
   static collateImages(
     post: PostDAO,
-    options?: CollateImageOptions
+    options: CollateImageOptions = {}
   ): (PostImage | string)[] {
     const { includeNulls = false } = options;
 
@@ -65,18 +65,16 @@ export class PostStatic {
 
     const images = [post.image].concat(post.contentImages).filter((image) => {
       if (includeNulls) return true;
-      if (image) {
-        if (this.isPostImageToUpload(post.image)) return true;
-        if (isString(image)) return true;
-      }
+      if (image) return true;
       return false;
     });
 
     return images;
   }
 
-  static isPostImageToUpload(image: PostImage | String): image is PostImage {
-    return (image as PostImage).source !== undefined;
+  static isPostImageToUpload(image: PostImage | string): image is PostImage {
+    if (image === null) return false;
+    return !!(image as PostImage).source;
   }
 
   /**
@@ -129,5 +127,5 @@ export class PostStatic {
 }
 
 interface CollateImageOptions {
-  includeNulls: boolean;
+  includeNulls?: boolean;
 }

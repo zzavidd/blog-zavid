@@ -1,7 +1,7 @@
-const { assert, classes } = require('..');
-const { zavidBirthday } = require('../../src/constants/settings');
+import { assert, classes } from '..';
+import { zavidBirthday } from '../../src/constants/settings';
 
-const { Diary, DiaryEntryBuilder } = classes;
+const { DiaryStatic, DiaryEntryBuilder } = classes;
 
 describe('Unit Tests: Diary', function () {
   describe('Object methods', function () {
@@ -24,10 +24,13 @@ describe('Unit Tests: Diary', function () {
         .random()
         .withDate(zavidBirthday)
         .build();
-      diaryEntry.slug = Diary.generateSlug(diaryEntry);
+      diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
 
       assert.property(diaryEntry, 'slug');
-      assert.deepEqual(new Date(diaryEntry.date), new Date('1996-12-02')),
+      assert.deepEqual(
+        new Date(diaryEntry.date as string),
+        new Date('1996-12-02')
+      ),
         finish();
     });
   });

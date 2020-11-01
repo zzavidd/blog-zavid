@@ -1,4 +1,4 @@
-import faker from 'faker';
+import * as faker from 'faker';
 import { zDate, zString } from 'zavid-modules';
 
 import { DiaryStatic } from '../../static';
@@ -8,7 +8,7 @@ import { DiaryStatus, DiaryDAO } from '../../interfaces';
 export class DiaryEntryBuilder {
   private entry: DiaryDAO = {};
 
-  withDate(date: string): DiaryEntryBuilder {
+  withDate(date: string | Date): DiaryEntryBuilder {
     this.entry.date = date;
     return this;
   }
