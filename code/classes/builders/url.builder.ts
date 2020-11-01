@@ -1,17 +1,16 @@
-const { zLogic } = require('zavid-modules');
+import { zLogic } from 'zavid-modules';
 const { isFalsy } = zLogic;
 
-class URLBuilder {
-  constructor() {
-    this.url = '';
-  }
+export class URLBuilder {
+
+  private url: string = ''
 
   /**
    * Append a value to the URL.
    * @param {string} value The text to append.
    * @returns {URLBuilder} The URLBuilder.
    */
-  append(value) {
+  append(value: string): URLBuilder {
     if (isFalsy(value)) return this;
     this.url += value;
     return this;
@@ -22,7 +21,7 @@ class URLBuilder {
    * @param {string} segment The segment to append.
    * @returns {URLBuilder} The URLBuilder.
    */
-  appendSegment(segment) {
+  appendSegment(segment: string): URLBuilder {
     if (isFalsy(segment)) return this;
     this.url += `/${segment}`;
     return this;
@@ -32,9 +31,7 @@ class URLBuilder {
    * Return the built URL string.
    * @returns {string} The built URL string.
    */
-  build() {
+  build(): string {
     return this.url;
   }
 }
-
-module.exports = URLBuilder;

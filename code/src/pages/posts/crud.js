@@ -3,11 +3,11 @@ import { useQuery, useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { Post } from 'lib/classes';
 import { alert, setAlert, reportError } from 'components/alert';
 import hooks from 'constants/hooks';
 import { OPERATIONS } from 'constants/strings';
 import { isValidPost } from 'constants/validations';
+import { PostStatic } from 'lib/classes';
 import PostForm from 'lib/helpers/pages/posts/form';
 import {
   GET_POSTS_QUERY,
@@ -28,7 +28,7 @@ const PostCrud = ({ post: serverPost, operation }) => {
       hasChanged: false
     },
     contentImages: {},
-    status: Post.STATUSES.DRAFT,
+    status: PostStatic.STATUS.DRAFT,
     datePublished: null,
     domainId: ''
   });
@@ -63,10 +63,10 @@ const PostCrud = ({ post: serverPost, operation }) => {
   // Determine if post is being published.
   let isPublish = false;
   if (isCreateOperation) {
-    isPublish = Post.isPublish(clientPost.status);
+    isPublish = PostStatic.isPublish(clientPost.status);
   } else {
     isPublish =
-      !Post.isPublish(serverPost.status) && Post.isPublish(clientPost.status);
+      !PostStatic.isPublish(serverPost.status) && PostStatic.isPublish(clientPost.status);
   }
 
   /** Populate the form with post details. */
@@ -226,11 +226,11 @@ const buildPayload = (clientPost, domains, isPublish, isCreateOperation) => {
     status
   };
 
-  if (Post.isPublish(post)) {
+  if (PostStatic.isPublish(post)) {
     post.datePublished = zDate.formatISODate(datePublished);
   }
 
-  if (Post.isPage(post)) {
+  if (PostStatic.isPage(post)) {
     post.domainId = parseInt(domainId);
   } else {
     post.typeId = parseInt(typeId);

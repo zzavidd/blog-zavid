@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { zText } = require('zavid-modules');
 
-const { Post, PostQueryBuilder, PageQueryBuilder } = require('../../lib').classes;
+const { PostStatic, PostQueryBuilder, PageQueryBuilder } = require('../../lib').classes;
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const { renderErrorPage, ERRORS } = require('../../error');
@@ -36,7 +36,7 @@ router.get(
       .then(() =>
         new PostQueryBuilder(knex)
           .whereSlug(slug)
-          .whereType({ include: [Post.TYPES.REVERIE.TITLE] })
+          .whereType({ include: [PostStatic.TYPE.REVERIE] })
           .build()
       )
       .then(([reverie]) => {
@@ -109,7 +109,7 @@ router.get('/admin/posts', function (req, res) {
 
 router.get('/admin/posts/add', function (req, res) {
   return server.render(req, res, '/posts/crud', {
-    title: `Add New Post`,
+    title: `Add New PostStatic`,
     operation: OPERATIONS.CREATE
   });
 });
@@ -122,7 +122,7 @@ router.get('/admin/posts/edit/:id', function (req, res) {
     .then(([post]) => {
       if (!post) throw ERRORS.NO_ENTITY('post');
       return server.render(req, res, '/posts/crud', {
-        title: `Edit Post`,
+        title: `Edit PostStatic`,
         operation: OPERATIONS.UPDATE,
         post
       });

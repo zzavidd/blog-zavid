@@ -1,16 +1,15 @@
-const faker = require('faker');
+import faker from 'faker';
 
-const Subscriber = require('../../static/subscriber.static');
+import { SubscriberStatic } from '../../static';
+import { SubscriberDAO } from '../../interfaces';
 
 /** The class for building Subscriber objects. */
-class SubscriberBuilder {
-  constructor() {
-    this.subscriber = {};
-  }
+export class SubscriberBuilder {
+  private subscriber: SubscriberDAO = {};
 
   random() {
     const subscriptions = {};
-    Object.values(Subscriber.SUBSCRIPTIONS).forEach((type) => {
+    Object.values(SubscriberStatic.SUBSCRIPTIONS).forEach((type) => {
       subscriptions[type] = faker.random.boolean();
     });
 
@@ -31,5 +30,3 @@ class SubscriberBuilder {
     return this.subscriber;
   }
 }
-
-module.exports = SubscriberBuilder;

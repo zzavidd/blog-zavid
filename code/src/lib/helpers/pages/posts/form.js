@@ -17,7 +17,7 @@ import { FileSelector, ASPECT_RATIO } from 'components/form/fileselector';
 import DatePicker from 'components/form/picker/datepicker';
 import { cloudinaryBaseUrl } from 'components/image';
 import { Fader } from 'components/transitioner';
-import { Post } from 'lib/classes';
+import { PostStatic } from 'lib/classes';
 import css from 'styles/pages/Posts.module.scss';
 
 const NUMBER_OF_CONTENT_IMAGES = 6;
@@ -62,7 +62,7 @@ const PostForm = (props) => {
             <Label>Type:</Label>
             <Select
               name={'type'}
-              items={Post.typeList}
+              items={PostStatic.TYPES}
               value={post.type}
               onChange={setDefaultTypeId}
               placeholder={'Select post type'}
@@ -70,7 +70,7 @@ const PostForm = (props) => {
           </Field>
           <DynamicField
             sm={2}
-            precondition={!Post.isPage(post)}
+            precondition={!PostStatic.isPage(post)}
             dependency={post.type}>
             <Label>Type ID:</Label>
             <NumberInput
@@ -95,7 +95,7 @@ const PostForm = (props) => {
         <FieldRow>
           <DynamicField
             md={8}
-            precondition={Post.isPage(post)}
+            precondition={PostStatic.isPage(post)}
             dependency={post.type}>
             <Label>Domain</Label>
             <Select
@@ -112,14 +112,14 @@ const PostForm = (props) => {
             <Label>Status:</Label>
             <Select
               name={'status'}
-              items={Post.statusList}
+              items={PostStatic.STATUS}
               value={post.status}
               onChange={handleText}
             />
           </Field>
           <DynamicField
             md={6}
-            precondition={Post.isPublish(post.status)}
+            precondition={PostStatic.isPublish(post.status)}
             dependency={post.status}>
             <Label>Date Published:</Label>
             <DatePicker

@@ -39,7 +39,7 @@ router.get(
     Promise.resolve()
       .then(() =>
         new DiaryQueryBuilder(knex)
-          .whereStatus({ include: [Diary.STATUSES.PUBLISHED] })
+          .whereStatus({ include: [Diary.STATUS.PUBLISHED] })
           .getLatestEntry()
           .build()
       )

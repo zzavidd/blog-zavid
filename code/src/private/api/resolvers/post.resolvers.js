@@ -1,5 +1,5 @@
 const {
-  Post,
+  PostStatic,
   PostQueryBuilder,
   PostMutationBuilder
 } = require('../../lib').classes;
@@ -33,7 +33,7 @@ const getAllPosts = (parent, { limit, sort, type, status }) => {
         .build()
     )
     .then((posts) => {
-      return posts.map((post) => Post.parse(post));
+      return posts.map((post) => PostStatic.parse(post));
     })
     .catch(debug);
 };
@@ -50,7 +50,7 @@ const getSinglePost = (parent, { id }) => {
     .then(() => new PostQueryBuilder(knex).whereId(id).build())
     .then(([post]) => {
       if (!post) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
-      post = Post.parse(post);
+      post = PostStatic.parse(post);
       return post;
     })
     .catch(debug);
@@ -70,7 +70,7 @@ const createPost = (parent, { post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.uploadImages(post, { isTest }))
     .then((post) => {
-      const shouldNotify = isPublish && !Post.isPage(post) && emailsOn;
+      const shouldNotify = isPublish && !PostStatic.isPage(post) && emailsOn;
       return Promise.all([
         new PostMutationBuilder(knex).insert(post).build(),
         shouldNotify ? emails.notifyNewPost(post) : null
@@ -97,7 +97,7 @@ const updatePost = (parent, { id, post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.replaceImages(id, post, { isTest }))
     .then((updatedPost) => {
-      const shouldNotify = isPublish && !Post.isPage(post) && emailsOn;
+      const shouldNotify = isPublish && !PostStatic.isPage(post) && emailsOn;
       return Promise.all([
         new PostMutationBuilder(knex).update(updatedPost).whereId(id).build(),
         shouldNotify ? emails.notifyNewPost(updatedPost) : null
@@ -121,7 +121,7 @@ const deletePost = (parent, { id }) => {
       if (!post) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
 
       const promises = [];
-      const images = Post.collateImages(post);
+      const images = PostStatic.collateImages(post);
       images.forEach((image) => {
         promises.push(filer.destroyImage(image));
       });

@@ -1,55 +1,55 @@
-const { isFalsy } = require('zavid-modules').zLogic;
+import { DiaryStatus, QueryOrder } from '../../interfaces';
+import { zLogic } from 'zavid-modules';
+import { MutationBuilder, QueryBuilder } from './super';
 
-const { QueryBuilder, MutationBuilder } = require('./super');
-
-const { ORDER } = require('../../../src/constants/strings');
-const Diary = require('../../static/diary.static');
+const { isFalsy } = zLogic;
 
 const TABLE_NAME = 'diary';
 
 /** Builds a post query with conditions. */
-class DiaryQueryBuilder extends QueryBuilder {
-  constructor(knex) {
+export class DiaryQueryBuilder extends QueryBuilder {
+  constructor(knex: any) {
     super(knex, TABLE_NAME);
     this.knex = knex;
   }
 
-  whereSlug(slug) {
+  whereSlug(slug: string): DiaryQueryBuilder {
     if (isFalsy(slug)) throw new Error(`No slug specified.`);
     this.query.where('slug', slug);
     return this;
   }
 
-  whereStatus({ include, exclude } = {}) {
+  whereStatus(filters: DiaryStatusFilters = {}): DiaryQueryBuilder {
+    const { include, exclude } = filters;
     if (!isFalsy(include)) this.query.whereIn('status', include);
     if (!isFalsy(exclude)) this.query.whereNotIn('status', exclude);
     return this;
   }
 
-  getLatestEntry() {
-    this.query.orderBy('date', ORDER.DESCENDING).limit(1);
+  getLatestEntry(): DiaryQueryBuilder {
+    this.query.orderBy('date', QueryOrder.DESCENDING).limit(1);
     return this;
   }
 
-  getLatestEntryNumber() {
+  getLatestEntryNumber(): DiaryQueryBuilder {
     this.query.max('entryNumber', { as: 'latestEntryNumber' });
     return this;
   }
 
-  getPreviousEntry(slug) {
+  getPreviousEntry(slug: string): DiaryQueryBuilder {
     if (isFalsy(slug)) throw new Error(`No slug specified.`);
     this.query.where({
       slug: this.knex(TABLE_NAME).max('slug').where('slug', '<', slug),
-      status: Diary.STATUSES.PUBLISHED
+      status: DiaryStatus.PUBLISHED
     });
     return this;
   }
 
-  getNextEntry(slug) {
+  getNextEntry(slug: string): DiaryQueryBuilder {
     if (isFalsy(slug)) throw new Error(`No slug specified.`);
     this.query.where({
       slug: this.knex(TABLE_NAME).min('slug').where('slug', '>', slug),
-      status: Diary.STATUSES.PUBLISHED
+      status: DiaryStatus.PUBLISHED
     });
     return this;
   }
@@ -59,18 +59,20 @@ class DiaryQueryBuilder extends QueryBuilder {
    * @param {number} [limit] - The number of results to be returned.
    * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
-  withLimit(limit) {
+  withLimit(limit: number): DiaryQueryBuilder {
     if (isFalsy(limit)) return this;
     this.query.limit(limit);
     return this;
   }
 }
 
-class DiaryMutationBuilder extends MutationBuilder {
-  constructor(knex) {
+export class DiaryMutationBuilder extends MutationBuilder {
+  constructor(knex: any) {
     super(knex, TABLE_NAME, 'diary entry');
   }
 }
 
-exports.DiaryQueryBuilder = DiaryQueryBuilder;
-exports.DiaryMutationBuilder = DiaryMutationBuilder;
+interface DiaryStatusFilters {
+  include?: DiaryStatus[];
+  exclude?: DiaryStatus[];
+}

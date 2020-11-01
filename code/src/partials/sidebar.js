@@ -3,11 +3,11 @@ import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { Post } from 'lib/classes';
 import { alert } from 'components/alert.js';
 import CloudImage from 'components/image.js';
 import { Title, VanillaLink } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
+import { PostStatic } from 'lib/classes';
 import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
 import css from 'styles/Partials.module.scss';
 
@@ -25,8 +25,8 @@ export const RightSidebar = () => {
           field: 'datePublished',
           order: 'DESC'
         },
-        type: { exclude: [Post.TYPES.PAGE.TITLE] },
-        status: { include: [Post.STATUSES.PUBLISHED] }
+        type: { exclude: [PostStatic.TYPE.PAGE] },
+        status: { include: [PostStatic.STATUS.PUBLISHED] }
       }
     }
   );

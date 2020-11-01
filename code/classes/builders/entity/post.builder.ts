@@ -1,18 +1,24 @@
-const faker = require('faker');
-const { zDate, zString } = require('zavid-modules');
+import faker from 'faker';
+import { zDate, zString } from 'zavid-modules';
 
-const Post = require('../../static/post.static');
+import { PostStatic } from '../../static';
+import {
+  PostDAO,
+  PostImageOptions,
+  PostType,
+  PostStatus
+} from '../../interfaces';
 
 /** The class for Post objects and methods. */
-class PostBuilder {
-  post: PostDAO = {};
+export class PostBuilder {
+  private post: PostDAO = {};
 
   withTitle(title: string): PostBuilder {
     this.post.title = title;
     return this;
   }
 
-  withType(type: string): PostBuilder {
+  withType(type: PostType): PostBuilder {
     this.post.type = type;
     return this;
   }
@@ -27,7 +33,7 @@ class PostBuilder {
     return this;
   }
 
-  withStatus(status: string): PostBuilder {
+  withStatus(status: PostStatus): PostBuilder {
     this.post.status = status;
     return this;
   }
@@ -46,11 +52,11 @@ class PostBuilder {
     const { withImage = false, numberOfContentImages = 0 } = options;
     this.post = {
       title: `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`,
-      type: Post.randomType(),
+      type: PostStatic.randomType(),
       typeId: faker.random.number(),
       content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
       excerpt: faker.lorem.sentences(),
-      status: Post.randomStatus(),
+      status: PostStatic.randomStatus(),
       datePublished: zDate.formatISODate(faker.date.past()),
       image: {
         source: withImage ? faker.image.image() : '',
@@ -77,33 +83,7 @@ class PostBuilder {
     return this;
   }
 
-  build() {
+  build(): PostDAO {
     return this.post;
   }
 }
-
-interface PostDAO {
-  title?: string;
-  type?: string;
-  typeId?: number;
-  content?: string;
-  status?: string;
-  excerpt?: string;
-  datePublished?: string | Date;
-  image?: PostImage | string;
-  contentImages?: PostImage[] | string[] | string;
-  domainId?: number;
-}
-
-interface PostImage {
-  source: string;
-  hasChanged: boolean;
-  isCover?: boolean
-}
-
-interface PostImageOptions {
-  withImage?: boolean;
-  numberOfContentImages?: number;
-}
-
-module.exports = PostBuilder;

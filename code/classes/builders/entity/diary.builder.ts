@@ -1,36 +1,35 @@
-const faker = require('faker');
-const { zDate, zString } = require('zavid-modules');
+import faker from 'faker';
+import { zDate, zString } from 'zavid-modules';
 
-const Diary = require('../../static/diary.static');
+import { DiaryStatic } from '../../static';
+import { DiaryStatus, DiaryDAO } from '../../interfaces';
 
 /** The class for Diary objects and methods. */
-class DiaryEntryBuilder {
-  constructor() {
-    this.entry = {};
-  }
+export class DiaryEntryBuilder {
+  private entry: DiaryDAO = {};
 
-  withDate(date) {
+  withDate(date: string): DiaryEntryBuilder {
     this.entry.date = date;
     return this;
   }
 
-  withStatus(status) {
+  withStatus(status: DiaryStatus): DiaryEntryBuilder {
     this.entry.status = status;
     return this;
   }
 
-  withContent(content){
+  withContent(content: string): DiaryEntryBuilder {
     this.entry.content = content;
     return this;
   }
 
-  random() {
+  random(): DiaryEntryBuilder {
     this.entry = {
       title: zString.toTitleCase(faker.company.catchPhraseNoun()),
       content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
       date: zDate.formatISODate(faker.date.past()),
-      status: Diary.randomStatus(),
-      entryNumber: faker.random.number(),
+      status: DiaryStatic.randomStatus(),
+      entryNumber: faker.random.number()
     };
     return this;
   }
@@ -39,9 +38,7 @@ class DiaryEntryBuilder {
    * Builds the diary entry object.
    * @returns {object} The diary entry object.
    */
-  build() {
+  build(): DiaryDAO {
     return this.entry;
   }
 }
-
-module.exports = DiaryEntryBuilder;

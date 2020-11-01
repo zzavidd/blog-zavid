@@ -1,10 +1,12 @@
-const { Post } = require('../../classes');
-const { alert } = require('components/alert.js');
 const { validate: validateEmail } = require('email-validator');
+
+const { alert } = require('components/alert.js');
+
+const { PostStatic } = require('../../classes');
 
 /**
  * Validation of post submission or update.
- * @param {object} post - Post information to be validated.
+ * @param {object} post - PostStatic information to be validated.
  * @returns {boolean} True if valid. False with error message if invalid.
  */
 exports.isValidPost = (post) => {
@@ -12,27 +14,27 @@ exports.isValidPost = (post) => {
   if (!ifExists(post.type, "Select the post's type.")) return false;
 
   // Ensure type ID if post is NOT a DRAFT nor a PAGE.
-  if (!Post.isDraft(post) && !Post.isPage(post)) {
+  if (!PostStatic.isDraft(post) && !PostStatic.isPage(post)) {
     if (!ifExists(post.typeId, "Set the post's type number.")) return false;
   }
 
   // Ensure page domain ID is set if post is PAGE.
-  if (Post.isPage(post)) {
+  if (PostStatic.isPage(post)) {
     if (!ifExists(post.domainId, "Select this page's domain post."))
       return false;
   }
 
   // Ensure post image, content and excerpt is PUBLISHED.
-  if (Post.isPublish(post)) {
+  if (PostStatic.isPublish(post)) {
     if (
       !isValidImage(post.image.source, 'post', {
-        mustExist: Post.isReverie(post)
+        mustExist: PostStatic.isReverie(post)
       })
     )
       return false;
     if (!ifExists(post.content, 'Write out the content of this post.'))
       return false;
-    if (Post.isReverie(post)) {
+    if (PostStatic.isReverie(post)) {
       if (!ifExists(post.excerpt, "Enter the post's excerpt.")) return false;
     }
   }

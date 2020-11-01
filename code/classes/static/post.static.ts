@@ -1,39 +1,28 @@
-const { zLogic } = require('zavid-modules');
+import { zLogic } from 'zavid-modules';
 
-const { Publishable } = require('./super');
-
-const { isObject, isString, getRandom } = require('../helper');
-const dev = process.env.NODE_ENV !== 'production';
-
-enum STATUS {
-  DRAFT,
-  PRIVATE,
-  PUBLISHED
-}
-
-enum TYPE {
-  REVERIE = 'Reverie',
-  EPISTLE = 'Epistle',
-  POEM = 'Poem',
-  MUSING = 'Musing',
-  PAGE = 'Page'
-}
+import { isString, getRandom } from '../helper';
+import {
+  PostDAO,
+  PostImage,
+  PostType,
+  PostStatus
+} from '../interfaces/post.interface';
 
 const DIRECTORY = {
-  [TYPE.REVERIE]: 'reveries',
-  [TYPE.EPISTLE]: 'epistles',
-  [TYPE.POEM]: 'Poem',
-  [TYPE.MUSING]: 'musings',
-  [TYPE.PAGE]: 'pages'
+  [PostType.REVERIE]: 'reveries',
+  [PostType.EPISTLE]: 'epistles',
+  [PostType.POEM]: 'Poem',
+  [PostType.MUSING]: 'musings',
+  [PostType.PAGE]: 'pages'
 };
 
-class PostStatic extends Publishable {
-  static TYPE = TYPE;
-  static TYPES = Object.values(TYPE);
-  static STATUS = STATUS;
-  static STATUSES = Object.values(STATUS);
+export class PostStatic {
+  static TYPE = PostType;
+  static TYPES = Object.values(PostType);
+  static STATUS = PostStatus;
+  static STATUSES = Object.values(PostStatus);
 
-  static randomType(): string {
+  static randomType(): PostType {
     return getRandom(this.TYPES);
   }
 
@@ -105,7 +94,7 @@ class PostStatic extends Publishable {
    * @returns {boolean} True if post is PAGE.
    */
   static isPage(input: PostDAO): boolean {
-    return input.type === TYPE.PAGE;
+    return input.type === PostType.PAGE;
   }
 
   /**
@@ -114,7 +103,11 @@ class PostStatic extends Publishable {
    * @returns {boolean} True if post is REVERIE.
    */
   static isReverie(input: PostDAO): boolean {
-    return input.type === TYPE.REVERIE;
+    return input.type === PostType.REVERIE;
+  }
+
+  static randomStatus(): PostStatus {
+    return getRandom(this.STATUSES);
   }
 
   /**
@@ -123,12 +116,18 @@ class PostStatic extends Publishable {
    * @returns {boolean} True if the selected status is DRAFT.
    */
   static isDraft(input: PostDAO): boolean {
-    return input.status === STATUS.DRAFT.toString();
+    return input.status === PostStatus.DRAFT;
+  }
+
+  static isPrivate(input: PostDAO): boolean {
+    return input.status === PostStatus.PRIVATE;
+  }
+
+  static isPublish(input: PostDAO): boolean {
+    return input.status === PostStatus.PUBLISHED;
   }
 }
 
 interface CollateImageOptions {
   includeNulls: boolean;
 }
-
-module.exports = PostStatic;

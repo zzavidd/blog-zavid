@@ -5,7 +5,7 @@ const { zString } = require('zavid-modules');
 const { debug } = require('./error');
 
 const { classes } = require('./lib');
-const { Post } = classes;
+const { PostStatic } = classes;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -27,9 +27,9 @@ exports.uploadImages = (post, options = {}) => {
     Promise.resolve()
       .then(() => generateSlugAndFilename(post))
       .then(({ directory, filename, slug }) => {
-        post.slug = Post.isDraft(post) ? null : slug;
+        post.slug = PostStatic.isDraft(post) ? null : slug;
 
-        const images = Post.collateImages(post);
+        const images = PostStatic.collateImages(post);
 
         // Discontinue if no images.
         if (!images.length) {
@@ -144,8 +144,8 @@ exports.replaceImages = (id, post, options) => {
       return getSinglePost(undefined, { id });
     })
     .then((postInDb) => {
-      const imagesInRequest = Post.collateImages(post, { includeNulls: true });
-      const imagesInDb = Post.collateImages(postInDb);
+      const imagesInRequest = PostStatic.collateImages(post, { includeNulls: true });
+      const imagesInDb = PostStatic.collateImages(postInDb);
 
       const promises = [];
 
@@ -173,7 +173,7 @@ exports.replaceImages = (id, post, options) => {
 const generateSlugAndFilename = (post) => {
   const title = zString.constructCleanSlug(post.title);
 
-  if (Post.isPage(post)) {
+  if (PostStatic.isPage(post)) {
     return Promise.resolve()
       .then(() => {
         const {
@@ -186,14 +186,14 @@ const generateSlugAndFilename = (post) => {
         const filename = zString.constructCleanSlug(
           `${postDomain.title} ${post.title}`
         );
-        const directory = Post.TYPES.PAGE.DIRECTORY;
+        const directory = PostStatic.TYPES.PAGE.DIRECTORY;
         return { directory, filename, slug };
       })
       .catch(debug);
   } else {
     return new Promise((resolve, reject) => {
       try {
-        const directory = Post.getDirectory(post.type);
+        const directory = PostStatic.getDirectory(post.type);
         const slug = title;
         const number = post.typeId.toString().padStart(3, '0');
         const filename = `${number}-${title}`;

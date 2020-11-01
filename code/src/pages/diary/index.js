@@ -29,7 +29,7 @@ const DiaryIndex = ({ diaryIntro }) => {
           field: 'date',
           order: ORDER.DESCENDING
         },
-        status: { include: [Diary.STATUSES.PUBLISHED] }
+        status: { include: [Diary.STATUS.PUBLISHED] }
       }
     }
   );

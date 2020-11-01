@@ -4,6 +4,7 @@ exports.OPERATIONS = {
   UPDATE: 'edit'
 };
 
+// TODO: Use interface version
 exports.ORDER = {
   ASCENDING: 'ASC',
   DESCENDING: 'DESC',

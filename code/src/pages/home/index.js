@@ -9,7 +9,7 @@ import { Flexer, Responsive } from 'components/layout';
 import { Title, Paragraph, VanillaLink } from 'components/text';
 import { Fader, Zoomer } from 'components/transitioner';
 import { redevelopmentDate } from 'constants/settings';
-import { Post } from 'lib/classes';
+import { PostStatic } from 'lib/classes';
 import css from 'styles/pages/Home.module.scss';
 
 const Home = ({ homeText, latestDiaryEntry, latestReverie, randomPosts }) => {
@@ -196,7 +196,7 @@ const RandomPostsGrid = ({ posts }) => {
       </Title>
       <div className={css['random-posts-grid']}>
         {posts.map((post, key) => {
-          const directory = Post.getDirectory(post.type);
+          const directory = PostStatic.getDirectory(post.type);
           return (
             <Zoomer
               determinant={isLoaded}

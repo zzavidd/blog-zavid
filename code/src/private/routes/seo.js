@@ -5,7 +5,7 @@ const { SitemapStream, streamToPromise } = require('sitemap');
 const path = require('path');
 
 const {
-  Post,
+  PostStatic,
   PostQueryBuilder,
   Diary,
   DiaryQueryBuilder,
@@ -38,8 +38,8 @@ router.get('/sitemap.xml', (req, res) => {
   const reveries = Promise.resolve()
     .then(() =>
       new PostQueryBuilder(knex)
-        .whereType({ include: [Post.TYPES.REVERIE.TITLE] })
-        .whereStatus({ include: [Post.STATUSES.PUBLISHED] })
+        .whereType({ include: [PostStatic.TYPE.REVERIE] })
+        .whereStatus({ include: [PostStatic.STATUS.PUBLISHED] })
         .build()
     )
     .then((reveries) => {
@@ -48,7 +48,7 @@ router.get('/sitemap.xml', (req, res) => {
 
   const diaryEntries = Promise.resolve()
     .then(() =>
-      new DiaryQueryBuilder(knex).whereStatus(Diary.STATUSES.PUBLISHED).build()
+      new DiaryQueryBuilder(knex).whereStatus(Diary.STATUS.PUBLISHED).build()
     )
     .then((diaryEntries) => {
       diaryEntries.forEach((diaryEntry) =>

@@ -8,9 +8,9 @@ const {
   comparePosts
 } = require('../helper/post.helper');
 
-const { Post, PostBuilder } = classes;
+const { PostStatic, PostBuilder } = classes;
 
-describe('Service Tests: Post', function () {
+describe('Service Tests: PostStatic', function () {
   describe('Get All Posts', function () {
     it('All', function (finish) {
       fetch(GET_POSTS_QUERY, {}, function ({ data }) {
@@ -29,10 +29,10 @@ describe('Service Tests: Post', function () {
 
     it('Including types', function (finish) {
       const includedTypes = [
-        Post.TYPES.REVERIE.TITLE,
-        Post.TYPES.EPISTLE.TITLE
+        PostStatic.TYPE.REVERIE,
+        PostStatic.TYPE.EPISTLE
       ];
-      const excludedTypes = Post.typeList.filter(function (val) {
+      const excludedTypes = PostStatic.TYPES.filter(function (val) {
         return includedTypes.indexOf(val) == -1;
       });
       fetch(
@@ -50,10 +50,10 @@ describe('Service Tests: Post', function () {
 
     it('Excluding types', function (finish) {
       const excludedTypes = [
-        Post.TYPES.REVERIE.TITLE,
-        Post.TYPES.EPISTLE.TITLE
+        PostStatic.TYPE.REVERIE,
+        PostStatic.TYPE.EPISTLE
       ];
-      const includedTypes = Post.typeList.filter(function (val) {
+      const includedTypes = PostStatic.TYPES.filter(function (val) {
         return excludedTypes.indexOf(val) == -1;
       });
       fetch(
@@ -70,7 +70,7 @@ describe('Service Tests: Post', function () {
     });
   });
 
-  describe('Create Post', function () {
+  describe('Create PostStatic', function () {
     it('Without image', function (finish) {
       const post = new PostBuilder().random().build();
       submitPost(post, (readPost) => {
@@ -106,15 +106,15 @@ describe('Service Tests: Post', function () {
     it('Different statuses', function (finish) {
       const draftPost = new PostBuilder()
         .random()
-        .withStatus(Post.STATUSES.DRAFT)
+        .withStatus(PostStatic.STATUS.DRAFT)
         .build();
       const privatePost = new PostBuilder()
         .random()
-        .withStatus(Post.STATUSES.PRIVATE)
+        .withStatus(PostStatic.STATUS.PRIVATE)
         .build();
       const publishedPost = new PostBuilder()
         .random()
-        .withStatus(Post.STATUSES.PUBLISHED)
+        .withStatus(PostStatic.STATUS.PUBLISHED)
         .build();
 
       Promise.all([
@@ -136,7 +136,7 @@ describe('Service Tests: Post', function () {
     });
   });
 
-  describe('Update Post', function () {
+  describe('Update PostStatic', function () {
     it('Without image', function (finish) {
       const postToSubmit = new PostBuilder().random().build();
       const postForUpdate = new PostBuilder().random().build();

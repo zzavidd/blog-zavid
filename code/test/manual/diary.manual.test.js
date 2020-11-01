@@ -48,7 +48,7 @@ Assumenda repudiandae non est. Velit rem occaecati autem harum mollitia modi. Et
     .random()
     .withContent(DIARY_CONTENT)
     .withDate(zDate.formatISODate(new Date(2020, 8, 13)))
-    .withStatus(Diary.STATUSES.PUBLISHED)
+    .withStatus(Diary.STATUS.PUBLISHED)
     .build();
 
   updateDiaryEntry(

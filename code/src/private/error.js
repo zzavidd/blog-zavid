@@ -1,8 +1,5 @@
 const server = require('./singleton').getServer();
 
-const { classes } = require('./lib');
-const { ErrorBuilder } = classes;
-
 const isDev = process.env.NODE_ENV !== 'production';
 
 const PROD_ERR_MESSAGE = 'A problem occurred. Please try again later!';
@@ -21,9 +18,12 @@ exports.renderErrorPage = (err, req, res, next) => {
 
 exports.ERRORS = {
   NO_ENTITY: (entity) => {
-    new ErrorBuilder(`No such ${entity} exists.`, 404);
+    const error = new Error(`No such ${entity} exists.`);
+    error.status = 404;
+    return error;
   },
   NONEXISTENT_ID: (id, entity) => {
-    return new ErrorBuilder(`There exists no ${entity} with ID '${id}'.`);
+    const error = new Error(`There exists no ${entity} with ID '${id}'.`);
+    return error;
   }
 };

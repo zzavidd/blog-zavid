@@ -1,7 +1,7 @@
 const { assert, classes } = require('..');
-const { Post, PostBuilder } = classes;
+const { PostStatic, PostBuilder } = classes;
 
-describe('Unit Tests: Post', function () {
+describe('Unit Tests: PostStatic', function () {
   describe('Object methods', function () {
     it('Test random construction', function (finish) {
       const post = new PostBuilder()
@@ -16,39 +16,39 @@ describe('Unit Tests: Post', function () {
     it('Check post type', function (finish) {
       const reverie = new PostBuilder()
         .random()
-        .withType(Post.TYPES.REVERIE.TITLE)
+        .withType(PostStatic.TYPE.REVERIE)
         .build();
-      assert.isTrue(Post.isReverie(reverie));
+      assert.isTrue(PostStatic.isReverie(reverie));
 
       const page = new PostBuilder()
         .random()
-        .withType(Post.TYPES.PAGE.TITLE)
+        .withType(PostStatic.TYPE.PAGE)
         .build();
-      assert.isTrue(Post.isPage(page));
-      assert.isTrue(Post.isPage(page));
+      assert.isTrue(PostStatic.isPage(page));
+      assert.isTrue(PostStatic.isPage(page));
       finish();
     });
 
     it('Check post status', function (finish) {
       const draftPost = new PostBuilder()
         .random()
-        .withStatus(Post.STATUSES.DRAFT)
+        .withStatus(PostStatic.STATUS.DRAFT)
         .build();
-      assert.isTrue(Post.isDraft(draftPost));
+      assert.isTrue(PostStatic.isDraft(draftPost));
 
       const privatePost = new PostBuilder()
         .random()
-        .withStatus(Post.STATUSES.PRIVATE)
+        .withStatus(PostStatic.STATUS.PRIVATE)
         .build();
-      assert.isTrue(Post.isPrivate(privatePost));
-      assert.isTrue(Post.isPrivate(privatePost.status));
+      assert.isTrue(PostStatic.isPrivate(privatePost));
+      assert.isTrue(PostStatic.isPrivate(privatePost.status));
 
       const publishPost = new PostBuilder()
         .random()
-        .withStatus(Post.STATUSES.PUBLISHED)
+        .withStatus(PostStatic.STATUS.PUBLISHED)
         .build();
-      assert.isTrue(Post.isPublish(publishPost));
-      assert.isTrue(Post.isPublish(publishPost.status));
+      assert.isTrue(PostStatic.isPublish(publishPost));
+      assert.isTrue(PostStatic.isPublish(publishPost.status));
       finish();
     });
 
@@ -60,15 +60,15 @@ describe('Unit Tests: Post', function () {
       let images;
 
       post.contentImages = JSON.stringify(post.contentImages);
-      images = Post.parse(post).contentImages;
+      images = PostStatic.parse(post).contentImages;
       isArrayOfLength(images, 2);
 
       post.contentImages = null;
-      images = Post.parse(post).contentImages;
+      images = PostStatic.parse(post).contentImages;
       assert.isNull(images);
 
       post.contentImages = '';
-      images = Post.parse(post).contentImages;
+      images = PostStatic.parse(post).contentImages;
       assert.isNull(images);
 
       finish();
@@ -79,15 +79,15 @@ describe('Unit Tests: Post', function () {
         .random({ withImage: true, numberOfContentImages: 2 })
         .build();
 
-      let images = Post.collateImages(post);
+      let images = PostStatic.collateImages(post);
       isArrayOfLength(images, 3);
 
       // If main image is null.
       post.image = null;
-      images = Post.collateImages(post);
+      images = PostStatic.collateImages(post);
       isArrayOfLength(images, 2);
 
-      images = Post.collateImages(post, { includeNulls: true });
+      images = PostStatic.collateImages(post, { includeNulls: true });
       isArrayOfLength(images, 3);
 
       finish();

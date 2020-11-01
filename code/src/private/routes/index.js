@@ -5,17 +5,17 @@ const subscriberRoutes = require('./entities/subscriber.routes');
 const linksRoutes = require('./links');
 const seoRoutes = require('./seo');
 
+const { siteTitle } = require('../../constants/settings');
+const { ORDER } = require('../../constants/strings');
+const authRoutes = require('../auth');
+const { debug } = require('../error');
 const {
-  Post,
+  PostStatic,
   PostQueryBuilder,
   Diary,
   DiaryQueryBuilder,
   PageQueryBuilder
 } = require('../lib').classes;
-const { siteTitle } = require('../../constants/settings');
-const { ORDER } = require('../../constants/strings');
-const authRoutes = require('../auth');
-const { debug } = require('../error');
 const app = require('../singleton').getApp();
 const knex = require('../singleton').getKnex();
 const server = require('../singleton').getServer();
@@ -33,20 +33,20 @@ app.use('/', [
 app.get(['/', '/home'], function (req, res) {
   const getHomeText = new PageQueryBuilder(knex).whereSlug('home').build();
   const getLatestDiaryEntry = new DiaryQueryBuilder(knex)
-    .whereStatus({ include: [Diary.STATUSES.PUBLISHED] })
+    .whereStatus({ include: [Diary.STATUS.PUBLISHED] })
     .getLatestEntry()
     .build();
   const getLatestReverie = new PostQueryBuilder(knex)
     .whereType({
-      include: [Post.TYPES.REVERIE.TITLE]
+      include: [PostStatic.TYPE.REVERIE]
     })
-    .whereStatus({ include: [Post.STATUSES.PUBLISHED] })
+    .whereStatus({ include: [PostStatic.STATUS.PUBLISHED] })
     .getLatestPost()
     .build();
   const getRandomPosts = (id) => {
     return new PostQueryBuilder(knex)
-      .whereType({ exclude: [Post.TYPES.PAGE.TITLE] })
-      .whereStatus({ include: [Post.STATUSES.PUBLISHED] })
+      .whereType({ exclude: [PostStatic.TYPE.PAGE] })
+      .whereStatus({ include: [PostStatic.STATUS.PUBLISHED] })
       .exceptId(id)
       .withOrder({ order: ORDER.RANDOM })
       .withLimit(4)

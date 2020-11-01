@@ -2,7 +2,7 @@ const faker = require('faker');
 const { zDate, zString, zNumber } = require('zavid-modules');
 
 const {
-  classes: { Post, PostBuilder },
+  classes: { PostStatic, PostBuilder },
   fetch
 } = require('../..');
 const {
@@ -20,7 +20,7 @@ exports.ingestReveries = () => {
     quantity: COUNT.REVERIE,
     postOptions: {
       generateTitle: () => faker.company.catchPhrase(),
-      type: Post.TYPES.REVERIE.TITLE,
+      type: PostStatic.TYPE.REVERIE,
       contentThreshold: 20,
       contentLimit: 25
     }
@@ -35,7 +35,7 @@ exports.ingestEpistles = () => {
       generateTitle: (i) => {
         return `#${i}: ${faker.lorem.words(zNumber.generateRandom(1, 3))}`;
       },
-      type: Post.TYPES.EPISTLE.TITLE,
+      type: PostStatic.TYPE.EPISTLE,
       contentThreshold: 3,
       contentLimit: 5
     }
@@ -73,7 +73,7 @@ const ingestPost = (options: IngestPostOptions) => {
             zNumber.generateRandom(contentThreshold, contentLimit)
           )
         )
-        .withStatus(Post.STATUSES.PUBLISHED)
+        .withStatus(PostStatic.STATUS.PUBLISHED)
         .withDatePublished(zDate.formatISODate(refDate))
         .withRandomExcerpt();
 

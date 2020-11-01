@@ -25,7 +25,7 @@ const DiaryCrud = ({
     title: '',
     content: '',
     date: new Date(),
-    status: Diary.STATUSES.PRIVATE,
+    status: Diary.STATUS.PRIVATE,
     entryNumber: latestEntryNumber + 1
   });
   const [isLoaded, setLoaded] = useState(true);

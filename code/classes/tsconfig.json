@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "allowJs": true,
     "isolatedModules": false,
-    "target": "es5",
+    "target": "es5"
   }
 }

@@ -31,11 +31,11 @@ describe('Service Tests: Diary', function () {
     it('Different statuses', function (finish) {
       const privateDiaryEntry = new DiaryEntryBuilder()
         .random()
-        .withStatus(Diary.STATUSES.PRIVATE)
+        .withStatus(Diary.STATUS.PRIVATE)
         .build();
       const publishedDiaryEntry = new DiaryEntryBuilder()
         .random()
-        .withStatus(Diary.STATUSES.PUBLISHED)
+        .withStatus(Diary.STATUS.PUBLISHED)
         .build();
 
       Promise.all([
