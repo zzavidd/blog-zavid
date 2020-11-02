@@ -1,18 +1,17 @@
-const { assert, classes, debug, fetch } = require('..');
-const { GET_DIARY_QUERY } = require('../../src/private/api/queries/diary.queries');
-const {
+import { assert, debug, fetch } from '..';
+import { DiaryDAO, DiaryStatic, DiaryEntryBuilder } from '../../classes';
+import { GET_DIARY_QUERY } from '../../src/private/api/queries/diary.queries';
+import {
   submitDiaryEntry,
   updateDiaryEntry,
   deleteDiaryEntry,
   compareDiaryEntries
-} = require('../helper/diary.helper');
-
-const { DiaryStatic, DiaryEntryBuilder } = classes;
+} from '../helper/diary.helper';
 
 describe('Service Tests: Diary', function () {
   describe('Get All Diary Entries', function () {
     it('All', function (finish) {
-      fetch(GET_DIARY_QUERY, {}, function ({ data }) {
+      fetch(GET_DIARY_QUERY, {}, function ({ data }: any) {
         assert.isOk(data.diaryEntries);
         finish();
       });
@@ -22,9 +21,9 @@ describe('Service Tests: Diary', function () {
   describe('Create Diary', function () {
     it('Standard', function (finish) {
       const diaryEntry = new DiaryEntryBuilder().random().build();
-      submitDiaryEntry(diaryEntry, (readDiaryEntry) => {
+      submitDiaryEntry(diaryEntry, (readDiaryEntry: DiaryDAO) => {
         compareDiaryEntries(diaryEntry, readDiaryEntry);
-        deleteDiaryEntry(readDiaryEntry.id, finish);
+        deleteDiaryEntry(readDiaryEntry.id!, finish);
       });
     });
 
@@ -39,13 +38,13 @@ describe('Service Tests: Diary', function () {
         .build();
 
       Promise.all([
-        submitDiaryEntry(privateDiaryEntry, (readDiaryEntry) => {
+        submitDiaryEntry(privateDiaryEntry, (readDiaryEntry: DiaryDAO) => {
           assert.isNotNull(readDiaryEntry.slug);
-          deleteDiaryEntry(readDiaryEntry.id);
+          deleteDiaryEntry(readDiaryEntry.id!);
         }),
-        submitDiaryEntry(publishedDiaryEntry, (readDiaryEntry) => {
+        submitDiaryEntry(publishedDiaryEntry, (readDiaryEntry: DiaryDAO) => {
           assert.isNotNull(readDiaryEntry.slug);
-          deleteDiaryEntry(readDiaryEntry.id);
+          deleteDiaryEntry(readDiaryEntry.id!);
         })
       ])
         .then(() => finish())
@@ -61,12 +60,16 @@ describe('Service Tests: Diary', function () {
         .then(() => {
           return submitDiaryEntry(diaryEntryToSubmit);
         })
-        .then((id) => {
-          updateDiaryEntry(id, diaryEntryForUpdate, (updatedDiaryEntry) => {
-            compareDiaryEntries(diaryEntryForUpdate, updatedDiaryEntry);
-            assert.strictEqual(id, updatedDiaryEntry.id);
-            deleteDiaryEntry(id, finish);
-          });
+        .then((id: number) => {
+          updateDiaryEntry(
+            id,
+            diaryEntryForUpdate,
+            (updatedDiaryEntry: DiaryDAO) => {
+              compareDiaryEntries(diaryEntryForUpdate, updatedDiaryEntry);
+              assert.strictEqual(id, updatedDiaryEntry.id!);
+              deleteDiaryEntry(id!, finish);
+            }
+          );
         })
         .catch(debug);
     });

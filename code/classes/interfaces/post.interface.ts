@@ -1,10 +1,12 @@
 export interface PostDAO {
+  id?: number
   title?: string;
   type?: PostType;
   typeId?: number;
   content?: string;
   status?: PostStatus;
   excerpt?: string;
+  slug?: string
   datePublished?: string | Date;
   image?: PostImage | string;
   contentImages?: PostImage[] | string[] | string;

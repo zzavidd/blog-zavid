@@ -1,4 +1,5 @@
 import { assert, classes } from '..';
+import { DiaryStatus } from '../../classes';
 import { zavidBirthday } from '../../src/constants/settings';
 
 const { DiaryStatic, DiaryEntryBuilder } = classes;
@@ -30,8 +31,14 @@ describe('Unit Tests: Diary', function () {
       assert.deepEqual(
         new Date(diaryEntry.date as string),
         new Date('1996-12-02')
-      ),
-        finish();
+      );
+      finish();
+    });
+
+    it('Random status', function (finish) {
+      const randomStatus: DiaryStatus = DiaryStatic.randomStatus();
+      assert.isTrue(Object.keys(DiaryStatus).includes(randomStatus.toString()));
+      finish();
     });
   });
 });

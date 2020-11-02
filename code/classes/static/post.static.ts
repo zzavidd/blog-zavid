@@ -1,6 +1,6 @@
 import { zLogic } from 'zavid-modules';
 
-import { isString, getRandom } from '../helper';
+import { isString, randomEnumValue } from '../helper';
 import {
   PostDAO,
   PostImage,
@@ -23,7 +23,7 @@ export class PostStatic {
   static STATUSES = Object.values(PostStatus);
 
   static randomType(): PostType {
-    return getRandom(this.TYPES);
+    return randomEnumValue(PostType);
   }
 
   /**
@@ -105,7 +105,7 @@ export class PostStatic {
   }
 
   static randomStatus(): PostStatus {
-    return getRandom(this.STATUSES);
+    return randomEnumValue(PostStatus);
   }
 
   /**

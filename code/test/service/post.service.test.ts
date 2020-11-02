@@ -1,19 +1,18 @@
-const { assert, classes, debug, fetch } = require('..');
-const { GET_POSTS_QUERY } = require('../../src/private/api/queries/post.queries');
-const { retrieveResource, extractPublicId } = require('../helper');
-const {
+import { assert, debug, fetch } from '..';
+import { PostBuilder, PostDAO, PostStatic } from '../../classes';
+import { GET_POSTS_QUERY } from '../../src/private/api/queries/post.queries';
+import { retrieveResource, extractPublicId } from '../helper';
+import {
   submitPost,
   updatePost,
   deletePost,
   comparePosts
-} = require('../helper/post.helper');
-
-const { PostStatic, PostBuilder } = classes;
+} from '../helper/post.helper';
 
 describe('Service Tests: PostStatic', function () {
   describe('Get All Posts', function () {
     it('All', function (finish) {
-      fetch(GET_POSTS_QUERY, {}, function ({ data }) {
+      fetch(GET_POSTS_QUERY, {}, function ({ data }: any) {
         assert.isOk(data.getAllPosts);
         finish();
       });
@@ -21,7 +20,7 @@ describe('Service Tests: PostStatic', function () {
 
     it('With limit', function (finish) {
       const limit = 5;
-      fetch(GET_POSTS_QUERY, { variables: { limit } }, function ({ data }) {
+      fetch(GET_POSTS_QUERY, { variables: { limit } }, function ({ data }: any) {
         assert.lengthOf(data.getAllPosts, limit);
         finish();
       });
@@ -38,8 +37,8 @@ describe('Service Tests: PostStatic', function () {
       fetch(
         GET_POSTS_QUERY,
         { variables: { type: { include: includedTypes } } },
-        function ({ data }) {
-          data.getAllPosts.forEach((post) => {
+        function ({ data }: any) {
+          data.getAllPosts.forEach((post: PostDAO) => {
             assert.include(includedTypes, post.type);
             assert.notInclude(excludedTypes, post.type);
           });
@@ -59,8 +58,8 @@ describe('Service Tests: PostStatic', function () {
       fetch(
         GET_POSTS_QUERY,
         { variables: { type: { exclude: excludedTypes } } },
-        function ({ data }) {
-          data.getAllPosts.forEach((post) => {
+        function ({ data }: any) {
+          data.getAllPosts.forEach((post: PostDAO) => {
             assert.include(includedTypes, post.type);
             assert.notInclude(excludedTypes, post.type);
           });
@@ -73,9 +72,9 @@ describe('Service Tests: PostStatic', function () {
   describe('Create PostStatic', function () {
     it('Without image', function (finish) {
       const post = new PostBuilder().random().build();
-      submitPost(post, (readPost) => {
+      submitPost(post, (readPost: PostDAO) => {
         comparePosts(post, readPost);
-        deletePost(readPost.id, finish);
+        deletePost(readPost.id!, finish);
       });
     });
 
@@ -84,13 +83,13 @@ describe('Service Tests: PostStatic', function () {
         .random({ withImage: true, numberOfContentImages: 2 })
         .build();
 
-      let publicId;
-      let postId;
+      let publicId: string;
+      let postId: number;
 
       Promise.resolve()
         .then(() => {
-          return submitPost(post, (readPost) => {
-            postId = readPost.id;
+          return submitPost(post, (readPost: PostDAO) => {
+            postId = readPost.id!;
             publicId = extractPublicId(readPost.image);
           });
         })
@@ -118,17 +117,17 @@ describe('Service Tests: PostStatic', function () {
         .build();
 
       Promise.all([
-        submitPost(draftPost, (readPost) => {
-          assert.isNull(readPost.slug);
-          return deletePost(readPost.id);
+        submitPost(draftPost, (readPost: PostDAO) => {
+          assert.isNull(readPost.slug!);
+          return deletePost(readPost.id!);
         }),
-        submitPost(privatePost, (readPost) => {
+        submitPost(privatePost, (readPost: PostDAO) => {
           assert.isNotNull(readPost.slug);
-          return deletePost(readPost.id);
+          return deletePost(readPost.id!);
         }),
-        submitPost(publishedPost, (readPost) => {
+        submitPost(publishedPost, (readPost: PostDAO) => {
           assert.isNotNull(readPost.slug);
-          deletePost(readPost.id);
+          deletePost(readPost.id!);
         })
       ])
         .then(() => finish())
@@ -145,7 +144,7 @@ describe('Service Tests: PostStatic', function () {
           return submitPost(postToSubmit);
         })
         .then((id) => {
-          updatePost(id, postForUpdate, (updatedPost) => {
+          updatePost(id, postForUpdate, (updatedPost: PostDAO) => {
             comparePosts(postForUpdate, updatedPost);
             assert.strictEqual(id, updatedPost.id);
             deletePost(id, finish);
@@ -162,19 +161,19 @@ describe('Service Tests: PostStatic', function () {
         .random({ withImage: true, numberOfContentImages: 2 })
         .build();
 
-      let postId;
-      let publicIdSubmit;
-      let publicIdUpdate;
+      let postId: number;
+      let publicIdSubmit: string;
+      let publicIdUpdate: string;
 
       Promise.resolve()
         .then(() => {
-          return submitPost(postToSubmit, (submittedPost) => {
-            postId = submittedPost.id;
+          return submitPost(postToSubmit, (submittedPost: PostDAO) => {
+            postId = submittedPost.id!;
             publicIdSubmit = extractPublicId(submittedPost.image);
           });
         })
         .then(() => {
-          updatePost(postId, postForUpdate, (updatedPost) => {
+          updatePost(postId, postForUpdate, (updatedPost: PostDAO) => {
             publicIdUpdate = extractPublicId(updatedPost.image);
             assert.notEqual(publicIdSubmit, publicIdUpdate);
             deletePost(postId, finish);

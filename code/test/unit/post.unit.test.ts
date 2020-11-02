@@ -1,3 +1,5 @@
+import { PostStatus, PostType } from '../../classes';
+
 const { assert, classes } = require('..');
 const { PostStatic, PostBuilder } = classes;
 
@@ -89,6 +91,18 @@ describe('Unit Tests: PostStatic', function () {
       images = PostStatic.collateImages(post, { includeNulls: true });
       isArrayOfLength(images, 3);
 
+      finish();
+    });
+
+    it('Random status', function (finish) {
+      const randomStatus = PostStatic.randomStatus();
+      assert.isTrue(Object.keys(PostStatus).includes(randomStatus.toString()));
+      finish();
+    });
+
+    it('Random type', function (finish) {
+      const randomType = PostStatic.randomType();
+      assert.isTrue(Object.keys(PostType).includes(randomType.toString()));
       finish();
     });
   });

@@ -6,16 +6,18 @@ const {
   DELETE_DIARY_QUERY
 } = require('../../src/private/api/queries/diary.queries');
 
-import { DiaryDAO, DiaryStatic, PostDAO } from '../../classes';
+import { DiaryDAO, DiaryStatic } from '../../classes';
 
-exports.submitDiaryEntry = (
-  diaryEntry: PostDAO,
-  assertions: Function,
+export const submitDiaryEntry = (
+  diaryEntry: DiaryDAO,
+  assertions?: Function,
   isPublish: boolean = false
-): Promise<PostDAO> => {
+): Promise<number> => {
   return Promise.resolve()
     .then(() => {
-      // Submit the random diaryentry.
+      // Submit the random diary entry.
+
+      console.log(diaryEntry.status);
       return fetch(
         CREATE_DIARY_QUERY,
         { variables: { diaryEntry, isPublish } },
@@ -41,12 +43,12 @@ exports.submitDiaryEntry = (
     .catch(debug);
 };
 
-exports.updateDiaryEntry = (
+export const updateDiaryEntry = (
   id: number,
   diaryEntry: DiaryDAO,
-  assertions: Function,
+  assertions?: Function,
   isPublish: boolean = false
-) => {
+): Promise<DiaryDAO> => {
   return fetch(
     UPDATE_DIARY_QUERY,
     { variables: { id, diaryEntry, isPublish, isTest: true } },
@@ -58,13 +60,10 @@ exports.updateDiaryEntry = (
   );
 };
 
-/**
- * Deletes a diary entry from the server.
- * @param {number} id The ID of the diary entry to delete.
- * @param {Function} [assertions] The assertions to make.
- * @returns {Promise} A resolution of the Promise.
- */
-exports.deleteDiaryEntry = (id: number, assertions: Function) => {
+export const deleteDiaryEntry = (
+  id: number,
+  assertions?: Function
+): Promise<number> => {
   return Promise.resolve()
     .then(() => {
       // Delete the diary entry.
@@ -89,12 +88,10 @@ exports.deleteDiaryEntry = (id: number, assertions: Function) => {
     .catch(debug);
 };
 
-/**
- * Compares to diary entry objects.
- * @param {object} request The diary entry submitted from client.
- * @param {object} response The diary entry returned from server.
- */
-exports.compareDiaryEntries = (request: DiaryDAO, response: DiaryDAO) => {
+export const compareDiaryEntries = (
+  request: DiaryDAO,
+  response: DiaryDAO
+): void => {
   assert.strictEqual(request.content, response.content);
   assert.strictEqual(request.status, response.status);
   assert.strictEqual(DiaryStatic.generateSlug(request), response.slug);

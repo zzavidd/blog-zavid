@@ -1,6 +1,6 @@
 const { zDate } = require('zavid-modules');
 
-import { getRandom } from '../helper';
+import { randomEnumValue } from '../helper';
 import { DiaryDAO, DiaryStatus } from '../interfaces';
 
 export class DiaryStatic {
@@ -12,7 +12,7 @@ export class DiaryStatic {
   }
 
   static randomStatus(): DiaryStatus {
-    return getRandom(this.STATUSES);
+    return randomEnumValue(DiaryStatus);
   }
 
   static isPrivate(input: DiaryDAO): boolean {

@@ -1,4 +1,5 @@
 export interface DiaryDAO {
+  id?: number
   title?: string;
   content?: string;
   date?: string | Date
