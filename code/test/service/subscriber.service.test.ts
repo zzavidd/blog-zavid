@@ -1,20 +1,17 @@
-const { assert, classes, debug, fetch } = require('..');
-const {
-  GET_SUBSCRIBERS_QUERY
-} = require('../../src/private/api/queries/subscriber.queries');
-const {
+import { assert, debug, fetch } from '..';
+import { SubscriberBuilder, SubscriberDAO } from '../../classes';
+import { GET_SUBSCRIBERS_QUERY } from '../../src/private/api/queries/subscriber.queries';
+import {
   submitSubscriber,
   updateSubscriber,
   deleteSubscriber,
   compareSubscribers
-} = require('../helper/subscriber.helper');
-
-const { SubscriberBuilder } = classes;
+} from '../helper/subscriber.helper';
 
 describe('Service Tests: Subscriber', function () {
   describe('Get All Subscribers', function () {
     it('All', function (finish) {
-      fetch(GET_SUBSCRIBERS_QUERY, {}, function ({ data }) {
+      fetch(GET_SUBSCRIBERS_QUERY, {}, function ({ data }: any) {
         assert.isOk(data.subscribers);
         finish();
       });
@@ -24,9 +21,9 @@ describe('Service Tests: Subscriber', function () {
   describe('Create Subscriber', function () {
     it('Standard', function (finish) {
       const subscriber = new SubscriberBuilder().random().build();
-      submitSubscriber(subscriber, (readSubscriber) => {
+      submitSubscriber(subscriber, (readSubscriber: SubscriberDAO) => {
         compareSubscribers(subscriber, readSubscriber);
-        deleteSubscriber(readSubscriber.id, finish);
+        deleteSubscriber(readSubscriber.id!, finish);
       });
     });
   });
@@ -38,9 +35,9 @@ describe('Service Tests: Subscriber', function () {
       Promise.resolve()
         .then(() => submitSubscriber(subscriberToSubmit))
         .then((id) => {
-          updateSubscriber(id, subscriberForUpdate, (updatedSubscriber) => {
+          updateSubscriber(id, subscriberForUpdate, (updatedSubscriber: SubscriberDAO) => {
             compareSubscribers(subscriberForUpdate, updatedSubscriber);
-            assert.strictEqual(id, updatedSubscriber.id);
+            assert.strictEqual(id, updatedSubscriber.id!);
             deleteSubscriber(id, finish);
           });
         })

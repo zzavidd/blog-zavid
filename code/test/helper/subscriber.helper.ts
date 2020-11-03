@@ -1,27 +1,25 @@
-const { validate: uuidValidate } = require('uuid');
+import { validate as uuidValidate } from 'uuid';
 
-const { assert, debug, fetch } = require('..');
-const {
+import { assert, debug, fetch } from '..';
+import { SubscriberDAO } from '../../classes';
+import {
   GET_SINGLE_SUBSCRIBER_QUERY,
   CREATE_SUBSCRIBER_QUERY,
   UPDATE_SUBSCRIBER_QUERY,
   DELETE_SUBSCRIBER_QUERY
-} = require('../../src/private/api/queries/subscriber.queries');
+} from '../../src/private/api/queries/subscriber.queries';
 
-/**
- * Submits a subscriber to the server.
- * @param {object} subscriber The subscriber to submit.
- * @param {Function} [assertions] The assertions to make.
- * @returns {Promise} A resolution of the Promise.
- */
-exports.submitSubscriber = (subscriber, assertions) => {
+export const submitSubscriber = (
+  subscriber: SubscriberDAO,
+  assertions?: Function
+): Promise<number> => {
   return Promise.resolve()
     .then(() => {
       // Submit the random subscriber.
       return fetch(
         CREATE_SUBSCRIBER_QUERY,
         { variables: { subscriber } },
-        function ({ data }) {
+        function ({ data }: any) {
           const createdSubscriber = data.createSubscriber;
           assert.property(createdSubscriber, 'id');
           return createdSubscriber;
@@ -33,7 +31,7 @@ exports.submitSubscriber = (subscriber, assertions) => {
       return fetch(
         GET_SINGLE_SUBSCRIBER_QUERY,
         { variables: { id: createdSubscriber.id } },
-        function ({ data }) {
+        function ({ data }: any) {
           const returnedSubscriber = data.subscriber;
           if (assertions) assertions(returnedSubscriber);
           return returnedSubscriber.id;
@@ -43,18 +41,15 @@ exports.submitSubscriber = (subscriber, assertions) => {
     .catch(debug);
 };
 
-/**
- * Updates a subscriber on the server.
- * @param {number} id The ID of the subscriber to update.
- * @param {object} subscriber The subscriber to update.
- * @param {Function} [assertions] The assertions to make.
- * @returns {Promise} A resolution of the Promise.
- */
-exports.updateSubscriber = (id, subscriber, assertions) => {
+export const updateSubscriber = (
+  id: number,
+  subscriber: SubscriberDAO,
+  assertions?: Function
+): Promise<SubscriberDAO> => {
   return fetch(
     UPDATE_SUBSCRIBER_QUERY,
     { variables: { id, subscriber } },
-    function ({ data }) {
+    function ({ data }: any) {
       const updatedSubscriber = data.updateSubscriber;
       assert.strictEqual(updatedSubscriber.id, id);
       if (assertions) assertions(updatedSubscriber);
@@ -62,19 +57,13 @@ exports.updateSubscriber = (id, subscriber, assertions) => {
   );
 };
 
-/**
- * Deletes a subscriber from the server.
- * @param {number} id The ID of the subscriber to delete.
- * @param {Function} [assertions] The assertions to make.
- * @returns {Promise} A resolution of the Promise.
- */
-exports.deleteSubscriber = (id, assertions) => {
+export const deleteSubscriber = (id: number, assertions?: Function) => {
   return Promise.resolve()
     .then(() => {
       // Delete the subscriber.
       return fetch(DELETE_SUBSCRIBER_QUERY, { variables: { id } }, function ({
         data
-      }) {
+      }: any) {
         const deletedSubscriber = data.deleteSubscriber;
         assert.property(deletedSubscriber, 'id');
       });
@@ -84,7 +73,7 @@ exports.deleteSubscriber = (id, assertions) => {
       return fetch(
         GET_SINGLE_SUBSCRIBER_QUERY,
         { variables: { id }, expectToFail: true },
-        function ({ errors }) {
+        function ({ errors }: any) {
           assert.isOk(errors);
           if (assertions) assertions();
         }
@@ -93,15 +82,10 @@ exports.deleteSubscriber = (id, assertions) => {
     .catch(debug);
 };
 
-/**
- * Compares to subscriber objects.
- * @param {object} request The subscriber submitted from client.
- * @param {object} response The subscriber returned from server.
- */
-exports.compareSubscribers = (request, response) => {
+export const compareSubscribers = (request: SubscriberDAO, response: SubscriberDAO) => {
   assert.strictEqual(request.email, response.email);
   assert.strictEqual(request.firstname, response.firstname);
   assert.strictEqual(request.lastname, response.lastname);
   assert.deepStrictEqual(request.subscriptions, response.subscriptions);
-  assert.isTrue(uuidValidate(response.token));
+  assert.isTrue(uuidValidate(response.token!));
 };

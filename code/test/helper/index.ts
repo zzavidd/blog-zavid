@@ -1,6 +1,7 @@
-const cloudinary = require('cloudinary').v2;
+import * as Cloudinary from 'cloudinary';
+const cloudinary = Cloudinary.v2;
 
-const { assert } = require('..');
+import { assert } from '..';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -8,16 +9,19 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-exports.retrieveResource = (publicId) => {
+export const retrieveResource = (publicId: string) => {
   return new Promise((resolve, reject) => {
-    cloudinary.api.resources_by_ids(publicId, function (err, { resources }) {
+    cloudinary.api.resources_by_ids(publicId, function (
+      err: any,
+      { resources }: any
+    ) {
       if (err) return reject(err);
       return resolve(resources);
     });
   });
 };
 
-exports.extractPublicId = (image) => {
+export const extractPublicId = (image: string) => {
   const ex = new Error(`Could not get public ID from ${image}`);
   if (!image) throw ex;
 
@@ -26,5 +30,5 @@ exports.extractPublicId = (image) => {
   );
   const match = image.match(regex);
   assert.isOk(match);
-  return match[1];
+  return match![1];
 };

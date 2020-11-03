@@ -5,7 +5,6 @@ import { print } from 'graphql/language/printer';
 import { assert } from 'chai';
 import nodeFetch from 'node-fetch';
 
-export * as classes from '../classes';
 export { assert };
 export const debug = (err: Error) => {
   throw err;

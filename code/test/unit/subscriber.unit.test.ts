@@ -1,5 +1,5 @@
-const { assert, classes } = require('..');
-const { SubscriberBuilder } = classes;
+import { assert } from '..';
+import { SubscriberBuilder } from '../../classes';
 
 describe('Unit Tests: Subscriber', function () {
   describe('Object methods', function () {

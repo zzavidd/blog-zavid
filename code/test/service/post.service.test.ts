@@ -90,11 +90,11 @@ describe('Service Tests: PostStatic', function () {
         .then(() => {
           return submitPost(post, (readPost: PostDAO) => {
             postId = readPost.id!;
-            publicId = extractPublicId(readPost.image);
+            publicId = extractPublicId(readPost.image as string);
           });
         })
         .then(() => retrieveResource(publicId))
-        .then((resources) => {
+        .then((resources: any) => {
           assert.isNotEmpty(resources);
           assert.strictEqual(resources[0].public_id, publicId);
           deletePost(postId, finish);
@@ -169,12 +169,12 @@ describe('Service Tests: PostStatic', function () {
         .then(() => {
           return submitPost(postToSubmit, (submittedPost: PostDAO) => {
             postId = submittedPost.id!;
-            publicIdSubmit = extractPublicId(submittedPost.image);
+            publicIdSubmit = extractPublicId(submittedPost.image as string);
           });
         })
         .then(() => {
           updatePost(postId, postForUpdate, (updatedPost: PostDAO) => {
-            publicIdUpdate = extractPublicId(updatedPost.image);
+            publicIdUpdate = extractPublicId(updatedPost.image as string);
             assert.notEqual(publicIdSubmit, publicIdUpdate);
             deletePost(postId, finish);
           });
