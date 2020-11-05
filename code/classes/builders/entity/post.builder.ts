@@ -1,5 +1,5 @@
 import * as faker from 'faker';
-import { zDate, zString } from 'zavid-modules';
+const { zDate, zString } = require('zavid-modules');
 
 import { PostStatic } from '../../static';
 import {

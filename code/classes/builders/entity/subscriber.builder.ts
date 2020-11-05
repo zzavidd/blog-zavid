@@ -1,15 +1,15 @@
 import * as faker from 'faker';
 
 import { SubscriberStatic } from '../../static';
-import { SubscriberDAO } from '../../interfaces';
+import { SubscriberDAO, SubscriptionsMapping, SubscriptionType } from '../../interfaces';
 
 /** The class for building Subscriber objects. */
 export class SubscriberBuilder {
   private subscriber: SubscriberDAO = {};
 
   random() {
-    const subscriptions = {};
-    Object.values(SubscriberStatic.SUBSCRIPTIONS).forEach((type) => {
+    const subscriptions: SubscriptionsMapping = {};
+    Object.values(SubscriptionType).forEach((type: string) => {
       subscriptions[type] = faker.random.boolean();
     });
 

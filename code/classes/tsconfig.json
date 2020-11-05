@@ -6,6 +6,7 @@
     "allowJs": true,
     "isolatedModules": false,
     "strict": true,
+    "noEmit": true,
     "target": "es5"
   }
 }

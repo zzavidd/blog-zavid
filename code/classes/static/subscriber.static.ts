@@ -26,8 +26,8 @@ export class SubscriberStatic {
    * @returns {SubscriptionsMapping} The subscription mapping.
    */
   static defaultSubscriptions(): SubscriptionsMapping {
-    const subscriptions = {};
-    Object.values(SubscriberStatic.SUBSCRIPTIONS).forEach((type) => {
+    const subscriptions: SubscriptionsMapping = {};
+    Object.values(SubscriptionType).forEach((type: string) => {
       subscriptions[type] = true;
     });
     return subscriptions;

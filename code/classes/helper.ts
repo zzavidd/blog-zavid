@@ -7,9 +7,9 @@ const isString = (value: any): boolean => {
 };
 
 const randomEnumValue = <T extends unknown>(enumeration: T): T[keyof T] => {
-  const keys = (Object.keys(enumeration)
-    .map((n) => n.toString())
-    .filter((n) => isNaN(parseInt(n, 10))) as unknown) as T[keyof T][];
+  const keys = (Object.entries(enumeration as any)
+    .filter(([k]) => isNaN(parseInt(k, 10)))
+    .map(([, v]) => v) as unknown) as T[keyof T][];
   const random = Math.floor(Math.random() * keys.length);
   return keys[random];
 };

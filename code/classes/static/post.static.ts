@@ -1,4 +1,4 @@
-import { zLogic } from 'zavid-modules';
+const { zLogic } = require('zavid-modules');
 
 import { isString, randomEnumValue } from '../helper';
 import {
@@ -8,10 +8,14 @@ import {
   PostStatus
 } from '../interfaces/post.interface';
 
-const DIRECTORY = {
+interface DirectoryMapping {
+  [type: string]: string
+}
+
+const DIRECTORY: DirectoryMapping = {
   [PostType.REVERIE]: 'reveries',
   [PostType.EPISTLE]: 'epistles',
-  [PostType.POEM]: 'Poem',
+  [PostType.POEM]: 'poetry',
   [PostType.MUSING]: 'musings',
   [PostType.PAGE]: 'pages'
 };
@@ -34,7 +38,7 @@ export class PostStatic {
   static parse(post: PostDAO): PostDAO {
     const images = post.contentImages;
     if (zLogic.isFalsy(images)) {
-      post.contentImages = null;
+      post.contentImages = null as any;
       return post;
     }
 
@@ -43,7 +47,7 @@ export class PostStatic {
         post.contentImages = JSON.parse(images as string);
       }
     } catch {
-      post.contentImages = null;
+      post.contentImages = null as any;
     }
     return post;
   }
@@ -61,7 +65,7 @@ export class PostStatic {
     const { includeNulls = false } = options;
 
     post = this.parse(post);
-    if (this.isPostImageToUpload(post.image)) post.image.isCover = true;
+    if (this.isPostImageToUpload(post.image!)) post.image.isCover = true;
 
     const images = [post.image].concat(post.contentImages).filter((image) => {
       if (includeNulls) return true;
@@ -69,7 +73,7 @@ export class PostStatic {
       return false;
     });
 
-    return images;
+    return images as PostImage[] | string[];
   }
 
   static isPostImageToUpload(image: PostImage | string): image is PostImage {

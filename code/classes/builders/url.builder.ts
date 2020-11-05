@@ -1,4 +1,4 @@
-import { zLogic } from 'zavid-modules';
+const { zLogic } = require('zavid-modules');
 const { isFalsy } = zLogic;
 
 export class URLBuilder {

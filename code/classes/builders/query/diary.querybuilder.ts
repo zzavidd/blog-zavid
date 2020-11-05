@@ -1,5 +1,5 @@
 import { DiaryStatus, QueryOrder } from '../../interfaces';
-import { zLogic } from 'zavid-modules';
+const { zLogic } = require('zavid-modules');
 import { MutationBuilder, QueryBuilder } from './super';
 
 const { isFalsy } = zLogic;

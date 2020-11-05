@@ -1,12 +1,12 @@
 export interface PostDAO {
-  id?: number
+  id?: number;
   title?: string;
   type?: PostType;
   typeId?: number;
   content?: string;
   status?: PostStatus;
   excerpt?: string;
-  slug?: string
+  slug?: string;
   datePublished?: string | Date;
   image?: PostImage | string;
   contentImages?: PostImage[] | string[] | string;
@@ -25,9 +25,9 @@ export interface PostImageOptions {
 }
 
 export enum PostStatus {
-  DRAFT,
-  PRIVATE,
-  PUBLISHED
+  DRAFT = 'DRAFT',
+  PRIVATE = 'PRIVATE',
+  PUBLISHED = 'PUBLISHED'
 }
 
 export enum PostType {

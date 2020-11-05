@@ -1,5 +1,5 @@
 import * as faker from 'faker';
-import { zDate, zString } from 'zavid-modules';
+const { zDate, zString } = require('zavid-modules');
 
 import { DiaryStatic } from '../../static';
 import { DiaryStatus, DiaryDAO } from '../../interfaces';

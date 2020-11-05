@@ -1,4 +1,4 @@
-import { zLogic } from 'zavid-modules';
+const { zLogic } = require('zavid-modules');
 import { QueryOrder } from '../../interfaces';
 const { isFalsy } = zLogic;
 
@@ -82,6 +82,7 @@ export class MutationBuilder extends QueryBuilder {
     super(knex, table, true);
     this.query = knex(table);
     this.entity = entity;
+    this.table = table;
   }
 
   insert(input: any): MutationBuilder {
