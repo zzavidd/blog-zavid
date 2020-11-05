@@ -1,8 +1,6 @@
-import { assert, classes } from '..';
-import { DiaryStatus } from '../../classes';
+import { assert } from '..';
+import { DiaryEntryBuilder, DiaryStatic, DiaryStatus } from '../../classes';
 import { zavidBirthday } from '../../src/constants/settings';
-
-const { DiaryStatic, DiaryEntryBuilder } = classes;
 
 describe('Unit Tests: Diary', function () {
   describe('Object methods', function () {
@@ -37,7 +35,7 @@ describe('Unit Tests: Diary', function () {
 
     it('Random status', function (finish) {
       const randomStatus: DiaryStatus = DiaryStatic.randomStatus();
-      assert.isTrue(Object.keys(DiaryStatus).includes(randomStatus.toString()));
+      assert.isTrue(Object.values(DiaryStatus).includes(randomStatus));
       finish();
     });
   });

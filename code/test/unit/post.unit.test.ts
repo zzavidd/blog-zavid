@@ -1,7 +1,12 @@
-import { PostStatus, PostType } from '../../classes';
+import {
+  PostBuilder,
+  PostImage,
+  PostStatic,
+  PostStatus,
+  PostType
+} from '../../classes';
 
-const { assert, classes } = require('..');
-const { PostStatic, PostBuilder } = classes;
+const { assert } = require('..');
 
 describe('Unit Tests: PostStatic', function () {
   describe('Object methods', function () {
@@ -9,7 +14,7 @@ describe('Unit Tests: PostStatic', function () {
       const post = new PostBuilder()
         .random({ numberOfContentImages: 4 })
         .build();
-      isArrayOfLength(post.contentImages, 4);
+      isArrayOfLength(post.contentImages as PostImage[], 4);
       finish();
     });
   });
@@ -18,13 +23,13 @@ describe('Unit Tests: PostStatic', function () {
     it('Check post type', function (finish) {
       const reverie = new PostBuilder()
         .random()
-        .withType(PostStatic.TYPE.REVERIE)
+        .withType(PostType.REVERIE)
         .build();
       assert.isTrue(PostStatic.isReverie(reverie));
 
       const page = new PostBuilder()
         .random()
-        .withType(PostStatic.TYPE.PAGE)
+        .withType(PostType.PAGE)
         .build();
       assert.isTrue(PostStatic.isPage(page));
       assert.isTrue(PostStatic.isPage(page));
@@ -34,20 +39,20 @@ describe('Unit Tests: PostStatic', function () {
     it('Check post status', function (finish) {
       const draftPost = new PostBuilder()
         .random()
-        .withStatus(PostStatic.STATUS.DRAFT)
+        .withStatus(PostStatus.DRAFT)
         .build();
       assert.isTrue(PostStatic.isDraft(draftPost));
 
       const privatePost = new PostBuilder()
         .random()
-        .withStatus(PostStatic.STATUS.PRIVATE)
+        .withStatus(PostStatus.PRIVATE)
         .build();
       assert.isTrue(PostStatic.isPrivate(privatePost));
       assert.isTrue(PostStatic.isPrivate(privatePost));
 
       const publishPost = new PostBuilder()
         .random()
-        .withStatus(PostStatic.STATUS.PUBLISHED)
+        .withStatus(PostStatus.PUBLISHED)
         .build();
       assert.isTrue(PostStatic.isPublish(publishPost));
       finish();
@@ -62,9 +67,9 @@ describe('Unit Tests: PostStatic', function () {
 
       post.contentImages = JSON.stringify(post.contentImages);
       images = PostStatic.parse(post).contentImages;
-      isArrayOfLength(images, 2);
+      isArrayOfLength(images as PostImage[], 2);
 
-      post.contentImages = null;
+      post.contentImages = null as any;
       images = PostStatic.parse(post).contentImages;
       assert.isNull(images);
 
@@ -84,7 +89,7 @@ describe('Unit Tests: PostStatic', function () {
       isArrayOfLength(images, 3);
 
       // If main image is null.
-      post.image = null;
+      post.image = null as any;
       images = PostStatic.collateImages(post);
       isArrayOfLength(images, 2);
 
@@ -96,13 +101,13 @@ describe('Unit Tests: PostStatic', function () {
 
     it('Random status', function (finish) {
       const randomStatus = PostStatic.randomStatus();
-      assert.isTrue(Object.keys(PostStatus).includes(randomStatus.toString()));
+      assert.isTrue(Object.values(PostStatus).includes(randomStatus));
       finish();
     });
 
     it('Random type', function (finish) {
       const randomType = PostStatic.randomType();
-      assert.isTrue(Object.keys(PostType).includes(randomType.toString()));
+      assert.isTrue(Object.values(PostType).includes(randomType));
       finish();
     });
   });
