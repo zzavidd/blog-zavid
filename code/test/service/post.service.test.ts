@@ -72,7 +72,9 @@ describe.only('Service Tests: Post', function () {
     it(
       'Without image',
       testWrapper(async () => {
-        const postToCreate = new PostBuilder().random().build();
+        const postToCreate = new PostBuilder()
+          .random({ allowPageTypes: false })
+          .build();
         const createdPost = (await submitPost(
           postToCreate
         )) as SubmitPostResponse;
@@ -87,7 +89,11 @@ describe.only('Service Tests: Post', function () {
       'With image',
       testWrapper(async () => {
         const post = new PostBuilder()
-          .random({ withImage: true, numberOfContentImages: 2 })
+          .random({
+            allowPageTypes: false,
+            withImage: true,
+            numberOfContentImages: 2
+          })
           .build();
 
         const createdPost = (await submitPost(post)) as SubmitPostResponse;
@@ -108,7 +114,7 @@ describe.only('Service Tests: Post', function () {
       testWrapper(async () => {
         const promiseDraft = new Promise(async (resolve) => {
           const draftPost = new PostBuilder()
-            .random()
+            .random({ allowPageTypes: false })
             .withStatus(PostStatus.DRAFT)
             .build();
           const createdPost = await submitPost(draftPost);
@@ -120,7 +126,7 @@ describe.only('Service Tests: Post', function () {
 
         const promisePrivate = new Promise(async (resolve) => {
           const draftPost = new PostBuilder()
-            .random()
+            .random({ allowPageTypes: false })
             .withStatus(PostStatus.PRIVATE)
             .build();
           const createdPost = await submitPost(draftPost);
@@ -132,7 +138,7 @@ describe.only('Service Tests: Post', function () {
 
         const promisePublished = new Promise(async (resolve) => {
           const draftPost = new PostBuilder()
-            .random()
+            .random({ allowPageTypes: false })
             .withStatus(PostStatus.PUBLISHED)
             .build();
           const createdPost = await submitPost(draftPost);
@@ -151,8 +157,12 @@ describe.only('Service Tests: Post', function () {
     it(
       'Without image',
       testWrapper(async () => {
-        const postToSubmit = new PostBuilder().random().build();
-        const postForUpdate = new PostBuilder().random().build();
+        const postToSubmit = new PostBuilder()
+          .random({ allowPageTypes: false })
+          .build();
+        const postForUpdate = new PostBuilder()
+          .random({ allowPageTypes: false })
+          .build();
         const createdPost = await submitPost(postToSubmit);
         const updatedPost = await updatePost(createdPost.id, postForUpdate);
 
@@ -166,10 +176,18 @@ describe.only('Service Tests: Post', function () {
       'With images',
       testWrapper(async () => {
         const postToSubmit = new PostBuilder()
-          .random({ withImage: true, numberOfContentImages: 2 })
+          .random({
+            allowPageTypes: false,
+            withImage: true,
+            numberOfContentImages: 2
+          })
           .build();
         const postForUpdate = new PostBuilder()
-          .random({ withImage: true, numberOfContentImages: 2 })
+          .random({
+            allowPageTypes: false,
+            withImage: true,
+            numberOfContentImages: 2
+          })
           .build();
 
         const createdPost = await submitPost(postToSubmit);
