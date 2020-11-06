@@ -3,3 +3,4 @@ config.env
 .next
 sessions/
 dist/
+.env.local

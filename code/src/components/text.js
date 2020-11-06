@@ -1,6 +1,6 @@
+import InstagramEmbed from '@aarnila/react-instagram-embed';
 import classNames from 'classnames';
 import React from 'react';
-import InstagramEmbed from 'react-instagram-embed';
 import { useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zLogic, zText } from 'zavid-modules';
@@ -146,5 +146,13 @@ const EmbeddedTweet = ({ id }) => {
  * @returns {React.Component} The component.
  */
 const EmbeddedInsta = ({ url }) => {
-  return <InstagramEmbed url={url} maxWidth={500} hideCaption={false} />;
+  const accessToken = `${process.env.NEXT_PUBLIC_FB_APP_ID}|${process.env.NEXT_PUBLIC_FB_APP_CLIENT}`;
+  return (
+    <InstagramEmbed
+      url={url}
+      accessToken={accessToken}
+      maxWidth={500}
+      hideCaption={false}
+    />
+  );
 };
