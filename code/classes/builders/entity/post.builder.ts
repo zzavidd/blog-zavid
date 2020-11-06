@@ -4,7 +4,7 @@ const { zDate, zString } = require('zavid-modules');
 import { PostStatic } from '../../static';
 import {
   PostDAO,
-  PostImageOptions,
+  RandomPostOptions,
   PostType,
   PostStatus
 } from '../../interfaces';
@@ -48,12 +48,16 @@ export class PostBuilder {
     return this;
   }
 
-  random(options: PostImageOptions = {}): PostBuilder {
-    const { withImage = false, numberOfContentImages = 0 } = options;
+  random(options: RandomPostOptions = {}): PostBuilder {
+    const {
+      allowPageTypes = true,
+      withImage = false,
+      numberOfContentImages = 0
+    } = options;
+    
     this.post = {
       title: `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`,
-      type: PostStatic.randomType(),
-      typeId: faker.random.number(),
+      type: PostStatic.randomType({ allowPageTypes }),
       content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
       excerpt: faker.lorem.sentences(),
       status: PostStatic.randomStatus(),
@@ -67,6 +71,11 @@ export class PostBuilder {
         hasChanged: true
       })
     };
+
+    if (this.post.type !== PostType.PAGE) {
+      this.post.typeId = faker.random.number();
+    }
+
     return this;
   }
 

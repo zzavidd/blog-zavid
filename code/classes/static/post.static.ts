@@ -1,6 +1,6 @@
 const { zLogic } = require('zavid-modules');
 
-import { isString, randomEnumValue } from '../helper';
+import { isString, randomEnumValue, randomElementFromList } from '../helper';
 import {
   PostDAO,
   PostImage,
@@ -9,7 +9,7 @@ import {
 } from '../interfaces/post.interface';
 
 interface DirectoryMapping {
-  [type: string]: string
+  [type: string]: string;
 }
 
 const DIRECTORY: DirectoryMapping = {
@@ -26,8 +26,13 @@ export class PostStatic {
   static STATUS = PostStatus;
   static STATUSES = Object.values(PostStatus);
 
-  static randomType(): PostType {
-    return randomEnumValue(PostType);
+  static randomType(options: RandomTypeOptions = {}): PostType {
+    const { allowPageTypes = true } = options;
+    const postTypes = this.TYPES.filter((type) => {
+      if (!allowPageTypes && type === PostType.PAGE) return false;
+      return true;
+    });
+    return randomElementFromList(postTypes);
   }
 
   /**
@@ -132,4 +137,8 @@ export class PostStatic {
 
 interface CollateImageOptions {
   includeNulls?: boolean;
+}
+
+interface RandomTypeOptions {
+  allowPageTypes?: boolean;
 }

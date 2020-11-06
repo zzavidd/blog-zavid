@@ -9,7 +9,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-export const retrieveResource = (publicId: string) => {
+export const retrieveResource = (publicId: string): Promise<any[]> => {
   return new Promise((resolve, reject) => {
     cloudinary.api.resources_by_ids(publicId, function (
       err: any,
@@ -21,7 +21,7 @@ export const retrieveResource = (publicId: string) => {
   });
 };
 
-export const extractPublicId = (image: string) => {
+export const extractPublicId = (image: string): string => {
   const ex = new Error(`Could not get public ID from ${image}`);
   if (!image) throw ex;
 

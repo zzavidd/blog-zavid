@@ -1,88 +1,131 @@
-import { assert, debug, fetch } from '..';
+import { assert, fetch, FetchResponse } from '..';
 import { PostDAO } from '../../classes';
 import {
   CREATE_POST_QUERY,
   DELETE_POST_QUERY,
+  GET_POSTS_QUERY,
   GET_SINGLE_POST_QUERY,
   UPDATE_POST_QUERY
 } from '../../src/private/api/queries/post.queries';
 
+interface GetPostsOptions {
+  variables?: any;
+}
+
+interface GetSinglePostOptions {
+  expectToFail?: boolean;
+}
+
+interface MutatePostOptions {
+  isPublish?: boolean;
+}
+
+export interface SubmitPostResponse {
+  id: number;
+}
+
+export const getPosts = (options: GetPostsOptions = {}): Promise<PostDAO[]> => {
+  const { variables = {} } = options;
+  return new Promise<PostDAO[]>(async (resolve, reject) => {
+    try {
+      const { data } = (await fetch(GET_POSTS_QUERY, {
+        variables
+      })) as FetchResponse;
+      const posts = data.getAllPosts as PostDAO[];
+      resolve(posts);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const getSinglePost = (
+  id: number,
+  options: GetSinglePostOptions = {}
+): Promise<PostDAO> => {
+  const { expectToFail = false } = options;
+
+  return new Promise<PostDAO>(async (resolve, reject) => {
+    try {
+      const { data, errors } = (await fetch(GET_SINGLE_POST_QUERY, {
+        variables: { id },
+        expectToFail
+      })) as FetchResponse;
+
+      if (expectToFail) {
+        assert.isOk(errors);
+        return resolve();
+      }
+
+      const post = data.singlePost as PostDAO;
+      resolve(post);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 export const submitPost = (
   post: PostDAO,
-  assertions?: Function,
-  isPublish: boolean = false
-): Promise<number> => {
-  return Promise.resolve()
-    .then(() => {
-      // Submit the random post.
-      return fetch(
-        CREATE_POST_QUERY,
-        { variables: { post, isPublish, isTest: true } },
-        function ({ data }: any) {
-          const createdPost = data.createPost;
-          assert.property(createdPost, 'id');
-          return createdPost;
-        }
-      );
-    })
-    .then((createdPost) => {
-      // Retrieve the post and run comparison.
-      return fetch(
-        GET_SINGLE_POST_QUERY,
-        { variables: { id: createdPost.id } },
-        function ({ data }: any) {
-          const returnedPost = data.getSinglePost;
-          if (assertions) assertions(returnedPost);
-          return returnedPost.id;
-        }
-      );
-    })
-    .catch(debug);
+  options: MutatePostOptions = {}
+): Promise<SubmitPostResponse> => {
+  const { isPublish = false } = options;
+
+  return new Promise<SubmitPostResponse>(async (resolve, reject) => {
+    try {
+      const { data } = (await fetch(CREATE_POST_QUERY, {
+        variables: { post, isPublish, isTest: true }
+      })) as FetchResponse;
+
+      const createdPost = data.createPost as SubmitPostResponse;
+      assert.property(createdPost, 'id');
+      assert.isNumber(createdPost.id);
+      resolve(createdPost);
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
 
 export const updatePost = (
   id: number,
   post: PostDAO,
-  assertions?: Function,
-  isPublish: boolean = false
+  options: MutatePostOptions = {}
 ): Promise<PostDAO> => {
-  return fetch(
-    UPDATE_POST_QUERY,
-    { variables: { id, post, isPublish, isTest: true } },
-    function ({ data }: any) {
-      const updatedPost = data.updatePost;
+  const { isPublish = false } = options;
+
+  return new Promise<PostDAO>(async (resolve, reject) => {
+    try {
+      const { data } = (await fetch(UPDATE_POST_QUERY, {
+        variables: { id, post, isPublish, isTest: true }
+      })) as FetchResponse;
+
+      const updatedPost = data.updatePost as PostDAO;
       assert.strictEqual(updatedPost.id, id);
-      if (assertions) assertions(updatedPost);
+      resolve(updatedPost);
+    } catch (err) {
+      reject(err);
     }
-  );
+  });
 };
 
-export const deletePost = (
-  id: number,
-  assertions?: Function
-): Promise<number> => {
-  return Promise.resolve()
-    .then(() => {
-      // Delete the post.
-      return fetch(DELETE_POST_QUERY, { variables: { id } }, function ({
-        data
-      }: any) {
-        const deletedPost = data.deletePost;
-        assert.property(deletedPost, 'id');
+export const deletePost = (id: number): Promise<void> => {
+  return new Promise<void>(async (resolve, reject) => {
+    try {
+      const { data } = (await fetch(DELETE_POST_QUERY, {
+        variables: { id }
+      })) as FetchResponse;
+      const deletedPost = data.deletePost as PostDAO;
+      assert.property(deletedPost, 'id');
+
+      await getSinglePost(deletedPost.id!, {
+        expectToFail: true
       });
-    })
-    .then(() => {
-      // Attempt to retrieve post and expect failure.
-      return fetch(
-        GET_SINGLE_POST_QUERY,
-        { variables: { id }, expectToFail: true },
-        function ({ errors }: any) {
-          assert.isOk(errors);
-          if (assertions) assertions();
-        }
-      );
-    })
-    .catch(debug);
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
 
 export const comparePosts = (submission: PostDAO, output: PostDAO) => {

@@ -16,8 +16,6 @@ export const submitDiaryEntry = (
   return Promise.resolve()
     .then(() => {
       // Submit the random diary entry.
-
-      console.log(diaryEntry.status);
       return fetch(
         CREATE_DIARY_QUERY,
         { variables: { diaryEntry, isPublish } },

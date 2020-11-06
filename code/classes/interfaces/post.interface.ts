@@ -19,7 +19,8 @@ export interface PostImage {
   isCover?: boolean;
 }
 
-export interface PostImageOptions {
+export interface RandomPostOptions {
+  allowPageTypes?: boolean;
   withImage?: boolean;
   numberOfContentImages?: number;
 }

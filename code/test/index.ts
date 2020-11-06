@@ -9,30 +9,41 @@ export { assert };
 export const debug = (err: Error) => {
   throw err;
 };
-export const fetch = (
-  query: any,
-  options: FetchOptions = {},
-  test?: Function
-) => {
+export const fetch = (query: any, options: FetchOptions = {}) => {
   const { variables = {}, expectToFail = false } = options;
   return nodeFetch(`http://localhost:4000/api`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: print(query), variables })
   })
-    .then((res: any) => res.json())
-    .then((response: { data?: any; errors?: any }) => {
+    .then((res) => res.json())
+    .then((response: FetchResponse = {}) => {
       const { data, errors } = response;
       if (!expectToFail) {
         assert.isNotOk(errors);
         assert.isOk(data);
       }
-      if (test) return test({ data, errors });
+      return { data, errors };
     })
     .catch(console.error);
 };
 
-interface FetchOptions {
+export const testWrapper = (testBody: Function) => {
+  return async () => {
+    try {
+      await testBody();
+    } catch (err) {
+      throw err;
+    }
+  };
+};
+
+export interface FetchOptions {
   variables?: any;
-  expectToFail?: true;
+  expectToFail?: boolean;
+}
+
+export interface FetchResponse {
+  data?: any;
+  errors?: any;
 }

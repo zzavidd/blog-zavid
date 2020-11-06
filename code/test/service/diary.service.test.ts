@@ -1,11 +1,11 @@
 import { assert, debug, fetch } from '..';
-import { DiaryDAO, DiaryStatic, DiaryEntryBuilder } from '../../classes';
+import { DiaryDAO, DiaryEntryBuilder, DiaryStatus } from '../../classes';
 import { GET_DIARY_QUERY } from '../../src/private/api/queries/diary.queries';
 import {
-  submitDiaryEntry,
-  updateDiaryEntry,
+  compareDiaryEntries,
   deleteDiaryEntry,
-  compareDiaryEntries
+  submitDiaryEntry,
+  updateDiaryEntry
 } from '../helper/diary.helper';
 
 describe('Service Tests: Diary', function () {
@@ -30,11 +30,11 @@ describe('Service Tests: Diary', function () {
     it('Different statuses', function (finish) {
       const privateDiaryEntry = new DiaryEntryBuilder()
         .random()
-        .withStatus(DiaryStatic.STATUS.PRIVATE)
+        .withStatus(DiaryStatus.PRIVATE)
         .build();
       const publishedDiaryEntry = new DiaryEntryBuilder()
         .random()
-        .withStatus(DiaryStatic.STATUS.PUBLISHED)
+        .withStatus(DiaryStatus.PUBLISHED)
         .build();
 
       Promise.all([

@@ -3,6 +3,7 @@ const {
   PostQueryBuilder,
   PostMutationBuilder
 } = require('../../lib').classes;
+const { reject } = require('async');
 const emails = require('../../emails');
 const { debug, ERRORS } = require('../../error');
 const filer = require('../../filer');
@@ -45,15 +46,17 @@ const getAllPosts = (parent, { limit, sort, type, status }) => {
  * @param {number} args.id - The ID of the post to retrieve.
  * @returns {object} The post matching the specified ID.
  */
-const getSinglePost = (parent, { id }) => {
-  return Promise.resolve()
-    .then(() => new PostQueryBuilder(knex).whereId(id).build())
-    .then(([post]) => {
-      if (!post) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
-      post = PostStatic.parse(post);
-      return post;
-    })
-    .catch(debug);
+const getSinglePost = async (parent, { id }) => {
+  try {
+    const post = await new PostQueryBuilder(knex).whereId(id).build();
+    return new Promise((resolve, reject) => {
+      if (!post) reject(ERRORS.NONEXISTENT_ID(id, ENTITY_NAME));
+      const parsedPost = PostStatic.parse(post);
+      resolve(parsedPost);
+    });
+  } catch (err) {
+    reject(err);
+  }
 };
 
 /**

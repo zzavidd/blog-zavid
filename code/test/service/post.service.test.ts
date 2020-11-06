@@ -1,185 +1,188 @@
-import { assert, debug, fetch } from '..';
-import { PostBuilder, PostDAO, PostStatic } from '../../classes';
-import { GET_POSTS_QUERY } from '../../src/private/api/queries/post.queries';
-import { retrieveResource, extractPublicId } from '../helper';
+import { assert, testWrapper } from '..';
+import { PostBuilder, PostStatic, PostStatus, PostType } from '../../classes';
+import { extractPublicId, retrieveResource } from '../helper';
 import {
-  submitPost,
-  updatePost,
+  comparePosts,
   deletePost,
-  comparePosts
+  getPosts,
+  getSinglePost,
+  submitPost,
+  SubmitPostResponse,
+  updatePost
 } from '../helper/post.helper';
 
-describe('Service Tests: PostStatic', function () {
+describe.only('Service Tests: Post', function () {
   describe('Get All Posts', function () {
-    it('All', function (finish) {
-      fetch(GET_POSTS_QUERY, {}, function ({ data }: any) {
-        assert.isOk(data.getAllPosts);
-        finish();
-      });
-    });
+    it(
+      'All',
+      testWrapper(async () => {
+        const posts = await getPosts();
+        assert.isOk(posts);
+      })
+    );
 
-    it('With limit', function (finish) {
-      const limit = 5;
-      fetch(GET_POSTS_QUERY, { variables: { limit } }, function ({ data }: any) {
-        assert.lengthOf(data.getAllPosts, limit);
-        finish();
-      });
-    });
+    it(
+      'With limit',
+      testWrapper(async () => {
+        const limit = 5;
+        const posts = await getPosts({ variables: { limit: 5 } });
+        assert.lengthOf(posts, limit);
+      })
+    );
 
-    it('Including types', function (finish) {
-      const includedTypes = [
-        PostStatic.TYPE.REVERIE,
-        PostStatic.TYPE.EPISTLE
-      ];
-      const excludedTypes = PostStatic.TYPES.filter(function (val) {
-        return includedTypes.indexOf(val) == -1;
-      });
-      fetch(
-        GET_POSTS_QUERY,
-        { variables: { type: { include: includedTypes } } },
-        function ({ data }: any) {
-          data.getAllPosts.forEach((post: PostDAO) => {
-            assert.include(includedTypes, post.type);
-            assert.notInclude(excludedTypes, post.type);
-          });
-          finish();
-        }
-      );
-    });
+    it(
+      'Including types',
+      testWrapper(async () => {
+        const includedTypes = [PostType.REVERIE, PostType.EPISTLE];
+        const excludedTypes = PostStatic.TYPES.filter((val) => {
+          return includedTypes.indexOf(val) == -1;
+        });
 
-    it('Excluding types', function (finish) {
-      const excludedTypes = [
-        PostStatic.TYPE.REVERIE,
-        PostStatic.TYPE.EPISTLE
-      ];
-      const includedTypes = PostStatic.TYPES.filter(function (val) {
-        return excludedTypes.indexOf(val) == -1;
-      });
-      fetch(
-        GET_POSTS_QUERY,
-        { variables: { type: { exclude: excludedTypes } } },
-        function ({ data }: any) {
-          data.getAllPosts.forEach((post: PostDAO) => {
-            assert.include(includedTypes, post.type);
-            assert.notInclude(excludedTypes, post.type);
-          });
-          finish();
-        }
-      );
-    });
+        const posts = await getPosts({
+          variables: { type: { include: includedTypes } }
+        });
+        posts.forEach((post) => {
+          assert.include(includedTypes, post.type);
+          assert.notInclude(excludedTypes, post.type);
+        });
+      })
+    );
+
+    it(
+      'Excluding types',
+      testWrapper(async () => {
+        const excludedTypes = [PostType.REVERIE, PostType.EPISTLE];
+        const includedTypes = PostStatic.TYPES.filter(function (val) {
+          return excludedTypes.indexOf(val) == -1;
+        });
+
+        const posts = await getPosts({
+          variables: { type: { exclude: excludedTypes } }
+        });
+
+        posts.forEach((post) => {
+          assert.include(includedTypes, post.type);
+          assert.notInclude(excludedTypes, post.type);
+        });
+      })
+    );
   });
 
-  describe('Create PostStatic', function () {
-    it('Without image', function (finish) {
-      const post = new PostBuilder().random().build();
-      submitPost(post, (readPost: PostDAO) => {
-        comparePosts(post, readPost);
-        deletePost(readPost.id!, finish);
-      });
-    });
+  describe('Create Post', function () {
+    it(
+      'Without image',
+      testWrapper(async () => {
+        const postToCreate = new PostBuilder().random().build();
+        const createdPost = (await submitPost(
+          postToCreate
+        )) as SubmitPostResponse;
+        const readPost = await getSinglePost(createdPost.id);
 
-    it('With image', function (finish) {
-      const post = new PostBuilder()
-        .random({ withImage: true, numberOfContentImages: 2 })
-        .build();
+        comparePosts(postToCreate, readPost);
+        await deletePost(readPost.id!);
+      })
+    );
 
-      let publicId: string;
-      let postId: number;
+    it(
+      'With image',
+      testWrapper(async () => {
+        const post = new PostBuilder()
+          .random({ withImage: true, numberOfContentImages: 2 })
+          .build();
 
-      Promise.resolve()
-        .then(() => {
-          return submitPost(post, (readPost: PostDAO) => {
-            postId = readPost.id!;
-            publicId = extractPublicId(readPost.image as string);
-          });
-        })
-        .then(() => retrieveResource(publicId))
-        .then((resources: any) => {
-          assert.isNotEmpty(resources);
-          assert.strictEqual(resources[0].public_id, publicId);
-          deletePost(postId, finish);
-        })
-        .catch(debug);
-    });
+        const createdPost = (await submitPost(post)) as SubmitPostResponse;
+        const readPost = await getSinglePost(createdPost.id);
 
-    it('Different statuses', function (finish) {
-      const draftPost = new PostBuilder()
-        .random()
-        .withStatus(PostStatic.STATUS.DRAFT)
-        .build();
-      const privatePost = new PostBuilder()
-        .random()
-        .withStatus(PostStatic.STATUS.PRIVATE)
-        .build();
-      const publishedPost = new PostBuilder()
-        .random()
-        .withStatus(PostStatic.STATUS.PUBLISHED)
-        .build();
+        const postId = readPost.id!;
+        const publicId = extractPublicId(readPost.image as string);
 
-      Promise.all([
-        submitPost(draftPost, (readPost: PostDAO) => {
+        const resources = await retrieveResource(publicId);
+        assert.isNotEmpty(resources);
+        assert.strictEqual(resources[0].public_id, publicId);
+        await deletePost(postId);
+      })
+    );
+
+    it(
+      'Different statuses',
+      testWrapper(async () => {
+        const promiseDraft = new Promise(async (resolve) => {
+          const draftPost = new PostBuilder()
+            .random()
+            .withStatus(PostStatus.DRAFT)
+            .build();
+          const createdPost = await submitPost(draftPost);
+          const readPost = await getSinglePost(createdPost.id);
           assert.isNull(readPost.slug!);
-          return deletePost(readPost.id!);
-        }),
-        submitPost(privatePost, (readPost: PostDAO) => {
-          assert.isNotNull(readPost.slug);
-          return deletePost(readPost.id!);
-        }),
-        submitPost(publishedPost, (readPost: PostDAO) => {
-          assert.isNotNull(readPost.slug);
-          deletePost(readPost.id!);
-        })
-      ])
-        .then(() => finish())
-        .catch(debug);
-    });
+          await deletePost(readPost.id!);
+          resolve();
+        });
+
+        const promisePrivate = new Promise(async (resolve) => {
+          const draftPost = new PostBuilder()
+            .random()
+            .withStatus(PostStatus.PRIVATE)
+            .build();
+          const createdPost = await submitPost(draftPost);
+          const readPost = await getSinglePost(createdPost.id);
+          assert.isNotNull(readPost.slug!);
+          await deletePost(readPost.id!);
+          resolve();
+        });
+
+        const promisePublished = new Promise(async (resolve) => {
+          const draftPost = new PostBuilder()
+            .random()
+            .withStatus(PostStatus.PUBLISHED)
+            .build();
+          const createdPost = await submitPost(draftPost);
+          const readPost = await getSinglePost(createdPost.id);
+          assert.isNotNull(readPost.slug!);
+          await deletePost(readPost.id!);
+          resolve();
+        });
+
+        return Promise.all([promiseDraft, promisePrivate, promisePublished]);
+      })
+    );
   });
 
-  describe('Update PostStatic', function () {
-    it('Without image', function (finish) {
-      const postToSubmit = new PostBuilder().random().build();
-      const postForUpdate = new PostBuilder().random().build();
-      Promise.resolve()
-        .then(() => {
-          return submitPost(postToSubmit);
-        })
-        .then((id) => {
-          updatePost(id, postForUpdate, (updatedPost: PostDAO) => {
-            comparePosts(postForUpdate, updatedPost);
-            assert.strictEqual(id, updatedPost.id);
-            deletePost(id, finish);
-          });
-        })
-        .catch(debug);
-    });
+  describe('Update Post', function () {
+    it(
+      'Without image',
+      testWrapper(async () => {
+        const postToSubmit = new PostBuilder().random().build();
+        const postForUpdate = new PostBuilder().random().build();
+        const createdPost = await submitPost(postToSubmit);
+        const updatedPost = await updatePost(createdPost.id, postForUpdate);
 
-    it('With images', function (finish) {
-      const postToSubmit = new PostBuilder()
-        .random({ withImage: true, numberOfContentImages: 2 })
-        .build();
-      const postForUpdate = new PostBuilder()
-        .random({ withImage: true, numberOfContentImages: 2 })
-        .build();
+        comparePosts(postForUpdate, updatedPost);
+        assert.strictEqual(createdPost.id, updatedPost.id);
+        await deletePost(createdPost.id);
+      })
+    );
 
-      let postId: number;
-      let publicIdSubmit: string;
-      let publicIdUpdate: string;
+    it(
+      'With images',
+      testWrapper(async () => {
+        const postToSubmit = new PostBuilder()
+          .random({ withImage: true, numberOfContentImages: 2 })
+          .build();
+        const postForUpdate = new PostBuilder()
+          .random({ withImage: true, numberOfContentImages: 2 })
+          .build();
 
-      Promise.resolve()
-        .then(() => {
-          return submitPost(postToSubmit, (submittedPost: PostDAO) => {
-            postId = submittedPost.id!;
-            publicIdSubmit = extractPublicId(submittedPost.image as string);
-          });
-        })
-        .then(() => {
-          updatePost(postId, postForUpdate, (updatedPost: PostDAO) => {
-            publicIdUpdate = extractPublicId(updatedPost.image as string);
-            assert.notEqual(publicIdSubmit, publicIdUpdate);
-            deletePost(postId, finish);
-          });
-        })
-        .catch(debug);
-    });
+        const createdPost = await submitPost(postToSubmit);
+        const readPost = await getSinglePost(createdPost.id);
+
+        const postId = createdPost.id;
+        const publicIdSubmit = extractPublicId(readPost.image as string);
+
+        const updatedPost = await updatePost(postId, postForUpdate);
+        const publicIdUpdate = extractPublicId(updatedPost.image as string);
+        assert.notEqual(publicIdSubmit, publicIdUpdate);
+        await deletePost(postId);
+      })
+    );
   });
 });

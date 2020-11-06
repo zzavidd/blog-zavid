@@ -6,7 +6,7 @@ import {
   PostType
 } from '../../classes';
 
-const { assert } = require('..');
+import { assert } from '..';
 
 describe('Unit Tests: PostStatic', function () {
   describe('Object methods', function () {
@@ -27,10 +27,7 @@ describe('Unit Tests: PostStatic', function () {
         .build();
       assert.isTrue(PostStatic.isReverie(reverie));
 
-      const page = new PostBuilder()
-        .random()
-        .withType(PostType.PAGE)
-        .build();
+      const page = new PostBuilder().random().withType(PostType.PAGE).build();
       assert.isTrue(PostStatic.isPage(page));
       assert.isTrue(PostStatic.isPage(page));
       finish();
@@ -108,6 +105,12 @@ describe('Unit Tests: PostStatic', function () {
     it('Random type', function (finish) {
       const randomType = PostStatic.randomType();
       assert.isTrue(Object.values(PostType).includes(randomType));
+
+      const randomNonPageType = PostStatic.randomType({
+        allowPageTypes: false
+      });
+
+      assert.notEqual(randomNonPageType, PostType.PAGE);
       finish();
     });
   });
