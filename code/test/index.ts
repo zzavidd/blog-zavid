@@ -7,7 +7,8 @@ import nodeFetch from 'node-fetch';
 
 export { assert };
 export const debug = (err: Error) => {
-  throw err;
+  console.error(err);
+  process.exit(0)
 };
 export const fetch = (query: any, options: FetchOptions = {}) => {
   const { variables = {}, expectToFail = false } = options;
@@ -25,7 +26,7 @@ export const fetch = (query: any, options: FetchOptions = {}) => {
       }
       return { data, errors };
     })
-    .catch(console.error);
+    .catch(debug);
 };
 
 export const testWrapper = (testBody: Function) => {
@@ -33,7 +34,7 @@ export const testWrapper = (testBody: Function) => {
     try {
       await testBody();
     } catch (err) {
-      throw err;
+      debug(err);
     }
   };
 };

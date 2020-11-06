@@ -1,4 +1,4 @@
-import { assert, fetch, FetchResponse } from '..';
+import { assert, debug, fetch, FetchResponse } from '..';
 import { PostDAO } from '../../classes';
 import {
   CREATE_POST_QUERY,
@@ -57,7 +57,7 @@ export const getSinglePost = (
         return resolve();
       }
 
-      const post = data.singlePost as PostDAO;
+      const post = data.getSinglePost as PostDAO;
       resolve(post);
     } catch (err) {
       reject(err);

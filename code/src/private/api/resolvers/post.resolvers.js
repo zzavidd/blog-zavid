@@ -48,7 +48,7 @@ const getAllPosts = (parent, { limit, sort, type, status }) => {
  */
 const getSinglePost = async (parent, { id }) => {
   try {
-    const post = await new PostQueryBuilder(knex).whereId(id).build();
+    const [post] = await new PostQueryBuilder(knex).whereId(id).build();
     return new Promise((resolve, reject) => {
       if (!post) reject(ERRORS.NONEXISTENT_ID(id, ENTITY_NAME));
       const parsedPost = PostStatic.parse(post);
