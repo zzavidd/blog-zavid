@@ -1,5 +1,6 @@
-export interface DiaryDAO {
-  id?: number;
+import { GenericDAO } from './super';
+
+export interface DiaryDAO extends GenericDAO {
   title?: string;
   content?: string;
   date?: string | Date;

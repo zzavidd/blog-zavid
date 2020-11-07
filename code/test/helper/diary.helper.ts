@@ -1,89 +1,71 @@
-import { assert, debug, fetch } from '..';
-const {
-  GET_SINGLE_DIARY_QUERY,
-  CREATE_DIARY_QUERY,
-  UPDATE_DIARY_QUERY,
-  DELETE_DIARY_QUERY
-} = require('../../src/private/api/queries/diary.queries');
-
+import {
+  createEntity,
+  deleteEntity,
+  getEntities,
+  getSingleEntity,
+  SubmitEntityResponse,
+  updateEntity
+} from '.';
+import { assert } from '..';
 import { DiaryDAO, DiaryStatic } from '../../classes';
+import {
+  CREATE_DIARY_QUERY,
+  DELETE_DIARY_QUERY,
+  GET_DIARY_QUERY,
+  GET_SINGLE_DIARY_QUERY,
+  UPDATE_DIARY_QUERY
+} from '../../src/private/api/queries/diary.queries';
+
+const ENTITY_NAME = 'diaryEntry';
+
+export const getDiaryEntries = (variables?: any) => {
+  return getEntities({
+    query: GET_DIARY_QUERY,
+    resolver: 'diaryEntries',
+    variables
+  });
+};
+
+export const getSingleDiaryEntry = (
+  id: number,
+  expectToFail?: boolean
+): Promise<DiaryDAO> => {
+  return getSingleEntity(id, {
+    query: GET_SINGLE_DIARY_QUERY,
+    resolver: 'diaryEntry',
+    expectToFail
+  });
+};
 
 export const submitDiaryEntry = (
-  diaryEntry: DiaryDAO,
-  assertions?: Function,
-  isPublish: boolean = false
-): Promise<number> => {
-  return Promise.resolve()
-    .then(() => {
-      // Submit the random diary entry.
-      return fetch(
-        CREATE_DIARY_QUERY,
-        { variables: { diaryEntry, isPublish } },
-        function ({ data }: any) {
-          const createdDiaryEntry = data.createDiaryEntry;
-          assert.property(createdDiaryEntry, 'id');
-          return createdDiaryEntry;
-        }
-      );
-    })
-    .then((createdDiaryEntry) => {
-      // Retrieve the diary entry and run comparison.
-      return fetch(
-        GET_SINGLE_DIARY_QUERY,
-        { variables: { id: createdDiaryEntry.id } },
-        function ({ data }: any) {
-          const returnedDiaryEntry = data.diaryEntry;
-          if (assertions) assertions(returnedDiaryEntry);
-          return returnedDiaryEntry.id;
-        }
-      );
-    })
-    .catch(debug);
+  diaryEntry: DiaryDAO
+): Promise<SubmitEntityResponse> => {
+  return createEntity(diaryEntry, {
+    query: CREATE_DIARY_QUERY,
+    resolver: 'createDiaryEntry',
+    anonym: ENTITY_NAME
+  });
 };
 
 export const updateDiaryEntry = (
   id: number,
-  diaryEntry: DiaryDAO,
-  assertions?: Function,
-  isPublish: boolean = false
+  diaryEntry: DiaryDAO
 ): Promise<DiaryDAO> => {
-  return fetch(
-    UPDATE_DIARY_QUERY,
-    { variables: { id, diaryEntry, isPublish, isTest: true } },
-    function ({ data }: any) {
-      const updatedDiaryEntry = data.updateDiaryEntry;
-      assert.strictEqual(updatedDiaryEntry.id, id);
-      if (assertions) assertions(updatedDiaryEntry);
-    }
-  );
+  return updateEntity(id, diaryEntry, {
+    query: UPDATE_DIARY_QUERY,
+    resolver: 'updateDiaryEntry',
+    anonym: ENTITY_NAME
+  });
 };
 
-export const deleteDiaryEntry = (
-  id: number,
-  assertions?: Function
-): Promise<number> => {
-  return Promise.resolve()
-    .then(() => {
-      // Delete the diary entry.
-      return fetch(DELETE_DIARY_QUERY, { variables: { id } }, function ({
-        data
-      }: any) {
-        const deletedDiaryEntry = data.deleteDiaryEntry;
-        assert.property(deletedDiaryEntry, 'id');
-      });
-    })
-    .then(() => {
-      // Attempt to retrieve diary entry and expect failure.
-      return fetch(
-        GET_SINGLE_DIARY_QUERY,
-        { variables: { id }, expectToFail: true },
-        function ({ errors }: any) {
-          assert.isOk(errors);
-          if (assertions) assertions();
-        }
-      );
-    })
-    .catch(debug);
+export const deleteDiaryEntry = (id: number): Promise<void> => {
+  return deleteEntity(id, {
+    query: DELETE_DIARY_QUERY,
+    resolver: 'deleteDiaryEntry',
+    verifyDelete: async () => {
+      return await getSingleDiaryEntry(id, true);
+    }
+  });
 };
 
 export const compareDiaryEntries = (

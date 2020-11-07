@@ -4,13 +4,25 @@ dotenv.config({ path: './config.env' });
 import { print } from 'graphql/language/printer';
 import { assert } from 'chai';
 import nodeFetch from 'node-fetch';
+import { DocumentNode } from 'graphql';
 
 export { assert };
+
+/**
+ * Prints error message and exits.
+ * @param err The error to be displayed to console.
+ */
 export const debug = (err: Error) => {
   console.error(err);
-  process.exit(0)
+  process.exit(0);
 };
-export const fetch = (query: any, options: FetchOptions = {}) => {
+
+/**
+ * Sends a request to the server.
+ * @param query The GraphQL query.
+ * @param options Options for fetching.
+ */
+export const fetch = (query: DocumentNode, options: FetchOptions = {}) => {
   const { variables = {}, expectToFail = false } = options;
   return nodeFetch(`http://localhost:4000/api`, {
     method: 'POST',
@@ -29,7 +41,11 @@ export const fetch = (query: any, options: FetchOptions = {}) => {
     .catch(debug);
 };
 
-export const testWrapper = (testBody: Function) => {
+/**
+ * A wrapper for Mocha tests which handles exceptions.
+ * @param testBody The body of the test to be executed.
+ */
+export const testWrapper = (testBody: Function): Mocha.AsyncFunc => {
   return async () => {
     try {
       await testBody();
@@ -37,6 +53,21 @@ export const testWrapper = (testBody: Function) => {
       debug(err);
     }
   };
+};
+
+/**
+ * A wrapper for promises with asynchronous bodies.
+ * @param promiseBody The body of the promise.
+ */
+export const promiseWrapper = (promiseBody: Function): Promise<any> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await promiseBody();
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
 
 export interface FetchOptions {

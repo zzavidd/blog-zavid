@@ -1,5 +1,6 @@
-export interface PostDAO {
-  id?: number;
+import { GenericDAO } from "./super";
+
+export interface PostDAO extends GenericDAO {
   title?: string;
   type?: PostType;
   typeId?: number;

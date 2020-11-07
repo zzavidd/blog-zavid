@@ -1,4 +1,4 @@
-import { assert, testWrapper } from '..';
+import { assert, promiseWrapper, testWrapper } from '..';
 import { PostBuilder, PostStatic, PostStatus, PostType } from '../../classes';
 import { extractPublicId, retrieveResource } from '../helper';
 import {
@@ -7,11 +7,10 @@ import {
   getPosts,
   getSinglePost,
   submitPost,
-  SubmitPostResponse,
   updatePost
 } from '../helper/post.helper';
 
-describe.only('Service Tests: Post', function () {
+describe('Service Tests: Post', function () {
   describe('Get All Posts', function () {
     it(
       'All',
@@ -25,7 +24,7 @@ describe.only('Service Tests: Post', function () {
       'With limit',
       testWrapper(async () => {
         const limit = 5;
-        const posts = await getPosts({ variables: { limit: 5 } });
+        const posts = await getPosts({ limit: 5 });
         assert.lengthOf(posts, limit);
       })
     );
@@ -38,9 +37,7 @@ describe.only('Service Tests: Post', function () {
           return includedTypes.indexOf(val) == -1;
         });
 
-        const posts = await getPosts({
-          variables: { type: { include: includedTypes } }
-        });
+        const posts = await getPosts({ type: { include: includedTypes } });
         posts.forEach((post) => {
           assert.include(includedTypes, post.type);
           assert.notInclude(excludedTypes, post.type);
@@ -56,9 +53,7 @@ describe.only('Service Tests: Post', function () {
           return excludedTypes.indexOf(val) == -1;
         });
 
-        const posts = await getPosts({
-          variables: { type: { exclude: excludedTypes } }
-        });
+        const posts = await getPosts({ type: { exclude: excludedTypes } });
 
         posts.forEach((post) => {
           assert.include(includedTypes, post.type);
@@ -75,9 +70,7 @@ describe.only('Service Tests: Post', function () {
         const postToCreate = new PostBuilder()
           .random({ allowPageTypes: false })
           .build();
-        const createdPost = (await submitPost(
-          postToCreate
-        )) as SubmitPostResponse;
+        const createdPost = await submitPost(postToCreate);
         const readPost = await getSinglePost(createdPost.id);
 
         comparePosts(postToCreate, readPost);
@@ -96,7 +89,7 @@ describe.only('Service Tests: Post', function () {
           })
           .build();
 
-        const createdPost = (await submitPost(post)) as SubmitPostResponse;
+        const createdPost = await submitPost(post);
         const readPost = await getSinglePost(createdPost.id);
 
         const postId = readPost.id!;
@@ -109,48 +102,42 @@ describe.only('Service Tests: Post', function () {
       })
     );
 
-    it(
-      'Different statuses',
-      testWrapper(async () => {
-        const promiseDraft = new Promise(async (resolve) => {
-          const draftPost = new PostBuilder()
-            .random({ allowPageTypes: false })
-            .withStatus(PostStatus.DRAFT)
-            .build();
-          const createdPost = await submitPost(draftPost);
-          const readPost = await getSinglePost(createdPost.id);
-          assert.isNull(readPost.slug!);
-          await deletePost(readPost.id!);
-          resolve();
-        });
+    it('Different statuses', function () {
+      const promiseDraft = promiseWrapper(async () => {
+        const draftPost = new PostBuilder()
+          .random({ allowPageTypes: false })
+          .withStatus(PostStatus.DRAFT)
+          .build();
+        const createdPost = await submitPost(draftPost);
+        const readPost = await getSinglePost(createdPost.id);
+        assert.isNull(readPost.slug!);
+        await deletePost(readPost.id!);
+      });
 
-        const promisePrivate = new Promise(async (resolve) => {
-          const draftPost = new PostBuilder()
-            .random({ allowPageTypes: false })
-            .withStatus(PostStatus.PRIVATE)
-            .build();
-          const createdPost = await submitPost(draftPost);
-          const readPost = await getSinglePost(createdPost.id);
-          assert.isNotNull(readPost.slug!);
-          await deletePost(readPost.id!);
-          resolve();
-        });
+      const promisePrivate = promiseWrapper(async () => {
+        const privatePost = new PostBuilder()
+          .random({ allowPageTypes: false })
+          .withStatus(PostStatus.PRIVATE)
+          .build();
+        const createdPost = await submitPost(privatePost);
+        const readPost = await getSinglePost(createdPost.id);
+        assert.isNotNull(readPost.slug!);
+        await deletePost(readPost.id!);
+      });
 
-        const promisePublished = new Promise(async (resolve) => {
-          const draftPost = new PostBuilder()
-            .random({ allowPageTypes: false })
-            .withStatus(PostStatus.PUBLISHED)
-            .build();
-          const createdPost = await submitPost(draftPost);
-          const readPost = await getSinglePost(createdPost.id);
-          assert.isNotNull(readPost.slug!);
-          await deletePost(readPost.id!);
-          resolve();
-        });
+      const promisePublished = promiseWrapper(async () => {
+        const publishedPost = new PostBuilder()
+          .random({ allowPageTypes: false })
+          .withStatus(PostStatus.PUBLISHED)
+          .build();
+        const createdPost = await submitPost(publishedPost);
+        const readPost = await getSinglePost(createdPost.id);
+        assert.isNotNull(readPost.slug!);
+        await deletePost(readPost.id!);
+      });
 
-        return Promise.all([promiseDraft, promisePrivate, promisePublished]);
-      })
-    );
+      return Promise.all([promiseDraft, promisePrivate, promisePublished]);
+    });
   });
 
   describe('Update Post', function () {
