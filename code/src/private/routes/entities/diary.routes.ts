@@ -4,9 +4,9 @@ import {
   DiaryStatic,
   PageQueryBuilder
 } from '../../../../classes';
-import { siteTitle } from '../../../constants/settings';
-import { OPERATIONS } from '../../../constants/strings';
-import { ERRORS, renderErrorPage } from '../../error';
+const { siteTitle } = require('../../../constants/settings');
+const { OPERATIONS } = require('../../../constants/strings');
+const { ERRORS, renderErrorPage } = require('../../error');
 import { getKnex, getServer } from '../../singleton';
 
 const router = express.Router();
