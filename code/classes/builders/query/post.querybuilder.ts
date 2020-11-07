@@ -15,7 +15,7 @@ const columns = [
 ];
 
 /** Builds a post query with conditions. */
-class PostQueryBuilder extends QueryBuilder {
+export class PostQueryBuilder extends QueryBuilder {
   constructor(knex: any) {
     super(knex.column(columns), TABLE_NAME);
     this.knex = knex;
@@ -90,7 +90,7 @@ class PostQueryBuilder extends QueryBuilder {
   }
 }
 
-class PostMutationBuilder extends MutationBuilder {
+export class PostMutationBuilder extends MutationBuilder {
   constructor(knex: any) {
     super(knex, TABLE_NAME, 'post');
   }
@@ -105,6 +105,3 @@ interface PostStatusFilters {
   include?: PostStatus[];
   exclude?: PostStatus[];
 }
-
-exports.PostQueryBuilder = PostQueryBuilder;
-exports.PostMutationBuilder = PostMutationBuilder;
