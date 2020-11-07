@@ -109,7 +109,7 @@ router.get('/admin/posts', function (req, res) {
 
 router.get('/admin/posts/add', function (req, res) {
   return server.render(req, res, '/posts/crud', {
-    title: `Add New PostStatic`,
+    title: `Add New Post`,
     operation: OPERATIONS.CREATE
   });
 });
@@ -122,7 +122,7 @@ router.get('/admin/posts/edit/:id', function (req, res) {
     .then(([post]) => {
       if (!post) throw ERRORS.NO_ENTITY('post');
       return server.render(req, res, '/posts/crud', {
-        title: `Edit PostStatic`,
+        title: `Edit Post`,
         operation: OPERATIONS.UPDATE,
         post
       });

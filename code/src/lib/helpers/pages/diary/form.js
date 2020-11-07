@@ -60,7 +60,7 @@ const PostForm = (props) => {
             <Label>Status:</Label>
             <Select
               name={'status'}
-              items={DiaryStatic.statusList}
+              items={DiaryStatic.STATUSES}
               value={diaryEntry.status}
               onChange={handleText}
             />

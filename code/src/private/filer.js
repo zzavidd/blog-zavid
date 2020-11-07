@@ -5,7 +5,7 @@ const { zString } = require('zavid-modules');
 const { debug } = require('./error');
 
 const { classes } = require('./lib');
-const { PostStatic } = classes;
+const { PostStatic, PostType } = classes;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -186,7 +186,7 @@ const generateSlugAndFilename = (post) => {
         const filename = zString.constructCleanSlug(
           `${postDomain.title} ${post.title}`
         );
-        const directory = PostStatic.TYPES.PAGE.DIRECTORY;
+        const directory = PostStatic.getDirectory(PostType.PAGE);
         return { directory, filename, slug };
       })
       .catch(debug);

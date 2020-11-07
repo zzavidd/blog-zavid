@@ -8,9 +8,9 @@ import {
 
 import { assert } from '..';
 
-describe('Unit Tests: PostStatic', function () {
+describe('Unit Tests: Post', function () {
   describe('Object methods', function () {
-    it('Test random construction', function (finish) {
+    it('Construct random post object', function (finish) {
       const post = new PostBuilder()
         .random({ numberOfContentImages: 4 })
         .build();

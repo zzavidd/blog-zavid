@@ -112,7 +112,7 @@ const PostForm = (props) => {
             <Label>Status:</Label>
             <Select
               name={'status'}
-              items={PostStatic.STATUS}
+              items={PostStatic.STATUSES}
               value={post.status}
               onChange={handleText}
             />

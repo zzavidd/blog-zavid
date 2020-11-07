@@ -30,7 +30,6 @@ export const Select = (props) => {
   return (
     <select
       name={name}
-      items={items}
       value={selectedValue}
       onChange={onChange}
       className={classes}
