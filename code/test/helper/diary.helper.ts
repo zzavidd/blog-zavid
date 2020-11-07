@@ -37,7 +37,7 @@ export const getSingleDiaryEntry = (
   });
 };
 
-export const submitDiaryEntry = (
+export const createDiaryEntry = (
   diaryEntry: DiaryDAO
 ): Promise<SubmitEntityResponse> => {
   return createEntity(diaryEntry, {
@@ -62,9 +62,7 @@ export const deleteDiaryEntry = (id: number): Promise<void> => {
   return deleteEntity(id, {
     query: DELETE_DIARY_QUERY,
     resolver: 'deleteDiaryEntry',
-    verifyDelete: async () => {
-      return await getSingleDiaryEntry(id, true);
-    }
+    verifyDelete: async () => await getSingleDiaryEntry(id, true)
   });
 };
 

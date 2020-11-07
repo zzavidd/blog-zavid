@@ -37,7 +37,7 @@ export const getSinglePost = (
   });
 };
 
-export const submitPost = (post: PostDAO): Promise<SubmitEntityResponse> => {
+export const createPost = (post: PostDAO): Promise<SubmitEntityResponse> => {
   return createEntity(post, {
     query: CREATE_POST_QUERY,
     resolver: 'createPost',
@@ -57,9 +57,7 @@ export const deletePost = (id: number): Promise<void> => {
   return deleteEntity(id, {
     query: DELETE_POST_QUERY,
     resolver: 'deletePost',
-    verifyDelete: async () => {
-      return await getSinglePost(id, true)
-    }
+    verifyDelete: async () => await getSinglePost(id, true)
   });
 };
 

@@ -5,7 +5,7 @@ import {
   deleteDiaryEntry,
   getDiaryEntries,
   getSingleDiaryEntry,
-  submitDiaryEntry,
+  createDiaryEntry,
   updateDiaryEntry
 } from '../helper/diary.helper';
 
@@ -25,7 +25,7 @@ describe('Service Tests: Diary', function () {
       'Standard',
       testWrapper(async () => {
         const diaryEntry = new DiaryEntryBuilder().random().build();
-        const createdDiaryEntry = await submitDiaryEntry(diaryEntry);
+        const createdDiaryEntry = await createDiaryEntry(diaryEntry);
         const readDiaryEntry = await getSingleDiaryEntry(createdDiaryEntry.id);
         compareDiaryEntries(diaryEntry, readDiaryEntry);
         await deleteDiaryEntry(readDiaryEntry.id!);
@@ -38,7 +38,7 @@ describe('Service Tests: Diary', function () {
           .random()
           .withStatus(DiaryStatus.PRIVATE)
           .build();
-        const createdDiaryEntry = await submitDiaryEntry(draftDiaryEntry);
+        const createdDiaryEntry = await createDiaryEntry(draftDiaryEntry);
         const readDiaryEntry = await getSingleDiaryEntry(createdDiaryEntry.id);
         assert.isNotNull(readDiaryEntry.slug!);
         await deleteDiaryEntry(readDiaryEntry.id!);
@@ -49,7 +49,7 @@ describe('Service Tests: Diary', function () {
           .random()
           .withStatus(DiaryStatus.PUBLISHED)
           .build();
-        const createdDiaryEntry = await submitDiaryEntry(draftDiaryEntry);
+        const createdDiaryEntry = await createDiaryEntry(draftDiaryEntry);
         const readDiaryEntry = await getSingleDiaryEntry(createdDiaryEntry.id);
         assert.isNotNull(readDiaryEntry.slug!);
         await deleteDiaryEntry(readDiaryEntry.id!);
@@ -66,7 +66,7 @@ describe('Service Tests: Diary', function () {
         const diaryEntryToSubmit = new DiaryEntryBuilder().random().build();
         const diaryEntryForUpdate = new DiaryEntryBuilder().random().build();
 
-        const createdDiaryEntry = await submitDiaryEntry(diaryEntryToSubmit);
+        const createdDiaryEntry = await createDiaryEntry(diaryEntryToSubmit);
         const updatedDiaryEntry = await updateDiaryEntry(
           createdDiaryEntry.id,
           diaryEntryForUpdate

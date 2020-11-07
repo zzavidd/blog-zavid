@@ -1,88 +1,76 @@
 import { validate as uuidValidate } from 'uuid';
-
-import { assert, debug, fetch } from '..';
+import {
+  createEntity,
+  deleteEntity,
+  getEntities,
+  getSingleEntity,
+  SubmitEntityResponse,
+  updateEntity
+} from '.';
+import { assert } from '..';
 import { SubscriberDAO } from '../../classes';
 import {
-  GET_SINGLE_SUBSCRIBER_QUERY,
   CREATE_SUBSCRIBER_QUERY,
-  UPDATE_SUBSCRIBER_QUERY,
-  DELETE_SUBSCRIBER_QUERY
+  DELETE_SUBSCRIBER_QUERY,
+  GET_SINGLE_SUBSCRIBER_QUERY,
+  GET_SUBSCRIBERS_QUERY,
+  UPDATE_SUBSCRIBER_QUERY
 } from '../../src/private/api/queries/subscriber.queries';
 
-export const submitSubscriber = (
-  subscriber: SubscriberDAO,
-  assertions?: Function
-): Promise<number> => {
-  return Promise.resolve()
-    .then(() => {
-      // Submit the random subscriber.
-      return fetch(
-        CREATE_SUBSCRIBER_QUERY,
-        { variables: { subscriber } },
-        function ({ data }: any) {
-          const createdSubscriber = data.createSubscriber;
-          assert.property(createdSubscriber, 'id');
-          return createdSubscriber;
-        }
-      );
-    })
-    .then((createdSubscriber) => {
-      // Retrieve the subscriber and run comparison.
-      return fetch(
-        GET_SINGLE_SUBSCRIBER_QUERY,
-        { variables: { id: createdSubscriber.id } },
-        function ({ data }: any) {
-          const returnedSubscriber = data.subscriber;
-          if (assertions) assertions(returnedSubscriber);
-          return returnedSubscriber.id;
-        }
-      );
-    })
-    .catch(debug);
+const ENTITY_NAME = 'subscriber';
+
+export const getSubscribers = (variables?: any) => {
+  return getEntities({
+    query: GET_SUBSCRIBERS_QUERY,
+    resolver: 'subscribers',
+    variables
+  });
+};
+
+export const getSingleSubscriber = (
+  id: number,
+  expectToFail?: boolean
+): Promise<SubscriberDAO> => {
+  return getSingleEntity(id, {
+    query: GET_SINGLE_SUBSCRIBER_QUERY,
+    resolver: 'subscriber',
+    expectToFail
+  });
+};
+
+export const createSubscriber = (
+  subscriber: SubscriberDAO
+): Promise<SubmitEntityResponse> => {
+  return createEntity(subscriber, {
+    query: CREATE_SUBSCRIBER_QUERY,
+    resolver: 'createSubscriber',
+    anonym: ENTITY_NAME
+  });
 };
 
 export const updateSubscriber = (
   id: number,
-  subscriber: SubscriberDAO,
-  assertions?: Function
+  subscriber: SubscriberDAO
 ): Promise<SubscriberDAO> => {
-  return fetch(
-    UPDATE_SUBSCRIBER_QUERY,
-    { variables: { id, subscriber } },
-    function ({ data }: any) {
-      const updatedSubscriber = data.updateSubscriber;
-      assert.strictEqual(updatedSubscriber.id, id);
-      if (assertions) assertions(updatedSubscriber);
-    }
-  );
+  return updateEntity(id, subscriber, {
+    query: UPDATE_SUBSCRIBER_QUERY,
+    resolver: 'updateSubscriber',
+    anonym: ENTITY_NAME
+  });
 };
 
-export const deleteSubscriber = (id: number, assertions?: Function) => {
-  return Promise.resolve()
-    .then(() => {
-      // Delete the subscriber.
-      return fetch(DELETE_SUBSCRIBER_QUERY, { variables: { id } }, function ({
-        data
-      }: any) {
-        const deletedSubscriber = data.deleteSubscriber;
-        assert.property(deletedSubscriber, 'id');
-      });
-    })
-    .then(() => {
-      // Attempt to retrieve subscriber and expect failure.
-      return fetch(
-        GET_SINGLE_SUBSCRIBER_QUERY,
-        { variables: { id }, expectToFail: true },
-        function ({ errors }: any) {
-          assert.isOk(errors);
-          if (assertions) assertions();
-        }
-      );
-    })
-    .catch(debug);
+export const deleteSubscriber = (id: number): Promise<void> => {
+  return deleteEntity(id, {
+    query: DELETE_SUBSCRIBER_QUERY,
+    resolver: 'deleteSubscriber',
+    verifyDelete: async () => await getSingleSubscriber(id, true)
+  });
 };
 
-export const compareSubscribers = (request: SubscriberDAO, response: SubscriberDAO) => {
+export const compareSubscribers = (
+  request: SubscriberDAO,
+  response: SubscriberDAO
+) => {
   assert.strictEqual(request.email, response.email);
   assert.strictEqual(request.firstname, response.firstname);
   assert.strictEqual(request.lastname, response.lastname);

@@ -1,47 +1,55 @@
-import { assert, debug, fetch } from '..';
-import { SubscriberBuilder, SubscriberDAO } from '../../classes';
-import { GET_SUBSCRIBERS_QUERY } from '../../src/private/api/queries/subscriber.queries';
+import { assert, testWrapper } from '..';
+import { SubscriberBuilder } from '../../classes';
 import {
-  submitSubscriber,
-  updateSubscriber,
+  compareSubscribers,
+  createSubscriber,
   deleteSubscriber,
-  compareSubscribers
+  getSingleSubscriber,
+  getSubscribers,
+  updateSubscriber
 } from '../helper/subscriber.helper';
 
 describe('Service Tests: Subscriber', function () {
   describe('Get All Subscribers', function () {
-    it('All', function (finish) {
-      fetch(GET_SUBSCRIBERS_QUERY, {}, function ({ data }: any) {
-        assert.isOk(data.subscribers);
-        finish();
-      });
-    });
+    it(
+      'All',
+      testWrapper(async () => {
+        const subscribers = await getSubscribers();
+        assert.isOk(subscribers);
+      })
+    );
   });
 
   describe('Create Subscriber', function () {
-    it('Standard', function (finish) {
-      const subscriber = new SubscriberBuilder().random().build();
-      submitSubscriber(subscriber, (readSubscriber: SubscriberDAO) => {
+    it(
+      'Standard',
+      testWrapper(async () => {
+        const subscriber = new SubscriberBuilder().random().build();
+        const createdSubscriber = await createSubscriber(subscriber);
+        const readSubscriber = await getSingleSubscriber(createdSubscriber.id);
         compareSubscribers(subscriber, readSubscriber);
-        deleteSubscriber(readSubscriber.id!, finish);
-      });
-    });
+        await deleteSubscriber(readSubscriber.id!);
+      })
+    );
   });
 
   describe('Update Subscriber', function () {
-    it('Standard', function (finish) {
-      const subscriberToSubmit = new SubscriberBuilder().random().build();
-      const subscriberForUpdate = new SubscriberBuilder().random().build();
-      Promise.resolve()
-        .then(() => submitSubscriber(subscriberToSubmit))
-        .then((id) => {
-          updateSubscriber(id, subscriberForUpdate, (updatedSubscriber: SubscriberDAO) => {
-            compareSubscribers(subscriberForUpdate, updatedSubscriber);
-            assert.strictEqual(id, updatedSubscriber.id!);
-            deleteSubscriber(id, finish);
-          });
-        })
-        .catch(debug);
-    });
+    it(
+      'Standard',
+      testWrapper(async () => {
+        const subscriberToSubmit = new SubscriberBuilder().random().build();
+        const subscriberForUpdate = new SubscriberBuilder().random().build();
+
+        const createdSubscriber = await createSubscriber(subscriberToSubmit);
+        const updatedSubscriber = await updateSubscriber(
+          createdSubscriber.id,
+          subscriberForUpdate
+        );
+
+        compareSubscribers(subscriberForUpdate, updatedSubscriber);
+        assert.strictEqual(createdSubscriber.id, updatedSubscriber.id!);
+        await deleteSubscriber(createdSubscriber.id);
+      })
+    );
   });
 });

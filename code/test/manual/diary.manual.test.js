@@ -1,6 +1,6 @@
 const { classes } = require('..');
 const {
-  submitDiaryEntry,
+  createDiaryEntry: submitDiaryEntry,
   updateDiaryEntry
 } = require('../helper/diary.helper');
 const { zDate } = require('zavid-modules');

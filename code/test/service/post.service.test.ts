@@ -6,7 +6,7 @@ import {
   deletePost,
   getPosts,
   getSinglePost,
-  submitPost,
+  createPost,
   updatePost
 } from '../helper/post.helper';
 
@@ -70,7 +70,7 @@ describe('Service Tests: Post', function () {
         const postToCreate = new PostBuilder()
           .random({ allowPageTypes: false })
           .build();
-        const createdPost = await submitPost(postToCreate);
+        const createdPost = await createPost(postToCreate);
         const readPost = await getSinglePost(createdPost.id);
 
         comparePosts(postToCreate, readPost);
@@ -89,7 +89,7 @@ describe('Service Tests: Post', function () {
           })
           .build();
 
-        const createdPost = await submitPost(post);
+        const createdPost = await createPost(post);
         const readPost = await getSinglePost(createdPost.id);
 
         const postId = readPost.id!;
@@ -108,7 +108,7 @@ describe('Service Tests: Post', function () {
           .random({ allowPageTypes: false })
           .withStatus(PostStatus.DRAFT)
           .build();
-        const createdPost = await submitPost(draftPost);
+        const createdPost = await createPost(draftPost);
         const readPost = await getSinglePost(createdPost.id);
         assert.isNull(readPost.slug!);
         await deletePost(readPost.id!);
@@ -119,7 +119,7 @@ describe('Service Tests: Post', function () {
           .random({ allowPageTypes: false })
           .withStatus(PostStatus.PRIVATE)
           .build();
-        const createdPost = await submitPost(privatePost);
+        const createdPost = await createPost(privatePost);
         const readPost = await getSinglePost(createdPost.id);
         assert.isNotNull(readPost.slug!);
         await deletePost(readPost.id!);
@@ -130,7 +130,7 @@ describe('Service Tests: Post', function () {
           .random({ allowPageTypes: false })
           .withStatus(PostStatus.PUBLISHED)
           .build();
-        const createdPost = await submitPost(publishedPost);
+        const createdPost = await createPost(publishedPost);
         const readPost = await getSinglePost(createdPost.id);
         assert.isNotNull(readPost.slug!);
         await deletePost(readPost.id!);
@@ -150,7 +150,7 @@ describe('Service Tests: Post', function () {
         const postForUpdate = new PostBuilder()
           .random({ allowPageTypes: false })
           .build();
-        const createdPost = await submitPost(postToSubmit);
+        const createdPost = await createPost(postToSubmit);
         const updatedPost = await updatePost(createdPost.id, postForUpdate);
 
         comparePosts(postForUpdate, updatedPost);
@@ -177,7 +177,7 @@ describe('Service Tests: Post', function () {
           })
           .build();
 
-        const createdPost = await submitPost(postToSubmit);
+        const createdPost = await createPost(postToSubmit);
         const readPost = await getSinglePost(createdPost.id);
 
         const postId = createdPost.id;
