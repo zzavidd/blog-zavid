@@ -1,24 +1,25 @@
 /* eslint-disable import/order */
-const express = require('express');
-const app = express();
+import express from 'express';
+import next from 'next';
 
-const next = require('next');
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import * as Dotenv from 'dotenv';
+import Knex from 'knex';
+
+import { setApp, setKnex, setServer } from './private/singleton';
+
+const app = express();
 const dev = process.env.NODE_ENV !== 'production';
 const server = next({ dev });
 const handle = server.getRequestHandler();
-
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const dotenv = require('dotenv').config({ path: './config.env' });
-const port = parseInt(process.env.PORT, 10) || 4000;
+const port = parseInt(process.env.PORT!, 10) || 4000;
+const dotenv = Dotenv.config({ path: './config.env' });
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
 
-const { setApp, setKnex, setServer } = require('./private/singleton');
-
-// Initialise MySQL database
-const knex = require('knex')({
+const knex = Knex({
   client: 'mysql',
   connection: {
     host: process.env.MYSQL_HOST,
@@ -45,9 +46,12 @@ function startServer() {
 
   server.prepare().then(() => {
     app.get('*', (req, res) => handle(req, res));
-    app.listen(port, '0.0.0.0', (err) => {
-      if (err) throw err;
-      console.info(`ZAVID server running on http://localhost:${port}`);
-    });
+    app
+      .listen(port, '0.0.0.0', () => {
+        console.info(`ZAVID server running on http://localhost:${port}`);
+      })
+      .on('error', (err) => {
+        if (err) throw err;
+      });
   });
 }

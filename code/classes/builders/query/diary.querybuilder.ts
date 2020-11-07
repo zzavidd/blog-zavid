@@ -1,6 +1,6 @@
 import { DiaryStatus, QueryOrder } from '../../interfaces';
-const { zLogic } = require('zavid-modules');
 import { MutationBuilder, QueryBuilder } from './super';
+const { zLogic } = require('zavid-modules');
 
 const { isFalsy } = zLogic;
 
@@ -13,9 +13,15 @@ export class DiaryQueryBuilder extends QueryBuilder {
     this.knex = knex;
   }
 
-  whereSlug(slug: string): DiaryQueryBuilder {
+  whereSlug(slug: string | number): DiaryQueryBuilder {
     if (isFalsy(slug)) throw new Error(`No slug specified.`);
     this.query.where('slug', slug);
+    return this;
+  }
+
+  whereEntryNumber(entryNumber: number): DiaryQueryBuilder {
+    if (isFalsy(entryNumber)) throw new Error(`No entry number specified.`);
+    this.query.where('entryNumber', entryNumber);
     return this;
   }
 
@@ -36,19 +42,17 @@ export class DiaryQueryBuilder extends QueryBuilder {
     return this;
   }
 
-  getPreviousEntry(slug: string): DiaryQueryBuilder {
-    if (isFalsy(slug)) throw new Error(`No slug specified.`);
+  getPreviousEntry(operand: string | number, field: string): DiaryQueryBuilder {
     this.query.where({
-      slug: this.knex(TABLE_NAME).max('slug').where('slug', '<', slug),
+      [field]: this.knex(TABLE_NAME).max(field).where(field, '<', operand),
       status: DiaryStatus.PUBLISHED
     });
     return this;
   }
 
-  getNextEntry(slug: string): DiaryQueryBuilder {
-    if (isFalsy(slug)) throw new Error(`No slug specified.`);
+  getNextEntry(operand: string | number, field: string): DiaryQueryBuilder {
     this.query.where({
-      slug: this.knex(TABLE_NAME).min('slug').where('slug', '>', slug),
+      [field]: this.knex(TABLE_NAME).min(field).where(field, '>', operand),
       status: DiaryStatus.PUBLISHED
     });
     return this;
