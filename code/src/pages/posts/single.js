@@ -1,13 +1,13 @@
 import React from 'react';
 import { zDate, zLogic } from 'zavid-modules';
 
-import { Post } from 'lib/classes';
 import { BackButton, AdminButton } from 'components/button';
 import CloudImage, { cloudinaryBaseUrl, Signature } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Paragraph, Title, Divider } from 'components/text';
 import Timeline, { TIMELINE_TYPE } from 'components/timeline';
+import { PostStatic } from 'lib/classes';
 import { isAuthenticated } from 'lib/cookies';
 import css from 'styles/pages/Posts.module.scss';
 
@@ -69,7 +69,7 @@ const navigateToEdit = (id) => (location.href = `/admin/posts/edit/${id}`);
 
 const PostDate = ({ post }) => {
   if (zLogic.isFalsy(post, post.datePublished)) return null;
-  if (Post.isPrivate(post)) return null;
+  if (PostStatic.isPrivate(post)) return null;
 
   const datePublished = zDate.formatDate(post.datePublished, { withWeekday: true });
   return <div className={css['post-single-date']}>{datePublished}</div>;

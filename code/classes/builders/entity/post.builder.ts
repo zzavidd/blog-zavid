@@ -1,18 +1,24 @@
-const faker = require('faker');
+import * as faker from 'faker';
 const { zDate, zString } = require('zavid-modules');
 
-const Post = require('../../static/post.static');
+import { PostStatic } from '../../static';
+import {
+  PostDAO,
+  RandomPostOptions,
+  PostType,
+  PostStatus
+} from '../../interfaces';
 
 /** The class for Post objects and methods. */
-class PostBuilder {
-  post: PostDAO = {};
+export class PostBuilder {
+  private post: PostDAO = {};
 
   withTitle(title: string): PostBuilder {
     this.post.title = title;
     return this;
   }
 
-  withType(type: string): PostBuilder {
+  withType(type: PostType): PostBuilder {
     this.post.type = type;
     return this;
   }
@@ -27,7 +33,7 @@ class PostBuilder {
     return this;
   }
 
-  withStatus(status: string): PostBuilder {
+  withStatus(status: PostStatus): PostBuilder {
     this.post.status = status;
     return this;
   }
@@ -42,15 +48,19 @@ class PostBuilder {
     return this;
   }
 
-  random(options: PostImageOptions = {}): PostBuilder {
-    const { withImage = false, numberOfContentImages = 0 } = options;
+  random(options: RandomPostOptions = {}): PostBuilder {
+    const {
+      allowPageTypes = true,
+      withImage = false,
+      numberOfContentImages = 0
+    } = options;
+    
     this.post = {
       title: `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`,
-      type: Post.randomType(),
-      typeId: faker.random.number(),
+      type: PostStatic.randomType({ allowPageTypes }),
       content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
       excerpt: faker.lorem.sentences(),
-      status: Post.randomStatus(),
+      status: PostStatic.randomStatus(),
       datePublished: zDate.formatISODate(faker.date.past()),
       image: {
         source: withImage ? faker.image.image() : '',
@@ -61,6 +71,11 @@ class PostBuilder {
         hasChanged: true
       })
     };
+
+    if (this.post.type !== PostType.PAGE) {
+      this.post.typeId = faker.random.number();
+    }
+
     return this;
   }
 
@@ -77,32 +92,7 @@ class PostBuilder {
     return this;
   }
 
-  build() {
+  build(): PostDAO {
     return this.post;
   }
 }
-
-interface PostDAO {
-  title?: string;
-  type?: string;
-  typeId?: number;
-  content?: string;
-  status?: string;
-  excerpt?: string;
-  datePublished?: string | Date;
-  image?: String | PostImage;
-  contentImages?: String | String[] | PostImage[];
-  domainId?: number;
-}
-
-interface PostImage {
-  source: string;
-  hasChanged: boolean;
-}
-
-interface PostImageOptions {
-  withImage?: boolean;
-  numberOfContentImages?: number;
-}
-
-module.exports = PostBuilder;

@@ -6,7 +6,7 @@ const ReactDOMServer = require('react-dom/server');
 const { v4: uuidv4 } = require('uuid');
 const { zDate, zText } = require('zavid-modules');
 
-const { Subscriber, SubscriberQueryBuilder } = require('../lib').classes;
+const { SubscriberStatic, SubscriberQueryBuilder } = require('../lib').classes;
 const {
   accounts,
   cloudinaryBaseUrl,
@@ -87,20 +87,27 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
 
   const entity = {
     diaryEntry: Object.assign({}, diaryEntry, {
-      content: ReactDOMServer.renderToStaticMarkup(zText.formatText(content, {
-        css: {
-          hyperlink: 'hyperlink-content',
-          blockquote: 'blockquote',
-          ['twitter-button']: 'button',
-          ['instagram-button']: 'button',
-        }
-      })),
+      content: ReactDOMServer.renderToStaticMarkup(
+        zText.formatText(content, {
+          css: {
+            hyperlink: 'hyperlink-content',
+            blockquote: 'blockquote',
+            ['twitter-button']: 'button',
+            ['instagram-button']: 'button'
+          }
+        })
+      ),
       slug: `${domain}/diary/${slug}`,
       date: zDate.formatDate(date, { withWeekday: true })
     })
   };
 
-  return prepareEmail(entity, Subscriber.SUBSCRIPTIONS.DIARY, 'diary', subject);
+  return prepareEmail(
+    entity,
+    SubscriberStatic.SUBSCRIPTIONS.DIARY,
+    'diary',
+    subject
+  );
 };
 
 /**

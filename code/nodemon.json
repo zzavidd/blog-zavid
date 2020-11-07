@@ -1,6 +1,5 @@
 {
-  "watch": ["classes"],
   "ext": ".ts,.js",
-  "ignore": [],
-  "exec": "ts-node --project tsconfig.prod.json src/server.js"
+  "exec": "ts-node --project tsconfig.override.json src/server.js",
+  "watch": false
 }

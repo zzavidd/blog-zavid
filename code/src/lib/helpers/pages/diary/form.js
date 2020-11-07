@@ -1,3 +1,4 @@
+import { DiaryStatic } from 'lib/classes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -13,7 +14,6 @@ import {
 } from 'components/form';
 import DatePicker from 'components/form/picker/datepicker';
 import { Fader } from 'components/transitioner';
-import { Diary } from 'lib/classes';
 
 const PostForm = (props) => {
   const { diaryEntry, handlers, isLoaded } = props;
@@ -60,7 +60,7 @@ const PostForm = (props) => {
             <Label>Status:</Label>
             <Select
               name={'status'}
-              items={Diary.statusList}
+              items={DiaryStatic.statusList}
               value={diaryEntry.status}
               onChange={handleText}
             />

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { zLogic, zText } from 'zavid-modules';
 
-import { Post, URLBuilder } from 'lib/classes';
 import { alert, reportError } from 'components/alert';
 import { InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
@@ -11,6 +10,7 @@ import { Spacer } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import Tabler, { TYPE } from 'components/tabler';
 import { VanillaLink } from 'components/text';
+import { PostStatic, URLBuilder } from 'lib/classes';
 import BottomToolbar from 'lib/helpers/pages/posts/toolbar';
 import { updatePostFilterSettings } from 'lib/reducers';
 import {
@@ -156,13 +156,13 @@ const LinkButton = ({ post }) => {
 
   const url = new URLBuilder();
 
-  if (Post.isPage(post)) {
-    const base = Post.getDirectory(post.domainType);
+  if (PostStatic.isPage(post)) {
+    const base = PostStatic.getDirectory(post.domainType);
     url.appendSegment(base);
     url.appendSegment(post.domainSlug);
     url.appendSegment(post.slug);
   } else {
-    const base = Post.getDirectory(post.type);
+    const base = PostStatic.getDirectory(post.type);
     url.appendSegment(base);
     url.appendSegment(post.slug);
   }

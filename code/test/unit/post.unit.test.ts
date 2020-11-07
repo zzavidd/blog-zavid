@@ -1,13 +1,20 @@
-const { assert, classes } = require('..');
-const { Post, PostBuilder } = classes;
+import {
+  PostBuilder,
+  PostImage,
+  PostStatic,
+  PostStatus,
+  PostType
+} from '../../classes';
 
-describe('Unit Tests: Post', function () {
+import { assert } from '..';
+
+describe('Unit Tests: PostStatic', function () {
   describe('Object methods', function () {
     it('Test random construction', function (finish) {
       const post = new PostBuilder()
         .random({ numberOfContentImages: 4 })
         .build();
-      isArrayOfLength(post.contentImages, 4);
+      isArrayOfLength(post.contentImages as PostImage[], 4);
       finish();
     });
   });
@@ -16,41 +23,35 @@ describe('Unit Tests: Post', function () {
     it('Check post type', function (finish) {
       const reverie = new PostBuilder()
         .random()
-        .withType(Post.TYPES.REVERIE.TITLE)
+        .withType(PostType.REVERIE)
         .build();
-      assert.isTrue(Post.isReverie(reverie));
-      assert.isTrue(Post.isReverie(reverie.type));
+      assert.isTrue(PostStatic.isReverie(reverie));
 
-      const page = new PostBuilder()
-        .random()
-        .withType(Post.TYPES.PAGE.TITLE)
-        .build();
-      assert.isTrue(Post.isPage(page));
-      assert.isTrue(Post.isPage(page.type));
+      const page = new PostBuilder().random().withType(PostType.PAGE).build();
+      assert.isTrue(PostStatic.isPage(page));
+      assert.isTrue(PostStatic.isPage(page));
       finish();
     });
 
     it('Check post status', function (finish) {
       const draftPost = new PostBuilder()
         .random()
-        .withStatus(Post.STATUSES.DRAFT)
+        .withStatus(PostStatus.DRAFT)
         .build();
-      assert.isTrue(Post.isDraft(draftPost));
-      assert.isTrue(Post.isDraft(draftPost.status));
+      assert.isTrue(PostStatic.isDraft(draftPost));
 
       const privatePost = new PostBuilder()
         .random()
-        .withStatus(Post.STATUSES.PRIVATE)
+        .withStatus(PostStatus.PRIVATE)
         .build();
-      assert.isTrue(Post.isPrivate(privatePost));
-      assert.isTrue(Post.isPrivate(privatePost.status));
+      assert.isTrue(PostStatic.isPrivate(privatePost));
+      assert.isTrue(PostStatic.isPrivate(privatePost));
 
       const publishPost = new PostBuilder()
         .random()
-        .withStatus(Post.STATUSES.PUBLISHED)
+        .withStatus(PostStatus.PUBLISHED)
         .build();
-      assert.isTrue(Post.isPublish(publishPost));
-      assert.isTrue(Post.isPublish(publishPost.status));
+      assert.isTrue(PostStatic.isPublish(publishPost));
       finish();
     });
 
@@ -62,15 +63,15 @@ describe('Unit Tests: Post', function () {
       let images;
 
       post.contentImages = JSON.stringify(post.contentImages);
-      images = Post.parse(post).contentImages;
-      isArrayOfLength(images, 2);
+      images = PostStatic.parse(post).contentImages;
+      isArrayOfLength(images as PostImage[], 2);
 
-      post.contentImages = null;
-      images = Post.parse(post).contentImages;
+      post.contentImages = null as any;
+      images = PostStatic.parse(post).contentImages;
       assert.isNull(images);
 
       post.contentImages = '';
-      images = Post.parse(post).contentImages;
+      images = PostStatic.parse(post).contentImages;
       assert.isNull(images);
 
       finish();
@@ -81,23 +82,41 @@ describe('Unit Tests: Post', function () {
         .random({ withImage: true, numberOfContentImages: 2 })
         .build();
 
-      let images = Post.collateImages(post);
+      let images = PostStatic.collateImages(post);
       isArrayOfLength(images, 3);
 
       // If main image is null.
-      post.image = null;
-      images = Post.collateImages(post);
+      post.image = null as any;
+      images = PostStatic.collateImages(post);
       isArrayOfLength(images, 2);
 
-      images = Post.collateImages(post, { includeNulls: true });
+      images = PostStatic.collateImages(post, { includeNulls: true });
       isArrayOfLength(images, 3);
 
+      finish();
+    });
+
+    it('Random status', function (finish) {
+      const randomStatus = PostStatic.randomStatus();
+      assert.isTrue(Object.values(PostStatus).includes(randomStatus));
+      finish();
+    });
+
+    it('Random type', function (finish) {
+      const randomType = PostStatic.randomType();
+      assert.isTrue(Object.values(PostType).includes(randomType));
+
+      const randomNonPageType = PostStatic.randomType({
+        allowPageTypes: false
+      });
+
+      assert.notEqual(randomNonPageType, PostType.PAGE);
       finish();
     });
   });
 });
 
-const isArrayOfLength = (array: any[], number: number) => {
+const isArrayOfLength = (array: any[], number: number): void => {
   assert.isArray(array);
   assert.lengthOf(array, number);
 };

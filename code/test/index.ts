@@ -1,35 +1,81 @@
-require('dotenv').config({ path: './config.env' });
-const { assert } = require('chai');
-const { print } = require('graphql/language/printer');
-const fetch = require('node-fetch');
+import * as dotenv from 'dotenv';
+dotenv.config({ path: './config.env' });
 
-exports.assert = assert;
-exports.classes = require('../classes');
-exports.debug = (err: Error) => {
-  throw err;
+import { print } from 'graphql/language/printer';
+import { assert } from 'chai';
+import nodeFetch from 'node-fetch';
+import { DocumentNode } from 'graphql';
+
+export { assert };
+
+/**
+ * Prints error message and exits.
+ * @param err The error to be displayed to console.
+ */
+export const debug = (err: Error) => {
+  console.error(err);
+  process.exit(0);
 };
-exports.fetch = (query: any, options: FetchOptions = {}, test?: Function) => {
+
+/**
+ * Sends a request to the server.
+ * @param query The GraphQL query.
+ * @param options Options for fetching.
+ */
+export const fetch = (query: DocumentNode, options: FetchOptions = {}) => {
   const { variables = {}, expectToFail = false } = options;
-  return fetch(`http://localhost:4000/api`, {
+  return nodeFetch(`http://localhost:4000/api`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: print(query), variables })
   })
-    .then((res: any) => res.json())
-    .then((response: { data?: any; errors?: any }) => {
+    .then((res) => res.json())
+    .then((response: FetchResponse = {}) => {
       const { data, errors } = response;
       if (!expectToFail) {
         assert.isNotOk(errors);
         assert.isOk(data);
       }
-      if (test) return test({ data, errors });
+      return { data, errors };
     })
-    .catch(console.error);
+    .catch(debug);
 };
 
-interface FetchOptions {
+/**
+ * A wrapper for Mocha tests which handles exceptions.
+ * @param testBody The body of the test to be executed.
+ */
+export const testWrapper = (testBody: Function): Mocha.AsyncFunc => {
+  return async () => {
+    try {
+      await testBody();
+    } catch (err) {
+      debug(err);
+    }
+  };
+};
+
+/**
+ * A wrapper for promises with asynchronous bodies.
+ * @param promiseBody The body of the promise.
+ */
+export const promiseWrapper = (promiseBody: Function): Promise<any> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await promiseBody();
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export interface FetchOptions {
   variables?: any;
-  expectToFail?: true;
+  expectToFail?: boolean;
 }
 
-export {};
+export interface FetchResponse {
+  data?: any;
+  errors?: any;
+}

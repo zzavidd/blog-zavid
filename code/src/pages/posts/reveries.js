@@ -3,7 +3,6 @@ import React, { useState, useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { Post } from 'lib/classes';
 import { alert } from 'components/alert.js';
 import { AdminButton } from 'components/button';
 import CloudImage from 'components/image.js';
@@ -12,6 +11,7 @@ import { LazyLoader } from 'components/loader.js';
 import { Title, Paragraph, Divider } from 'components/text.js';
 import { Zoomer } from 'components/transitioner.js';
 import { ORDER } from 'constants/strings.js';
+import { PostStatic } from 'lib/classes';
 import { isAuthenticated } from 'lib/cookies';
 import { RightSidebar } from 'partials/sidebar';
 import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
@@ -31,8 +31,8 @@ const ReveriesIndex = ({ reveriesIntro }) => {
           field: 'datePublished',
           order: ORDER.DESCENDING
         },
-        type: { include: [Post.TYPES.REVERIE.TITLE] },
-        status: { include: [Post.STATUSES.PUBLISHED] }
+        type: { include: [PostStatic.TYPE.REVERIE] },
+        status: { include: [PostStatic.STATUS.PUBLISHED] }
       }
     }
   );

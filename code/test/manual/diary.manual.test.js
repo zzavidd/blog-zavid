@@ -1,11 +1,11 @@
 const { classes } = require('..');
 const {
-  submitDiaryEntry,
+  createDiaryEntry: submitDiaryEntry,
   updateDiaryEntry
 } = require('../helper/diary.helper');
 const { zDate } = require('zavid-modules');
 
-const { Diary, DiaryEntryBuilder } = classes;
+const { DiaryStatic, DiaryEntryBuilder } = classes;
 
 const submitDiary = () => {
   const diaryEntryForSubmit = new DiaryEntryBuilder().random().build();
@@ -48,7 +48,7 @@ Assumenda repudiandae non est. Velit rem occaecati autem harum mollitia modi. Et
     .random()
     .withContent(DIARY_CONTENT)
     .withDate(zDate.formatISODate(new Date(2020, 8, 13)))
-    .withStatus(Diary.STATUSES.PUBLISHED)
+    .withStatus(DiaryStatic.STATUS.PUBLISHED)
     .build();
 
   updateDiaryEntry(

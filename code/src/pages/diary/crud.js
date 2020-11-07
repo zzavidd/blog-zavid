@@ -1,9 +1,9 @@
 /* eslint-disable jsdoc/require-returns */
 import { useMutation } from '@apollo/client';
+import { DiaryStatic } from 'lib/classes';
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { Diary } from 'lib/classes';
 import { setAlert, reportError } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
 import hooks from 'constants/hooks';
@@ -25,7 +25,7 @@ const DiaryCrud = ({
     title: '',
     content: '',
     date: new Date(),
-    status: Diary.STATUSES.PRIVATE,
+    status: DiaryStatic.STATUS.PRIVATE,
     entryNumber: latestEntryNumber + 1
   });
   const [isLoaded, setLoaded] = useState(true);
@@ -46,11 +46,11 @@ const DiaryCrud = ({
   // Determine if diary entry is being published.
   let isPublish = false;
   if (isCreateOperation) {
-    isPublish = Diary.isPublish(clientDiaryEntry.status);
+    isPublish = DiaryStatic.isPublish(clientDiaryEntry.status);
   } else {
     isPublish =
-      !Diary.isPublish(serverDiaryEntry.status) &&
-      Diary.isPublish(clientDiaryEntry.status);
+      !DiaryStatic.isPublish(serverDiaryEntry.status) &&
+      DiaryStatic.isPublish(clientDiaryEntry.status);
   }
 
   /** Populate the form with diary entry details. */

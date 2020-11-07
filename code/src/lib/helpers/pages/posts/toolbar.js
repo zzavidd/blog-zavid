@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import { Post } from 'lib/classes';
 import { AdminButton } from 'components/button';
 import { Field, FieldRow, Select } from 'components/form';
 import { Icon } from 'components/icon';
 import { Responsive, Toolbar, ToolbarToggle } from 'components/layout';
 import { Slider } from 'components/transitioner';
+import { PostStatic } from 'lib/classes';
 import css from 'styles/pages/Posts.module.scss';
 
 const sortOptions = [
@@ -96,7 +96,7 @@ const toolbarWidgets = (options, handleOptionSelection) => {
       TYPE: (
         <FilterDropdown
           name={'type'}
-          items={Post.typeList}
+          items={PostStatic.TYPES}
           value={options.type}
           onChange={handleOptionSelection}
           placeholder={'Filter by type...'}
@@ -106,7 +106,7 @@ const toolbarWidgets = (options, handleOptionSelection) => {
       STATUS: (
         <FilterDropdown
           name={'status'}
-          items={Post.statusList}
+          items={PostStatic.STATUS}
           value={options.status}
           onChange={handleOptionSelection}
           placeholder={'Filter by status...'}

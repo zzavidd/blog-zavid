@@ -1,8 +1,9 @@
 const {
-  Post,
+  PostStatic,
   PostQueryBuilder,
   PostMutationBuilder
 } = require('../../lib').classes;
+const { reject } = require('async');
 const emails = require('../../emails');
 const { debug, ERRORS } = require('../../error');
 const filer = require('../../filer');
@@ -33,7 +34,7 @@ const getAllPosts = (parent, { limit, sort, type, status }) => {
         .build()
     )
     .then((posts) => {
-      return posts.map((post) => Post.parse(post));
+      return posts.map((post) => PostStatic.parse(post));
     })
     .catch(debug);
 };
@@ -45,15 +46,17 @@ const getAllPosts = (parent, { limit, sort, type, status }) => {
  * @param {number} args.id - The ID of the post to retrieve.
  * @returns {object} The post matching the specified ID.
  */
-const getSinglePost = (parent, { id }) => {
-  return Promise.resolve()
-    .then(() => new PostQueryBuilder(knex).whereId(id).build())
-    .then(([post]) => {
-      if (!post) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
-      post = Post.parse(post);
-      return post;
-    })
-    .catch(debug);
+const getSinglePost = async (parent, { id }) => {
+  try {
+    const [post] = await new PostQueryBuilder(knex).whereId(id).build();
+    return new Promise((resolve, reject) => {
+      if (!post) reject(ERRORS.NONEXISTENT_ID(id, ENTITY_NAME));
+      const parsedPost = PostStatic.parse(post);
+      resolve(parsedPost);
+    });
+  } catch (err) {
+    reject(err);
+  }
 };
 
 /**
@@ -70,7 +73,7 @@ const createPost = (parent, { post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.uploadImages(post, { isTest }))
     .then((post) => {
-      const shouldNotify = isPublish && !Post.isPage(post) && emailsOn;
+      const shouldNotify = isPublish && !PostStatic.isPage(post) && emailsOn;
       return Promise.all([
         new PostMutationBuilder(knex).insert(post).build(),
         shouldNotify ? emails.notifyNewPost(post) : null
@@ -97,7 +100,7 @@ const updatePost = (parent, { id, post, isPublish, isTest }) => {
   return Promise.resolve()
     .then(() => filer.replaceImages(id, post, { isTest }))
     .then((updatedPost) => {
-      const shouldNotify = isPublish && !Post.isPage(post) && emailsOn;
+      const shouldNotify = isPublish && !PostStatic.isPage(post) && emailsOn;
       return Promise.all([
         new PostMutationBuilder(knex).update(updatedPost).whereId(id).build(),
         shouldNotify ? emails.notifyNewPost(updatedPost) : null
@@ -121,7 +124,7 @@ const deletePost = (parent, { id }) => {
       if (!post) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
 
       const promises = [];
-      const images = Post.collateImages(post);
+      const images = PostStatic.collateImages(post);
       images.forEach((image) => {
         promises.push(filer.destroyImage(image));
       });

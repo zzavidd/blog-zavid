@@ -9,7 +9,7 @@ import { Icon } from 'components/icon';
 import { Title, VanillaLink } from 'components/text';
 import { copyright, accounts } from 'constants/settings';
 import { isValidEmail } from 'constants/validations';
-import { Subscriber } from 'lib/classes';
+import { SubscriberStatic } from 'lib/classes';
 import { CREATE_SUBSCRIBER_QUERY } from 'private/api/queries/subscriber.queries';
 import css from 'styles/Partials.module.scss';
 
@@ -114,7 +114,7 @@ const SubscribeForm = () => {
               email,
               firstname: '',
               lastname: '',
-              subscriptions: Subscriber.defaultSubscriptions()
+              subscriptions: SubscriberStatic.defaultSubscriptions()
             }
           }
         })

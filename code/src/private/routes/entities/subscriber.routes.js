@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Subscriber, SubscriberQueryBuilder } = require('../../lib').classes;
+const { SubscriberStatic, SubscriberQueryBuilder } = require('../../lib').classes;
 const { siteTitle } = require('../../../constants/settings');
 const { OPERATIONS } = require('../../../constants/strings');
 const knex = require('../../singleton').getKnex();
@@ -16,7 +16,7 @@ router.get('/subscriptions/:token', function (req, res) {
       if (!subscriber) return res.redirect('/');
       return server.render(req, res, '/subscribers/subscriptions', {
         title: `Subscription Preferences | ${siteTitle}`,
-        subscriber: Subscriber.parse(subscriber)
+        subscriber: SubscriberStatic.parse(subscriber)
       });
     });
 });
@@ -50,7 +50,7 @@ router.get('/admin/subscribers/edit/:id', function (req, res) {
       return server.render(req, res, '/subscribers/crud', {
         title: `Edit Subscriber`,
         operation: OPERATIONS.UPDATE,
-        subscriber: Subscriber.parse(subscriber)
+        subscriber: SubscriberStatic.parse(subscriber)
       });
     });
 });

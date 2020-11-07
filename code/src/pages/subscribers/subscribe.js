@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
+import { SubscriberStatic } from 'lib/classes';
 import React, { useEffect, useState } from 'react';
 
-import { Subscriber } from 'lib/classes';
 import { alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { FieldRow, Field, Label, TextInput } from 'components/form';
@@ -124,7 +124,7 @@ const buildPayload = (clientSubscriber) => {
     email: email.trim(),
     firstname: firstname.trim(),
     lastname: lastname.trim(),
-    subscriptions: Subscriber.defaultSubscriptions()
+    subscriptions: SubscriberStatic.defaultSubscriptions()
   };
 
   return { subscriber };

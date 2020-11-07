@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 
 const {
-  Subscriber,
+  SubscriberStatic,
   SubscriberQueryBuilder,
   SubscriberMutationBuilder
 } = require('../../lib').classes;
@@ -21,7 +21,7 @@ const getAllSubscribers = (parent, { sort }) => {
   return Promise.resolve()
     .then(() => new SubscriberQueryBuilder(knex).withOrder(sort).build())
     .then((subscribers) => {
-      return subscribers.map((subscriber) => Subscriber.parse(subscriber));
+      return subscribers.map((subscriber) => SubscriberStatic.parse(subscriber));
     })
     .catch(debug);
 };
@@ -38,7 +38,7 @@ const getSingleSubscriber = (parent, { id }) => {
     .then(() => new SubscriberQueryBuilder(knex).whereId(id).build())
     .then(([subscriber]) => {
       if (!subscriber) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
-      return Subscriber.parse(subscriber);
+      return SubscriberStatic.parse(subscriber);
     })
     .catch(debug);
 };
