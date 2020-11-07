@@ -1,3 +1,4 @@
+import { PostStatic } from 'lib/classes';
 import React, { useState } from 'react';
 
 import { AdminButton } from 'components/button';
@@ -5,7 +6,6 @@ import { Field, FieldRow, Select } from 'components/form';
 import { Icon } from 'components/icon';
 import { Responsive, Toolbar, ToolbarToggle } from 'components/layout';
 import { Slider } from 'components/transitioner';
-import { PostStatic } from 'lib/classes';
 import css from 'styles/pages/Posts.module.scss';
 
 const sortOptions = [
@@ -106,7 +106,7 @@ const toolbarWidgets = (options, handleOptionSelection) => {
       STATUS: (
         <FilterDropdown
           name={'status'}
-          items={PostStatic.STATUS}
+          items={PostStatic.STATUSES}
           value={options.status}
           onChange={handleOptionSelection}
           placeholder={'Filter by status...'}
