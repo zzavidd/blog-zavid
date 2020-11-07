@@ -12,8 +12,7 @@ import { Fader } from 'components/transitioner.js';
 import { ORDER } from 'constants/strings.js';
 import { isAuthenticated } from 'lib/cookies';
 import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
-
-import css from 'styles/pages/DiaryStatic.module.scss';
+import css from 'styles/pages/Diary.module.scss';
 
 const DIARY_HEADING = `Zavid's Diary`;
 
