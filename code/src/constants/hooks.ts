@@ -1,4 +1,4 @@
-import { saveText } from 'lib/reducers.js';
+const { saveText } = require('lib/reducers.js');
 import { Dispatch } from 'redux';
 import { PostContentImageMapping, PostDAO, PostImage, ReactChangeEvent } from '../../classes';
 import { GenericDAO } from '../../classes/interfaces/super';

@@ -9,15 +9,15 @@ import {
 import React, { useEffect, useState } from 'react';
 import { NextPageContext } from 'next';
 
-import { setAlert, reportError } from '../../components/alert';
-import { ConfirmModal } from '../../components/modal';
+const { setAlert, reportError } = require('../../components/alert');
+const { ConfirmModal } = require('../../components/modal');
 import hooks from '../../constants/hooks';
-import { isValidDiaryEntry } from '../../constants/validations';
-import DiaryEntryForm from '../../lib/helpers/pages/diary/form';
-import {
+const { isValidDiaryEntry } = require('../../constants/validations');
+const DiaryEntryForm = require('../../lib/helpers/pages/diary/form');
+const {
   CREATE_DIARY_QUERY,
   UPDATE_DIARY_QUERY
-} from '../../private/api/queries/diary.queries';
+} = require('../../private/api/queries/diary.queries');
 
 const { zDate } = require('zavid-modules');
 

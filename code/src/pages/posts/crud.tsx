@@ -11,15 +11,16 @@ import {
   PostStatic,
   ReactChangeEvent
 } from '../../../classes';
-import { alert, reportError, setAlert } from '../../components/alert';
 import hooks from '../../constants/hooks';
-import { isValidPost } from '../../constants/validations';
-import PostForm from '../../lib/helpers/pages/posts/form';
-import {
+
+const { alert, reportError, setAlert } = require('../../components/alert');
+const { isValidPost } = require('../../constants/validations');
+const PostForm = require('../../lib/helpers/pages/posts/form');
+const {
   CREATE_POST_QUERY,
   GET_POSTS_QUERY,
   UPDATE_POST_QUERY
-} from '../../private/api/queries/post.queries';
+} = require('../../private/api/queries/post.queries');
 const { zDate } = require('zavid-modules');
 
 interface PostInitialProps {
