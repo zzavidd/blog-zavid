@@ -38,23 +38,29 @@ export const getSingleDiaryEntry = (
 };
 
 export const createDiaryEntry = (
-  diaryEntry: DiaryDAO
+  diaryEntry: DiaryDAO,
+  options: MutateDiaryOptions = {}
 ): Promise<SubmitEntityResponse> => {
+  const { extraVariables } = options;
   return createEntity(diaryEntry, {
     query: CREATE_DIARY_QUERY,
     resolver: 'createDiaryEntry',
-    anonym: ENTITY_NAME
+    anonym: ENTITY_NAME,
+    extraVariables
   });
 };
 
 export const updateDiaryEntry = (
   id: number,
-  diaryEntry: DiaryDAO
+  diaryEntry: DiaryDAO,
+  options: MutateDiaryOptions = {}
 ): Promise<DiaryDAO> => {
+  const { extraVariables } = options;
   return updateEntity(id, diaryEntry, {
     query: UPDATE_DIARY_QUERY,
     resolver: 'updateDiaryEntry',
-    anonym: ENTITY_NAME
+    anonym: ENTITY_NAME,
+    extraVariables
   });
 };
 
@@ -78,3 +84,7 @@ export const compareDiaryEntries = (
     new Date(parseInt(response.date as string)).getUTCMilliseconds
   );
 };
+
+interface MutateDiaryOptions {
+  extraVariables?: object
+}

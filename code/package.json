@@ -9,6 +9,7 @@
     "test": "npm run test:unit && npm run test:service",
     "test:unit": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/unit/**/*",
     "test:service": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/service/**/*",
+    "test:manual": "ts-node --project test/tsconfig.test.json test/manual",
     "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts",
     "prettify": "prettier --ignore-path ../../.gitignore --write \"**/*.js\""
   },

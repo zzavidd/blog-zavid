@@ -11,30 +11,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-export const retrieveResource = (publicId: string): Promise<any[]> => {
-  return new Promise((resolve, reject) => {
-    cloudinary.api.resources_by_ids(publicId, function (
-      err: any,
-      { resources }: any
-    ) {
-      if (err) return reject(err);
-      return resolve(resources);
-    });
-  });
-};
-
-export const extractPublicId = (image: string): string => {
-  const ex = new Error(`Could not get public ID from ${image}`);
-  if (!image) throw ex;
-
-  const regex = new RegExp(
-    /^(?:v[0-9]+\/)?((?:dynamic|static|test)\/.*)(?:\.[a-z]+)$/
-  );
-  const match = image.match(regex);
-  assert.isOk(match);
-  return match![1];
-};
-
 export const getEntities = <T>(options: GetEntitiesOptions): Promise<T[]> => {
   const { query, resolver, variables = {} } = options;
   return new Promise<T[]>(async (resolve, reject) => {
@@ -81,11 +57,11 @@ export const createEntity = <T>(
   entity: T,
   options: MutateEntityOptions
 ): Promise<SubmitEntityResponse> => {
-  const { query, resolver, anonym } = options;
+  const { query, resolver, anonym, extraVariables = {} } = options;
   return new Promise<SubmitEntityResponse>(async (resolve, reject) => {
     try {
       const { data } = (await fetch(query, {
-        variables: { [anonym]: entity, isTest: true }
+        variables: { [anonym]: entity, isTest: true, ...extraVariables }
       })) as FetchResponse;
 
       const createdEntity = data[resolver] as SubmitEntityResponse;
@@ -103,11 +79,11 @@ export const updateEntity = <T extends GenericDAO>(
   entity: T,
   options: MutateEntityOptions
 ): Promise<T> => {
-  const { query, resolver, anonym } = options;
+  const { query, resolver, anonym, extraVariables = {} } = options;
   return new Promise<T>(async (resolve, reject) => {
     try {
       const { data } = (await fetch(query, {
-        variables: { id, [anonym]: entity, isTest: true }
+        variables: { id, [anonym]: entity, isTest: true, ...extraVariables }
       })) as FetchResponse;
 
       const updatedEntity = data[resolver] as T;
@@ -140,6 +116,38 @@ export const deleteEntity = <T extends GenericDAO>(
   });
 };
 
+/**
+ * Retrieves a list of resources matching a specified public ID
+ * @param publicId A resource Cloudinary public ID.
+ */
+export const retrieveResource = (publicId: string): Promise<any[]> => {
+  return new Promise((resolve, reject) => {
+    cloudinary.api.resources_by_ids(publicId, function (
+      err: any,
+      { resources }: any
+    ) {
+      if (err) return reject(err);
+      return resolve(resources);
+    });
+  });
+};
+
+/**
+ * Extracts the public ID from a Cloudinary image URL.
+ * @param image The image URL.
+ */
+export const extractPublicId = (image: string): string => {
+  const ex = new Error(`Could not get public ID from ${image}`);
+  if (!image) throw ex;
+
+  const regex = new RegExp(
+    /^(?:v[0-9]+\/)?((?:dynamic|static|test)\/.*)(?:\.[a-z]+)$/
+  );
+  const match = image.match(regex);
+  assert.isOk(match);
+  return match![1];
+};
+
 interface QueryOptions {
   query: DocumentNode;
   resolver: string;
@@ -155,6 +163,7 @@ interface GetSingleEntityOptions extends QueryOptions {
 
 interface MutateEntityOptions extends QueryOptions {
   anonym: string;
+  extraVariables?: any;
 }
 
 interface DeleteEntityOptions extends QueryOptions {
