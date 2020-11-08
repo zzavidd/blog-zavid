@@ -6,44 +6,60 @@ import {
   PostDAO,
   RandomPostOptions,
   PostType,
-  PostStatus
+  PostStatus,
+  PostImage
 } from '../../interfaces';
 
 /** The class for Post objects and methods. */
 export class PostBuilder {
   private post: PostDAO = {};
 
-  withTitle(title: string): PostBuilder {
-    this.post.title = title;
+  withTitle(title?: string): PostBuilder {
+    this.post.title = title!.trim();
     return this;
   }
 
-  withType(type: PostType): PostBuilder {
+  withType(type?: PostType): PostBuilder {
     this.post.type = type;
     return this;
   }
 
-  withTypeId(typeId: number): PostBuilder {
+  withTypeId(typeId?: number): PostBuilder {
     this.post.typeId = typeId;
     return this;
   }
 
-  withContent(content: string): PostBuilder {
-    this.post.content = content;
+  withContent(content?: string): PostBuilder {
+    this.post.content = content!.trim();
     return this;
   }
 
-  withStatus(status: PostStatus): PostBuilder {
+  withStatus(status?: PostStatus): PostBuilder {
     this.post.status = status;
     return this;
   }
 
-  withDatePublished(date: string | Date): PostBuilder {
+  withExcerpt(excerpt?: string): PostBuilder {
+    this.post.excerpt = excerpt!.trim();
+    return this;
+  }
+
+  withImage(image?: PostImage | string): PostBuilder {
+    this.post.image = image;
+    return this;
+  }
+
+  withContentImages(contentImages?: PostImage[]): PostBuilder {
+    this.post.contentImages = contentImages;
+    return this;
+  }
+
+  withDatePublished(date?: string | Date): PostBuilder {
     this.post.datePublished = date;
     return this;
   }
 
-  withDomain(id: number): PostBuilder {
+  withDomain(id?: number): PostBuilder {
     this.post.domainId = id;
     return this;
   }

@@ -7,3 +7,10 @@ export enum QueryOrder {
   DESCENDING = 'DESC',
   RANDOM = 'RANDOM'
 }
+
+export enum Operation {
+  CREATE = 'add',
+  UPDATE = 'edit'
+}
+
+export type ReactChangeEvent = React.ChangeEvent<HTMLInputElement>;

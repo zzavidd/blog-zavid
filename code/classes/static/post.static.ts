@@ -42,6 +42,7 @@ export class PostStatic {
    */
   static parse(post: PostDAO): PostDAO {
     const images = post.contentImages;
+    
     if (zLogic.isFalsy(images)) {
       post.contentImages = null as any;
       return post;
@@ -72,7 +73,9 @@ export class PostStatic {
     post = this.parse(post);
     if (this.isPostImageToUpload(post.image!)) post.image.isCover = true;
 
-    const images = [post.image].concat(post.contentImages).filter((image) => {
+    const medium = post.contentImages as PostImage[] | string[];
+
+    const images = [post.image].concat(medium).filter((image) => {
       if (includeNulls) return true;
       if (image) return true;
       return false;

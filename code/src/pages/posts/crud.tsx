@@ -1,26 +1,45 @@
 /* eslint-disable jsdoc/require-returns */
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
-import { zDate } from 'zavid-modules';
-
-import { alert, setAlert, reportError } from 'components/alert';
-import hooks from 'constants/hooks';
-import { OPERATIONS } from 'constants/strings';
-import { isValidPost } from 'constants/validations';
-import { PostStatic } from 'lib/classes';
-import PostForm from 'lib/helpers/pages/posts/form';
 import {
-  GET_POSTS_QUERY,
+  Operation,
+  PostBuilder,
+  PostContentImageMapping,
+  PostDAO,
+  PostImage,
+  PostStatic,
+  ReactChangeEvent
+} from '../../../classes';
+import { alert, reportError, setAlert } from '../../components/alert';
+import hooks from '../../constants/hooks';
+import { isValidPost } from '../../constants/validations';
+import PostForm from '../../lib/helpers/pages/posts/form';
+import {
   CREATE_POST_QUERY,
+  GET_POSTS_QUERY,
   UPDATE_POST_QUERY
-} from 'private/api/queries/post.queries';
+} from '../../private/api/queries/post.queries';
+const { zDate } = require('zavid-modules');
 
-const PostCrud = ({ post: serverPost, operation }) => {
+interface PostInitialProps {
+  post: PostDAO;
+  operation: Operation;
+}
+
+interface PostRequest {
+  id?: number;
+  post: PostDAO;
+  isPublish: boolean;
+  isTest: boolean;
+}
+
+const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
   const [clientPost, setPost] = useState({
     id: 0,
     title: '',
     content: '',
-    type: '',
+    type: undefined,
     typeId: 1,
     excerpt: '',
     image: {
@@ -29,9 +48,9 @@ const PostCrud = ({ post: serverPost, operation }) => {
     },
     contentImages: {},
     status: PostStatic.STATUS.DRAFT,
-    datePublished: null,
-    domainId: ''
-  });
+    datePublished: undefined,
+    domainId: undefined
+  } as PostDAO);
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
   const [domains, setDomains] = useState([]);
@@ -58,19 +77,19 @@ const PostCrud = ({ post: serverPost, operation }) => {
   );
 
   // Determine operation type.
-  const isCreateOperation = operation === OPERATIONS.CREATE;
+  const isCreateOperation = operation === Operation.CREATE;
 
   // Determine if post is being published.
   let isPublish = false;
   if (isCreateOperation) {
-    isPublish = PostStatic.isPublish(clientPost.status);
+    isPublish = PostStatic.isPublish(clientPost);
   } else {
     isPublish =
-      !PostStatic.isPublish(serverPost.status) && PostStatic.isPublish(clientPost.status);
+      !PostStatic.isPublish(serverPost) && PostStatic.isPublish(clientPost);
   }
 
   /** Populate the form with post details. */
-  const populateForm = () => {
+  const populateForm = (): void => {
     if (isCreateOperation) return;
 
     const image = {
@@ -79,16 +98,17 @@ const PostCrud = ({ post: serverPost, operation }) => {
     };
 
     // Transform array of images into map values.
-    let contentImages = {};
+    let contentImages: PostContentImageMapping = {};
     try {
-      serverPost.contentImages.forEach((value, i) => {
+      const medium = serverPost.contentImages as string[];
+      medium.forEach((value: string, i: number) => {
         contentImages[`image${i}`] = {
           source: value,
           hasChanged: false
-        };
+        } as PostImage;
       });
     } catch {
-      contentImages = null;
+      contentImages = {};
     }
 
     setPost(
@@ -97,22 +117,20 @@ const PostCrud = ({ post: serverPost, operation }) => {
         contentImages
       })
     );
-
-    // setDefaultTypeId();
   };
 
   /** Populate the form with post details. */
-  const loadDomains = () => {
+  const loadDomains = (): void => {
     if (queryLoading) return;
     if (queryError) alert.error(queryError);
 
     const domainList = data.getAllPosts.map(
-      ({ id, type, title, datePublished }) => {
+      ({ id, type, title, datePublished }: PostDAO) => {
         return {
           value: id,
           label: `${type}: ${title}`,
           type,
-          datePublished: new Date(parseInt(datePublished))
+          datePublished: new Date(parseInt(datePublished as string))
         };
       }
     );
@@ -120,7 +138,7 @@ const PostCrud = ({ post: serverPost, operation }) => {
     setDomains(domainList);
   };
 
-  const setDefaultTypeId = (e) => {
+  const setDefaultTypeId = (e: ReactChangeEvent): void => {
     const selectedType = e.target.value;
     const postsOfType = domains.filter(({ type }) => selectedType === type);
     setPost(
@@ -145,37 +163,39 @@ const PostCrud = ({ post: serverPost, operation }) => {
   }, [createLoading, updateLoading]);
 
   /** Create new post on server. */
-  const submitPost = () => {
-    if (!isValidPost(clientPost)) return false;
+  const submitPost = async (): Promise<void> => {
+    if (!isValidPost(clientPost)) return;
 
-    const variables = buildPayload(clientPost, domains, isPublish, true);
-    Promise.resolve()
-      .then(() => createPostMutation({ variables }))
-      .then(() => {
-        setAlert({
-          type: 'success',
-          message: `You've successfully added the new post titled "${clientPost.title}".`
-        });
-        returnToAdminPosts();
-      })
-      .catch(reportError);
+    const variables = buildPayload(clientPost, isPublish, true);
+
+    try {
+      await createPostMutation({ variables });
+      setAlert({
+        type: 'success',
+        message: `You've successfully added the new post titled "${clientPost.title}".`
+      });
+      returnToAdminPosts();
+    } catch (err) {
+      reportError(err);
+    }
   };
 
   /** Update post on server. */
-  const updatePost = () => {
-    if (!isValidPost(clientPost)) return false;
+  const updatePost = async (): Promise<void> => {
+    if (!isValidPost(clientPost)) return;
 
-    const variables = buildPayload(clientPost, domains, isPublish, false);
-    Promise.resolve()
-      .then(() => updatePostMutation({ variables }))
-      .then(() => {
-        setAlert({
-          type: 'success',
-          message: `You've successfully updated "${clientPost.title}".`
-        });
-        returnToAdminPosts();
-      })
-      .catch(reportError);
+    const variables = buildPayload(clientPost, isPublish, false);
+
+    try {
+      await updatePostMutation({ variables });
+      setAlert({
+        type: 'success',
+        message: `You've successfully updated "${clientPost.title}".`
+      });
+      returnToAdminPosts();
+    } catch (err) {
+      reportError(err);
+    }
   };
 
   return (
@@ -196,12 +216,15 @@ const PostCrud = ({ post: serverPost, operation }) => {
 /**
  * Builds the payload to send via the request.
  * @param {object} clientPost The post from state.
- * @param {object[]} domains The list of domains for a page.
  * @param {boolean} isPublish Indicates if operation is publish.
  * @param {boolean} isCreateOperation Indicates if operation is create or update.
  * @returns {object} The post to submit.
  */
-const buildPayload = (clientPost, domains, isPublish, isCreateOperation) => {
+const buildPayload = (
+  clientPost: PostDAO,
+  isPublish: boolean,
+  isCreateOperation: boolean
+): PostRequest => {
   const {
     id,
     title,
@@ -216,27 +239,29 @@ const buildPayload = (clientPost, domains, isPublish, isCreateOperation) => {
     domainId
   } = clientPost;
 
-  const post = {
-    title: title.trim(),
-    content: content.trim(),
-    type,
-    excerpt: excerpt.trim(),
-    image,
-    contentImages: contentImages ? Object.values(contentImages) : null,
-    status
-  };
+  const post = new PostBuilder()
+    .withTitle(title)
+    .withType(type)
+    .withContent(content)
+    .withStatus(status)
+    .withImage(image)
+    .withExcerpt(excerpt);
 
-  if (PostStatic.isPublish(post)) {
-    post.datePublished = zDate.formatISODate(datePublished);
+  if (contentImages) {
+    post.withContentImages(Object.values(contentImages));
   }
 
-  if (PostStatic.isPage(post)) {
-    post.domainId = parseInt(domainId);
+  if (PostStatic.isPublish(clientPost)) {
+    post.withDatePublished(zDate.formatISODate(datePublished));
+  }
+
+  if (PostStatic.isPage(clientPost)) {
+    post.withDomain(domainId);
   } else {
-    post.typeId = parseInt(typeId);
+    post.withTypeId(typeId);
   }
 
-  const payload = { post, isPublish };
+  const payload: PostRequest = { post: post.build(), isPublish, isTest: true };
   if (!isCreateOperation) {
     payload.id = id;
   }
@@ -245,11 +270,11 @@ const buildPayload = (clientPost, domains, isPublish, isCreateOperation) => {
 };
 
 /** Return to the admin page. */
-const returnToAdminPosts = () => {
+const returnToAdminPosts = (): void => {
   location.href = '/admin/posts';
 };
 
-PostCrud.getInitialProps = async ({ query }) => {
+PostCrud.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };
 };
 
