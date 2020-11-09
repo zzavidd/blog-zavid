@@ -6,7 +6,7 @@ import CloudImage, { cloudinaryBaseUrl, Signature } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Paragraph, Title, Divider } from 'components/text';
-import Timeline, { TIMELINE_TYPE } from 'components/timeline';
+import Timeline, { TimelineType } from 'components/timeline';
 import { PostStatic } from 'lib/classes';
 import { isAuthenticated } from 'lib/cookies';
 import css from 'styles/pages/Posts.module.scss';
@@ -37,7 +37,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
         </Paragraph>
         <Signature />
         <Timeline
-          type={TIMELINE_TYPE.REVERIE}
+          type={TimelineType.REVERIE}
           previous={{
             slug: previousPost.slug,
             image: previousPost.image,

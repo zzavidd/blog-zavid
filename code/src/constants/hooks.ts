@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { PostContentImageMapping, PostDAO, PostImage, ReactChangeEvent } from '../../classes';
 import { GenericDAO } from '../../classes/interfaces/super';
 
-type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
+export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export default <T extends GenericDAO>(hook: ReactHook<T>, state: T) => {
   

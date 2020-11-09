@@ -1,12 +1,14 @@
 import InstagramEmbed from '@aarnila/react-instagram-embed';
 import classNames from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
-import { zLogic, zText } from 'zavid-modules';
 
-import { Icon } from 'components/icon';
+import { Icon } from './icon';
 import css from 'styles/components/Text.module.scss';
+
+const { zLogic, zText } = require('zavid-modules');
+
 /**
  * A title component for headings.
  * @param {string} props - Inherited properties.
@@ -43,7 +45,7 @@ export const Paragraph = ({
   substitutions,
   truncate = 0
 }) => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classNames(css['paragraph'], className);
 
   let text = truncate
@@ -90,7 +92,7 @@ export const Paragraph = ({
 };
 
 export const ReadMore = ({ link, text = 'Read more', className }) => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classNames(css[`paragraph-read-more-${theme}`], className);
   return (
     <VanillaLink href={link}>
@@ -107,7 +109,7 @@ export const VanillaLink = ({
   href,
   children,
   openNewTab = false
-}) => {
+}: VanillaLinkProps) => {
   const classes = classNames(css['vanilla-link'], className);
   return (
     <a
@@ -123,7 +125,7 @@ export const VanillaLink = ({
 };
 
 export const Divider = ({ className }) => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classNames(css[`divider-${theme}`], className);
   return <hr className={classes} />;
 };
@@ -156,3 +158,10 @@ const EmbeddedInsta = ({ url }) => {
     />
   );
 };
+
+interface VanillaLinkProps {
+  href: string;
+  children: JSX.Element;
+  className?: string;
+  openNewTab?: boolean;
+}

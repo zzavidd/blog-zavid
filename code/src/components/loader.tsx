@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import LazyLoad from 'react-lazyload';
 import VisibilitySensor from 'react-visibility-sensor';
 
+import { ReactHook } from '../constants/hooks';
+
+interface LazyLoaderProps {
+  children: JSX.Element;
+  setInView: ReactHook<boolean>;
+  height: number;
+  offset: number;
+}
+
 /**
  * The component wrapper used to lazy load elements.
  * @param {object} props - The component props.
@@ -18,7 +27,7 @@ export const LazyLoader = ({
   setInView,
   height = 400,
   offset = -100
-}) => {
+}: LazyLoaderProps) => {
   const [shouldDetectChange, setDetectivity] = useState(true);
 
   const toggleVisibility = () => {

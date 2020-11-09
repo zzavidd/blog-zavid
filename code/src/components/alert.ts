@@ -1,7 +1,7 @@
-const classnames = require('classnames');
-const { toast, cssTransition } = require('react-toastify');
+import classnames from 'classnames';
+import { toast, cssTransition } from 'react-toastify';
 
-const css = require('styles/components/Alert.module.scss');
+import css from 'styles/components/Alert.module.scss';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -20,22 +20,28 @@ toast.configure({
 });
 
 interface Alert {
-  type: string;
+  type: AlertType;
   message: string;
+}
+
+enum AlertType {
+  SUCCESS = 'success',
+  ERROR = 'error',
+  INFO = 'info'
 }
 
 const classes = ['alert', css['toast-message']];
 
 export const alert = {
-  success: (message: string) => {
+  success: (message: string): void => {
     toast(message, { className: classnames('alert-success', classes) });
   },
-  error: (message: string | Error) => {
+  error: (message: string | Error): void => {
     toast(message.toString(), {
       className: classnames('alert-danger', classes)
     });
   },
-  info: (message: string) => {
+  info: (message: string): void => {
     toast(message, { className: classnames('alert-info', classes) });
   }
 };
@@ -53,9 +59,10 @@ export const reportError = (error: Error): void => {
   }
 };
 
-/** Check whether an alert has been set by {@link setAlert}. */
 export const checkForSetAlerts = (): void => {
-  const notification = JSON.parse(sessionStorage.getItem('alert'));
+  const notification: Alert = JSON.parse(
+    sessionStorage.getItem('alert') as string
+  );
   if (notification) {
     const { type, message } = notification;
     if (type && message) alert[type](message);

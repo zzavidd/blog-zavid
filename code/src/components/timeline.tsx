@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Icon } from 'components/icon';
-import CloudImage, { AspectRatio } from 'components/image';
-import { Title } from 'components/text';
+import { Icon } from './icon';
+import CloudImage, { AspectRatio } from './image';
+import { Title } from './text';
 import css from 'styles/components/Form.module.scss';
 
-export const TIMELINE_TYPE = {
+export const TimelineType: TimelineType = {
   REVERIE: { label: 'Reverie', segment: 'reveries' },
   DIARY: { label: 'Entry', segment: 'diary' }
 };
@@ -20,7 +20,11 @@ export default ({ type, previous, next }) => {
   );
 };
 
-const PrevNextEntity = ({ entity = {}, isPrevious, type }) => {
+const PrevNextEntity = ({
+  entity = {},
+  isPrevious,
+  type
+}: PrevNextEntityProps) => {
   const prefix = isPrevious ? 'Previous' : 'Next';
   const { label, segment } = type;
   return (
@@ -53,3 +57,24 @@ const EntityImage = ({ image }) => {
     />
   );
 };
+
+interface PrevNextEntityProps {
+  entity: TimelineEntity;
+  isPrevious?: boolean;
+  type?: TimelineType;
+}
+
+interface TimelineEntity {
+  label?: string;
+  slug?: string;
+  image?: string;
+}
+
+interface TimelineType {
+  [key: string]: TimelineTypeValues;
+}
+
+interface TimelineTypeValues {
+  label: string;
+  segment: string;
+}
