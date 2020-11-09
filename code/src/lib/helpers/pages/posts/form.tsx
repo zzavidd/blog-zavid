@@ -1,6 +1,16 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
+// TODO: Turn all components to TypeScript
+
+import {
+  PostContentImageMapping,
+  PostDAO,
+  PostImage,
+  PostStatic,
+  ReactChangeEvent
+} from '../../../../../classes';
+
 import {
   Form,
   FieldRow,
@@ -12,17 +22,41 @@ import {
   Select,
   ShortTextArea,
   LongTextArea
-} from 'components/form';
-import { FileSelector, ASPECT_RATIO } from 'components/form/fileselector';
-import DatePicker from 'components/form/picker/datepicker';
-import { cloudinaryBaseUrl } from 'components/image';
-import { Fader } from 'components/transitioner';
-import { PostStatic } from 'lib/classes';
-import css from 'styles/pages/Posts.module.scss';
+} from '../../../../components/form';
+import {
+  FileSelector,
+  ASPECT_RATIO
+} from '../../../../components/form/fileselector';
+import DatePicker from '../../../../components/form/picker/datepicker';
+import { cloudinaryBaseUrl } from '../../../../components/image';
+import { Fader } from '../../../../components/transitioner';
+import css from '../../../../styles/pages/Posts.module.scss';
 
 const NUMBER_OF_CONTENT_IMAGES = 6;
 
-const PostForm = (props) => {
+interface PostFormProps {
+  isLoaded: boolean;
+  post: PostDAO;
+  domains: PostDAO[];
+  isCreateOperation: boolean;
+  handlers: any;
+  confirmFunction: Promise<void> | Function;
+  confirmButtonText: string;
+  cancelFunction: Function;
+  isRequestPending: boolean;
+}
+
+interface PostContentImageInputs {
+  post: PostDAO;
+  isCreateOperation: boolean;
+  handleContentImages: Function;
+}
+
+interface PostImageSubstitutions {
+  [key: string]: string;
+}
+
+const PostForm = (props: PostFormProps) => {
   const { post, domains, handlers, isCreateOperation, isLoaded } = props;
   const {
     handleText,
@@ -35,7 +69,7 @@ const PostForm = (props) => {
 
   const dispatch = useDispatch();
 
-  const substitutions = {};
+  const substitutions: PostImageSubstitutions = {};
   const contentImages = Object.values(post.contentImages || []);
   contentImages
     .filter((e) => e)
@@ -87,7 +121,7 @@ const PostForm = (props) => {
             <LongTextArea
               name={'content'}
               value={post.content}
-              onChange={(e) => handleTextSave(e, dispatch)}
+              onChange={(e: ReactChangeEvent) => handleTextSave(e, dispatch)}
               placeholder={"Write out the post's content..."}
             />
           </Field>
@@ -125,7 +159,9 @@ const PostForm = (props) => {
             <DatePicker
               name={'datePublished'}
               date={post.datePublished}
-              onConfirm={(e) => handleDate(e, 'datePublished')}
+              onConfirm={(e: ReactChangeEvent) =>
+                handleDate(e, 'datePublished')
+              }
               placeholderText={'Select the publish date...'}
             />
           </DynamicField>
@@ -145,7 +181,7 @@ const PostForm = (props) => {
           <Field sm={6}>
             <Label>Image:</Label>
             <FileSelector
-              image={post.image.source}
+              image={(post.image as PostImage).source}
               isCreateOperation={isCreateOperation}
               onChange={handleFile}
               aspectRatio={ASPECT_RATIO.WIDE}
@@ -169,26 +205,28 @@ const PostForm = (props) => {
   );
 };
 
-const ContentImages = ({ post, isCreateOperation, handleContentImages }) => {
+const ContentImages = ({
+  post,
+  isCreateOperation,
+  handleContentImages
+}: PostContentImageInputs): JSX.Element => {
   const contentImages = [];
   for (let i = 0; i < NUMBER_OF_CONTENT_IMAGES; i++) {
-    let source;
-    try {
-      source = post.contentImages[`image${i}`].source;
-    } catch {
-      source = null;
-    }
+    const mapping = post.contentImages as PostContentImageMapping;
+    const image = mapping[`image${i}`] as PostImage;
+    const source = image ? image.source : null;
+
     contentImages.push(
       <FileSelector
         key={i}
         image={source}
         isCreateOperation={isCreateOperation}
-        onChange={(img) => handleContentImages(img, i)}
+        onChange={(img: string) => handleContentImages(img, i)}
         aspectRatio={ASPECT_RATIO.WIDE}
       />
     );
   }
-  return contentImages;
+  return <>{contentImages}</>;
 };
 
 export default PostForm;

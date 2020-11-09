@@ -1,6 +1,10 @@
-import { DiaryStatic } from 'lib/classes';
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import {
+  DiaryDAO,
+  DiaryStatic,
+  ReactChangeEvent
+} from '../../../../../classes';
 
 import {
   Form,
@@ -11,11 +15,21 @@ import {
   LongTextArea,
   TextInput,
   NumberInput
-} from 'components/form';
-import DatePicker from 'components/form/picker/datepicker';
-import { Fader } from 'components/transitioner';
+} from '../../../../components/form';
+import DatePicker from '../../../../components/form/picker/datepicker';
+import { Fader } from '../../../../components/transitioner';
 
-const PostForm = (props) => {
+interface DiaryFormProps {
+  isLoaded: boolean;
+  diaryEntry: DiaryDAO;
+  handlers: any;
+  confirmFunction: Promise<void> | Function;
+  confirmButtonText: string;
+  cancelFunction: Function;
+  isRequestPending: boolean;
+}
+
+const DiaryEntryForm = (props: DiaryFormProps): JSX.Element => {
   const { diaryEntry, handlers, isLoaded } = props;
   const { handleText, handleTextSave, handleDate } = handlers;
 
@@ -30,7 +44,7 @@ const PostForm = (props) => {
             <LongTextArea
               name={'content'}
               value={diaryEntry.content}
-              onChange={(e) => handleTextSave(e, dispatch)}
+              onChange={(e: ReactChangeEvent) => handleTextSave(e, dispatch)}
               placeholder={'Scribe your thoughts and feelings...'}
             />
           </Field>
@@ -70,7 +84,7 @@ const PostForm = (props) => {
             <DatePicker
               name={'date'}
               date={diaryEntry.date}
-              onConfirm={(e) => handleDate(e, 'date')}
+              onConfirm={(e: ReactChangeEvent) => handleDate(e, 'date')}
               placeholderText={'Select the date...'}
             />
           </Field>
@@ -80,4 +94,4 @@ const PostForm = (props) => {
   );
 };
 
-export default PostForm;
+export default DiaryEntryForm;

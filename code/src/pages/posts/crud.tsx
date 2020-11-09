@@ -9,19 +9,20 @@ import {
   PostDAO,
   PostImage,
   PostStatic,
+  PostStatus,
   ReactChangeEvent
 } from '../../../classes';
 import hooks from '../../constants/hooks';
+import PostForm from '../../lib/helpers/pages/posts/form';
 
-const { alert, reportError, setAlert } = require('../../components/alert');
-const { isValidPost } = require('../../constants/validations');
-const PostForm = require('../../lib/helpers/pages/posts/form');
-const {
+import { alert, reportError, setAlert } from '../../components/alert';
+import { isValidPost } from '../../constants/validations';
+import {
   CREATE_POST_QUERY,
   GET_POSTS_QUERY,
   UPDATE_POST_QUERY
-} = require('../../private/api/queries/post.queries');
-const { zDate } = require('zavid-modules');
+} from '../../private/api/queries/post.queries';
+import { zDate } from 'zavid-modules';
 
 interface PostInitialProps {
   post: PostDAO;
@@ -35,7 +36,10 @@ interface PostRequest {
   isTest: boolean;
 }
 
-const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
+const PostCrud = ({
+  post: serverPost,
+  operation
+}: PostInitialProps): JSX.Element => {
   const [clientPost, setPost] = useState({
     id: 0,
     title: '',
@@ -48,7 +52,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       hasChanged: false
     },
     contentImages: {},
-    status: PostStatic.STATUS.DRAFT,
+    status: PostStatus.DRAFT,
     datePublished: undefined,
     domainId: undefined
   } as PostDAO);
@@ -214,13 +218,6 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
   );
 };
 
-/**
- * Builds the payload to send via the request.
- * @param {object} clientPost The post from state.
- * @param {boolean} isPublish Indicates if operation is publish.
- * @param {boolean} isCreateOperation Indicates if operation is create or update.
- * @returns {object} The post to submit.
- */
 const buildPayload = (
   clientPost: PostDAO,
   isPublish: boolean,

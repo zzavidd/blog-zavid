@@ -8,18 +8,18 @@ import {
 } from '../../../classes';
 import React, { useEffect, useState } from 'react';
 import { NextPageContext } from 'next';
-
-const { setAlert, reportError } = require('../../components/alert');
-const { ConfirmModal } = require('../../components/modal');
 import hooks from '../../constants/hooks';
-const { isValidDiaryEntry } = require('../../constants/validations');
-const DiaryEntryForm = require('../../lib/helpers/pages/diary/form');
-const {
+import DiaryEntryForm from '../../lib/helpers/pages/diary/form';
+
+import { setAlert, reportError } from '../../components/alert';
+import { ConfirmModal } from '../../components/modal';
+import { isValidDiaryEntry } from '../../constants/validations';
+import {
   CREATE_DIARY_QUERY,
   UPDATE_DIARY_QUERY
-} = require('../../private/api/queries/diary.queries');
+} from '../../private/api/queries/diary.queries';
 
-const { zDate } = require('zavid-modules');
+import { zDate } from 'zavid-modules';
 
 interface DiaryInitialProps {
   diaryEntry: DiaryDAO;
@@ -87,39 +87,39 @@ const DiaryCrud = ({
   }, [createLoading, updateLoading]);
 
   /** Create new diary entry on server. */
-  const submitDiaryEntry = () => {
-    if (!isValidDiaryEntry(clientDiaryEntry)) return false;
+  const submitDiaryEntry = async (): Promise<void> => {
+    if (!isValidDiaryEntry(clientDiaryEntry)) return;
 
     const variables = buildPayload(clientDiaryEntry, isPublish, true);
-    Promise.resolve()
-      .then(() => createDiaryEntryMutation({ variables }))
-      .then(() => {
-        setAlert({
-          type: 'success',
-          message: `You've successfully added a new diary entry.`
-        });
-        returnToDiaryAdmin();
-      })
-      .catch(reportError);
+    try {
+      await createDiaryEntryMutation({ variables });
+      setAlert({
+        type: 'success',
+        message: `You've successfully added a new diary entry.`
+      });
+      returnToDiaryAdmin();
+    } catch (err) {
+      return reportError(err);
+    }
   };
 
   /** Update diary entry on server. */
-  const updateDiaryEntry = () => {
-    if (!isValidDiaryEntry(clientDiaryEntry)) return false;
+  const updateDiaryEntry = async (): Promise<void> => {
+    if (!isValidDiaryEntry(clientDiaryEntry)) return;
 
     const variables = buildPayload(clientDiaryEntry, isPublish, false);
-    Promise.resolve()
-      .then(() => updateDiaryEntryMutation({ variables }))
-      .then(() => {
-        setAlert({
-          type: 'success',
-          message: `You've successfully updated the diary entry for ${zDate.formatDate(
-            clientDiaryEntry.date
-          )}.`
-        });
-        returnToDiaryAdmin();
-      })
-      .catch(reportError);
+    try {
+      await updateDiaryEntryMutation({ variables });
+      setAlert({
+        type: 'success',
+        message: `You've successfully updated the diary entry for ${zDate.formatDate(
+          clientDiaryEntry.date
+        )}.`
+      });
+      returnToDiaryAdmin();
+    } catch (err) {
+      return reportError(err);
+    }
   };
 
   const confirmText = `${isCreateOperation ? 'Submit' : 'Update'}${
@@ -156,6 +156,7 @@ const DiaryCrud = ({
   );
 };
 
+// TODO: Use DiaryEntryBuilder
 const buildPayload = (
   clientDiaryEntry: DiaryDAO,
   isPublish: boolean,
