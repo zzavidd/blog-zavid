@@ -2,17 +2,17 @@
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { alert } from 'components/alert.js';
+import { alert } from '../../alert';
 import {
   ConfirmButton,
   CancelButton,
   InvisibleButton
-} from 'components/button.js';
-import { Field, FieldRow, Select, TextInput } from 'components/form';
-import { Icon } from 'components/icon';
-import { Modal, ConfirmModal } from 'components/modal.js';
-import { creationDate } from 'constants/settings.js';
-import css from 'styles/components/Form.module.scss';
+} from '../../button';
+import { Field, FieldRow, Select, TextInput } from '../../form';
+import { Icon } from '../../icon';
+import { Modal, ConfirmModal } from '../../modal';
+import { creationDate } from '../../../constants/settings';
+import css from '../../../styles/components/Form.module.scss';
 
 export default ({ name, date, onConfirm, placeholderText }) => {
   return (

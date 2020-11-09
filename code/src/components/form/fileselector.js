@@ -10,7 +10,7 @@ import {
 import { Zoomer } from 'components/transitioner.js';
 import css from 'styles/components/Form.module.scss';
 
-export const ASPECT_RATIO = {
+export const AspectRatio = {
   SQUARE: '50% 0',
   WIDE: '28.125% 0'
 };

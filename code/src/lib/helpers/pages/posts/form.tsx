@@ -25,7 +25,7 @@ import {
 } from '../../../../components/form';
 import {
   FileSelector,
-  ASPECT_RATIO
+  AspectRatio
 } from '../../../../components/form/fileselector';
 import DatePicker from '../../../../components/form/picker/datepicker';
 import { cloudinaryBaseUrl } from '../../../../components/image';
@@ -184,7 +184,7 @@ const PostForm = (props: PostFormProps) => {
               image={(post.image as PostImage).source}
               isCreateOperation={isCreateOperation}
               onChange={handleFile}
-              aspectRatio={ASPECT_RATIO.WIDE}
+              aspectRatio={AspectRatio.WIDE}
             />
           </Field>
         </FieldRow>
@@ -222,7 +222,7 @@ const ContentImages = ({
         image={source}
         isCreateOperation={isCreateOperation}
         onChange={(img: string) => handleContentImages(img, i)}
-        aspectRatio={ASPECT_RATIO.WIDE}
+        aspectRatio={AspectRatio.WIDE}
       />
     );
   }

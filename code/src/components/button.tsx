@@ -1,12 +1,11 @@
 import classnames from 'classnames';
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { Responsive } from 'components/layout';
-import { readCookie } from 'lib/cookies';
 import css from 'styles/components/Button.module.scss';
 
 import { Icon } from './icon';
+import { Responsive } from './layout';
 
 /**
  * The base template for buttons.
@@ -45,7 +44,7 @@ export const ButtonSpacer = (props) => {
  * @returns {React.Component} The component.
  */
 export const ConfirmButton = (props) => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`button-confirm-${theme}`], props.className);
   return (
     <Button {...props} className={classes}>
@@ -60,7 +59,7 @@ export const ConfirmButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const CancelButton = (props) => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <Button {...props} className={css[`button-cancel-${theme}`]}>
       {props.children}
@@ -74,7 +73,7 @@ export const CancelButton = (props) => {
  * @returns {React.Component} The component.
  */
 export const DeleteButton = (props) => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <Button {...props} className={css[`button-delete-${theme}`]}>
       {props.children}
@@ -89,7 +88,7 @@ export const DeleteButton = (props) => {
  */
 export const AdminButton = (props) => {
   const { mobileText, children } = props;
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`button-admin-${theme}`], props.className);
 
   return (

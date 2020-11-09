@@ -1,11 +1,25 @@
 import classnames from 'classnames';
 import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { cloudinaryBaseUrl as url } from 'constants/settings';
+export { cloudinaryBaseUrl } from '../constants/settings';
 
-export const cloudinaryBaseUrl = url;
+interface CloudImageProps {
+  src: string;
+  alt?: string;
+  aspectRatio?: AspectRatio;
+  containerClassName?: string;
+  imageClassName?: string;
+  style?: CSSStyleDeclaration;
+  title?: string;
+  version?: number;
+}
+
+export enum AspectRatio {
+  SQUARE = '1:1',
+  WIDE = '16:9'
+}
 
 export const validateCloudinaryImage = (image) => {
   if (!image) return false;
@@ -17,11 +31,6 @@ export const validateCloudinaryImage = (image) => {
   return image.startsWith(match[0]);
 };
 
-export const ASPECT_RATIO = {
-  SQUARE: '1:1',
-  WIDE: '16:9'
-};
-
 const CloudImage = ({
   alt,
   aspectRatio,
@@ -31,7 +40,7 @@ const CloudImage = ({
   style,
   title,
   version
-}) => {
+}: CloudImageProps) => {
   if (!src) return null;
 
   const publicId = version ? `v${version}/${src}` : src;
@@ -53,7 +62,7 @@ const CloudImage = ({
 };
 
 export const Signature = ({ className }) => {
-  let theme = useSelector(({ theme }) => theme);
+  let theme = useSelector(({ theme }: RootStateOrAny) => theme);
   theme = theme === 'light' ? 'dark' : 'light';
 
   const classes = classnames('signature', className);

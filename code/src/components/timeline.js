@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Icon } from 'components/icon';
-import CloudImage, { ASPECT_RATIO } from 'components/image';
+import CloudImage, { AspectRatio } from 'components/image';
 import { Title } from 'components/text';
 import css from 'styles/components/Form.module.scss';
 
@@ -49,7 +49,7 @@ const EntityImage = ({ image }) => {
       src={image}
       containerClassName={css['timeline-image-container']}
       imageClassName={css['timeline-image']}
-      aspectRatio={ASPECT_RATIO.WIDE}
+      aspectRatio={AspectRatio.WIDE}
     />
   );
 };

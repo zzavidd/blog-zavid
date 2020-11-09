@@ -1,21 +1,29 @@
 import classnames from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 
-import css from 'styles/components/Layout.module.scss';
+import css from '../styles/components/Layout.module.scss';
 
 import { InvisibleButton } from './button';
+
+interface ResponsiveOptions {
+  defaultView: JSX.Element;
+  xl?: JSX.Element;
+  laptopView?: JSX.Element;
+  tabletView?: JSX.Element;
+  mobileView?: JSX.Element;
+}
 
 export const Container = ({ children, className }) => {
   const classes = classnames(css['container'], className);
   return <div className={classes}>{children}</div>;
 };
 
-export const Flexer = ({children, className}) => {
+export const Flexer = ({ children, className }) => {
   const classes = classnames(css['flexer'], className);
   return <div className={classes}>{children}</div>;
-}
+};
 
 export const Partitioner = ({ children, className }) => {
   const classes = classnames(css['partitioner'], className);
@@ -37,7 +45,7 @@ export const Spacer = ({ children }) => {
  */
 export const Toolbar = ({ className, children, spaceItems, hasBackButton }) => {
   if (!children) return null;
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(
     css[`toolbar-${theme}`],
     spaceItems ? css['toolbar-spaced'] : null,
@@ -49,7 +57,7 @@ export const Toolbar = ({ className, children, spaceItems, hasBackButton }) => {
 };
 
 export const ToolbarToggle = ({ children, toggle }) => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <InvisibleButton
       onClick={toggle}
@@ -59,7 +67,13 @@ export const ToolbarToggle = ({ children, toggle }) => {
   );
 };
 
-export const Responsive = ({ defaultView = null, xl, laptopView, tabletView, mobileView }) => {
+export const Responsive = ({
+  defaultView = null,
+  xl,
+  laptopView,
+  tabletView,
+  mobileView
+}: ResponsiveOptions) => {
   if (xl) {
     return (
       <>

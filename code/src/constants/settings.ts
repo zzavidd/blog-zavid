@@ -1,7 +1,7 @@
 const dev = process.env.NODE_ENV !== 'production';
 
 /** The full URLs for each my social media accounts. */
-exports.accounts = {
+export const accounts = {
   // facebook: 'https://www.facebook.com/zzavidd',
   twitter: 'https://www.twitter.com/zzavidd',
   instagram: 'https://www.instagram.com/zavidd',
@@ -10,22 +10,22 @@ exports.accounts = {
 };
 
 /** The base URL for Cloudinary media. */
-exports.cloudinaryBaseUrl = 'https://res.cloudinary.com/zavid/image/upload';
+export const cloudinaryBaseUrl = 'https://res.cloudinary.com/zavid/image/upload';
 
 /** The copyright declaration. */
-exports.copyright = `\u00A9 ${new Date().getFullYear()} ZAVID`;
+export const copyright = `\u00A9 ${new Date().getFullYear()} ZAVID`;
 
 /** The date this blog was founded. Month is 0-indexed. */
-exports.creationDate = new Date(2017, 8, 2);
+export const creationDate = new Date(2017, 8, 2);
 
 /** The date this blog was redeveloped. Month is 0-indexed. */
-exports.redevelopmentDate = new Date(2020, 8, 21);
+export const redevelopmentDate = new Date(2020, 8, 21);
 
 /** Domain to use dependent on environment. */
-exports.domain = dev ? 'http://localhost:4000' : 'https://www.zavidegbue.com';
+export const domain = dev ? 'http://localhost:4000' : 'https://www.zavidegbue.com';
 
 /** The website title. */
-exports.siteTitle = 'ZAVID';
+export const siteTitle = 'ZAVID';
 
 /** /the date of Zavid's birthday. Month is 0-indexed. */
-exports.zavidBirthday = new Date(1996, 11, 2);
+export const zavidBirthday = new Date(1996, 11, 2);

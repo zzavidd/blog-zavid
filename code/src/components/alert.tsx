@@ -19,47 +19,46 @@ toast.configure({
   })
 });
 
+interface Alert {
+  type: string;
+  message: string;
+}
+
 const classes = ['alert', css['toast-message']];
 
-exports.alert = {
-  success: (message) => {
+export const alert = {
+  success: (message: string) => {
     toast(message, { className: classnames('alert-success', classes) });
   },
-  error: (message) => {
+  error: (message: string | Error) => {
     toast(message.toString(), {
       className: classnames('alert-danger', classes)
     });
   },
-  info: (message) => {
+  info: (message: string) => {
     toast(message, { className: classnames('alert-info', classes) });
   }
 };
 
-/**
- * Set the alert to be viewed on the next page change.
- * @param {object} alert - The alert object.
- * @param {string} alert.type - The type of the alert.
- * @param {string} alert.message - The contents of the alert message.
- */
-exports.setAlert = ({ type, message }) => {
+export const setAlert = ({ type, message }: Alert): void => {
   sessionStorage.setItem('alert', JSON.stringify({ type, message }));
 };
 
-exports.reportError = (error) => {
+export const reportError = (error: Error): void => {
   if (isDev) {
-    this.alert.error(error);
+    alert.error(error);
   } else {
-    this.alert.error('There was a problem. Please try again later.');
+    alert.error('There was a problem. Please try again later.');
     console.error(error);
   }
 };
 
 /** Check whether an alert has been set by {@link setAlert}. */
-exports.checkForSetAlerts = () => {
+export const checkForSetAlerts = (): void => {
   const notification = JSON.parse(sessionStorage.getItem('alert'));
   if (notification) {
     const { type, message } = notification;
-    if (type && message) this.alert[type](message);
+    if (type && message) alert[type](message);
     sessionStorage.clear();
   }
 };

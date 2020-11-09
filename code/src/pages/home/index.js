@@ -4,7 +4,7 @@ import { zDate } from 'zavid-modules';
 
 import { Field, FieldRow } from 'components/form';
 import { Icon } from 'components/icon';
-import CloudImage, { ASPECT_RATIO, Signature } from 'components/image';
+import CloudImage, { AspectRatio, Signature } from 'components/image';
 import { Flexer, Responsive } from 'components/layout';
 import { Title, Paragraph, VanillaLink } from 'components/text';
 import { Fader, Zoomer } from 'components/transitioner';
@@ -178,8 +178,8 @@ const LatestReverieImage = ({ image }) => {
   };
   return (
     <Responsive
-      defaultView={<ReverieImage aspectRatio={ASPECT_RATIO.SQUARE} />}
-      xl={<ReverieImage aspectRatio={ASPECT_RATIO.WIDE} />}
+      defaultView={<ReverieImage aspectRatio={AspectRatio.SQUARE} />}
+      xl={<ReverieImage aspectRatio={AspectRatio.WIDE} />}
     />
   );
 };
@@ -208,7 +208,7 @@ const RandomPostsGrid = ({ posts }) => {
                   src={post.image}
                   containerClassName={css['random-post-image-wrapper']}
                   imageClassName={css['random-post-image']}
-                  aspectRatio={ASPECT_RATIO.WIDE}
+                  aspectRatio={AspectRatio.WIDE}
                 />
                 <Title className={css['random-post-title']}>{post.title}</Title>
                 <div className={css['random-post-date']}>
