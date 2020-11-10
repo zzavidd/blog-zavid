@@ -64,7 +64,7 @@ export const Modal = (props) => {
  * @param {Function} props.confirmFunction - The function called on clicking confirm.
  * @param {string} props.confirmText - The text for the confirmation button.
  * @param {Function} props.closeFunction - The function called on clicking the close button.
- * @returns {JSX.Element} The component.
+ * @returns {React.Component} The component.
  */
 export const ConfirmModal = ({
   message,

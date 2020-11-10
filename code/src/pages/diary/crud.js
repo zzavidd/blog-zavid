@@ -1,51 +1,33 @@
 /* eslint-disable jsdoc/require-returns */
 import { useMutation } from '@apollo/client';
-import {
-  DiaryDAO,
-  DiaryStatic,
-  Operation,
-  DiaryStatus
-} from '../../../classes';
+import { DiaryStatic } from 'lib/classes';
 import React, { useEffect, useState } from 'react';
-import { NextPageContext } from 'next';
+import { zDate } from 'zavid-modules';
 
-const { setAlert, reportError } = require('../../components/alert');
-const { ConfirmModal } = require('../../components/modal');
-import hooks from '../../constants/hooks';
-const { isValidDiaryEntry } = require('../../constants/validations');
-const DiaryEntryForm = require('../../lib/helpers/pages/diary/form');
-const {
+import { setAlert, reportError } from 'components/alert';
+import { ConfirmModal } from 'components/modal';
+import hooks from 'constants/hooks';
+import { OPERATIONS } from 'constants/strings';
+import { isValidDiaryEntry } from 'constants/validations';
+import DiaryEntryForm from 'lib/helpers/pages/diary/form';
+import {
   CREATE_DIARY_QUERY,
   UPDATE_DIARY_QUERY
-} = require('../../private/api/queries/diary.queries');
-
-const { zDate } = require('zavid-modules');
-
-interface DiaryInitialProps {
-  diaryEntry: DiaryDAO;
-  latestEntryNumber?: number;
-  operation: Operation;
-}
-
-interface DiaryRequest {
-  id?: number;
-  diaryEntry: DiaryDAO;
-  isPublish: boolean;
-}
+} from 'private/api/queries/diary.queries';
 
 const DiaryCrud = ({
   diaryEntry: serverDiaryEntry,
   operation,
   latestEntryNumber = 0
-}: DiaryInitialProps) => {
+}) => {
   const [clientDiaryEntry, setDiaryEntry] = useState({
     id: 0,
     title: '',
     content: '',
     date: new Date(),
-    status: DiaryStatus.PRIVATE,
+    status: DiaryStatic.STATUS.PRIVATE,
     entryNumber: latestEntryNumber + 1
-  } as DiaryDAO);
+  });
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
   const [isPublishModalVisible, setPublishModalVisibility] = useState(false);
@@ -59,16 +41,16 @@ const DiaryCrud = ({
   );
 
   // Determine operation type.
-  const isCreateOperation = operation === Operation.CREATE;
+  const isCreateOperation = operation === OPERATIONS.CREATE;
 
   // Determine if diary entry is being published.
   let isPublish = false;
   if (isCreateOperation) {
-    isPublish = DiaryStatic.isPublish(clientDiaryEntry);
+    isPublish = DiaryStatic.isPublish(clientDiaryEntry.status);
   } else {
     isPublish =
-      !DiaryStatic.isPublish(serverDiaryEntry) &&
-      DiaryStatic.isPublish(clientDiaryEntry);
+      !DiaryStatic.isPublish(serverDiaryEntry.status) &&
+      DiaryStatic.isPublish(clientDiaryEntry.status);
   }
 
   /** Populate the form with diary entry details. */
@@ -156,23 +138,25 @@ const DiaryCrud = ({
   );
 };
 
-const buildPayload = (
-  clientDiaryEntry: DiaryDAO,
-  isPublish: boolean,
-  isCreateOperation: boolean
-): DiaryRequest => {
+/**
+ * Builds the payload to send via the request.
+ * @param {object} clientDiaryEntry The diary entry from state.
+ * @param {boolean} isPublish Indicates if operation is publish.
+ * @param {boolean} isCreateOperation Indicates if operation is create or update.
+ * @returns {object} The diary entry to submit.
+ */
+const buildPayload = (clientDiaryEntry, isPublish, isCreateOperation) => {
   const { id, title, content, status, date, entryNumber } = clientDiaryEntry;
 
-  const diaryEntry: DiaryDAO = {
+  const diaryEntry = {
     title,
     content,
     date: zDate.formatISODate(date),
     status,
-    entryNumber
+    entryNumber: parseInt(entryNumber)
   };
 
-  const payload: DiaryRequest = { diaryEntry, isPublish };
-
+  const payload = { diaryEntry, isPublish };
   if (!isCreateOperation) {
     payload.id = id;
   }
@@ -181,11 +165,11 @@ const buildPayload = (
 };
 
 /** Return to the admin page. */
-const returnToDiaryAdmin = (): void => {
+const returnToDiaryAdmin = () => {
   location.href = '/admin/diary';
 };
 
-DiaryCrud.getInitialProps = async ({ query }: NextPageContext) => {
+DiaryCrud.getInitialProps = async ({ query }) => {
   return { ...query };
 };
 
