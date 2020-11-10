@@ -22,7 +22,7 @@ pipeline {
     always {
       dir(cwd) {
         // junit '**/test-results.xml'
-        sh 'rm -rf node_modules .next'
+        sh 'rm -rf node_modules'
       }
     }
   }
