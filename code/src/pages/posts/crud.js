@@ -63,10 +63,10 @@ const PostCrud = ({ post: serverPost, operation }) => {
   // Determine if post is being published.
   let isPublish = false;
   if (isCreateOperation) {
-    isPublish = PostStatic.isPublish(clientPost.status);
+    isPublish = PostStatic.isPublish(clientPost);
   } else {
     isPublish =
-      !PostStatic.isPublish(serverPost.status) && PostStatic.isPublish(clientPost.status);
+      !PostStatic.isPublish(serverPost.status) && PostStatic.isPublish(clientPost);
   }
 
   /** Populate the form with post details. */
