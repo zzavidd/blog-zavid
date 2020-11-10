@@ -46,11 +46,11 @@ const DiaryCrud = ({
   // Determine if diary entry is being published.
   let isPublish = false;
   if (isCreateOperation) {
-    isPublish = DiaryStatic.isPublish(clientDiaryEntry.status);
+    isPublish = DiaryStatic.isPublish(clientDiaryEntry);
   } else {
     isPublish =
-      !DiaryStatic.isPublish(serverDiaryEntry.status) &&
-      DiaryStatic.isPublish(clientDiaryEntry.status);
+      !DiaryStatic.isPublish(serverDiaryEntry) &&
+      DiaryStatic.isPublish(clientDiaryEntry);
   }
 
   /** Populate the form with diary entry details. */
