@@ -119,7 +119,7 @@ const PostForm = (props) => {
           </Field>
           <DynamicField
             md={6}
-            precondition={PostStatic.isPublish(post)}
+            precondition={PostStatic.isPublish(post.status)}
             dependency={post.status}>
             <Label>Date Published:</Label>
             <DatePicker
