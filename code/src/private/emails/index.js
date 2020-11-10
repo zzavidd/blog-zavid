@@ -6,7 +6,10 @@ const ReactDOMServer = require('react-dom/server');
 const { v4: uuidv4 } = require('uuid');
 const { zDate, zText } = require('zavid-modules');
 
-const { SubscriberStatic, SubscriberQueryBuilder } = require('../lib').classes;
+const {
+  SubscriberStatic,
+  SubscriberQueryBuilder
+} = require('../../../classes');
 const {
   accounts,
   cloudinaryBaseUrl,
@@ -104,7 +107,7 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
 
   return prepareEmail(
     entity,
-    SubscriberStatic.SUBSCRIPTIONS.DIARY,
+    SubscriberStatic.SUBSCRIPTIONS.Diary,
     'diary',
     subject
   );
