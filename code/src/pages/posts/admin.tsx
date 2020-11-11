@@ -8,7 +8,7 @@ import { InvisibleButton } from 'src/components/button';
 import { Icon } from 'src/components/icon';
 import { Spacer } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
-import Tabler, { TablerItemField, TablerType } from 'src/components/tabler';
+import Tabler, { TablerItemCell, TablerType } from 'src/components/tabler';
 import { VanillaLink } from 'src/components/text';
 import { PostStatic, URLBuilder } from 'src/lib/classes';
 import BottomToolbar from 'src/lib/helpers/pages/posts/toolbar';
@@ -99,7 +99,7 @@ const PostsAdmin = () => {
           ]}
           items={posts.map((post, key) => {
             return [
-              new TablerItemField(key + 1, {
+              new TablerItemCell(key + 1, {
                 type: TablerType.
               })
               [key + 1, { type: TablerType.INDEX }],

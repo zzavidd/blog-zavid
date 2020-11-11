@@ -108,6 +108,9 @@ rules:
     - exceptions:
         - '*'
 
+  "@typescript-eslint/explicit-module-boundary-types": off
+  "@typescript-eslint/no-non-null-assertion": off
+
   # Overridden and disabled rules
   mocha/handle-done-callback: off
   mocha/no-top-level-hooks: off

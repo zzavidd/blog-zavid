@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, MouseEventHandler } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
 import css from 'src/styles/components/Button.module.scss';
@@ -7,12 +7,7 @@ import css from 'src/styles/components/Button.module.scss';
 import { Icon } from './icon';
 import { Responsive } from './layout';
 
-/**
- * The base template for buttons.
- * @param {object} props - The component props.
- * @returns {React.Component} The component.
- */
-const Button = (props) => {
+const Button = (props: Button) => {
   const { children, className, onClick, isRequestPending } = props;
   const [buttonText, setButtonText] = useState(children);
 
@@ -27,23 +22,13 @@ const Button = (props) => {
   );
 };
 
-/**
- * A container for spacing child buttons.
- * @param {object} props - The component props.
- * @returns {React.Component} The component.
- */
-export const ButtonSpacer = (props) => {
+export const ButtonSpacer = (props: Button) => {
   const { children, className } = props;
   const classes = classnames(css[`button-spacer`], className);
   return <div className={classes}>{children}</div>;
 };
 
-/**
- * A form confirmation button.
- * @param {object} props - The component props.
- * @returns {React.Component} The component.
- */
-export const ConfirmButton = (props) => {
+export const ConfirmButton = (props: Button) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`button-confirm-${theme}`], props.className);
   return (
@@ -53,12 +38,7 @@ export const ConfirmButton = (props) => {
   );
 };
 
-/**
- * A form cancellation button.
- * @param {object} props - The component props.
- * @returns {React.Component} The component.
- */
-export const CancelButton = (props) => {
+export const CancelButton = (props: Button) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <Button {...props} className={css[`button-cancel-${theme}`]}>
@@ -67,12 +47,7 @@ export const CancelButton = (props) => {
   );
 };
 
-/**
- * A delete button.
- * @param {object} props - The component props.
- * @returns {React.Component} The component.
- */
-export const DeleteButton = (props) => {
+export const DeleteButton = (props: Button) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <Button {...props} className={css[`button-delete-${theme}`]}>
@@ -81,12 +56,7 @@ export const DeleteButton = (props) => {
   );
 };
 
-/**
- * An addition button.
- * @param {object} props - The component props.
- * @returns {React.Component} The component.
- */
-export const AdminButton = (props) => {
+export const AdminButton = (props: AdminButton) => {
   const { mobileText, children } = props;
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`button-admin-${theme}`], props.className);
@@ -107,7 +77,7 @@ export const AdminButton = (props) => {
   );
 };
 
-export const BackButton = (props) => {
+export const BackButton = (props: Button) => {
   return (
     <InvisibleButton
       {...props}
@@ -120,12 +90,7 @@ export const BackButton = (props) => {
   );
 };
 
-/**
- * An invisible button.
- * @param {object} props - The component props.
- * @returns {React.Component} The component.
- */
-export const InvisibleButton = (props) => {
+export const InvisibleButton = (props: Button): JSX.Element => {
   return (
     <button
       {...props}
@@ -134,3 +99,14 @@ export const InvisibleButton = (props) => {
     </button>
   );
 };
+
+interface Button {
+  children: string | JSX.Element | JSX.Element[]
+  className?: string
+  onClick?: MouseEventHandler<HTMLButtonElement>
+  isRequestPending?: boolean
+}
+
+interface AdminButton extends Button  {
+  mobileText?: string
+}

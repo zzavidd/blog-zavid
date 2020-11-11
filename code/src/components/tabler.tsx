@@ -4,13 +4,14 @@ import { Spinner } from 'react-bootstrap';
 import { forceCheck } from 'react-lazyload';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
+import css from 'src/styles/components/Tabler.module.scss';
+
 import { Icon } from './icon';
 import CloudImage, { AspectRatio } from './image';
 import { Responsive } from './layout';
 import { LazyLoader } from './loader';
 import { Title } from './text';
 import { Fader } from './transitioner';
-import css from 'src/styles/components/Tabler.module.scss';
 
 export default (props: Tabler) => {
   const {
@@ -42,7 +43,7 @@ export default (props: Tabler) => {
   });
 
   const TablerItemRows = (): JSX.Element => (
-    <ItemRows {...props} centerAlignedIndices={centerAlignedIndices} />
+    <TablerItemList {...props} centerAlignedIndices={centerAlignedIndices} />
   );
 
   return (
@@ -52,7 +53,7 @@ export default (props: Tabler) => {
         <Responsive
           defaultView={
             <div className={css['tabler-grid']}>
-              <HeaderRow {...props} />
+              <TablerHeaderRow {...props} />
               <TablerItemRows />
             </div>
           }
@@ -86,7 +87,7 @@ const TableHeading = ({ heading, numOfItems }: TablerHeading) => {
   );
 };
 
-const HeaderRow = ({ columns, distribution }: TablerHeaderRow) => {
+const TablerHeaderRow = ({ columns, distribution }: TablerHeaderRow) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <div
@@ -107,16 +108,16 @@ const HeaderRow = ({ columns, distribution }: TablerHeaderRow) => {
   );
 };
 
-const ItemRows = ({
+const TablerItemList = ({
   centerAlignedIndices,
   distribution,
   items
-}: TablerRows) => {
+}: TablerItemList) => {
   return (
     <>
       {items.map((fields, key) => {
         return (
-          <Item
+          <TablerItemRow
             centerAlignedIndices={centerAlignedIndices}
             distribution={{ gridTemplateColumns: distribution }}
             fields={fields}
@@ -129,8 +130,8 @@ const ItemRows = ({
   );
 };
 
-const Item = memo(
-  ({ centerAlignedIndices, fields, distribution, index }: TablerItem) => {
+const TablerItemRow = memo(
+  ({ centerAlignedIndices, fields, distribution, index }: TablerItemRow) => {
     const theme = useSelector(({ theme }: RootStateOrAny) => theme);
     const [isLoaded, setLoaded] = useState(false);
     useEffect(() => {
@@ -150,7 +151,7 @@ const Item = memo(
           className={css[`tabler-item-row-${theme}`]}
           postTransitions={'background-color .1s ease'}
           style={distribution}>
-          <ItemFields
+          <TablerItemFields
             fields={fields}
             centerAlignedIndices={centerAlignedIndices}
           />
@@ -161,16 +162,29 @@ const Item = memo(
   }
 );
 
-const ItemFields = ({ fields, centerAlignedIndices }: TablerItemFields) => {
-  return fields
+const TablerItemFields = ({
+  fields,
+  centerAlignedIndices
+}: TablerItemFields) => {
+  const itemFields = fields
     .filter((e) => e)
-    .map((field: TablerItemField, key: number) => {
-      let [value, { type, imageOptions = {}, subvalue }] = field;
+    .map((cell: TablerItemCell, key: number) => {
+      let { value } = cell;
+      const {
+        type,
+        imageOptions = {
+          css: ''
+        },
+        subvalue = ''
+      } = cell.options;
 
       switch (type) {
         case TablerType.IMAGE:
           value = (
-            <CloudImage src={value} containerClassName={imageOptions.css} />
+            <CloudImage
+              src={value as string}
+              containerClassName={imageOptions.css}
+            />
           );
           break;
       }
@@ -182,23 +196,21 @@ const ItemFields = ({ fields, centerAlignedIndices }: TablerItemFields) => {
         <Responsive
           key={key}
           defaultView={
-            <DefaultView style={style} value={value} subvalue={subvalue} />
+            <DefaultView
+              style={style as CSSProperties}
+              value={value}
+              subvalue={subvalue}
+            />
           }
-          mobileView={<MobileView field={field} key={key} />}
+          mobileView={<MobileView field={cell} key={key} />}
         />
       );
     });
+
+  return <>{itemFields}</>;
 };
 
-/**
- * The default view for each component in {@see ItemFields}.
- * @param {object} props - The component props.
- * @param {string} props.value - The value to be displayed.
- * @param {object} props.style - Styling for the field.
- * @param {string} [props.subvalue] - A possible subvalue to be displayed under the value.
- * @returns {React.Component} - The component.
- */
-const DefaultView = ({ value, style, subvalue }) => {
+const DefaultView = ({ value, style, subvalue }: DefaultView) => {
   if (!subvalue)
     return (
       <span className={css['tabler-item-value']} style={style}>
@@ -214,16 +226,10 @@ const DefaultView = ({ value, style, subvalue }) => {
   );
 };
 
-/**
- * The mobile view for each component in {@see ItemFields}.
- * @param {object} props - The component props.
- * @param {TablerField} props.field - Each field in the row.
- * @returns {React.Component} - The component.
- */
-const MobileView = ({ field }: TablerItemField) => {
-  let [
+const MobileView = ({ field }: MobileView) => {
+  const {
     value,
-    {
+    options: {
       icon,
       type,
       hideIfEmpty = false,
@@ -232,8 +238,8 @@ const MobileView = ({ field }: TablerItemField) => {
         css: '',
         lazy: ''
       }
-    } = {}
-  ] = field;
+    }
+  } = field;
 
   if (!value && hideIfEmpty) return null;
   if (hideOnMobile) return null;
@@ -242,14 +248,19 @@ const MobileView = ({ field }: TablerItemField) => {
     case TablerType.BUTTON:
       return null;
     case TablerType.IMAGE:
-      return <CloudImage src={value} containerClassName={imageOptions.css} />;
+      return (
+        <CloudImage
+          src={value as string}
+          containerClassName={imageOptions.css}
+        />
+      );
     case TablerType.INDEX:
       return <div className={css['tabler-item-index']}>{value}</div>;
     default:
       return (
         <div className={css['tabler-field-mobile']}>
           <span>
-            <Icon name={icon} />
+            <Icon name={icon!} />
           </span>
           <span>{value}</span>
         </div>
@@ -257,19 +268,13 @@ const MobileView = ({ field }: TablerItemField) => {
   }
 };
 
-/**
- * The CRUD buttons for each {@see Item}.
- * @param {object} props - The component props.
- * @param {TablerField[]} props.fields - All fields of the {@see Item}.
- * @returns {React.Component} - The component.
- */
-const CrudButtons = memo(({ fields }) => {
+const CrudButtons = memo(({ fields }: CrudButtons) => {
   return (
     <div className={css['tabler-item-buttons']}>
       {fields
-        .filter(([, options]) => options.type === TablerType.BUTTON)
-        .map(([button], key) => {
-          return <span key={key}>{button}</span>;
+        .filter(({ options }) => options.type === TablerType.BUTTON)
+        .map(({ value }, key) => {
+          return <span key={key}>{value}</span>;
         })}
     </div>
   );
@@ -281,15 +286,15 @@ export class TablerColumnHeader {
 
   constructor(label: string, options: TablerColumnHeaderOptions = {}) {
     this.label = label;
-    this.centerAlign = options.centerAlign;
+    this.centerAlign = options.centerAlign ?? false;
   }
 }
 
-export class TablerItemField {
-  value: any;
+export class TablerItemCell {
+  value: TableItemValue;
   options: TablerItemFieldOptions;
 
-  constructor(value: any, options: TablerItemFieldOptions = {}) {
+  constructor(value: TableItemValue, options: TablerItemFieldOptions = {}) {
     this.value = value;
     this.options = options;
   }
@@ -306,8 +311,12 @@ interface Tabler {
   distribution: string;
   emptyMessage: string;
   heading: string;
-  items: TablerItem[];
+  items: TablerItemCell[][];
   itemsLoaded: boolean;
+}
+
+interface TablerItemList extends Tabler {
+  centerAlignedIndices: CenterAlignedIndices;
 }
 
 interface TablerColumnHeaderOptions {
@@ -319,35 +328,45 @@ interface TablerHeaderRow {
   distribution: string;
 }
 
-interface TablerRows {
-  centerAlignedIndices: number[];
-  columns: TablerColumnHeader[];
-  distribution: string;
-  items: TablerItem[];
-}
-
-interface TablerItem {
-  centerAlignedIndices: number[];
-  distribution: string;
-  fields: TablerItemField[];
+interface TablerItemRow {
+  centerAlignedIndices: CenterAlignedIndices;
+  distribution: CSSProperties;
+  fields: TablerItemCell[];
   index: number;
 }
 
 interface TablerItemFields {
-  centerAlignedIndices: number[];
-  fields: TablerItemField[];
+  centerAlignedIndices: CenterAlignedIndices;
+  fields: TablerItemCell[];
 }
 
 interface TablerItemFieldOptions {
   type?: TablerType;
   icon?: IconName;
-  subvalue?: string
+  subvalue?: string;
   hideIfEmpty?: boolean;
   hideOnMobile?: boolean;
   imageOptions?: TablerImageOptions;
 }
 
 interface TablerImageOptions {
-  css: string;
-  aspectRatio: AspectRatio;
+  css?: string;
+  aspectRatio?: AspectRatio;
 }
+
+interface DefaultView {
+  value: TableItemValue;
+  subvalue: string;
+  style: CSSProperties;
+}
+
+interface MobileView {
+  field: TablerItemCell;
+}
+
+interface CrudButtons {
+  fields: TablerItemCell[];
+}
+
+type TableItemValue = string | number | JSX.Element | null | undefined;
+type CenterAlignedIndices = (number | undefined)[];

@@ -21,7 +21,7 @@ export enum AspectRatio {
   WIDE = '16:9'
 }
 
-export const validateCloudinaryImage = (image) => {
+export const validateCloudinaryImage = (image: string) => {
   if (!image) return false;
 
   const regex = new RegExp(/(v[0-9]+|dynamic|static|test)\//);
@@ -61,7 +61,7 @@ const CloudImage = ({
   );
 };
 
-export const Signature = ({ className }) => {
+export const Signature = ({ className }: Signature) => {
   let theme = useSelector(({ theme }: RootStateOrAny) => theme);
   theme = theme === 'light' ? 'dark' : 'light';
 
@@ -73,5 +73,9 @@ export const Signature = ({ className }) => {
     />
   );
 };
+
+interface Signature {
+  className: string;
+}
 
 export default CloudImage;

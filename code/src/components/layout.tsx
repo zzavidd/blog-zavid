@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 
@@ -7,35 +7,30 @@ import css from 'src/styles/components/Layout.module.scss';
 
 import { InvisibleButton } from './button';
 
-export const Container = ({ children, className }) => {
+export const Container = ({ children, className }: Layout) => {
   const classes = classnames(css['container'], className);
   return <div className={classes}>{children}</div>;
 };
 
-export const Flexer = ({ children, className }) => {
+export const Flexer = ({ children, className }: Layout) => {
   const classes = classnames(css['flexer'], className);
   return <div className={classes}>{children}</div>;
 };
 
-export const Partitioner = ({ children, className }) => {
+export const Partitioner = ({ children, className }: Layout) => {
   const classes = classnames(css['partitioner'], className);
   return <div className={classes}>{children}</div>;
 };
 
-export const Spacer = ({ children }) => {
+export const Spacer = ({ children }: Layout) => {
   return <div className={css['spacer']}>{children}</div>;
 };
-
-/**
- * Bottom toolbar for items
- * @param {object} props The properties.
- * @param {string} props.className The toolbar class.
- * @param {React.Component[]} props.children The toolbar items.
- * @param {boolean} props.spaceItems Indicates whether items should be spaced.
- * @param {boolean} props.hasBackButton Indicates if toolbar contains back button.
- * @returns {React.Component} The component.
- */
-export const Toolbar = ({ className, children, spaceItems, hasBackButton }) => {
+export const Toolbar = ({
+  className,
+  children,
+  spaceItems,
+  hasBackButton
+}: Toolbar) => {
   if (!children) return null;
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(
@@ -48,7 +43,7 @@ export const Toolbar = ({ className, children, spaceItems, hasBackButton }) => {
   return <div className={classes}>{children}</div>;
 };
 
-export const ToolbarToggle = ({ children, toggle }) => {
+export const ToolbarToggle = ({ children, toggle }: ToolbarToggle) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <InvisibleButton
@@ -60,7 +55,7 @@ export const ToolbarToggle = ({ children, toggle }) => {
 };
 
 export const Responsive = ({
-  defaultView = null,
+  defaultView,
   xl,
   laptopView,
   tabletView,
@@ -96,6 +91,20 @@ export const Responsive = ({
     );
   }
 };
+
+interface Layout {
+  className: string;
+  children: string | JSX.Element | JSX.Element[];
+}
+
+interface Toolbar extends Layout {
+  spaceItems: boolean;
+  hasBackButton: boolean;
+}
+
+interface ToolbarToggle extends Layout {
+  toggle: MouseEventHandler;
+}
 
 interface ResponsiveOptions {
   defaultView?: JSX.Element;

@@ -1,7 +1,6 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
-import { DiaryDAO } from '../../../classes';
 
 import { alert, reportError } from 'src/components/alert';
 import { AdminButton, InvisibleButton } from 'src/components/button';
@@ -10,7 +9,7 @@ import { Spacer, Toolbar } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
 import Tabler, {
   TablerColumnHeader,
-  TablerItemField,
+  TablerItemCell,
   TablerType
 } from 'src/components/tabler';
 import { VanillaLink } from 'src/components/text';
@@ -19,6 +18,8 @@ import {
   GET_DIARY_QUERY,
   DELETE_DIARY_QUERY
 } from 'src/private/api/queries/diary.queries';
+
+import { DiaryDAO } from '../../../classes';
 
 export default () => {
   const [diaryEntries, setDiaryEntries] = useState([]);
@@ -93,23 +94,23 @@ export default () => {
               withWeekday: true
             });
             return [
-              new TablerItemField(key + 1, {
+              new TablerItemCell(key + 1, {
                 type: TablerType.INDEX
               }),
-              new TablerItemField(date, {
+              new TablerItemCell(date, {
                 icon: 'calendar-alt'
               }),
-              new TablerItemField(diaryEntry.title, { icon: 'heading' }),
-              new TablerItemField(diaryEntry.status, { icon: 'lock' }),
-              new TablerItemField(content, { hideOnMobile: true }),
-              new TablerItemField(
+              new TablerItemCell(diaryEntry.title, { icon: 'heading' }),
+              new TablerItemCell(diaryEntry.status, { icon: 'lock' }),
+              new TablerItemCell(content, { hideOnMobile: true }),
+              new TablerItemCell(
                 <LinkButton diaryEntry={diaryEntry} key={key} />,
                 { type: TablerType.BUTTON }
               ),
-              new TablerItemField(<EditButton id={diaryEntry.id} key={key} />, {
+              new TablerItemCell(<EditButton id={diaryEntry.id} key={key} />, {
                 type: TablerType.BUTTON
               }),
-              new TablerItemField(
+              new TablerItemCell(
                 (
                   <DeleteButton
                     diaryEntry={diaryEntry}
