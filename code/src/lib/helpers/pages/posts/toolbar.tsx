@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-import { AdminButton } from 'components/button';
-import { Field, FieldRow, Select } from 'components/form';
-import { Icon } from 'components/icon';
-import { Responsive, Toolbar, ToolbarToggle } from 'components/layout';
-import { Slider } from 'components/transitioner';
-import { PostStatic } from 'lib/classes.ts';
-import css from 'styles/pages/Posts.module.scss';
+import { PostStatic } from 'classes';
+import { AdminButton } from 'src/components/button';
+import { Field, FieldRow, Select } from 'src/components/form';
+import { Icon } from 'src/components/icon';
+import { Responsive, Toolbar, ToolbarToggle } from 'src/components/layout';
+import { Slider } from 'src/components/transitioner';
+import css from 'src/styles/pages/Posts.module.scss';
 
 const sortOptions = [
   { value: 'createTime', label: 'Sort by Creation Time' },
@@ -15,7 +15,7 @@ const sortOptions = [
   { value: 'status', label: 'Sort by Status' }
 ];
 
-export default ({ options, handleOptionSelection }) => {
+export default ({ options, handleOptionSelection }): JSX.Element => {
   const [filtersVisible, setFilterVisibility] = useState(false);
 
   const toggleFilterVisibility = () => {

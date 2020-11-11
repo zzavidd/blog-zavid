@@ -22,15 +22,15 @@ import {
   Select,
   ShortTextArea,
   LongTextArea
-} from '../../../../components/form';
+} from 'src/components/form';
 import {
   FileSelector,
   AspectRatio
-} from '../../../../components/form/fileselector';
-import DatePicker from '../../../../components/form/picker/datepicker';
-import { cloudinaryBaseUrl } from '../../../../components/image';
-import { Fader } from '../../../../components/transitioner';
-import css from '../../../../styles/pages/Posts.module.scss';
+} from 'src/components/form/fileselector';
+import DatePicker from 'src/components/form/picker/datepicker';
+import { cloudinaryBaseUrl } from 'src/components/image';
+import { Fader } from 'src/components/transitioner';
+import css from 'src/styles/pages/Posts.module.scss';
 
 const NUMBER_OF_CONTENT_IMAGES = 6;
 

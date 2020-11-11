@@ -7,7 +7,7 @@ import { AdminButton, InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
-import Tabler, { TYPE } from 'components/tabler';
+import Tabler, { TablerType } from 'components/tabler';
 import {
   GET_PAGES_QUERY,
   DELETE_PAGE_QUERY
@@ -71,7 +71,7 @@ export default () => {
           ]}
           items={pages.map((page, key) => {
             return [
-              [key + 1, { type: TYPE.INDEX }],
+              [key + 1, { type: TablerType.INDEX }],
               [page.title, { icon: 'heading' }],
               [
                 page.slug ? `/${page.slug}` : '',
@@ -89,8 +89,8 @@ export default () => {
                 zDate.formatDate(parseInt(page.lastModified)),
                 { icon: 'clock' }
               ],
-              [<LinkButton page={page} key={key} />, { type: TYPE.BUTTON }],
-              [<EditButton id={page.id} key={key} />, { type: TYPE.BUTTON }],
+              [<LinkButton page={page} key={key} />, { type: TablerType.BUTTON }],
+              [<EditButton id={page.id} key={key} />, { type: TablerType.BUTTON }],
               [
                 <DeleteButton
                   page={page}
@@ -98,7 +98,7 @@ export default () => {
                   setDeleteModalVisibility={setDeleteModalVisibility}
                   setSelectedPage={setSelectedPage}
                 />,
-                { type: TYPE.BUTTON }
+                { type: TablerType.BUTTON }
               ]
             ];
           })}

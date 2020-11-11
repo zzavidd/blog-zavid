@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LazyLoad from 'react-lazyload';
 import VisibilitySensor from 'react-visibility-sensor';
 
-import { ReactHook } from '../constants/hooks';
+import { ReactHook } from 'src/constants/hooks';
 
 interface LazyLoaderProps {
   children: JSX.Element;

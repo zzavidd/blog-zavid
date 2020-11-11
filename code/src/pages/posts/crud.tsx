@@ -12,16 +12,16 @@ import {
   PostStatus,
   ReactChangeEvent
 } from '../../../classes';
-import hooks from '../../constants/hooks';
-import PostForm from '../../lib/helpers/pages/posts/form';
+import hooks from 'src/constants/hooks';
+import PostForm from 'src/lib/helpers/pages/posts/form';
 
-import { alert, reportError, setAlert } from '../../components/alert';
-import { isValidPost } from '../../constants/validations';
+import { alert, reportError, setAlert } from 'src/components/alert';
+import { isValidPost } from 'src/constants/validations';
 import {
   CREATE_POST_QUERY,
   GET_POSTS_QUERY,
   UPDATE_POST_QUERY
-} from '../../private/api/queries/post.queries';
+} from 'src/private/api/queries/post.queries';
 import { zDate } from 'zavid-modules';
 
 interface PostInitialProps {

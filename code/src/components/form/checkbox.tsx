@@ -1,10 +1,11 @@
 import classnames from 'classnames';
 import React from 'react';
 
-import { InvisibleButton } from 'components/button';
-import css from 'styles/components/Form.module.scss';
+import css from 'src/styles/components/Form.module.scss';
 
-export const Checkbox = ({ name, label, checked, onChange, className }) => {
+import { InvisibleButton } from '../button';
+
+export const Checkbox = ({ name, label, checked, onChange, className }): JSX.Element => {
   const classes = classnames(css['checkbox-group'], className);
   return (
     <label className={classes}>

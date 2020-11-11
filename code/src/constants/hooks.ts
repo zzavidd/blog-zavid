@@ -1,7 +1,8 @@
-const { saveText } = require('lib/reducers.js');
 import { Dispatch } from 'redux';
-import { PostContentImageMapping, PostDAO, PostImage, ReactChangeEvent } from '../../classes';
-import { GenericDAO } from '../../classes/interfaces/super';
+
+import { PostContentImageMapping, PostDAO, PostImage, ReactChangeEvent } from 'classes';
+import { GenericDAO } from 'classes/interfaces/super';
+import { saveText } from 'src/lib/reducers';
 
 export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
 
@@ -19,7 +20,7 @@ export default <T extends GenericDAO>(hook: ReactHook<T>, state: T) => {
 
   const handleSelection = handleText;
 
-  const handleDate = (date: string, name: string = 'date'): void => {
+  const handleDate = (date: string, name = 'date'): void => {
     hook(Object.assign({}, state, { [name]: date }));
   };
 
@@ -28,7 +29,7 @@ export default <T extends GenericDAO>(hook: ReactHook<T>, state: T) => {
     hook(Object.assign({}, state, { [name]: checked }));
   };
 
-  const handleFile = (file: string, name: string = 'image'): void => {
+  const handleFile = (file: string, name = 'image'): void => {
     hook(
       Object.assign({}, state, {
         [name]: {

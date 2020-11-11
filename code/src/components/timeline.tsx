@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon } from './icon';
 import CloudImage, { AspectRatio } from './image';
 import { Title } from './text';
-import css from 'styles/components/Form.module.scss';
+import css from 'src/styles/components/Form.module.scss';
 
 export const TimelineType: TimelineType = {
   REVERIE: { label: 'Reverie', segment: 'reveries' },

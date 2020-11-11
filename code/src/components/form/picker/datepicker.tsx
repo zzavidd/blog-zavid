@@ -11,8 +11,8 @@ import {
 import { Field, FieldRow, Select, TextInput } from '../../form';
 import { Icon } from '../../icon';
 import { Modal, ConfirmModal } from '../../modal';
-import { creationDate } from '../../../constants/settings';
-import css from '../../../styles/components/Form.module.scss';
+import { creationDate } from 'src/constants/settings';
+import css from 'src/styles/components/Form.module.scss';
 
 export default ({ name, date, onConfirm, placeholderText }) => {
   return (

@@ -3,17 +3,9 @@ import React from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 
-import css from '../styles/components/Layout.module.scss';
+import css from 'src/styles/components/Layout.module.scss';
 
 import { InvisibleButton } from './button';
-
-interface ResponsiveOptions {
-  defaultView: JSX.Element;
-  xl?: JSX.Element;
-  laptopView?: JSX.Element;
-  tabletView?: JSX.Element;
-  mobileView?: JSX.Element;
-}
 
 export const Container = ({ children, className }) => {
   const classes = classnames(css['container'], className);
@@ -104,3 +96,11 @@ export const Responsive = ({
     );
   }
 };
+
+interface ResponsiveOptions {
+  defaultView?: JSX.Element;
+  xl?: JSX.Element;
+  laptopView?: JSX.Element;
+  tabletView?: JSX.Element;
+  mobileView?: JSX.Element;
+}

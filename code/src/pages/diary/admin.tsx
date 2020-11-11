@@ -1,23 +1,28 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
+import { DiaryDAO } from '../../../classes';
 
-import { alert, reportError } from 'components/alert';
-import { AdminButton, InvisibleButton } from 'components/button';
-import { Icon } from 'components/icon';
-import { Spacer, Toolbar } from 'components/layout';
-import { ConfirmModal } from 'components/modal';
-import Tabler, { TYPE } from 'components/tabler';
-import { VanillaLink } from 'components/text';
-import { ORDER } from 'constants/strings';
+import { alert, reportError } from 'src/components/alert';
+import { AdminButton, InvisibleButton } from 'src/components/button';
+import { Icon } from 'src/components/icon';
+import { Spacer, Toolbar } from 'src/components/layout';
+import { ConfirmModal } from 'src/components/modal';
+import Tabler, {
+  TablerColumnHeader,
+  TablerItemField,
+  TablerType
+} from 'src/components/tabler';
+import { VanillaLink } from 'src/components/text';
+import { ORDER } from 'src/constants/strings';
 import {
   GET_DIARY_QUERY,
   DELETE_DIARY_QUERY
-} from 'private/api/queries/diary.queries';
+} from 'src/private/api/queries/diary.queries';
 
 export default () => {
   const [diaryEntries, setDiaryEntries] = useState([]);
-  const [selectedDiaryEntry, setSelectedDiaryEntry] = useState({});
+  const [selectedDiaryEntry, setSelectedDiaryEntry] = useState({} as DiaryDAO);
   const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
@@ -74,44 +79,47 @@ export default () => {
           }
           emptyMessage={'No diary entries found.'}
           columns={[
-            ['#', { centerAlign: true }],
-            ['Date'],
-            ['Title'],
-            ['Status'],
-            ['Content']
+            new TablerColumnHeader('#', { centerAlign: true }),
+            new TablerColumnHeader('Date'),
+            new TablerColumnHeader('Title'),
+            new TablerColumnHeader('Status'),
+            new TablerColumnHeader('Content')
           ]}
-          items={diaryEntries.map((diaryEntry, key) => {
+          items={diaryEntries.map((diaryEntry: DiaryDAO, key: number) => {
+            const content = zText.truncateText(diaryEntry.content, {
+              limit: 20
+            });
+            const date = zDate.formatDate(parseInt(diaryEntry.date as string), {
+              withWeekday: true
+            });
             return [
-              [key + 1, { type: TYPE.INDEX }],
-              [
-                zDate.formatDate(parseInt(diaryEntry.date), {
-                  withWeekday: true
-                }),
-                { icon: 'calendar-alt' }
-              ],
-              [diaryEntry.title, { icon: 'heading' }],
-              [diaryEntry.status, { icon: 'lock' }],
-              [
-                zText.truncateText(diaryEntry.content, { limit: 20 }),
-                { hideOnMobile: true }
-              ],
-              [
+              new TablerItemField(key + 1, {
+                type: TablerType.INDEX
+              }),
+              new TablerItemField(date, {
+                icon: 'calendar-alt'
+              }),
+              new TablerItemField(diaryEntry.title, { icon: 'heading' }),
+              new TablerItemField(diaryEntry.status, { icon: 'lock' }),
+              new TablerItemField(content, { hideOnMobile: true }),
+              new TablerItemField(
                 <LinkButton diaryEntry={diaryEntry} key={key} />,
-                { type: TYPE.BUTTON }
-              ],
-              [
-                <EditButton id={diaryEntry.id} key={key} />,
-                { type: TYPE.BUTTON }
-              ],
-              [
-                <DeleteButton
-                  diaryEntry={diaryEntry}
-                  key={key}
-                  setDeleteModalVisibility={setDeleteModalVisibility}
-                  setSelectedDiaryEntry={setSelectedDiaryEntry}
-                />,
-                { type: TYPE.BUTTON }
-              ]
+                { type: TablerType.BUTTON }
+              ),
+              new TablerItemField(<EditButton id={diaryEntry.id} key={key} />, {
+                type: TablerType.BUTTON
+              }),
+              new TablerItemField(
+                (
+                  <DeleteButton
+                    diaryEntry={diaryEntry}
+                    key={key}
+                    setDeleteModalVisibility={setDeleteModalVisibility}
+                    setSelectedDiaryEntry={setSelectedDiaryEntry}
+                  />
+                ),
+                { type: TablerType.BUTTON }
+              )
             ];
           })}
           distribution={'6% 20% 1fr 10% 30% 4% 4% 4%'}
@@ -125,7 +133,7 @@ export default () => {
       <ConfirmModal
         visible={deleteModalVisible}
         message={`Are you sure you want to delete the diary entry for **${zDate.formatDate(
-          parseInt(selectedDiaryEntry.date),
+          parseInt(selectedDiaryEntry.date as string),
           { withWeekday: true }
         )}**?`}
         confirmFunction={deleteDiaryEntry}

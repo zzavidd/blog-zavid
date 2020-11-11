@@ -8,16 +8,16 @@ import {
 } from '../../../classes';
 import React, { useEffect, useState } from 'react';
 import { NextPageContext } from 'next';
-import hooks from '../../constants/hooks';
-import DiaryEntryForm from '../../lib/helpers/pages/diary/form';
+import hooks from 'src/constants/hooks';
+import DiaryEntryForm from 'src/lib/helpers/pages/diary/form';
 
-import { setAlert, reportError } from '../../components/alert';
-import { ConfirmModal } from '../../components/modal';
-import { isValidDiaryEntry } from '../../constants/validations';
+import { setAlert, reportError } from 'src/components/alert';
+import { ConfirmModal } from 'src/components/modal';
+import { isValidDiaryEntry } from 'src/constants/validations';
 import {
   CREATE_DIARY_QUERY,
   UPDATE_DIARY_QUERY
-} from '../../private/api/queries/diary.queries';
+} from 'src/private/api/queries/diary.queries';
 
 import { zDate } from 'zavid-modules';
 

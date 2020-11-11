@@ -15,9 +15,9 @@ import {
   LongTextArea,
   TextInput,
   NumberInput
-} from '../../../../components/form';
-import DatePicker from '../../../../components/form/picker/datepicker';
-import { Fader } from '../../../../components/transitioner';
+} from 'src/components/form';
+import DatePicker from 'src/components/form/picker/datepicker';
+import { Fader } from 'src/components/transitioner';
 
 interface DiaryFormProps {
   isLoaded: boolean;

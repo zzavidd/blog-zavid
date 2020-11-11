@@ -6,7 +6,7 @@ import { AdminButton, InvisibleButton } from 'components/button';
 import { Icon } from 'components/icon';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
-import Tabler, { TYPE } from 'components/tabler';
+import Tabler, { TablerType } from 'components/tabler';
 import { ORDER } from 'constants/strings';
 import {
   GET_SUBSCRIBERS_QUERY,
@@ -76,7 +76,7 @@ export default () => {
           ]}
           items={subscribers.map((subscriber, key) => {
             return [
-              [subscribers.length - key, { type: TYPE.INDEX }],
+              [subscribers.length - key, { type: TablerType.INDEX }],
               [subscriber.email, { icon: 'at' }],
               [subscriber.firstname, { icon: 'user', hideIfEmpty: true }],
               [subscriber.lastname, { icon: 'user', hideIfEmpty: true }],
@@ -86,7 +86,7 @@ export default () => {
               ],
               [
                 <EditButton id={subscriber.id} key={key} />,
-                { type: TYPE.BUTTON }
+                { type: TablerType.BUTTON }
               ],
               [
                 <DeleteButton
@@ -95,7 +95,7 @@ export default () => {
                   setDeleteModalVisibility={setDeleteModalVisibility}
                   setSelectedSubscriber={setSelectedSubscriber}
                 />,
-                { type: TYPE.BUTTON }
+                { type: TablerType.BUTTON }
               ]
             ];
           })}

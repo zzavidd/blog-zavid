@@ -104,7 +104,7 @@ exports.notifyNewDiaryEntry = (diaryEntry) => {
 
   return prepareEmail(
     entity,
-    SubscriberStatic.SUBSCRIPTIONS.DIARY,
+    SubscriberStatic.SUBSCRIPTIONS.Diary,
     'diary',
     subject
   );

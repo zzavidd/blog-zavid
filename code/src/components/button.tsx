@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React, { useState, useEffect } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
-import css from 'styles/components/Button.module.scss';
+import css from 'src/styles/components/Button.module.scss';
 
 import { Icon } from './icon';
 import { Responsive } from './layout';

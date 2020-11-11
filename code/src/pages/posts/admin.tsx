@@ -1,23 +1,23 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { zLogic, zText } from 'zavid-modules';
 
-import { alert, reportError } from 'components/alert';
-import { InvisibleButton } from 'components/button';
-import { Icon } from 'components/icon';
-import { Spacer } from 'components/layout';
-import { ConfirmModal } from 'components/modal';
-import Tabler, { TYPE } from 'components/tabler';
-import { VanillaLink } from 'components/text';
-import { PostStatic, URLBuilder } from 'lib/classes';
-import BottomToolbar from 'lib/helpers/pages/posts/toolbar';
-import { updatePostFilterSettings } from 'lib/reducers';
+import { alert, reportError } from 'src/components/alert';
+import { InvisibleButton } from 'src/components/button';
+import { Icon } from 'src/components/icon';
+import { Spacer } from 'src/components/layout';
+import { ConfirmModal } from 'src/components/modal';
+import Tabler, { TablerItemField, TablerType } from 'src/components/tabler';
+import { VanillaLink } from 'src/components/text';
+import { PostStatic, URLBuilder } from 'src/lib/classes';
+import BottomToolbar from 'src/lib/helpers/pages/posts/toolbar';
+import { updatePostFilterSettings } from 'src/lib/reducers';
 import {
   DELETE_POST_QUERY,
   GET_POSTS_QUERY
-} from 'private/api/queries/post.queries';
-import css from 'styles/pages/Posts.module.scss';
+} from 'src/private/api/queries/post.queries';
+import css from 'src/styles/pages/Posts.module.scss';
 
 const PostsAdmin = () => {
   const [posts, setPosts] = useState([]);
@@ -26,7 +26,7 @@ const PostsAdmin = () => {
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
   const dispatch = useDispatch();
-  const options = useSelector(({ postFilterOptions }) => postFilterOptions);
+  const options = useSelector(({ postFilterOptions }: RootStateOrAny) => postFilterOptions);
 
   const handleOptionSelection = (event) => {
     const { name, value } = event.target;
@@ -99,7 +99,10 @@ const PostsAdmin = () => {
           ]}
           items={posts.map((post, key) => {
             return [
-              [key + 1, { type: TYPE.INDEX }],
+              new TablerItemField(key + 1, {
+                type: TablerType.
+              })
+              [key + 1, { type: TablerType.INDEX }],
               [post.title, { icon: 'heading' }],
               [
                 post.type,
@@ -116,12 +119,12 @@ const PostsAdmin = () => {
               [
                 post.image,
                 {
-                  type: TYPE.IMAGE,
+                  type: TablerType.IMAGE,
                   imageOptions: { css: css['post-admin-image'] }
                 }
               ],
-              [<LinkButton post={post} key={key} />, { type: TYPE.BUTTON }],
-              [<EditButton id={post.id} key={key} />, { type: TYPE.BUTTON }],
+              [<LinkButton post={post} key={key} />, { type: TablerType.BUTTON }],
+              [<EditButton id={post.id} key={key} />, { type: TablerType.BUTTON }],
               [
                 <DeleteButton
                   post={post}
@@ -129,7 +132,7 @@ const PostsAdmin = () => {
                   setDeleteModalVisibility={setDeleteModalVisibility}
                   setSelectedPost={setSelectedPost}
                 />,
-                { type: TYPE.BUTTON }
+                { type: TablerType.BUTTON }
               ]
             ];
           })}

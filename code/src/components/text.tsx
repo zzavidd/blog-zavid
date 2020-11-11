@@ -5,7 +5,7 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 
 import { Icon } from './icon';
-import css from 'styles/components/Text.module.scss';
+import css from 'src/styles/components/Text.module.scss';
 
 const { zLogic, zText } = require('zavid-modules');
 

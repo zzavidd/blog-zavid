@@ -1,14 +1,13 @@
 import { validate as validateEmail } from 'email-validator';
 
-import { alert } from '../components/alert';
-
 import {
   DiaryDAO,
   PostDAO,
   PostImage,
   PostStatic,
   SubscriberDAO
-} from '../../classes';
+} from 'classes';
+import { alert } from 'src/components/alert';
 
 export const isValidPost = (post: PostDAO): boolean => {
   if (!ifExists(post.title, 'Enter the post title.')) return false;
@@ -84,7 +83,7 @@ export const isValidPage = (page: any): boolean => {
 
 export const isValidEmail = (
   email: string,
-  message: string = 'Enter a valid email address.'
+  message = 'Enter a valid email address.'
 ): boolean => {
   if (!email) {
     alert.error(message);

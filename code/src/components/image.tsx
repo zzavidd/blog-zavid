@@ -1,9 +1,9 @@
 import classnames from 'classnames';
 import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
-export { cloudinaryBaseUrl } from '../constants/settings';
+export { cloudinaryBaseUrl } from 'src/constants/settings';
 
 interface CloudImageProps {
   src: string;
@@ -11,7 +11,7 @@ interface CloudImageProps {
   aspectRatio?: AspectRatio;
   containerClassName?: string;
   imageClassName?: string;
-  style?: CSSStyleDeclaration;
+  style?: CSSProperties;
   title?: string;
   version?: number;
 }
