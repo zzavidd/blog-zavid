@@ -93,7 +93,7 @@ export const Responsive = ({
 };
 
 interface Layout {
-  className: string;
+  className?: string;
   children: string | JSX.Element | JSX.Element[];
 }
 

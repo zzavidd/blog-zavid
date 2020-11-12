@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { CSSProperties, ReactElement, ReactText } from 'react';
 import { Transition } from 'react-transition-group';
 
-export const Fader = (props) => {
+export const Fader = (props: Transitioner) => {
   const { duration, delay = 0, postTransitions } = props;
 
   const defaultStyle = {
@@ -26,7 +26,7 @@ export const Fader = (props) => {
   );
 };
 
-export const Zoomer = (props) => {
+export const Zoomer = (props: Transitioner) => {
   const { duration, delay = 0, postTransitions } = props;
 
   const defaultStyle = {
@@ -51,7 +51,7 @@ export const Zoomer = (props) => {
   );
 };
 
-export const Slider = (props) => {
+export const Slider = (props: SlideTransitioner) => {
   const { duration, delay = 0, direction, postTransitions = '' } = props;
 
   const defaultStyle = {
@@ -75,7 +75,7 @@ export const Slider = (props) => {
   return (
     <Template
       {...props}
-      defaultStyle={defaultStyle}
+      defaultStyle={defaultStyle as CSSProperties}
       transitionStyles={transitionStyles}
     />
   );
@@ -89,12 +89,12 @@ const Template = ({
   hollow,
   style,
   transitionStyles
-}) => {
+}: BaseTransitioner) => {
   return (
     <Transition in={determinant} timeout={{}}>
       {(state) => {
         if (hollow) {
-          return React.cloneElement(children, {
+          return React.cloneElement(children as ReactElement, {
             style: { ...defaultStyle, ...transitionStyles[state], ...style }
           });
         } else {
@@ -114,3 +114,27 @@ const Template = ({
     </Transition>
   );
 };
+
+interface BaseTransitioner {
+  className?: string;
+  children?: ReactText | JSX.Element | JSX.Element[];
+  defaultStyle: CSSProperties;
+  transitionStyles: TransitionStyles;
+  style: CSSProperties;
+  determinant: boolean;
+  hollow: boolean;
+}
+
+interface Transitioner extends BaseTransitioner {
+  duration: number;
+  delay: number;
+  postTransitions?: string;
+}
+
+interface SlideTransitioner extends Transitioner {
+  direction: string;
+}
+
+interface TransitionStyles {
+  [key: string]: CSSProperties;
+}

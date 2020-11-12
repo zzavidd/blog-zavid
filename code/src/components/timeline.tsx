@@ -1,17 +1,18 @@
 import React from 'react';
 
+import css from 'src/styles/components/Form.module.scss';
+
 import { Icon } from './icon';
 import CloudImage, { AspectRatio } from './image';
 import { Title } from './text';
-import css from 'src/styles/components/Form.module.scss';
 
 export const TimelineType: TimelineType = {
   REVERIE: { label: 'Reverie', segment: 'reveries' },
   DIARY: { label: 'Entry', segment: 'diary' }
 };
 
-export default ({ type, previous, next }) => {
-  if (!previous.slug && !next.slug) return null;
+export default ({ type, previous, next }: Timeline) => {
+  if (!previous?.slug && !next?.slug) return null;
   return (
     <div className={css['timeline']}>
       <PrevNextEntity type={type} entity={previous} isPrevious={true} />
@@ -26,7 +27,7 @@ const PrevNextEntity = ({
   type
 }: PrevNextEntityProps) => {
   const prefix = isPrevious ? 'Previous' : 'Next';
-  const { label, segment } = type;
+  const { label, segment } = type!;
   return (
     <a
       href={`/${segment}/${entity.slug}`}
@@ -36,7 +37,9 @@ const PrevNextEntity = ({
         <Icon name={isPrevious ? 'chevron-left' : 'chevron-right'} />
         <div className={css['timeline-text']}>
           <Title className={css['timeline-text-heading']}>
-            {prefix} {label}
+            <>
+              {prefix} {label}
+            </>
           </Title>
           <div>{entity.label}</div>
         </div>
@@ -46,7 +49,7 @@ const PrevNextEntity = ({
   );
 };
 
-const EntityImage = ({ image }) => {
+const EntityImage = ({ image }: EntityImage) => {
   if (!image) return null;
   return (
     <CloudImage
@@ -58,8 +61,14 @@ const EntityImage = ({ image }) => {
   );
 };
 
+interface Timeline {
+  type: TimelineType;
+  previous?: TimelineEntity;
+  next?: TimelineEntity;
+}
+
 interface PrevNextEntityProps {
-  entity: TimelineEntity;
+  entity: TimelineEntity | undefined;
   isPrevious?: boolean;
   type?: TimelineType;
 }
@@ -77,4 +86,8 @@ interface TimelineType {
 interface TimelineTypeValues {
   label: string;
   segment: string;
+}
+
+interface EntityImage {
+  image: string | undefined;
 }

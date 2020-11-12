@@ -3,38 +3,17 @@ import classNames from 'classnames';
 import React from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
+import { zText } from 'zavid-modules';
 
-import { Icon } from './icon';
 import css from 'src/styles/components/Text.module.scss';
 
-const { zLogic, zText } = require('zavid-modules');
+import { Icon } from './icon';
 
-/**
- * A title component for headings.
- * @param {string} props - Inherited properties.
- * @param {string} props.className The CSS styling.
- * @returns {React.Component} A title component.
- */
-export const Title = ({ children, className }) => {
+export const Title = ({ children, className }: Text) => {
   const classes = classNames(css['title'], className);
   return <div className={classes}>{children}</div>;
 };
 
-/**
- * A paragraph component for a formatted body of text.
- * @param {string} props - Inherited properties from the paragraph component.
- * @param {string} props.children - The text to be formatted.
- * @param {string} [props.className] - The CSS styling.
- * @param {object} [props.substitutions] - A map of variable substitutions
- * to be made to the text.
- * @param {string} [props.cssOverrides] - The CSS styling overrides for the emphasis
- * and section formatting.
- * @param {string} [props.morelink] - The hyperlink for the embedded {@link ReadMore} component.
- * @param {string} [props.moretext] - The text to be formatted.
- * @param {object} [props.moreclass] - The CSS styling for the embedded {@link ReadMore} component.
- * @param {number} [props.truncate] - Number of words to truncate off text. No truncation by default.
- * @returns {React.Component} A formatted paragraph component.
- */
 export const Paragraph = ({
   children,
   className,
@@ -44,7 +23,7 @@ export const Paragraph = ({
   moretext,
   substitutions,
   truncate = 0
-}) => {
+}: Paragraph) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classNames(css['paragraph'], className);
 
@@ -78,8 +57,10 @@ export const Paragraph = ({
   });
 
   const ReadMoreLabel = () => {
-    if (children && children.length <= truncate) return null;
-    if (zLogic.isFalsy(moretext, morelink)) return null;
+    if (typeof children !== 'string') return null;
+    if (children.length <= truncate) return null;
+    if (!moretext || !morelink) return null;
+
     return <ReadMore className={moreclass} link={morelink} text={moretext} />;
   };
 
@@ -91,7 +72,7 @@ export const Paragraph = ({
   );
 };
 
-export const ReadMore = ({ link, text = 'Read more', className }) => {
+export const ReadMore = ({ link, text = 'Read more', className }: ReadMore) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classNames(css[`paragraph-read-more-${theme}`], className);
   return (
@@ -109,7 +90,7 @@ export const VanillaLink = ({
   href,
   children,
   openNewTab = false
-}: VanillaLinkProps) => {
+}: VanillaLink) => {
   const classes = classNames(css['vanilla-link'], className);
   return (
     <a
@@ -124,30 +105,17 @@ export const VanillaLink = ({
   );
 };
 
-export const Divider = ({ className }) => {
+export const Divider = ({ className }: Text) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classNames(css[`divider-${theme}`], className);
   return <hr className={classes} />;
 };
 
-/**
- * Component for embedding tweets into articles.
- * @param {object} props - The properties.
- * @param {number} props.id - The ID of the tweet
- * @returns {React.Component} The component.
- */
-const EmbeddedTweet = ({ id }) => {
+const EmbeddedTweet = ({ id }: EmbeddedTweet) => {
   return <TwitterTweetEmbed tweetId={id} />;
 };
 
-/**
- * Component for embedding Instagram posts into articles.
- * @param {object} props - The properties.
- * @param {string} props.url - The url of the Instagram post.
- * @param {boolean} props.hideCaption - The option to hide the post's caption.
- * @returns {React.Component} The component.
- */
-const EmbeddedInsta = ({ url }) => {
+const EmbeddedInsta = ({ url }: EmbeddedInsta) => {
   const accessToken = `${process.env.NEXT_PUBLIC_FB_APP_ID}|${process.env.NEXT_PUBLIC_FB_APP_CLIENT}`;
   return (
     <InstagramEmbed
@@ -159,9 +127,42 @@ const EmbeddedInsta = ({ url }) => {
   );
 };
 
-interface VanillaLinkProps {
-  href: string;
-  children: JSX.Element;
+interface Text {
   className?: string;
+  children?: string | JSX.Element | JSX.Element[];
+}
+
+interface Paragraph extends Text {
+  cssOverrides?: CSSOverrides;
+  moreclass?: string;
+  morelink?: string;
+  moretext?: string;
+  substitutions?: Substitutions;
+  truncate?: number | boolean;
+}
+
+interface ReadMore extends Text {
+  link: string;
+  text: string;
+}
+
+interface VanillaLink extends Text {
+  href: string;
   openNewTab?: boolean;
+}
+
+interface EmbeddedTweet {
+  id: number;
+}
+
+interface EmbeddedInsta {
+  url: string;
+}
+
+interface CSSOverrides {
+  [key: string]: string;
+}
+
+interface Substitutions {
+  [key: string]: any;
 }

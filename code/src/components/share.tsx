@@ -10,13 +10,13 @@ import {
   WhatsappIcon
 } from 'react-share';
 
-import css from 'styles/components/Share.module.scss';
+import css from 'src/styles/components/Share.module.scss';
 
 import { alert } from './alert';
 import { InvisibleButton } from './button';
 import { Icon } from './icon';
 
-export default (props) => {
+export default (props: Share) => {
   const { headline = 'Share This Post' } = props;
   return (
     <div className={css['share-block']}>
@@ -32,7 +32,7 @@ export default (props) => {
   );
 };
 
-const ShareFacebook = ({ message, url }) => {
+const ShareFacebook = ({ message, url }: Share) => {
   return (
     <FacebookShareButton quote={message} url={url}>
       <FacebookIcon size={50} round={true} />
@@ -40,7 +40,7 @@ const ShareFacebook = ({ message, url }) => {
   );
 };
 
-const ShareTwitter = ({ message, url }) => {
+const ShareTwitter = ({ message, url }: Share) => {
   const handle = 'zzavidd';
   return (
     <TwitterShareButton title={message} url={url} via={handle}>
@@ -49,7 +49,7 @@ const ShareTwitter = ({ message, url }) => {
   );
 };
 
-const ShareWhatsapp = ({ message, url }) => {
+const ShareWhatsapp = ({ message, url }: Share) => {
   return (
     <WhatsappShareButton title={message} separator={'\n'} url={url}>
       <WhatsappIcon size={50} round={true} />
@@ -57,7 +57,7 @@ const ShareWhatsapp = ({ message, url }) => {
   );
 };
 
-const ShareLinkedin = ({ message, url }) => {
+const ShareLinkedin = ({ message, url }: Share) => {
   return (
     <LinkedinShareButton title={message} url={url}>
       <LinkedinIcon size={50} round={true} />
@@ -65,7 +65,7 @@ const ShareLinkedin = ({ message, url }) => {
   );
 };
 
-const ShareLink = ({ url }) => {
+const ShareLink = ({ url }: Share) => {
   const copyLink = () => {
     navigator.clipboard.writeText(url);
     alert.success("Copied this post's link to clipboard!");
@@ -78,3 +78,9 @@ const ShareLink = ({ url }) => {
     </InvisibleButton>
   );
 };
+
+interface Share {
+  headline?: string;
+  message: string;
+  url: string;
+}

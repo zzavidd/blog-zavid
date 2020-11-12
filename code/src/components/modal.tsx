@@ -1,23 +1,14 @@
 import React from 'react';
 import { Modal as IModal } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { ButtonSpacer, CancelButton, DeleteButton } from 'components/button.js';
-import { Paragraph } from 'components/text.js';
-import css from 'styles/components/Modal.module.scss';
+import { ButtonSpacer, CancelButton, DeleteButton } from 'src/components/button.js';
+import { Paragraph } from 'src/components/text.js';
+import css from 'src/styles/components/Modal.module.scss';
 
-/**
- * A modal component.
- * @param {object} props - The props.
- * @param {boolean} props.visible - Indicates if modal is showing or not.
- * @param {React.Component} props.modalHeader - Content for the modal's header.
- * @param {React.Component} props.modalBody - Content for the modal's body.
- * @param {React.Component} props.modalFooter - Content for the modal's footer.
- * @param {Function} props.onHide - The function called when clicking outside of the modal.
- * @returns {React.Component} The component.
- */
-export const Modal = (props) => {
-  const theme = useSelector(({ theme }) => theme);
+
+export const Modal = (props: Modal) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const { visible, modalHeader, modalBody, modalFooter, onHide } = props;
 
   const Header = () => {
@@ -72,7 +63,7 @@ export const ConfirmModal = ({
   confirmText,
   closeFunction,
   visible
-}) => {
+}: ConfirmModal) => {
   return (
     <Modal
       visible={visible}
@@ -87,3 +78,19 @@ export const ConfirmModal = ({
     />
   );
 };
+
+
+interface Modal {
+  visible: boolean
+  modalHeader?: JSX.Element
+  modalBody?: JSX.Element
+  modalFooter?: JSX.Element
+  onHide: any
+}
+
+interface ConfirmModal extends Modal {
+  message: string
+  confirmFunction: any
+  confirmText: string
+  closeFunction: any
+}
