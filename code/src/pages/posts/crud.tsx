@@ -10,7 +10,7 @@ import {
   PostImage,
   PostStatic,
   PostStatus,
-  ReactChangeEvent
+  ReactInputChangeEvent
 } from '../../../classes';
 import hooks from 'src/constants/hooks';
 import PostForm from 'src/lib/helpers/pages/posts/form';
@@ -143,7 +143,7 @@ const PostCrud = ({
     setDomains(domainList);
   };
 
-  const setDefaultTypeId = (e: ReactChangeEvent): void => {
+  const setDefaultTypeId = (e: ReactInputChangeEvent): void => {
     const selectedType = e.target.value;
     const postsOfType = domains.filter(({ type }) => selectedType === type);
     setPost(

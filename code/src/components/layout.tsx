@@ -98,8 +98,8 @@ interface Layout {
 }
 
 interface Toolbar extends Layout {
-  spaceItems: boolean;
-  hasBackButton: boolean;
+  spaceItems?: boolean;
+  hasBackButton?: boolean;
 }
 
 interface ToolbarToggle extends Layout {

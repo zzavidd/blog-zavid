@@ -85,7 +85,7 @@ interface Modal {
   modalHeader?: JSX.Element
   modalBody?: JSX.Element
   modalFooter?: JSX.Element
-  onHide: any
+  onHide?: any
 }
 
 interface ConfirmModal extends Modal {

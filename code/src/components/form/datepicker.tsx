@@ -2,19 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { alert } from '../../alert';
-import {
-  ConfirmButton,
-  CancelButton,
-  InvisibleButton
-} from '../../button';
-import { Field, FieldRow, Select, TextInput } from '../../form';
-import { Icon } from '../../icon';
-import { Modal, ConfirmModal } from '../../modal';
+import { alert } from '../alert';
+import { ConfirmButton, CancelButton, InvisibleButton } from '../button';
+import { Field, FieldRow, Select, TextInput } from '.';
+import { Icon } from '../icon';
+import { Modal, ConfirmModal } from '../modal';
 import { creationDate } from 'src/constants/settings';
 import css from 'src/styles/components/Form.module.scss';
+import { ReactSelectChangeEvent, ReactHook } from 'classes';
 
-export default ({ name, date, onConfirm, placeholderText }) => {
+export default ({ name, date, onConfirm, placeholderText }: DatePicker) => {
   return (
     <DatePicker
       name={name}
@@ -28,7 +25,7 @@ export default ({ name, date, onConfirm, placeholderText }) => {
   );
 };
 
-const DatePicker = (props) => {
+const DatePicker = (props: BaseDatePicker) => {
   const { date, name, onConfirm, placeholderText, withDayOfWeek } = props;
 
   const [selectedDay, setDay] = useState(1);
@@ -127,7 +124,7 @@ const DatePickerBody = ({
   setDay,
   setMonth,
   setYear
-}) => {
+}: DatePickerBody) => {
   const startYear = minDate && minDate.getFullYear();
   const endYear = maxDate && maxDate.getFullYear();
 
@@ -139,7 +136,9 @@ const DatePickerBody = ({
           value={selectedDay}
           items={zDate.getDatesForMonth(selectedMonth)}
           placeholder={'DD'}
-          onChange={(event) => setDay(event.target.value)}
+          onChange={(event: ReactSelectChangeEvent) =>
+            setDay(parseInt(event.target.value))
+          }
         />
       </Field>
       <Field xs={6}>
@@ -148,7 +147,7 @@ const DatePickerBody = ({
           value={selectedMonth}
           items={zDate.getAllMonths()}
           placeholder={'MMMM'}
-          onChange={(event) => setMonth(event.target.value)}
+          onChange={(event) => setMonth(parseInt(event.target.value))}
         />
       </Field>
       <Field xs={3}>
@@ -157,7 +156,7 @@ const DatePickerBody = ({
           value={selectedYear}
           items={zDate.getYearsInRange(startYear, endYear)}
           placeholder={'YYYY'}
-          onChange={(event) => setYear(event.target.value)}
+          onChange={(event) => setYear(parseInt(event.target.value))}
         />
       </Field>
     </FieldRow>
@@ -171,7 +170,7 @@ const DatePickerFooter = ({
   year,
   onConfirm,
   setDatePickerVisibility
-}) => {
+}: DatePickerFooter) => {
   /** Close the datepicker. */
   const closeDatePicker = () => setDatePickerVisibility(false);
 
@@ -181,8 +180,8 @@ const DatePickerFooter = ({
     if (!month) return alert.error('Please set the month of the year.');
     if (!year) return alert.error('Please set the year.');
 
-    month = zDate.MONTHS[month.toUpperCase()].NUMBER - 1;
-    day = parseInt(day.replace(/([0-9]+)(.*)/g, '$1'));
+    month = zDate.MONTHS[(month as string).toUpperCase()].NUMBER - 1;
+    day = parseInt((day as string).replace(/([0-9]+)(.*)/g, '$1'));
 
     const date = new Date(year, month, day);
     onConfirm(date, name);
@@ -197,7 +196,10 @@ const DatePickerFooter = ({
   );
 };
 
-const ClearDateButton = ({ date, setClearDateModalVisibility }) => {
+const ClearDateButton = ({
+  date,
+  setClearDateModalVisibility
+}: ClearDateButton) => {
   if (date === null) return null;
   return (
     <InvisibleButton onClick={() => setClearDateModalVisibility(true)}>
@@ -206,13 +208,10 @@ const ClearDateButton = ({ date, setClearDateModalVisibility }) => {
   );
 };
 
-/**
- * Extract the day, month and year from a specified date.
- * @param {Date} date - The specified date.
- * @returns {object[]} The day, month and year.
- */
-const extractDates = (date) => {
-  let day, month, year;
+const extractDates = (date: string | Date): ExtractedDate => {
+  let day = 1;
+  let month = 1;
+  let year = 2000;
 
   if (date !== null) {
     date = new Date(date);
@@ -226,3 +225,47 @@ const extractDates = (date) => {
 
   return { day, month, year };
 };
+
+interface ExtractedDate {
+  day: number;
+  month: number;
+  year: number;
+}
+
+interface DatePicker {
+  name: string;
+  date: string | Date;
+  onConfirm: any;
+  placeholderText: string;
+}
+
+interface BaseDatePicker extends DatePicker {
+  withDayOfWeek?: boolean;
+  minDate: Date;
+  maxDate: Date;
+}
+
+interface DatePickerBody {
+  minDate: Date;
+  maxDate: Date;
+  selectedDay: number;
+  selectedMonth: number;
+  selectedYear: number;
+  setDay: ReactHook<number>;
+  setMonth: ReactHook<number>;
+  setYear: ReactHook<number>;
+}
+
+interface DatePickerFooter {
+  name: string;
+  day: string | number;
+  month: string | number;
+  year: number;
+  onConfirm: any;
+  setDatePickerVisibility: ReactHook<boolean>;
+}
+
+interface ClearDateButton {
+  date: string | Date;
+  setClearDateModalVisibility: ReactHook<boolean>;
+}

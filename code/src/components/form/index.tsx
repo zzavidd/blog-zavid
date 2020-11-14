@@ -1,17 +1,18 @@
 import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { Col, ColProps, Row } from 'react-bootstrap';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
+import { ReactHook, Substitutions } from 'classes';
 import {
   AdminButton,
   ButtonSpacer,
   CancelButton,
   ConfirmButton
-} from 'components/button';
-import { Spacer, Toolbar } from 'components/layout';
-import { Paragraph } from 'components/text';
-import { Fader, Slider } from 'components/transitioner';
+} from 'src/components/button';
+import { Spacer, Toolbar } from 'src/components/layout';
+import { Paragraph } from 'src/components/text';
+import { Fader, Slider } from 'src/components/transitioner';
 import css from 'styles/components/Form.module.scss';
 
 export * from './checkbox';
@@ -20,18 +21,6 @@ export * from './input';
 export * from './select';
 export * from './textarea';
 
-/**
- * A form component.
- * @param {object} props - The component props.
- * @param {string} [props.confirmButtonText] - The text displayed on the confirm button.
- * @param {Function} props.confirmFunction - The function called on clicking the confirm button.
- * @param {Function} props.cancelFunction - The function called on clicking the cancel button.
- * @param {boolean} props.isRequestPending - Indicates whether a request is currently pending.
- * @param {string} props.previewText - The text to be shown in the preview.
- * @param {object} props.substitutions - The expected text substitutions (e.g. images).
- * @param {any} props.children - The component children.
- * @returns {React.Component} The component.
- */
 export const Form = ({
   confirmButtonText = 'Submit',
   confirmFunction,
@@ -40,7 +29,7 @@ export const Form = ({
   previewText = false,
   substitutions,
   children
-}) => {
+}: Form) => {
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
 
   return (
@@ -58,7 +47,7 @@ export const Form = ({
       </div>
       <Toolbar>
         <div className={css['form-footer-buttons']}>
-          <FormAdminButton
+          <FormPreviewToggle
             previewText={previewText}
             setPreviewVisibility={setPreviewVisibility}
             isPreviewVisible={isPreviewVisible}
@@ -77,8 +66,12 @@ export const Form = ({
   );
 };
 
-const FormPreview = ({ isPreviewVisible, previewText, substitutions = {} }) => {
-  const theme = useSelector(({ theme }) => theme);
+const FormPreview = ({
+  isPreviewVisible,
+  previewText,
+  substitutions = {}
+}: FormPreview) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   return (
     <Slider
@@ -90,17 +83,18 @@ const FormPreview = ({ isPreviewVisible, previewText, substitutions = {} }) => {
       <Paragraph
         className={css['form-preview-text']}
         substitutions={substitutions}>
-        {previewText}
+        {previewText as string}
       </Paragraph>
     </Slider>
   );
 };
 
-const FormAdminButton = ({
+const FormPreviewToggle = ({
   previewText,
   setPreviewVisibility,
   isPreviewVisible
-}) => {
+}: FormPreviewToggle) => {
+  // TODO: Make previewText just string type
   if (typeof previewText !== 'string') return null;
 
   const togglePreview = () => {
@@ -114,13 +108,7 @@ const FormAdminButton = ({
   );
 };
 
-/**
- * A row of fields in the form.
- * @param {object} props - The component props.
- * @param {any} props.children - The component children.
- * @returns {React.Component} The component.
- */
-export const FieldRow = (props) => {
+export const FieldRow = (props: FieldRow) => {
   const classes = classnames(css['form-field-row'], props.className);
   return (
     <Row {...props} className={classes}>
@@ -129,12 +117,7 @@ export const FieldRow = (props) => {
   );
 };
 
-/**
- * A form field component.
- * @param {object} props - The component props.
- * @returns {React.Component} The component.
- */
-export const Field = (props) => {
+export const Field = (props: Field): JSX.Element => {
   const classes = classnames(css['form-field'], props.className);
   return (
     <Col {...props} className={classes}>
@@ -143,12 +126,7 @@ export const Field = (props) => {
   );
 };
 
-/**
- * A dynamic field component visible by condition.
- * @param {object} props - The component props.
- * @returns {React.Component} The component.
- */
-export const DynamicField = (props) => {
+export const DynamicField = (props: DynamicField) => {
   const { precondition, dependency, xs, sm, md, lg, xl } = props;
   const [isVisible, setVisibility] = useState(true);
 
@@ -171,12 +149,47 @@ export const DynamicField = (props) => {
   );
 };
 
-/**
- * A label component.
- * @param {object} props - The component props.
- * @param {string} props.children - The label text.
- * @returns {React.Component} The component.
- */
-export const Label = ({ children }) => {
+export const Label = ({ children }: Label) => {
   return <label className={css['label']}>{children}</label>;
 };
+
+interface Form {
+  confirmButtonText?: string;
+  confirmFunction: any;
+  cancelFunction: any;
+  isRequestPending?: boolean;
+  previewText?: string | boolean;
+  substitutions?: Substitutions;
+  children: JSX.Element;
+}
+
+interface FormPreview {
+  isPreviewVisible: boolean;
+  previewText: string | boolean;
+  substitutions?: Substitutions;
+}
+
+interface FormPreviewToggle {
+  isPreviewVisible: boolean;
+  previewText: string | boolean;
+  setPreviewVisibility: ReactHook<boolean>;
+}
+
+interface FieldRow {
+  className: string;
+  children: JSX.Element[];
+}
+
+interface Field extends ColProps {
+  className?: string;
+  children?: JSX.Element;
+}
+
+interface DynamicField extends Field {
+  precondition: boolean;
+  dependency: unknown;
+}
+
+interface Label {
+  children: JSX.Element;
+}

@@ -1,4 +1,4 @@
-import { IconName } from '@fortawesome/fontawesome-svg-core';
+import type { IconName } from '@fortawesome/fontawesome-svg-core';
 import React, { CSSProperties, memo, useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { forceCheck } from 'react-lazyload';

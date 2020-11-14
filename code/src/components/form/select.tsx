@@ -1,10 +1,11 @@
 import classnames from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
+import { OnSelectChangeType } from 'classes';
 import css from 'styles/components/Form.module.scss';
 
-export const Select = (props) => {
+export const Select = (props: Select) => {
   const {
     name,
     items,
@@ -16,11 +17,11 @@ export const Select = (props) => {
     isRound = false
   } = props;
 
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   // Make widgets account for values of '00' (time)
   const selectedValue = value === 0 ? '00' : value;
-  const color = !selectedValue && placeholder && '#8E8E8E';
+  const color = (!selectedValue && placeholder) ? '#8E8E8E' : 'auto';
 
   const classes = classnames(
     css[isRound ? `select-round-${theme}` : `select-${theme}`],
@@ -39,11 +40,11 @@ export const Select = (props) => {
           {placeholder}
         </option>
       ) : null}
-      {items.map((item, key) => {
-        const label = item.label || item;
-        const value = item.value || item;
+      {items.map((item: SelectItem, key: number) => {
+        const label = (item as SelectItem).label || item;
+        const value = (item as SelectItem).value || item;
         return (
-          <option key={key} value={value}>
+          <option key={key} value={value as string}>
             {label}
           </option>
         );
@@ -51,3 +52,21 @@ export const Select = (props) => {
     </select>
   );
 };
+
+interface Select {
+  name?: string;
+  items: SelectItemType;
+  value?: string | number;
+  onChange: OnSelectChangeType;
+  className?: string;
+  placeholder?: string;
+  isPlaceholderSelectable?: boolean;
+  isRound?: boolean;
+}
+
+interface SelectItem {
+  label: string | number;
+  value: string | number;
+}
+
+type SelectItemType = string[] | number[] | SelectItem[] | readonly string[];

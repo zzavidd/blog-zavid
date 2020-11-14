@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import {
   DiaryDAO,
   DiaryStatic,
-  ReactChangeEvent
+  ReactInputChangeEvent
 } from '../../../../../classes';
 
 import {
@@ -16,7 +16,7 @@ import {
   TextInput,
   NumberInput
 } from 'src/components/form';
-import DatePicker from 'src/components/form/picker/datepicker';
+import DatePicker from 'src/components/form/datepicker';
 import { Fader } from 'src/components/transitioner';
 
 interface DiaryFormProps {
@@ -44,7 +44,7 @@ const DiaryEntryForm = (props: DiaryFormProps): JSX.Element => {
             <LongTextArea
               name={'content'}
               value={diaryEntry.content}
-              onChange={(e: ReactChangeEvent) => handleTextSave(e, dispatch)}
+              onChange={(e: ReactInputChangeEvent) => handleTextSave(e, dispatch)}
               placeholder={'Scribe your thoughts and feelings...'}
             />
           </Field>
@@ -84,7 +84,7 @@ const DiaryEntryForm = (props: DiaryFormProps): JSX.Element => {
             <DatePicker
               name={'date'}
               date={diaryEntry.date}
-              onConfirm={(e: ReactChangeEvent) => handleDate(e, 'date')}
+              onConfirm={(e: ReactInputChangeEvent) => handleDate(e, 'date')}
               placeholderText={'Select the date...'}
             />
           </Field>

@@ -164,5 +164,5 @@ interface CSSOverrides {
 }
 
 interface Substitutions {
-  [key: string]: any;
+  [key: string]: string | number;
 }

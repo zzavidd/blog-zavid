@@ -18,7 +18,7 @@ export const Fader = (props: Transitioner) => {
   };
 
   return (
-    <Template
+    <BaseTransitioner
       {...props}
       defaultStyle={defaultStyle}
       transitionStyles={transitionStyles}
@@ -43,7 +43,7 @@ export const Zoomer = (props: Transitioner) => {
   };
 
   return (
-    <Template
+    <BaseTransitioner
       {...props}
       defaultStyle={defaultStyle}
       transitionStyles={transitionStyles}
@@ -73,7 +73,7 @@ export const Slider = (props: SlideTransitioner) => {
   };
 
   return (
-    <Template
+    <BaseTransitioner
       {...props}
       defaultStyle={defaultStyle as CSSProperties}
       transitionStyles={transitionStyles}
@@ -81,7 +81,7 @@ export const Slider = (props: SlideTransitioner) => {
   );
 };
 
-const Template = ({
+const BaseTransitioner = ({
   children,
   className,
   defaultStyle,
@@ -115,20 +115,20 @@ const Template = ({
   );
 };
 
-interface BaseTransitioner {
-  className?: string;
-  children?: ReactText | JSX.Element | JSX.Element[];
-  defaultStyle: CSSProperties;
-  transitionStyles: TransitionStyles;
-  style: CSSProperties;
+interface Transitioner {
   determinant: boolean;
-  hollow: boolean;
+  duration: number;
+  delay?: number;
+  postTransitions?: string;
+  hollow?: boolean;
+  children: ReactText | JSX.Element | JSX.Element[];
+  className?: string;
+  style: CSSProperties
 }
 
-interface Transitioner extends BaseTransitioner {
-  duration: number;
-  delay: number;
-  postTransitions?: string;
+interface BaseTransitioner extends Transitioner {
+  defaultStyle: CSSProperties
+  transitionStyles: TransitionStyles
 }
 
 interface SlideTransitioner extends Transitioner {

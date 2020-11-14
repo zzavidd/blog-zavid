@@ -8,7 +8,7 @@ import {
   PostDAO,
   PostImage,
   PostStatic,
-  ReactChangeEvent
+  ReactInputChangeEvent
 } from '../../../../../classes';
 
 import {
@@ -27,7 +27,7 @@ import {
   FileSelector,
   AspectRatio
 } from 'src/components/form/fileselector';
-import DatePicker from 'src/components/form/picker/datepicker';
+import DatePicker from 'src/components/form/datepicker';
 import { cloudinaryBaseUrl } from 'src/components/image';
 import { Fader } from 'src/components/transitioner';
 import css from 'src/styles/pages/Posts.module.scss';
@@ -121,7 +121,7 @@ const PostForm = (props: PostFormProps) => {
             <LongTextArea
               name={'content'}
               value={post.content}
-              onChange={(e: ReactChangeEvent) => handleTextSave(e, dispatch)}
+              onChange={(e: ReactInputChangeEvent) => handleTextSave(e, dispatch)}
               placeholder={"Write out the post's content..."}
             />
           </Field>
@@ -159,7 +159,7 @@ const PostForm = (props: PostFormProps) => {
             <DatePicker
               name={'datePublished'}
               date={post.datePublished}
-              onConfirm={(e: ReactChangeEvent) =>
+              onConfirm={(e: ReactInputChangeEvent) =>
                 handleDate(e, 'datePublished')
               }
               placeholderText={'Select the publish date...'}

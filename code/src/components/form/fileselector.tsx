@@ -1,24 +1,25 @@
 import classnames from 'classnames';
-import React, { useState, useEffect, useRef } from 'react';
-
-import { InvisibleButton } from 'components/button.js';
-import { Icon } from 'components/icon.js';
+import React, {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+import { InvisibleButton } from 'src/components/button.js';
+import { Icon } from 'src/components/icon.js';
 import {
   cloudinaryBaseUrl,
   validateCloudinaryImage
-} from 'components/image.js';
-import { Zoomer } from 'components/transitioner.js';
-import css from 'styles/components/Form.module.scss';
+} from 'src/components/image.js';
+import { Zoomer } from 'src/components/transitioner.js';
+import css from 'src/styles/components/Form.module.scss';
 
-export const AspectRatio = {
-  SQUARE: '50% 0',
-  WIDE: '28.125% 0'
-};
-
-export const FileSelector = (props) => {
+export const FileSelector = (props: FileSelector) => {
   const { className, image, isCreateOperation } = props;
 
-  const [sImage, setImage] = useState(image);
+  const [stateImage, setImage] = useState(image);
   const imageRef = useRef(null);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export const FileSelector = (props) => {
       <ChoosePrompt {...props} imageRef={imageRef} setImage={setImage} />
       <ChoiceImage
         {...props}
-        stateImage={sImage}
+        stateImage={stateImage}
         imageRef={imageRef}
         setImage={setImage}
       />
@@ -50,10 +51,10 @@ const ChoosePrompt = ({
   imageRef,
   placeholder = 'Choose an image...',
   setImage
-}) => {
+}: ChoosePrompt) => {
   if (image) return null;
 
-  const fileRef = useRef(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   /** Show preview of image. */
   const previewImage = () => {
@@ -65,7 +66,7 @@ const ChoosePrompt = ({
       'load',
       () => {
         const source = reader.result;
-        preview.src = source;
+        preview!.src = source as string;
         setImage(source);
         onChange(source);
       },
@@ -93,7 +94,12 @@ const ChoosePrompt = ({
   );
 };
 
-const ChoiceImage = ({ stateImage, onChange, imageRef, setImage }) => {
+const ChoiceImage = ({
+  stateImage,
+  onChange,
+  imageRef,
+  setImage
+}: ChoiceImage) => {
   /** Remove selected image. */
   const removeImage = () => {
     onChange(null);
@@ -119,3 +125,27 @@ const ChoiceImage = ({ stateImage, onChange, imageRef, setImage }) => {
     </Zoomer>
   );
 };
+
+interface FileSelector {
+  className: string;
+  onChange: any;
+  image: string;
+  isCreateOperation: boolean;
+  setImage: Dispatch<SetStateAction<any>>;
+  imageRef: RefObject<any>;
+}
+
+interface ChoosePrompt extends FileSelector {
+  aspectRatio?: AspectRatio;
+  placeholder?: string;
+}
+
+interface ChoiceImage extends FileSelector {
+  stateImage: string;
+  onChange: any;
+}
+
+enum AspectRatio {
+  SQUARE = '50% 0',
+  WIDE = '28.125% 0'
+}

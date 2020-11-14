@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 
-import { PostContentImageMapping, PostDAO, PostImage, ReactChangeEvent } from 'classes';
+import { PostContentImageMapping, PostDAO, PostImage, ReactInputChangeEvent } from 'classes';
 import { GenericDAO } from 'classes/interfaces/super';
 import { saveText } from 'src/lib/reducers';
 
@@ -8,12 +8,12 @@ export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export default <T extends GenericDAO>(hook: ReactHook<T>, state: T) => {
   
-  const handleText = (event: ReactChangeEvent): void => {
+  const handleText = (event: ReactInputChangeEvent): void => {
     const { name, value } = event.target;
     hook(Object.assign({}, state, { [name]: value }));
   };
 
-  const handleTextSave = (event: ReactChangeEvent, dispatch: Dispatch): void => {
+  const handleTextSave = (event: ReactInputChangeEvent, dispatch: Dispatch): void => {
     handleText(event);
     dispatch(saveText(event.target.value));
   };
@@ -24,7 +24,7 @@ export default <T extends GenericDAO>(hook: ReactHook<T>, state: T) => {
     hook(Object.assign({}, state, { [name]: date }));
   };
 
-  const handleCheck = (event: ReactChangeEvent): void => {
+  const handleCheck = (event: ReactInputChangeEvent): void => {
     const { name, checked } = event.target;
     hook(Object.assign({}, state, { [name]: checked }));
   };
