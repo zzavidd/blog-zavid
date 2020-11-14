@@ -155,8 +155,8 @@ export const Label = ({ children }: Label) => {
 
 interface Form {
   confirmButtonText?: string;
-  confirmFunction: any;
-  cancelFunction: any;
+  confirmFunction: () => void;
+  cancelFunction: () => void;
   isRequestPending?: boolean;
   previewText?: string | boolean;
   substitutions?: Substitutions;

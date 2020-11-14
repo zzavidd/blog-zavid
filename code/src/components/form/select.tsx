@@ -40,12 +40,12 @@ export const Select = (props: Select) => {
           {placeholder}
         </option>
       ) : null}
-      {items.map((item: SelectItem, key: number) => {
+      {items.map((item: unknown, key: number) => {
         const label = (item as SelectItem).label || item;
         const value = (item as SelectItem).value || item;
         return (
           <option key={key} value={value as string}>
-            {label}
+            {label as string}
           </option>
         );
       })}
@@ -69,4 +69,4 @@ interface SelectItem {
   value: string | number;
 }
 
-type SelectItemType = string[] | number[] | SelectItem[] | readonly string[];
+type SelectItemType = unknown[];

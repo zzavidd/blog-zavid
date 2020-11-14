@@ -59,7 +59,8 @@ const ChoosePrompt = ({
   /** Show preview of image. */
   const previewImage = () => {
     const preview = imageRef.current;
-    const file = fileRef.current.files[0];
+    const file: Blob = fileRef.current!.files![0];
+
     const reader = new FileReader();
 
     reader.addEventListener(
