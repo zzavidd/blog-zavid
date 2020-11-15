@@ -1,14 +1,14 @@
 import * as faker from 'faker';
-const { zDate, zString } = require('zavid-modules');
+import { zDate, zString } from 'zavid-modules';
 
-import { PostStatic } from '../../static';
 import {
+  PostStatic,
   PostDAO,
   RandomPostOptions,
   PostType,
   PostStatus,
   PostImage
-} from '../../interfaces';
+} from 'classes';
 
 /** The class for Post objects and methods. */
 export class PostBuilder {
@@ -70,7 +70,7 @@ export class PostBuilder {
       withImage = false,
       numberOfContentImages = 0
     } = options;
-    
+
     this.post = {
       title: `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`,
       type: PostStatic.randomType({ allowPageTypes }),

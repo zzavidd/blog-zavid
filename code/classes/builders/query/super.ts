@@ -1,15 +1,20 @@
-const { zLogic } = require('zavid-modules');
-import { QueryOrder } from '../../interfaces';
+import Knex, { RawQueryBuilder } from 'knex';
+import { zLogic } from 'zavid-modules';
+
+import { QueryOrder } from 'classes';
 const { isFalsy } = zLogic;
 
 export class QueryBuilder {
-
-  knex: any
-  query: any;
+  knex: Knex;
+  query: Knex | Knex.QueryBuilder;
   table: string;
 
-  constructor(knex: any, table: string, isMutation: boolean = false) {
-    if (!isMutation) this.query = knex.select().from(table);
+  constructor(knex: Knex, table: string, isMutation = false) {
+    if (!isMutation) {
+      this.query = knex.select().from(table);
+    } else {
+      this.query = knex;
+    }
     this.table = table;
     this.knex = knex;
   }
@@ -34,19 +39,20 @@ export class QueryBuilder {
    * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
   withOrder(sort: QuerySort = {}, options: QuerySortOptions = {}) {
-    let { field, order } = sort;
-    let { forStringsWithNumbers = false } = options;
+    let { order } = sort;
+    const { field } = sort;
+    const { forStringsWithNumbers = false } = options;
     if (isFalsy(order)) order = QueryOrder.ASCENDING;
 
     if (order === QueryOrder.RANDOM) {
-      this.query.orderByRaw('RAND()');
+      (this.query.orderByRaw as RawQueryBuilder)('RAND()');
     } else if (field) {
       if (forStringsWithNumbers) {
         const cases = [
           `CAST((REGEXP_REPLACE(${this.table}.${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
           `REGEXP_REPLACE(${this.table}.${field}, "[^a-z0-9]+", '') ${order}`
         ];
-        this.query.orderByRaw(cases.join(', '));
+        (this.query.orderByRaw as RawQueryBuilder)(cases.join(', '));
       } else {
         this.query.orderBy(`${this.table}.${field}`, order);
       }
@@ -65,11 +71,7 @@ export class QueryBuilder {
     return this;
   }
 
-  /**
-   * Return the built query.
-   * @returns {string} The build Knex query.
-   */
-  build(): any {
+  build(): unknown {
     return this.query;
   }
 }
@@ -78,21 +80,21 @@ export class MutationBuilder extends QueryBuilder {
   entity: string;
   table: string;
 
-  constructor(knex: any, table: string, entity: string) {
+  constructor(knex: Knex, table: string, entity: string) {
     super(knex, table, true);
     this.query = knex(table);
     this.entity = entity;
     this.table = table;
   }
 
-  insert(input: any): MutationBuilder {
+  insert<T>(input: T): MutationBuilder {
     if (isFalsy(input))
       throw new Error(`No specified ${this.entity} to insert.`);
     this.query.insert(input);
     return this;
   }
 
-  update(input: any): MutationBuilder {
+  update<T>(input: T): MutationBuilder {
     if (isFalsy(input))
       throw new Error(`No specified ${this.entity} to update.`);
     this.query.update(input);

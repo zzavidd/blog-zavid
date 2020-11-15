@@ -1,6 +1,9 @@
-import { DiaryStatus, QueryOrder } from '../../interfaces';
+import Knex from 'knex';
+import { zLogic } from 'zavid-modules';
+
+import { DiaryStatus, QueryOrder } from 'classes';
+
 import { MutationBuilder, QueryBuilder } from './super';
-const { zLogic } = require('zavid-modules');
 
 const { isFalsy } = zLogic;
 
@@ -8,7 +11,7 @@ const TABLE_NAME = 'diary';
 
 /** Builds a post query with conditions. */
 export class DiaryQueryBuilder extends QueryBuilder {
-  constructor(knex: any) {
+  constructor(knex: Knex) {
     super(knex, TABLE_NAME);
     this.knex = knex;
   }
@@ -71,7 +74,7 @@ export class DiaryQueryBuilder extends QueryBuilder {
 }
 
 export class DiaryMutationBuilder extends MutationBuilder {
-  constructor(knex: any) {
+  constructor(knex: Knex) {
     super(knex, TABLE_NAME, 'diary entry');
   }
 }

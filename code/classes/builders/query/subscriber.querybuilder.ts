@@ -1,8 +1,10 @@
+import Knex from 'knex';
+
 import { QueryBuilder, MutationBuilder } from './super';
 
 /** Builds a post query with conditions. */
 export class SubscriberQueryBuilder extends QueryBuilder {
-  constructor(knex: any) {
+  constructor(knex: Knex) {
     super(knex, 'subscribers');
   }
 
@@ -13,7 +15,7 @@ export class SubscriberQueryBuilder extends QueryBuilder {
 }
 
 export class SubscriberMutationBuilder extends MutationBuilder {
-  constructor(knex: any) {
+  constructor(knex: Knex) {
     super(knex, 'subscribers', 'subscriber');
   }
 }

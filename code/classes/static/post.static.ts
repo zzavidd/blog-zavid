@@ -1,12 +1,8 @@
-const { zLogic } = require('zavid-modules');
+import { zLogic } from 'zavid-modules';
+
+import { PostDAO, PostImage, PostType, PostStatus } from 'classes';
 
 import { isString, randomEnumValue, randomElementFromList } from '../helper';
-import {
-  PostDAO,
-  PostImage,
-  PostType,
-  PostStatus
-} from '../interfaces/post.interface';
 
 interface DirectoryMapping {
   [type: string]: string;
@@ -42,9 +38,9 @@ export class PostStatic {
    */
   static parse(post: PostDAO): PostDAO {
     const images = post.contentImages;
-    
+
     if (zLogic.isFalsy(images)) {
-      post.contentImages = null as any;
+      post.contentImages = null;
       return post;
     }
 
@@ -53,7 +49,7 @@ export class PostStatic {
         post.contentImages = JSON.parse(images as string);
       }
     } catch {
-      post.contentImages = null as any;
+      post.contentImages = null;
     }
     return post;
   }

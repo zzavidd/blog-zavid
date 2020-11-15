@@ -1,10 +1,11 @@
-import { SubscriberStatic } from 'classes/static';
 import * as faker from 'faker';
+
 import {
+  SubscriberStatic,
   SubscriberDAO,
   SubscriptionsMapping,
   SubscriptionType
-} from '../../interfaces';
+} from 'classes';
 
 /** The class for building Subscriber objects. */
 export class SubscriberBuilder {

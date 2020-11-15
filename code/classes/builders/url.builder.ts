@@ -1,9 +1,9 @@
-const { zLogic } = require('zavid-modules');
+import { zLogic } from 'zavid-modules';
 const { isFalsy } = zLogic;
 
 export class URLBuilder {
 
-  private url: string = ''
+  private url = ''
 
   /**
    * Append a value to the URL.

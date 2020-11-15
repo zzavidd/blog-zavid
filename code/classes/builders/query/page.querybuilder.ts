@@ -1,11 +1,12 @@
-const { zLogic } = require('zavid-modules');
+import Knex from 'knex';
+import { zLogic } from 'zavid-modules';
 const { isFalsy } = zLogic;
 
 import { QueryBuilder, MutationBuilder } from './super';
 
 /** Builds a post query with conditions. */
 export class PageQueryBuilder extends QueryBuilder {
-  constructor(knex: any) {
+  constructor(knex: Knex) {
     super(knex, 'pages');
   }
 
@@ -22,7 +23,7 @@ export class PageQueryBuilder extends QueryBuilder {
 }
 
 export class PageMutationBuilder extends MutationBuilder {
-  constructor(knex: any) {
+  constructor(knex: Knex) {
     super(knex, 'pages', 'page');
   }
 }

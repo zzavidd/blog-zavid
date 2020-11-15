@@ -10,7 +10,7 @@
     "test:unit": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/unit/**/*",
     "test:service": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/service/**/*",
     "test:manual": "ts-node --project test/tsconfig.test.json test/manual",
-    "lint": "eslint --ignore-path ../../.gitignore --ext .js,.ts",
+    "lint": "eslint --ignore-path ../.gitignore --ext .js,.ts,.tsx \"./**\"",
     "prettify": "prettier --ignore-path ../../.gitignore --write \"**/*.js\""
   },
   "dependencies": {
@@ -89,7 +89,6 @@
     "eslint": "^7.13.0",
     "eslint-plugin-filenames": "^1.3.2",
     "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsdoc": "^25.4.2",
     "eslint-plugin-mocha": "^7.0.0",
     "eslint-plugin-react": "^7.19.0",
     "faker": "^5.1.0",

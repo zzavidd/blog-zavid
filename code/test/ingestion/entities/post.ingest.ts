@@ -1,5 +1,5 @@
 const faker = require('faker');
-const { zDate, zString, zNumber } = require('zavid-modules');
+import { zDate, zString, zNumber } from 'zavid-modules';
 
 const {
   classes: { PostStatic, PostBuilder },

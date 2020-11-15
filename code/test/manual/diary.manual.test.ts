@@ -1,6 +1,6 @@
 import { DiaryStatic, DiaryEntryBuilder } from '../../classes';
 import { createDiaryEntry, updateDiaryEntry } from '../helper/diary.helper';
-const { zDate } = require('zavid-modules');
+import { zDate } from 'zavid-modules';
 
 export async function submitDiary() {
   const entry = new DiaryEntryBuilder().random().build();

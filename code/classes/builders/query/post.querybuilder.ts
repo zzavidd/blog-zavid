@@ -1,10 +1,10 @@
-const { zLogic } = require('zavid-modules');
+import Knex from 'knex';
+import { zLogic } from 'zavid-modules';
 const { isFalsy } = zLogic;
 
-import { QueryBuilder, MutationBuilder } from './super';
+import { PostStatus, PostType, QueryOrder, PostStatic } from 'classes';
 
-import { PostStatus, PostType, QueryOrder } from '../../interfaces';
-import { PostStatic } from '../../static';
+import { QueryBuilder, MutationBuilder } from './super';
 
 const TABLE_NAME = 'posts';
 const columns = [
@@ -16,7 +16,7 @@ const columns = [
 
 /** Builds a post query with conditions. */
 export class PostQueryBuilder extends QueryBuilder {
-  constructor(knex: any) {
+  constructor(knex: Knex) {
     super(knex.column(columns), TABLE_NAME);
     this.knex = knex;
     this.query.leftJoin(
@@ -91,7 +91,7 @@ export class PostQueryBuilder extends QueryBuilder {
 }
 
 export class PostMutationBuilder extends MutationBuilder {
-  constructor(knex: any) {
+  constructor(knex: Knex) {
     super(knex, TABLE_NAME, 'post');
   }
 }
