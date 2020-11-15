@@ -66,7 +66,7 @@ interface BaseInput {
   type?: string;
   onChange?: OnInputChangeType;
   onClick?: OnClickType;
-  className: string
+  className?: string
   style?: CSSProperties
   readOnly?: boolean
 }

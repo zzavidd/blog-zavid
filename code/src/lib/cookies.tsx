@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { alert } from 'components/alert.js';
-import { InvisibleButton } from 'components/button';
-import { Icon } from 'components/icon';
-import { Fader } from 'components/transitioner.js';
+import { InvisibleButton } from 'src/components/button';
+import { Icon } from 'src/components/icon';
+import { Fader } from 'src/components/transitioner';
 
-export const CookiePrompt = ({ acceptCookies }) => {
+export const CookiePrompt = ({ acceptCookies }: CookiePrompt) => {
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ export const CookiePrompt = ({ acceptCookies }) => {
   );
 };
 
-export const readCookie = (cookieName) => {
+export const readCookie = (cookieName: string): string => {
   const name = cookieName + '=';
   const decodedCookie = decodeURIComponent(document.cookie);
   const ca = decodedCookie.split(';');
@@ -54,30 +53,26 @@ export const readCookie = (cookieName) => {
   return '';
 };
 
-export const setCookie = (name, value, hours) => {
+export const setCookie = (name: string, value: unknown, hours: number): void => {
   const date = new Date();
   date.setTime(date.getTime() + hours * 60 * 60 * 1000);
   const expires = `expires=${date.toUTCString()}`;
   document.cookie = `${name}=${value};${expires};path=/`;
 };
 
-export const clearCookie = (name) => {
+export const clearCookie = (name: string): void => {
   setCookie(name, '', -1);
 };
 
-export const checkCookiePolicyAccepted = (message) => {
-  if (readCookie('cookiesAccepted') === 'true') {
-    return true;
-  } else {
-    if (message) {
-      return alert.error(message);
-    } else {
-      return false;
-    }
-  }
+export const checkCookiePolicyAccepted = (): boolean => {
+  return readCookie('cookiesAccepted') === 'true';
 };
 
-export const isAuthenticated = () => {
-  const user = useSelector(({ user }) => user);
+export const isAuthenticated = (): boolean => {
+  const user = useSelector(({ user }: RootStateOrAny) => user);
   return user.isAuthenticated;
 };
+
+interface CookiePrompt {
+  acceptCookies: () => void;
+}

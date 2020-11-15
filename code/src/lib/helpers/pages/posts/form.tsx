@@ -1,66 +1,42 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-// TODO: Turn all components to TypeScript
-
 import {
   PostContentImageMapping,
   PostDAO,
   PostImage,
   PostStatic,
-  ReactInputChangeEvent
-} from '../../../../../classes';
-
+  ReactTextAreaChangeEvent,
+  Substitutions
+} from 'classes';
+import { GenericForm } from 'classes/interfaces/super';
 import {
-  Form,
-  FieldRow,
-  Field,
   DynamicField,
+  Field,
+  FieldRow,
+  Form,
   Label,
-  TextInput,
+  LongTextArea,
   NumberInput,
   Select,
   ShortTextArea,
-  LongTextArea
+  TextInput
 } from 'src/components/form';
-import {
-  FileSelector,
-  AspectRatio
-} from 'src/components/form/fileselector';
 import DatePicker from 'src/components/form/datepicker';
+import { FileSelector, FSAspectRatio } from 'src/components/form/fileselector';
 import { cloudinaryBaseUrl } from 'src/components/image';
 import { Fader } from 'src/components/transitioner';
+import { Handlers } from 'src/constants/hooks';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const NUMBER_OF_CONTENT_IMAGES = 6;
 
-interface PostFormProps {
-  isLoaded: boolean;
-  post: PostDAO;
-  domains: PostDAO[];
-  isCreateOperation: boolean;
-  handlers: any;
-  confirmFunction: Promise<void> | Function;
-  confirmButtonText: string;
-  cancelFunction: Function;
-  isRequestPending: boolean;
-}
-
-interface PostContentImageInputs {
-  post: PostDAO;
-  isCreateOperation: boolean;
-  handleContentImages: Function;
-}
-
-interface PostImageSubstitutions {
-  [key: string]: string;
-}
-
-const PostForm = (props: PostFormProps) => {
+const PostForm = (props: PostForm) => {
   const { post, domains, handlers, isCreateOperation, isLoaded } = props;
   const {
     handleText,
     handleTextSave,
+    handleSelection,
     handleDate,
     handleFile,
     handleContentImages,
@@ -69,7 +45,7 @@ const PostForm = (props: PostFormProps) => {
 
   const dispatch = useDispatch();
 
-  const substitutions: PostImageSubstitutions = {};
+  const substitutions: Substitutions = {};
   const contentImages = Object.values(post.contentImages || []);
   contentImages
     .filter((e) => e)
@@ -87,7 +63,7 @@ const PostForm = (props: PostFormProps) => {
             <Label>Title:</Label>
             <TextInput
               name={'title'}
-              value={post.title}
+              value={post.title!}
               onChange={handleText}
               placeholder={'Enter the title'}
             />
@@ -98,7 +74,7 @@ const PostForm = (props: PostFormProps) => {
               name={'type'}
               items={PostStatic.TYPES}
               value={post.type}
-              onChange={setDefaultTypeId}
+              onChange={setDefaultTypeId!}
               placeholder={'Select post type'}
             />
           </Field>
@@ -109,7 +85,7 @@ const PostForm = (props: PostFormProps) => {
             <Label>Type ID:</Label>
             <NumberInput
               name={'typeId'}
-              value={post.typeId}
+              value={post.typeId!}
               onChange={handleText}
               placeholder={'Type ID'}
             />
@@ -120,8 +96,10 @@ const PostForm = (props: PostFormProps) => {
             <Label>Content:</Label>
             <LongTextArea
               name={'content'}
-              value={post.content}
-              onChange={(e: ReactInputChangeEvent) => handleTextSave(e, dispatch)}
+              value={post.content!}
+              onChange={(e: ReactTextAreaChangeEvent) =>
+                handleTextSave(e, dispatch)
+              }
               placeholder={"Write out the post's content..."}
             />
           </Field>
@@ -136,7 +114,7 @@ const PostForm = (props: PostFormProps) => {
               name={'domainId'}
               items={domains}
               value={post.domainId}
-              onChange={handleText}
+              onChange={handleSelection}
               placeholder={'Select page domain'}
             />
           </DynamicField>
@@ -148,7 +126,7 @@ const PostForm = (props: PostFormProps) => {
               name={'status'}
               items={PostStatic.STATUSES}
               value={post.status}
-              onChange={handleText}
+              onChange={handleSelection}
             />
           </Field>
           <DynamicField
@@ -158,10 +136,8 @@ const PostForm = (props: PostFormProps) => {
             <Label>Date Published:</Label>
             <DatePicker
               name={'datePublished'}
-              date={post.datePublished}
-              onConfirm={(e: ReactInputChangeEvent) =>
-                handleDate(e, 'datePublished')
-              }
+              date={post.datePublished!}
+              onConfirm={(date: string) => handleDate(date, 'datePublished')}
               placeholderText={'Select the publish date...'}
             />
           </DynamicField>
@@ -171,7 +147,7 @@ const PostForm = (props: PostFormProps) => {
             <Label>Excerpt:</Label>
             <ShortTextArea
               name={'excerpt'}
-              value={post.excerpt}
+              value={post.excerpt!}
               onChange={handleText}
               placeholder={"Enter the post's excerpt..."}
             />
@@ -184,7 +160,7 @@ const PostForm = (props: PostFormProps) => {
               image={(post.image as PostImage).source}
               isCreateOperation={isCreateOperation}
               onChange={handleFile}
-              aspectRatio={AspectRatio.WIDE}
+              aspectRatio={FSAspectRatio.WIDE}
             />
           </Field>
         </FieldRow>
@@ -219,10 +195,10 @@ const ContentImages = ({
     contentImages.push(
       <FileSelector
         key={i}
-        image={source}
+        image={source!}
         isCreateOperation={isCreateOperation}
-        onChange={(img: string) => handleContentImages(img, i)}
-        aspectRatio={AspectRatio.WIDE}
+        onChange={(img) => handleContentImages(img as string, i)}
+        aspectRatio={FSAspectRatio.WIDE}
       />
     );
   }
@@ -230,3 +206,17 @@ const ContentImages = ({
 };
 
 export default PostForm;
+
+interface PostForm extends GenericForm {
+  isLoaded: boolean;
+  post: PostDAO;
+  domains: PostDAO[];
+  handlers: Handlers;
+  isCreateOperation: boolean;
+}
+
+interface PostContentImageInputs {
+  post: PostDAO;
+  isCreateOperation: boolean;
+  handleContentImages: (file: string, i: number) => void;
+}

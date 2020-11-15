@@ -1,7 +1,5 @@
 /* eslint-disable jsdoc/require-returns */
 import { useMutation, useQuery } from '@apollo/client';
-import { NextPageContext } from 'next';
-import React, { useEffect, useState } from 'react';
 import {
   Operation,
   PostBuilder,
@@ -10,13 +8,14 @@ import {
   PostImage,
   PostStatic,
   PostStatus,
-  ReactInputChangeEvent
-} from '../../../classes';
-import hooks from 'src/constants/hooks';
-import PostForm from 'src/lib/helpers/pages/posts/form';
-
+  ReactSelectChangeEvent
+} from 'classes';
+import { NextPageContext } from 'next';
+import React, { useEffect, useState } from 'react';
 import { alert, reportError, setAlert } from 'src/components/alert';
+import hooks from 'src/constants/hooks';
 import { isValidPost } from 'src/constants/validations';
+import PostForm from 'src/lib/helpers/pages/posts/form';
 import {
   CREATE_POST_QUERY,
   GET_POSTS_QUERY,
@@ -143,7 +142,7 @@ const PostCrud = ({
     setDomains(domainList);
   };
 
-  const setDefaultTypeId = (e: ReactInputChangeEvent): void => {
+  const setDefaultTypeId = (e: ReactSelectChangeEvent): void => {
     const selectedType = e.target.value;
     const postsOfType = domains.filter(({ type }) => selectedType === type);
     setPost(

@@ -12,6 +12,9 @@ export interface PostDAO extends GenericDAO {
   image?: PostImage | string;
   contentImages?: PostContentImages;
   domainId?: number;
+  domainTitle?: string;
+  domainType?: PostType
+  domainSlug?: string
 }
 
 export interface PostImage {

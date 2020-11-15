@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { PageDAO } from 'classes';
+import { GenericForm } from 'classes/interfaces/super';
 import {
   Form,
   FieldRow,
@@ -9,10 +11,11 @@ import {
   LongTextArea,
   TextInput,
   Checkbox
-} from 'components/form';
-import { Fader } from 'components/transitioner';
+} from 'src/components/form';
+import { Fader } from 'src/components/transitioner';
+import { Handlers } from 'src/constants/hooks';
 
-export default (props) => {
+export default (props: PageForm) => {
   const { page, handlers, isLoaded } = props;
   const { handleText, handleCheck } = handlers;
 
@@ -24,7 +27,7 @@ export default (props) => {
             <Label>Title:</Label>
             <TextInput
               name={'title'}
-              value={page.title}
+              value={page.title!}
               onChange={handleText}
               placeholder={'Enter the title'}
             />
@@ -33,7 +36,7 @@ export default (props) => {
             <Label>Slug:</Label>
             <TextInput
               name={'slug'}
-              value={page.slug}
+              value={page.slug!}
               onChange={handleText}
               placeholder={'Enter the slug'}
               leadingComponent={<span>/</span>}
@@ -44,7 +47,7 @@ export default (props) => {
             <Checkbox
               name={'isEmbed'}
               label={'This page is just embedded text'}
-              checked={page.isEmbed}
+              checked={page.isEmbed!}
               onChange={handleCheck}
             />
           </Field>
@@ -54,7 +57,7 @@ export default (props) => {
             <Label>Content:</Label>
             <LongTextArea
               name={'content'}
-              value={page.content}
+              value={page.content!}
               onChange={handleText}
               placeholder={"Write out the page's content..."}
             />
@@ -65,7 +68,7 @@ export default (props) => {
             <Label>Excerpt:</Label>
             <ShortTextArea
               name={'excerpt'}
-              value={page.excerpt}
+              value={page.excerpt!}
               onChange={handleText}
               placeholder={"Enter the post's excerpt..."}
             />
@@ -75,3 +78,13 @@ export default (props) => {
     </Fader>
   );
 };
+
+export interface PageForm extends GenericForm {
+  page: PageDAO;
+  handlers: Handlers;
+  isLoaded: boolean;
+  confirmFunction?: () => void;
+  confirmButtonText: string;
+  cancelFunction?: () => void;
+  isRequestPending: boolean;
+}

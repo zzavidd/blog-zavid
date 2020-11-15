@@ -1,21 +1,31 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
-import { alert, reportError } from 'components/alert';
-import { AdminButton, InvisibleButton } from 'components/button';
-import { Icon } from 'components/icon';
-import { Spacer, Toolbar } from 'components/layout';
-import { ConfirmModal } from 'components/modal';
-import Tabler, { TablerType } from 'components/tabler';
-import { ORDER } from 'constants/strings';
+import {
+  EditButton,
+  QueryOrder,
+  ReactHook,
+  SubscriberDAO,
+  SubscriptionsMapping
+} from 'classes';
+import { alert, reportError } from 'src/components/alert';
+import { AdminButton, InvisibleButton } from 'src/components/button';
+import { Icon } from 'src/components/icon';
+import { Spacer, Toolbar } from 'src/components/layout';
+import { ConfirmModal } from 'src/components/modal';
+import Tabler, {
+  TablerColumnHeader,
+  TablerItemCell,
+  TablerType
+} from 'src/components/tabler';
 import {
   GET_SUBSCRIBERS_QUERY,
   DELETE_SUBSCRIBER_QUERY
-} from 'private/api/queries/subscriber.queries';
+} from 'src/private/api/queries/subscriber.queries';
 
 export default () => {
   const [subscribers, setSubscribers] = useState([]);
-  const [selectedSubscriber, setSelectedSubscriber] = useState({});
+  const [selectedSubscriber, setSelectedSubscriber] = useState({} as SubscriberDAO);
   const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
@@ -29,8 +39,8 @@ export default () => {
     variables: {
       sort: {
         field: 'createTime',
-        order: ORDER.DESCENDING
-      },
+        order: QueryOrder.DESCENDING
+      }
     },
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true
@@ -47,7 +57,7 @@ export default () => {
   }, [queryLoading, networkStatus]);
 
   const deleteSubscriber = () => {
-    const { id, email } = selectedSubscriber;
+    const { id, email }: SubscriberDAO = selectedSubscriber;
     Promise.resolve()
       .then(() => deleteSubscriberMutation({ variables: { id } }))
       .then(() => {
@@ -68,35 +78,44 @@ export default () => {
           }
           emptyMessage={'No subscribers found.'}
           columns={[
-            ['#', { centerAlign: true }],
-            ['Email'],
-            ['First Name'],
-            ['Last Name'],
-            ['Subscriptions']
+            new TablerColumnHeader('#', { centerAlign: true }),
+            new TablerColumnHeader('Email'),
+            new TablerColumnHeader('First Name'),
+            new TablerColumnHeader('Last Name'),
+            new TablerColumnHeader('Subscriptions')
           ]}
-          items={subscribers.map((subscriber, key) => {
+          items={subscribers.map((subscriber: SubscriberDAO, key: number) => {
             return [
-              [subscribers.length - key, { type: TablerType.INDEX }],
-              [subscriber.email, { icon: 'at' }],
-              [subscriber.firstname, { icon: 'user', hideIfEmpty: true }],
-              [subscriber.lastname, { icon: 'user', hideIfEmpty: true }],
-              [
-                showSubscriptionPreferences(subscriber.subscriptions),
+              new TablerItemCell(subscribers.length - key, {
+                type: TablerType.INDEX
+              }),
+              new TablerItemCell(subscriber.email, { icon: 'at' }),
+              new TablerItemCell(subscriber.firstname, {
+                icon: 'user',
+                hideIfEmpty: true
+              }),
+              new TablerItemCell(subscriber.lastname, {
+                icon: 'user',
+                hideIfEmpty: true
+              }),
+              new TablerItemCell(
+                showSubscriptionPreferences(subscriber.subscriptions as SubscriptionsMapping),
                 { icon: 'check-square', hideIfEmpty: true }
-              ],
-              [
-                <EditButton id={subscriber.id} key={key} />,
+              ),
+              new TablerItemCell(<EditButton id={subscriber.id!} key={key} />, {
+                type: TablerType.BUTTON
+              }),
+              new TablerItemCell(
+                (
+                  <DeleteButton
+                    subscriber={subscriber}
+                    key={key}
+                    setDeleteModalVisibility={setDeleteModalVisibility}
+                    setSelectedSubscriber={setSelectedSubscriber}
+                  />
+                ),
                 { type: TablerType.BUTTON }
-              ],
-              [
-                <DeleteButton
-                  subscriber={subscriber}
-                  key={key}
-                  setDeleteModalVisibility={setDeleteModalVisibility}
-                  setSelectedSubscriber={setSelectedSubscriber}
-                />,
-                { type: TablerType.BUTTON }
-              ]
+              )
             ];
           })}
           distribution={'6% 1fr 0.7fr 0.7fr 30% 4% 4%'}
@@ -118,7 +137,7 @@ export default () => {
   );
 };
 
-const showSubscriptionPreferences = (subscriptions) => {
+const showSubscriptionPreferences = (subscriptions: SubscriptionsMapping) => {
   return (
     <>
       {Object.entries(subscriptions)
@@ -137,11 +156,11 @@ const showSubscriptionPreferences = (subscriptions) => {
   );
 };
 
-const navigateToCreateForm = () => {
+const navigateToCreateForm = (): void => {
   location.href = '/admin/subscribers/add';
 };
 
-const EditButton = ({ id }) => {
+const EditButton = ({ id }: EditButton) => {
   const navigateToLink = () =>
     (location.href = `/admin/subscribers/edit/${id}`);
   return (
@@ -155,7 +174,7 @@ const DeleteButton = ({
   subscriber,
   setDeleteModalVisibility,
   setSelectedSubscriber
-}) => {
+}: DeleteButton) => {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);
     setSelectedSubscriber(subscriber);
@@ -167,3 +186,9 @@ const DeleteButton = ({
     </InvisibleButton>
   );
 };
+
+interface DeleteButton {
+  subscriber: SubscriberDAO;
+  setDeleteModalVisibility: (event: boolean) => void;
+  setSelectedSubscriber: ReactHook<SubscriberDAO>;
+}

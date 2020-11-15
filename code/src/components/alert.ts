@@ -24,7 +24,7 @@ interface Alert {
   message: string;
 }
 
-enum AlertType {
+export enum AlertType {
   SUCCESS = 'success',
   ERROR = 'error',
   INFO = 'info'

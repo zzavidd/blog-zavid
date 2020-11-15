@@ -1,23 +1,24 @@
 import { useQuery } from '@apollo/client';
-import { DiaryStatic } from 'lib/classes';
+import { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { alert } from 'components/alert.js';
-import { AdminButton } from 'components/button';
-import { Spacer, Toolbar } from 'components/layout';
-import { Paragraph, Title, VanillaLink } from 'components/text.js';
-import { Fader } from 'components/transitioner.js';
-import { ORDER } from 'constants/strings.js';
-import { isAuthenticated } from 'lib/cookies';
-import { GET_DIARY_QUERY } from 'private/api/queries/diary.queries';
-import css from 'styles/pages/Diary.module.scss';
+import { DiaryDAO, DiaryStatic } from 'classes';
+import { alert } from 'src/components/alert';
+import { AdminButton } from 'src/components/button';
+import { Spacer, Toolbar } from 'src/components/layout';
+import { Paragraph, Title, VanillaLink } from 'src/components/text';
+import { Fader } from 'src/components/transitioner';
+import { ORDER } from 'src/constants/strings';
+import { isAuthenticated } from 'src/lib/cookies';
+import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
+import css from 'src/styles/pages/Diary.module.scss';
 
 const DIARY_HEADING = `Zavid's Diary`;
 
-const DiaryIndex = ({ diaryIntro }) => {
-  const theme = useSelector(({ theme }) => theme);
+const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [diaryEntries, setDiaryEntries] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
@@ -63,7 +64,7 @@ const DiaryIndex = ({ diaryIntro }) => {
 
 const navigateToDiaryAdmin = () => (location.href = '/admin/diary');
 
-const DiaryGrid = ({ diaryEntries }) => {
+const DiaryGrid = ({ diaryEntries }: DiaryGrid) => {
   return (
     <div className={css['diary-grid']}>
       {diaryEntries.map((diaryEntry, key) => (
@@ -73,15 +74,17 @@ const DiaryGrid = ({ diaryEntries }) => {
   );
 };
 
-const DiaryEntry = memo(({ diaryEntry, idx }) => {
-  const theme = useSelector(({ theme }) => theme);
+const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
   }, [isLoaded]);
 
-  const date = zDate.formatDate(parseInt(diaryEntry.date), { withWeekday: true });
+  const date = zDate.formatDate(parseInt(diaryEntry.date as string), {
+    withWeekday: true
+  });
   const link = `/diary/${diaryEntry.slug}`;
   return (
     <VanillaLink href={link}>
@@ -110,8 +113,21 @@ const DiaryEntry = memo(({ diaryEntry, idx }) => {
   );
 });
 
-DiaryIndex.getInitialProps = async ({ query }) => {
+DiaryIndex.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };
 };
 
 export default DiaryIndex;
+
+interface DiaryIndex {
+  diaryIntro: string;
+}
+
+interface DiaryGrid {
+  diaryEntries: DiaryDAO[];
+}
+
+interface DiaryEntry {
+  diaryEntry: DiaryDAO;
+  idx: number;
+}

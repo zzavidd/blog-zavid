@@ -1,22 +1,23 @@
+import { NextPageContext } from 'next';
 import React from 'react';
 import { zDate, zLogic } from 'zavid-modules';
 
-import { BackButton, AdminButton } from 'components/button';
-import CloudImage, { cloudinaryBaseUrl, Signature } from 'components/image';
-import { Spacer, Toolbar } from 'components/layout';
-import ShareBlock from 'components/share';
-import { Paragraph, Title, Divider } from 'components/text';
-import Timeline, { TimelineType } from 'components/timeline';
-import { PostStatic } from 'lib/classes';
-import { isAuthenticated } from 'lib/cookies';
-import css from 'styles/pages/Posts.module.scss';
+import { PostDAO, PostStatic, Substitutions } from 'classes';
+import { BackButton, AdminButton } from 'src/components/button';
+import CloudImage, { cloudinaryBaseUrl, Signature } from 'src/components/image';
+import { Spacer, Toolbar } from 'src/components/layout';
+import ShareBlock from 'src/components/share';
+import { Paragraph, Title, Divider } from 'src/components/text';
+import Timeline, { TimelineType } from 'src/components/timeline';
+import { isAuthenticated } from 'src/lib/cookies';
+import css from 'src/styles/pages/Posts.module.scss';
 
-const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
+const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
   const shareMessage = `"${post.title}" on ZAVID`;
 
-  const substitutions = {};
-  const contentImages = JSON.parse(post.contentImages) || [];
-  contentImages.forEach((image, key) => {
+  const substitutions: Substitutions = {};
+  const contentImages = JSON.parse(post.contentImages as string) || [];
+  contentImages.forEach((image: string, key: number) => {
     substitutions[`image${key + 1}`] = `![](${cloudinaryBaseUrl}/${image})`;
   });
 
@@ -26,7 +27,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
         <Title className={css['post-single-title']}>{post.title}</Title>
         <PostDate post={post} />
         <CloudImage
-          src={post.image}
+          src={post.image as string}
           containerClassName={css['post-single-image-container']}
           imageClassName={css['post-single-image']}
         />
@@ -40,12 +41,12 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
           type={TimelineType.REVERIE}
           previous={{
             slug: previousPost.slug,
-            image: previousPost.image,
+            image: previousPost.image as string,
             label: previousPost.title
           }}
           next={{
             slug: nextPost.slug,
-            image: nextPost.image,
+            image: nextPost.image as string,
             label: nextPost.title
           }}
         />
@@ -55,7 +56,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
       <Toolbar spaceItems={true} hasBackButton={true}>
         <BackButton onClick={navigateToReveries}>Back to Reveries</BackButton>
         {isAuthenticated() && (
-          <AdminButton onClick={() => navigateToEdit(post.id)}>
+          <AdminButton onClick={() => navigateToEdit(post.id!)}>
             Edit Reverie
           </AdminButton>
         )}
@@ -64,19 +65,35 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }) => {
   );
 };
 
-const navigateToReveries = () => (location.href = '/reveries');
-const navigateToEdit = (id) => (location.href = `/admin/posts/edit/${id}`);
+const navigateToReveries = (): void => {
+  location.href = '/reveries';
+};
+const navigateToEdit = (id: number): void => {
+  location.href = `/admin/posts/edit/${id}`;
+};
 
-const PostDate = ({ post }) => {
+const PostDate = ({ post }: PostDate) => {
   if (zLogic.isFalsy(post, post.datePublished)) return null;
   if (PostStatic.isPrivate(post)) return null;
 
-  const datePublished = zDate.formatDate(post.datePublished, { withWeekday: true });
+  const datePublished = zDate.formatDate(post.datePublished, {
+    withWeekday: true
+  });
   return <div className={css['post-single-date']}>{datePublished}</div>;
 };
 
-PostSingle.getInitialProps = async ({ query }) => {
+PostSingle.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };
 };
 
 export default PostSingle;
+
+interface PostSingle {
+  post: PostDAO;
+  nextPost: PostDAO;
+  previousPost: PostDAO;
+}
+
+interface PostDate {
+  post: PostDAO
+}

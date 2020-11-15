@@ -2,20 +2,25 @@ import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
-import { alert, reportError } from 'components/alert';
-import { AdminButton, InvisibleButton } from 'components/button';
-import { Icon } from 'components/icon';
-import { Spacer, Toolbar } from 'components/layout';
-import { ConfirmModal } from 'components/modal';
-import Tabler, { TablerType } from 'components/tabler';
+import { EditButton, PageDAO, ReactHook } from 'classes';
+import { alert, reportError } from 'src/components/alert';
+import { AdminButton, InvisibleButton } from 'src/components/button';
+import { Icon } from 'src/components/icon';
+import { Spacer, Toolbar } from 'src/components/layout';
+import { ConfirmModal } from 'src/components/modal';
+import Tabler, {
+  TablerColumnHeader,
+  TablerItemCell,
+  TablerType
+} from 'src/components/tabler';
 import {
   GET_PAGES_QUERY,
   DELETE_PAGE_QUERY
-} from 'private/api/queries/page.queries';
+} from 'src/private/api/queries/page.queries';
 
 export default () => {
   const [pages, setPages] = useState([]);
-  const [selectedPage, setSelectedPage] = useState({});
+  const [selectedPage, setSelectedPage] = useState({} as PageDAO);
   const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
@@ -41,7 +46,7 @@ export default () => {
   }, [queryLoading, networkStatus]);
 
   const deletePage = () => {
-    const { id, title } = selectedPage;
+    const { id, title }: PageDAO = selectedPage;
     Promise.resolve()
       .then(() => deletePageMutation({ variables: { id } }))
       .then(() => {
@@ -62,44 +67,50 @@ export default () => {
           }
           emptyMessage={'No pages found.'}
           columns={[
-            ['#', { centerAlign: true }],
-            ['Title'],
-            ['Slug'],
-            ['Excerpt'],
-            ['Content'],
-            ['Last Modified']
+            new TablerColumnHeader('#', { centerAlign: true }),
+            new TablerColumnHeader('Title'),
+            new TablerColumnHeader('Slug'),
+            new TablerColumnHeader('Excerpt'),
+            new TablerColumnHeader('Content'),
+            new TablerColumnHeader('Last Modified')
           ]}
-          items={pages.map((page, key) => {
+          items={pages.map((page: PageDAO, key: number) => {
             return [
-              [key + 1, { type: TablerType.INDEX }],
-              [page.title, { icon: 'heading' }],
-              [
-                page.slug ? `/${page.slug}` : '',
-                { icon: 'link', hideIfEmpty: true }
-              ],
-              [
+              new TablerItemCell(key + 1, { type: TablerType.INDEX }),
+              new TablerItemCell(page.title!, { icon: 'heading' }),
+              new TablerItemCell(page.slug ? `/${page.slug}` : '', {
+                icon: 'link',
+                hideIfEmpty: true
+              }),
+              new TablerItemCell(
                 zText.truncateText(page.excerpt, { limit: 30 }),
                 { hideOnMobile: true }
-              ],
-              [
+              ),
+              new TablerItemCell(
                 zText.truncateText(page.content, { limit: 30 }),
                 { hideOnMobile: true }
-              ],
-              [
-                zDate.formatDate(parseInt(page.lastModified)),
+              ),
+              new TablerItemCell(
+                zDate.formatDate(parseInt(page.lastModified as string)),
                 { icon: 'clock' }
-              ],
-              [<LinkButton page={page} key={key} />, { type: TablerType.BUTTON }],
-              [<EditButton id={page.id} key={key} />, { type: TablerType.BUTTON }],
-              [
-                <DeleteButton
-                  page={page}
-                  key={key}
-                  setDeleteModalVisibility={setDeleteModalVisibility}
-                  setSelectedPage={setSelectedPage}
-                />,
+              ),
+              new TablerItemCell(<LinkButton page={page} key={key} />, {
+                type: TablerType.BUTTON
+              }),
+              new TablerItemCell(<EditButton id={page.id!} key={key} />, {
+                type: TablerType.BUTTON
+              }),
+              new TablerItemCell(
+                (
+                  <DeleteButton
+                    page={page}
+                    key={key}
+                    setDeleteModalVisibility={setDeleteModalVisibility}
+                    setSelectedPage={setSelectedPage}
+                  />
+                ),
                 { type: TablerType.BUTTON }
-              ]
+              )
             ];
           })}
           distribution={'6% 0.8fr 10% 1fr 1fr 30% 4% 4% 4%'}
@@ -123,8 +134,8 @@ const navigateToCreateForm = () => {
   location.href = '/admin/pages/add';
 };
 
-const LinkButton = ({ page }) => {
-  if (page.isEmbed) return true;
+const LinkButton = ({ page }: LinkButton) => {
+  if (page.isEmbed) return null;
 
   const navigateToLink = () => (location.href = `/${page.slug}`);
 
@@ -135,7 +146,7 @@ const LinkButton = ({ page }) => {
   );
 };
 
-const EditButton = ({ id }) => {
+const EditButton = ({ id }: EditButton) => {
   const navigateToLink = () => (location.href = `/admin/pages/edit/${id}`);
   return (
     <InvisibleButton onClick={navigateToLink}>
@@ -144,7 +155,11 @@ const EditButton = ({ id }) => {
   );
 };
 
-const DeleteButton = ({ page, setDeleteModalVisibility, setSelectedPage }) => {
+const DeleteButton = ({
+  page,
+  setDeleteModalVisibility,
+  setSelectedPage
+}: DeleteButton) => {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);
     setSelectedPage(page);
@@ -156,3 +171,13 @@ const DeleteButton = ({ page, setDeleteModalVisibility, setSelectedPage }) => {
     </InvisibleButton>
   );
 };
+
+interface LinkButton {
+  page: PageDAO;
+}
+
+interface DeleteButton {
+  page: PageDAO;
+  setDeleteModalVisibility: (event: boolean) => void;
+  setSelectedPage: ReactHook<PageDAO>;
+}

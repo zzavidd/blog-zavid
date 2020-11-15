@@ -1,6 +1,6 @@
 import InstagramEmbed from '@aarnila/react-instagram-embed';
 import classNames from 'classnames';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zText } from 'zavid-modules';
@@ -11,7 +11,7 @@ import { Icon } from './icon';
 
 export const Title = ({ children, className }: Text) => {
   const classes = classNames(css['title'], className);
-  return <div className={classes}>{children}</div>;
+  return <div className={classes}>{children as string}</div>;
 };
 
 export const Paragraph = ({
@@ -129,7 +129,7 @@ const EmbeddedInsta = ({ url }: EmbeddedInsta) => {
 
 interface Text {
   className?: string;
-  children?: string | JSX.Element | JSX.Element[];
+  children?: ReactNode;
 }
 
 interface Paragraph extends Text {

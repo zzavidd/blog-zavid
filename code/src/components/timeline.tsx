@@ -6,7 +6,7 @@ import { Icon } from './icon';
 import CloudImage, { AspectRatio } from './image';
 import { Title } from './text';
 
-export const TimelineType: TimelineType = {
+export const TimelineType: TimelineTypes = {
   REVERIE: { label: 'Reverie', segment: 'reveries' },
   DIARY: { label: 'Entry', segment: 'diary' }
 };
@@ -79,11 +79,11 @@ interface TimelineEntity {
   image?: string;
 }
 
-interface TimelineType {
-  [key: string]: TimelineTypeValues;
+interface TimelineTypes {
+  [key: string]: TimelineType;
 }
 
-interface TimelineTypeValues {
+interface TimelineType {
   label: string;
   segment: string;
 }

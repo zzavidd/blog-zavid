@@ -75,7 +75,7 @@ export const Signature = ({ className }: Signature) => {
 };
 
 interface Signature {
-  className: string;
+  className?: string;
 }
 
 export default CloudImage;

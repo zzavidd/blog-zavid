@@ -2,9 +2,11 @@ import type { IconName } from '@fortawesome/fontawesome-svg-core';
 import classnames from 'classnames';
 import React from 'react';
 
+import { OnClickType, OnInputChangeType } from 'classes';
 import css from 'src/styles/components/Form.module.scss';
 
 import { InvisibleButton } from '../button';
+import { Icon } from '../icon';
 
 export const Checkbox = ({
   name,
@@ -28,7 +30,12 @@ export const Checkbox = ({
   );
 };
 
-export const Switch = ({ onChange, checked, checkedIcon, uncheckedIcon }: Switch) => {
+export const Switch = ({
+  onChange,
+  checked,
+  checkedIcon,
+  uncheckedIcon
+}: Switch) => {
   return (
     <InvisibleButton onClick={onChange}>
       <div
@@ -36,7 +43,7 @@ export const Switch = ({ onChange, checked, checkedIcon, uncheckedIcon }: Switch
           css[checked ? 'switch-panel-checked' : 'switch-panel-unchecked']
         }>
         <div className={css['switch-dial']}>
-          {checked ? checkedIcon : uncheckedIcon}
+          <Icon name={checked ? checkedIcon : uncheckedIcon} />
         </div>
       </div>
     </InvisibleButton>
@@ -47,13 +54,13 @@ interface Checkbox {
   name: string;
   label: string;
   checked: boolean;
-  onChange: any;
+  onChange: OnInputChangeType;
   className?: string;
 }
 
 interface Switch {
-  checkedIcon: IconName
-  uncheckedIcon: IconName
+  checkedIcon: IconName;
+  uncheckedIcon: IconName;
   checked: boolean;
-  onChange: any;
+  onChange: OnClickType;
 }

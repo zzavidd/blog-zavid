@@ -2,7 +2,7 @@ import React from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { OnTextareaChangeType } from 'classes';
+import { OnTextAreaChangeType } from 'classes';
 import css from 'styles/components/Form.module.scss';
 
 export const ShortTextArea = (props: TextArea) => {
@@ -36,7 +36,7 @@ const TextArea = ({
 interface TextArea {
   name: string;
   value: string;
-  onChange: OnTextareaChangeType;
+  onChange: OnTextAreaChangeType;
   placeholder?: string;
-  minRows: number;
+  minRows?: number;
 }

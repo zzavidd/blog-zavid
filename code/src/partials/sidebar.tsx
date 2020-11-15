@@ -1,18 +1,18 @@
 import { useQuery } from '@apollo/client';
 import React, { memo, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { alert } from 'components/alert.js';
-import CloudImage from 'components/image.js';
-import { Title, VanillaLink } from 'components/text.js';
-import { Zoomer } from 'components/transitioner.js';
-import { PostStatic } from 'lib/classes';
-import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
-import css from 'styles/Partials.module.scss';
+import { PostDAO, PostStatic } from 'classes';
+import { alert } from 'src/components/alert';
+import CloudImage from 'src/components/image';
+import { Title, VanillaLink } from 'src/components/text';
+import { Zoomer } from 'src/components/transitioner';
+import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
+import css from 'src/styles/Partials.module.scss';
 
 export const RightSidebar = () => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [recentPosts, setRecentPosts] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
@@ -48,15 +48,20 @@ export const RightSidebar = () => {
   );
 };
 
-const RecentPost = memo(({ post }) => {
-  const theme = useSelector(({ theme }) => theme);
+const RecentPost = memo(({ post }: RecentPostProps) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
   }, []);
 
-  const datePublished = zDate.formatDate(parseInt(post.datePublished), { withWeekday: true });
+  const datePublished = zDate.formatDate(
+    parseInt(post.datePublished as string),
+    {
+      withWeekday: true
+    }
+  );
   const link = `/reveries/${post.slug}`;
   return (
     <VanillaLink href={link}>
@@ -74,14 +79,18 @@ const RecentPost = memo(({ post }) => {
   );
 });
 
-const RecentPostImage = ({ post }) => {
+const RecentPostImage = ({ post }: RecentPostProps) => {
   if (!post.image) return null;
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <CloudImage
-      src={post.image}
+      src={post.image as string}
       alt={post.title}
       containerClassName={css[`recent-post-image-${theme}`]}
     />
   );
 };
+
+interface RecentPostProps {
+  post: PostDAO;
+}

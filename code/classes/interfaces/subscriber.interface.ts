@@ -1,5 +1,6 @@
-export interface SubscriberDAO {
-  id?: number;
+import { GenericDAO } from "./super";
+
+export interface SubscriberDAO extends GenericDAO {
   email?: string;
   firstname?: string;
   lastname?: string;
@@ -14,4 +15,9 @@ export interface SubscriptionsMapping {
 export enum SubscriptionType {
   Reverie = 'Reveries',
   Diary = 'Diary'
+}
+
+export interface SubscriberPayload {
+  id?: number;
+  subscriber: SubscriberDAO;
 }

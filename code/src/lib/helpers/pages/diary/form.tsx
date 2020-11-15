@@ -1,37 +1,25 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  DiaryDAO,
-  DiaryStatic,
-  ReactInputChangeEvent
-} from '../../../../../classes';
 
+import { DiaryDAO, DiaryStatic, ReactTextAreaChangeEvent } from 'classes';
+import { GenericForm } from 'classes/interfaces/super';
 import {
-  Form,
-  FieldRow,
   Field,
+  FieldRow,
+  Form,
   Label,
-  Select,
   LongTextArea,
-  TextInput,
-  NumberInput
+  NumberInput,
+  Select,
+  TextInput
 } from 'src/components/form';
 import DatePicker from 'src/components/form/datepicker';
 import { Fader } from 'src/components/transitioner';
+import { Handlers } from 'src/constants/hooks';
 
-interface DiaryFormProps {
-  isLoaded: boolean;
-  diaryEntry: DiaryDAO;
-  handlers: any;
-  confirmFunction: Promise<void> | Function;
-  confirmButtonText: string;
-  cancelFunction: Function;
-  isRequestPending: boolean;
-}
-
-const DiaryEntryForm = (props: DiaryFormProps): JSX.Element => {
+const DiaryEntryForm = (props: DiaryForm) => {
   const { diaryEntry, handlers, isLoaded } = props;
-  const { handleText, handleTextSave, handleDate } = handlers;
+  const { handleText, handleSelection, handleTextSave, handleDate } = handlers;
 
   const dispatch = useDispatch();
 
@@ -43,8 +31,10 @@ const DiaryEntryForm = (props: DiaryFormProps): JSX.Element => {
             <Label>Content:</Label>
             <LongTextArea
               name={'content'}
-              value={diaryEntry.content}
-              onChange={(e: ReactInputChangeEvent) => handleTextSave(e, dispatch)}
+              value={diaryEntry.content!}
+              onChange={(e: ReactTextAreaChangeEvent) =>
+                handleTextSave(e as ReactTextAreaChangeEvent, dispatch)
+              }
               placeholder={'Scribe your thoughts and feelings...'}
             />
           </Field>
@@ -54,7 +44,7 @@ const DiaryEntryForm = (props: DiaryFormProps): JSX.Element => {
             <Label>Title:</Label>
             <TextInput
               name={'title'}
-              value={diaryEntry.title}
+              value={diaryEntry.title!}
               onChange={handleText}
               placeholder={'Enter the title'}
             />
@@ -63,7 +53,7 @@ const DiaryEntryForm = (props: DiaryFormProps): JSX.Element => {
             <Label>Entry No.:</Label>
             <NumberInput
               name={'entryNumber'}
-              value={diaryEntry.entryNumber}
+              value={diaryEntry.entryNumber!}
               onChange={handleText}
               placeholder={'No.'}
             />
@@ -76,15 +66,15 @@ const DiaryEntryForm = (props: DiaryFormProps): JSX.Element => {
               name={'status'}
               items={DiaryStatic.STATUSES}
               value={diaryEntry.status}
-              onChange={handleText}
+              onChange={handleSelection}
             />
           </Field>
           <Field md={6}>
             <Label>Date:</Label>
             <DatePicker
               name={'date'}
-              date={diaryEntry.date}
-              onConfirm={(e: ReactInputChangeEvent) => handleDate(e, 'date')}
+              date={diaryEntry.date!}
+              onConfirm={(date: string) => handleDate(date, 'date')}
               placeholderText={'Select the date...'}
             />
           </Field>
@@ -95,3 +85,9 @@ const DiaryEntryForm = (props: DiaryFormProps): JSX.Element => {
 };
 
 export default DiaryEntryForm;
+
+interface DiaryForm extends GenericForm {
+  diaryEntry: DiaryDAO;
+  handlers: Handlers;
+  isLoaded: boolean;
+}

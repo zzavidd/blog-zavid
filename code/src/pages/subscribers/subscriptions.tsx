@@ -1,23 +1,25 @@
 import { useMutation } from '@apollo/client';
+import { NextPageContext } from 'next';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { alert, setAlert, reportError } from 'components/alert';
-import { ConfirmButton, InvisibleButton } from 'components/button';
-import { Container } from 'components/layout';
-import { ConfirmModal } from 'components/modal';
-import { Title } from 'components/text';
-import PreferenceChecks from 'lib/helpers/pages/subscribers/preferences';
+import { SubscriberDAO, SubscriptionsMapping } from 'classes';
+import { alert, setAlert, reportError, AlertType } from 'src/components/alert';
+import { ConfirmButton, InvisibleButton } from 'src/components/button';
+import { Container } from 'src/components/layout';
+import { ConfirmModal } from 'src/components/modal';
+import { Title } from 'src/components/text';
+import PreferenceChecks from 'src/lib/helpers/pages/subscribers/preferences';
 import {
   UPDATE_SUBSCRIBER_QUERY,
   DELETE_SUBSCRIBER_QUERY
-} from 'private/api/queries/subscriber.queries';
-import css from 'styles/pages/Subscribers.module.scss';
+} from 'src/private/api/queries/subscriber.queries';
+import css from 'src/styles/pages/Subscribers.module.scss';
 
-const SubscriptionPreferences = ({ subscriber }) => {
-  const theme = useSelector(({ theme }) => theme);
+const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
-  const [preferences, setPreferences] = useState(subscriber.subscriptions);
+  const [preferences, setPreferences] = useState(subscriber.subscriptions as SubscriptionsMapping);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [updateSubscriberMutation] = useMutation(UPDATE_SUBSCRIBER_QUERY);
   const [deleteSubscriberMutation] = useMutation(DELETE_SUBSCRIBER_QUERY);
@@ -50,7 +52,7 @@ const SubscriptionPreferences = ({ subscriber }) => {
       .then(() => deleteSubscriberMutation({ variables: { id } }))
       .then(() => {
         setAlert({
-          type: 'success',
+          type: AlertType.SUCCESS,
           message: `You've successfully unsubscribed from my blog.`
         });
         setDeleteModalVisibility(false);
@@ -93,8 +95,14 @@ const SubscriptionPreferences = ({ subscriber }) => {
   );
 };
 
-SubscriptionPreferences.getInitialProps = async ({ query }) => {
+SubscriptionPreferences.getInitialProps = async ({
+  query
+}: NextPageContext) => {
   return { ...query };
 };
 
 export default SubscriptionPreferences;
+
+interface SubscriptionsProps {
+  subscriber: SubscriberDAO;
+}

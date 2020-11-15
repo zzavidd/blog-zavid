@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { cloudinaryBaseUrl } from 'components/image';
-import { domain } from 'constants/settings';
+import { cloudinaryBaseUrl } from 'src/components/image';
+import { domain } from 'src/constants/settings';
 
 export default ({
   title = 'Page Not Found',
   ogUrl = '',
   description = '',
   cardImage = 'v1600638270/static/bg/card-home.jpg'
-}) => {
+}: MetaProps) => {
   return (
     <>
       {/* Page information */}
@@ -47,3 +47,10 @@ export default ({
     </>
   );
 };
+
+interface MetaProps {
+  title?: string;
+  ogUrl?: string;
+  description?: string;
+  cardImage?: string;
+}

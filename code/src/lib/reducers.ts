@@ -1,17 +1,7 @@
+import { PostStatus, PostType } from 'classes';
 import { AnyAction, combineReducers, createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-
-interface PostFiltersState {
-  limit: number;
-  field: string;
-  order: string;
-  type: string | null;
-}
-
-interface UserState {
-  isAuthenticated: boolean;
-}
 
 /**
  * ACTIONS.
@@ -122,3 +112,15 @@ export default () => {
   let persistor = persistStore(store);
   return { store, persistor };
 };
+
+export interface PostFiltersState {
+  limit?: number;
+  field?: string;
+  order?: string;
+  type?: PostType | null;
+  status?: PostStatus
+}
+
+interface UserState {
+  isAuthenticated: boolean;
+}

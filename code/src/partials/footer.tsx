@@ -2,16 +2,16 @@ import { useMutation } from '@apollo/client';
 import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 
-import { alert, reportError } from 'components/alert';
-import { ConfirmButton } from 'components/button';
-import { FieldRow, Field, TextInput } from 'components/form';
-import { Icon } from 'components/icon';
-import { Title, VanillaLink } from 'components/text';
-import { copyright, accounts } from 'constants/settings';
-import { isValidEmail } from 'constants/validations';
-import { SubscriberStatic } from 'lib/classes';
-import { CREATE_SUBSCRIBER_QUERY } from 'private/api/queries/subscriber.queries';
-import css from 'styles/Partials.module.scss';
+import { SubscriberStatic } from 'classes';
+import { alert, reportError } from 'src/components/alert';
+import { ConfirmButton } from 'src/components/button';
+import { FieldRow, Field, TextInput } from 'src/components/form';
+import { Icon } from 'src/components/icon';
+import { Title, VanillaLink } from 'src/components/text';
+import { copyright, accounts } from 'src/constants/settings';
+import { isValidEmail } from 'src/constants/validations';
+import { CREATE_SUBSCRIBER_QUERY } from 'src/private/api/queries/subscriber.queries';
+import css from 'src/styles/Partials.module.scss';
 
 const footerLinks = [
   { name: 'About Zavid', url: '/about' },

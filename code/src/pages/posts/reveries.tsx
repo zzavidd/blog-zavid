@@ -1,25 +1,31 @@
 import { useQuery } from '@apollo/client';
+import { NextPageContext } from 'next';
 import React, { useState, useEffect, memo } from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { alert } from 'components/alert.js';
-import { AdminButton } from 'components/button';
-import CloudImage from 'components/image.js';
-import { Partitioner, Spacer, Toolbar, Responsive } from 'components/layout';
-import { LazyLoader } from 'components/loader.js';
-import { Title, Paragraph, Divider } from 'components/text.js';
-import { Zoomer } from 'components/transitioner.js';
-import { ORDER } from 'constants/strings.js';
-import { PostStatic } from 'lib/classes';
-import { isAuthenticated } from 'lib/cookies';
-import { RightSidebar } from 'partials/sidebar';
-import { GET_POSTS_QUERY } from 'private/api/queries/post.queries';
+import { PostDAO, PostStatic } from 'classes';
+import { alert } from 'src/components/alert';
+import { AdminButton } from 'src/components/button';
+import CloudImage from 'src/components/image';
+import {
+  Partitioner,
+  Spacer,
+  Toolbar,
+  Responsive
+} from 'src/components/layout';
+import { LazyLoader } from 'src/components/loader';
+import { Title, Paragraph, Divider } from 'src/components/text';
+import { Zoomer } from 'src/components/transitioner';
+import { ORDER } from 'src/constants/strings';
+import { isAuthenticated } from 'src/lib/cookies';
+import { RightSidebar } from 'src/partials/sidebar';
+import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'styles/pages/Reveries.module.scss';
 
 const REVERIES_HEADING = 'Reveries';
 
-const ReveriesIndex = ({ reveriesIntro }) => {
+const ReveriesIndex = ({ reveriesIntro }: ReveriesIndexProps) => {
   const [reveries, setReveries] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
@@ -70,12 +76,13 @@ const ReveriesIndex = ({ reveriesIntro }) => {
 
 const navigateToPostAdmin = () => (location.href = '/admin/posts');
 
-const ReveriesHeading = ({ reveriesIntro }) => {
+const ReveriesHeading = ({ reveriesIntro }: ReveriesIndexProps) => {
   return (
     <div>
       <Title className={css['reveries-heading']}>{REVERIES_HEADING}</Title>
       <div className={css[`reveries-introduction`]}>
-        <Paragraph cssOverrides={{ paragraph: css[`reveries-introduction-paragraph`] }}>
+        <Paragraph
+          cssOverrides={{ paragraph: css[`reveries-introduction-paragraph`] }}>
           {reveriesIntro}
         </Paragraph>
       </div>
@@ -84,11 +91,11 @@ const ReveriesHeading = ({ reveriesIntro }) => {
   );
 };
 
-const ReverieList = ({ reveries, reveriesIntro }) => {
+const ReverieList = ({ reveries, reveriesIntro }: ReverieList) => {
   return (
     <>
       <div className={css['reveries-list']}>
-      <ReveriesHeading reveriesIntro={reveriesIntro} />
+        <ReveriesHeading reveriesIntro={reveriesIntro} />
         {reveries.map((reverie, key) => (
           <Reverie reverie={reverie} key={key} />
         ))}
@@ -97,11 +104,13 @@ const ReverieList = ({ reveries, reveriesIntro }) => {
   );
 };
 
-const Reverie = memo(({ reverie }) => {
-  const theme = useSelector(({ theme }) => theme);
+const Reverie = memo(({ reverie }: ReverieProps) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [isInView, setInView] = useState(false);
 
-  const datePublished = zDate.formatDate(parseInt(reverie.datePublished), { withWeekday: true });
+  const datePublished = zDate.formatDate(parseInt(reverie.datePublished as string), {
+    withWeekday: true
+  });
   const link = `/reveries/${reverie.slug}`;
   return (
     <LazyLoader setInView={setInView}>
@@ -129,20 +138,32 @@ const Reverie = memo(({ reverie }) => {
   );
 });
 
-const ReverieImage = ({ reverie }) => {
-  const theme = useSelector(({ theme }) => theme);
+const ReverieImage = ({ reverie }: ReverieProps) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   if (!reverie.image) return null;
   return (
     <CloudImage
-      src={reverie.image}
+      src={reverie.image as string}
       alt={reverie.title}
       containerClassName={css[`reveries-image-${theme}`]}
     />
   );
 };
 
-ReveriesIndex.getInitialProps = async ({ query }) => {
+ReveriesIndex.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };
 };
 
-export default ReveriesIndex;
+interface ReveriesIndexProps {
+  reveriesIntro: string;
+}
+
+interface ReverieList {
+  reveries: PostDAO[];
+  reveriesIntro: string;
+}
+
+interface ReverieProps {
+  reverie: PostDAO
+}
+

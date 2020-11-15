@@ -3,14 +3,25 @@ import React, { useEffect, useState } from 'react';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { zLogic, zText } from 'zavid-modules';
 
+import {
+  EditButton,
+  PostDAO,
+  PostStatic,
+  ReactHook,
+  ReactSelectChangeEvent,
+  URLBuilder
+} from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { InvisibleButton } from 'src/components/button';
 import { Icon } from 'src/components/icon';
 import { Spacer } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
-import Tabler, { TablerItemCell, TablerType } from 'src/components/tabler';
+import Tabler, {
+  TablerColumnHeader,
+  TablerItemCell,
+  TablerType
+} from 'src/components/tabler';
 import { VanillaLink } from 'src/components/text';
-import { PostStatic, URLBuilder } from 'src/lib/classes';
 import BottomToolbar from 'src/lib/helpers/pages/posts/toolbar';
 import { updatePostFilterSettings } from 'src/lib/reducers';
 import {
@@ -21,14 +32,16 @@ import css from 'src/styles/pages/Posts.module.scss';
 
 const PostsAdmin = () => {
   const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState({});
+  const [selectedPost, setSelectedPost] = useState({} as PostDAO);
   const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
   const dispatch = useDispatch();
-  const options = useSelector(({ postFilterOptions }: RootStateOrAny) => postFilterOptions);
+  const options = useSelector(
+    ({ postFilterOptions }: RootStateOrAny) => postFilterOptions
+  );
 
-  const handleOptionSelection = (event) => {
+  const handleOptionSelection = (event: ReactSelectChangeEvent) => {
     const { name, value } = event.target;
     dispatch(updatePostFilterSettings({ [name]: value }));
   };
@@ -69,7 +82,7 @@ const PostsAdmin = () => {
   }, [queryLoading, options, networkStatus]);
 
   const deletePost = () => {
-    const { id, title } = selectedPost;
+    const { id, title }: PostDAO = selectedPost;
     Promise.resolve()
       .then(() => deletePostMutation({ variables: { id } }))
       .then(() => {
@@ -90,50 +103,49 @@ const PostsAdmin = () => {
           }
           emptyMessage={'No posts found.'}
           columns={[
-            ['#', { centerAlign: true }],
-            ['Title'],
-            ['Type'],
-            ['Content'],
-            ['Status'],
-            ['Image', { centerAlign: true }]
+            new TablerColumnHeader('#', { centerAlign: true }),
+            new TablerColumnHeader('Title'),
+            new TablerColumnHeader('Type'),
+            new TablerColumnHeader('Content'),
+            new TablerColumnHeader('Status'),
+            new TablerColumnHeader('Image', { centerAlign: true })
           ]}
-          items={posts.map((post, key) => {
+          items={posts.map((post: PostDAO, key: number) => {
             return [
               new TablerItemCell(key + 1, {
-                type: TablerType.
-              })
-              [key + 1, { type: TablerType.INDEX }],
-              [post.title, { icon: 'heading' }],
-              [
-                post.type,
-                {
-                  icon: 'newspaper',
-                  subvalue: post.domainId && post.domainTitle
-                }
-              ],
-              [
+                type: TablerType.INDEX
+              }),
+              new TablerItemCell(post.title, { icon: 'heading' }),
+              new TablerItemCell(post.type, {
+                icon: 'newspaper',
+                subvalue: (post.domainId && post.domainTitle) as string
+              }),
+              new TablerItemCell(
                 zText.truncateText(post.content, { limit: 30 }),
                 { hideOnMobile: true }
-              ],
-              [post.status, { icon: 'lock' }],
-              [
-                post.image,
-                {
-                  type: TablerType.IMAGE,
-                  imageOptions: { css: css['post-admin-image'] }
-                }
-              ],
-              [<LinkButton post={post} key={key} />, { type: TablerType.BUTTON }],
-              [<EditButton id={post.id} key={key} />, { type: TablerType.BUTTON }],
-              [
-                <DeleteButton
-                  post={post}
-                  key={key}
-                  setDeleteModalVisibility={setDeleteModalVisibility}
-                  setSelectedPost={setSelectedPost}
-                />,
+              ),
+              new TablerItemCell(post.status, { icon: 'lock' }),
+              new TablerItemCell(post.image as string, {
+                type: TablerType.IMAGE,
+                imageOptions: { css: css['post-admin-image'] }
+              }),
+              new TablerItemCell(<LinkButton post={post} key={key} />, {
+                type: TablerType.BUTTON
+              }),
+              new TablerItemCell(<EditButton id={post.id!} key={key} />, {
+                type: TablerType.BUTTON
+              }),
+              new TablerItemCell(
+                (
+                  <DeleteButton
+                    post={post}
+                    key={key}
+                    setDeleteModalVisibility={setDeleteModalVisibility}
+                    setSelectedPost={setSelectedPost}
+                  />
+                ),
                 { type: TablerType.BUTTON }
-              ]
+              )
             ];
           })}
           distribution={'6% 1fr 10% 1fr 10% 8% 4% 4% 4%'}
@@ -154,22 +166,22 @@ const PostsAdmin = () => {
   );
 };
 
-const LinkButton = ({ post }) => {
+const LinkButton = ({ post }: LinkButton) => {
   if (zLogic.isFalsy(post.slug)) return null;
 
   const url = new URLBuilder();
 
   if (PostStatic.isPage(post)) {
-    const base = PostStatic.getDirectory(post.domainType);
+    const base = PostStatic.getDirectory(post.domainType!);
     url.appendSegment(base);
-    url.appendSegment(post.domainSlug);
-    url.appendSegment(post.slug);
+    url.appendSegment(post.domainSlug!);
+    url.appendSegment(post.slug!);
   } else {
-    const base = PostStatic.getDirectory(post.type);
+    const base = PostStatic.getDirectory(post.type!);
     url.appendSegment(base);
-    url.appendSegment(post.slug);
+    url.appendSegment(post.slug!);
   }
-  
+
   const link = url.build();
 
   return (
@@ -179,7 +191,7 @@ const LinkButton = ({ post }) => {
   );
 };
 
-const EditButton = ({ id }) => {
+const EditButton = ({ id }: EditButton) => {
   const navigateToLink = () => (location.href = `/admin/posts/edit/${id}`);
   return (
     <InvisibleButton onClick={navigateToLink}>
@@ -188,7 +200,11 @@ const EditButton = ({ id }) => {
   );
 };
 
-const DeleteButton = ({ post, setDeleteModalVisibility, setSelectedPost }) => {
+const DeleteButton = ({
+  post,
+  setDeleteModalVisibility,
+  setSelectedPost
+}: DeleteButton) => {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);
     setSelectedPost(
@@ -206,3 +222,13 @@ const DeleteButton = ({ post, setDeleteModalVisibility, setSelectedPost }) => {
 };
 
 export default PostsAdmin;
+
+interface LinkButton {
+  post: PostDAO;
+}
+
+interface DeleteButton {
+  post: PostDAO;
+  setDeleteModalVisibility: (event: boolean) => void;
+  setSelectedPost: ReactHook<PostDAO>;
+}

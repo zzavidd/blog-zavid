@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import LazyLoad from 'react-lazyload';
 import VisibilitySensor from 'react-visibility-sensor';
 
-import { ReactHook } from 'src/constants/hooks';
+import { ReactHook } from 'classes';
 
 interface LazyLoaderProps {
-  children: JSX.Element;
+  children: ReactNode;
   setInView: ReactHook<boolean>;
-  height: number;
-  offset: number;
+  height?: number;
+  offset?: number;
 }
 
 /**

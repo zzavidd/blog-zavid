@@ -1,23 +1,22 @@
 import { useMutation } from '@apollo/client';
-import { SubscriberStatic } from 'lib/classes';
+import { SubscriberBuilder, SubscriberDAO, SubscriberPayload } from 'classes';
 import React, { useEffect, useState } from 'react';
-
-import { alert, reportError } from 'components/alert';
-import { ConfirmButton } from 'components/button';
-import { FieldRow, Field, Label, TextInput } from 'components/form';
-import { Title } from 'components/text';
-import { Fader } from 'components/transitioner';
-import hooks from 'constants/hooks';
-import { isValidSubscriber } from 'constants/validations';
-import { CREATE_SUBSCRIBER_QUERY } from 'private/api/queries/subscriber.queries';
-import css from 'styles/pages/Subscribers.module.scss';
+import { alert, reportError } from 'src/components/alert';
+import { ConfirmButton } from 'src/components/button';
+import { Field, FieldRow, Label, TextInput } from 'src/components/form';
+import { Title } from 'src/components/text';
+import { Fader } from 'src/components/transitioner';
+import hooks from 'src/constants/hooks';
+import { isValidSubscriber } from 'src/constants/validations';
+import { CREATE_SUBSCRIBER_QUERY } from 'src/private/api/queries/subscriber.queries';
+import css from 'src/styles/pages/Subscribers.module.scss';
 
 export default () => {
   const [subscriber, setSubscriber] = useState({
     email: '',
     firstname: '',
     lastname: ''
-  });
+  } as SubscriberDAO);
   const [isLoaded, setLoaded] = useState(false);
   const [isRequestPending, setRequestPending] = useState(false);
 
@@ -74,7 +73,7 @@ export default () => {
           <Label>Email:</Label>
           <TextInput
             name={'email'}
-            value={subscriber.email}
+            value={subscriber.email!}
             onChange={handleText}
             placeholder={'Enter your email address'}
           />
@@ -85,7 +84,7 @@ export default () => {
           <Label>First Name:</Label>
           <TextInput
             name={'firstname'}
-            value={subscriber.firstname}
+            value={subscriber.firstname!}
             onChange={handleText}
             placeholder={'(Optional) Enter your first name'}
           />
@@ -94,7 +93,7 @@ export default () => {
           <Label>Last Name:</Label>
           <TextInput
             name={'lastname'}
-            value={subscriber.lastname}
+            value={subscriber.lastname!}
             onChange={handleText}
             placeholder={'(Optional) Enter your last name'}
           />
@@ -112,20 +111,15 @@ export default () => {
   );
 };
 
-/**
- * Builds the payload to send via the request.
- * @param {object} clientSubscriber The subscriber from state.
- * @returns {object} The subscriber to submit.
- */
-const buildPayload = (clientSubscriber) => {
+const buildPayload = (clientSubscriber: SubscriberDAO): SubscriberPayload => {
   const { email, firstname, lastname } = clientSubscriber;
 
-  const subscriber = {
-    email: email.trim(),
-    firstname: firstname.trim(),
-    lastname: lastname.trim(),
-    subscriptions: SubscriberStatic.defaultSubscriptions()
-  };
+  const subscriber = new SubscriberBuilder()
+    .withEmail(email)
+    .withFirstName(firstname)
+    .withLastName(lastname)
+    .withDefaultSubscriptions()
+    .build();
 
   return { subscriber };
 };

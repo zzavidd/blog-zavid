@@ -1,24 +1,41 @@
 import { Dispatch } from 'redux';
 
-import { PostContentImageMapping, PostDAO, PostImage, ReactInputChangeEvent } from 'classes';
+import {
+  PostContentImageMapping,
+  PostDAO,
+  PostImage,
+  ReactHook,
+  ReactInputChangeEvent,
+  ReactSelectChangeEvent,
+  ReactTextAreaChangeEvent,
+  SubscriptionsMapping
+} from 'classes';
 import { GenericDAO } from 'classes/interfaces/super';
 import { saveText } from 'src/lib/reducers';
 
-export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
-
-export default <T extends GenericDAO>(hook: ReactHook<T>, state: T) => {
-  
-  const handleText = (event: ReactInputChangeEvent): void => {
+const handlers = <T extends GenericDAO>(
+  hook: ReactHook<T>,
+  state: T
+): Handlers => {
+  const handleText = (
+    event: ReactInputChangeEvent | ReactTextAreaChangeEvent
+  ): void => {
     const { name, value } = event.target;
     hook(Object.assign({}, state, { [name]: value }));
   };
 
-  const handleTextSave = (event: ReactInputChangeEvent, dispatch: Dispatch): void => {
+  const handleSelection = (event: ReactSelectChangeEvent): void => {
+    const { name, value } = event.target;
+    hook(Object.assign({}, state, { [name]: value }));
+  };
+
+  const handleTextSave = (
+    event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
+    dispatch: Dispatch
+  ): void => {
     handleText(event);
     dispatch(saveText(event.target.value));
   };
-
-  const handleSelection = handleText;
 
   const handleDate = (date: string, name = 'date'): void => {
     hook(Object.assign({}, state, { [name]: date }));
@@ -29,7 +46,7 @@ export default <T extends GenericDAO>(hook: ReactHook<T>, state: T) => {
     hook(Object.assign({}, state, { [name]: checked }));
   };
 
-  const handleFile = (file: string, name = 'image'): void => {
+  const handleFile = (file: string | null, name = 'image'): void => {
     hook(
       Object.assign({}, state, {
         [name]: {
@@ -41,7 +58,8 @@ export default <T extends GenericDAO>(hook: ReactHook<T>, state: T) => {
   };
 
   const handleContentImages = (file: string, i: number): void => {
-    const contentImages = (state as PostDAO).contentImages as PostContentImageMapping;
+    const contentImages = (state as PostDAO)
+      .contentImages as PostContentImageMapping;
 
     contentImages[`image${i}`] = {
       source: file,
@@ -65,3 +83,20 @@ export default <T extends GenericDAO>(hook: ReactHook<T>, state: T) => {
     handleContentImages
   };
 };
+
+export default handlers;
+
+export interface Handlers {
+  handleText: (event: ReactInputChangeEvent | ReactTextAreaChangeEvent) => void;
+  handleTextSave: (
+    event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
+    dispatch: Dispatch
+  ) => void;
+  handleSelection: (event: ReactSelectChangeEvent) => void;
+  handleDate: (date: string, name: string) => void;
+  handleCheck: (event: ReactInputChangeEvent) => void;
+  handleFile: (file: string | null, name?: string) => void;
+  handleContentImages: (file: string, i: number) => void;
+  setDefaultTypeId?: (e: ReactSelectChangeEvent) => void
+  setPreferences?: ReactHook<SubscriptionsMapping>
+}

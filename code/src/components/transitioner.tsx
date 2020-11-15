@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactElement, ReactText } from 'react';
+import React, { CSSProperties, ReactElement, ReactNode, ReactText } from 'react';
 import { Transition } from 'react-transition-group';
 
 export const Fader = (props: Transitioner) => {
@@ -121,9 +121,9 @@ interface Transitioner {
   delay?: number;
   postTransitions?: string;
   hollow?: boolean;
-  children: ReactText | JSX.Element | JSX.Element[];
+  children: ReactNode;
   className?: string;
-  style: CSSProperties
+  style?: CSSProperties
 }
 
 interface BaseTransitioner extends Transitioner {

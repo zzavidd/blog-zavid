@@ -22,7 +22,7 @@ export class URLBuilder {
    * @returns {URLBuilder} The URLBuilder.
    */
   appendSegment(segment: string): URLBuilder {
-    if (isFalsy(segment)) return this;
+    if (!segment) return this;
     this.url += `/${segment}`;
     return this;
   }

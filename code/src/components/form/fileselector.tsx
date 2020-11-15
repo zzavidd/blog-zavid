@@ -19,7 +19,7 @@ import css from 'src/styles/components/Form.module.scss';
 export const FileSelector = (props: FileSelector) => {
   const { className, image, isCreateOperation } = props;
 
-  const [stateImage, setImage] = useState(image);
+  const [stateImage, setImage] = useState(image as FSImage);
   const imageRef = useRef(null);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const FileSelector = (props: FileSelector) => {
       <ChoosePrompt {...props} imageRef={imageRef} setImage={setImage} />
       <ChoiceImage
         {...props}
-        stateImage={stateImage}
+        stateImage={stateImage as string}
         imageRef={imageRef}
         setImage={setImage}
       />
@@ -58,7 +58,7 @@ const ChoosePrompt = ({
 
   /** Show preview of image. */
   const previewImage = () => {
-    const preview = imageRef.current;
+    const preview = imageRef!.current;
     const file: Blob = fileRef.current!.files![0];
 
     const reader = new FileReader();
@@ -68,8 +68,8 @@ const ChoosePrompt = ({
       () => {
         const source = reader.result;
         preview!.src = source as string;
-        setImage(source);
-        onChange(source);
+        setImage!(source);
+        onChange(source as string);
       },
       false
     );
@@ -104,7 +104,7 @@ const ChoiceImage = ({
   /** Remove selected image. */
   const removeImage = () => {
     onChange(null);
-    setImage(null);
+    setImage!(null);
   };
 
   return (
@@ -128,25 +128,27 @@ const ChoiceImage = ({
 };
 
 interface FileSelector {
-  className: string;
-  onChange: any;
   image: string;
+  onChange: (file: string | null, name?: string) => void;
   isCreateOperation: boolean;
-  setImage: Dispatch<SetStateAction<any>>;
-  imageRef: RefObject<any>;
+  className?: string;
+  setImage?: Dispatch<SetStateAction<FSImage>>;
+  imageRef?: RefObject<any>;
+  aspectRatio?: FSAspectRatio;
 }
 
 interface ChoosePrompt extends FileSelector {
-  aspectRatio?: AspectRatio;
   placeholder?: string;
 }
 
 interface ChoiceImage extends FileSelector {
   stateImage: string;
-  onChange: any;
+  onChange: (file: string | null, name?: string) => void;
 }
 
-enum AspectRatio {
+export enum FSAspectRatio {
   SQUARE = '50% 0',
   WIDE = '28.125% 0'
 }
+
+type FSImage = string | ArrayBuffer | null;

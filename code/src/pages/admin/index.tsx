@@ -1,10 +1,10 @@
 import classnames from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { Container } from 'components/layout';
-import { VanillaLink } from 'components/text';
-import css from 'styles/pages/Admin.module.scss';
+import { Container } from 'src/components/layout';
+import { VanillaLink } from 'src/components/text';
+import css from 'src/styles/pages/Admin.module.scss';
 
 const links = [
   { name: 'Posts', url: 'posts' },
@@ -14,7 +14,7 @@ const links = [
 ];
 
 export default () => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <Container>
       <div className={css['admin-page']}>

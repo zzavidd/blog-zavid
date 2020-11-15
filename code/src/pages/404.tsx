@@ -1,6 +1,6 @@
 import React from 'react';
 
-import css from 'styles/Partials.module.scss';
+import css from 'src/styles/Partials.module.scss';
 
 export default () => {
   return (

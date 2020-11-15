@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { Checkbox } from 'components/form/checkbox';
+import { ReactHook, ReactInputChangeEvent, SubscriptionsMapping } from 'classes';
+import { Checkbox } from 'src/components/form/checkbox';
 import css from 'styles/pages/Subscribers.module.scss';
 
-export default ({ preferences = {}, setPreferences }) => {
-  const checkPreference = (e) => {
+export default ({ preferences = {}, setPreferences }: SubscriptionPreferenceProps) => {
+  const checkPreference = (e: ReactInputChangeEvent) => {
     const { name, checked } = e.target;
     setPreferences(
       Object.assign({}, preferences, {
@@ -30,3 +31,8 @@ export default ({ preferences = {}, setPreferences }) => {
     </div>
   );
 };
+
+interface SubscriptionPreferenceProps {
+  preferences: SubscriptionsMapping
+  setPreferences: ReactHook<SubscriptionsMapping>
+}

@@ -1,20 +1,22 @@
+import { NextPageContext } from 'next';
 import React from 'react';
 import { zDate } from 'zavid-modules';
 
-import { BackButton, AdminButton } from 'components/button';
-import { Signature } from 'components/image';
-import { Spacer, Toolbar } from 'components/layout';
-import ShareBlock from 'components/share';
-import { Paragraph, Title, Divider } from 'components/text';
-import Timeline, { TimelineType } from 'components/timeline';
-import { isAuthenticated } from 'lib/cookies';
-import css from 'styles/pages/Posts.module.scss';
+import { DiaryDAO } from 'classes';
+import { BackButton, AdminButton } from 'src/components/button';
+import { Signature } from 'src/components/image';
+import { Spacer, Toolbar } from 'src/components/layout';
+import ShareBlock from 'src/components/share';
+import { Paragraph, Title, Divider } from 'src/components/text';
+import Timeline, { TimelineType } from 'src/components/timeline';
+import { isAuthenticated } from 'src/lib/cookies';
+import css from 'src/styles/pages/Posts.module.scss';
 
 const DiarySingle = ({
   diaryEntry,
   previousDiaryEntry = {},
   nextDiaryEntry = {}
-}) => {
+}: DiarySingle) => {
   const date = zDate.formatDate(diaryEntry.date, { withWeekday: true });
   const shareMessage = `"Diary: ${date}" on ZAVID`;
 
@@ -50,7 +52,7 @@ const DiarySingle = ({
       <Toolbar spaceItems={true} hasBackButton={true}>
         <BackButton onClick={navigateToReveries}>Back to Diary</BackButton>
         {isAuthenticated() && (
-          <AdminButton onClick={() => navigateToEdit(diaryEntry.id)}>
+          <AdminButton onClick={() => navigateToEdit(diaryEntry.id!)}>
             Edit Diary Entry
           </AdminButton>
         )}
@@ -59,11 +61,21 @@ const DiarySingle = ({
   );
 };
 
-const navigateToReveries = () => (location.href = '/diary');
-const navigateToEdit = (id) => (location.href = `/admin/diary/edit/${id}`);
+const navigateToReveries = (): void => {
+  location.href = '/diary';
+};
+const navigateToEdit = (id: number): void => {
+  location.href = `/admin/diary/edit/${id}`;
+};
 
-DiarySingle.getInitialProps = async ({ query }) => {
+DiarySingle.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };
 };
 
 export default DiarySingle;
+
+interface DiarySingle {
+  diaryEntry: DiaryDAO;
+  previousDiaryEntry: DiaryDAO;
+  nextDiaryEntry: DiaryDAO;
+}

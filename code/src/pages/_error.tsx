@@ -1,15 +1,16 @@
+import { NextPageContext } from 'next';
 import React from 'react';
 
-import css from 'styles/Partials.module.scss';
+import css from 'src/styles/Partials.module.scss';
 
-const Error = ({ message }) => {
+const Error = ({ message }: Error) => {
   return (
     <div className={css['error-page']}>
       <div className={css['error-message-container']}>
         {message ? (
           <CustomErrorMessage message={message} />
         ) : (
-          <DefaultErrorMessage message={message} />
+          <DefaultErrorMessage />
         )}
       </div>
     </div>
@@ -30,7 +31,7 @@ const DefaultErrorMessage = () => {
   );
 };
 
-const CustomErrorMessage = ({ message }) => {
+const CustomErrorMessage = ({ message }: Error) => {
   return (
     <>
       <div className={css['error-message']}>{message}</div>
@@ -41,9 +42,13 @@ const CustomErrorMessage = ({ message }) => {
   );
 };
 
-Error.getInitialProps = ({ res, err, query }) => {
+Error.getInitialProps = ({ res, err, query }: NextPageContext) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : null;
   return { statusCode, ...query };
 };
 
 export default Error;
+
+interface Error {
+  message: string;
+}

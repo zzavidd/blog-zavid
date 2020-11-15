@@ -1,9 +1,9 @@
 import classnames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Col, ColProps, Row } from 'react-bootstrap';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { ReactHook, Substitutions } from 'classes';
+import { ReactComponent, ReactHook, Substitutions } from 'classes';
 import {
   AdminButton,
   ButtonSpacer,
@@ -108,7 +108,7 @@ const FormPreviewToggle = ({
   );
 };
 
-export const FieldRow = (props: FieldRow) => {
+export const FieldRow = (props: ReactComponent) => {
   const classes = classnames(css['form-field-row'], props.className);
   return (
     <Row {...props} className={classes}>
@@ -117,7 +117,7 @@ export const FieldRow = (props: FieldRow) => {
   );
 };
 
-export const Field = (props: Field): JSX.Element => {
+export const Field = (props: ColProps): JSX.Element => {
   const classes = classnames(css['form-field'], props.className);
   return (
     <Col {...props} className={classes}>
@@ -155,12 +155,12 @@ export const Label = ({ children }: Label) => {
 
 interface Form {
   confirmButtonText?: string;
-  confirmFunction: () => void;
-  cancelFunction: () => void;
+  confirmFunction?: () => void;
+  cancelFunction?: () => void;
   isRequestPending?: boolean;
   previewText?: string | boolean;
   substitutions?: Substitutions;
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 interface FormPreview {
@@ -175,21 +175,11 @@ interface FormPreviewToggle {
   setPreviewVisibility: ReactHook<boolean>;
 }
 
-interface FieldRow {
-  className: string;
-  children: JSX.Element[];
-}
-
-interface Field extends ColProps {
-  className?: string;
-  children?: JSX.Element;
-}
-
-interface DynamicField extends Field {
+interface DynamicField extends ColProps {
   precondition: boolean;
   dependency: unknown;
 }
 
 interface Label {
-  children: JSX.Element;
+  children: ReactNode;
 }

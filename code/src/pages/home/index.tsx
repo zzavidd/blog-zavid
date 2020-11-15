@@ -1,18 +1,24 @@
 import classnames from 'classnames';
-import React, { useState, useEffect } from 'react';
+import { NextPageContext } from 'next';
+import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { Field, FieldRow } from 'components/form';
-import { Icon } from 'components/icon';
-import CloudImage, { AspectRatio, Signature } from 'components/image';
-import { Flexer, Responsive } from 'components/layout';
-import { Title, Paragraph, VanillaLink } from 'components/text';
-import { Fader, Zoomer } from 'components/transitioner';
-import { redevelopmentDate } from 'constants/settings';
-import { PostStatic } from 'lib/classes';
-import css from 'styles/pages/Home.module.scss';
+import { DiaryDAO, PostDAO, PostStatic, ReactComponent } from 'classes';
+import { Field, FieldRow } from 'src/components/form';
+import { Icon } from 'src/components/icon';
+import CloudImage, { AspectRatio, Signature } from 'src/components/image';
+import { Flexer, Responsive } from 'src/components/layout';
+import { Paragraph, Title, VanillaLink } from 'src/components/text';
+import { Fader, Zoomer } from 'src/components/transitioner';
+import { redevelopmentDate } from 'src/constants/settings';
+import css from 'src/styles/pages/Home.module.scss';
 
-const Home = ({ homeText, latestDiaryEntry, latestReverie, randomPosts }) => {
+const Home = ({
+  homeText,
+  latestDiaryEntry,
+  latestReverie,
+  randomPosts
+}: Home) => {
   return (
     <>
       <div className={css['home-page']}>
@@ -33,7 +39,7 @@ const Home = ({ homeText, latestDiaryEntry, latestReverie, randomPosts }) => {
   );
 };
 
-const Introduction = ({ content }) => {
+const Introduction = ({ content }: Introduction) => {
   const [isLoaded, setLoaded] = useState(false);
   useEffect(() => {
     setLoaded(true);
@@ -66,7 +72,7 @@ const Introduction = ({ content }) => {
   );
 };
 
-const LatestDiaryEntry = ({ entry }) => {
+const LatestDiaryEntry = ({ entry }: LatestDiaryEntry) => {
   if (!entry) return null;
 
   const [isLoaded, setLoaded] = useState(false);
@@ -105,7 +111,7 @@ const LatestDiaryEntry = ({ entry }) => {
   );
 };
 
-const LatestReverie = ({ reverie }) => {
+const LatestReverie = ({ reverie }: LatestReverie) => {
   const [isLoaded, setLoaded] = useState(false);
   useEffect(() => {
     setLoaded(true);
@@ -123,13 +129,13 @@ const LatestReverie = ({ reverie }) => {
               <LatestReverieHeader reverie={reverie} />
               <LatestReverieParagraph reverie={reverie} />
             </div>
-            <LatestReverieImage image={reverie.image} />
+            <LatestReverieImage image={reverie.image as string} />
           </Flexer>
         }
         xl={
           <>
             <LatestReverieHeader reverie={reverie} />
-            <LatestReverieImage image={reverie.image} />
+            <LatestReverieImage image={reverie.image as string} />
             <LatestReverieParagraph reverie={reverie} />
           </>
         }
@@ -138,7 +144,7 @@ const LatestReverie = ({ reverie }) => {
   );
 };
 
-const LatestReverieHeader = ({ reverie }) => {
+const LatestReverieHeader = ({ reverie }: LatestReverie) => {
   const date = zDate.formatDate(reverie.datePublished, { withWeekday: true });
   return (
     <Flexer>
@@ -152,7 +158,7 @@ const LatestReverieHeader = ({ reverie }) => {
   );
 };
 
-const LatestReverieParagraph = ({ reverie }) => {
+const LatestReverieParagraph = ({ reverie }: LatestReverie) => {
   return (
     <Paragraph
       className={css['latest-reverie-content']}
@@ -165,8 +171,11 @@ const LatestReverieParagraph = ({ reverie }) => {
   );
 };
 
-const LatestReverieImage = ({ image }) => {
-  const ReverieImage = ({ aspectRatio }) => {
+const LatestReverieImage = ({ image }: LatestReverieImage) => {
+  interface ReverieImage {
+    aspectRatio: AspectRatio;
+  }
+  const ReverieImage = ({ aspectRatio }: ReverieImage) => {
     return (
       <CloudImage
         src={image}
@@ -184,7 +193,7 @@ const LatestReverieImage = ({ image }) => {
   );
 };
 
-const RandomPostsGrid = ({ posts }) => {
+const RandomPostsGrid = ({ posts }: RandomPostsGrid) => {
   const [isLoaded, setLoaded] = useState(false);
   useEffect(() => {
     setLoaded(true);
@@ -196,7 +205,7 @@ const RandomPostsGrid = ({ posts }) => {
       </Title>
       <div className={css['random-posts-grid']}>
         {posts.map((post, key) => {
-          const directory = PostStatic.getDirectory(post.type);
+          const directory = PostStatic.getDirectory(post.type!);
           return (
             <Zoomer
               determinant={isLoaded}
@@ -205,14 +214,15 @@ const RandomPostsGrid = ({ posts }) => {
               key={key}>
               <VanillaLink href={`/${directory}/${post.slug}`}>
                 <CloudImage
-                  src={post.image}
+                  src={post.image as string}
                   containerClassName={css['random-post-image-wrapper']}
                   imageClassName={css['random-post-image']}
                   aspectRatio={AspectRatio.WIDE}
                 />
                 <Title className={css['random-post-title']}>{post.title}</Title>
                 <div className={css['random-post-date']}>
-                  {post.type} | {zDate.formatDate(post.datePublished, { withWeekday: true })}
+                  {post.type} |{' '}
+                  {zDate.formatDate(post.datePublished, { withWeekday: true })}
                 </div>
               </VanillaLink>
             </Zoomer>
@@ -223,7 +233,7 @@ const RandomPostsGrid = ({ posts }) => {
   );
 };
 
-const HomeRow = (props) => {
+const HomeRow = (props: ReactComponent) => {
   const classes = classnames(css['home-row'], props.className);
   return (
     <FieldRow {...props} className={classes}>
@@ -232,7 +242,7 @@ const HomeRow = (props) => {
   );
 };
 
-const HomeField = (props) => {
+const HomeField = (props: Field) => {
   return (
     <Field {...props} className={css['home-field']}>
       {props.children}
@@ -240,8 +250,35 @@ const HomeField = (props) => {
   );
 };
 
-Home.getInitialProps = async ({ query }) => {
+Home.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };
 };
 
 export default Home;
+
+interface Home {
+  homeText: string;
+  latestDiaryEntry: DiaryDAO;
+  latestReverie: PostDAO;
+  randomPosts: PostDAO[];
+}
+
+interface Introduction {
+  content: string;
+}
+
+interface LatestDiaryEntry {
+  entry: DiaryDAO;
+}
+
+interface LatestReverie {
+  reverie: PostDAO;
+}
+
+interface LatestReverieImage {
+  image: string;
+}
+
+interface RandomPostsGrid {
+  posts: PostDAO[];
+}

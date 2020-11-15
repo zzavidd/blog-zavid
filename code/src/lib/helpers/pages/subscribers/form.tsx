@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { Form, FieldRow, Field, Label, TextInput } from 'components/form';
-import { Fader } from 'components/transitioner';
+import { SubscriberDAO, SubscriptionsMapping } from 'classes';
+import { GenericForm } from 'classes/interfaces/super';
+import { Form, FieldRow, Field, Label, TextInput } from 'src/components/form';
+import { Fader } from 'src/components/transitioner';
+import { Handlers } from 'src/constants/hooks';
 
 import PreferenceChecks from './preferences';
 
-export default (props) => {
+export default (props: SubscribeForm) => {
   const { subscriber, preferences, handlers, isLoaded } = props;
   const { handleText, setPreferences } = handlers;
 
@@ -17,7 +20,7 @@ export default (props) => {
             <Label>Email:</Label>
             <TextInput
               name={'email'}
-              value={subscriber.email}
+              value={subscriber.email!}
               onChange={handleText}
               placeholder={'Enter the email address'}
             />
@@ -28,7 +31,7 @@ export default (props) => {
             <Label>First Name:</Label>
             <TextInput
               name={'firstname'}
-              value={subscriber.firstname}
+              value={subscriber.firstname!}
               onChange={handleText}
               placeholder={'Enter the first name'}
             />
@@ -37,7 +40,7 @@ export default (props) => {
             <Label>Last Name:</Label>
             <TextInput
               name={'lastname'}
-              value={subscriber.lastname}
+              value={subscriber.lastname!}
               onChange={handleText}
               placeholder={'Enter the last name'}
             />
@@ -56,3 +59,10 @@ export default (props) => {
     </Fader>
   );
 };
+
+interface SubscribeForm extends GenericForm {
+  subscriber: SubscriberDAO
+  preferences: SubscriptionsMapping
+  handlers: Handlers
+  isLoaded: boolean
+}

@@ -2,6 +2,7 @@ import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
+import { DiaryDAO, EditButton, QueryOrder, ReactHook } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { AdminButton, InvisibleButton } from 'src/components/button';
 import { Icon } from 'src/components/icon';
@@ -13,13 +14,10 @@ import Tabler, {
   TablerType
 } from 'src/components/tabler';
 import { VanillaLink } from 'src/components/text';
-import { ORDER } from 'src/constants/strings';
 import {
   GET_DIARY_QUERY,
   DELETE_DIARY_QUERY
 } from 'src/private/api/queries/diary.queries';
-
-import { DiaryDAO } from '../../../classes';
 
 export default () => {
   const [diaryEntries, setDiaryEntries] = useState([]);
@@ -37,7 +35,7 @@ export default () => {
     variables: {
       sort: {
         field: 'date',
-        order: ORDER.DESCENDING
+        order: QueryOrder.DESCENDING
       }
     },
     errorPolicy: 'all',
@@ -107,7 +105,7 @@ export default () => {
                 <LinkButton diaryEntry={diaryEntry} key={key} />,
                 { type: TablerType.BUTTON }
               ),
-              new TablerItemCell(<EditButton id={diaryEntry.id} key={key} />, {
+              new TablerItemCell(<EditButton id={diaryEntry.id!} key={key} />, {
                 type: TablerType.BUTTON
               }),
               new TablerItemCell(
@@ -149,7 +147,7 @@ const navigateToCreateForm = () => {
   location.href = '/admin/diary/add';
 };
 
-const LinkButton = ({ diaryEntry }) => {
+const LinkButton = ({ diaryEntry }: LinkButton) => {
   return (
     <VanillaLink href={`/diary/${diaryEntry.slug}`}>
       <Icon name={'paper-plane'} />
@@ -157,7 +155,7 @@ const LinkButton = ({ diaryEntry }) => {
   );
 };
 
-const EditButton = ({ id }) => {
+const EditButton = ({ id }: EditButton) => {
   const navigateToLink = () => (location.href = `/admin/diary/edit/${id}`);
   return (
     <InvisibleButton onClick={navigateToLink}>
@@ -170,7 +168,7 @@ const DeleteButton = ({
   diaryEntry,
   setDeleteModalVisibility,
   setSelectedDiaryEntry
-}) => {
+}: DeleteButton) => {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);
     setSelectedDiaryEntry(diaryEntry);
@@ -182,3 +180,13 @@ const DeleteButton = ({
     </InvisibleButton>
   );
 };
+
+interface LinkButton {
+  diaryEntry: DiaryDAO;
+}
+
+interface DeleteButton {
+  diaryEntry: DiaryDAO;
+  setDeleteModalVisibility: (event: boolean) => void;
+  setSelectedDiaryEntry: ReactHook<DiaryDAO>;
+}

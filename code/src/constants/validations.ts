@@ -53,7 +53,7 @@ export const isValidDiaryEntry = (diaryEntry: DiaryDAO): boolean => {
 
 export const isValidSubscriber = (
   subscriber: SubscriberDAO,
-  isAdminOp: boolean
+  isAdminOp?: boolean
 ): boolean => {
   let INVALID_EMAIL, ONLY_LASTNAME;
 

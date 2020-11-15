@@ -4,23 +4,23 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/scss/bootstrap.scss';
-import App from 'next/app';
+import App, { AppProps } from 'next/app';
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
-import { Provider, useSelector, useDispatch } from 'react-redux';
+import { Provider, useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { alert, checkForSetAlerts } from 'components/alert.js';
+import { alert, checkForSetAlerts } from 'src/components/alert.js';
 import {
   CookiePrompt,
   setCookie,
   readCookie,
   clearCookie,
   checkCookiePolicyAccepted
-} from 'lib/cookies';
-import configureStore, { setTheme, setUser, clearUser } from 'lib/reducers.js';
-import Footer from 'partials/footer.js';
-import Header from 'partials/header.js';
+} from 'src/lib/cookies';
+import configureStore, { setTheme, setUser, clearUser } from 'src/lib/reducers.js';
+import Footer from 'src/partials/footer.js';
+import Header from 'src/partials/header.js';
 
 import 'styles/App.scss';
 
@@ -56,17 +56,18 @@ export default class ZAVID extends App {
  * @param {object} props.pageProps - The properties for each page.
  * @returns {React.Component} - The full page including the header and footer.
  */
-const ZAVIDApp = ({ Component, pageProps }) => {
+const ZAVIDApp = ({ Component, pageProps }: AppProps) => {
   const [isLoaded, setLoaded] = useState(false);
   const [isCookiePolicyAccepted, setCookieAcceptance] = useState(
-    checkCookiePolicyAccepted
+    checkCookiePolicyAccepted()
   );
   const dispatch = useDispatch();
 
-  const theme = useSelector(({ theme }) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => {
+    // TODO: Create theme enum
     if (theme !== 'light' && theme !== 'dark') {
-      dispatch(setTheme('light'));
-      return 'light';
+      dispatch(setTheme('dark'));
+      return 'dark';
     }
     return theme;
   });

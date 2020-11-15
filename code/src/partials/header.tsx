@@ -1,18 +1,18 @@
-import classnames from 'classnames';
 import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 
-import { InvisibleButton } from 'components/button';
-import { Switch } from 'components/form/checkbox.js';
-import { Icon } from 'components/icon.js';
-import CloudImage from 'components/image.js';
-import { Responsive } from 'components/layout';
-import { setTheme } from 'lib/reducers';
-import css from 'styles/Partials.module.scss';
+import { ReactComponent } from 'classes';
+import { InvisibleButton } from 'src/components/button';
+import { Switch } from 'src/components/form/checkbox';
+import { Icon } from 'src/components/icon';
+import CloudImage from 'src/components/image';
+import { Responsive } from 'src/components/layout';
+import { setTheme } from 'src/lib/reducers';
+import css from 'src/styles/Partials.module.scss';
 
 const Header = () => {
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   return (
     <Navbar
@@ -74,7 +74,6 @@ const NavigationLinks = () => {
 };
 
 const AdminButton = () => {
-  const theme = useSelector(({ theme }) => theme);
   const navigateToAdmin = () => (location.href = '/admin');
   return (
     <Nav.Item>
@@ -87,7 +86,7 @@ const AdminButton = () => {
   );
 };
 
-const DisabledNavLink = ({ children }) => {
+const DisabledNavLink = ({ children }: ReactComponent) => {
   return (
     <Nav.Link href={'#'} className={css['nav-link-disabled']} disabled>
       {children}
@@ -97,7 +96,7 @@ const DisabledNavLink = ({ children }) => {
 
 const ThemeSwitcher = () => {
   const dispatch = useDispatch();
-  const theme = useSelector(({ theme }) => theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   const isLightTheme = theme === 'light';
 
@@ -112,8 +111,8 @@ const ThemeSwitcher = () => {
       <Switch
         onChange={switchTheme}
         checked={!isLightTheme}
-        checkedIcon={<Icon name={'moon'} />}
-        uncheckedIcon={<Icon name={'sun'} />}
+        checkedIcon={'moon'}
+        uncheckedIcon={'sun'}
       />
     </Nav.Item>
   );

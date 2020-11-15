@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import MediaQuery from 'react-responsive';
 
@@ -94,7 +94,7 @@ export const Responsive = ({
 
 interface Layout {
   className?: string;
-  children: string | JSX.Element | JSX.Element[];
+  children: ReactNode;
 }
 
 interface Toolbar extends Layout {

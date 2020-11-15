@@ -5,7 +5,7 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 import { OnSelectChangeType } from 'classes';
 import css from 'styles/components/Form.module.scss';
 
-export const Select = (props: Select) => {
+export const Select = (props: SelectProps) => {
   const {
     name,
     items,
@@ -31,7 +31,7 @@ export const Select = (props: Select) => {
   return (
     <select
       name={name}
-      value={selectedValue}
+      value={selectedValue as string}
       onChange={onChange}
       className={classes}
       style={{ color }}>
@@ -53,10 +53,10 @@ export const Select = (props: Select) => {
   );
 };
 
-interface Select {
+export interface SelectProps {
   name?: string;
   items: SelectItemType;
-  value?: string | number;
+  value?: unknown;
   onChange: OnSelectChangeType;
   className?: string;
   placeholder?: string;

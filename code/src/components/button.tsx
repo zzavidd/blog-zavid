@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React, { useState, useEffect, MouseEventHandler } from 'react';
+import React, { useState, useEffect, MouseEventHandler, ReactNode } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
 import css from 'src/styles/components/Button.module.scss';
@@ -101,7 +101,7 @@ export const InvisibleButton = (props: Button): JSX.Element => {
 };
 
 interface Button {
-  children: string | JSX.Element | JSX.Element[]
+  children: ReactNode
   className?: string
   onClick?: MouseEventHandler<HTMLButtonElement>
   isRequestPending?: boolean

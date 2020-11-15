@@ -4,7 +4,7 @@ import { zDate } from 'zavid-modules';
 
 import { alert } from '../alert';
 import { ConfirmButton, CancelButton, InvisibleButton } from '../button';
-import { Field, FieldRow, Select, TextInput } from '.';
+import { Field, FieldRow, SelectProps, TextInput } from '.';
 import { Icon } from '../icon';
 import { Modal, ConfirmModal } from '../modal';
 import { creationDate } from 'src/constants/settings';
@@ -172,7 +172,7 @@ const DatePickerFooter = ({
   setDatePickerVisibility
 }: DatePickerFooter) => {
   /** Close the datepicker. */
-  const closeDatePicker = () => setDatePickerVisibility(false);
+  const closeDatePicker = (): void => setDatePickerVisibility(false);
 
   /** Update component dates on confirmation */
   const confirmDateSelection = () => {

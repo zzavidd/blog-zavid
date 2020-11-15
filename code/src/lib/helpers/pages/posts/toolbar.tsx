@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-import { PostStatic } from 'classes';
+import { PostStatic, ReactSelectChangeEvent } from 'classes';
 import { AdminButton } from 'src/components/button';
-import { Field, FieldRow, Select } from 'src/components/form';
+import { Field, FieldRow, Select, SelectProps } from 'src/components/form';
 import { Icon } from 'src/components/icon';
 import { Responsive, Toolbar, ToolbarToggle } from 'src/components/layout';
 import { Slider } from 'src/components/transitioner';
+import { PostFiltersState } from 'src/lib/reducers';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const sortOptions = [
@@ -15,7 +16,7 @@ const sortOptions = [
   { value: 'status', label: 'Sort by Status' }
 ];
 
-export default ({ options, handleOptionSelection }): JSX.Element => {
+export default ({ options, handleOptionSelection }: Toolbar) => {
   const [filtersVisible, setFilterVisibility] = useState(false);
 
   const toggleFilterVisibility = () => {
@@ -68,7 +69,10 @@ export default ({ options, handleOptionSelection }): JSX.Element => {
   );
 };
 
-const toolbarWidgets = (options, handleOptionSelection) => {
+const toolbarWidgets = (
+  options: PostFiltersState,
+  handleOptionSelection: (event: ReactSelectChangeEvent) => void
+) => {
   const navigateToCreateForm = () => {
     location.href = '/admin/posts/add';
   };
@@ -127,6 +131,11 @@ const toolbarWidgets = (options, handleOptionSelection) => {
   };
 };
 
-const FilterDropdown = (props) => {
+const FilterDropdown = (props: SelectProps) => {
   return <Select {...props} className={css['post-filter']} isRound={true} />;
 };
+
+interface Toolbar {
+  options: PostFiltersState;
+  handleOptionSelection: (event: ReactSelectChangeEvent) => void;
+}
