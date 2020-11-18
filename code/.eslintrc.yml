@@ -18,7 +18,7 @@ parserOptions:
   ecmaFeatures:
     jsx: true
   project:
-    - "./tsconfig.json"
+    - "**/tsconfig.json"
 plugins:
   - react
   - filenames

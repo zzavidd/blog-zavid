@@ -4,8 +4,5 @@
     "module": "commonjs",
     "isolatedModules": false,
     "strict": true
-  },
-  "paths": {
-    "components/*": ["src/components/*"],
   }
 }
