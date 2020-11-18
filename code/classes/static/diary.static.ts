@@ -9,7 +9,7 @@ export class DiaryStatic {
   static STATUSES = Object.values(DiaryStatus);
 
   static generateSlug(diaryEntry: DiaryDAO): string{
-    return zDate.formatISODate(diaryEntry.date);
+    return zDate.formatISODate(diaryEntry.date as string);
   }
 
   static randomStatus(): DiaryStatus {

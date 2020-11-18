@@ -82,7 +82,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
     setLoaded(true);
   }, [isLoaded]);
 
-  const date = zDate.formatDate(parseInt(diaryEntry.date as string), {
+  const date = zDate.formatDate(diaryEntry.date as string, {
     withWeekday: true
   });
   const link = `/diary/${diaryEntry.slug}`;

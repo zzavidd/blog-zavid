@@ -12,7 +12,7 @@ import {
 } from 'classes';
 import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
-import { alert, reportError, setAlert } from 'src/components/alert';
+import { alert, AlertType, reportError, setAlert } from 'src/components/alert';
 import hooks from 'src/constants/hooks';
 import { isValidPost } from 'src/constants/validations';
 import PostForm from 'src/lib/helpers/pages/posts/form';
@@ -175,7 +175,7 @@ const PostCrud = ({
     try {
       await createPostMutation({ variables });
       setAlert({
-        type: 'success',
+        type: AlertType.SUCCESS,
         message: `You've successfully added the new post titled "${clientPost.title}".`
       });
       returnToAdminPosts();
@@ -193,7 +193,7 @@ const PostCrud = ({
     try {
       await updatePostMutation({ variables });
       setAlert({
-        type: 'success',
+        type: AlertType.SUCCESS,
         message: `You've successfully updated "${clientPost.title}".`
       });
       returnToAdminPosts();
@@ -249,7 +249,7 @@ const buildPayload = (
   }
 
   if (PostStatic.isPublish(clientPost)) {
-    post.withDatePublished(zDate.formatISODate(datePublished));
+    post.withDatePublished(zDate.formatISODate(datePublished!));
   }
 
   if (PostStatic.isPage(clientPost)) {

@@ -2,6 +2,9 @@
   "scripts": {
     "build": "NODE_ENV=development next build",
     "build:ci": "next build",
+    "check": "tsc --noEmit --project ./tsconfig.json",
+    "check:classes": "tsc --noEmit --project ./classes/tsconfig.classes.json",
+    "check:test": "tsc --project ./test/tsconfig.test.json",
     "dev": "nodemon",
     "preprod": "tsc --project tsconfig.override.json",
     "prod": "NODE_ENV=production node src/server.js",
@@ -10,7 +13,7 @@
     "test:unit": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/unit/**/*",
     "test:service": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/service/**/*",
     "test:manual": "ts-node --project test/tsconfig.test.json test/manual",
-    "lint": "eslint --ignore-path ../.gitignore --ext .js,.ts,.tsx \"./**\"",
+    "lint": "eslint --ignore-path ../.gitignore \"src/**\"",
     "prettify": "prettier --ignore-path ../../.gitignore --write \"**/*.js\""
   },
   "dependencies": {
@@ -61,7 +64,7 @@
     "redux-persist": "^6.0.0",
     "sitemap": "^6.3.0",
     "uuid": "^8.3.0",
-    "zavid-modules": "^4.0.2"
+    "zavid-modules": "^4.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

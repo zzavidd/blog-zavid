@@ -1,6 +1,4 @@
 import Knex from 'knex';
-import { zLogic } from 'zavid-modules';
-const { isFalsy } = zLogic;
 
 import { QueryBuilder, MutationBuilder } from './super';
 
@@ -11,7 +9,7 @@ export class PageQueryBuilder extends QueryBuilder {
   }
 
   whereSlug(slug: string): PageQueryBuilder {
-    if (isFalsy(slug)) throw new Error(`No specified slug.`);
+    if (!slug) throw new Error(`No specified slug.`);
     this.query.where('slug', slug);
     return this;
   }

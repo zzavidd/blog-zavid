@@ -51,7 +51,7 @@ export default (props: SubscribeForm) => {
             <Label>Preferences:</Label>
             <PreferenceChecks
               preferences={preferences}
-              setPreferences={setPreferences}
+              setPreferences={setPreferences!}
             />
           </Field>
         </FieldRow>

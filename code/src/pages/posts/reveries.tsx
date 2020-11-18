@@ -108,7 +108,7 @@ const Reverie = memo(({ reverie }: ReverieProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [isInView, setInView] = useState(false);
 
-  const datePublished = zDate.formatDate(parseInt(reverie.datePublished as string), {
+  const datePublished = zDate.formatDate(reverie.datePublished as string, {
     withWeekday: true
   });
   const link = `/reveries/${reverie.slug}`;

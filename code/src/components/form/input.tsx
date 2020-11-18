@@ -49,7 +49,7 @@ const Input = ({
     <input
       name={name}
       type={type}
-      value={value}
+      value={value as string}
       onChange={onChange}
       className={css[`text-input`]}
       autoComplete={'off'}

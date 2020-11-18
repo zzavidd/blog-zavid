@@ -1,7 +1,7 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { zLogic, zText } from 'zavid-modules';
+import { zText } from 'zavid-modules';
 
 import {
   EditButton,
@@ -121,7 +121,7 @@ const PostsAdmin = () => {
                 subvalue: (post.domainId && post.domainTitle) as string
               }),
               new TablerItemCell(
-                zText.truncateText(post.content, { limit: 30 }),
+                zText.truncateText(post.content!, { limit: 30 }),
                 { hideOnMobile: true }
               ),
               new TablerItemCell(post.status, { icon: 'lock' }),
@@ -167,7 +167,7 @@ const PostsAdmin = () => {
 };
 
 const LinkButton = ({ post }: LinkButton) => {
-  if (zLogic.isFalsy(post.slug)) return null;
+  if (!post.slug) return null;
 
   const url = new URLBuilder();
 

@@ -83,15 +83,15 @@ export default () => {
                 hideIfEmpty: true
               }),
               new TablerItemCell(
-                zText.truncateText(page.excerpt, { limit: 30 }),
+                zText.truncateText(page.excerpt!, { limit: 30 }),
                 { hideOnMobile: true }
               ),
               new TablerItemCell(
-                zText.truncateText(page.content, { limit: 30 }),
+                zText.truncateText(page.content!, { limit: 30 }),
                 { hideOnMobile: true }
               ),
               new TablerItemCell(
-                zDate.formatDate(parseInt(page.lastModified as string)),
+                zDate.formatDate(page.lastModified!),
                 { icon: 'clock' }
               ),
               new TablerItemCell(<LinkButton page={page} key={key} />, {

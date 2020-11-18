@@ -50,7 +50,7 @@ const DatePicker = (props: BaseDatePicker) => {
 
   /** Clear the date. */
   const clearDate = () => {
-    onConfirm(null, name);
+    onConfirm('', name);
     setClearDateModalVisibility(false);
   };
 

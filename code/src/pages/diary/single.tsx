@@ -17,7 +17,7 @@ const DiarySingle = ({
   previousDiaryEntry = {},
   nextDiaryEntry = {}
 }: DiarySingle) => {
-  const date = zDate.formatDate(diaryEntry.date, { withWeekday: true });
+  const date = zDate.formatDate(diaryEntry.date!, { withWeekday: true });
   const shareMessage = `"Diary: ${date}" on ZAVID`;
 
   return (

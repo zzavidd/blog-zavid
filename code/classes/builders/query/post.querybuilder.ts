@@ -1,10 +1,8 @@
 import Knex from 'knex';
-import { zLogic } from 'zavid-modules';
-const { isFalsy } = zLogic;
 
-import { PostStatus, PostType, QueryOrder, PostStatic } from 'classes';
+import { PostStatic, PostStatus, PostType, QueryOrder } from 'classes';
 
-import { QueryBuilder, MutationBuilder } from './super';
+import { MutationBuilder, QueryBuilder } from './super';
 
 const TABLE_NAME = 'posts';
 const columns = [
@@ -19,7 +17,7 @@ export class PostQueryBuilder extends QueryBuilder {
   constructor(knex: Knex) {
     super(knex.column(columns), TABLE_NAME);
     this.knex = knex;
-    this.query.leftJoin(
+    (this.query.leftJoin as Knex.Join<Record<string, unknown>, unknown>)(
       `${TABLE_NAME} AS domain`,
       `${TABLE_NAME}.domainId`,
       '=',
@@ -29,33 +27,36 @@ export class PostQueryBuilder extends QueryBuilder {
 
   whereType(filters: PostTypeFilters = {}): PostQueryBuilder {
     const { include, exclude } = filters;
-    if (!isFalsy(include)) this.query.whereIn(`${TABLE_NAME}.type`, include);
-    if (!isFalsy(exclude)) this.query.whereNotIn(`${TABLE_NAME}.type`, exclude);
+    if (include && include.length)
+      this.query.whereIn(`${TABLE_NAME}.type`, include);
+    if (exclude && exclude.length)
+      this.query.whereNotIn(`${TABLE_NAME}.type`, exclude);
     return this;
   }
 
   whereStatus(filters: PostStatusFilters = {}): PostQueryBuilder {
     const { include, exclude } = filters;
-    if (!isFalsy(include)) this.query.whereIn(`${TABLE_NAME}.status`, include);
-    if (!isFalsy(exclude))
+    if (include && include.length)
+      this.query.whereIn(`${TABLE_NAME}.status`, include);
+    if (exclude && exclude.length)
       this.query.whereNotIn(`${TABLE_NAME}.status`, exclude);
     return this;
   }
 
   whereSlug(slug: string): PostQueryBuilder {
-    if (isFalsy(slug)) return this;
+    if (!slug) return this;
     this.query.where(`${TABLE_NAME}.slug`, slug);
     return this;
   }
 
   whereDomainType(type: PostType): PostQueryBuilder {
-    if (isFalsy(type)) return this;
+    if (!type) return this;
     this.query.where('domain.type', type);
     return this;
   }
 
   whereDomainSlug(slug: string): PostQueryBuilder {
-    if (isFalsy(slug)) return this;
+    if (!slug) return this;
     this.query.where(`domain.slug`, slug);
     return this;
   }

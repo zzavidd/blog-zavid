@@ -1,5 +1,3 @@
-import { zLogic } from 'zavid-modules';
-
 import { PostDAO, PostImage, PostType, PostStatus } from 'classes';
 
 import { isString, randomEnumValue, randomElementFromList } from '../helper';
@@ -39,7 +37,7 @@ export class PostStatic {
   static parse(post: PostDAO): PostDAO {
     const images = post.contentImages;
 
-    if (zLogic.isFalsy(images)) {
+    if (!images || !images.length) {
       post.contentImages = null;
       return post;
     }

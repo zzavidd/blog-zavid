@@ -12,7 +12,7 @@ import css from 'src/styles/pages/Posts.module.scss';
 
 const PageSingle = ({ page }: PageSingle) => {
   const substitutions = {
-    lastModified: `**${zDate.formatDate(page.lastModified)}**`,
+    lastModified: `**${zDate.formatDate(page.lastModified!)}**`,
     myAge: zDate.calculateAge(zavidBirthday),
     redevelopmentDate: zDate.formatDate(redevelopmentDate)
   };

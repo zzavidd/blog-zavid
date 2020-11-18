@@ -58,7 +58,7 @@ export default () => {
       .then(() => deleteDiaryEntryMutation({ variables: { id } }))
       .then(() => {
         alert.success(
-          `You've deleted the diary entry for ${zDate.formatDate(date, {
+          `You've deleted the diary entry for ${zDate.formatDate(date!, {
             withWeekday: true
           })}.`
         );
@@ -85,10 +85,10 @@ export default () => {
             new TablerColumnHeader('Content')
           ]}
           items={diaryEntries.map((diaryEntry: DiaryDAO, key: number) => {
-            const content = zText.truncateText(diaryEntry.content, {
+            const content = zText.truncateText(diaryEntry.content!, {
               limit: 20
             });
-            const date = zDate.formatDate(parseInt(diaryEntry.date as string), {
+            const date = zDate.formatDate(diaryEntry.date as string, {
               withWeekday: true
             });
             return [
@@ -132,7 +132,7 @@ export default () => {
       <ConfirmModal
         visible={deleteModalVisible}
         message={`Are you sure you want to delete the diary entry for **${zDate.formatDate(
-          parseInt(selectedDiaryEntry.date as string),
+          selectedDiaryEntry.date as string,
           { withWeekday: true }
         )}**?`}
         confirmFunction={deleteDiaryEntry}

@@ -56,12 +56,9 @@ const RecentPost = memo(({ post }: RecentPostProps) => {
     setLoaded(true);
   }, []);
 
-  const datePublished = zDate.formatDate(
-    parseInt(post.datePublished as string),
-    {
-      withWeekday: true
-    }
-  );
+  const datePublished = zDate.formatDate(post.datePublished as string, {
+    withWeekday: true
+  });
   const link = `/reveries/${post.slug}`;
   return (
     <VanillaLink href={link}>

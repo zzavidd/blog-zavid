@@ -28,16 +28,19 @@ export const Paragraph = ({
   const classes = classNames(css['paragraph'], className);
 
   let text = truncate
-    ? zText.truncateText(children, { limit: truncate })
+    ? zText.truncateText(children as string, { limit: truncate as number })
     : children;
 
   try {
-    text = zText.applySubstitutions(text, substitutions);
+    text = zText.applySubstitutions(
+      text as string,
+      substitutions as Record<string, string>
+    );
   } catch (e) {
     // Don't apply substitutions.
   }
 
-  text = zText.formatText(text, {
+  text = zText.formatText(text as string, {
     css: {
       heading: css['paragraph-heading'],
       subheading: css['paragraph-subheading'],
@@ -133,11 +136,11 @@ interface Text {
 }
 
 interface Paragraph extends Text {
-  cssOverrides?: CSSOverrides;
+  cssOverrides?: Record<string, string>;
   moreclass?: string;
   morelink?: string;
   moretext?: string;
-  substitutions?: Substitutions;
+  substitutions?: Record<string, unknown>;
   truncate?: number | boolean;
 }
 
@@ -157,12 +160,4 @@ interface EmbeddedTweet {
 
 interface EmbeddedInsta {
   url: string;
-}
-
-interface CSSOverrides {
-  [key: string]: string;
-}
-
-interface Substitutions {
-  [key: string]: string | number;
 }

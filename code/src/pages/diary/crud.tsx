@@ -11,7 +11,7 @@ import { NextPageContext } from 'next';
 import hooks from 'src/constants/hooks';
 import DiaryEntryForm from 'src/lib/helpers/pages/diary/form';
 
-import { setAlert, reportError } from 'src/components/alert';
+import { setAlert, reportError, AlertType } from 'src/components/alert';
 import { ConfirmModal } from 'src/components/modal';
 import { isValidDiaryEntry } from 'src/constants/validations';
 import {
@@ -94,7 +94,7 @@ const DiaryCrud = ({
     try {
       await createDiaryEntryMutation({ variables });
       setAlert({
-        type: 'success',
+        type: AlertType.SUCCESS,
         message: `You've successfully added a new diary entry.`
       });
       returnToDiaryAdmin();
@@ -111,9 +111,9 @@ const DiaryCrud = ({
     try {
       await updateDiaryEntryMutation({ variables });
       setAlert({
-        type: 'success',
+        type: AlertType.SUCCESS,
         message: `You've successfully updated the diary entry for ${zDate.formatDate(
-          clientDiaryEntry.date
+          clientDiaryEntry.date!
         )}.`
       });
       returnToDiaryAdmin();
@@ -167,7 +167,7 @@ const buildPayload = (
   const diaryEntry: DiaryDAO = {
     title,
     content,
-    date: zDate.formatISODate(date),
+    date: zDate.formatISODate(date!),
     status,
     entryNumber
   };

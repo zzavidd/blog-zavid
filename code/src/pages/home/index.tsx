@@ -12,6 +12,7 @@ import { Paragraph, Title, VanillaLink } from 'src/components/text';
 import { Fader, Zoomer } from 'src/components/transitioner';
 import { redevelopmentDate } from 'src/constants/settings';
 import css from 'src/styles/pages/Home.module.scss';
+import { ColProps } from 'react-bootstrap';
 
 const Home = ({
   homeText,
@@ -80,7 +81,7 @@ const LatestDiaryEntry = ({ entry }: LatestDiaryEntry) => {
     setLoaded(true);
   }, [isLoaded]);
 
-  const date = zDate.formatDate(entry.date, { withWeekday: true });
+  const date = zDate.formatDate(entry.date!, { withWeekday: true });
   return (
     <Fader
       determinant={isLoaded}
@@ -145,7 +146,7 @@ const LatestReverie = ({ reverie }: LatestReverie) => {
 };
 
 const LatestReverieHeader = ({ reverie }: LatestReverie) => {
-  const date = zDate.formatDate(reverie.datePublished, { withWeekday: true });
+  const date = zDate.formatDate(reverie.datePublished!, { withWeekday: true });
   return (
     <Flexer>
       <Icon name={'book-open'} className={css['latest-reverie-icon']} />
@@ -222,7 +223,7 @@ const RandomPostsGrid = ({ posts }: RandomPostsGrid) => {
                 <Title className={css['random-post-title']}>{post.title}</Title>
                 <div className={css['random-post-date']}>
                   {post.type} |{' '}
-                  {zDate.formatDate(post.datePublished, { withWeekday: true })}
+                  {zDate.formatDate(post.datePublished!, { withWeekday: true })}
                 </div>
               </VanillaLink>
             </Zoomer>
@@ -242,7 +243,7 @@ const HomeRow = (props: ReactComponent) => {
   );
 };
 
-const HomeField = (props: Field) => {
+const HomeField = (props: ColProps) => {
   return (
     <Field {...props} className={css['home-field']}>
       {props.children}

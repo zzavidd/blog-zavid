@@ -1,6 +1,6 @@
 import { NextPageContext } from 'next';
 import React from 'react';
-import { zDate, zLogic } from 'zavid-modules';
+import { zDate } from 'zavid-modules';
 
 import { PostDAO, PostStatic, Substitutions } from 'classes';
 import { BackButton, AdminButton } from 'src/components/button';
@@ -73,10 +73,10 @@ const navigateToEdit = (id: number): void => {
 };
 
 const PostDate = ({ post }: PostDate) => {
-  if (zLogic.isFalsy(post, post.datePublished)) return null;
+  if (!post || !post.datePublished) return null;
   if (PostStatic.isPrivate(post)) return null;
 
-  const datePublished = zDate.formatDate(post.datePublished, {
+  const datePublished = zDate.formatDate(post.datePublished as string, {
     withWeekday: true
   });
   return <div className={css['post-single-date']}>{datePublished}</div>;

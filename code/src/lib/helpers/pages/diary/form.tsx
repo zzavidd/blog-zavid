@@ -74,7 +74,7 @@ const DiaryEntryForm = (props: DiaryForm) => {
             <DatePicker
               name={'date'}
               date={diaryEntry.date!}
-              onConfirm={(date: string) => handleDate(date, 'date')}
+              onConfirm={(date: string | Date) => handleDate(date as string, 'date')}
               placeholderText={'Select the date...'}
             />
           </Field>
