@@ -18,7 +18,9 @@ parserOptions:
   ecmaFeatures:
     jsx: true
   project:
-    - "**/tsconfig.json"
+    - "./tsconfig.json"
+    - "classes/tsconfig.classes.json"
+    - "test/tsconfig.test.json"
 plugins:
   - react
   - filenames
@@ -35,7 +37,10 @@ settings:
         - ".js"
         - ".ts"
         - ".tsx"
-        - ".scss"
+  import/ignore:
+    - '.json'
+    - '.scss'
+    - '.ejs'
   react:
     version: detect
 
@@ -56,10 +61,6 @@ rules:
         - internal
         - sibling
       pathGroups:
-        - pattern: 'reducers/**'
-          group: external
-          position: before
-
         - pattern: 'components/**'
           group: internal
           position: after

@@ -1,11 +1,8 @@
-import Knex from 'knex';
-import { zLogic } from 'zavid-modules';
+import Knex, { TypePreservingAggregation } from 'knex';
 
 import { DiaryStatus, QueryOrder } from 'classes';
 
 import { MutationBuilder, QueryBuilder } from './super';
-
-const { isFalsy } = zLogic;
 
 const TABLE_NAME = 'diary';
 
@@ -17,21 +14,19 @@ export class DiaryQueryBuilder extends QueryBuilder {
   }
 
   whereSlug(slug: string | number): DiaryQueryBuilder {
-    if (isFalsy(slug)) throw new Error(`No slug specified.`);
     this.query.where('slug', slug);
     return this;
   }
 
   whereEntryNumber(entryNumber: number): DiaryQueryBuilder {
-    if (isFalsy(entryNumber)) throw new Error(`No entry number specified.`);
     this.query.where('entryNumber', entryNumber);
     return this;
   }
 
   whereStatus(filters: DiaryStatusFilters = {}): DiaryQueryBuilder {
     const { include, exclude } = filters;
-    if (!isFalsy(include)) this.query.whereIn('status', include);
-    if (!isFalsy(exclude)) this.query.whereNotIn('status', exclude);
+    if (include && include.length) this.query.whereIn('status', include);
+    if (exclude && exclude.length) this.query.whereNotIn('status', exclude);
     return this;
   }
 
@@ -41,7 +36,9 @@ export class DiaryQueryBuilder extends QueryBuilder {
   }
 
   getLatestEntryNumber(): DiaryQueryBuilder {
-    this.query.max('entryNumber', { as: 'latestEntryNumber' });
+    (this.query.max as KnexMaxQuery)('entryNumber', {
+      as: 'latestEntryNumber'
+    });
     return this;
   }
 
@@ -60,17 +57,6 @@ export class DiaryQueryBuilder extends QueryBuilder {
     });
     return this;
   }
-
-  /**
-   * Limits the number of results.
-   * @param {number} [limit] - The number of results to be returned.
-   * @returns {PostQueryBuilder} The PostQueryBuilder object.
-   */
-  withLimit(limit: number): DiaryQueryBuilder {
-    if (isFalsy(limit)) return this;
-    this.query.limit(limit);
-    return this;
-  }
 }
 
 export class DiaryMutationBuilder extends MutationBuilder {
@@ -83,3 +69,5 @@ interface DiaryStatusFilters {
   include?: DiaryStatus[];
   exclude?: DiaryStatus[];
 }
+
+type KnexMaxQuery = TypePreservingAggregation<unknown, unknown, unknown>;

@@ -60,7 +60,7 @@ const Input = ({
 };
 
 interface BaseInput {
-  value: string | number;
+  value: unknown;
   placeholder: string;
   name?: string;
   type?: string;

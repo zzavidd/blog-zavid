@@ -1,8 +1,6 @@
 import Knex, { RawQueryBuilder } from 'knex';
-import { zLogic } from 'zavid-modules';
 
 import { QueryOrder } from 'classes';
-const { isFalsy } = zLogic;
 
 export class QueryBuilder {
   knex: Knex;
@@ -20,13 +18,13 @@ export class QueryBuilder {
   }
 
   whereId(id: number): QueryBuilder {
-    if (isFalsy(id)) throw new Error(`No specified ID.`);
+    if (!id) throw new Error(`No specified ID.`);
     this.query.where(`${this.table}.id`, id);
     return this;
   }
 
   exceptId(id: number): QueryBuilder {
-    if (isFalsy(id)) return this;
+    if (!id) return this;
     this.query.whereNot(`${this.table}.id`, id);
     return this;
   }
@@ -42,7 +40,8 @@ export class QueryBuilder {
     let { order } = sort;
     const { field } = sort;
     const { forStringsWithNumbers = false } = options;
-    if (isFalsy(order)) order = QueryOrder.ASCENDING;
+    
+    if (!order) order = QueryOrder.ASCENDING;
 
     if (order === QueryOrder.RANDOM) {
       (this.query.orderByRaw as RawQueryBuilder)('RAND()');
@@ -62,11 +61,8 @@ export class QueryBuilder {
 
   /**
    * Limits the number of results.
-   * @param {number} [limit] - The number of results to be returned.
-   * @returns {QueryBuilder} The PostQueryBuilder object.
    */
   withLimit(limit: number): QueryBuilder {
-    if (isFalsy(limit)) return this;
     this.query.limit(limit);
     return this;
   }
@@ -88,21 +84,21 @@ export class MutationBuilder extends QueryBuilder {
   }
 
   insert<T>(input: T): MutationBuilder {
-    if (isFalsy(input))
+    if (input)
       throw new Error(`No specified ${this.entity} to insert.`);
     this.query.insert(input);
     return this;
   }
 
   update<T>(input: T): MutationBuilder {
-    if (isFalsy(input))
+    if (input)
       throw new Error(`No specified ${this.entity} to update.`);
     this.query.update(input);
     return this;
   }
 
   delete(id: number): MutationBuilder {
-    if (isFalsy(id)) throw new Error(`No specified ${this.entity} to delete.`);
+    if (id) throw new Error(`No specified ${this.entity} to delete.`);
     this.query.where(`${this.table}.id`, id).del();
     return this;
   }
