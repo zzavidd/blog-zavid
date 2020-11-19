@@ -1,51 +1,54 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { zText } from 'zavid-modules';
+
 import {
+  DiaryDAO,
   DiaryQueryBuilder,
   DiaryStatic,
+  Operation,
   PageQueryBuilder
-} from '../../../../classes';
-const { siteTitle } = require('../../../constants/settings');
-const { OPERATIONS } = require('../../../constants/strings');
-const { ERRORS, renderErrorPage } = require('../../error');
-import { getKnex, getServer } from '../../singleton';
+} from 'classes';
+import { siteTitle } from 'src/constants/settings';
+import { ERRORS, renderErrorPage } from 'src/private/error';
+import { getKnex, getServer } from 'src/private/singleton';
 
 const router = express.Router();
-const { zText } = require('zavid-modules');
 const knex = getKnex();
 const server = getServer();
 
 router.get(
   '/diary',
-  function (req, res, next) {
-    Promise.resolve()
-      .then(() => new PageQueryBuilder(knex).whereSlug('diary').build())
-      .then(([diaryPage = {}]) => {
-        return server.render(req, res, '/diary', {
-          title: `Diary | ${siteTitle}`,
-          description: 'Dear Zavid, how have you been feeling?',
-          ogUrl: '/diary',
-          diaryIntro: diaryPage.content
-        });
-      })
-      .catch(next);
+  async function (req, res, next) {
+    try {
+      const [diaryPage] = await new PageQueryBuilder(knex)
+        .whereSlug('diary')
+        .build();
+
+      return server.render(req, res, '/diary', {
+        title: `Diary | ${siteTitle}`,
+        description: 'Dear Zavid, how have you been feeling?',
+        ogUrl: '/diary',
+        diaryIntro: diaryPage.content
+      });
+    } catch (err) {
+      next(err);
+    }
   },
   renderErrorPage
 );
 
 router.get(
   '/diary/latest',
-  function (req, res, next) {
-    Promise.resolve()
-      .then(() =>
-        new DiaryQueryBuilder(knex)
-          .whereStatus({ include: [DiaryStatic.STATUS.PUBLISHED] })
-          .getLatestEntry()
-          .build()
-      )
-      .then(([diaryEntry]) => {
-        res.redirect(`/diary/${diaryEntry.entryNumber}`);
-      })
-      .catch(next);
+  async function (req, res, next) {
+    try {
+      const [diary] = await new DiaryQueryBuilder(knex)
+        .whereStatus({ include: [DiaryStatic.STATUS.PUBLISHED] })
+        .getLatestEntry()
+        .build();
+      return res.redirect(`/diary/${diary.entryNumber}`);
+    } catch (err) {
+      next(err);
+    }
   },
   renderErrorPage
 );
@@ -91,19 +94,27 @@ router.get('/admin/diary', function (req, res) {
   });
 });
 
-router.get('/admin/diary/add', function (req, res) {
-  Promise.resolve()
-    .then(() => {
-      return new DiaryQueryBuilder(knex).getLatestEntryNumber().build();
-    })
-    .then(([{ latestEntryNumber }]) => {
+router.get(
+  '/admin/diary/add',
+  async function (req, res, next) {
+    try {
+      const [diary] = await new DiaryQueryBuilder(knex)
+        .getLatestEntryNumber()
+        .build();
+      const { latestEntryNumber } = diary as DiaryDAO & {
+        latestEntryNumber: number;
+      };
       return server.render(req, res, '/diary/crud', {
         title: `Add New Diary Entry`,
-        operation: OPERATIONS.CREATE,
-        latestEntryNumber
+        operation: Operation.CREATE,
+        latestEntryNumber: latestEntryNumber.toString()
       });
-    });
-});
+    } catch (err) {
+      next(err);
+    }
+  },
+  renderErrorPage
+);
 
 router.get('/admin/diary/edit/:id', async function (req, res) {
   const id = req.params.id as unknown;
@@ -113,8 +124,8 @@ router.get('/admin/diary/edit/:id', async function (req, res) {
     .build();
   return server.render(req, res, '/diary/crud', {
     title: `Edit Diary Entry`,
-    operation: OPERATIONS.UPDATE,
-    diaryEntry
+    operation: Operation.UPDATE,
+    diaryEntry: diaryEntry as string
   });
 });
 

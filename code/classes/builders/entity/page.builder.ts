@@ -1,7 +1,7 @@
 import * as faker from 'faker';
 import { zString } from 'zavid-modules';
 
-import { PageDAO } from 'classes';
+import { PageDAO } from '../../index';
 
 /** The class for Page objects and methods. */
 export class PageBuilder {

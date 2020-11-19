@@ -1,8 +1,8 @@
 import Knex from 'knex';
 
-import { PostStatic, PostStatus, PostType, QueryOrder } from 'classes';
-
 import { MutationBuilder, QueryBuilder } from './super';
+
+import { PostDAO, PostStatic, PostStatus, PostType, QueryOrder } from '../../index';
 
 const TABLE_NAME = 'posts';
 const columns = [
@@ -13,9 +13,9 @@ const columns = [
 ];
 
 /** Builds a post query with conditions. */
-export class PostQueryBuilder extends QueryBuilder {
+export class PostQueryBuilder extends QueryBuilder<PostDAO> {
   constructor(knex: Knex) {
-    super(knex.column(columns), TABLE_NAME);
+    super(knex.column(columns) as any, TABLE_NAME);
     this.knex = knex;
     (this.query.leftJoin as Knex.Join<Record<string, unknown>, unknown>)(
       `${TABLE_NAME} AS domain`,
@@ -91,7 +91,7 @@ export class PostQueryBuilder extends QueryBuilder {
   }
 }
 
-export class PostMutationBuilder extends MutationBuilder {
+export class PostMutationBuilder extends MutationBuilder<PostDAO> {
   constructor(knex: Knex) {
     super(knex, TABLE_NAME, 'post');
   }

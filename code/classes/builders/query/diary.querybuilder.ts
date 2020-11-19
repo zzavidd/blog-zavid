@@ -1,13 +1,13 @@
 import Knex, { TypePreservingAggregation } from 'knex';
 
-import { DiaryStatus, QueryOrder } from 'classes';
-
 import { MutationBuilder, QueryBuilder } from './super';
+
+import { DiaryDAO, DiaryStatus, QueryOrder } from '../../index';
 
 const TABLE_NAME = 'diary';
 
 /** Builds a post query with conditions. */
-export class DiaryQueryBuilder extends QueryBuilder {
+export class DiaryQueryBuilder extends QueryBuilder<DiaryDAO> {
   constructor(knex: Knex) {
     super(knex, TABLE_NAME);
     this.knex = knex;
@@ -59,7 +59,7 @@ export class DiaryQueryBuilder extends QueryBuilder {
   }
 }
 
-export class DiaryMutationBuilder extends MutationBuilder {
+export class DiaryMutationBuilder extends MutationBuilder<DiaryDAO> {
   constructor(knex: Knex) {
     super(knex, TABLE_NAME, 'diary entry');
   }

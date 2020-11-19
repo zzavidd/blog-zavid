@@ -1,8 +1,7 @@
 import { zDate } from 'zavid-modules';
 
-import { DiaryDAO, DiaryStatus } from 'classes';
-
 import { randomEnumValue } from '../helper';
+import { DiaryDAO, DiaryStatus } from '../interfaces';
 
 export class DiaryStatic {
   static STATUS = DiaryStatus;

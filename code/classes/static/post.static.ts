@@ -1,6 +1,5 @@
-import { PostDAO, PostImage, PostType, PostStatus } from 'classes';
-
 import { isString, randomEnumValue, randomElementFromList } from '../helper';
+import { PostDAO, PostImage, PostType, PostStatus } from '../interfaces';
 
 interface DirectoryMapping {
   [type: string]: string;
@@ -31,8 +30,6 @@ export class PostStatic {
 
   /**
    * Ensure a post object is able to be operated on.
-   * @param {object} post The post object.
-   * @returns {object} The parsed post object.
    */
   static parse(post: PostDAO): PostDAO {
     const images = post.contentImages;

@@ -8,7 +8,7 @@ import {
   PostType,
   PostStatus,
   PostImage
-} from 'classes';
+} from '../../index';
 
 /** The class for Post objects and methods. */
 export class PostBuilder {

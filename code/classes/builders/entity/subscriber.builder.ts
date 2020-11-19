@@ -5,7 +5,7 @@ import {
   SubscriberDAO,
   SubscriptionsMapping,
   SubscriptionType
-} from 'classes';
+} from '../../index';
 
 /** The class for building Subscriber objects. */
 export class SubscriberBuilder {

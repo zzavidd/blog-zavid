@@ -1,7 +1,8 @@
-import assert from 'assert';
 import { Application } from 'express';
 import Knex from 'knex';
 import Server from 'next/dist/next-server/server/next-server';
+
+import assert from 'assert';
 
 let IApp: Application;
 let IKnex: Knex;

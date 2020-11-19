@@ -2,8 +2,10 @@ import Knex from 'knex';
 
 import { QueryBuilder, MutationBuilder } from './super';
 
+import { SubscriberDAO } from '../../interfaces';
+
 /** Builds a post query with conditions. */
-export class SubscriberQueryBuilder extends QueryBuilder {
+export class SubscriberQueryBuilder extends QueryBuilder<SubscriberDAO> {
   constructor(knex: Knex) {
     super(knex, 'subscribers');
   }
@@ -14,7 +16,7 @@ export class SubscriberQueryBuilder extends QueryBuilder {
   }
 }
 
-export class SubscriberMutationBuilder extends MutationBuilder {
+export class SubscriberMutationBuilder extends MutationBuilder<SubscriberDAO> {
   constructor(knex: Knex) {
     super(knex, 'subscribers', 'subscriber');
   }

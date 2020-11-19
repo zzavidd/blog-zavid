@@ -1,8 +1,8 @@
 import Knex, { RawQueryBuilder } from 'knex';
 
-import { QueryOrder } from 'classes';
+import { QueryOrder } from '../../index';
 
-export class QueryBuilder {
+export class QueryBuilder<T> {
   knex: Knex;
   query: Knex | Knex.QueryBuilder;
   table: string;
@@ -17,13 +17,13 @@ export class QueryBuilder {
     this.knex = knex;
   }
 
-  whereId(id: number): QueryBuilder {
+  whereId(id: number): QueryBuilder<T> {
     if (!id) throw new Error(`No specified ID.`);
     this.query.where(`${this.table}.id`, id);
     return this;
   }
 
-  exceptId(id: number): QueryBuilder {
+  exceptId(id: number): QueryBuilder<T> {
     if (!id) return this;
     this.query.whereNot(`${this.table}.id`, id);
     return this;
@@ -31,12 +31,8 @@ export class QueryBuilder {
 
   /**
    * Enables sorting or randomising of the results.
-   * @param {object} [sort] The sort details.
-   * @param {object} [options] Any options.
-   * @param {boolean} [options.forStringsWithNumbers] If sorting on fields with numbers.
-   * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
-  withOrder(sort: QuerySort = {}, options: QuerySortOptions = {}) {
+  withOrder(sort: QuerySort = {}, options: QuerySortOptions = {}): QueryBuilder<T> {
     let { order } = sort;
     const { field } = sort;
     const { forStringsWithNumbers = false } = options;
@@ -62,17 +58,17 @@ export class QueryBuilder {
   /**
    * Limits the number of results.
    */
-  withLimit(limit: number): QueryBuilder {
+  withLimit(limit: number): QueryBuilder<T> {
     this.query.limit(limit);
     return this;
   }
 
-  build(): unknown {
-    return this.query;
+  async build(): Promise<T[]> {
+    return await this.query;
   }
 }
 
-export class MutationBuilder extends QueryBuilder {
+export class MutationBuilder<T> extends QueryBuilder<T> {
   entity: string;
   table: string;
 
@@ -83,27 +79,27 @@ export class MutationBuilder extends QueryBuilder {
     this.table = table;
   }
 
-  insert<T>(input: T): MutationBuilder {
+  insert<E>(input: E): MutationBuilder<T> {
     if (input)
       throw new Error(`No specified ${this.entity} to insert.`);
     this.query.insert(input);
     return this;
   }
 
-  update<T>(input: T): MutationBuilder {
+  update<E>(input: E): MutationBuilder<T> {
     if (input)
       throw new Error(`No specified ${this.entity} to update.`);
     this.query.update(input);
     return this;
   }
 
-  delete(id: number): MutationBuilder {
+  delete(id: number): MutationBuilder<T> {
     if (id) throw new Error(`No specified ${this.entity} to delete.`);
     this.query.where(`${this.table}.id`, id).del();
     return this;
   }
 
-  truncate(): MutationBuilder {
+  truncate(): MutationBuilder<T> {
     this.query.truncate();
     return this;
   }

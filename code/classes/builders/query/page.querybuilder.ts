@@ -2,8 +2,10 @@ import Knex from 'knex';
 
 import { QueryBuilder, MutationBuilder } from './super';
 
+import { PageDAO } from '../../interfaces';
+
 /** Builds a post query with conditions. */
-export class PageQueryBuilder extends QueryBuilder {
+export class PageQueryBuilder extends QueryBuilder<PageDAO> {
   constructor(knex: Knex) {
     super(knex, 'pages');
   }
@@ -20,7 +22,7 @@ export class PageQueryBuilder extends QueryBuilder {
   }
 }
 
-export class PageMutationBuilder extends MutationBuilder {
+export class PageMutationBuilder extends MutationBuilder<PageDAO> {
   constructor(knex: Knex) {
     super(knex, 'pages', 'page');
   }

@@ -11,22 +11,20 @@ env:
   node: true
   mocha: true
   es6: true
-parser: "@typescript-eslint/parser"
+parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 2020
   sourceType: module
   ecmaFeatures:
     jsx: true
-  project:
-    - "./tsconfig.json"
-    - "classes/tsconfig.classes.json"
-    - "test/tsconfig.test.json"
+  # project: './tsconfig.json'
 plugins:
   - react
   - filenames
   - import
   - mocha
-  - "@typescript-eslint"
+  - '@typescript-eslint'
+root: true
 settings:
   import/resolver:
     node:
@@ -34,9 +32,9 @@ settings:
         - 'node_modules'
         - '.'
       extensions:
-        - ".js"
-        - ".ts"
-        - ".tsx"
+        - '.js'
+        - '.ts'
+        - '.tsx'
   import/ignore:
     - '.json'
     - '.scss'
@@ -99,8 +97,8 @@ rules:
     - exceptions:
         - '*'
 
-  "@typescript-eslint/explicit-module-boundary-types": off
-  "@typescript-eslint/no-non-null-assertion": off
+  '@typescript-eslint/explicit-module-boundary-types': off
+  '@typescript-eslint/no-non-null-assertion': off
 
   # Overridden and disabled rules
   mocha/handle-done-callback: off
