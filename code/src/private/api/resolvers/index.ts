@@ -1,7 +1,7 @@
-const diaryResolvers = require('./diary.resolvers');
-const pageResolvers = require('./page.resolvers');
-const postResolvers = require('./post.resolvers');
-const subscriberResolvers = require('./subscriber.resolvers');
+import diaryResolvers from './diary.resolvers';
+import pageResolvers from './page.resolvers';
+import postResolvers from './post.resolvers';
+import subscriberResolvers from './subscriber.resolvers';
 
 const resolvers = [
   diaryResolvers,
@@ -19,4 +19,4 @@ resolvers.forEach((resolver) => {
   Object.assign(Mutation, resolver.Mutation);
 });
 
-module.exports = { Query, Mutation };
+export default { Query, Mutation };

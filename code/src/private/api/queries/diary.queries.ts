@@ -1,4 +1,4 @@
-const { gql } = require('@apollo/client');
+import { gql } from '@apollo/client';
 
 const diaryFragments = gql`
   fragment DiaryFields on DiaryEntry {
@@ -12,7 +12,7 @@ const diaryFragments = gql`
   }
 `;
 
-exports.GET_DIARY_QUERY = gql`
+export const GET_DIARY_QUERY = gql`
   query GetAllDiaryEntries(
     $sort: DiarySortOptions
     $status: DiaryStatusOptions
@@ -24,7 +24,7 @@ exports.GET_DIARY_QUERY = gql`
   ${diaryFragments}
 `;
 
-exports.GET_SINGLE_DIARY_QUERY = gql`
+export const GET_SINGLE_DIARY_QUERY = gql`
   query GetSingleDiaryEntry($id: Int!) {
     diaryEntry(id: $id) {
       ...DiaryFields
@@ -33,7 +33,7 @@ exports.GET_SINGLE_DIARY_QUERY = gql`
   ${diaryFragments}
 `;
 
-exports.CREATE_DIARY_QUERY = gql`
+export const CREATE_DIARY_QUERY = gql`
   mutation CreateDiaryEntry($diaryEntry: DiaryInput!, $isPublish: Boolean) {
     createDiaryEntry(diaryEntry: $diaryEntry, isPublish: $isPublish) {
       id
@@ -41,7 +41,7 @@ exports.CREATE_DIARY_QUERY = gql`
   }
 `;
 
-exports.UPDATE_DIARY_QUERY = gql`
+export const UPDATE_DIARY_QUERY = gql`
   mutation UpdateDiaryEntry(
     $id: Int!
     $diaryEntry: DiaryInput!
@@ -54,7 +54,7 @@ exports.UPDATE_DIARY_QUERY = gql`
   ${diaryFragments}
 `;
 
-exports.DELETE_DIARY_QUERY = gql`
+export const DELETE_DIARY_QUERY = gql`
   mutation DeleteDiaryEntry($id: Int!) {
     deleteDiaryEntry(id: $id) {
       id

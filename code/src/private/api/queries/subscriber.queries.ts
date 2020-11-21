@@ -1,4 +1,4 @@
-const { gql } = require('@apollo/client');
+import { gql } from '@apollo/client';
 
 const subscriberFragments = gql`
   fragment SubscriberFields on Subscriber {
@@ -15,7 +15,7 @@ const subscriberFragments = gql`
   }
 `;
 
-exports.GET_SUBSCRIBERS_QUERY = gql`
+export const GET_SUBSCRIBERS_QUERY = gql`
   query GetAllSubscribers($sort: SubscriberSortOptions) {
     subscribers(sort: $sort) {
       ...SubscriberFields
@@ -24,7 +24,7 @@ exports.GET_SUBSCRIBERS_QUERY = gql`
   ${subscriberFragments}
 `;
 
-exports.GET_SINGLE_SUBSCRIBER_QUERY = gql`
+export const GET_SINGLE_SUBSCRIBER_QUERY = gql`
   query GetSingleSubscriber($id: Int!) {
     subscriber(id: $id) {
       ...SubscriberFields
@@ -33,7 +33,7 @@ exports.GET_SINGLE_SUBSCRIBER_QUERY = gql`
   ${subscriberFragments}
 `;
 
-exports.CREATE_SUBSCRIBER_QUERY = gql`
+export const CREATE_SUBSCRIBER_QUERY = gql`
   mutation CreateSubscriber($subscriber: SubscriberInput!) {
     createSubscriber(subscriber: $subscriber) {
       id
@@ -41,7 +41,7 @@ exports.CREATE_SUBSCRIBER_QUERY = gql`
   }
 `;
 
-exports.UPDATE_SUBSCRIBER_QUERY = gql`
+export const UPDATE_SUBSCRIBER_QUERY = gql`
   mutation UpdateSubscriber($id: Int!, $subscriber: SubscriberInput!) {
     updateSubscriber(id: $id, subscriber: $subscriber) {
       ...SubscriberFields
@@ -50,7 +50,7 @@ exports.UPDATE_SUBSCRIBER_QUERY = gql`
   ${subscriberFragments}
 `;
 
-exports.DELETE_SUBSCRIBER_QUERY = gql`
+export const DELETE_SUBSCRIBER_QUERY = gql`
   mutation DeleteSubscriber($id: Int!) {
     deleteSubscriber(id: $id) {
       id

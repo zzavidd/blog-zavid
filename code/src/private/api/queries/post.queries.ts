@@ -1,4 +1,4 @@
-const { gql } = require('@apollo/client');
+import { gql } from '@apollo/client';
 
 const postFragments = gql`
   fragment PostFields on Post {
@@ -21,7 +21,7 @@ const postFragments = gql`
   }
 `;
 
-exports.GET_POSTS_QUERY = gql`
+export const GET_POSTS_QUERY = gql`
   query GetAllPosts(
     $limit: Int
     $sort: PostSortOptions
@@ -35,7 +35,7 @@ exports.GET_POSTS_QUERY = gql`
   ${postFragments}
 `;
 
-exports.GET_SINGLE_POST_QUERY = gql`
+export const GET_SINGLE_POST_QUERY = gql`
   query GetSinglePost($id: Int!) {
     getSinglePost(id: $id) {
       ...PostFields
@@ -44,7 +44,7 @@ exports.GET_SINGLE_POST_QUERY = gql`
   ${postFragments}
 `;
 
-exports.CREATE_POST_QUERY = gql`
+export const CREATE_POST_QUERY = gql`
   mutation CreatePost(
     $post: PostInput!
     $isPublish: Boolean
@@ -56,7 +56,7 @@ exports.CREATE_POST_QUERY = gql`
   }
 `;
 
-exports.UPDATE_POST_QUERY = gql`
+export const UPDATE_POST_QUERY = gql`
   mutation UpdatePost(
     $id: Int!
     $post: PostInput!
@@ -70,7 +70,7 @@ exports.UPDATE_POST_QUERY = gql`
   ${postFragments}
 `;
 
-exports.DELETE_POST_QUERY = gql`
+export const DELETE_POST_QUERY = gql`
   mutation DeletePost($id: Int!) {
     deletePost(id: $id) {
       id
@@ -78,7 +78,7 @@ exports.DELETE_POST_QUERY = gql`
   }
 `;
 
-exports.TRUNCATE_POST_TABLE_QUERY = gql`
+export const TRUNCATE_POST_TABLE_QUERY = gql`
   mutation TruncatePostTable {
     truncatePostTable
   }

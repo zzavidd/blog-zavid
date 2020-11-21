@@ -4,6 +4,7 @@ export * from './post.interface';
 export * from './diary.interface';
 export * from './subscriber.interface';
 export * from './page.interface';
+export * from './super';
 
 export enum QueryOrder {
   ASCENDING = 'ASC',

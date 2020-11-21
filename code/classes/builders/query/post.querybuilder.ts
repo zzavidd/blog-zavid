@@ -97,12 +97,12 @@ export class PostMutationBuilder extends MutationBuilder<PostDAO> {
   }
 }
 
-interface PostTypeFilters {
+export type PostTypeFilters = {
   include?: PostType[];
   exclude?: PostType[];
 }
 
-interface PostStatusFilters {
+export type PostStatusFilters = {
   include?: PostStatus[];
   exclude?: PostStatus[];
 }

@@ -65,7 +65,7 @@ export class DiaryMutationBuilder extends MutationBuilder<DiaryDAO> {
   }
 }
 
-interface DiaryStatusFilters {
+export interface DiaryStatusFilters {
   include?: DiaryStatus[];
   exclude?: DiaryStatus[];
 }

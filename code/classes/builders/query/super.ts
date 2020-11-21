@@ -105,7 +105,7 @@ export class MutationBuilder<T> extends QueryBuilder<T> {
   }
 }
 
-interface QuerySort {
+export interface QuerySort {
   field?: string;
   order?: string;
 }

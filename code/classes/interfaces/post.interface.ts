@@ -7,7 +7,7 @@ export interface PostDAO extends GenericDAO {
   content?: string;
   status?: PostStatus;
   excerpt?: string;
-  slug?: string;
+  slug?: string | null;
   datePublished?: string | Date;
   image?: PostImage | string;
   contentImages?: PostContentImages;

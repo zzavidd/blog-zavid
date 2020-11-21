@@ -50,10 +50,9 @@ export class PostStatic {
   }
 
   /**
-   * Concatenate post images and return as a single list.
-   * @param {PostDAO} post - The post object containing images.
-   * @param {CollateImageOptions} [options] - Options for image collation.
-   * @returns {(PostDAO|string)[]} The list of images.
+   * Collates a post's images into an array.
+   * @param post The post object containing images.
+   * @param options - Options for image collation.
    */
   static collateImages(
     post: PostDAO,

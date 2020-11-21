@@ -1,4 +1,4 @@
-const { gql } = require('@apollo/client');
+import { gql } from '@apollo/client';
 
 const pageFragments = gql`
   fragment PageFields on Page {
@@ -12,7 +12,7 @@ const pageFragments = gql`
   }
 `;
 
-exports.GET_PAGES_QUERY = gql`
+export const GET_PAGES_QUERY = gql`
   query GetAllPages {
     pages {
       ...PageFields
@@ -21,7 +21,7 @@ exports.GET_PAGES_QUERY = gql`
   ${pageFragments}
 `;
 
-exports.GET_SINGLE_PAGE_QUERY = gql`
+export const GET_SINGLE_PAGE_QUERY = gql`
   query GetSinglePage($id: Int!) {
     page(id: $id) {
       ...PageFields
@@ -30,7 +30,7 @@ exports.GET_SINGLE_PAGE_QUERY = gql`
   ${pageFragments}
 `;
 
-exports.CREATE_PAGE_QUERY = gql`
+export const CREATE_PAGE_QUERY = gql`
   mutation CreatePage($page: PageInput!) {
     createPage(page: $page) {
       id
@@ -38,7 +38,7 @@ exports.CREATE_PAGE_QUERY = gql`
   }
 `;
 
-exports.UPDATE_PAGE_QUERY = gql`
+export const UPDATE_PAGE_QUERY = gql`
   mutation UpdatePage($id: Int!, $page: PageInput!) {
     updatePage(id: $id, page: $page) {
       ...PageFields
@@ -47,7 +47,7 @@ exports.UPDATE_PAGE_QUERY = gql`
   ${pageFragments}
 `;
 
-exports.DELETE_PAGE_QUERY = gql`
+export const DELETE_PAGE_QUERY = gql`
   mutation DeletePage($id: Int!) {
     deletePage(id: $id) {
       id

@@ -1,12 +1,14 @@
-const { ApolloServer } = require('apollo-server-express');
-const async = require('async');
+import { ApolloServer } from 'apollo-server-express';
+import async from 'async';
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const resolvers = require('./resolvers');
+import resolvers from './resolvers';
 
-const app = require('../singleton').getApp();
+import { getApp } from '../singleton';
+
+const app = getApp();
 
 const schemaFilenames = fs.readdirSync(path.join(__dirname, 'schema'));
 
@@ -21,7 +23,7 @@ async.map(
       }
     );
   },
-  function (err, typeDefs) {
+  function (err, typeDefs: string[]) {
     if (err) throw err;
 
     const apolloServer = new ApolloServer({
