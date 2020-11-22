@@ -13,7 +13,7 @@ import {
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph } from 'src/components/text';
 import { Fader, Slider } from 'src/components/transitioner';
-import css from 'styles/components/Form.module.scss';
+import css from 'src/styles/components/Form.module.scss';
 
 export * from './checkbox';
 export * from './fileselector';

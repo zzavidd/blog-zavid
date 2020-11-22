@@ -21,7 +21,7 @@ import { ORDER } from 'src/constants/strings';
 import { isAuthenticated } from 'src/lib/cookies';
 import { RightSidebar } from 'src/partials/sidebar';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
-import css from 'styles/pages/Reveries.module.scss';
+import css from 'src/styles/pages/Reveries.module.scss';
 
 const REVERIES_HEADING = 'Reveries';
 

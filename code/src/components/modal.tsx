@@ -2,8 +2,8 @@ import React from 'react';
 import { Modal as IModal } from 'react-bootstrap';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { ButtonSpacer, CancelButton, DeleteButton } from 'src/components/button.js';
-import { Paragraph } from 'src/components/text.js';
+import { ButtonSpacer, CancelButton, DeleteButton } from 'src/components/button';
+import { Paragraph } from 'src/components/text';
 import css from 'src/styles/components/Modal.module.scss';
 
 

@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server-express';
-import async from 'async';
+import async, { AsyncResultCallback } from 'async';
 
 import fs from 'fs';
 import path from 'path';
@@ -14,23 +14,25 @@ const schemaFilenames = fs.readdirSync(path.join(__dirname, 'schema'));
 
 async.map(
   schemaFilenames,
-  function (filename, callback) {
+  function (filename: string, callback: AsyncResultCallback<string, Error>) {
     fs.readFile(
       path.join(__dirname, `schema/${filename}`),
       { encoding: 'utf-8' },
       function (err, data) {
-        callback(err, data);
+        callback(err, data!);
       }
     );
   },
-  function (err, typeDefs: string[]) {
+  function (err: CallbackError, typeDefs) {
     if (err) throw err;
 
     const apolloServer = new ApolloServer({
-      typeDefs,
+      typeDefs: typeDefs as string[],
       resolvers
     });
 
     apolloServer.applyMiddleware({ app, path: '/api' });
   }
 );
+
+type CallbackError = Error | null | undefined

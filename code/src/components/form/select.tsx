@@ -3,7 +3,7 @@ import React from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
 import { OnSelectChangeType } from 'classes';
-import css from 'styles/components/Form.module.scss';
+import css from 'src/styles/components/Form.module.scss';
 
 export const Select = (props: SelectProps) => {
   const {

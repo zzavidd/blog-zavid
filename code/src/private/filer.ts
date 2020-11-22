@@ -41,17 +41,17 @@ export const uploadImages = async (
   }
 
   return new Promise((resolve, reject) => {
-    async.transform(
+    async.transform<PostImage | string, string, Error>(
       images,
       function (
-        acc: Record<string, string>,
-        image: PostImage,
-        key: number,
+        acc,
+        image,
+        key,
         callback
       ) {
-        const { hasChanged, source, isCover } = image;
+        const { hasChanged, source, isCover } = image as PostImage;
         if (!hasChanged) {
-          acc[key] = source;
+          acc.push(source);
           return callback();
         }
 
@@ -73,19 +73,19 @@ export const uploadImages = async (
           (err, result) => {
             if (err) return callback(err);
             const { version, public_id, format } = result!;
-            acc[key] = `v${version}/${public_id}.${format}`;
+            acc.push(`v${version}/${public_id}.${format}`);
             callback();
           }
         );
       },
-      function (err, results: string[]) {
+      function (err, results) {
         if (err) return reject(err);
 
         const contentImageRegex = new RegExp(/.*\-[0-9]{2}\.[a-z]+/);
         const contentImages: string[] = [];
 
         // Store return image information in post object.
-        results!.forEach((result: string) => {
+        (results as string[]).forEach((result: string) => {
           if (contentImageRegex.test(result)) {
             contentImages.push(result);
           } else {

@@ -56,7 +56,7 @@ const testRecipient: TestRecipient = {
 /** Initialise the mail transporter */
 const transporter = nodemailer.createTransport({
   host: process.env[isDev ? 'ETHEREAL_HOST' : 'EMAIL_HOST'],
-  port: process.env[isDev ? 'ETHEREAL_PORT' : 'EMAIL_PORT'],
+  port: parseInt(process.env[isDev ? 'ETHEREAL_PORT' : 'EMAIL_PORT'] as string),
   auth: {
     user: process.env[isDev ? 'ETHEREAL_EMAIL' : 'EMAIL_USER'],
     pass: process.env[isDev ? 'ETHEREAL_PWD' : 'EMAIL_PWD']

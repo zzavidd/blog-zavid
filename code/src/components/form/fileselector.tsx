@@ -7,13 +7,14 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { InvisibleButton } from 'src/components/button.js';
-import { Icon } from 'src/components/icon.js';
+
+import { InvisibleButton } from 'src/components/button';
+import { Icon } from 'src/components/icon';
 import {
   cloudinaryBaseUrl,
   validateCloudinaryImage
-} from 'src/components/image.js';
-import { Zoomer } from 'src/components/transitioner.js';
+} from 'src/components/image';
+import { Zoomer } from 'src/components/transitioner';
 import css from 'src/styles/components/Form.module.scss';
 
 export const FileSelector = (props: FileSelector) => {

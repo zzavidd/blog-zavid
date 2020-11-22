@@ -3,7 +3,7 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import { OnTextAreaChangeType } from 'classes';
-import css from 'styles/components/Form.module.scss';
+import css from 'src/styles/components/Form.module.scss';
 
 export const ShortTextArea = (props: TextArea) => {
   return <TextArea {...props} minRows={1} />;

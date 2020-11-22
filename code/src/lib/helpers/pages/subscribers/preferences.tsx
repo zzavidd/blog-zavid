@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ReactHook, ReactInputChangeEvent, SubscriptionsMapping } from 'classes';
 import { Checkbox } from 'src/components/form/checkbox';
-import css from 'styles/pages/Subscribers.module.scss';
+import css from 'src/styles/pages/Subscribers.module.scss';
 
 export default ({ preferences = {}, setPreferences }: SubscriptionPreferenceProps) => {
   const checkPreference = (e: ReactInputChangeEvent) => {

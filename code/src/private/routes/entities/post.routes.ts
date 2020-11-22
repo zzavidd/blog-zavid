@@ -1,8 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { zText } from 'zavid-modules';
 
-import { PostService } from 'src/private/api/service';
-
 import {
   PostStatic,
   PostQueryBuilder,
@@ -11,6 +9,7 @@ import {
   PostType
 } from '../../../../classes';
 import { siteTitle } from '../../../constants/settings';
+import { PostService } from '../../api/service';
 import { renderErrorPage, ERRORS } from '../../error';
 import { getKnex, getServer } from '../../singleton';
 
