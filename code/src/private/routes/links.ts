@@ -1,9 +1,8 @@
-const express = require('express');
+import express from 'express';
+import request from 'request';
+
+import { cloudinaryBaseUrl } from '../../constants/settings';
 const router = express.Router();
-
-const request = require('request');
-
-const { cloudinaryBaseUrl } = require('../../constants/settings');
 
 router.get('/resources/university-thrival-guide', function (req, res) {
   const url = `${cloudinaryBaseUrl}/v1601812122/static/docs/university-thrival-guide.pdf`;
@@ -15,4 +14,4 @@ router.get('/resources/dissertation', function (req, res) {
   request(url).pipe(res);
 });
 
-module.exports = router;
+export default router;

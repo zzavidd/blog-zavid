@@ -1,18 +1,20 @@
-const express = require('express');
-const router = express.Router();
-const { SitemapStream, streamToPromise } = require('sitemap');
+import express from 'express';
+import { SitemapStream, streamToPromise } from 'sitemap';
 
-const path = require('path');
+import path from 'path';
 
-const {
+import {
   PostStatic,
   PostQueryBuilder,
-  DiaryStatic,
   DiaryQueryBuilder,
-  PageQueryBuilder
-} = require('../lib').classes;
-const { domain } = require('../../constants/settings.js');
-const knex = require('../singleton').getKnex();
+  PageQueryBuilder,
+  DiaryStatus
+} from '../../../classes';
+import { domain } from '../../constants/settings';
+import { getKnex } from '../singleton';
+
+const router = express.Router();
+const knex = getKnex();
 
 /** Robots.txt page */
 router.get('/robots.txt', (req, res) =>
@@ -48,7 +50,9 @@ router.get('/sitemap.xml', (req, res) => {
 
   const diaryEntries = Promise.resolve()
     .then(() =>
-      new DiaryQueryBuilder(knex).whereStatus(DiaryStatic.STATUS.PUBLISHED).build()
+      new DiaryQueryBuilder(knex)
+        .whereStatus({ include: [DiaryStatus.PUBLISHED] })
+        .build()
     )
     .then((diaryEntries) => {
       diaryEntries.forEach((diaryEntry) =>
@@ -83,4 +87,4 @@ router.get('/sitemap.xml', (req, res) => {
     .catch(console.warn);
 });
 
-module.exports = router;
+export default router;

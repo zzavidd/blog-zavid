@@ -1,14 +1,19 @@
-const express = require('express');
-const router = express.Router();
-const expressSession = require('express-session');
-const MemoryStore = require('memorystore')(expressSession);
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
+import express, { Request } from 'express';
+import expressSession, { Session } from 'express-session';
+import memoryStore from 'memorystore';
+import passport from 'passport';
+import {
+  Strategy as GoogleStrategy,
+  VerifyCallback
+} from 'passport-google-oauth2';
 
-const { domain } = require('../../constants/settings');
-const app = require('../singleton').getApp();
+import { domain } from '../../constants/settings';
+import { getApp } from '../singleton';
 
 const isDev = process.env.NODE_ENV !== 'production';
+const MemoryStore = memoryStore(expressSession);
+const router = express.Router();
+const app = getApp();
 
 const authCookieOptions = {
   maxAge: 2 * 60 * 1000,
@@ -27,7 +32,7 @@ app.use(
     store: new MemoryStore({
       checkPeriod: 24 * 60 * 60 * 1000
     }),
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET!,
     resave: false,
     saveUninitialized: false
   })
@@ -38,12 +43,18 @@ app.use(passport.session());
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientID: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       callbackURL: `${domain}/login/redirect`,
       passReqToCallback: true
     },
-    function (req, accessToken, refreshToken, profile, done) {
+    function (
+      req: Request,
+      accessToken: string,
+      refreshToken: string,
+      profile: GoogleProfile,
+      done: VerifyCallback
+    ) {
       const isZavid = profile.id === process.env.GOOGLE_ACCOUNT_ID;
       if (isZavid) {
         done(null, profile);
@@ -57,11 +68,11 @@ passport.use(
   )
 );
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function (user: AuthenticatedUser, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
+passport.deserializeUser(function (id: number, done) {
   done(null, { id });
 });
 
@@ -77,7 +88,7 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/' }),
   function (req, res) {
     res.cookie('justAuthenticated', true, authCookieOptions);
-    res.redirect(req.session.returnTo || '/');
+    res.redirect((req.session as CustomSession).returnTo || '/');
   }
 );
 
@@ -94,9 +105,19 @@ app.use('/admin', (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
-    req.session.returnTo = req.originalUrl;
+    (req.session as CustomSession).returnTo = req.originalUrl;
     res.redirect('/login');
   }
 });
 
-module.exports = router;
+export default router;
+
+type GoogleProfile = {
+  id?: string;
+};
+
+type AuthenticatedUser = {
+  id: number;
+};
+
+type CustomSession = Session & { returnTo: string };

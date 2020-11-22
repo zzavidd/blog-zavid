@@ -40,12 +40,12 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
         <Timeline
           type={TimelineType.REVERIE}
           previous={{
-            slug: previousPost.slug,
+            slug: previousPost.slug!,
             image: previousPost.image as string,
             label: previousPost.title
           }}
           next={{
-            slug: nextPost.slug,
+            slug: nextPost.slug!,
             image: nextPost.image as string,
             label: nextPost.title
           }}

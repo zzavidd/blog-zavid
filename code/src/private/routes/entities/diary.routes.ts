@@ -7,55 +7,48 @@ import {
   DiaryStatic,
   Operation,
   PageQueryBuilder
-} from 'classes';
-import { siteTitle } from 'src/constants/settings';
-import { ERRORS, renderErrorPage } from 'src/private/error';
-import { getKnex, getServer } from 'src/private/singleton';
+} from '../../../../classes';
+import { siteTitle } from '../../../constants/settings';
+import { ERRORS, renderErrorPage } from '../../error';
+import { getKnex, getServer } from '../../singleton';
 
 const router = express.Router();
 const knex = getKnex();
 const server = getServer();
 
-router.get(
-  '/diary',
-  async function (req, res, next) {
-    try {
-      const [diaryPage] = await new PageQueryBuilder(knex)
-        .whereSlug('diary')
-        .build();
+router.get('/diary', async function (req: Request, res: Response) {
+  const [diaryPage] = await new PageQueryBuilder(knex)
+    .whereSlug('diary')
+    .build();
 
-      return server.render(req, res, '/diary', {
-        title: `Diary | ${siteTitle}`,
-        description: 'Dear Zavid, how have you been feeling?',
-        ogUrl: '/diary',
-        diaryIntro: diaryPage.content
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
-  renderErrorPage
-);
+  const diaryIntro = diaryPage.content || '';
+
+  return server.render(req, res, '/diary', {
+    title: `Diary | ${siteTitle}`,
+    description: 'Dear Zavid, how have you been feeling?',
+    ogUrl: '/diary',
+    diaryIntro
+  });
+});
 
 router.get(
   '/diary/latest',
-  async function (req, res, next) {
-    try {
-      const [diary] = await new DiaryQueryBuilder(knex)
-        .whereStatus({ include: [DiaryStatic.STATUS.PUBLISHED] })
-        .getLatestEntry()
-        .build();
-      return res.redirect(`/diary/${diary.entryNumber}`);
-    } catch (err) {
-      next(err);
-    }
+  async function (req: Request, res: Response, next: NextFunction) {
+    const [diaryEntry] = await new DiaryQueryBuilder(knex)
+      .whereStatus({ include: [DiaryStatic.STATUS.PUBLISHED] })
+      .getLatestEntry()
+      .build();
+
+    if (!diaryEntry) return next(ERRORS.NO_ENTITY('diary entry'));
+
+    return res.redirect(`/diary/${diaryEntry.entryNumber}`);
   },
   renderErrorPage
 );
 
 router.get(
   '/diary/:slug([0-9]{4}-[0-9]{2}-[0-9]{2})',
-  function (req, res, next) {
+  function (req: Request, res: Response, next: NextFunction) {
     const { slug } = req.params;
     const field = 'slug';
 
@@ -73,7 +66,7 @@ router.get(
 
 router.get(
   '/diary/:number([0-9]+)',
-  function (req, res, next) {
+  function (req: Request, res: Response, next: NextFunction) {
     const number = parseInt(req.params.number);
     const field = 'entryNumber';
 
@@ -96,7 +89,7 @@ router.get('/admin/diary', function (req, res) {
 
 router.get(
   '/admin/diary/add',
-  async function (req, res, next) {
+  async function (req: Request, res: Response, next: NextFunction) {
     try {
       const [diary] = await new DiaryQueryBuilder(knex)
         .getLatestEntryNumber()
@@ -135,22 +128,26 @@ async function serveDiaryEntries(
   next: NextFunction
 ) {
   try {
-    const [[diaryEntry], [previousDiaryEntry], [nextDiaryEntry]] = await res
-      .locals.promise;
+    const promises: Promise<DiaryDAO[][]> = res.locals.promise;
+    const [
+      [diaryEntry],
+      [previousDiaryEntry],
+      [nextDiaryEntry]
+    ] = await promises;
 
     if (!diaryEntry) return next(ERRORS.NO_ENTITY('diary entry'));
 
     return server.render(req, res, '/diary/single', {
       title: `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title} | ${siteTitle}`,
-      description: zText.extractExcerpt(diaryEntry.content),
+      description: zText.extractExcerpt(diaryEntry.content!),
       ogUrl: `/diary/${diaryEntry.slug}`,
-      diaryEntry,
-      previousDiaryEntry,
-      nextDiaryEntry
+      diaryEntry: JSON.stringify(diaryEntry),
+      previousDiaryEntry: JSON.stringify(previousDiaryEntry),
+      nextDiaryEntry: JSON.stringify(nextDiaryEntry)
     });
   } catch (err) {
     next(err);
   }
 }
 
-module.exports = router;
+export default router;
