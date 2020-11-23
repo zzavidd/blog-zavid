@@ -1,7 +1,8 @@
-import { PostStatus, PostType } from 'classes';
 import { AnyAction, combineReducers, createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+
+import { PostStatus, PostType } from 'classes';
 
 /**
  * ACTIONS.
@@ -108,8 +109,8 @@ const persistedReducer = persistReducer(
 );
 
 export default () => {
-  let store = createStore(persistedReducer);
-  let persistor = persistStore(store);
+  const store = createStore(persistedReducer);
+  const persistor = persistStore(store);
   return { store, persistor };
 };
 

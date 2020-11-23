@@ -25,7 +25,7 @@ const ENTITY_NAME = 'post';
  * @param args.status The statuses to filter by.
  */
 export const getAllPosts = ({
-  limit,
+  limit = 0,
   sort,
   type,
   status
@@ -134,7 +134,7 @@ export const truncatePosts = () => {
 };
 
 export type GetAllPostOptions = {
-  limit: number;
+  limit?: number;
   sort: QuerySort;
   status: PostStatusFilters;
   type: PostTypeFilters;

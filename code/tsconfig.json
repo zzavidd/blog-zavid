@@ -13,6 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "sourceMap": true,
     "strict": true,
     "typeRoots": ["types"]
   },
@@ -20,7 +21,7 @@
     "next-env.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "classes/**/*.ts"
+    "classes/**/*.ts", "src/pages/_document.js"
   ],
   "exclude": ["node_modules", "dist/", "test/**/*", "types/**/*"]
 }

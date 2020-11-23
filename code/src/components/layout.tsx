@@ -61,6 +61,7 @@ export const Responsive = ({
   tabletView,
   mobileView
 }: ResponsiveOptions) => {
+  if (!defaultView) defaultView = null;
   if (xl) {
     return (
       <>
@@ -107,9 +108,9 @@ interface ToolbarToggle extends Layout {
 }
 
 interface ResponsiveOptions {
-  defaultView?: JSX.Element;
-  xl?: JSX.Element;
-  laptopView?: JSX.Element;
-  tabletView?: JSX.Element;
-  mobileView?: JSX.Element;
+  defaultView?: ReactNode;
+  xl?: ReactNode;
+  laptopView?: ReactNode;
+  tabletView?: ReactNode;
+  mobileView?: ReactNode;
 }

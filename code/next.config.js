@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 module.exports = {
   webpack: function (config) {
     config.module.rules.push(

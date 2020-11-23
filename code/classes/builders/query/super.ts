@@ -32,11 +32,14 @@ export class QueryBuilder<T> {
   /**
    * Enables sorting or randomising of the results.
    */
-  withOrder(sort: QuerySort = {}, options: QuerySortOptions = {}): QueryBuilder<T> {
+  withOrder(
+    sort: QuerySort = {},
+    options: QuerySortOptions = {}
+  ): QueryBuilder<T> {
     let { order } = sort;
     const { field } = sort;
     const { forStringsWithNumbers = false } = options;
-    
+
     if (!order) order = QueryOrder.ASCENDING;
 
     if (order === QueryOrder.RANDOM) {
@@ -59,7 +62,7 @@ export class QueryBuilder<T> {
    * Limits the number of results.
    */
   withLimit(limit: number): QueryBuilder<T> {
-    this.query.limit(limit);
+    if (limit) this.query.limit(limit);
     return this;
   }
 
@@ -80,15 +83,13 @@ export class MutationBuilder<T> extends QueryBuilder<T> {
   }
 
   insert<E>(input: E): MutationBuilder<T> {
-    if (input)
-      throw new Error(`No specified ${this.entity} to insert.`);
+    if (input) throw new Error(`No specified ${this.entity} to insert.`);
     this.query.insert(input);
     return this;
   }
 
   update<E>(input: E): MutationBuilder<T> {
-    if (input)
-      throw new Error(`No specified ${this.entity} to update.`);
+    if (input) throw new Error(`No specified ${this.entity} to update.`);
     this.query.update(input);
     return this;
   }

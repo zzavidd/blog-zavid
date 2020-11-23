@@ -4,13 +4,12 @@ import React, { memo, useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { DiaryDAO, DiaryStatic } from 'classes';
+import { DiaryDAO, DiaryStatus, QueryOrder } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
 import { Fader } from 'src/components/transitioner';
-import { ORDER } from 'src/constants/strings';
 import { isAuthenticated } from 'src/lib/cookies';
 import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
 import css from 'src/styles/pages/Diary.module.scss';
@@ -28,9 +27,9 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
       variables: {
         sort: {
           field: 'date',
-          order: ORDER.DESCENDING
+          order: QueryOrder.DESCENDING
         },
-        status: { include: [DiaryStatic.STATUS.PUBLISHED] }
+        status: { include: [DiaryStatus.PUBLISHED] }
       }
     }
   );

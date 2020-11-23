@@ -1,8 +1,6 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
-import { ParsedUrlQuery } from 'querystring';
-
 import Meta from 'src/partials/meta';
 
 export default class AppDocument extends Document {
@@ -12,7 +10,7 @@ export default class AppDocument extends Document {
   }
 }
 
-const AppMarkup = ({ query }: AppMarkup) => {
+const AppMarkup = ({ query }) => {
   return (
     <Html>
       <Head>
@@ -27,10 +25,6 @@ const AppMarkup = ({ query }: AppMarkup) => {
 };
 
 AppDocument.getInitialProps = async (ctx) => {
-  const meta = await Document.getInitialProps(ctx);
-  return { ...meta };
+  const query = await Document.getInitialProps(ctx);
+  return { ...query };
 };
-
-interface AppMarkup {
-  query: ParsedUrlQuery
-}

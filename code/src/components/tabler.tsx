@@ -42,29 +42,29 @@ export default (props: Tabler) => {
     if (centerAlign) return key;
   });
 
-  const TablerItemRows = (): JSX.Element => (
-    <TablerItemList {...props} centerAlignedIndices={centerAlignedIndices} />
-  );
+  const TablerItemRows = () => {
+    return (
+      <TablerItemList {...props} centerAlignedIndices={centerAlignedIndices} />
+    );
+  };
 
   return (
-    <>
-      <div className={css['tabler-container']}>
-        <TableHeading heading={heading} numOfItems={items.length} />
-        <Responsive
-          defaultView={
-            <div className={css['tabler-grid']}>
-              <TablerHeaderRow {...props} />
-              <TablerItemRows />
-            </div>
-          }
-          mobileView={
-            <div className={css['tabler-list']}>
-              <TablerItemRows />
-            </div>
-          }
-        />
-      </div>
-    </>
+    <div className={css['tabler-container']}>
+      <TableHeading heading={heading} numOfItems={items.length} />
+      <Responsive
+        defaultView={
+          <div className={css['tabler-grid']}>
+            <TablerHeaderRow {...props} />
+            <TablerItemRows />
+          </div>
+        }
+        mobileView={
+          <div className={css['tabler-list']}>
+            <TablerItemRows />
+          </div>
+        }
+      />
+    </div>
   );
 };
 

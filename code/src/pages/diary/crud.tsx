@@ -1,37 +1,25 @@
-/* eslint-disable jsdoc/require-returns */
 import { useMutation } from '@apollo/client';
-import {
-  DiaryDAO,
-  DiaryStatic,
-  Operation,
-  DiaryStatus
-} from '../../../classes';
-import React, { useEffect, useState } from 'react';
 import { NextPageContext } from 'next';
-import hooks from 'src/constants/hooks';
-import DiaryEntryForm from 'src/lib/helpers/pages/diary/form';
+import React, { useEffect, useState } from 'react';
+import { zDate } from 'zavid-modules';
 
-import { setAlert, reportError, AlertType } from 'src/components/alert';
+import { AlertType, reportError, setAlert } from 'src/components/alert';
 import { ConfirmModal } from 'src/components/modal';
+import hooks from 'src/constants/hooks';
 import { isValidDiaryEntry } from 'src/constants/validations';
+import DiaryEntryForm from 'src/lib/helpers/pages/diary/form';
+import { DAOParse, NumberParse } from 'src/lib/parser';
 import {
   CREATE_DIARY_QUERY,
   UPDATE_DIARY_QUERY
 } from 'src/private/api/queries/diary.queries';
 
-import { zDate } from 'zavid-modules';
-
-interface DiaryInitialProps {
-  diaryEntry: DiaryDAO;
-  latestEntryNumber?: number;
-  operation: Operation;
-}
-
-interface DiaryRequest {
-  id?: number;
-  diaryEntry: DiaryDAO;
-  isPublish: boolean;
-}
+import {
+  DiaryDAO,
+  DiaryStatic,
+  DiaryStatus,
+  Operation
+} from '../../../classes';
 
 const DiaryCrud = ({
   diaryEntry: serverDiaryEntry,
@@ -187,7 +175,22 @@ const returnToDiaryAdmin = (): void => {
 };
 
 DiaryCrud.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+  const diaryEntry = DAOParse<DiaryDAO>(query.diaryEntry);
+  const operation = query.operation as Operation;
+  const latestEntryNumber = NumberParse(query.latestEntryNumber);
+  return { diaryEntry, operation, latestEntryNumber };
 };
 
 export default DiaryCrud;
+
+type DiaryInitialProps = {
+  diaryEntry: DiaryDAO;
+  latestEntryNumber?: number;
+  operation: Operation;
+};
+
+type DiaryRequest = {
+  id?: number;
+  diaryEntry: DiaryDAO;
+  isPublish: boolean;
+};

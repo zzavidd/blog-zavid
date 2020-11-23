@@ -4,13 +4,18 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/scss/bootstrap.scss';
-import App, { AppProps } from 'next/app';
+import App, { AppContext, AppProps } from 'next/app';
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
-import { Provider, useSelector, useDispatch, RootStateOrAny } from 'react-redux';
+import {
+  Provider,
+  useSelector,
+  useDispatch,
+  RootStateOrAny
+} from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { alert, checkForSetAlerts } from 'src/components/alert.js';
+import { alert, checkForSetAlerts } from 'src/components/alert';
 import {
   CookiePrompt,
   setCookie,
@@ -18,11 +23,11 @@ import {
   clearCookie,
   checkCookiePolicyAccepted
 } from 'src/lib/cookies';
-import configureStore, { setTheme, setUser, clearUser } from 'src/lib/reducers.js';
-import Footer from 'src/partials/footer.js';
-import Header from 'src/partials/header.js';
+import configureStore, { setTheme, setUser, clearUser } from 'src/lib/reducers';
+import Footer from 'src/partials/footer';
+import Header from 'src/partials/header';
 
-import 'styles/App.scss';
+import 'src/styles/App.scss';
 
 library.add(fab, far, fas);
 
@@ -35,19 +40,17 @@ const client = new ApolloClient({
 const AUTH_COOKIE = 'justAuthenticated';
 const DEAUTH_COOKIE = 'justDeauthenticated';
 
-export default class ZAVID extends App {
-  render() {
-    return (
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ApolloProvider client={client}>
-            <ZAVIDApp {...this.props} />
-          </ApolloProvider>
-        </PersistGate>
-      </Provider>
-    );
-  }
-}
+export default (props: AppProps) => {
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ApolloProvider client={client}>
+          <ZAVIDApp {...props} />
+        </ApolloProvider>
+      </PersistGate>
+    </Provider>
+  );
+};
 
 /**
  * The root of the ZAVID blog.
@@ -79,11 +82,11 @@ const ZAVIDApp = ({ Component, pageProps }: AppProps) => {
 
     document.body.classList.add(`body-${theme}`);
 
-    if (readCookie(AUTH_COOKIE)){
+    if (readCookie(AUTH_COOKIE)) {
       dispatch(setUser({ isAuthenticated: true }));
       alert.success("You've successfully logged in.");
       clearCookie(AUTH_COOKIE);
-    } else if (readCookie(DEAUTH_COOKIE)){
+    } else if (readCookie(DEAUTH_COOKIE)) {
       dispatch(clearUser());
       alert.success("You've successfully logged out.");
       clearCookie(DEAUTH_COOKIE);
@@ -119,11 +122,7 @@ const ZAVIDApp = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-ZAVID.getInitialProps = async ({ Component, ctx }) => {
-  let pageProps = {};
-
-  if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
-  }
-  return { pageProps };
+ZAVIDApp.getInitialProps = async (context: AppContext) => {
+  const pageProps = await App.getInitialProps(context);
+  return { ...pageProps };
 };

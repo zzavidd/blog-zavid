@@ -1,7 +1,7 @@
-import React, { CSSProperties, ReactElement, ReactNode, ReactText } from 'react';
+import React, { CSSProperties, ReactElement, ReactNode } from 'react';
 import { Transition } from 'react-transition-group';
 
-export const Fader = (props: Transitioner) => {
+export const Fader = (props: TransitionerProps) => {
   const { duration, delay = 0, postTransitions } = props;
 
   const defaultStyle = {
@@ -26,7 +26,7 @@ export const Fader = (props: Transitioner) => {
   );
 };
 
-export const Zoomer = (props: Transitioner) => {
+export const Zoomer = (props: TransitionerProps) => {
   const { duration, delay = 0, postTransitions } = props;
 
   const defaultStyle = {
@@ -51,7 +51,7 @@ export const Zoomer = (props: Transitioner) => {
   );
 };
 
-export const Slider = (props: SlideTransitioner) => {
+export const Slider = (props: SlideTransitionerProps) => {
   const { duration, delay = 0, direction, postTransitions = '' } = props;
 
   const defaultStyle = {
@@ -89,7 +89,7 @@ const BaseTransitioner = ({
   hollow,
   style,
   transitionStyles
-}: BaseTransitioner) => {
+}: BaseTransitionerProps) => {
   return (
     <Transition in={determinant} timeout={{}}>
       {(state) => {
@@ -115,7 +115,7 @@ const BaseTransitioner = ({
   );
 };
 
-interface Transitioner {
+interface TransitionerProps {
   determinant: boolean;
   duration: number;
   delay?: number;
@@ -123,15 +123,15 @@ interface Transitioner {
   hollow?: boolean;
   children: ReactNode;
   className?: string;
-  style?: CSSProperties
+  style?: CSSProperties;
 }
 
-interface BaseTransitioner extends Transitioner {
-  defaultStyle: CSSProperties
-  transitionStyles: TransitionStyles
+interface BaseTransitionerProps extends TransitionerProps {
+  defaultStyle: CSSProperties;
+  transitionStyles: TransitionStyles;
 }
 
-interface SlideTransitioner extends Transitioner {
+interface SlideTransitionerProps extends TransitionerProps {
   direction: string;
 }
 

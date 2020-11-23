@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
+import { ColProps } from 'react-bootstrap';
 import { zDate } from 'zavid-modules';
 
 import { DiaryDAO, PostDAO, PostStatic, ReactComponent } from 'classes';
@@ -11,15 +12,15 @@ import { Flexer, Responsive } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
 import { Fader, Zoomer } from 'src/components/transitioner';
 import { redevelopmentDate } from 'src/constants/settings';
+import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Home.module.scss';
-import { ColProps } from 'react-bootstrap';
 
 const Home = ({
   homeText,
   latestDiaryEntry,
   latestReverie,
   randomPosts
-}: Home) => {
+}: HomeProps) => {
   return (
     <>
       <div className={css['home-page']}>
@@ -252,12 +253,16 @@ const HomeField = (props: ColProps) => {
 };
 
 Home.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+  const homeText = query.homeText as string;
+  const latestDiaryEntry = DAOParse<DiaryDAO>(query.latestDiaryEntry as string);
+  const latestReverie = DAOParse<PostDAO>(query.latestReverie as string);
+  const randomPosts = DAOParse<PostDAO[]>(query.randomPosts as string);
+  return { homeText, latestDiaryEntry, latestReverie, randomPosts };
 };
 
 export default Home;
 
-interface Home {
+interface HomeProps {
   homeText: string;
   latestDiaryEntry: DiaryDAO;
   latestReverie: PostDAO;

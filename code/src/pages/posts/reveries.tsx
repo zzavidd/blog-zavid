@@ -1,23 +1,22 @@
 import { useQuery } from '@apollo/client';
 import { NextPageContext } from 'next';
-import React, { useState, useEffect, memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { PostDAO, PostStatic } from 'classes';
+import { PostDAO, PostStatus, PostType, QueryOrder } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton } from 'src/components/button';
 import CloudImage from 'src/components/image';
 import {
   Partitioner,
+  Responsive,
   Spacer,
-  Toolbar,
-  Responsive
+  Toolbar
 } from 'src/components/layout';
 import { LazyLoader } from 'src/components/loader';
-import { Title, Paragraph, Divider } from 'src/components/text';
+import { Divider, Paragraph, Title } from 'src/components/text';
 import { Zoomer } from 'src/components/transitioner';
-import { ORDER } from 'src/constants/strings';
 import { isAuthenticated } from 'src/lib/cookies';
 import { RightSidebar } from 'src/partials/sidebar';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
@@ -35,10 +34,10 @@ const ReveriesIndex = ({ reveriesIntro }: ReveriesIndexProps) => {
       variables: {
         sort: {
           field: 'datePublished',
-          order: ORDER.DESCENDING
+          order: QueryOrder.DESCENDING
         },
-        type: { include: [PostStatic.TYPE.REVERIE] },
-        status: { include: [PostStatic.STATUS.PUBLISHED] }
+        type: { include: [PostType.REVERIE] },
+        status: { include: [PostStatus.PUBLISHED] }
       }
     }
   );
@@ -154,6 +153,8 @@ ReveriesIndex.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };
 };
 
+export default ReveriesIndex;
+
 interface ReveriesIndexProps {
   reveriesIntro: string;
 }
@@ -164,6 +165,5 @@ interface ReverieList {
 }
 
 interface ReverieProps {
-  reverie: PostDAO
+  reverie: PostDAO;
 }
-

@@ -88,7 +88,7 @@ export default () => {
             const content = zText.truncateText(diaryEntry.content!, {
               limit: 20
             });
-            const date = zDate.formatDate(diaryEntry.date as string, {
+            const date = zDate.formatDate(diaryEntry.date!, {
               withWeekday: true
             });
             return [
