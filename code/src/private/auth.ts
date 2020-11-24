@@ -7,8 +7,9 @@ import {
   VerifyCallback
 } from 'passport-google-oauth2';
 
-import { domain } from '../../constants/settings';
-import { getApp } from '../singleton';
+import { getApp } from './singleton';
+
+import { domain } from '../constants/settings';
 
 const isDev = process.env.NODE_ENV !== 'production';
 const MemoryStore = memoryStore(expressSession);
