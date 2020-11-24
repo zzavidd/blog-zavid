@@ -21,7 +21,7 @@
     "next-env.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "classes/**/*.ts", "src/pages/_document.js"
+    "classes/**/*.ts"
   ],
   "exclude": ["node_modules", "dist/", "test/**/*", "types/**/*"]
 }
