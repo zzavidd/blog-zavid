@@ -13,7 +13,7 @@ import {
   Select,
   TextInput
 } from 'src/components/form';
-import DatePicker from 'src/components/form/datepicker';
+import DatePicker, { DateType } from 'src/components/form/datepicker';
 import { Fader } from 'src/components/transitioner';
 import { Handlers } from 'src/constants/hooks';
 
@@ -74,7 +74,7 @@ const DiaryEntryForm = (props: DiaryForm) => {
             <DatePicker
               name={'date'}
               date={diaryEntry.date!}
-              onConfirm={(date: string | Date) => handleDate(date as string, 'date')}
+              onConfirm={(date: DateType) => handleDate(date as DateType, 'date')}
               placeholderText={'Select the date...'}
             />
           </Field>

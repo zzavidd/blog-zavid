@@ -22,7 +22,7 @@ import {
   ShortTextArea,
   TextInput
 } from 'src/components/form';
-import DatePicker from 'src/components/form/datepicker';
+import DatePicker, { DateType } from 'src/components/form/datepicker';
 import { FileSelector, FSAspectRatio } from 'src/components/form/fileselector';
 import { cloudinaryBaseUrl } from 'src/components/image';
 import { Fader } from 'src/components/transitioner';
@@ -137,7 +137,7 @@ const PostForm = (props: PostForm) => {
             <DatePicker
               name={'datePublished'}
               date={post.datePublished!}
-              onConfirm={(date: string | Date) => handleDate(date as string, 'datePublished')}
+              onConfirm={(date: DateType) => handleDate(date as DateType, 'datePublished')}
               placeholderText={'Select the publish date...'}
             />
           </DynamicField>

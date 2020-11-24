@@ -11,6 +11,7 @@ import {
   SubscriptionsMapping
 } from 'classes';
 import { GenericDAO } from 'classes/interfaces/super';
+import { DateType } from 'src/components/form/datepicker';
 import { saveText } from 'src/lib/reducers';
 
 const handlers = <T extends GenericDAO>(
@@ -37,7 +38,7 @@ const handlers = <T extends GenericDAO>(
     dispatch(saveText(event.target.value));
   };
 
-  const handleDate = (date: string, name = 'date'): void => {
+  const handleDate = (date: DateType, name = 'date'): void => {
     hook(Object.assign({}, state, { [name]: date }));
   };
 
@@ -93,7 +94,7 @@ export interface Handlers {
     dispatch: Dispatch
   ) => void;
   handleSelection: (event: ReactSelectChangeEvent) => void;
-  handleDate: (date: string, name: string) => void;
+  handleDate: (date: DateType, name: string) => void;
   handleCheck: (event: ReactInputChangeEvent) => void;
   handleFile: (file: string | null, name?: string) => void;
   handleContentImages: (file: string, i: number) => void;
