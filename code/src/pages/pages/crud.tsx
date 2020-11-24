@@ -1,13 +1,14 @@
 import { useMutation } from '@apollo/client';
-import { Operation, PageDAO } from 'classes';
-import { PageBuilder } from 'classes/builders/entity/page.builder';
 import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 
+import { Operation, PageDAO } from 'classes';
+import { PageBuilder } from 'classes/builders/entity/page.builder';
 import { setAlert, reportError, AlertType } from 'src/components/alert';
 import hooks from 'src/constants/hooks';
 import { isValidPage } from 'src/constants/validations';
 import PageForm from 'src/lib/helpers/pages/pages/form';
+import { DAOParse } from 'src/lib/parser';
 import {
   CREATE_PAGE_QUERY,
   UPDATE_PAGE_QUERY
@@ -126,7 +127,9 @@ const returnToPageAdmin = () => {
 };
 
 PageCrud.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+  const page = DAOParse<PageDAO>(query.page);
+  const operation = query.operation as Operation;
+  return { page, operation };
 };
 
 export default PageCrud;

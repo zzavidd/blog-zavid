@@ -91,10 +91,10 @@ router.get(
   '/admin/diary/add',
   async function (req: Request, res: Response, next: NextFunction) {
     try {
-      const [diary] = await new DiaryQueryBuilder(knex)
+      const [entry] = await new DiaryQueryBuilder(knex)
         .getLatestEntryNumber()
         .build();
-      const { latestEntryNumber } = diary as DiaryDAO & {
+      const { latestEntryNumber } = entry as DiaryDAO & {
         latestEntryNumber: number;
       };
       return server.render(req, res, '/diary/crud', {
@@ -118,7 +118,7 @@ router.get('/admin/diary/edit/:id', async function (req, res) {
   return server.render(req, res, '/diary/crud', {
     title: `Edit Diary Entry`,
     operation: Operation.UPDATE,
-    diaryEntry: diaryEntry as string
+    diaryEntry: JSON.stringify(diaryEntry)
   });
 });
 

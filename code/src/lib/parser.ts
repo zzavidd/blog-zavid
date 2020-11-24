@@ -3,13 +3,11 @@ export const NumberParse = (value: unknown) => {
 };
 
 export const DAOParse = <T>(value: unknown): T | undefined => {
-  let object;
+  if (!value) return;
 
   try {
-    object = JSON.parse(value as string) as T;
+    return JSON.parse(value as string) as T;
   } catch (err) {
     console.warn(err);
-    object = undefined;
   }
-  return object;
 };

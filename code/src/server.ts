@@ -1,11 +1,9 @@
-/* eslint-disable import/order */
-import express from 'express';
-import next from 'next';
-
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import * as Dotenv from 'dotenv';
+import express from 'express';
 import Knex from 'knex';
+import next from 'next';
 
 import { setApp, setKnex, setServer } from './private/singleton';
 

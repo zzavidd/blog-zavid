@@ -1,5 +1,8 @@
-/* eslint-disable jsdoc/require-returns */
 import { useMutation, useQuery } from '@apollo/client';
+import { NextPageContext } from 'next';
+import React, { useEffect, useState } from 'react';
+import { zDate } from 'zavid-modules';
+
 import {
   Operation,
   PostBuilder,
@@ -10,18 +13,16 @@ import {
   PostStatus,
   ReactSelectChangeEvent
 } from 'classes';
-import { NextPageContext } from 'next';
-import React, { useEffect, useState } from 'react';
 import { alert, AlertType, reportError, setAlert } from 'src/components/alert';
 import hooks from 'src/constants/hooks';
 import { isValidPost } from 'src/constants/validations';
 import PostForm from 'src/lib/helpers/pages/posts/form';
+import { DAOParse } from 'src/lib/parser';
 import {
   CREATE_POST_QUERY,
   GET_POSTS_QUERY,
   UPDATE_POST_QUERY
 } from 'src/private/api/queries/post.queries';
-import { zDate } from 'zavid-modules';
 
 interface PostInitialProps {
   post: PostDAO;
@@ -272,7 +273,9 @@ const returnToAdminPosts = (): void => {
 };
 
 PostCrud.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+  const post = DAOParse<PostDAO>(query.post);
+  const operation = query.operation as Operation;
+  return { post, operation };
 };
 
 export default PostCrud;

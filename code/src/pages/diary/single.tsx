@@ -10,6 +10,7 @@ import ShareBlock from 'src/components/share';
 import { Paragraph, Title, Divider } from 'src/components/text';
 import Timeline, { TimelineType } from 'src/components/timeline';
 import { isAuthenticated } from 'src/lib/cookies';
+import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const DiarySingle = ({
@@ -69,7 +70,10 @@ const navigateToEdit = (id: number): void => {
 };
 
 DiarySingle.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+  const diaryEntry = DAOParse<DiaryDAO>(query.diaryEntry);
+  const previousDiaryEntry = DAOParse<DiaryDAO>(query.previousDiaryEntry);
+  const nextDiaryEntry = DAOParse<DiaryDAO>(query.nextDiaryEntry);
+  return { diaryEntry, previousDiaryEntry, nextDiaryEntry };
 };
 
 export default DiarySingle;

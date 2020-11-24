@@ -1,5 +1,7 @@
-/* eslint-disable jsdoc/require-returns */
 import { useMutation } from '@apollo/client';
+import { NextPageContext } from 'next';
+import React, { useEffect, useState } from 'react';
+
 import {
   Operation,
   SubscriberBuilder,
@@ -8,9 +10,6 @@ import {
   SubscriberStatic,
   SubscriptionsMapping
 } from 'classes';
-import { NextPageContext } from 'next';
-import React, { useEffect, useState } from 'react';
-
 import { setAlert, reportError, alert, AlertType } from 'src/components/alert';
 import hooks from 'src/constants/hooks';
 import { isValidSubscriber } from 'src/constants/validations';
@@ -19,6 +18,7 @@ import {
   CREATE_SUBSCRIBER_QUERY,
   UPDATE_SUBSCRIBER_QUERY
 } from 'src/private/api/queries/subscriber.queries';
+import { DAOParse } from 'src/lib/parser';
 
 const SubscriberCrud = ({
   subscriber: serverSubscriber,
@@ -141,7 +141,9 @@ const returnToSubscriberAdmin = (): void => {
 };
 
 SubscriberCrud.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+  const subscriber = DAOParse<SubscriberDAO>(query.subscriber);
+  const operation = query.operation as Operation;
+  return { subscriber, operation };
 };
 
 export default SubscriberCrud;

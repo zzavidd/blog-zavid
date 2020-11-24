@@ -10,6 +10,7 @@ import ShareBlock from 'src/components/share';
 import { Paragraph, Title, Divider } from 'src/components/text';
 import Timeline, { TimelineType } from 'src/components/timeline';
 import { isAuthenticated } from 'src/lib/cookies';
+import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
@@ -83,7 +84,10 @@ const PostDate = ({ post }: PostDate) => {
 };
 
 PostSingle.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+  const post = DAOParse<PostDAO>(query.post);
+  const previousPost = DAOParse<PostDAO>(query.previousPost);
+  const nextPost = DAOParse<PostDAO>(query.nextPost);
+  return { post, previousPost, nextPost };
 };
 
 export default PostSingle;
@@ -95,5 +99,5 @@ interface PostSingle {
 }
 
 interface PostDate {
-  post: PostDAO
+  post: PostDAO;
 }

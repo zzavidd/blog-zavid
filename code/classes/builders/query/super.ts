@@ -83,19 +83,19 @@ export class MutationBuilder<T> extends QueryBuilder<T> {
   }
 
   insert<E>(input: E): MutationBuilder<T> {
-    if (input) throw new Error(`No specified ${this.entity} to insert.`);
+    if (!input) throw new Error(`No specified ${this.entity} to insert.`);
     this.query.insert(input);
     return this;
   }
 
   update<E>(input: E): MutationBuilder<T> {
-    if (input) throw new Error(`No specified ${this.entity} to update.`);
+    if (!input) throw new Error(`No specified ${this.entity} to update.`);
     this.query.update(input);
     return this;
   }
 
   delete(id: number): MutationBuilder<T> {
-    if (id) throw new Error(`No specified ${this.entity} to delete.`);
+    if (!id) throw new Error(`No specified ${this.entity} to delete.`);
     this.query.where(`${this.table}.id`, id).del();
     return this;
   }

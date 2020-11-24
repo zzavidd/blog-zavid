@@ -2,12 +2,13 @@ import { NextPageContext } from 'next';
 import React from 'react';
 import { zDate } from 'zavid-modules';
 
-import { PageDAO } from 'classes';
+import { DiaryDAO, PageDAO } from 'classes';
 import { AdminButton } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
 import { redevelopmentDate, zavidBirthday } from 'src/constants/settings';
 import { isAuthenticated } from 'src/lib/cookies';
+import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const PageSingle = ({ page }: PageSingle) => {
@@ -43,7 +44,8 @@ const navigateToEdit = (id: number): void => {
 };
 
 PageSingle.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+  const page = DAOParse<DiaryDAO>(query.page);
+  return { page };
 };
 
 export default PageSingle;

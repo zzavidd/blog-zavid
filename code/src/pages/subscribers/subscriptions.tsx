@@ -15,11 +15,14 @@ import {
   DELETE_SUBSCRIBER_QUERY
 } from 'src/private/api/queries/subscriber.queries';
 import css from 'src/styles/pages/Subscribers.module.scss';
+import { DAOParse } from 'src/lib/parser';
 
 const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
-  const [preferences, setPreferences] = useState(subscriber.subscriptions as SubscriptionsMapping);
+  const [preferences, setPreferences] = useState(
+    subscriber.subscriptions as SubscriptionsMapping
+  );
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [updateSubscriberMutation] = useMutation(UPDATE_SUBSCRIBER_QUERY);
   const [deleteSubscriberMutation] = useMutation(DELETE_SUBSCRIBER_QUERY);
@@ -98,7 +101,8 @@ const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
 SubscriptionPreferences.getInitialProps = async ({
   query
 }: NextPageContext) => {
-  return { ...query };
+  const subscriber = DAOParse<SubscriberDAO>(query.subscriber);
+  return { subscriber };
 };
 
 export default SubscriptionPreferences;
