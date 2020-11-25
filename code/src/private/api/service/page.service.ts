@@ -43,7 +43,7 @@ export const getSinglePage = ({
 export const createPage = ({ page }: CreatePageOptions): Promise<PageDAO> => {
   return TryWrapper(async () => {
     page.lastModified = new Date();
-    const [{ id }] = await new PageMutationBuilder(knex).insert(page).build();
+    const [id] = await new PageMutationBuilder(knex).insert(page).build();
     return { id };
   });
 };

@@ -70,7 +70,7 @@ export const createPost = ({
   const shouldNotify = isPublish && !PostStatic.isPage(post) && emailsOn;
   return TryWrapper(async () => {
     post = await Filer.uploadImages(post, { isTest });
-    const [[{ id }]] = await Promise.all([
+    const [[id]] = await Promise.all([
       new PostMutationBuilder(knex).insert(post).build(),
       shouldNotify ? Emails.notifyNewPost(post) : null
     ]);

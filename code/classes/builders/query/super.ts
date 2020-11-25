@@ -71,7 +71,7 @@ export class QueryBuilder<T> {
   }
 }
 
-export class MutationBuilder<T> extends QueryBuilder<T> {
+export class MutationBuilder<T extends unknown> extends QueryBuilder<T> {
   entity: string;
   table: string;
 
@@ -82,10 +82,10 @@ export class MutationBuilder<T> extends QueryBuilder<T> {
     this.table = table;
   }
 
-  insert<E>(input: E): MutationBuilder<T> {
+  insert<E>(input: E): MutationBuilder<number> {
     if (!input) throw new Error(`No specified ${this.entity} to insert.`);
     this.query.insert(input);
-    return this;
+    return <MutationBuilder<number>>this;
   }
 
   update<E>(input: E): MutationBuilder<T> {

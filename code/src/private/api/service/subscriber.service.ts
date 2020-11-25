@@ -62,7 +62,7 @@ export const createSubscriber = ({
   });
 
   return TryWrapper(async () => {
-    const [{ id }] = await new SubscriberMutationBuilder(knex)
+    const [id] = await new SubscriberMutationBuilder(knex)
       .insert(subscriber)
       .build();
     return { id };

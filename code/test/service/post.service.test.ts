@@ -110,7 +110,10 @@ describe('Service Tests: Post', function () {
           .build();
         const createdPost = await createPost(draftPost);
         const readPost = await getSinglePost(createdPost.id);
-        assert.isNull(readPost.slug!);
+        assert.isNull(
+          readPost.slug!,
+          'A slug was incorrectly generated for this DRAFT post.'
+        );
         await deletePost(readPost.id!);
       });
 
@@ -121,7 +124,10 @@ describe('Service Tests: Post', function () {
           .build();
         const createdPost = await createPost(privatePost);
         const readPost = await getSinglePost(createdPost.id);
-        assert.isNotNull(readPost.slug!);
+        assert.isNotNull(
+          readPost.slug!,
+          'A slug should have been generated for this PRIVATE post.'
+        );
         await deletePost(readPost.id!);
       });
 
@@ -132,7 +138,10 @@ describe('Service Tests: Post', function () {
           .build();
         const createdPost = await createPost(publishedPost);
         const readPost = await getSinglePost(createdPost.id);
-        assert.isNotNull(readPost.slug!);
+        assert.isNotNull(
+          readPost.slug!,
+          'A slug should have been generated for this PUBLISHED post.'
+        );
         await deletePost(readPost.id!);
       });
 

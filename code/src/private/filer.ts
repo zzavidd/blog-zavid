@@ -27,7 +27,7 @@ export const uploadImages = async (
   const { isTest = false } = options;
   const { directory, filename, slug } = await generateSlugAndFilename(post);
 
-  if (PostStatic.isDraft(post)) {
+  if (!PostStatic.isDraft(post)) {
     post.slug = slug;
   }
 

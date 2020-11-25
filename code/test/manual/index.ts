@@ -1,4 +1,3 @@
-import { submitDiary, updateDiary } from './diary.manual.test';
+import { updateDiary } from './diary.manual';
 
-// submitDiary();
 updateDiary();

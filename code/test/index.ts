@@ -1,10 +1,10 @@
-import * as dotenv from 'dotenv';
-dotenv.config({ path: './config.env' });
-
-import { print } from 'graphql/language/printer';
 import { assert } from 'chai';
-import nodeFetch from 'node-fetch';
+import * as dotenv from 'dotenv';
 import { DocumentNode } from 'graphql';
+import { print } from 'graphql/language/printer';
+import nodeFetch from 'node-fetch';
+
+dotenv.config({ path: './config.env' });
 
 export { assert };
 
@@ -45,10 +45,10 @@ export const fetch = (query: DocumentNode, options: FetchOptions = {}) => {
  * A wrapper for Mocha tests which handles exceptions.
  * @param testBody The body of the test to be executed.
  */
-export const testWrapper = (testBody: Function): Mocha.AsyncFunc => {
+export const testWrapper = (testBody: () => void): Mocha.AsyncFunc => {
   return async () => {
     try {
-      await testBody();
+      testBody();
     } catch (err) {
       debug(err);
     }
@@ -59,7 +59,7 @@ export const testWrapper = (testBody: Function): Mocha.AsyncFunc => {
  * A wrapper for promises with asynchronous bodies.
  * @param promiseBody The body of the promise.
  */
-export const promiseWrapper = (promiseBody: Function): Promise<any> => {
+export const promiseWrapper = (promiseBody: () => void): Promise<void> => {
   return new Promise(async (resolve, reject) => {
     try {
       await promiseBody();
@@ -79,3 +79,5 @@ export interface FetchResponse {
   data?: any;
   errors?: any;
 }
+
+// TODO: Strictly type test files
