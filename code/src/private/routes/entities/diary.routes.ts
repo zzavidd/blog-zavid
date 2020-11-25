@@ -1,58 +1,54 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { zText } from 'zavid-modules';
+
 import {
+  DiaryDAO,
   DiaryQueryBuilder,
   DiaryStatic,
+  Operation,
   PageQueryBuilder
 } from '../../../../classes';
-const { siteTitle } = require('../../../constants/settings');
-const { OPERATIONS } = require('../../../constants/strings');
-const { ERRORS, renderErrorPage } = require('../../error');
+import { siteTitle } from '../../../constants/settings';
+import { ERRORS, renderErrorPage } from '../../error';
 import { getKnex, getServer } from '../../singleton';
 
 const router = express.Router();
-const { zText } = require('zavid-modules');
 const knex = getKnex();
 const server = getServer();
 
-router.get(
-  '/diary',
-  function (req, res, next) {
-    Promise.resolve()
-      .then(() => new PageQueryBuilder(knex).whereSlug('diary').build())
-      .then(([diaryPage = {}]) => {
-        return server.render(req, res, '/diary', {
-          title: `Diary | ${siteTitle}`,
-          description: 'Dear Zavid, how have you been feeling?',
-          ogUrl: '/diary',
-          diaryIntro: diaryPage.content
-        });
-      })
-      .catch(next);
-  },
-  renderErrorPage
-);
+router.get('/diary', async function (req: Request, res: Response) {
+  const [diaryPage] = await new PageQueryBuilder(knex)
+    .whereSlug('diary')
+    .build();
+
+  const diaryIntro = diaryPage.content || '';
+
+  return server.render(req, res, '/diary', {
+    title: `Diary | ${siteTitle}`,
+    description: 'Dear Zavid, how have you been feeling?',
+    ogUrl: '/diary',
+    diaryIntro
+  });
+});
 
 router.get(
   '/diary/latest',
-  function (req, res, next) {
-    Promise.resolve()
-      .then(() =>
-        new DiaryQueryBuilder(knex)
-          .whereStatus({ include: [DiaryStatic.STATUS.PUBLISHED] })
-          .getLatestEntry()
-          .build()
-      )
-      .then(([diaryEntry]) => {
-        res.redirect(`/diary/${diaryEntry.entryNumber}`);
-      })
-      .catch(next);
+  async function (req: Request, res: Response, next: NextFunction) {
+    const [diaryEntry] = await new DiaryQueryBuilder(knex)
+      .whereStatus({ include: [DiaryStatic.STATUS.PUBLISHED] })
+      .getLatestEntry()
+      .build();
+
+    if (!diaryEntry) return next(ERRORS.NO_ENTITY('diary entry'));
+
+    return res.redirect(`/diary/${diaryEntry.entryNumber}`);
   },
   renderErrorPage
 );
 
 router.get(
   '/diary/:slug([0-9]{4}-[0-9]{2}-[0-9]{2})',
-  function (req, res, next) {
+  function (req: Request, res: Response, next: NextFunction) {
     const { slug } = req.params;
     const field = 'slug';
 
@@ -70,7 +66,7 @@ router.get(
 
 router.get(
   '/diary/:number([0-9]+)',
-  function (req, res, next) {
+  function (req: Request, res: Response, next: NextFunction) {
     const number = parseInt(req.params.number);
     const field = 'entryNumber';
 
@@ -91,19 +87,27 @@ router.get('/admin/diary', function (req, res) {
   });
 });
 
-router.get('/admin/diary/add', function (req, res) {
-  Promise.resolve()
-    .then(() => {
-      return new DiaryQueryBuilder(knex).getLatestEntryNumber().build();
-    })
-    .then(([{ latestEntryNumber }]) => {
+router.get(
+  '/admin/diary/add',
+  async function (req: Request, res: Response, next: NextFunction) {
+    try {
+      const [entry] = await new DiaryQueryBuilder(knex)
+        .getLatestEntryNumber()
+        .build();
+      const { latestEntryNumber } = entry as DiaryDAO & {
+        latestEntryNumber: number;
+      };
       return server.render(req, res, '/diary/crud', {
         title: `Add New Diary Entry`,
-        operation: OPERATIONS.CREATE,
-        latestEntryNumber
+        operation: Operation.CREATE,
+        latestEntryNumber: latestEntryNumber.toString()
       });
-    });
-});
+    } catch (err) {
+      next(err);
+    }
+  },
+  renderErrorPage
+);
 
 router.get('/admin/diary/edit/:id', async function (req, res) {
   const id = req.params.id as unknown;
@@ -113,8 +117,8 @@ router.get('/admin/diary/edit/:id', async function (req, res) {
     .build();
   return server.render(req, res, '/diary/crud', {
     title: `Edit Diary Entry`,
-    operation: OPERATIONS.UPDATE,
-    diaryEntry
+    operation: Operation.UPDATE,
+    diaryEntry: JSON.stringify(diaryEntry)
   });
 });
 
@@ -124,22 +128,26 @@ async function serveDiaryEntries(
   next: NextFunction
 ) {
   try {
-    const [[diaryEntry], [previousDiaryEntry], [nextDiaryEntry]] = await res
-      .locals.promise;
+    const promises: Promise<DiaryDAO[][]> = res.locals.promise;
+    const [
+      [diaryEntry],
+      [previousDiaryEntry],
+      [nextDiaryEntry]
+    ] = await promises;
 
     if (!diaryEntry) return next(ERRORS.NO_ENTITY('diary entry'));
 
     return server.render(req, res, '/diary/single', {
       title: `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title} | ${siteTitle}`,
-      description: zText.extractExcerpt(diaryEntry.content),
+      description: zText.extractExcerpt(diaryEntry.content!),
       ogUrl: `/diary/${diaryEntry.slug}`,
-      diaryEntry,
-      previousDiaryEntry,
-      nextDiaryEntry
+      diaryEntry: JSON.stringify(diaryEntry),
+      previousDiaryEntry: JSON.stringify(previousDiaryEntry),
+      nextDiaryEntry: JSON.stringify(nextDiaryEntry)
     });
   } catch (err) {
     next(err);
   }
 }
 
-module.exports = router;
+export default router;

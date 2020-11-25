@@ -4,30 +4,41 @@ extends:
   - plugin:react/recommended
   - plugin:import/errors
   - plugin:import/warnings
-  - plugin:jsdoc/recommended
   - plugin:mocha/recommended
+  - plugin:@typescript-eslint/recommended
 env:
   browser: true
   node: true
   mocha: true
   es6: true
-parser: babel-eslint
+parser: '@typescript-eslint/parser'
 parserOptions:
+  ecmaVersion: 2020
   sourceType: module
   ecmaFeatures:
     jsx: true
+  # project: './tsconfig.json'
 plugins:
   - react
   - filenames
   - import
-  - jsdoc
   - mocha
+  - '@typescript-eslint'
+root: true
 settings:
   import/resolver:
     node:
       moduleDirectory:
         - 'node_modules'
         - '.'
+      extensions:
+        - '.js'
+        - '.ts'
+        - '.tsx'
+  import/ignore:
+    - '.json'
+    - '.scss'
+    - '.ejs'
   react:
     version: detect
 
@@ -48,10 +59,6 @@ rules:
         - internal
         - sibling
       pathGroups:
-        - pattern: 'reducers/**'
-          group: external
-          position: before
-
         - pattern: 'components/**'
           group: internal
           position: after
@@ -70,16 +77,6 @@ rules:
       alphabetize:
         order: asc
         caseInsensitive: true
-  jsdoc/newline-after-description:
-    - warn
-    - never
-  jsdoc/require-jsdoc:
-    - warn
-    - require:
-        FunctionDeclaration: false
-  jsdoc/require-param:
-    - warn
-    - enableFixer: false
   no-multiple-empty-lines:
     - warn
     - max: 1
@@ -99,6 +96,9 @@ rules:
     - always
     - exceptions:
         - '*'
+
+  '@typescript-eslint/explicit-module-boundary-types': off
+  '@typescript-eslint/no-non-null-assertion': off
 
   # Overridden and disabled rules
   mocha/handle-done-callback: off

@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es5",
+    "allowJs": true,
+    "baseUrl": "..",
+    "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "allowJs": true,
+    "noEmit": false,
     "isolatedModules": false,
     "strict": true,
-    "noEmit": false
+    "target": "es5"
   }
 }

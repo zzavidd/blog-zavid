@@ -1,7 +1,7 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
-import Meta from 'partials/meta';
+import Meta from 'src/partials/meta';
 
 export default class AppDocument extends Document {
   render() {
@@ -25,6 +25,6 @@ const AppMarkup = ({ query }) => {
 };
 
 AppDocument.getInitialProps = async (ctx) => {
-  const meta = await Document.getInitialProps(ctx);
-  return { ...meta };
+  const query = await Document.getInitialProps(ctx);
+  return { ...query };
 };

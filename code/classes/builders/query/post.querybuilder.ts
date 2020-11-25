@@ -1,10 +1,8 @@
-const { zLogic } = require('zavid-modules');
-const { isFalsy } = zLogic;
+import Knex from 'knex';
 
-import { QueryBuilder, MutationBuilder } from './super';
+import { MutationBuilder, QueryBuilder } from './super';
 
-import { PostStatus, PostType, QueryOrder } from '../../interfaces';
-import { PostStatic } from '../../static';
+import { PostDAO, PostStatic, PostStatus, PostType, QueryOrder } from '../../index';
 
 const TABLE_NAME = 'posts';
 const columns = [
@@ -15,11 +13,11 @@ const columns = [
 ];
 
 /** Builds a post query with conditions. */
-export class PostQueryBuilder extends QueryBuilder {
-  constructor(knex: any) {
-    super(knex.column(columns), TABLE_NAME);
+export class PostQueryBuilder extends QueryBuilder<PostDAO> {
+  constructor(knex: Knex) {
+    super(knex.column(columns) as any, TABLE_NAME);
     this.knex = knex;
-    this.query.leftJoin(
+    (this.query.leftJoin as Knex.Join<Record<string, unknown>, unknown>)(
       `${TABLE_NAME} AS domain`,
       `${TABLE_NAME}.domainId`,
       '=',
@@ -29,33 +27,36 @@ export class PostQueryBuilder extends QueryBuilder {
 
   whereType(filters: PostTypeFilters = {}): PostQueryBuilder {
     const { include, exclude } = filters;
-    if (!isFalsy(include)) this.query.whereIn(`${TABLE_NAME}.type`, include);
-    if (!isFalsy(exclude)) this.query.whereNotIn(`${TABLE_NAME}.type`, exclude);
+    if (include && include.length)
+      this.query.whereIn(`${TABLE_NAME}.type`, include);
+    if (exclude && exclude.length)
+      this.query.whereNotIn(`${TABLE_NAME}.type`, exclude);
     return this;
   }
 
   whereStatus(filters: PostStatusFilters = {}): PostQueryBuilder {
     const { include, exclude } = filters;
-    if (!isFalsy(include)) this.query.whereIn(`${TABLE_NAME}.status`, include);
-    if (!isFalsy(exclude))
+    if (include && include.length)
+      this.query.whereIn(`${TABLE_NAME}.status`, include);
+    if (exclude && exclude.length)
       this.query.whereNotIn(`${TABLE_NAME}.status`, exclude);
     return this;
   }
 
   whereSlug(slug: string): PostQueryBuilder {
-    if (isFalsy(slug)) return this;
+    if (!slug) return this;
     this.query.where(`${TABLE_NAME}.slug`, slug);
     return this;
   }
 
   whereDomainType(type: PostType): PostQueryBuilder {
-    if (isFalsy(type)) return this;
+    if (!type) return this;
     this.query.where('domain.type', type);
     return this;
   }
 
   whereDomainSlug(slug: string): PostQueryBuilder {
-    if (isFalsy(slug)) return this;
+    if (!slug) return this;
     this.query.where(`domain.slug`, slug);
     return this;
   }
@@ -90,18 +91,18 @@ export class PostQueryBuilder extends QueryBuilder {
   }
 }
 
-export class PostMutationBuilder extends MutationBuilder {
-  constructor(knex: any) {
+export class PostMutationBuilder extends MutationBuilder<PostDAO> {
+  constructor(knex: Knex) {
     super(knex, TABLE_NAME, 'post');
   }
 }
 
-interface PostTypeFilters {
+export type PostTypeFilters = {
   include?: PostType[];
   exclude?: PostType[];
 }
 
-interface PostStatusFilters {
+export type PostStatusFilters = {
   include?: PostStatus[];
   exclude?: PostStatus[];
 }

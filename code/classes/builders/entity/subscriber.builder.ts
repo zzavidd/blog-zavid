@@ -1,13 +1,42 @@
 import * as faker from 'faker';
 
-import { SubscriberStatic } from '../../static';
-import { SubscriberDAO, SubscriptionsMapping, SubscriptionType } from '../../interfaces';
+import {
+  SubscriberStatic,
+  SubscriberDAO,
+  SubscriptionsMapping,
+  SubscriptionType
+} from '../../index';
 
 /** The class for building Subscriber objects. */
 export class SubscriberBuilder {
   private subscriber: SubscriberDAO = {};
 
-  random() {
+  withEmail(email?: string): SubscriberBuilder {
+    this.subscriber.email = email!.trim();
+    return this;
+  }
+
+  withFirstName(firstname?: string): SubscriberBuilder {
+    this.subscriber.firstname = firstname!.trim();
+    return this;
+  }
+
+  withLastName(lastname?: string): SubscriberBuilder {
+    this.subscriber.lastname = lastname!.trim();
+    return this;
+  }
+
+  withSubscriptions(subscriptions?: SubscriptionsMapping): SubscriberBuilder {
+    this.subscriber.subscriptions = subscriptions;
+    return this;
+  }
+
+  withDefaultSubscriptions(): SubscriberBuilder {
+    this.subscriber.subscriptions = SubscriberStatic.defaultSubscriptions();
+    return this;
+  }
+
+  random(): SubscriberBuilder {
     const subscriptions: SubscriptionsMapping = {};
     Object.values(SubscriptionType).forEach((type: string) => {
       subscriptions[type] = faker.random.boolean();
@@ -22,11 +51,7 @@ export class SubscriberBuilder {
     return this;
   }
 
-  /**
-   * Builds the subscriber object.
-   * @returns {object} The subscriber object.
-   */
-  build() {
+  build(): SubscriberDAO {
     return this.subscriber;
   }
 }

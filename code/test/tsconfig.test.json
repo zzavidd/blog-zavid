@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "target": "es5",
+    "baseUrl": "..",
+    "esModuleInterop": true,
     "module": "CommonJS",
     "moduleResolution": "node",
-    "strict": false,
-    "noEmit": true
+    "noEmit": true,
+    "strict": true,
+    "target": "es5",
+    "typeRoots": ["types", "node_modules/@types"]
   }
 }

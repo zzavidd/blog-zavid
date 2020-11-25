@@ -7,17 +7,24 @@ export interface PostDAO extends GenericDAO {
   content?: string;
   status?: PostStatus;
   excerpt?: string;
-  slug?: string;
+  slug?: string | null;
   datePublished?: string | Date;
   image?: PostImage | string;
-  contentImages?: PostImage[] | string[] | string;
+  contentImages?: PostContentImages;
   domainId?: number;
+  domainTitle?: string;
+  domainType?: PostType
+  domainSlug?: string
 }
 
 export interface PostImage {
   source: string;
   hasChanged: boolean;
   isCover?: boolean;
+}
+
+export interface PostContentImageMapping {
+  [key: string]: PostImage
 }
 
 export interface RandomPostOptions {
@@ -39,3 +46,5 @@ export enum PostType {
   MUSING = 'Musing',
   PAGE = 'Page'
 }
+
+export type PostContentImages = PostImage[] | string[] | PostContentImageMapping | string | null;

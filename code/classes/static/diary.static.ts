@@ -1,4 +1,4 @@
-const { zDate } = require('zavid-modules');
+import { zDate } from 'zavid-modules';
 
 import { randomEnumValue } from '../helper';
 import { DiaryDAO, DiaryStatus } from '../interfaces';
@@ -8,7 +8,7 @@ export class DiaryStatic {
   static STATUSES = Object.values(DiaryStatus);
 
   static generateSlug(diaryEntry: DiaryDAO): string{
-    return zDate.formatISODate(diaryEntry.date);
+    return zDate.formatISODate(diaryEntry.date as string);
   }
 
   static randomStatus(): DiaryStatus {

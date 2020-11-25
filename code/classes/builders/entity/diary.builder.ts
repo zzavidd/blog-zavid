@@ -1,8 +1,7 @@
 import * as faker from 'faker';
-const { zDate, zString } = require('zavid-modules');
+import { zDate, zString } from 'zavid-modules';
 
-import { DiaryStatic } from '../../static';
-import { DiaryStatus, DiaryDAO } from '../../interfaces';
+import { DiaryStatic, DiaryStatus, DiaryDAO } from '../../index';
 
 /** The class for Diary objects and methods. */
 export class DiaryEntryBuilder {
@@ -36,7 +35,6 @@ export class DiaryEntryBuilder {
 
   /**
    * Builds the diary entry object.
-   * @returns {object} The diary entry object.
    */
   build(): DiaryDAO {
     return this.entry;

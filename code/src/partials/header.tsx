@@ -1,0 +1,121 @@
+import React from 'react';
+import { Container, Nav, Navbar } from 'react-bootstrap';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+
+import { ReactComponent } from 'classes';
+import { InvisibleButton } from 'src/components/button';
+import { Switch } from 'src/components/form/checkbox';
+import { Icon } from 'src/components/icon';
+import CloudImage from 'src/components/image';
+import { Responsive } from 'src/components/layout';
+import { setTheme } from 'src/lib/reducers';
+import css from 'src/styles/Partials.module.scss';
+
+const Header = () => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+
+  return (
+    <Navbar
+      className={css[`nav-${theme}`]}
+      expand={'md'}
+      sticky={'top'}
+      variant={theme}>
+      <Container fluid={'lg'}>
+        <BrandButton />
+        <Responsive
+          defaultView={
+            <>
+              <NavigationLinks />
+              <ThemeSwitcher />
+              <AdminButton />
+            </>
+          }
+          tabletView={
+            <>
+              <ThemeSwitcher />
+              <AdminButton />
+              <NavigationLinks />
+            </>
+          }
+        />
+      </Container>
+    </Navbar>
+  );
+};
+
+const BrandButton = () => {
+  return (
+    <Navbar.Brand href={'/'}>
+      <CloudImage
+        containerClassName={css['nav-brand']}
+        src={`/static/logos/zavid-head-logo.png`}
+        version={1598802245}
+      />
+    </Navbar.Brand>
+  );
+};
+
+const NavigationLinks = () => {
+  return (
+    <>
+      <Navbar.Toggle className={css[`nav-toggler`]} />
+      <Navbar.Collapse>
+        <Nav className={'justify-content-center'}>
+          <Nav.Link href={'/reveries'}>Reveries</Nav.Link>
+          <Nav.Link href={'/diary'}>Diary</Nav.Link>
+          <DisabledNavLink>Epistles</DisabledNavLink>
+          <DisabledNavLink>Poetry</DisabledNavLink>
+          <DisabledNavLink>Musings</DisabledNavLink>
+          <Nav.Link href={'/about'}>About</Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </>
+  );
+};
+
+const AdminButton = () => {
+  const navigateToAdmin = () => (location.href = '/admin');
+  return (
+    <Nav.Item>
+      <InvisibleButton
+        onClick={navigateToAdmin}
+        className={css[`nav-admin-button`]}>
+        <Icon name={'lock'} withRightSpace={false} />
+      </InvisibleButton>
+    </Nav.Item>
+  );
+};
+
+const DisabledNavLink = ({ children }: ReactComponent) => {
+  return (
+    <Nav.Link href={'#'} className={css['nav-link-disabled']} disabled>
+      {children}
+    </Nav.Link>
+  );
+};
+
+const ThemeSwitcher = () => {
+  const dispatch = useDispatch();
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+
+  const isLightTheme = theme === 'light';
+
+  const switchTheme = () => {
+    const oppositeTheme = isLightTheme ? 'dark' : 'light';
+    dispatch(setTheme(oppositeTheme));
+    document.body.classList.add(`body-${oppositeTheme}`);
+    document.body.classList.remove(`body-${theme}`);
+  };
+  return (
+    <Nav.Item>
+      <Switch
+        onChange={switchTheme}
+        checked={!isLightTheme}
+        checkedIcon={'moon'}
+        uncheckedIcon={'sun'}
+      />
+    </Nav.Item>
+  );
+};
+
+export default Header;

@@ -1,52 +1,56 @@
-const { zLogic } = require('zavid-modules');
-import { QueryOrder } from '../../interfaces';
-const { isFalsy } = zLogic;
+import Knex, { RawQueryBuilder } from 'knex';
 
-export class QueryBuilder {
+import { QueryOrder } from '../../index';
 
-  knex: any
-  query: any;
+export class QueryBuilder<T> {
+  knex: Knex;
+  query: Knex | Knex.QueryBuilder;
   table: string;
 
-  constructor(knex: any, table: string, isMutation: boolean = false) {
-    if (!isMutation) this.query = knex.select().from(table);
+  constructor(knex: Knex, table: string, isMutation = false) {
+    if (!isMutation) {
+      this.query = knex.select().from(table);
+    } else {
+      this.query = knex;
+    }
     this.table = table;
     this.knex = knex;
   }
 
-  whereId(id: number): QueryBuilder {
-    if (isFalsy(id)) throw new Error(`No specified ID.`);
+  whereId(id: number): QueryBuilder<T> {
+    if (!id) throw new Error(`No specified ID.`);
     this.query.where(`${this.table}.id`, id);
     return this;
   }
 
-  exceptId(id: number): QueryBuilder {
-    if (isFalsy(id)) return this;
+  exceptId(id: number): QueryBuilder<T> {
+    if (!id) return this;
     this.query.whereNot(`${this.table}.id`, id);
     return this;
   }
 
   /**
    * Enables sorting or randomising of the results.
-   * @param {object} [sort] The sort details.
-   * @param {object} [options] Any options.
-   * @param {boolean} [options.forStringsWithNumbers] If sorting on fields with numbers.
-   * @returns {PostQueryBuilder} The PostQueryBuilder object.
    */
-  withOrder(sort: QuerySort = {}, options: QuerySortOptions = {}) {
-    let { field, order } = sort;
-    let { forStringsWithNumbers = false } = options;
-    if (isFalsy(order)) order = QueryOrder.ASCENDING;
+  withOrder(
+    sort: QuerySort = {},
+    options: QuerySortOptions = {}
+  ): QueryBuilder<T> {
+    let { order } = sort;
+    const { field } = sort;
+    const { forStringsWithNumbers = false } = options;
+
+    if (!order) order = QueryOrder.ASCENDING;
 
     if (order === QueryOrder.RANDOM) {
-      this.query.orderByRaw('RAND()');
+      (this.query.orderByRaw as RawQueryBuilder)('RAND()');
     } else if (field) {
       if (forStringsWithNumbers) {
         const cases = [
           `CAST((REGEXP_REPLACE(${this.table}.${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
           `REGEXP_REPLACE(${this.table}.${field}, "[^a-z0-9]+", '') ${order}`
         ];
-        this.query.orderByRaw(cases.join(', '));
+        (this.query.orderByRaw as RawQueryBuilder)(cases.join(', '));
       } else {
         this.query.orderBy(`${this.table}.${field}`, order);
       }
@@ -56,62 +60,53 @@ export class QueryBuilder {
 
   /**
    * Limits the number of results.
-   * @param {number} [limit] - The number of results to be returned.
-   * @returns {QueryBuilder} The PostQueryBuilder object.
    */
-  withLimit(limit: number): QueryBuilder {
-    if (isFalsy(limit)) return this;
-    this.query.limit(limit);
+  withLimit(limit: number): QueryBuilder<T> {
+    if (limit) this.query.limit(limit);
     return this;
   }
 
-  /**
-   * Return the built query.
-   * @returns {string} The build Knex query.
-   */
-  build(): any {
-    return this.query;
+  async build(): Promise<T[]> {
+    return await this.query;
   }
 }
 
-export class MutationBuilder extends QueryBuilder {
+export class MutationBuilder<T extends unknown> extends QueryBuilder<T> {
   entity: string;
   table: string;
 
-  constructor(knex: any, table: string, entity: string) {
+  constructor(knex: Knex, table: string, entity: string) {
     super(knex, table, true);
     this.query = knex(table);
     this.entity = entity;
     this.table = table;
   }
 
-  insert(input: any): MutationBuilder {
-    if (isFalsy(input))
-      throw new Error(`No specified ${this.entity} to insert.`);
+  insert<E>(input: E): MutationBuilder<number> {
+    if (!input) throw new Error(`No specified ${this.entity} to insert.`);
     this.query.insert(input);
-    return this;
+    return <MutationBuilder<number>>this;
   }
 
-  update(input: any): MutationBuilder {
-    if (isFalsy(input))
-      throw new Error(`No specified ${this.entity} to update.`);
+  update<E>(input: E): MutationBuilder<T> {
+    if (!input) throw new Error(`No specified ${this.entity} to update.`);
     this.query.update(input);
     return this;
   }
 
-  delete(id: number): MutationBuilder {
-    if (isFalsy(id)) throw new Error(`No specified ${this.entity} to delete.`);
+  delete(id: number): MutationBuilder<T> {
+    if (!id) throw new Error(`No specified ${this.entity} to delete.`);
     this.query.where(`${this.table}.id`, id).del();
     return this;
   }
 
-  truncate(): MutationBuilder {
+  truncate(): MutationBuilder<T> {
     this.query.truncate();
     return this;
   }
 }
 
-interface QuerySort {
+export interface QuerySort {
   field?: string;
   order?: string;
 }

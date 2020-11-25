@@ -1,16 +1,17 @@
-const { zLogic } = require('zavid-modules');
-const { isFalsy } = zLogic;
+import Knex from 'knex';
 
 import { QueryBuilder, MutationBuilder } from './super';
 
+import { PageDAO } from '../../interfaces';
+
 /** Builds a post query with conditions. */
-export class PageQueryBuilder extends QueryBuilder {
-  constructor(knex: any) {
+export class PageQueryBuilder extends QueryBuilder<PageDAO> {
+  constructor(knex: Knex) {
     super(knex, 'pages');
   }
 
   whereSlug(slug: string): PageQueryBuilder {
-    if (isFalsy(slug)) throw new Error(`No specified slug.`);
+    if (!slug) throw new Error(`No specified slug.`);
     this.query.where('slug', slug);
     return this;
   }
@@ -21,8 +22,8 @@ export class PageQueryBuilder extends QueryBuilder {
   }
 }
 
-export class PageMutationBuilder extends MutationBuilder {
-  constructor(knex: any) {
+export class PageMutationBuilder extends MutationBuilder<PageDAO> {
+  constructor(knex: Knex) {
     super(knex, 'pages', 'page');
   }
 }
