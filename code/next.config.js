@@ -11,8 +11,13 @@ module.exports = {
           }
         }
       },
-      { test: /\.tsx?$/, loader: 'ts-loader' }
+      {
+        test: /\.tsx?$/,
+        use: [{ loader: 'ts-loader', options: { transpileOnly: true } }]
+      }
     );
+
+    config.resolve.extensions.push('.ts', '.tsx');
 
     return config;
   },
