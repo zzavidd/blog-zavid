@@ -35,7 +35,7 @@ export class PostStatic {
     const images = post.contentImages;
 
     if (!images || !images.length) {
-      post.contentImages = null;
+      delete post.contentImages;
       return post;
     }
 
@@ -44,7 +44,7 @@ export class PostStatic {
         post.contentImages = JSON.parse(images as string);
       }
     } catch {
-      post.contentImages = null;
+      delete post.contentImages;
     }
     return post;
   }
