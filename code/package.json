@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "pre-build": "LIMIT=4096 increase-memory-limit",
     "build": "NODE_ENV=development next build",
     "build:ci": "next build",
     "check": "tsc --noEmit --project ./tsconfig.json",
@@ -105,6 +106,7 @@
     "eslint-plugin-mocha": "^7.0.0",
     "eslint-plugin-react": "^7.19.0",
     "faker": "^5.1.0",
+    "increase-memory-limit": "^1.0.7",
     "mocha": "^8.1.1",
     "nodemon": "^2.0.6",
     "prettier": "2.0.5",
