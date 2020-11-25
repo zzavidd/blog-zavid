@@ -13,7 +13,6 @@ pipeline {
     stage('Build') {
       steps {
         dir(cwd) {
-          // sh 'npm run check'
           sh 'npm run build'
         }
       }
