@@ -68,11 +68,11 @@ describe('Unit Tests: Post', function () {
 
       post.contentImages = null as any;
       images = PostStatic.parse(post).contentImages;
-      assert.isNull(images);
+      assert.isNotOk(images);
 
-      post.contentImages = '';
+      delete post.contentImages;
       images = PostStatic.parse(post).contentImages;
-      assert.isNull(images);
+      assert.isNotOk(images);
 
       finish();
     });
