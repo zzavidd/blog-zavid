@@ -15,6 +15,7 @@ import {
 } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import { Theme } from 'classes';
 import { alert, checkForSetAlerts } from 'src/components/alert';
 import {
   CookiePrompt,
@@ -67,10 +68,9 @@ const ZAVIDApp = ({ Component, pageProps }: AppProps) => {
   const dispatch = useDispatch();
 
   const theme = useSelector(({ theme }: RootStateOrAny) => {
-    // TODO: Create theme enum
-    if (theme !== 'light' && theme !== 'dark') {
-      dispatch(setTheme('dark'));
-      return 'dark';
+    if (Theme.isValid(theme)) {
+      dispatch(setTheme(Theme.DARK));
+      return Theme.DARK;
     }
     return theme;
   });

@@ -3,6 +3,8 @@ import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
 import React, { CSSProperties } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
+import { Theme } from 'classes';
+
 export { cloudinaryBaseUrl } from 'src/constants/settings';
 
 interface CloudImageProps {
@@ -63,7 +65,7 @@ const CloudImage = ({
 
 export const Signature = ({ className }: Signature) => {
   let theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  theme = theme === 'light' ? 'dark' : 'light';
+  theme = Theme.switchTheme(theme);
 
   const classes = classnames('signature', className);
   return (
