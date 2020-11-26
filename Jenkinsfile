@@ -12,6 +12,8 @@ pipeline {
     CLOUDINARY_NAME = credentials('CLOUDINARY_NAME')
     CLOUDINARY_API_KEY = credentials('CLOUDINARY_API_KEY')
     CLOUDINARY_API_SECRET = credentials('CLOUDINARY_API_SECRET')
+    SESSION_NAME = credentials('SESSION_NAME')
+    SESSION_SECRET = credentials('SESSION_SECRET')
   }
 
   options {
