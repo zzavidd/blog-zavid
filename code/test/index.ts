@@ -3,8 +3,24 @@ import * as dotenv from 'dotenv';
 import { DocumentNode } from 'graphql';
 import { print } from 'graphql/language/printer';
 import nodeFetch from 'node-fetch';
+import 'mocha';
 
 dotenv.config({ path: './config.env' });
+
+// Start the server when in staging environment.
+if (process.argv.includes('--staging')) {
+  (async () => {
+    const server = await import('../src/server');
+    before(function (done) {
+      console.info('Starting server to run tests.');
+      server.startStagingServer(done);
+    });
+  })();
+
+  after(function () {
+    setTimeout(() => process.exit(0), 1500);
+  });
+}
 
 export { assert };
 
