@@ -13,7 +13,7 @@
     "test:unit": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/unit/**/*.test.ts",
     "test:service": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/service/**/*.test.ts",
     "test:manual": "ts-node --project test/tsconfig.test.json test/manual",
-    "test:ci": "npm run test -- --staging",
+    "test:ci": "npm run test -- --staging --reporter mocha-junit-reporter",
     "lint": "eslint --ignore-path ../.gitignore \"src/**\"",
     "prettify": "prettier --ignore-path ../../.gitignore --write \"**/*.js\""
   },
@@ -107,6 +107,7 @@
     "eslint-plugin-react": "^7.19.0",
     "faker": "^5.1.0",
     "mocha": "^8.1.1",
+    "mocha-junit-reporter": "^2.0.0",
     "nodemon": "^2.0.6",
     "prettier": "2.0.5",
     "source-map-loader": "^1.1.2",
