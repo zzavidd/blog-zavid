@@ -5,13 +5,13 @@ pipeline {
 
   environment {
     PORT = 4000
-    MYSQL_HOST = credentials('mysql-host')
-    MYSQL_NAME = credentials('mysql-name')
-    MYSQL_USER = credentials('mysql-user')
-    MYSQL_PWD = credentials('mysql-pwd')
-    CLOUDINARY_NAME = credentials('cloudinary-name')
-    CLOUDINARY_API_KEY = credentials('cloudinary-api-key')
-    CLOUDINARY_API_SECRET = credentials('cloudinary-api-secret')
+    MYSQL_HOST = credentials('MYSQL_HOST')
+    MYSQL_NAME = credentials('MYSQL_NAME')
+    MYSQL_USER = credentials('MYSQL_USER')
+    MYSQL_PWD = credentials('MYSQL_PWD')
+    CLOUDINARY_NAME = credentials('CLOUDINARY_NAME')
+    CLOUDINARY_API_KEY = credentials('CLOUDINARY_API_KEY')
+    CLOUDINARY_API_SECRET = credentials('CLOUDINARY_API_SECRET')
   }
 
   options {
