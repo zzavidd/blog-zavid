@@ -10,10 +10,16 @@ pipeline {
         }
       }
     }
-    stage('Build') {
+    stage('Check') {
       steps {
         dir(cwd) {
           sh 'npm run check'
+        }
+      }
+    }
+    stage('Build') {
+      steps {
+        dir(cwd) {
           sh 'npm run build'
         }
       }
