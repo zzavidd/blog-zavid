@@ -18,6 +18,7 @@ import {
 
 const ENTITY_NAME = 'diaryEntry';
 
+// TODO: Set types of responses
 export const getDiaryEntries = (variables?: any) => {
   return getEntities({
     query: GET_DIARY_QUERY,

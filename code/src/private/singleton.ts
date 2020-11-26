@@ -31,6 +31,6 @@ export const getKnex = (): Knex => {
   return IKnex;
 };
 export const getServer = (): Server => {
-  assert.ok(IServer, 'An server instance has not been initialized.');
+  assert.ok(IServer, 'A instance of the server has not been initialized.');
   return IServer;
 };

@@ -24,11 +24,18 @@ pipeline {
         }
       }
     }
+    stage('Test') {
+      steps {
+        dir(cwd) {
+          sh 'npm run test:ci'
+        }
+      }
+    }
   }
   post {
     always {
       dir(cwd) {
-        // junit '**/test-results.xml'
+        junit '**/test-results.xml'
         sh 'rm -rf node_modules'
       }
     }

@@ -14,6 +14,8 @@ const handle = server.getRequestHandler();
 const port = parseInt(process.env.PORT!, 10) || 4000;
 const dotenv = Dotenv.config({ path: './config.env' });
 
+const isStaging = process.argv.includes('--staging');
+
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
 
@@ -32,24 +34,48 @@ if (dotenv.error) {
   throw new Error(`No environment variables loaded.`);
 }
 
-startServer();
+// If not in CI environment, start server normally.
+if (!isStaging) {
+  startDevServer();
+}
 
-require('./private/api');
-require('./private/routes');
+async function startDevServer() {
+  startServer();
+}
 
-function startServer() {
+function startStagingServer(finish: () => void) {
+  startServer({ callback: finish });
+}
+
+async function startServer(options: ServerOptions = {}) {
+  const { isFullServer = true, callback } = options;
+
   setApp(app);
   setKnex(knex);
   setServer(server);
+
+  await import('./private/api');
+
+  if (isFullServer) {
+    await import('./private/routes');
+  }
 
   server.prepare().then(() => {
     app.get('*', (req, res) => handle(req, res));
     app
       .listen(port, '0.0.0.0', () => {
         console.info(`ZAVID server running on http://localhost:${port}`);
+        if (callback) callback();
       })
       .on('error', (err) => {
         if (err) throw err;
       });
   });
 }
+
+export { startStagingServer };
+
+type ServerOptions = {
+  isFullServer?: boolean;
+  callback?: () => void;
+};
