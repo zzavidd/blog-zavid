@@ -30,7 +30,7 @@ const knex = Knex({
 });
 
 // Check for loaded environment variables
-if (dotenv.error) {
+if (dotenv.error && !process.env.PORT) {
   throw new Error(`No environment variables loaded.`);
 }
 
