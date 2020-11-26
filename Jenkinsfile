@@ -14,6 +14,9 @@ pipeline {
     CLOUDINARY_API_SECRET = credentials('CLOUDINARY_API_SECRET')
     SESSION_NAME = credentials('SESSION_NAME')
     SESSION_SECRET = credentials('SESSION_SECRET')
+    GOOGLE_ACCOUNT_ID = credentials('GOOGLE_ACCOUNT_ID')
+    GOOGLE_CLIENT_ID = credentials('GOOGLE_CLIENT_ID')
+    GOOGLE_CLIENT_SECRET = credentials('GOOGLE_CLIENT_SECRET')
   }
 
   options {
