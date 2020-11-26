@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 
-import { ReactComponent } from 'classes';
+import { ReactComponent, Theme } from 'classes';
 import { InvisibleButton } from 'src/components/button';
 import { Switch } from 'src/components/form/checkbox';
 import { Icon } from 'src/components/icon';
@@ -98,19 +98,17 @@ const ThemeSwitcher = () => {
   const dispatch = useDispatch();
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
-  const isLightTheme = theme === 'light';
-
   const switchTheme = () => {
-    const oppositeTheme = isLightTheme ? 'dark' : 'light';
-    dispatch(setTheme(oppositeTheme));
-    document.body.classList.add(`body-${oppositeTheme}`);
+    const oppTheme = Theme.switchTheme(theme);
+    dispatch(setTheme(oppTheme));
+    document.body.classList.add(`body-${oppTheme}`);
     document.body.classList.remove(`body-${theme}`);
   };
   return (
     <Nav.Item>
       <Switch
         onChange={switchTheme}
-        checked={!isLightTheme}
+        checked={!Theme.isLight(theme)}
         checkedIcon={'moon'}
         uncheckedIcon={'sun'}
       />

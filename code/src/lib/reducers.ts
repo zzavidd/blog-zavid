@@ -1,14 +1,14 @@
 import { AnyAction, combineReducers, createStore } from 'redux';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { PostStatus, PostType } from 'classes';
+import { PostStatus, PostType, ThemeOption } from 'classes';
 
 /**
  * ACTIONS.
  */
 
-export const setTheme = (theme: string): AnyAction => ({
+export const setTheme = (theme: ThemeOption): AnyAction => ({
   type: 'SET_THEME',
   payload: theme
 });
@@ -39,7 +39,7 @@ export const saveText = (text: string): AnyAction => ({
  */
 
 const themeReducer = (
-  state = 'light',
+  state = ThemeOption.DARK,
   { type, payload }: AnyAction
 ): string => {
   switch (type) {
@@ -119,7 +119,7 @@ export interface PostFiltersState {
   field?: string;
   order?: string;
   type?: PostType | null;
-  status?: PostStatus
+  status?: PostStatus;
 }
 
 interface UserState {
