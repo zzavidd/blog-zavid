@@ -117,9 +117,6 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       image,
       contentImages
     });
-
-    console.log(postWithImages);
-
     setPost(postWithImages);
   };
 
