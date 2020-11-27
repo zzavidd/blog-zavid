@@ -149,7 +149,7 @@ const navigateToCreateForm = () => {
 
 const LinkButton = ({ diaryEntry }: LinkButton) => {
   return (
-    <VanillaLink href={`/diary/${diaryEntry.slug}`}>
+    <VanillaLink href={`/diary/${diaryEntry.entryNumber}`}>
       <Icon name={'paper-plane'} />
     </VanillaLink>
   );

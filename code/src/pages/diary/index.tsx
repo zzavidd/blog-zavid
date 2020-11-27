@@ -84,7 +84,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
   const date = zDate.formatDate(diaryEntry.date as string, {
     withWeekday: true
   });
-  const link = `/diary/${diaryEntry.slug}`;
+  const link = `/diary/${diaryEntry.entryNumber}`;
   return (
     <VanillaLink href={link}>
       <Fader

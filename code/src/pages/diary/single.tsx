@@ -35,11 +35,11 @@ const DiarySingle = ({
         <Timeline
           type={TimelineType.DIARY}
           previous={{
-            slug: previousDiaryEntry.slug,
+            slug: previousDiaryEntry.entryNumber?.toString(),
             label: `Diary Entry #${previousDiaryEntry.entryNumber}: ${previousDiaryEntry.title}`
           }}
           next={{
-            slug: nextDiaryEntry.slug,
+            slug: nextDiaryEntry.entryNumber?.toString(),
             label: `Diary Entry #${nextDiaryEntry.entryNumber}: ${nextDiaryEntry.title}`
           }}
         />
