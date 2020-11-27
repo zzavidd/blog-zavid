@@ -111,12 +111,17 @@ export class PostStatic {
   }
 
   /**
-   * Checks if submission operation is a draft.
-   * @param {PostDAO} input - The post or its status value.
-   * @returns {boolean} True if the selected status is DRAFT.
+   * Checks if a post has the DRAFT status.
    */
   static isDraft(input: PostDAO): boolean {
     return input.status === PostStatus.DRAFT;
+  }
+
+  /**
+   * Checks if a post has the PROTECTED status.
+   */
+  static isProtected(input: PostDAO): boolean {
+    return input.status === PostStatus.PROTECTED;
   }
 
   static isPrivate(input: PostDAO): boolean {

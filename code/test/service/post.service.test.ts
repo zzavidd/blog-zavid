@@ -103,49 +103,31 @@ describe('Service Tests: Post', function () {
     );
 
     it('Different statuses', function () {
-      const promiseDraft = promiseWrapper(async () => {
-        const draftPost = new PostBuilder()
-          .random({ allowPageTypes: false })
-          .withStatus(PostStatus.DRAFT)
-          .build();
-        const createdPost = await createPost(draftPost);
-        const readPost = await getSinglePost(createdPost.id);
-        assert.isNull(
-          readPost.slug!,
-          'A slug was incorrectly generated for this DRAFT post.'
-        );
-        await deletePost(readPost.id!);
+      const promiseDraft = createPostStatusPromise(PostStatus.DRAFT, {
+        expectNullSlug: true,
+        failMessage: 'A slug was incorrectly generated for this DRAFT post.'
       });
 
-      const promisePrivate = promiseWrapper(async () => {
-        const privatePost = new PostBuilder()
-          .random({ allowPageTypes: false })
-          .withStatus(PostStatus.PRIVATE)
-          .build();
-        const createdPost = await createPost(privatePost);
-        const readPost = await getSinglePost(createdPost.id);
-        assert.isNotNull(
-          readPost.slug!,
-          'A slug should have been generated for this PRIVATE post.'
-        );
-        await deletePost(readPost.id!);
+      const promiseProtected = createPostStatusPromise(PostStatus.PROTECTED, {
+        failMessage:
+          'A slug should have been generated for this PROTECTED post.'
       });
 
-      const promisePublished = promiseWrapper(async () => {
-        const publishedPost = new PostBuilder()
-          .random({ allowPageTypes: false })
-          .withStatus(PostStatus.PUBLISHED)
-          .build();
-        const createdPost = await createPost(publishedPost);
-        const readPost = await getSinglePost(createdPost.id);
-        assert.isNotNull(
-          readPost.slug!,
+      const promisePrivate = createPostStatusPromise(PostStatus.PRIVATE, {
+        failMessage: 'A slug should have been generated for this PRIVATE post.'
+      });
+
+      const promisePublished = createPostStatusPromise(PostStatus.PUBLISHED, {
+        failMessage:
           'A slug should have been generated for this PUBLISHED post.'
-        );
-        await deletePost(readPost.id!);
       });
 
-      return Promise.all([promiseDraft, promisePrivate, promisePublished]);
+      return Promise.all([
+        promiseDraft,
+        promiseProtected,
+        promisePrivate,
+        promisePublished
+      ]);
     });
   });
 
@@ -200,3 +182,32 @@ describe('Service Tests: Post', function () {
     );
   });
 });
+
+async function createPostStatusPromise(
+  status: PostStatus,
+  options: CreatePromiseOptions
+) {
+  const { failMessage, expectNullSlug = false } = options;
+  return promiseWrapper(async () => {
+    const draftPost = new PostBuilder()
+      .random({ allowPageTypes: false })
+      .withStatus(status)
+      .build();
+    const createdPost = await createPost(draftPost);
+    const readPost = await getSinglePost(createdPost.id);
+
+    const slug = readPost.slug!;
+    if (expectNullSlug) {
+      assert.isNull(slug, failMessage);
+    } else {
+      assert.isNotNull(slug, failMessage);
+    }
+
+    await deletePost(readPost.id!);
+  });
+}
+
+type CreatePromiseOptions = {
+  failMessage: string;
+  expectNullSlug?: boolean;
+};

@@ -33,29 +33,10 @@ describe('Service Tests: Diary', function () {
     );
 
     it('Different statuses', function () {
-      const promisePrivate = promiseWrapper(async () => {
-        const draftDiaryEntry = new DiaryEntryBuilder()
-          .random()
-          .withStatus(DiaryStatus.PRIVATE)
-          .build();
-        const createdDiaryEntry = await createDiaryEntry(draftDiaryEntry);
-        const readDiaryEntry = await getSingleDiaryEntry(createdDiaryEntry.id);
-        assert.isNotNull(readDiaryEntry.slug!);
-        await deleteDiaryEntry(readDiaryEntry.id!);
-      });
-
-      const promisePublished = promiseWrapper(async () => {
-        const draftDiaryEntry = new DiaryEntryBuilder()
-          .random()
-          .withStatus(DiaryStatus.PUBLISHED)
-          .build();
-        const createdDiaryEntry = await createDiaryEntry(draftDiaryEntry);
-        const readDiaryEntry = await getSingleDiaryEntry(createdDiaryEntry.id);
-        assert.isNotNull(readDiaryEntry.slug!);
-        await deleteDiaryEntry(readDiaryEntry.id!);
-      });
-
-      return Promise.all([promisePrivate, promisePublished]);
+      const promiseProtected = createDiaryStatusPromise(DiaryStatus.PROTECTED);
+      const promisePrivate = createDiaryStatusPromise(DiaryStatus.PRIVATE);
+      const promisePublished = createDiaryStatusPromise(DiaryStatus.PUBLISHED);
+      return Promise.all([promiseProtected, promisePrivate, promisePublished]);
     });
   });
 
@@ -79,3 +60,16 @@ describe('Service Tests: Diary', function () {
     );
   });
 });
+
+async function createDiaryStatusPromise(status: DiaryStatus) {
+  return promiseWrapper(async () => {
+    const draftDiaryEntry = new DiaryEntryBuilder()
+      .random()
+      .withStatus(status)
+      .build();
+    const createdDiaryEntry = await createDiaryEntry(draftDiaryEntry);
+    const readDiaryEntry = await getSingleDiaryEntry(createdDiaryEntry.id);
+    assert.isNotNull(readDiaryEntry.slug!);
+    await deleteDiaryEntry(readDiaryEntry.id!);
+  });
+}

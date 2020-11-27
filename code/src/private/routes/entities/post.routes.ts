@@ -1,22 +1,24 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { zText } from 'zavid-modules';
 
 import {
-  PostStatic,
-  PostQueryBuilder,
-  PageQueryBuilder,
   Operation,
+  PageQueryBuilder,
+  PostQueryBuilder,
+  PostStatic,
+  PostStatus,
   PostType
 } from '../../../../classes';
 import { siteTitle } from '../../../constants/settings';
 import { PostService } from '../../api/service';
-import { renderErrorPage, ERRORS } from '../../error';
+import { ERRORS, renderErrorPage } from '../../error';
 import { getKnex, getServer } from '../../singleton';
 
 const router = express.Router();
 const knex = getKnex();
 const server = getServer();
 
+/** Route for list of reveries. */
 router.get(
   '/reveries',
   async function (req: Request, res: Response, next: NextFunction) {
@@ -35,6 +37,7 @@ router.get(
   renderErrorPage
 );
 
+/** Route for reverie page. */
 router.get(
   '/reveries/:slug',
   async function (req: Request, res: Response, next: NextFunction) {
@@ -42,10 +45,16 @@ router.get(
 
     const [reverie] = await new PostQueryBuilder(knex)
       .whereSlug(slug)
-      .whereType({ include: [PostStatic.TYPE.REVERIE] })
+      .whereType({ include: [PostType.REVERIE] })
+      .whereStatus({ exclude: [PostStatus.DRAFT] })
       .build();
 
-    if (!reverie) next(ERRORS.NO_ENTITY('reverie'));
+    const isUnauthorized =
+      PostStatic.isProtected(reverie) && !req.isAuthenticated();
+
+    if (!reverie || isUnauthorized) {
+      return next(ERRORS.NO_ENTITY('reverie'));
+    }
 
     const { type, typeId } = reverie;
     const [[previousReverie], [nextReverie]] = await Promise.all([
@@ -66,12 +75,14 @@ router.get(
   renderErrorPage
 );
 
+/** Route for pages with reverie domains. */
 router.get(
   '/reveries/:domain/:slug',
   async function (req: Request, res: Response, next: NextFunction) {
     const { domain, slug } = req.params;
 
     const [page] = await new PostQueryBuilder(knex)
+      .whereStatus({ exclude: [PostStatus.DRAFT] })
       .whereDomainType(PostType.REVERIE)
       .whereDomainSlug(domain)
       .whereSlug(slug)
