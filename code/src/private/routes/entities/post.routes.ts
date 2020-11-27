@@ -123,10 +123,10 @@ router.get('/admin/posts/add', function (req, res) {
   });
 });
 
-router.get('/admin/posts/edit/:id', function (req, res) {
+router.get('/admin/posts/edit/:id', async function (req, res) {
   const id = parseInt(req.params.id);
 
-  const post = PostService.getSinglePost({ id });
+  const post = await PostService.getSinglePost({ id });
   if (!post) throw ERRORS.NO_ENTITY('post');
 
   return server.render(req, res, '/posts/crud', {

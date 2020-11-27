@@ -36,10 +36,7 @@ interface PostRequest {
   isTest: boolean;
 }
 
-const PostCrud = ({
-  post: serverPost,
-  operation
-}: PostInitialProps): JSX.Element => {
+const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
   const [clientPost, setPost] = useState({
     id: 0,
     title: '',
@@ -97,8 +94,8 @@ const PostCrud = ({
   const populateForm = (): void => {
     if (isCreateOperation) return;
 
-    const image = {
-      source: serverPost.image,
+    const image: PostImage = {
+      source: serverPost.image as string,
       hasChanged: false
     };
 
@@ -116,12 +113,14 @@ const PostCrud = ({
       contentImages = {};
     }
 
-    setPost(
-      Object.assign({}, serverPost, {
-        image,
-        contentImages
-      })
-    );
+    const postWithImages = Object.assign({}, serverPost, {
+      image,
+      contentImages
+    });
+
+    console.log(postWithImages);
+
+    setPost(postWithImages);
   };
 
   /** Populate the form with post details. */
