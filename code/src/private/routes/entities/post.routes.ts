@@ -88,7 +88,12 @@ router.get(
       .whereSlug(slug)
       .build();
 
-    if (!page) next(ERRORS.NO_ENTITY('page'));
+    const isUnauthorized =
+      PostStatic.isProtected(page) && !req.isAuthenticated();
+
+    if (!page || isUnauthorized) {
+      return next(ERRORS.NO_ENTITY('page'));
+    }
 
     return server.render(req, res, '/posts/single', {
       title: `${page.title} | ${siteTitle}`,
