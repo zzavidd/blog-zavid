@@ -66,6 +66,7 @@ enum PostSortField {
 
 enum PostStatus {
   DRAFT
+  PROTECTED
   PRIVATE
   PUBLISHED
 }

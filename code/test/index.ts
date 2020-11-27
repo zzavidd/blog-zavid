@@ -64,7 +64,7 @@ export const fetch = (query: DocumentNode, options: FetchOptions = {}) => {
 export const testWrapper = (testBody: () => void): Mocha.AsyncFunc => {
   return async () => {
     try {
-      testBody();
+      await testBody();
     } catch (err) {
       debug(err);
     }
@@ -75,16 +75,13 @@ export const testWrapper = (testBody: () => void): Mocha.AsyncFunc => {
  * A wrapper for promises with asynchronous bodies.
  * @param promiseBody The body of the promise.
  */
-export const promiseWrapper = (promiseBody: () => void): Promise<void> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      await promiseBody();
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
+export async function promiseWrapper(promiseBody: () => void): Promise<void> {
+  try {
+    await promiseBody();
+  } catch (err) {
+    debug(err);
+  }
+}
 
 export interface FetchOptions {
   variables?: any;

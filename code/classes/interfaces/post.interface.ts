@@ -35,6 +35,7 @@ export interface RandomPostOptions {
 
 export enum PostStatus {
   DRAFT = 'DRAFT',
+  PROTECTED = 'PROTECTED',
   PRIVATE = 'PRIVATE',
   PUBLISHED = 'PUBLISHED'
 }

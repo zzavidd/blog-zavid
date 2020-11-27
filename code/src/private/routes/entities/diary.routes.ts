@@ -135,7 +135,12 @@ async function serveDiaryEntries(
       [nextDiaryEntry]
     ] = await promises;
 
-    if (!diaryEntry) return next(ERRORS.NO_ENTITY('diary entry'));
+    const isUnauthorized =
+      DiaryStatic.isProtected(diaryEntry) && !req.isAuthenticated();
+
+    if (!diaryEntry || isUnauthorized) {
+      return next(ERRORS.NO_ENTITY('diary entry'));
+    }
 
     return server.render(req, res, '/diary/single', {
       title: `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title} | ${siteTitle}`,

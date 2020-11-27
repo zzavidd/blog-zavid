@@ -15,6 +15,10 @@ export class DiaryStatic {
     return randomEnumValue(DiaryStatus);
   }
 
+  static isProtected(input: DiaryDAO): boolean {
+    return input.status === DiaryStatus.PROTECTED;
+  }
+
   static isPrivate(input: DiaryDAO): boolean {
     return input.status === DiaryStatus.PRIVATE;
   }
