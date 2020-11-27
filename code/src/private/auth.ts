@@ -77,14 +77,14 @@ passport.deserializeUser(function (id: number, done) {
   done(null, { id });
 });
 
-app.get(
+router.get(
   '/login',
   passport.authenticate('google', {
     scope: ['profile']
   })
 );
 
-app.get(
+router.get(
   '/login/redirect',
   passport.authenticate('google', { failureRedirect: '/' }),
   function (req, res) {
@@ -93,7 +93,7 @@ app.get(
   }
 );
 
-app.get('/logout', function (req, res) {
+router.get('/logout', function (req, res) {
   if (!req.session) return res.redirect('/');
   req.session.destroy(() => {
     req.logout();
@@ -102,7 +102,7 @@ app.get('/logout', function (req, res) {
   });
 });
 
-app.use('/admin', (req, res, next) => {
+router.use('/admin', (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
