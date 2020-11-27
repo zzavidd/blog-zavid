@@ -1,33 +1,25 @@
-const faker = require('faker');
+import * as faker from 'faker';
 import { zDate, zString, zNumber } from 'zavid-modules';
 
-const {
-  classes: { PostStatic, PostBuilder },
-  fetch
-} = require('../..');
-const {
-  CREATE_POST_QUERY
-} = require('../../../src/private/api/queries/post.queries');
+import { fetch } from '../..';
+import { PostBuilder, PostStatus, PostType } from '../../../classes';
+import { CREATE_POST_QUERY } from '../../../src/private/api/queries/post.queries';
+import { COUNT } from '../constants';
 
-const COUNT = {
-  REVERIE: 10,
-  EPISTLE: 20
-};
-
-exports.ingestReveries = () => {
+export const ingestReveries = () => {
   return ingestPost({
     startMessage: `Ingesting ${COUNT.EPISTLE} epistles...`,
     quantity: COUNT.REVERIE,
     postOptions: {
       generateTitle: () => faker.company.catchPhrase(),
-      type: PostStatic.TYPE.REVERIE,
+      type: PostType.REVERIE,
       contentThreshold: 20,
       contentLimit: 25
     }
   });
 };
 
-exports.ingestEpistles = () => {
+export const ingestEpistles = () => {
   return ingestPost({
     startMessage: `Ingesting ${COUNT.EPISTLE} epistles...`,
     quantity: COUNT.EPISTLE,
@@ -35,14 +27,14 @@ exports.ingestEpistles = () => {
       generateTitle: (i) => {
         return `#${i}: ${faker.lorem.words(zNumber.generateRandom(1, 3))}`;
       },
-      type: PostStatic.TYPE.EPISTLE,
+      type: PostType.EPISTLE,
       contentThreshold: 3,
       contentLimit: 5
     }
   });
 };
 
-const ingestPost = (options: IngestPostOptions) => {
+async function ingestPost(options: IngestPostOptions) {
   const {
     startMessage,
     quantity = 0,
@@ -55,55 +47,49 @@ const ingestPost = (options: IngestPostOptions) => {
     }
   } = options;
 
-  return new Promise((resolve, reject) => {
-    console.info(startMessage);
+  console.info(startMessage);
 
-    const promises = [];
-    let refDate = new Date();
+  const promises = [];
+  let refDate = new Date();
 
-    for (let i = 0; i < quantity; i++) {
-      refDate = faker.date.future(1, refDate);
-      const index = i + 1;
-      let postbuilder = new PostBuilder()
-        .withTitle(zString.toTitleCase(generateTitle(index)))
-        .withType(type)
-        .withTypeId(index)
-        .withContent(
-          faker.lorem.paragraphs(
-            zNumber.generateRandom(contentThreshold, contentLimit)
-          )
+  for (let i = 0; i < quantity; i++) {
+    refDate = faker.date.future(1, refDate);
+    const index = i + 1;
+    let postbuilder = new PostBuilder()
+      .withTitle(zString.toTitleCase(generateTitle(index)))
+      .withType(type)
+      .withTypeId(index)
+      .withContent(
+        faker.lorem.paragraphs(
+          zNumber.generateRandom(contentThreshold, contentLimit)
         )
-        .withStatus(PostStatic.STATUS.PUBLISHED)
-        .withDatePublished(zDate.formatISODate(refDate))
-        .withRandomExcerpt();
+      )
+      .withStatus(PostStatus.PUBLISHED)
+      .withDatePublished(zDate.formatISODate(refDate))
+      .withRandomExcerpt();
 
-      if (includeImage) postbuilder = postbuilder.withRandomImage();
+    if (includeImage) postbuilder = postbuilder.withRandomImage();
 
-      const post = postbuilder.build();
+    const post = postbuilder.build();
 
-      promises.push(
-        fetch(CREATE_POST_QUERY, {
-          variables: { post, isTest: true }
-        })
-      );
-    }
+    promises.push(
+      fetch(CREATE_POST_QUERY, {
+        variables: { post, isTest: true }
+      })
+    );
+  }
 
-    Promise.all(promises)
-      .then(() => resolve())
-      .catch(reject);
-  });
-};
+  await Promise.all(promises);
+}
 
 interface IngestPostOptions {
   startMessage: string;
   quantity: number;
   postOptions: {
     generateTitle: (index?: number) => string;
-    type: string;
+    type: PostType;
     contentThreshold: number;
     contentLimit: number;
     includeImage?: boolean;
   };
 }
-
-export {};

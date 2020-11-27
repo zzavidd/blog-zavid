@@ -1,11 +1,12 @@
-import * as Dotenv from 'dotenv';
 import Cloudinary from 'cloudinary';
+import * as dotenv from 'dotenv';
 
 import { fetch } from '..';
 import { TRUNCATE_POST_TABLE_QUERY } from '../../src/private/api/queries/post.queries';
 
 const cloudinary = Cloudinary.v2;
-const dotenv = Dotenv.config({ path: '../../config.env' });
+
+dotenv.config({ path: '../../config.env' });
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -13,14 +14,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-export const clearAllData = (): Promise<any> => {
+export async function clearAllData() {
   console.info(`Deleting all data from POST table...`);
-  return new Promise((resolve, reject) => {
-    Promise.all([
-      fetch(TRUNCATE_POST_TABLE_QUERY),
-      cloudinary.api.delete_resources_by_prefix('test')
-    ])
-      .then(() => resolve())
-      .catch(reject);
-  });
-};
+  await Promise.all([
+    fetch(TRUNCATE_POST_TABLE_QUERY),
+    cloudinary.api.delete_resources_by_prefix('test')
+  ]);
+  console.info("Cleared all data from database.");
+}

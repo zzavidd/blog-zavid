@@ -19,7 +19,7 @@ import {
 
 const ENTITY_NAME = 'subscriber';
 
-export const getSubscribers = (variables?: any) => {
+export const getSubscribers = (variables?: any): Promise<SubscriberDAO[]> => {
   return getEntities({
     query: GET_SUBSCRIBERS_QUERY,
     resolver: 'subscribers',

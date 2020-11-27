@@ -37,17 +37,22 @@ export class SubscriberBuilder {
   }
 
   random(): SubscriberBuilder {
+    const firstname = faker.name.firstName();
+    const lastname = faker.name.lastName();
+    const email = faker.internet.email(firstname, lastname).toLowerCase();
+
     const subscriptions: SubscriptionsMapping = {};
     Object.values(SubscriptionType).forEach((type: string) => {
       subscriptions[type] = faker.random.boolean();
     });
 
     this.subscriber = {
-      email: faker.internet.email(),
-      firstname: faker.name.firstName(),
-      lastname: faker.name.lastName(),
+      firstname,
+      lastname,
+      email,
       subscriptions
     };
+
     return this;
   }
 
