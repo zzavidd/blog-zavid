@@ -1,6 +1,7 @@
 import { assert } from '..';
 import {
   PostBuilder,
+  PostContentImages,
   PostImage,
   PostStatic,
   PostStatus,
@@ -59,13 +60,13 @@ describe('Unit Tests: Post', function () {
         .random({ withImage: true, numberOfContentImages: 2 })
         .build();
 
-      let images;
+      let images: PostContentImages;
 
       post.contentImages = JSON.stringify(post.contentImages);
       images = PostStatic.parse(post).contentImages;
-      isArrayOfLength(images as PostImage[], 2);
+      isArrayOfLength(images, 2);
 
-      post.contentImages = null;
+      post.contentImages = undefined;
       images = PostStatic.parse(post).contentImages;
       assert.isNotOk(images);
 
@@ -85,11 +86,13 @@ describe('Unit Tests: Post', function () {
       isArrayOfLength(images, 3);
 
       // If main image is null.
-      post.image = null;
+      post.image = undefined;
       images = PostStatic.collateImages(post) as PostImage[];
       isArrayOfLength(images, 2);
 
-      images = PostStatic.collateImages(post, { includeNulls: true }) as PostImage[];
+      images = PostStatic.collateImages(post, {
+        includeNulls: true
+      }) as PostImage[];
       isArrayOfLength(images, 3);
 
       finish();
@@ -115,7 +118,7 @@ describe('Unit Tests: Post', function () {
   });
 });
 
-const isArrayOfLength = (array: PostImage[], number: number): void => {
+const isArrayOfLength = (array: PostImage[] | PostContentImages, number: number): void => {
   assert.isArray(array);
   assert.lengthOf(array, number);
 };

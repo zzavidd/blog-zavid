@@ -183,6 +183,11 @@ describe('Service Tests: Post', function () {
   });
 });
 
+/**
+ * Create a promise which submits a post with a specified status.
+ * @param status The status of the post.
+ * @param options The options for creating the promise.
+ */
 async function createPostStatusPromise(
   status: PostStatus,
   options: CreatePromiseOptions

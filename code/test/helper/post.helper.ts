@@ -6,7 +6,7 @@ import {
   SubmitEntityResponse,
   updateEntity
 } from '.';
-import { assert } from '..';
+import { assert, Variables } from '..';
 import { PostDAO } from '../../classes';
 import {
   CREATE_POST_QUERY,
@@ -18,7 +18,7 @@ import {
 
 const ENTITY_NAME = 'post';
 
-export const getPosts = (variables?: any): Promise<PostDAO[]> => {
+export const getPosts = (variables?: Variables): Promise<PostDAO[]> => {
   return getEntities({
     query: GET_POSTS_QUERY,
     resolver: 'getAllPosts',

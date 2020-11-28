@@ -6,7 +6,7 @@ import {
   SubmitEntityResponse,
   updateEntity
 } from '.';
-import { assert } from '..';
+import { assert, Variables } from '..';
 import { DiaryDAO, DiaryStatic } from '../../classes';
 import {
   CREATE_DIARY_QUERY,
@@ -18,9 +18,8 @@ import {
 
 const ENTITY_NAME = 'diaryEntry';
 
-// TODO: Set types of responses
-export const getDiaryEntries = (variables?: any) => {
-  return getEntities({
+export const getDiaryEntries = (variables?: Variables) => {
+  return getEntities<DiaryDAO>({
     query: GET_DIARY_QUERY,
     resolver: 'diaryEntries',
     variables
@@ -87,5 +86,5 @@ export const compareDiaryEntries = (
 };
 
 interface MutateDiaryOptions {
-  extraVariables?: object
+  extraVariables?: Record<string, unknown>;
 }

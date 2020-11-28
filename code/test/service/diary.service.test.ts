@@ -61,6 +61,10 @@ describe('Service Tests: Diary', function () {
   });
 });
 
+/**
+ * Creates a promise which submits a diary entry with a specified status.
+ * @param status The status of the diary entry.
+ */
 async function createDiaryStatusPromise(status: DiaryStatus) {
   return promiseWrapper(async () => {
     const draftDiaryEntry = new DiaryEntryBuilder()

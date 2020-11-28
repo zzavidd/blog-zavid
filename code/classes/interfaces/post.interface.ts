@@ -48,4 +48,4 @@ export enum PostType {
   PAGE = 'Page'
 }
 
-export type PostContentImages = PostImage[] | string[] | PostContentImageMapping | string | null;
+export type PostContentImages = PostImage[] | string[] | PostContentImageMapping | string | undefined;

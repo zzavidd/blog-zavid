@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { CustomError } from 'classes';
-
 import { getServer } from './singleton';
+
+import { CustomError } from '../../classes';
 
 const isDev = process.env.NODE_ENV !== 'production';
 const server = getServer();

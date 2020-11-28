@@ -1,4 +1,5 @@
 import { validate as uuidValidate } from 'uuid';
+
 import {
   createEntity,
   deleteEntity,
@@ -7,7 +8,7 @@ import {
   SubmitEntityResponse,
   updateEntity
 } from '.';
-import { assert } from '..';
+import { assert, Variables } from '..';
 import { SubscriberDAO } from '../../classes';
 import {
   CREATE_SUBSCRIBER_QUERY,
@@ -19,7 +20,7 @@ import {
 
 const ENTITY_NAME = 'subscriber';
 
-export const getSubscribers = (variables?: any): Promise<SubscriberDAO[]> => {
+export const getSubscribers = (variables?: Variables): Promise<SubscriberDAO[]> => {
   return getEntities({
     query: GET_SUBSCRIBERS_QUERY,
     resolver: 'subscribers',

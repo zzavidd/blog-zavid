@@ -2,8 +2,10 @@ import { assert } from 'chai';
 import * as dotenv from 'dotenv';
 import { DocumentNode } from 'graphql';
 import { print } from 'graphql/language/printer';
-import nodeFetch from 'node-fetch';
 import 'mocha';
+import nodeFetch from 'node-fetch';
+
+import { GenericDAO } from '../classes';
 
 dotenv.config({ path: './config.env' });
 
@@ -96,4 +98,9 @@ export type FetchResponse = {
   errors?: Record<string, unknown>;
 };
 
-export type Variables = Record<string, unknown>;
+export type Variables = {
+  id?: number;
+  isPublish?: boolean;
+  isTest?: boolean;
+  [entity: string]: unknown;
+};
