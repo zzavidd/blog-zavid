@@ -3,13 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import React from 'react';
 
-interface IconProps {
-  name: IconName;
-  prefix?: IconPrefix;
-  withRightSpace?: boolean;
-  className?: string;
-}
-
 export const Icon = ({
   prefix = 'fas',
   name,
@@ -20,5 +13,14 @@ export const Icon = ({
     className,
     withRightSpace ? 'icon-right-space' : null
   );
-  return <FontAwesomeIcon icon={[prefix, name]} className={classes} />;
+  return (
+    <FontAwesomeIcon icon={[prefix, name]} className={classes} />
+  );
 };
+
+interface IconProps {
+  name: IconName;
+  prefix?: IconPrefix;
+  withRightSpace?: boolean;
+  className?: string;
+}
