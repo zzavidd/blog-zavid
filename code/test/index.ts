@@ -38,30 +38,33 @@ export const debug = (err: Error) => {
  * @param query The GraphQL query.
  * @param options Options for fetching.
  */
-export const fetch = (query: DocumentNode, options: FetchOptions = {}) => {
+export async function fetch(
+  query: DocumentNode,
+  options: FetchOptions = {}
+): Promise<FetchResponse> | never {
   const { variables = {}, expectToFail = false } = options;
-  return nodeFetch(`http://localhost:4000/api`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: print(query), variables })
-  })
-    .then((res) => res.json())
-    .then((response: FetchResponse = {}) => {
-      const { data, errors } = response;
-      if (!expectToFail) {
-        assert.isNotOk(errors);
-        assert.isOk(data);
-      }
-      return { data, errors };
-    })
-    .catch(debug);
-};
+  try {
+    const res = await nodeFetch(`http://localhost:4000/api`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: print(query), variables })
+    });
+    const { data, errors } = await res.json();
+    if (!expectToFail) {
+      assert.isNotOk(errors);
+      assert.isOk(data);
+    }
+    return { data, errors };
+  } catch (err) {
+    debug(err);
+  }
+}
 
 /**
  * A wrapper for Mocha tests which handles exceptions.
  * @param testBody The body of the test to be executed.
  */
-export const testWrapper = (testBody: () => void): Mocha.AsyncFunc => {
+export function testWrapper(testBody: () => void): () => Promise<void> {
   return async () => {
     try {
       await testBody();
@@ -69,7 +72,7 @@ export const testWrapper = (testBody: () => void): Mocha.AsyncFunc => {
       debug(err);
     }
   };
-};
+}
 
 /**
  * A wrapper for promises with asynchronous bodies.
@@ -83,14 +86,14 @@ export async function promiseWrapper(promiseBody: () => void): Promise<void> {
   }
 }
 
-export interface FetchOptions {
-  variables?: any;
+export type FetchOptions = {
+  variables?: Variables;
   expectToFail?: boolean;
-}
+};
 
-export interface FetchResponse {
-  data?: any;
-  errors?: any;
-}
+export type FetchResponse = {
+  data?: Record<string, unknown>;
+  errors?: Record<string, unknown>;
+};
 
-// TODO: Strictly type test files
+export type Variables = Record<string, unknown>;

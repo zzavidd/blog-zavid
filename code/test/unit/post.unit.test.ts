@@ -1,3 +1,4 @@
+import { assert } from '..';
 import {
   PostBuilder,
   PostImage,
@@ -5,8 +6,6 @@ import {
   PostStatus,
   PostType
 } from '../../classes';
-
-import { assert } from '..';
 
 describe('Unit Tests: Post', function () {
   describe('Object methods', function () {
@@ -66,7 +65,7 @@ describe('Unit Tests: Post', function () {
       images = PostStatic.parse(post).contentImages;
       isArrayOfLength(images as PostImage[], 2);
 
-      post.contentImages = null as any;
+      post.contentImages = null;
       images = PostStatic.parse(post).contentImages;
       assert.isNotOk(images);
 
@@ -82,15 +81,15 @@ describe('Unit Tests: Post', function () {
         .random({ withImage: true, numberOfContentImages: 2 })
         .build();
 
-      let images = PostStatic.collateImages(post);
+      let images = PostStatic.collateImages(post) as PostImage[];
       isArrayOfLength(images, 3);
 
       // If main image is null.
-      post.image = null as any;
-      images = PostStatic.collateImages(post);
+      post.image = null;
+      images = PostStatic.collateImages(post) as PostImage[];
       isArrayOfLength(images, 2);
 
-      images = PostStatic.collateImages(post, { includeNulls: true });
+      images = PostStatic.collateImages(post, { includeNulls: true }) as PostImage[];
       isArrayOfLength(images, 3);
 
       finish();
@@ -116,7 +115,7 @@ describe('Unit Tests: Post', function () {
   });
 });
 
-const isArrayOfLength = (array: any[], number: number): void => {
+const isArrayOfLength = (array: PostImage[], number: number): void => {
   assert.isArray(array);
   assert.lengthOf(array, number);
 };
