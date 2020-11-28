@@ -241,7 +241,7 @@ const buildPayload = (
     .withImage(image)
     .withExcerpt(excerpt);
 
-  if (contentImages) {
+  if (contentImages?.length) {
     post.withContentImages(Object.values(contentImages));
   }
 

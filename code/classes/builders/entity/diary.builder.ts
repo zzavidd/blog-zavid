@@ -7,18 +7,30 @@ import { DiaryStatic, DiaryStatus, DiaryDAO } from '../../index';
 export class DiaryEntryBuilder {
   private entry: DiaryDAO = {};
 
-  withDate(date: string | Date): DiaryEntryBuilder {
-    this.entry.date = date;
+  withTitle(title?: string): DiaryEntryBuilder {
+    this.entry.title = title!.trim();
     return this;
   }
 
-  withStatus(status: DiaryStatus): DiaryEntryBuilder {
-    this.entry.status = status;
+  withDate(date?: string | Date): DiaryEntryBuilder {
+    this.entry.date = date!;
     return this;
   }
 
-  withContent(content: string): DiaryEntryBuilder {
-    this.entry.content = content;
+  withStatus(status?: DiaryStatus): DiaryEntryBuilder {
+    this.entry.status = status!;
+    return this;
+  }
+
+  withContent(content?: string): DiaryEntryBuilder {
+    this.entry.content = content!.trim();
+    return this;
+  }
+
+  withEntryNumber(entryNumber?: number): DiaryEntryBuilder {
+    entryNumber =
+      typeof entryNumber && parseInt((entryNumber as unknown) as string);
+    this.entry.entryNumber = entryNumber;
     return this;
   }
 

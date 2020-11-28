@@ -16,6 +16,7 @@ import {
 
 import {
   DiaryDAO,
+  DiaryEntryBuilder,
   DiaryStatic,
   DiaryStatus,
   Operation
@@ -144,7 +145,6 @@ const DiaryCrud = ({
   );
 };
 
-// TODO: Use DiaryEntryBuilder
 const buildPayload = (
   clientDiaryEntry: DiaryDAO,
   isPublish: boolean,
@@ -152,13 +152,13 @@ const buildPayload = (
 ): DiaryRequest => {
   const { id, title, content, status, date, entryNumber } = clientDiaryEntry;
 
-  const diaryEntry: DiaryDAO = {
-    title,
-    content,
-    date: zDate.formatISODate(date!),
-    status,
-    entryNumber
-  };
+  const diaryEntry = new DiaryEntryBuilder()
+    .withTitle(title)
+    .withContent(content)
+    .withDate(zDate.formatISODate(date!))
+    .withStatus(status)
+    .withEntryNumber(entryNumber)
+    .build();
 
   const payload: DiaryRequest = { diaryEntry, isPublish };
 
