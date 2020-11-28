@@ -103,5 +103,5 @@
 .diary-search-bar {
   @include responsive(font-size, 0.9em, $sm: 0.8em);
   margin-top: 1em;
-  padding: 0.5em 0;
+  padding: 0.5em 1em;
 }
