@@ -21,7 +21,7 @@ export const Select = (props: SelectProps) => {
 
   // Make widgets account for values of '00' (time)
   const selectedValue = value === 0 ? '00' : value;
-  const color = (!selectedValue && placeholder) ? '#8E8E8E' : 'auto';
+  const color = (!selectedValue && placeholder) ? '#8E8E8E' : 'inherit';
 
   const classes = classnames(
     css[isRound ? `select-round-${theme}` : `select-${theme}`],
