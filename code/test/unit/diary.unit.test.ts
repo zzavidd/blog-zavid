@@ -19,7 +19,7 @@ describe('Unit Tests: Diary', function () {
 
   describe('Static methods', function () {
     it('Slug generation', function (finish) {
-      let diaryEntry = new DiaryEntryBuilder()
+      const diaryEntry = new DiaryEntryBuilder()
         .random()
         .withDate(zavidBirthday)
         .build();

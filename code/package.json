@@ -3,7 +3,6 @@
     "build": "NODE_ENV=development next build",
     "build:ci": "next build",
     "check": "tsc --noEmit --project ./tsconfig.json",
-    "check:classes": "tsc --noEmit --project ./classes/tsconfig.classes.json",
     "check:test": "tsc --project ./test/tsconfig.test.json",
     "dev": "nodemon",
     "preprod": "tsc --project tsconfig.override.json",

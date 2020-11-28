@@ -75,7 +75,7 @@ export class PostStatic {
   }
 
   static isPostImageToUpload(image: PostImage | string): image is PostImage {
-    if (image === null) return false;
+    if (!image || image === null) return false;
     return !!(image as PostImage).source;
   }
 
