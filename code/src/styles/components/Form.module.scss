@@ -145,7 +145,7 @@
   @include themer(
     &,
     background-color,
-    $light: rgba(255, 255, 255, 0.5),
+    $light: rgba(224, 224, 224, 0.5),
     $dark: rgba(33, 33, 33, 0.7)
   );
   border-radius: 10px;
