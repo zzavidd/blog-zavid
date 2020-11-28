@@ -6,7 +6,9 @@ import { OnInputChangeType, OnClickType } from 'classes';
 import { InvisibleButton } from 'src/components/button';
 import css from 'src/styles/components/Form.module.scss';
 
-export const TextInput = (props: TextInput) => {
+import { Icon } from '../icon';
+
+export const TextInput = (props: TextInputProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const { onClick, leadingComponent = null, trailingComponent = null } = props;
 
@@ -27,12 +29,26 @@ export const TextInput = (props: TextInput) => {
   );
 };
 
-export const NumberInput = (props: Input) => {
+export const NumberInput = (props: InputProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <div className={css[`text-input-field-${theme}`]}>
       <Input {...props} type={'number'} min={1} />
     </div>
+  );
+};
+
+export const SearchBar = (props: TextInputProps) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+  const classes = classnames(css[`search-bar-${theme}`], props.className);
+  return (
+    <TextInput
+      {...props}
+      className={classes}
+      leadingComponent={
+        <Icon name={'search'} className={css[`search-bar-icon`]} />
+      }
+    />
   );
 };
 
@@ -43,7 +59,7 @@ const Input = ({
   onChange,
   placeholder,
   onClick
-}: Input) => {
+}: InputProps) => {
   if (value === null) value = '';
   return (
     <input
@@ -59,23 +75,20 @@ const Input = ({
   );
 };
 
-interface BaseInput {
+interface InputProps {
   value: unknown;
   placeholder: string;
   name?: string;
   type?: string;
   onChange?: OnInputChangeType;
   onClick?: OnClickType;
-  className?: string
-  style?: CSSProperties
-  readOnly?: boolean
+  className?: string;
+  style?: CSSProperties;
+  readOnly?: boolean;
+  min?: number;
 }
 
-interface Input extends BaseInput {
-  min?: number
-}
-
-interface TextInput extends BaseInput {
-  leadingComponent?: JSX.Element
-  trailingComponent?: JSX.Element
+interface TextInputProps extends InputProps {
+  leadingComponent?: JSX.Element;
+  trailingComponent?: JSX.Element;
 }

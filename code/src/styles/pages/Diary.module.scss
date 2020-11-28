@@ -13,7 +13,7 @@
     $md: 100%
   );
   display: grid;
-  padding: 1em 0;
+  padding: 0.5em 0;
 }
 
 %diary-entry {
@@ -82,4 +82,15 @@
 .diary-single-date {
   @include responsive(font-size, 1.3em, $sm: 1em);
   padding-bottom: 0;
+}
+
+.diary-search {
+  @include responsive(width, 40%, $xl: 60, $sm: 100%);
+  margin: 0 auto;
+}
+
+.diary-search-bar {
+  @include responsive(font-size, 0.9em, $sm: 0.8em);
+  margin-top: 1em;
+  padding: 0.5em 0;
 }

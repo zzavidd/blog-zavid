@@ -14,11 +14,14 @@ import { isAuthenticated } from 'src/lib/cookies';
 import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
 import css from 'src/styles/pages/Diary.module.scss';
 
+import DiarySearch from './search';
+
 const DIARY_HEADING = `Zavid's Diary`;
 
 const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const [diaryEntries, setDiaryEntries] = useState([]);
+  const [allDiaryEntries, setAllDiaryEntries] = useState<DiaryDAO[]>([]);
+  const [filteredEntries, setFilteredEntries] = useState<DiaryDAO[]>([]);
   const [isLoaded, setLoaded] = useState(false);
 
   const { data, error: queryError, loading: queryLoading } = useQuery(
@@ -37,7 +40,10 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
   useEffect(() => {
     if (queryLoading) return;
     if (queryError) alert.error(queryError);
-    setDiaryEntries(data ? data.diaryEntries : []);
+
+    const entries = data?.diaryEntries;
+    setAllDiaryEntries(entries);
+    setFilteredEntries(entries);
     setLoaded(true);
   }, [isLoaded, queryLoading]);
 
@@ -50,7 +56,8 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
             {diaryIntro}
           </Paragraph>
         </div>
-        <DiaryGrid diaryEntries={diaryEntries} />
+        <DiarySearch diaryEntries={allDiaryEntries} setFilteredEntries={setFilteredEntries} />
+        <DiaryGrid diaryEntries={filteredEntries} />
       </div>
       <Toolbar spaceItems={true}>
         {isAuthenticated() && (

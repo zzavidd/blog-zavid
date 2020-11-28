@@ -141,6 +141,22 @@
   }
 }
 
+.search-bar {
+  @include themer(
+    &,
+    background-color,
+    $light: rgba(255, 255, 255, 0.5),
+    $dark: rgba(33, 33, 33, 0.7)
+  );
+  border-radius: 10px;
+  border-style: none !important;
+  padding: 0.5em 1em;
+
+  .search-bar-icon {
+    @include responsive(margin-right, $sm: 0.7em);
+  }
+}
+
 @mixin theme-extend($class, $target) {
   @each $theme in $themes {
     &-#{$theme} {
