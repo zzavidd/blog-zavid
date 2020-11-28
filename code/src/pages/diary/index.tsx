@@ -56,7 +56,10 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
             {diaryIntro}
           </Paragraph>
         </div>
-        <DiarySearch diaryEntries={allDiaryEntries} setFilteredEntries={setFilteredEntries} />
+        <DiarySearch
+          diaryEntries={allDiaryEntries}
+          setFilteredEntries={setFilteredEntries}
+        />
         <DiaryGrid diaryEntries={filteredEntries} />
       </div>
       <Toolbar spaceItems={true}>
@@ -71,6 +74,11 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
 const navigateToDiaryAdmin = () => (location.href = '/admin/diary');
 
 const DiaryGrid = ({ diaryEntries }: DiaryGrid) => {
+  if (!diaryEntries.length) {
+    return (
+      <div className={css['diary-index-error']}>No diary entries found.</div>
+    );
+  }
   return (
     <div className={css['diary-grid']}>
       {diaryEntries.map((diaryEntry, key) => (
