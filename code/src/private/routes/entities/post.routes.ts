@@ -106,14 +106,53 @@ router.get(
   renderErrorPage
 );
 
-// router.get('/epistles', function (req, res) {
-//   return server.render(req, res, '/posts/epistles', {
-//     title: `Epistles | ${siteTitle}`,
-//     description:
-//       'My messages, written to encourage and enlighten; typically based off of Bible scriptures and transcribed as poetry. Read and be blessed.',
-//     ogUrl: '/epistles'
-//   });
-// });
+/** Route for index of epistles. */
+router.get('/epistles', function (req, res) {
+  return server.render(req, res, '/posts/epistles', {
+    title: `Epistles | ${siteTitle}`,
+    description:
+      'My messages, written to encourage and enlighten; typically based off of Bible scriptures and transcribed as poetry. Read and be blessed.',
+    ogUrl: '/epistles'
+  });
+});
+
+/** Route for epistle page. */
+router.get(
+  '/epistles/:slug',
+  async function (req: Request, res: Response, next: NextFunction) {
+    const { slug } = req.params;
+
+    const [epistle] = await new PostQueryBuilder(knex)
+      .whereSlug(slug)
+      .whereType({ include: [PostType.EPISTLE] })
+      .whereStatus({ exclude: [PostStatus.DRAFT] })
+      .build();
+
+    const isUnauthorized =
+      PostStatic.isProtected(epistle) && !req.isAuthenticated();
+
+    if (!epistle || isUnauthorized) {
+      return next(ERRORS.NO_ENTITY('epistle'));
+    }
+
+    const { type, typeId } = epistle;
+    const [[previousEpistle], [nextEpistle]] = await Promise.all([
+      new PostQueryBuilder(knex).getPreviousPost(typeId!, type!).build(),
+      new PostQueryBuilder(knex).getNextPost(typeId!, type!).build()
+    ]);
+
+    return server.render(req, res, '/posts/single', {
+      title: `${epistle.title} | ${siteTitle}`,
+      description: epistle.excerpt,
+      ogUrl: `/epistles/${slug}`,
+      cardImage: epistle.image as string,
+      post: JSON.stringify(epistle),
+      previousPost: JSON.stringify(previousEpistle),
+      nextPost: JSON.stringify(nextEpistle)
+    });
+  },
+  renderErrorPage
+);
 
 router.get('/admin/posts', function (req, res) {
   return server.render(req, res, '/posts/admin', {
