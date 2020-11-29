@@ -13,8 +13,8 @@
     "test:service": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/service/**/*.test.ts",
     "test:manual": "ts-node --project test/tsconfig.test.json test/manual",
     "test:ci": "npm run test -- --staging --reporter mocha-junit-reporter",
-    "lint": "eslint --ignore-path ../.gitignore \"src/**\"",
-    "prettify": "prettier --ignore-path ../../.gitignore --write \"**/*.js\""
+    "lint": "eslint --ignore-path ../.gitignore \"src/**/*.ts\"",
+    "prettify": "prettier --ignore-path ../../.gitignore --write \"**/**/*.ts\""
   },
   "dependencies": {
     "@aarnila/react-instagram-embed": "^2.0.2",
