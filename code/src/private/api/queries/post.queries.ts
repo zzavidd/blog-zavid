@@ -78,8 +78,8 @@ export const DELETE_POST_QUERY = gql`
   }
 `;
 
-export const TRUNCATE_POST_TABLE_QUERY = gql`
-  mutation TruncatePostTable {
-    truncatePostTable
+export const CLEAR_POSTS_QUERY = gql`
+  mutation ClearPosts {
+    clearPosts
   }
 `;

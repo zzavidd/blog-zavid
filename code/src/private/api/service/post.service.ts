@@ -125,11 +125,11 @@ export const deletePost = ({
 };
 
 /**
- * Clears all data from  the posts table in the database.
+ * Clears all data from the posts table in the database.
  */
-export const truncatePosts = () => {
+export const clearPosts = () => {
   return TryWrapper(async () => {
-    return new PostMutationBuilder(knex).truncate().build();
+    await new PostMutationBuilder(knex).truncate().build();
   });
 };
 

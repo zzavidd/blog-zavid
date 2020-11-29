@@ -28,6 +28,7 @@ extend type Mutation {
     isPublish: Boolean
   ): DiaryEntry
   deleteDiaryEntry(id: Int!): DiaryEntry
+  clearDiary: Boolean
 }
 
 ###############

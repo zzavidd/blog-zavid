@@ -8,7 +8,8 @@ import { COUNT } from '../constants';
 
 export const ingestReveries = () => {
   return ingestPost({
-    startMessage: `Ingesting ${COUNT.EPISTLE} epistles...`,
+    startMessage: `Ingesting ${COUNT.REVERIE} reveries...`,
+    endMessage: `Finished ingesting reveries.`,
     quantity: COUNT.REVERIE,
     postOptions: {
       generateTitle: () => faker.company.catchPhrase(),
@@ -22,6 +23,7 @@ export const ingestReveries = () => {
 export const ingestEpistles = () => {
   return ingestPost({
     startMessage: `Ingesting ${COUNT.EPISTLE} epistles...`,
+    endMessage: 'Finished ingesting epistles.',
     quantity: COUNT.EPISTLE,
     postOptions: {
       generateTitle: (i) => {
@@ -37,6 +39,7 @@ export const ingestEpistles = () => {
 async function ingestPost(options: IngestPostOptions) {
   const {
     startMessage,
+    endMessage,
     quantity = 0,
     postOptions: {
       generateTitle,
@@ -80,10 +83,12 @@ async function ingestPost(options: IngestPostOptions) {
   }
 
   await Promise.all(promises);
+  console.info(endMessage);
 }
 
 interface IngestPostOptions {
   startMessage: string;
+  endMessage: string;
   quantity: number;
   postOptions: {
     generateTitle: (index?: number) => string;

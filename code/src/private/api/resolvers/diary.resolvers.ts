@@ -40,6 +40,11 @@ const deleteDiaryEntry = (
   args: DiaryService.GetOrDeleteDiaryEntryOptions
 ) => DiaryService.deleteDiaryEntry(args);
 
+/**
+ * Clears all data from  the posts table in the database.
+ */
+const clearDiary = () => DiaryService.clearDiary();
+
 export default {
   Query: {
     diaryEntries: getAllDiaryEntries,
@@ -48,6 +53,7 @@ export default {
   Mutation: {
     createDiaryEntry,
     updateDiaryEntry,
-    deleteDiaryEntry
+    deleteDiaryEntry,
+    clearDiary
   }
 };
