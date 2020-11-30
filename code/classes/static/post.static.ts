@@ -77,10 +77,9 @@ export class PostStatic {
 
   /**
    * Retrieves the post directory name from its type.
-   * @param {string} type The post type.
-   * @returns {string} The post's directory name.
+   * @param type The post type.
    */
-  static getDirectory(type: string): string {
+  static getDirectory(type: PostType): string {
     return PostDirectory[type];
   }
 
@@ -117,22 +116,22 @@ export class PostStatic {
    * Checks if a post has the DRAFT status.
    */
   static isDraft(input: PostDAO): boolean {
-    return input.status === PostStatus.DRAFT;
+    return input?.status === PostStatus.DRAFT;
   }
 
   /**
    * Checks if a post has the PROTECTED status.
    */
   static isProtected(input: PostDAO): boolean {
-    return input.status === PostStatus.PROTECTED;
+    return input?.status === PostStatus.PROTECTED;
   }
 
   static isPrivate(input: PostDAO): boolean {
-    return input.status === PostStatus.PRIVATE;
+    return input?.status === PostStatus.PRIVATE;
   }
 
   static isPublish(input: PostDAO): boolean {
-    return input.status === PostStatus.PUBLISHED;
+    return input?.status === PostStatus.PUBLISHED;
   }
 }
 
