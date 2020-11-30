@@ -25,7 +25,7 @@ router.get('/reveries', async function (req: Request, res: Response) {
 
   return server.render(req, res, '/posts/reveries', {
     title: `Reveries | ${siteTitle}`,
-    description: 'For my deeper ruminations...',
+    description: reveriePage.excerpt,
     ogUrl: `/${url}`,
     reveriesIntro: reveriePage.content
   });
@@ -107,8 +107,7 @@ router.get('/epistles', async function (req, res) {
 
   return server.render(req, res, '/posts/epistles', {
     title: `Epistles | ${siteTitle}`,
-    description:
-      'My messages, written to encourage and enlighten; typically based off of Bible scriptures and transcribed as poetry. Read and be blessed.',
+    description: epistlePage.excerpt,
     ogUrl: `/${url}`,
     epistlesIntro: epistlePage.content
   });
