@@ -1,0 +1,84 @@
+@import '../App';
+
+.epistles-heading {
+  @include responsive(font-size, 2.5em, $sm: 2.1em);
+  margin-top: 0.5em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.epistles-introduction {
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 0.5em 0 1em;
+  text-align: center;
+
+  &-paragraph {
+    font-size: 0.85em;
+    margin: 0;
+  }
+}
+
+.epistles-heading-divider {
+  margin: 0.5em 0;
+}
+
+.epistles-index-page {
+  @include responsive(padding, 0 2em, $sm: 0 0.5em);
+}
+
+.epistles-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.epistles-grid-column {
+  @include responsive(
+    flex,
+    20%,
+    $xl: 25%,
+    $lg: calc(100% / 3),
+    $md: 50%
+  );
+  padding: 0.2em;
+}
+
+.epistles-unit {
+  @include themer(&, border-color, $dark, $border-color);
+  border: 1px solid;
+  border-radius: 5px;
+  margin-bottom: 0.4em;
+  overflow: hidden;
+  width: 100%;
+}
+
+.epistles-unit-text {
+  @include responsive(padding, 2em 1em, $sm: 1em 0.8em);
+}
+
+.epistles-title {
+  @include responsive(font-size, 1.6em, $sm: 1.05em);
+  letter-spacing: -1px !important;
+}
+
+.epistles-date {
+  @include responsive(font-size, 0.9em, $sm: 0.7em);
+  padding-bottom: 1em;
+}
+
+.epistles-image {
+  @include themer(&, border-bottom-color, $dark, $border-color);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  max-width: 600px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.epistles-paragraph {
+  @include responsive(font-size, 0.8em, $sm: 0.9em);
+}
+
+.epistles-readmore {
+  @include responsive(font-size, 1.1em, $sm: 0.9em);
+}

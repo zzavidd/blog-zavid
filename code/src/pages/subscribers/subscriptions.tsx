@@ -10,12 +10,12 @@ import { Container } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
 import { Title } from 'src/components/text';
 import PreferenceChecks from 'src/lib/helpers/pages/subscribers/preferences';
+import { DAOParse } from 'src/lib/parser';
 import {
   UPDATE_SUBSCRIBER_QUERY,
   DELETE_SUBSCRIBER_QUERY
 } from 'src/private/api/queries/subscriber.queries';
 import css from 'src/styles/pages/Subscribers.module.scss';
-import { DAOParse } from 'src/lib/parser';
 
 const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);

@@ -2,7 +2,7 @@ import { NextPageContext } from 'next';
 import React from 'react';
 import { zDate } from 'zavid-modules';
 
-import { PostDAO, PostStatic, Substitutions } from 'classes';
+import { PostDAO, PostStatic, PostType, Substitutions } from 'classes';
 import { BackButton, AdminButton } from 'src/components/button';
 import CloudImage, { cloudinaryBaseUrl, Signature } from 'src/components/image';
 import { Spacer, Toolbar } from 'src/components/layout';
@@ -39,7 +39,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
         </Paragraph>
         <Signature />
         <Timeline
-          type={TimelineType.REVERIE}
+          type={getTimelineType(post.type!)!}
           previous={{
             slug: previousPost.slug!,
             image: previousPost.image as string,
@@ -55,10 +55,12 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
         <ShareBlock message={shareMessage} url={location.href} />
       </div>
       <Toolbar spaceItems={true} hasBackButton={true}>
-        <BackButton onClick={navigateToReveries}>Back to Reveries</BackButton>
+        <BackButton onClick={() => navigateToIndex(post.type!)}>
+          Back to {post.type}s
+        </BackButton>
         {isAuthenticated() && (
           <AdminButton onClick={() => navigateToEdit(post.id!)}>
-            Edit Reverie
+            Edit {post.type}
           </AdminButton>
         )}
       </Toolbar>
@@ -66,8 +68,12 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
   );
 };
 
-const navigateToReveries = (): void => {
-  location.href = '/reveries';
+const getTimelineType = (type: PostType) => {
+  return Object.values(TimelineType).find(({ label }) => label === type);
+};
+
+const navigateToIndex = (type: PostType): void => {
+  location.href = `/${PostStatic.getDirectory(type)}`;
 };
 const navigateToEdit = (id: number): void => {
   location.href = `/admin/posts/edit/${id}`;

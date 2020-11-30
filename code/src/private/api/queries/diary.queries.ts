@@ -61,3 +61,9 @@ export const DELETE_DIARY_QUERY = gql`
     }
   }
 `;
+
+export const CLEAR_DIARY_QUERY = gql`
+  mutation ClearDiary {
+    clearDiary
+  }
+`;

@@ -40,6 +40,11 @@ const deleteSubscriber = (
   args: SubscriberService.GetOrDeleteSubscriberOptions
 ) => SubscriberService.deleteSubscriber(args);
 
+/**
+ * Clears all data from  the posts table in the database.
+ */
+const clearSubscribers = () => SubscriberService.clearSubscribers();
+
 export default {
   Query: {
     subscribers: getAllSubscribers,
@@ -48,6 +53,7 @@ export default {
   Mutation: {
     createSubscriber,
     updateSubscriber,
-    deleteSubscriber
+    deleteSubscriber,
+    clearSubscribers
   }
 };

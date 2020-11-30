@@ -108,6 +108,15 @@ export const deleteDiaryEntry = async ({
   });
 };
 
+/**
+ * Clears all data from the diary table in the database.
+ */
+export const clearDiary = () => {
+  return TryWrapper(async () => {
+    await new DiaryMutationBuilder(knex).truncate().build();
+  });
+};
+
 export type GetDiaryOptions = {
   sort: QuerySort;
   status: DiaryStatusFilters;

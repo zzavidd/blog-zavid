@@ -7,6 +7,14 @@ import css from 'src/styles/components/Layout.module.scss';
 
 import { InvisibleButton } from './button';
 
+export enum ScreenWidth {
+  SMALL = '(max-width: 576px)',
+  MEDIUM = '(max-width: 768px)',
+  LARGE = '(max-width: 992px)',
+  XLARGE = '(max-width: 1200px)',
+  XXLARGE = '(max-width: 1408px)',
+}
+
 export const Container = ({ children, className }: Layout) => {
   const classes = classnames(css['container'], className);
   return <div className={classes}>{children}</div>;

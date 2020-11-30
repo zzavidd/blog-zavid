@@ -6,7 +6,7 @@ import { COUNT } from '../constants';
 const quantity = COUNT.SUBSCRIBERS;
 
 export async function ingestSubscribers() {
-  console.info(`Ingesting ${quantity} epistles...`);
+  console.info(`Ingesting ${quantity} subscribers...`);
 
   const promises = [];
 
@@ -21,4 +21,5 @@ export async function ingestSubscribers() {
   }
 
   await Promise.all(promises);
+  console.info("Finished ingesting subscribers.");
 }
