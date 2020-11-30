@@ -1,22 +1,26 @@
 /* eslint-disable no-console */
-import readline from 'readline';
-
 import { clearAllData } from './clear';
+import { rl } from './constants';
 import { ingestEpistles, ingestReveries } from './entities/post.ingest';
 import { ingestSubscribers } from './entities/subscriber.ingest';
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
 const options: Record<string, () => Promise<void>> = {
   1: ingestReveries,
   2: ingestEpistles,
   3: ingestSubscribers,
-  4: clearAllData,
-  5: completeWipe
+  4: ingestAll,
+  5: clearAllData,
+  6: clearAndIngestAll
 };
+
+async function ingestAll() {
+  await Promise.all([ingestReveries(), ingestEpistles(), ingestSubscribers()]);
+}
+
+async function clearAndIngestAll() {
+  await clearAllData();
+  await ingestAll();
+}
 
 showMenu();
 
@@ -36,25 +40,15 @@ function showMenu() {
 }
 
 function showOptions() {
+  console.log('**************************');
   console.log('Choose your option:');
+  console.log('');
   console.log('(1) Ingest Reveries');
   console.log('(2) Ingest Epistles');
   console.log('(3) Ingest Subscribers');
-  console.log('(4) Clear All Data');
-  console.log('(5) Full Wipe');
+  console.log('(4) Ingest All');
+  console.log('(5) Clear All Data');
+  console.log('(6) Clear & Ingest All');
+  console.log('**************************');
   console.log('');
 }
-
-async function ingestAll() {
-  await Promise.all([ingestReveries(), ingestEpistles(), ingestSubscribers()]);
-}
-
-async function completeWipe() {
-  await clearAllData();
-  await ingestAll();
-}
-
-rl.on('close', function () {
-  console.log('\nExiting.');
-  process.exit(0);
-});

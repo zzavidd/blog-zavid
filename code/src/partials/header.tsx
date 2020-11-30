@@ -63,7 +63,7 @@ const NavigationLinks = () => {
         <Nav className={'justify-content-center'}>
           <Nav.Link href={'/reveries'}>Reveries</Nav.Link>
           <Nav.Link href={'/diary'}>Diary</Nav.Link>
-          <DisabledNavLink>Epistles</DisabledNavLink>
+          <Nav.Link href={'/epistles'}>Epistles</Nav.Link>
           <DisabledNavLink>Poetry</DisabledNavLink>
           <DisabledNavLink>Musings</DisabledNavLink>
           <Nav.Link href={'/about'}>About</Nav.Link>

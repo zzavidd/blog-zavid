@@ -1,11 +1,7 @@
 import { isString, randomEnumValue, randomElementFromList } from '../helper';
 import { PostDAO, PostImage, PostType, PostStatus } from '../interfaces';
 
-interface DirectoryMapping {
-  [type: string]: string;
-}
-
-const DIRECTORY: DirectoryMapping = {
+const PostDirectory: Record<PostType, string> = {
   [PostType.REVERIE]: 'reveries',
   [PostType.EPISTLE]: 'epistles',
   [PostType.POEM]: 'poetry',
@@ -81,11 +77,10 @@ export class PostStatic {
 
   /**
    * Retrieves the post directory name from its type.
-   * @param {string} type The post type.
-   * @returns {string} The post's directory name.
+   * @param type The post type.
    */
-  static getDirectory(type: string): string {
-    return DIRECTORY[type];
+  static getDirectory(type: PostType): string {
+    return PostDirectory[type];
   }
 
   /**
@@ -99,11 +94,18 @@ export class PostStatic {
 
   /**
    * Eagerly checks if post is of type reverie.
-   * @param {PostDAO} input - The post or its type value.
-   * @returns {boolean} True if post is REVERIE.
+   * @param input - The post or its type value.
    */
   static isReverie(input: PostDAO): boolean {
     return input.type === PostType.REVERIE;
+  }
+
+  /**
+   * Eagerly checks if post is of type reverie.
+   * @param input - The post or its type value.
+   */
+  static isEpistle(input: PostDAO): boolean {
+    return input.type === PostType.EPISTLE;
   }
 
   static randomStatus(): PostStatus {
@@ -114,22 +116,22 @@ export class PostStatic {
    * Checks if a post has the DRAFT status.
    */
   static isDraft(input: PostDAO): boolean {
-    return input.status === PostStatus.DRAFT;
+    return input?.status === PostStatus.DRAFT;
   }
 
   /**
    * Checks if a post has the PROTECTED status.
    */
   static isProtected(input: PostDAO): boolean {
-    return input.status === PostStatus.PROTECTED;
+    return input?.status === PostStatus.PROTECTED;
   }
 
   static isPrivate(input: PostDAO): boolean {
-    return input.status === PostStatus.PRIVATE;
+    return input?.status === PostStatus.PRIVATE;
   }
 
   static isPublish(input: PostDAO): boolean {
-    return input.status === PostStatus.PUBLISHED;
+    return input?.status === PostStatus.PUBLISHED;
   }
 }
 

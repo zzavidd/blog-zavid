@@ -2,7 +2,9 @@ import Cloudinary from 'cloudinary';
 import * as dotenv from 'dotenv';
 
 import { fetch } from '..';
-import { TRUNCATE_POST_TABLE_QUERY } from '../../src/private/api/queries/post.queries';
+import { CLEAR_DIARY_QUERY } from '../../src/private/api/queries/diary.queries';
+import { CLEAR_POSTS_QUERY } from '../../src/private/api/queries/post.queries';
+import { CLEAR_SUBSCRIBERS_QUERY } from '../../src/private/api/queries/subscriber.queries';
 
 const cloudinary = Cloudinary.v2;
 
@@ -15,10 +17,12 @@ cloudinary.config({
 });
 
 export async function clearAllData() {
-  console.info(`Deleting all data from POST table...`);
+  console.info(`Deleting all data from database...`);
   await Promise.all([
-    fetch(TRUNCATE_POST_TABLE_QUERY),
+    fetch(CLEAR_POSTS_QUERY),
+    fetch(CLEAR_DIARY_QUERY),
+    fetch(CLEAR_SUBSCRIBERS_QUERY),
     cloudinary.api.delete_resources_by_prefix('test')
   ]);
-  console.info("Cleared all data from database.");
+  console.info("Successfully cleared all data from database.");
 }

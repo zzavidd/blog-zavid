@@ -1,6 +1,6 @@
 import InstagramEmbed from '@aarnila/react-instagram-embed';
 import classNames from 'classnames';
-import React, { ReactNode } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zText } from 'zavid-modules';
@@ -92,13 +92,15 @@ export const VanillaLink = ({
   className,
   href,
   children,
-  openNewTab = false
-}: VanillaLink) => {
+  openNewTab = false,
+  style
+}: VanillaLinkProps) => {
   const classes = classNames(css['vanilla-link'], className);
   return (
     <a
       className={classes}
       href={href}
+      style={style}
       {...(openNewTab && {
         target: '_blank',
         rel: 'noopener noreferrer'
@@ -133,6 +135,7 @@ const EmbeddedInsta = ({ url }: EmbeddedInsta) => {
 interface Text {
   className?: string;
   children?: ReactNode;
+  style?: CSSProperties;
 }
 
 interface Paragraph extends Text {
@@ -149,7 +152,7 @@ interface ReadMore extends Text {
   text: string;
 }
 
-interface VanillaLink extends Text {
+interface VanillaLinkProps extends Text {
   href: string;
   openNewTab?: boolean;
 }

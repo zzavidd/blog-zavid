@@ -4,10 +4,11 @@ import css from 'src/styles/components/Form.module.scss';
 
 import { Icon } from './icon';
 import CloudImage, { AspectRatio } from './image';
-import { Title } from './text';
+import { Title, VanillaLink } from './text';
 
 export const TimelineType: TimelineTypes = {
   REVERIE: { label: 'Reverie', segment: 'reveries' },
+  EPISTLE: { label: 'Epistle', segment: 'epistles' },
   DIARY: { label: 'Entry', segment: 'diary' }
 };
 
@@ -29,7 +30,7 @@ const PrevNextEntity = ({
   const prefix = isPrevious ? 'Previous' : 'Next';
   const { label, segment } = type!;
   return (
-    <a
+    <VanillaLink
       href={`/${segment}/${entity.slug}`}
       className={css[isPrevious ? 'timeline-previous' : 'timeline-next']}
       style={{ visibility: entity.slug ? 'visible' : 'hidden' }}>
@@ -45,7 +46,7 @@ const PrevNextEntity = ({
         </div>
       </div>
       <EntityImage image={entity.image} />
-    </a>
+    </VanillaLink>
   );
 };
 

@@ -6,7 +6,6 @@ import { ButtonSpacer, CancelButton, DeleteButton } from 'src/components/button'
 import { Paragraph } from 'src/components/text';
 import css from 'src/styles/components/Modal.module.scss';
 
-
 export const Modal = (props: Modal) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const { visible, modalHeader, modalBody, modalFooter, onHide } = props;
@@ -78,7 +77,6 @@ export const ConfirmModal = ({
     />
   );
 };
-
 
 interface Modal {
   visible: boolean

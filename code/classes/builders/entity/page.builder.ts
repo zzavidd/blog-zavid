@@ -28,7 +28,7 @@ export class PageBuilder {
   }
 
   setIsEmbed(isEmbed?: boolean): PageBuilder {
-    this.page.isEmbed = isEmbed!;
+    this.page.isEmbed = new Boolean(isEmbed!).valueOf();
     return this;
   }
 

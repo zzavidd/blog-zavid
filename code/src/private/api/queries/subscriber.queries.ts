@@ -57,3 +57,9 @@ export const DELETE_SUBSCRIBER_QUERY = gql`
     }
   }
 `;
+
+export const CLEAR_SUBSCRIBERS_QUERY = gql`
+  mutation ClearSubscribers {
+    clearSubscribers
+  }
+`;

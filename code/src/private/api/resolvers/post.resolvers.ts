@@ -38,7 +38,7 @@ const deletePost = (
 /**
  * Clears all data from  the posts table in the database.
  */
-const truncatePostTable = () => PostService.truncatePosts();
+const clearPosts = () => PostService.clearPosts();
 
 export default {
   Query: {
@@ -49,6 +49,6 @@ export default {
     createPost,
     updatePost,
     deletePost,
-    truncatePostTable
+    clearPosts
   }
 };

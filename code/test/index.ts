@@ -5,8 +5,6 @@ import { print } from 'graphql/language/printer';
 import 'mocha';
 import nodeFetch from 'node-fetch';
 
-import { GenericDAO } from '../classes';
-
 dotenv.config({ path: './config.env' });
 
 // Start the server when in staging environment.
@@ -43,7 +41,7 @@ export const debug = (err: Error) => {
 export async function fetch(
   query: DocumentNode,
   options: FetchOptions = {}
-): Promise<FetchResponse> | never {
+): Promise<FetchResponse | undefined> {
   const { variables = {}, expectToFail = false } = options;
   try {
     const res = await nodeFetch(`http://localhost:4000/api`, {

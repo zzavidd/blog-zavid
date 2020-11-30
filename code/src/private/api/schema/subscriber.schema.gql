@@ -21,6 +21,7 @@ extend type Mutation {
   createSubscriber(subscriber: SubscriberInput!): Subscriber
   updateSubscriber(id: Int!, subscriber: SubscriberInput!): Subscriber
   deleteSubscriber(id: Int!): Subscriber
+  clearSubscribers: Boolean
 }
 
 ###############

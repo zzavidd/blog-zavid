@@ -104,6 +104,15 @@ export const deleteSubscriber = ({
   });
 };
 
+/**
+ * Clears all data from the posts table in the database.
+ */
+export const clearSubscribers = () => {
+  return TryWrapper(async () => {
+    await new SubscriberMutationBuilder(knex).truncate().build();
+  });
+};
+
 export type GetAllSubscriberOptions = {
   sort: QuerySort;
 };
