@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { zDate } from 'zavid-modules';
 
 import { PostDAO, PostStatus, PostType, QueryOrder } from 'classes';
@@ -15,7 +16,6 @@ import { Zoomer } from 'src/components/transitioner';
 import { isAuthenticated } from 'src/lib/cookies';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/pages/Epistles.module.scss';
-import { useMediaQuery } from 'react-responsive';
 
 const EPISTLES_HEADING = 'Epistles';
 

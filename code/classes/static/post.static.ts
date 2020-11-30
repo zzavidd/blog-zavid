@@ -1,11 +1,7 @@
 import { isString, randomEnumValue, randomElementFromList } from '../helper';
 import { PostDAO, PostImage, PostType, PostStatus } from '../interfaces';
 
-interface DirectoryMapping {
-  [type: string]: string;
-}
-
-const DIRECTORY: DirectoryMapping = {
+const PostDirectory: Record<PostType, string> = {
   [PostType.REVERIE]: 'reveries',
   [PostType.EPISTLE]: 'epistles',
   [PostType.POEM]: 'poetry',
@@ -85,7 +81,7 @@ export class PostStatic {
    * @returns {string} The post's directory name.
    */
   static getDirectory(type: string): string {
-    return DIRECTORY[type];
+    return PostDirectory[type];
   }
 
   /**
