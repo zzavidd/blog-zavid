@@ -20,6 +20,7 @@ interface CloudImageProps {
 
 export enum AspectRatio {
   SQUARE = '1:1',
+  TALL = '9:16',
   WIDE = '16:9'
 }
 

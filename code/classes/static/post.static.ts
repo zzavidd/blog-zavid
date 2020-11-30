@@ -99,11 +99,18 @@ export class PostStatic {
 
   /**
    * Eagerly checks if post is of type reverie.
-   * @param {PostDAO} input - The post or its type value.
-   * @returns {boolean} True if post is REVERIE.
+   * @param input - The post or its type value.
    */
   static isReverie(input: PostDAO): boolean {
     return input.type === PostType.REVERIE;
+  }
+
+  /**
+   * Eagerly checks if post is of type reverie.
+   * @param input - The post or its type value.
+   */
+  static isEpistle(input: PostDAO): boolean {
+    return input.type === PostType.EPISTLE;
   }
 
   static randomStatus(): PostStatus {

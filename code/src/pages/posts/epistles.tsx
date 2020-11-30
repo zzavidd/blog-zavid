@@ -45,7 +45,7 @@ const EpistlesIndex = ({ epistlesIntro }: EpistlesIndexProps) => {
 
   return (
     <Spacer>
-      <EpistleList epistles={epistles} epistlesIntro={epistlesIntro} />
+      <EpistleGrid epistles={epistles} epistlesIntro={epistlesIntro} />
       <Toolbar spaceItems={true}>
         {isAuthenticated() && (
           <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
@@ -72,17 +72,40 @@ const EpistlesHeading = ({ epistlesIntro }: EpistlesIndexProps) => {
   );
 };
 
-const EpistleList = ({ epistles, epistlesIntro }: EpistleList) => {
+const EpistleGrid = ({
+  epistles,
+  epistlesIntro
+}: EpistleGridProps): JSX.Element => {
   return (
-    <>
-      <div className={css['epistles-list']}>
-        <EpistlesHeading epistlesIntro={epistlesIntro} />
-        {epistles.map((epistle, key) => (
-          <Epistle epistle={epistle} key={key} />
-        ))}
+    <div className={css['epistles-grid-page']}>
+      <EpistlesHeading epistlesIntro={epistlesIntro} />
+      <div className={css['epistles-grid']}>
+        <EpistleGridder
+          epistles={epistles.map((epistle, key) => (
+            <Epistle epistle={epistle} key={key + 1} />
+          ))}
+        />
       </div>
-    </>
+    </div>
   );
+};
+
+const EpistleGridder = ({ epistles }: EpistleGridderProps) => {
+  const COLUMN_NUMBER = 5;
+
+  const array = [];
+
+  for (let i = 0; i <= COLUMN_NUMBER; i++) {
+    array.push(
+      <div className={css['epistles-grid-column']} key={i}>
+        {epistles.filter((epistle: JSX.Element, key: number) => {
+          return key % COLUMN_NUMBER === i;
+        })}
+      </div>
+    );
+  }
+
+  return <>{array}</>;
 };
 
 const Epistle = memo(({ epistle }: EpistleProps) => {
@@ -93,27 +116,31 @@ const Epistle = memo(({ epistle }: EpistleProps) => {
     withWeekday: true
   });
   const link = `/epistles/${epistle.slug}`;
+  const title = `#${epistle.typeId}: ${epistle.title}`;
+
   return (
     <LazyLoader setInView={setInView}>
       <Zoomer
         determinant={isInView}
         duration={400}
         className={css[`epistles-unit-${theme}`]}>
-        <Title className={css['epistles-title']}>{epistle.title}</Title>
-        <div className={css['epistles-date']}>{datePublished}</div>
         <a href={link}>
           <EpistleImage epistle={epistle} />
         </a>
-        <Paragraph
-          cssOverrides={{
-            paragraph: css['epistles-paragraph'],
-            hyperlink: css['epistles-readmore']
-          }}
-          truncate={60}
-          moreclass={css['epistles-readmore']}
-          morelink={link}>
-          {epistle.content}
-        </Paragraph>
+        <div className={css['epistles-unit-text']}>
+          <Title className={css['epistles-title']}>{title}</Title>
+          <div className={css['epistles-date']}>{datePublished}</div>
+          <Paragraph
+            cssOverrides={{
+              paragraph: css['epistles-paragraph'],
+              hyperlink: css['epistles-readmore']
+            }}
+            truncate={40}
+            moreclass={css['epistles-readmore']}
+            morelink={link}>
+            {epistle.content}
+          </Paragraph>
+        </div>
       </Zoomer>
     </LazyLoader>
   );
@@ -141,10 +168,14 @@ interface EpistlesIndexProps {
   epistlesIntro: string;
 }
 
-interface EpistleList {
+interface EpistleGridProps {
   epistles: PostDAO[];
   epistlesIntro: string;
 }
+
+type EpistleGridderProps = {
+  epistles: JSX.Element[];
+};
 
 interface EpistleProps {
   epistle: PostDAO;

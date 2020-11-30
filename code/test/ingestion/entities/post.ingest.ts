@@ -26,8 +26,8 @@ export const ingestEpistles = () => {
     endMessage: 'Finished ingesting epistles.',
     quantity: COUNT.EPISTLE,
     postOptions: {
-      generateTitle: (i) => {
-        return `#${i}: ${faker.lorem.words(zNumber.generateRandom(1, 3))}`;
+      generateTitle: () => {
+        return faker.lorem.words(zNumber.generateRandom(1, 3));
       },
       type: PostType.EPISTLE,
       contentThreshold: 3,

@@ -43,12 +43,7 @@ export const uploadImages = async (
   return new Promise((resolve, reject) => {
     async.transform<PostImage | string, string, Error>(
       images,
-      function (
-        acc,
-        image,
-        key,
-        callback
-      ) {
+      function (acc, image, key, callback) {
         const { hasChanged, source, isCover } = image as PostImage;
         if (!hasChanged) {
           acc.push(source);
@@ -172,13 +167,40 @@ export const replaceImages = async (
 
 /**
  * Construct slug and filenames.
- * @param {object} post - The post details.
+ * @param post The post details.
  */
-const generateSlugAndFilename = async (
+async function generateSlugAndFilename(
   post: PostDAO
-): Promise<GenerateSlugResponse> => {
-  const slug = zString.constructCleanSlug(post.title!);
+): Promise<GenerateSlugResponse> {
+  const slug = generateSlug(post);
   const directory = PostStatic.getDirectory(post.type!);
+  const filename = await generateFilename(post, slug);
+  return { directory, filename, slug };
+}
+
+/**
+ * Generate the slug using the post.
+ * @param post The post to generate the slug for.
+ */
+function generateSlug(post: PostDAO): string {
+  let subject;
+
+  if (PostStatic.isEpistle(post)) {
+    subject = `${post.typeId}: ${post.title!}`;
+  } else {
+    subject = post.title!;
+  }
+
+  const slug = zString.constructCleanSlug(subject);
+  return slug;
+}
+
+/**
+ * Generate the filename using the post.
+ * @param post The post to generate the filename for.
+ * @param slug The post slug.
+ */
+async function generateFilename(post: PostDAO, slug: string) {
   let filename = 'untitled';
 
   if (PostStatic.isPage(post)) {
@@ -197,8 +219,8 @@ const generateSlugAndFilename = async (
     filename = `${number}-${slug}`;
   }
 
-  return { directory, filename, slug };
-};
+  return filename;
+}
 
 type PostImageUploadOptions = {
   isTest?: boolean;
