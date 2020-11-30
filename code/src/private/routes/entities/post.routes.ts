@@ -19,23 +19,17 @@ const knex = getKnex();
 const server = getServer();
 
 /** Route for list of reveries. */
-router.get(
-  '/reveries',
-  async function (req: Request, res: Response, next: NextFunction) {
-    const [reveriePage] = await new PageQueryBuilder(knex)
-      .whereSlug('reveries')
-      .build();
-    if (!reveriePage) return next();
+router.get('/reveries', async function (req: Request, res: Response) {
+  const url = 'reveries';
+  const [reveriePage] = await new PageQueryBuilder(knex).whereSlug(url).build();
 
-    return server.render(req, res, '/posts/reveries', {
-      title: `Reveries | ${siteTitle}`,
-      description: 'For my deeper ruminations...',
-      ogUrl: '/reveries',
-      reveriesIntro: reveriePage.content
-    });
-  },
-  renderErrorPage
-);
+  return server.render(req, res, '/posts/reveries', {
+    title: `Reveries | ${siteTitle}`,
+    description: 'For my deeper ruminations...',
+    ogUrl: `/${url}`,
+    reveriesIntro: reveriePage.content
+  });
+});
 
 /** Route for reverie page. */
 router.get(
@@ -107,12 +101,16 @@ router.get(
 );
 
 /** Route for index of epistles. */
-router.get('/epistles', function (req, res) {
+router.get('/epistles', async function (req, res) {
+  const url = 'epistles';
+  const [epistlePage] = await new PageQueryBuilder(knex).whereSlug(url).build();
+
   return server.render(req, res, '/posts/epistles', {
     title: `Epistles | ${siteTitle}`,
     description:
       'My messages, written to encourage and enlighten; typically based off of Bible scriptures and transcribed as poetry. Read and be blessed.',
-    ogUrl: '/epistles'
+    ogUrl: `/${url}`,
+    epistlesIntro: epistlePage.content
   });
 });
 

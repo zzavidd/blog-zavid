@@ -8,13 +8,14 @@ import { PostDAO, PostStatus, PostType, QueryOrder } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton } from 'src/components/button';
 import CloudImage from 'src/components/image';
-import { Spacer, Toolbar } from 'src/components/layout';
+import { ScreenWidth, Spacer, Toolbar } from 'src/components/layout';
 import { LazyLoader } from 'src/components/loader';
-import { Divider, Paragraph, Title } from 'src/components/text';
+import { Divider, Paragraph, Title, VanillaLink } from 'src/components/text';
 import { Zoomer } from 'src/components/transitioner';
 import { isAuthenticated } from 'src/lib/cookies';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/pages/Epistles.module.scss';
+import { useMediaQuery } from 'react-responsive';
 
 const EPISTLES_HEADING = 'Epistles';
 
@@ -77,7 +78,7 @@ const EpistleGrid = ({
   epistlesIntro
 }: EpistleGridProps): JSX.Element => {
   return (
-    <div className={css['epistles-grid-page']}>
+    <div className={css['epistles-index-page']}>
       <EpistlesHeading epistlesIntro={epistlesIntro} />
       <div className={css['epistles-grid']}>
         <EpistleGridder
@@ -91,7 +92,11 @@ const EpistleGrid = ({
 };
 
 const EpistleGridder = ({ epistles }: EpistleGridderProps) => {
-  const COLUMN_NUMBER = 5;
+  const isMedium = useMediaQuery({ query: ScreenWidth.MEDIUM });
+  const isLarge = useMediaQuery({ query: ScreenWidth.LARGE });
+  const isXLarge = useMediaQuery({ query: ScreenWidth.XLARGE });
+
+  const COLUMN_NUMBER = isMedium ? 2 : isLarge ? 3 : isXLarge ? 4 : 5;
 
   const array = [];
 
@@ -124,27 +129,35 @@ const Epistle = memo(({ epistle }: EpistleProps) => {
         determinant={isInView}
         duration={400}
         className={css[`epistles-unit-${theme}`]}>
-        <a href={link}>
+        <VanillaLink href={link}>
           <EpistleImage epistle={epistle} />
-        </a>
-        <div className={css['epistles-unit-text']}>
-          <Title className={css['epistles-title']}>{title}</Title>
-          <div className={css['epistles-date']}>{datePublished}</div>
-          <Paragraph
-            cssOverrides={{
-              paragraph: css['epistles-paragraph'],
-              hyperlink: css['epistles-readmore']
-            }}
-            truncate={40}
-            moreclass={css['epistles-readmore']}
-            morelink={link}>
-            {epistle.content}
-          </Paragraph>
-        </div>
+          <div className={css['epistles-unit-text']}>
+            <Title className={css['epistles-title']}>{title}</Title>
+            <div className={css['epistles-date']}>{datePublished}</div>
+            <EpistleParagraph epistle={epistle} link={link} />
+          </div>
+        </VanillaLink>
       </Zoomer>
     </LazyLoader>
   );
 });
+
+const EpistleParagraph = ({ epistle, link }: EpistleParagraphProps) => {
+  const isSmall = useMediaQuery({ query: ScreenWidth.SMALL });
+
+  return (
+    <Paragraph
+      cssOverrides={{
+        paragraph: css['epistles-paragraph'],
+        hyperlink: css['epistles-readmore']
+      }}
+      truncate={isSmall ? 20 : 30}
+      moreclass={css['epistles-readmore']}
+      morelink={link}>
+      {epistle.content}
+    </Paragraph>
+  );
+};
 
 const EpistleImage = ({ epistle }: EpistleProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
@@ -164,19 +177,24 @@ EpistlesIndex.getInitialProps = async ({ query }: NextPageContext) => {
 
 export default EpistlesIndex;
 
-interface EpistlesIndexProps {
+type EpistlesIndexProps = {
   epistlesIntro: string;
-}
+};
 
-interface EpistleGridProps {
+type EpistleGridProps = {
   epistles: PostDAO[];
   epistlesIntro: string;
-}
+};
 
 type EpistleGridderProps = {
   epistles: JSX.Element[];
 };
 
-interface EpistleProps {
+type EpistleProps = {
   epistle: PostDAO;
-}
+};
+
+type EpistleParagraphProps = {
+  epistle: PostDAO;
+  link: string;
+};
