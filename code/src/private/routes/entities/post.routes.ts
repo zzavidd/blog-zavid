@@ -139,7 +139,7 @@ router.get(
     ]);
 
     return server.render(req, res, '/posts/single', {
-      title: `${epistle.title} | ${siteTitle}`,
+      title: `#${epistle.typeId}: ${epistle.title} | ${siteTitle}`,
       description: epistle.excerpt,
       ogUrl: `/epistles/${slug}`,
       cardImage: epistle.image as string,

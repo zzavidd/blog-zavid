@@ -133,6 +133,23 @@ export class PostStatic {
   static isPublish(input: PostDAO): boolean {
     return input?.status === PostStatus.PUBLISHED;
   }
+
+  /**
+   * Retrieve the title of the post. Epistles are formatted with their type ID
+   * numbers.
+   * @param post The post to retrieve its title.
+   */
+  static getPostTitle(post: PostDAO): string {
+    let title;
+
+    if (this.isEpistle(post)) {
+      title = `#${post.typeId}: ${post.title!}`;
+    } else {
+      title = post.title!;
+    }
+
+    return title;
+  }
 }
 
 interface CollateImageOptions {

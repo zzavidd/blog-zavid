@@ -183,15 +183,8 @@ async function generateSlugAndFilename(
  * @param post The post to generate the slug for.
  */
 function generateSlug(post: PostDAO): string {
-  let subject;
-
-  if (PostStatic.isEpistle(post)) {
-    subject = `${post.typeId}: ${post.title!}`;
-  } else {
-    subject = post.title!;
-  }
-
-  const slug = zString.constructCleanSlug(subject);
+  const title = PostStatic.getPostTitle(post);
+  const slug = zString.constructCleanSlug(title);
   return slug;
 }
 

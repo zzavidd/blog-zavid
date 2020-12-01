@@ -25,7 +25,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
   return (
     <Spacer>
       <div className={css['post-single']}>
-        <Title className={css['post-single-title']}>{post.title}</Title>
+        <Title className={css['post-single-title']}>{PostStatic.getPostTitle(post)}</Title>
         <PostDate post={post} />
         <CloudImage
           src={post.image as string}
@@ -43,12 +43,12 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
           previous={{
             slug: previousPost.slug!,
             image: previousPost.image as string,
-            label: previousPost.title
+            label: PostStatic.getPostTitle(previousPost)
           }}
           next={{
             slug: nextPost.slug!,
             image: nextPost.image as string,
-            label: nextPost.title
+            label: PostStatic.getPostTitle(nextPost)
           }}
         />
         <Divider />

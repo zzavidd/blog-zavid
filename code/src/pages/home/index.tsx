@@ -221,7 +221,7 @@ const RandomPostsGrid = ({ posts }: RandomPostsGrid) => {
                   imageClassName={css['random-post-image']}
                   aspectRatio={AspectRatio.WIDE}
                 />
-                <Title className={css['random-post-title']}>{post.title}</Title>
+                <Title className={css['random-post-title']}>{PostStatic.getPostTitle(post)}</Title>
                 <div className={css['random-post-date']}>
                   {post.type} |{' '}
                   {zDate.formatDate(post.datePublished!, { withWeekday: true })}
