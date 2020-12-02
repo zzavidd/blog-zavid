@@ -3,7 +3,7 @@ import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import { PostDAO, PostStatic, PostType, Substitutions } from 'classes';
-import { BackButton, AdminButton } from 'src/components/button';
+import { BackButton as IBackButton, AdminButton } from 'src/components/button';
 import CloudImage, { cloudinaryBaseUrl, Signature } from 'src/components/image';
 import { Spacer, Toolbar } from 'src/components/layout';
 import ShareBlock from 'src/components/share';
@@ -25,7 +25,9 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
   return (
     <Spacer>
       <div className={css['post-single']}>
-        <Title className={css['post-single-title']}>{PostStatic.getPostTitle(post)}</Title>
+        <Title className={css['post-single-title']}>
+          {PostStatic.getPostTitle(post)}
+        </Title>
         <PostDate post={post} />
         <CloudImage
           src={post.image as string}
@@ -55,9 +57,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
         <ShareBlock message={shareMessage} url={location.href} />
       </div>
       <Toolbar spaceItems={true} hasBackButton={true}>
-        <BackButton onClick={() => navigateToIndex(post.type!)}>
-          Back to {post.type}s
-        </BackButton>
+        <BackButton post={post} />
         {isAuthenticated() && (
           <AdminButton onClick={() => navigateToEdit(post.id!)}>
             Edit {post.type}
@@ -68,13 +68,33 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
   );
 };
 
+const BackButton = ({ post }: BackButtonProps) => {
+  const goBack = () => {
+    let url;
+    if (PostStatic.isPage(post)) {
+      const basePath = PostStatic.getDirectory(post.domainType!);
+      url = `/${basePath}/${post.domainSlug}`;
+    } else {
+      url = `/${PostStatic.getDirectory(post.type!)}`;
+    }
+
+    location.href = url;
+  };
+
+  let buttonText = 'Back to ';
+  if (!PostStatic.isPage(post)) {
+    buttonText += `${post.type}s`;
+  } else {
+    buttonText += post.domainTitle;
+  }
+
+  return <IBackButton onClick={goBack}>{buttonText}</IBackButton>;
+};
+
 const getTimelineType = (type: PostType) => {
   return Object.values(TimelineType).find(({ label }) => label === type);
 };
 
-const navigateToIndex = (type: PostType): void => {
-  location.href = `/${PostStatic.getDirectory(type)}`;
-};
 const navigateToEdit = (id: number): void => {
   location.href = `/admin/posts/edit/${id}`;
 };
@@ -107,3 +127,7 @@ interface PostSingle {
 interface PostDate {
   post: PostDAO;
 }
+
+type BackButtonProps = {
+  post: PostDAO;
+};
