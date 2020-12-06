@@ -22,7 +22,7 @@ import Tabler, {
   TablerType
 } from 'src/components/tabler';
 import { VanillaLink } from 'src/components/text';
-import BottomToolbar from 'src/lib/helpers/pages/posts/toolbar';
+import BottomToolbar from 'src/lib/pages/posts/toolbar';
 import { updatePostFilterSettings } from 'src/lib/reducers';
 import {
   DELETE_POST_QUERY,

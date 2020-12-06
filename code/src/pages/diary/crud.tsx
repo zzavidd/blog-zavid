@@ -5,8 +5,8 @@ import { zDate } from 'zavid-modules';
 
 import { AlertType, reportError, setAlert } from 'src/components/alert';
 import { ConfirmModal } from 'src/components/modal';
-import DiaryEntryForm from 'src/lib/helpers/pages/diary/form';
 import hooks from 'src/lib/hooks';
+import DiaryEntryForm from 'src/lib/pages/diary/form';
 import { DAOParse, NumberParse } from 'src/lib/parser';
 import { isValidDiaryEntry } from 'src/lib/validations';
 import {

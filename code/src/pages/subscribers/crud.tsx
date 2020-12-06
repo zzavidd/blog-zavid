@@ -11,8 +11,8 @@ import {
   SubscriptionsMapping
 } from 'classes';
 import { setAlert, reportError, alert, AlertType } from 'src/components/alert';
-import SubscriberForm from 'src/lib/helpers/pages/subscribers/form';
 import hooks from 'src/lib/hooks';
+import SubscriberForm from 'src/lib/pages/subscribers/form';
 import { DAOParse } from 'src/lib/parser';
 import { isValidSubscriber } from 'src/lib/validations';
 import {

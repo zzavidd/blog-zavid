@@ -9,7 +9,7 @@ import { ConfirmButton, InvisibleButton } from 'src/components/button';
 import { Container } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
 import { Title } from 'src/components/text';
-import PreferenceChecks from 'src/lib/helpers/pages/subscribers/preferences';
+import PreferenceChecks from 'src/lib/pages/subscribers/preferences';
 import { DAOParse } from 'src/lib/parser';
 import {
   UPDATE_SUBSCRIBER_QUERY,
