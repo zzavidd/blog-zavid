@@ -14,6 +14,8 @@ const handle = server.getRequestHandler();
 const port = parseInt(process.env.PORT!, 10) || 4000;
 const dotenv = Dotenv.config({ path: './config.env' });
 
+import 'colors';
+
 const isStaging = process.argv.includes('--staging');
 
 app.use(bodyParser.json({ limit: '2MB' }));
@@ -34,19 +36,36 @@ if (dotenv.error && !process.env.PORT) {
   throw new Error(`No environment variables loaded.`);
 }
 
+// Warn if using production database. Prohibit if running tests.
+if (!process.env.MYSQL_NAME?.includes('test')){
+  console.warn('WARNING: Using production data.'.yellow);
+  if (isStaging){
+    throw new Error(`Failsafe disallows tests being run against production data.`);
+  }
+}
+
 // If not in CI environment, start server normally.
 if (!isStaging) {
   startDevServer();
 }
 
+/** Start server for development. */
 async function startDevServer() {
   startServer();
 }
 
+/**
+ * Start server for running service tests.
+ * @param finish The callback called after running the server.
+ */
 function startStagingServer(finish: () => void) {
   startServer({ callback: finish });
 }
 
+/**
+ * Starts the server.
+ * @param options The options for starting the server.
+ */
 async function startServer(options: ServerOptions = {}) {
   const { isFullServer = true, callback } = options;
 
@@ -64,7 +83,7 @@ async function startServer(options: ServerOptions = {}) {
     app.get('*', (req, res) => handle(req, res));
     app
       .listen(port, '0.0.0.0', () => {
-        console.info(`ZAVID server running on http://localhost:${port}`);
+        console.info(`ZAVID server running on http://localhost:${port}`.green);
         if (callback) callback();
       })
       .on('error', (err) => {
