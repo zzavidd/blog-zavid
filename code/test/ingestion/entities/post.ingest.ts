@@ -56,7 +56,8 @@ async function ingestPost(options: IngestPostOptions) {
   let refDate = new Date();
 
   for (let i = 0; i < quantity; i++) {
-    refDate = faker.date.future(1, refDate);
+    refDate.setDate(refDate.getDate() + 30);
+    refDate = faker.date.soon(30, refDate);
     const index = i + 1;
     let postbuilder = new PostBuilder()
       .withTitle(zString.toTitleCase(generateTitle(index)))
