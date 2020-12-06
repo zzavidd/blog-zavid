@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import { NextPageContext } from 'next';
 import React from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
@@ -13,7 +14,7 @@ const links = [
   { name: 'Subscribers', url: 'subscribers' }
 ];
 
-export default () => {
+const Admin = () => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <Container>
@@ -34,3 +35,9 @@ export default () => {
     </Container>
   );
 };
+
+Admin.getInitialProps = async ({ query }: NextPageContext) => {
+  return { ...query };
+};
+
+export default Admin;

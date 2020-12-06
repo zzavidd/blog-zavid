@@ -1,4 +1,5 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
+import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -23,9 +24,11 @@ import {
   DELETE_SUBSCRIBER_QUERY
 } from 'src/private/api/queries/subscriber.queries';
 
-export default () => {
+const SubscriberAdmin = () => {
   const [subscribers, setSubscribers] = useState([]);
-  const [selectedSubscriber, setSelectedSubscriber] = useState({} as SubscriberDAO);
+  const [selectedSubscriber, setSelectedSubscriber] = useState(
+    {} as SubscriberDAO
+  );
   const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
@@ -99,7 +102,9 @@ export default () => {
                 hideIfEmpty: true
               }),
               new TablerItemCell(
-                showSubscriptionPreferences(subscriber.subscriptions as SubscriptionsMapping),
+                showSubscriptionPreferences(
+                  subscriber.subscriptions as SubscriptionsMapping
+                ),
                 { icon: 'check-square', hideIfEmpty: true }
               ),
               new TablerItemCell(<EditButton id={subscriber.id!} key={key} />, {
@@ -186,6 +191,12 @@ const DeleteButton = ({
     </InvisibleButton>
   );
 };
+
+SubscriberAdmin.getInitialProps = async ({ query }: NextPageContext) => {
+  return { ...query };
+};
+
+export default SubscriberAdmin;
 
 interface DeleteButton {
   subscriber: SubscriberDAO;

@@ -1,4 +1,5 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
+import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
@@ -18,7 +19,7 @@ import {
   DELETE_PAGE_QUERY
 } from 'src/private/api/queries/page.queries';
 
-export default () => {
+const PageAdmin = () => {
   const [pages, setPages] = useState([]);
   const [selectedPage, setSelectedPage] = useState({} as PageDAO);
   const [isLoaded, setLoaded] = useState(false);
@@ -171,6 +172,12 @@ const DeleteButton = ({
     </InvisibleButton>
   );
 };
+
+PageAdmin.getInitialProps = async ({ query }: NextPageContext) => {
+  return { ...query };
+};
+
+export default PageAdmin;
 
 interface LinkButton {
   page: PageDAO;
