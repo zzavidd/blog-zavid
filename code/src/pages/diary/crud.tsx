@@ -32,7 +32,7 @@ const DiaryCrud = ({
     title: '',
     content: '',
     date: new Date(),
-    status: DiaryStatus.PRIVATE,
+    status: DiaryStatus.PROTECTED,
     entryNumber: latestEntryNumber + 1
   } as DiaryDAO);
   const [isLoaded, setLoaded] = useState(true);
