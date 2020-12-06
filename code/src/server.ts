@@ -83,7 +83,7 @@ async function startServer(options: ServerOptions = {}) {
     app.get('*', (req, res) => handle(req, res));
     app
       .listen(port, '0.0.0.0', () => {
-        console.info(`ZAVID server running on http://localhost:${port}`.green);
+        console.info(`ZAVID server running on http://localhost:${port}`);
         if (callback) callback();
       })
       .on('error', (err) => {
