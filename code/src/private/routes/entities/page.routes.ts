@@ -2,7 +2,7 @@ import express from 'express';
 import { zText } from 'zavid-modules';
 
 import { Operation, PageQueryBuilder } from '../../../../classes';
-import { siteTitle } from '../../../constants/settings';
+import { siteTitle } from '../../../settings';
 import { PageService } from '../../api/service';
 import { getKnex, getServer } from '../../singleton';
 

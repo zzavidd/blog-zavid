@@ -13,7 +13,7 @@ import {
   PostStatic,
   QueryOrder
 } from '../../../classes';
-import { siteTitle } from '../../constants/settings';
+import { siteTitle } from '../../settings';
 import authRoutes from '../auth';
 import { getApp, getKnex, getServer } from '../singleton';
 

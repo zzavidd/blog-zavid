@@ -15,7 +15,7 @@ import {
 } from 'src/components/form';
 import DatePicker, { DateType } from 'src/components/form/datepicker';
 import { Fader } from 'src/components/transitioner';
-import { Handlers } from 'src/constants/hooks';
+import { Handlers } from 'src/lib/hooks';
 
 const DiaryEntryForm = (props: DiaryForm) => {
   const { diaryEntry, handlers, isLoaded } = props;

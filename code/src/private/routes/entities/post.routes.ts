@@ -9,7 +9,7 @@ import {
   PostStatus,
   PostType
 } from '../../../../classes';
-import { siteTitle } from '../../../constants/settings';
+import { siteTitle } from '../../../settings';
 import { PostService } from '../../api/service';
 import { ERRORS, renderErrorPage } from '../../error';
 import { getKnex, getServer } from '../../singleton';

@@ -8,7 +8,7 @@ import {
   Operation,
   PageQueryBuilder
 } from '../../../../classes';
-import { siteTitle } from '../../../constants/settings';
+import { siteTitle } from '../../../settings';
 import { ERRORS, renderErrorPage } from '../../error';
 import { getKnex, getServer } from '../../singleton';
 

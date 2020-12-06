@@ -10,7 +10,7 @@ import {
   PageQueryBuilder,
   DiaryStatus
 } from '../../../classes';
-import { domain } from '../../constants/settings';
+import { domain } from '../../settings';
 import { getKnex } from '../singleton';
 
 const router = express.Router();

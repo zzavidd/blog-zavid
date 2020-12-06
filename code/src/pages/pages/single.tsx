@@ -6,9 +6,9 @@ import { DiaryDAO, PageDAO } from 'classes';
 import { AdminButton } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
-import { redevelopmentDate, zavidBirthday } from 'src/constants/settings';
 import { isAuthenticated } from 'src/lib/cookies';
 import { DAOParse } from 'src/lib/parser';
+import { redevelopmentDate, zavidBirthday } from 'src/settings';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const PageSingle = ({ page }: PageSingle) => {

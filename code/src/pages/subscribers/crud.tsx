@@ -11,10 +11,10 @@ import {
   SubscriptionsMapping
 } from 'classes';
 import { setAlert, reportError, alert, AlertType } from 'src/components/alert';
-import hooks from 'src/constants/hooks';
-import { isValidSubscriber } from 'src/constants/validations';
 import SubscriberForm from 'src/lib/helpers/pages/subscribers/form';
+import hooks from 'src/lib/hooks';
 import { DAOParse } from 'src/lib/parser';
+import { isValidSubscriber } from 'src/lib/validations';
 import {
   CREATE_SUBSCRIBER_QUERY,
   UPDATE_SUBSCRIBER_QUERY

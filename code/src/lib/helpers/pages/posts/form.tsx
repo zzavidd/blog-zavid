@@ -26,7 +26,7 @@ import DatePicker, { DateType } from 'src/components/form/datepicker';
 import { FileSelector, FSAspectRatio } from 'src/components/form/fileselector';
 import { cloudinaryBaseUrl } from 'src/components/image';
 import { Fader } from 'src/components/transitioner';
-import { Handlers } from 'src/constants/hooks';
+import { Handlers } from 'src/lib/hooks';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const NUMBER_OF_CONTENT_IMAGES = 6;

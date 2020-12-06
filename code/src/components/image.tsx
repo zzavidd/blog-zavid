@@ -5,7 +5,7 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 
 import { Theme } from 'classes';
 
-export { cloudinaryBaseUrl } from 'src/constants/settings';
+export { cloudinaryBaseUrl } from 'src/settings';
 
 interface CloudImageProps {
   src: string;

@@ -8,9 +8,9 @@ import { ConfirmButton } from 'src/components/button';
 import { FieldRow, Field, TextInput } from 'src/components/form';
 import { Icon } from 'src/components/icon';
 import { Title, VanillaLink } from 'src/components/text';
-import { copyright, accounts } from 'src/constants/settings';
-import { isValidEmail } from 'src/constants/validations';
+import { isValidEmail } from 'src/lib/validations';
 import { CREATE_SUBSCRIBER_QUERY } from 'src/private/api/queries/subscriber.queries';
+import { copyright, accounts } from 'src/settings';
 import css from 'src/styles/Partials.module.scss';
 
 const footerLinks = [

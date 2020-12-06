@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { cloudinaryBaseUrl } from 'src/components/image';
-import { domain } from 'src/constants/settings';
+import { domain } from 'src/settings';
 
 export default ({
   title = 'Page Not Found',

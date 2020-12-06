@@ -5,7 +5,7 @@ import {
   SubscriberQueryBuilder,
   Operation
 } from '../../../../classes';
-import { siteTitle } from '../../../constants/settings';
+import { siteTitle } from '../../../settings';
 import { getKnex, getServer } from '../../singleton';
 
 const router = express.Router();

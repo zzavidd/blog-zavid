@@ -11,8 +11,8 @@ import CloudImage, { AspectRatio, Signature } from 'src/components/image';
 import { Flexer, Responsive } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
 import { Fader, Zoomer } from 'src/components/transitioner';
-import { redevelopmentDate } from 'src/constants/settings';
 import { DAOParse } from 'src/lib/parser';
+import { redevelopmentDate } from 'src/settings';
 import css from 'src/styles/pages/Home.module.scss';
 
 const Home = ({
