@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client';
+import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 
 import { SubscriberBuilder, SubscriberDAO, SubscriberPayload } from 'classes';
@@ -12,7 +13,7 @@ import { isValidSubscriber } from 'src/lib/validations';
 import { CREATE_SUBSCRIBER_QUERY } from 'src/private/api/queries/subscriber.queries';
 import css from 'src/styles/pages/Subscribers.module.scss';
 
-export default () => {
+const SubscribeForm = () => {
   const [subscriber, setSubscriber] = useState({
     email: '',
     firstname: '',
@@ -124,3 +125,9 @@ const buildPayload = (clientSubscriber: SubscriberDAO): SubscriberPayload => {
 
   return { subscriber };
 };
+
+SubscribeForm.getInitialProps = async ({ query }: NextPageContext) => {
+  return { ...query };
+};
+
+export default SubscribeForm;
