@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React, { CSSProperties } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { OnInputChangeType, OnClickType } from 'classes';
+import { OnClickType, OnInputChangeType } from 'classes';
 import { InvisibleButton } from 'src/components/button';
 import css from 'src/styles/components/Form.module.scss';
 
@@ -38,9 +38,10 @@ export const NumberInput = (props: InputProps) => {
   );
 };
 
-export const SearchBar = (props: TextInputProps) => {
+export const SearchBar = (props: SearchBarProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`search-bar-${theme}`], props.className);
+
   return (
     <TextInput
       {...props}
@@ -48,7 +49,17 @@ export const SearchBar = (props: TextInputProps) => {
       leadingComponent={
         <Icon name={'search'} className={css[`search-bar-icon`]} />
       }
+      trailingComponent={<SearchBarTrailingComponent {...props} />}
     />
+  );
+};
+
+const SearchBarTrailingComponent = (props: SearchBarProps) => {
+  if (!props.value) return null;
+  return (
+    <InvisibleButton onClick={props.onClearInput}>
+      <Icon name={'times'} />
+    </InvisibleButton>
   );
 };
 
@@ -86,9 +97,14 @@ interface InputProps {
   style?: CSSProperties;
   readOnly?: boolean;
   min?: number;
+  ref?: React.RefObject<HTMLInputElement>;
 }
 
 interface TextInputProps extends InputProps {
   leadingComponent?: JSX.Element;
   trailingComponent?: JSX.Element;
+}
+
+interface SearchBarProps extends TextInputProps {
+  onClearInput: () => void;
 }

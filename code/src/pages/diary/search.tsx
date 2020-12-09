@@ -11,8 +11,8 @@ export default ({ diaryEntries, setFilteredEntries }: DiarySearchProps) => {
    * Searches diary entries using entered search term.
    * @param e The input DOM element.
    */
-  const searchDiaryEntries = (e: ReactInputChangeEvent): void => {
-    const term = e.target.value;
+  const searchDiaryEntries = (e?: ReactInputChangeEvent): void => {
+    const term = e?.target.value || '';
     setSearchTerm(term);
     filterEntriesBySearchTerm(term);
   };
@@ -22,7 +22,7 @@ export default ({ diaryEntries, setFilteredEntries }: DiarySearchProps) => {
    * @param term The search term.
    */
   const filterEntriesBySearchTerm = (term: string): void => {
-    if (!term.length) {
+    if (!term || !term.length) {
       setFilteredEntries(diaryEntries);
       return;
     }
@@ -40,6 +40,11 @@ export default ({ diaryEntries, setFilteredEntries }: DiarySearchProps) => {
     setFilteredEntries(filteredEntries);
   };
 
+  const clearInput = () => {
+    setSearchTerm('');
+    searchDiaryEntries();
+  };
+
   return (
     <div className={css['diary-search']}>
       <SearchBar
@@ -47,6 +52,7 @@ export default ({ diaryEntries, setFilteredEntries }: DiarySearchProps) => {
         placeholder={'Search diary entries...'}
         onChange={searchDiaryEntries}
         className={css['diary-search-bar']}
+        onClearInput={clearInput}
       />
     </div>
   );

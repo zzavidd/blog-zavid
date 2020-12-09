@@ -7,7 +7,7 @@
 }
 
 .home-row {
-  margin: 0 0 !important;
+  margin: 0 !important;
 }
 
 .home-field {
@@ -44,13 +44,31 @@
 }
 
 ////////////////////////////////
+/// SEARCH
+////////////////////////////////
+
+.search-row {
+  @include responsive(padding, 4em 0, $sm: 2em 0);
+  @include responsive(width, 80%, $lg: 90%, $sm: 100%);
+  // border-bottom: 1px solid;
+  justify-self: center;
+  margin: 0 auto !important;
+}
+
+.search-bar {
+  @include responsive(font-size, 1.4em, $md: 1.2em);
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+////////////////////////////////
 /// LATEST
 ////////////////////////////////
 
 %latest-segment {
-  @include responsive(border-top, none, $xl: 1px solid);
   @include responsive(padding, 2em, $xl: 2em 1em, $sm: 2em 0);
   @include responsive(width, $xl: 90%, $sm: 100%);
+  border-top: 1px solid;
   height: 100%;
   margin: 0 auto;
 }
