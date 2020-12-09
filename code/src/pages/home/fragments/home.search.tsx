@@ -4,7 +4,7 @@ import { ConfirmButton } from 'src/components/button';
 import { SearchBar } from 'src/components/form';
 import css from 'src/styles/pages/Home.module.scss';
 
-import { HomeRow } from '.';
+import { HomeRow } from '..';
 
 export default () => {
   const [searchTerm, setSearchTerm] = useState('');

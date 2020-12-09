@@ -8,11 +8,11 @@ import { Field, FieldRow } from 'src/components/form';
 import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Home.module.scss';
 
-import LatestDiaryEntry from './home.diary';
-import Introduction from './home.intro';
-import RandomPostsGrid from './home.posts';
-import LatestReverie from './home.reverie';
-import Search from './home.search';
+import LatestDiaryEntry from './fragments/home.diary';
+import Introduction from './fragments/home.intro';
+import RandomPostsGrid from './fragments/home.posts';
+import LatestReverie from './fragments/home.reverie';
+import Search from './fragments/home.search';
 
 const Home = ({
   homeText,

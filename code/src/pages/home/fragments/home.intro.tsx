@@ -7,7 +7,7 @@ import { Fader } from 'src/components/transitioner';
 import { redevelopmentDate } from 'src/settings';
 import css from 'src/styles/pages/Home.module.scss';
 
-import { HomeField, HomeRow } from '.';
+import { HomeField, HomeRow } from '..';
 
 export default ({ content }: IntroductionProps) => {
   const [isLoaded, setLoaded] = useState(false);
