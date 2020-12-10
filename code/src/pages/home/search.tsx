@@ -17,14 +17,14 @@ const SearchResults = ({ searchTerm, results }: SearchResultsProps) => {
   const [term, setSearchTerm] = useState(searchTerm);
   const searchTermExists = !!searchTerm;
 
-  const heading = searchTermExists ? `Results for '${searchTerm}'` : 'Search ZAVID';
+  const heading = searchTermExists
+    ? `Results for '${searchTerm}'`
+    : 'Search ZAVID';
 
   return (
     <Spacer>
       <div className={css['search-results-page']}>
-        <Title className={css['search-heading']}>
-          {heading}
-        </Title>
+        <Title className={css['search-heading']}>{heading}</Title>
         <SearchBar
           value={term}
           placeholder={'Search blog...'}
@@ -86,9 +86,7 @@ const ResultEntity = memo(({ entity, idx }: ResultEntityProps) => {
         className={classes}
         postTransitions={'background-color .4s ease'}>
         <Title className={css['search-results-title']}>{entity.title}</Title>
-        <div className={css['search-results-metadata']}>
-          {entity.type} • {date}
-        </div>
+        <div className={css['search-results-metadata']}>{date}</div>
         <Paragraph
           cssOverrides={{
             paragraph: css['search-results-content'],
@@ -132,7 +130,7 @@ type SearchResultsProps = {
 
 type ResultsGridProps = {
   results: ResultEntityDAO[];
-  searchTermExists: boolean
+  searchTermExists: boolean;
 };
 
 type ResultEntityProps = {

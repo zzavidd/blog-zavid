@@ -19,7 +19,7 @@ export default () => {
       <HomeRow className={css['search-row']}>
         <SearchBar
           value={searchTerm}
-          placeholder={'Search blog...'}
+          placeholder={'Search this entire blog...'}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {

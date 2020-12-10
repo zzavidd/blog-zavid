@@ -109,10 +109,10 @@ async function getResultEntities(
   const fields: Array<keyof FilterField> = ['title', 'content'];
 
   const posts = await new PostQueryBuilder(knex)
-    .whereStatus({ include: [PostStatus.PUBLISHED] })
+    .whereStatus({ include: [PostStatus.PRIVATE, PostStatus.PUBLISHED] })
     .build();
   const diary = await new DiaryQueryBuilder(knex)
-    .whereStatus({ include: [DiaryStatus.PUBLISHED] })
+    .whereStatus({ include: [DiaryStatus.PRIVATE, DiaryStatus.PUBLISHED] })
     .build();
 
   // Filter entities by matching search term.
@@ -128,8 +128,8 @@ async function getResultEntities(
   const parsedPosts: ResultEntityDAO[] = posts
     .filter(filterEntities)
     .map((post) => {
-      if (PostStatic.isEpistle(post)) {
-        post.title = `#${post.typeId}: ${post.title}`;
+      if (!PostStatic.isPage(post)) {
+        post.title = `${post.type} #${post.typeId}: ${post.title}`; 
       }
 
       const url = new URLBuilder();
@@ -162,7 +162,7 @@ async function getResultEntities(
     .map(({ id, title, date, content, entryNumber }) => {
       return {
         id,
-        title: `#${entryNumber}: ${title}`,
+        title: `Diary Entry #${entryNumber}: ${title}`,
         type: 'Diary Entry',
         date,
         content,
