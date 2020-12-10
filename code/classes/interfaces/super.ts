@@ -11,6 +11,7 @@ export interface ResultEntityDAO extends GenericDAO {
   content: string
   date: string | Date
   slug: string
+  image?: string
 }
 
 export interface GenericForm {

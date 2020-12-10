@@ -84,8 +84,10 @@ app.get('/search', async function (req, res) {
   const searchTerm = req.query.term as string;
   const entities = await getResultEntities(searchTerm);
 
+  const title = searchTerm ? `Results for '${searchTerm}'` : `Search`;
+
   return server.render(req, res, '/home/search', {
-    title: `Results for '${searchTerm}'`,
+    title: `${title} | ${siteTitle}`,
     searchTerm,
     results: JSON.stringify(entities)
   });
@@ -136,19 +138,20 @@ async function getResultEntities(
         const base = PostStatic.getDirectory(post.domainType!);
         url.appendSegment(base).appendSegment(post.domainSlug!);
       } else {
-        url.appendSegment(post.type!);
+        url.appendSegment(PostStatic.getDirectory(post.type!));
       }
 
       url.appendSegment(post.slug!);
       post.slug = url.build();
 
-      const { id, title, type, datePublished, content, slug } = post;
+      const { id, title, type, datePublished, content, slug, image } = post;
       return {
         id,
         title,
         type,
         content,
         slug,
+        image,
         date: datePublished
       };
     }) as ResultEntityDAO[];
@@ -167,7 +170,11 @@ async function getResultEntities(
       };
     }) as ResultEntityDAO[];
 
-  entities = entities.concat(parsedPosts, parsedDiary);
+  entities = entities.concat(parsedPosts, parsedDiary).sort((a, b) => {
+    if (a.date < b.date) return 1;
+    if (a.date > b.date) return -1;
+    return 0;
+  });
   return entities;
 }
 

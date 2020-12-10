@@ -38,6 +38,7 @@ export type OnTextAreaChangeType = (
   event: React.ChangeEvent<HTMLTextAreaElement>
 ) => void;
 export type OnClickType = (event: React.MouseEvent<HTMLButtonElement>) => void;
+export type OnKeyPressType = (event: React.KeyboardEvent<HTMLInputElement>) => void;
 export type OnSelectChangeType = (
   event: React.ChangeEvent<HTMLSelectElement>
 ) => void;

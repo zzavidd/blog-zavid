@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React, { CSSProperties } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { OnClickType, OnInputChangeType } from 'classes';
+import { OnClickType, OnInputChangeType, OnKeyPressType } from 'classes';
 import { InvisibleButton } from 'src/components/button';
 import css from 'src/styles/components/Form.module.scss';
 
@@ -69,7 +69,8 @@ const Input = ({
   value,
   onChange,
   placeholder,
-  onClick
+  onClick,
+  onKeyPress
 }: InputProps) => {
   if (value === null) value = '';
   return (
@@ -78,6 +79,7 @@ const Input = ({
       type={type}
       value={value as string}
       onChange={onChange}
+      onKeyPress={onKeyPress}
       className={css[`text-input`]}
       autoComplete={'off'}
       placeholder={placeholder}
@@ -93,6 +95,7 @@ interface InputProps {
   type?: string;
   onChange?: OnInputChangeType;
   onClick?: OnClickType;
+  onKeyPress?: OnKeyPressType;
   className?: string;
   style?: CSSProperties;
   readOnly?: boolean;
