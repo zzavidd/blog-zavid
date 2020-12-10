@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React, { CSSProperties } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { OnInputChangeType, OnClickType } from 'classes';
+import { OnClickType, OnInputChangeType, OnKeyPressType } from 'classes';
 import { InvisibleButton } from 'src/components/button';
 import css from 'src/styles/components/Form.module.scss';
 
@@ -38,9 +38,10 @@ export const NumberInput = (props: InputProps) => {
   );
 };
 
-export const SearchBar = (props: TextInputProps) => {
+export const SearchBar = (props: SearchBarProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`search-bar-${theme}`], props.className);
+
   return (
     <TextInput
       {...props}
@@ -48,7 +49,17 @@ export const SearchBar = (props: TextInputProps) => {
       leadingComponent={
         <Icon name={'search'} className={css[`search-bar-icon`]} />
       }
+      trailingComponent={<SearchBarTrailingComponent {...props} />}
     />
+  );
+};
+
+const SearchBarTrailingComponent = (props: SearchBarProps) => {
+  if (!props.value) return null;
+  return (
+    <InvisibleButton onClick={props.onClearInput}>
+      <Icon name={'times'} />
+    </InvisibleButton>
   );
 };
 
@@ -58,7 +69,8 @@ const Input = ({
   value,
   onChange,
   placeholder,
-  onClick
+  onClick,
+  onKeyPress
 }: InputProps) => {
   if (value === null) value = '';
   return (
@@ -67,6 +79,7 @@ const Input = ({
       type={type}
       value={value as string}
       onChange={onChange}
+      onKeyPress={onKeyPress}
       className={css[`text-input`]}
       autoComplete={'off'}
       placeholder={placeholder}
@@ -82,13 +95,19 @@ interface InputProps {
   type?: string;
   onChange?: OnInputChangeType;
   onClick?: OnClickType;
+  onKeyPress?: OnKeyPressType;
   className?: string;
   style?: CSSProperties;
   readOnly?: boolean;
   min?: number;
+  ref?: React.RefObject<HTMLInputElement>;
 }
 
 interface TextInputProps extends InputProps {
   leadingComponent?: JSX.Element;
   trailingComponent?: JSX.Element;
+}
+
+interface SearchBarProps extends TextInputProps {
+  onClearInput: () => void;
 }
