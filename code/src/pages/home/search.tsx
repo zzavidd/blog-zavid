@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
-import { zDate } from 'zavid-modules';
+import { zDate, zText } from 'zavid-modules';
 
 import { ResultEntityDAO } from 'classes';
 import { SearchBar } from 'src/components/form';
@@ -37,30 +37,35 @@ const SearchResults = ({ searchTerm, results }: SearchResultsProps) => {
           className={css['search-results-input']}
           onClearInput={() => setSearchTerm('')}
         />
-        <ResultsGrid results={results} searchTermExists={searchTermExists} />
+        <ResultsGrid results={results} searchTerm={searchTerm} />
       </div>
     </Spacer>
   );
 };
 
-const ResultsGrid = ({ results, searchTermExists }: ResultsGridProps) => {
+const ResultsGrid = ({ results, searchTerm }: SearchResultsProps) => {
   if (!results.length) {
     return (
       <div className={css['search-results-error']}>
-        {searchTermExists ? 'No results found' : 'Type in a search term...'}
+        {searchTerm ? 'No results found' : 'Type in a search term...'}
       </div>
     );
   }
   return (
     <div className={css['search-results-list']}>
       {results.map((entity, key) => (
-        <ResultEntity entity={entity} idx={key} key={key} />
+        <ResultEntity
+          entity={entity}
+          searchTerm={searchTerm}
+          idx={key}
+          key={key}
+        />
       ))}
     </div>
   );
 };
 
-const ResultEntity = memo(({ entity, idx }: ResultEntityProps) => {
+const ResultEntity = memo(({ entity, searchTerm, idx }: ResultEntityProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [isLoaded, setLoaded] = useState(false);
 
@@ -85,18 +90,10 @@ const ResultEntity = memo(({ entity, idx }: ResultEntityProps) => {
         delay={idx * 50 + 50}
         className={classes}
         postTransitions={'background-color .4s ease'}>
+        <div className={css['search-results-index']}>#{entity.index}</div>
         <Title className={css['search-results-title']}>{entity.title}</Title>
         <div className={css['search-results-metadata']}>{date}</div>
-        <Paragraph
-          cssOverrides={{
-            paragraph: css['search-results-content'],
-            hyperlink: css['search-results-readmore']
-          }}
-          truncate={40}
-          moreclass={css['search-results-readmore']}
-          morelink={entity.slug}>
-          {entity.content}
-        </Paragraph>
+        <MatchedContent entity={entity} searchTerm={searchTerm} />
         <ResultEntityImage entity={entity} />
       </Fader>
     </VanillaLink>
@@ -115,6 +112,76 @@ const ResultEntityImage = ({ entity }: ResultEntityImageProps) => {
   );
 };
 
+const MatchedContent = ({ entity, searchTerm }: MatchedContentProps) => {
+  const theme = useSelector((theme: RootStateOrAny) => theme);
+  if (!entity.content) return null;
+
+  if (!containsSearchTerm(entity.title, searchTerm)) {
+    const content: string[] = entity.content.split(/\n/);
+    const index: number = content.findIndex((paragraph) => {
+      return containsSearchTerm(paragraph, searchTerm);
+    });
+
+    // if (index > -1) entity.content = content[index];
+    if (index > -1) {
+      const combinedEmphasisRegex = zText.getCombinedEmphasisRegex();
+
+      entity.content = content
+        .splice(index)
+        .map((paragraph) => {
+          paragraph = zText
+            .deformatText(paragraph)
+            .split(combinedEmphasisRegex)
+            .filter((e) => e)
+            .map((fragment) => {
+              if (!containsSearchTerm(fragment, searchTerm)) return fragment;
+              fragment = zText
+                .deformatText(fragment)
+                .split(' ')
+                .map((word) => {
+                  if (!containsSearchTerm(word, searchTerm)) return word;
+                  return `%%${word}%%`;
+                })
+                .join(' ');
+              return fragment;
+            })
+            .join(' ');
+
+          return paragraph;
+        })
+        .join(' ');
+    }
+  }
+
+  return (
+    <Paragraph
+      cssOverrides={{
+        paragraph: css['search-results-content'],
+        hyperlink: css['search-results-readmore'],
+        custom: css[`search-results-highlight`]
+      }}
+      truncate={40}
+      keepRichFormatOnTruncate={true}
+      moreclass={css['search-results-readmore']}
+      morelink={entity.slug}>
+      {entity.content}
+    </Paragraph>
+  );
+};
+
+const containsSearchTerm = (string: string, searchTerm: string): boolean => {
+  return string
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .includes(
+      searchTerm
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+    );
+};
+
 SearchResults.getInitialProps = async ({ query }: NextPageContext) => {
   const searchTerm = query.searchTerm as string;
   const results = DAOParse<ResultEntityDAO[]>(query.results as string);
@@ -124,17 +191,18 @@ SearchResults.getInitialProps = async ({ query }: NextPageContext) => {
 export default SearchResults;
 
 type SearchResultsProps = {
-  searchTerm: string;
   results: ResultEntityDAO[];
+  searchTerm: string;
 };
 
-type ResultsGridProps = {
-  results: ResultEntityDAO[];
-  searchTermExists: boolean;
+type MatchedContentProps = {
+  entity: ResultEntityDAO;
+  searchTerm: string;
 };
 
 type ResultEntityProps = {
   entity: ResultEntityDAO;
+  searchTerm: string;
   idx: number;
 };
 

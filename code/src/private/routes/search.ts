@@ -76,9 +76,8 @@ async function getResultEntities(
       url.appendSegment(post.slug!);
       post.slug = url.build();
 
-      const { id, title, type, datePublished, content, slug, image } = post;
+      const { title, type, datePublished, content, slug, image } = post;
       return {
-        id,
         title,
         type,
         content,
@@ -91,9 +90,8 @@ async function getResultEntities(
   // Parse diary entries to fit in result collection.
   const parsedDiary: ResultEntityDAO[] = diary
     .filter(filterEntities)
-    .map(({ id, title, date, content, entryNumber }) => {
+    .map(({ title, date, content, entryNumber }) => {
       return {
-        id,
         title: `Diary Entry #${entryNumber}: ${title}`,
         type: 'Diary Entry',
         date,
@@ -102,11 +100,19 @@ async function getResultEntities(
       };
     }) as ResultEntityDAO[];
 
-  entities = entities.concat(parsedPosts, parsedDiary).sort((a, b) => {
-    if (a.date < b.date) return 1;
-    if (a.date > b.date) return -1;
-    return 0;
-  });
+  entities = entities
+    .concat(parsedPosts, parsedDiary)
+    .sort((a, b) => {
+      if (a.date < b.date) return 1;
+      if (a.date > b.date) return -1;
+      return 0;
+    })
+    .map((entity, index) => {
+      return {
+        ...entity,
+        index: index + 1
+      };
+    });
   return entities;
 }
 

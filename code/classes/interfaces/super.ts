@@ -5,7 +5,8 @@ export interface GenericDAO {
   id?: number
 }
 
-export interface ResultEntityDAO extends GenericDAO {
+export interface ResultEntityDAO {
+  index?: number
   title: string
   type: PostType | 'Diary Entry'
   content: string

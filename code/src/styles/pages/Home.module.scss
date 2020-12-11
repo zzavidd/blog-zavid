@@ -63,7 +63,7 @@
 .search-results-page {
   @include responsive(
     width,
-    40%,
+    45%,
     $xxl: 50%,
     $xl: 60%,
     $lg: 70%,
@@ -96,9 +96,9 @@
 }
 
 .search-results-entity {
+  @include responsive(padding, 1.5em, $sm: 1em 0);
   border-radius: 15px;
   cursor: pointer;
-  padding: 1em 0;
 
   &-light {
     @media (min-width: $break-md) {
@@ -108,6 +108,10 @@
         * {
           color: #fff !important;
         }
+      }
+
+      .search-results-highlight {
+        color: #000 !important;
       }
     }
   }
@@ -125,6 +129,10 @@
   }
 }
 
+.search-results-index {
+  @include responsive(font-size, 1em, $sm: 0.8em);
+}
+
 .search-results-title {
   @include responsive(font-size, 2em, $sm: 1.6em);
 }
@@ -140,6 +148,13 @@
 
 .search-results-readmore {
   @include responsive(font-size, 1em, $sm: 0.8em);
+}
+
+.search-results-highlight {
+  background-color: #fdfd67;
+  border-radius: 10px;
+  color: #000 !important;
+  padding: 0.1em 0.3em;
 }
 
 .search-results-image {
