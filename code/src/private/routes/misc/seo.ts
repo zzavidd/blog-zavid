@@ -9,9 +9,9 @@ import {
   DiaryQueryBuilder,
   PageQueryBuilder,
   DiaryStatus
-} from '../../../classes';
-import { domain } from '../../settings';
-import { getKnex } from '../singleton';
+} from '../../../../classes';
+import { domain } from '../../../settings';
+import { getKnex } from '../../singleton';
 
 const router = express.Router();
 const knex = getKnex();
