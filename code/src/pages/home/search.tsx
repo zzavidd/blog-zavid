@@ -13,6 +13,8 @@ import { Fader } from 'src/components/transitioner';
 import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Home.module.scss';
 
+const COMBINED_EMPHASIS_REGEX = zText.getCombinedEmphasisRegex();
+
 const SearchResults = ({ searchTerm, results }: SearchResultsProps) => {
   const [term, setSearchTerm] = useState(searchTerm);
   const searchTermExists = !!searchTerm;
@@ -113,44 +115,37 @@ const ResultEntityImage = ({ entity }: ResultEntityImageProps) => {
 };
 
 const MatchedContent = ({ entity, searchTerm }: MatchedContentProps) => {
-  const theme = useSelector((theme: RootStateOrAny) => theme);
   if (!entity.content) return null;
 
-  if (!containsSearchTerm(entity.title, searchTerm)) {
-    const content: string[] = entity.content.split(/\n/);
-    const index: number = content.findIndex((paragraph) => {
-      return containsSearchTerm(paragraph, searchTerm);
-    });
+  const content: string[] = entity.content.split(/[\.\?\!]\s|\n/);
+  const index: number = content.findIndex((paragraph) => {
+    return containsSearchTerm(paragraph, searchTerm);
+  });
 
-    // if (index > -1) entity.content = content[index];
-    if (index > -1) {
-      const combinedEmphasisRegex = zText.getCombinedEmphasisRegex();
+  if (index > -1) {
+    entity.content = content
+      .splice(index)
+      .join('. ')
+      .split(COMBINED_EMPHASIS_REGEX)
+      .filter((e) => e)
+      .map((fragment) => {
+        if (!containsSearchTerm(fragment, searchTerm)) {
+          return zText.deformatText(fragment);
+        }
 
-      entity.content = content
-        .splice(index)
-        .map((paragraph) => {
-          paragraph = zText
-            .deformatText(paragraph)
-            .split(combinedEmphasisRegex)
-            .filter((e) => e)
-            .map((fragment) => {
-              if (!containsSearchTerm(fragment, searchTerm)) return fragment;
-              fragment = zText
-                .deformatText(fragment)
-                .split(' ')
-                .map((word) => {
-                  if (!containsSearchTerm(word, searchTerm)) return word;
-                  return `%%${word}%%`;
-                })
-                .join(' ');
-              return fragment;
-            })
-            .join(' ');
+        if (COMBINED_EMPHASIS_REGEX.test(fragment)) {
+          return `%%${zText.deformatText(fragment)}%%`;
+        }
 
-          return paragraph;
-        })
-        .join(' ');
-    }
+        fragment = zText
+          .deformatText(fragment)
+          .replace(new RegExp(searchTerm, 'i'), (match) => {
+            return `%%${match}%%`;
+          });
+
+        return fragment;
+      })
+      .join(' ');
   }
 
   return (
@@ -170,16 +165,13 @@ const MatchedContent = ({ entity, searchTerm }: MatchedContentProps) => {
 };
 
 const containsSearchTerm = (string: string, searchTerm: string): boolean => {
-  return string
-    .toLowerCase()
+  return string.standardize().includes(searchTerm.standardize());
+};
+
+String.prototype.standardize = function (): string {
+  return this.toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .includes(
-      searchTerm
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-    );
+    .replace(/[\u0300-\u036f]/g, '');
 };
 
 SearchResults.getInitialProps = async ({ query }: NextPageContext) => {
