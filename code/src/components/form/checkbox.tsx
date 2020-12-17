@@ -13,19 +13,22 @@ export const Checkbox = ({
   label,
   checked,
   onChange,
-  className
+  className,
+  boxClassName
 }: Checkbox): JSX.Element => {
   const classes = classnames(css['checkbox-group'], className);
+  const boxClasses = classnames(css['checkbox-mark'], boxClassName);
   return (
     <label className={classes}>
       <span className={css['checkbox-label']}>{label}</span>
       <input
+        className={boxClasses}
         type={'checkbox'}
         name={name}
         checked={checked}
         onChange={onChange}
       />
-      <span className={css['checkbox-mark']} />
+      <span className={boxClasses} />
     </label>
   );
 };
@@ -56,6 +59,7 @@ interface Checkbox {
   onChange: OnInputChangeType;
   name?: string;
   className?: string;
+  boxClassName?: string;
 }
 
 interface Switch {

@@ -76,6 +76,31 @@
   @include responsive(min-width, 200px, $sm: 150px);
 }
 
+.search-check-diary {
+  padding-left: 1.8em;
+
+  @media (max-width: $break-sm) {
+    font-size: 0.8em;
+    padding-left: 1.6em;
+
+    .search-check-diary-box {
+      $size: 13px;
+      border-radius: 2px;
+      height: $size;
+      width: $size;
+    }
+
+    .search-check-diary,
+    .search-check-diary-box::after {
+      border-width: 0 2px 2px 0;
+      height: 9px;
+      left: 4.5px;
+      top: 1px;
+      width: 4px;
+    }
+  }
+}
+
 .search-results-page {
   @include responsive(
     width,

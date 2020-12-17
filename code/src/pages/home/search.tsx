@@ -45,13 +45,15 @@ const SearchResults = (props: SearchResultsProps) => {
           onClearInput={() => setSearchTerm('')}
         />
         <Checkbox
+          className={css['search-check-diary']}
+          boxClassName={css['search-check-diary-box']}
           label={'Only diary entries'}
           checked={onlyDiary}
           onChange={(e) => {
             const isChecked = e.target.checked;
             url.searchParams.set('onlyDiary', JSON.stringify(isChecked));
-            history.pushState({}, '', url.toString());
             setOnlyDiaryFlag(isChecked);
+            location.href = url.toString();
           }}
         />
         <ResultsGrid results={results} searchTerm={searchTerm} />
@@ -184,9 +186,9 @@ const containsSearchTerm = (string: string, searchTerm: string): boolean => {
 };
 
 String.prototype.standardize = function (): string {
-  return this.toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+  return this.normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
 };
 
 SearchResults.getInitialProps = async ({ query }: NextPageContext) => {
