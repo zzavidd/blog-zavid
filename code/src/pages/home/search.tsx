@@ -5,7 +5,7 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 import { zDate, zText } from 'zavid-modules';
 
 import { ResultEntityDAO } from 'classes';
-import { SearchBar } from 'src/components/form';
+import { Checkbox, SearchBar } from 'src/components/form';
 import CloudImage, { AspectRatio } from 'src/components/image';
 import { Spacer } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
@@ -14,14 +14,18 @@ import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Home.module.scss';
 
 const COMBINED_EMPHASIS_REGEX = zText.getCombinedEmphasisRegex();
+const PARAM_ONLY_DIARY = 'onlyDiary';
 
-const SearchResults = ({ searchTerm, results }: SearchResultsProps) => {
+const SearchResults = (props: SearchResultsProps) => {
+  const { searchTerm, results } = props;
+  const url = new URL(location.href);
+
   const [term, setSearchTerm] = useState(searchTerm);
-  const searchTermExists = !!searchTerm;
+  const [onlyDiary, setOnlyDiaryFlag] = useState(
+    url.searchParams.get(PARAM_ONLY_DIARY) === 'true'
+  );
 
-  const heading = searchTermExists
-    ? `Results for '${searchTerm}'`
-    : 'Search ZAVID';
+  const heading = searchTerm ? `Results for '${searchTerm}'` : 'Search ZAVID';
 
   return (
     <Spacer>
@@ -33,11 +37,22 @@ const SearchResults = ({ searchTerm, results }: SearchResultsProps) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              location.href = `/search?term=${term}`;
+              url.searchParams.set('term', term);
+              location.href = url.toString();
             }
           }}
           className={css['search-results-input']}
           onClearInput={() => setSearchTerm('')}
+        />
+        <Checkbox
+          label={'Only diary entries'}
+          checked={onlyDiary}
+          onChange={(e) => {
+            const isChecked = e.target.checked;
+            url.searchParams.set('onlyDiary', JSON.stringify(isChecked));
+            history.pushState({}, '', url.toString());
+            setOnlyDiaryFlag(isChecked);
+          }}
         />
         <ResultsGrid results={results} searchTerm={searchTerm} />
       </div>

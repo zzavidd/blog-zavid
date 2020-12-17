@@ -54,10 +54,26 @@
   margin: 0 auto !important;
 }
 
+.search-container {
+  width: 100%;
+}
+
 .search-bar {
   @include responsive(font-size, 1.4em, $md: 1.2em);
   margin: 0 auto;
   max-width: 600px;
+}
+
+.search-button-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 1em;
+  width: 100%;
+}
+
+.search-button {
+  @include responsive(font-size, 1em, $md: 0.9em);
+  @include responsive(min-width, 200px, $sm: 150px);
 }
 
 .search-results-page {
@@ -71,7 +87,7 @@
     $sm: 100%
   );
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto auto 1fr;
   margin: 0 auto;
   padding: 1.5em;
 }

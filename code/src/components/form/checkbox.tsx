@@ -51,10 +51,10 @@ export const Switch = ({
 };
 
 interface Checkbox {
-  name: string;
   label: string;
   checked: boolean;
   onChange: OnInputChangeType;
+  name?: string;
   className?: string;
 }
 

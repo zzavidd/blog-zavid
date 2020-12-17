@@ -4,9 +4,15 @@ import React, { memo, useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { DiaryDAO, DiaryStatus, QueryOrder } from 'classes';
+import {
+  DiaryDAO,
+  DiaryStatus,
+  QueryOrder,
+  ReactInputChangeEvent
+} from 'classes';
 import { alert } from 'src/components/alert';
-import { AdminButton } from 'src/components/button';
+import { AdminButton, ConfirmButton } from 'src/components/button';
+import { SearchBar } from 'src/components/form';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
 import { Fader } from 'src/components/transitioner';
@@ -14,14 +20,11 @@ import { isAuthenticated } from 'src/lib/cookies';
 import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
 import css from 'src/styles/pages/Diary.module.scss';
 
-import DiarySearch from './search';
-
 const DIARY_HEADING = `Zavid's Diary`;
 
 const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const [allDiaryEntries, setAllDiaryEntries] = useState<DiaryDAO[]>([]);
-  const [filteredEntries, setFilteredEntries] = useState<DiaryDAO[]>([]);
+  const [diaryEntries, setDiaryEntries] = useState<DiaryDAO[]>([]);
   const [isLoaded, setLoaded] = useState(false);
 
   const { data, error: queryError, loading: queryLoading } = useQuery(
@@ -42,8 +45,7 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
     if (queryError) alert.error(queryError);
 
     const entries = data?.diaryEntries;
-    setAllDiaryEntries(entries);
-    setFilteredEntries(entries);
+    setDiaryEntries(entries);
     setLoaded(true);
   }, [isLoaded, queryLoading]);
 
@@ -56,11 +58,8 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
             {diaryIntro}
           </Paragraph>
         </div>
-        <DiarySearch
-          diaryEntries={allDiaryEntries}
-          setFilteredEntries={setFilteredEntries}
-        />
-        <DiaryGrid diaryEntries={filteredEntries} />
+        <DiarySearch />
+        <DiaryGrid diaryEntries={diaryEntries} />
       </div>
       <Toolbar spaceItems={true}>
         {isAuthenticated() && (
@@ -70,8 +69,6 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
     </Spacer>
   );
 };
-
-const navigateToDiaryAdmin = () => (location.href = '/admin/diary');
 
 const DiaryGrid = ({ diaryEntries }: DiaryGrid) => {
   if (!diaryEntries.length) {
@@ -127,21 +124,69 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
   );
 });
 
+const DiarySearch = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  /**
+   * Searches diary entries using entered search term.
+   * @param e The input DOM element.
+   */
+  const searchDiaryEntries = (e?: ReactInputChangeEvent): void => {
+    const term = e?.target.value || '';
+    setSearchTerm(term);
+  };
+
+  /** Clear the search input. */
+  const clearInput = () => {
+    setSearchTerm('');
+    searchDiaryEntries();
+  };
+
+  return (
+    <div className={css['diary-search']}>
+      <SearchBar
+        value={searchTerm}
+        placeholder={'Search diary entries...'}
+        onChange={searchDiaryEntries}
+        className={css['diary-search-bar']}
+        onClearInput={clearInput}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            launchSearch(searchTerm);
+          }
+        }}
+        withRightSpace={false}
+      />
+      <ConfirmButton
+        className={css['diary-search-button']}
+        onClick={() => launchSearch(searchTerm)}>
+        Search
+      </ConfirmButton>
+    </div>
+  );
+};
+
+const launchSearch = (searchTerm: string) => {
+  location.href = `/search?term=${searchTerm}&onlyDiary=true`;
+};
+
+const navigateToDiaryAdmin = () => (location.href = '/admin/diary');
+
 DiaryIndex.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };
 };
 
 export default DiaryIndex;
 
-interface DiaryIndex {
+type DiaryIndex = {
   diaryIntro: string;
-}
+};
 
-interface DiaryGrid {
+type DiaryGrid = {
   diaryEntries: DiaryDAO[];
-}
+};
 
-interface DiaryEntry {
+type DiaryEntry = {
   diaryEntry: DiaryDAO;
   idx: number;
-}
+};

@@ -55,10 +55,11 @@ export const SearchBar = (props: SearchBarProps) => {
 };
 
 const SearchBarTrailingComponent = (props: SearchBarProps) => {
-  if (!props.value) return null;
+  const { onClearInput, value, withRightSpace = true } = props;
+  if (!value) return null;
   return (
-    <InvisibleButton onClick={props.onClearInput}>
-      <Icon name={'times'} />
+    <InvisibleButton onClick={onClearInput}>
+      <Icon name={'times'} withRightSpace={withRightSpace} />
     </InvisibleButton>
   );
 };
@@ -110,4 +111,5 @@ interface TextInputProps extends InputProps {
 
 interface SearchBarProps extends TextInputProps {
   onClearInput: () => void;
+  withRightSpace?: boolean
 }

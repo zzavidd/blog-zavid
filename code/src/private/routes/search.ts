@@ -20,7 +20,8 @@ const server = getServer();
 
 router.get('/search', async function (req, res) {
   const searchTerm = req.query.term as string;
-  const entities = await getResultEntities(searchTerm);
+  const onlyDiary = req.query.onlyDiary === 'true';
+  const entities = await getResultEntities(searchTerm, { includePosts: !onlyDiary });
 
   const title = searchTerm ? `Results for '${searchTerm}'` : `Search`;
 
@@ -31,21 +32,17 @@ router.get('/search', async function (req, res) {
   });
 });
 
-async function getResultEntities(
-  searchTerm: string
+export async function getResultEntities(
+  searchTerm: string,
+  options: GetResultEntityOptions = {}
 ): Promise<ResultEntityDAO[]> {
   let entities: ResultEntityDAO[] = [];
   if (!searchTerm) return entities;
 
+  const { includePosts = true } = options;
+
   searchTerm = searchTerm.toLowerCase();
   const fields: Array<keyof FilterField> = ['title', 'content'];
-
-  const posts = await new PostQueryBuilder(knex)
-    .whereStatus({ include: [PostStatus.PRIVATE, PostStatus.PUBLISHED] })
-    .build();
-  const diary = await new DiaryQueryBuilder(knex)
-    .whereStatus({ include: [DiaryStatus.PRIVATE, DiaryStatus.PUBLISHED] })
-    .build();
 
   // Filter entities by matching search term.
   const filterEntities = (entry: PostDAO | DiaryDAO) => {
@@ -56,49 +53,8 @@ async function getResultEntities(
     return fields.some(predicate);
   };
 
-  // Parse posts to fit in result collection.
-  const parsedPosts: ResultEntityDAO[] = posts
-    .filter(filterEntities)
-    .map((post) => {
-      if (!PostStatic.isPage(post)) {
-        post.title = `${post.type} #${post.typeId}: ${post.title}`;
-      }
-
-      const url = new URLBuilder();
-
-      if (PostStatic.isPage(post)) {
-        const base = PostStatic.getDirectory(post.domainType!);
-        url.appendSegment(base).appendSegment(post.domainSlug!);
-      } else {
-        url.appendSegment(PostStatic.getDirectory(post.type!));
-      }
-
-      url.appendSegment(post.slug!);
-      post.slug = url.build();
-
-      const { title, type, datePublished, content, slug, image } = post;
-      return {
-        title,
-        type,
-        content,
-        slug,
-        image,
-        date: datePublished
-      };
-    }) as ResultEntityDAO[];
-
-  // Parse diary entries to fit in result collection.
-  const parsedDiary: ResultEntityDAO[] = diary
-    .filter(filterEntities)
-    .map(({ title, date, content, entryNumber }) => {
-      return {
-        title: `Diary Entry #${entryNumber}: ${title}`,
-        type: 'Diary Entry',
-        date,
-        content,
-        slug: `/diary/${entryNumber}`
-      };
-    }) as ResultEntityDAO[];
+  const parsedPosts = includePosts ? await compilePosts(filterEntities) : [];
+  const parsedDiary = await compileDiaryEntries(filterEntities);
 
   entities = entities
     .concat(parsedPosts, parsedDiary)
@@ -116,9 +72,81 @@ async function getResultEntities(
   return entities;
 }
 
+/**
+ * Parse posts to fit in result collection.
+ * @param filterBySearchTerm The function used to filter by search term.
+ */
+async function compilePosts(
+  filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean
+): Promise<ResultEntityDAO[]> {
+  const posts = await new PostQueryBuilder(knex)
+    .whereStatus({ include: [PostStatus.PRIVATE, PostStatus.PUBLISHED] })
+    .build();
+
+  const parsedPosts = posts.filter(filterBySearchTerm).map((post) => {
+    if (!PostStatic.isPage(post)) {
+      post.title = `${post.type} #${post.typeId}: ${post.title}`;
+    }
+
+    const url = new URLBuilder();
+
+    if (PostStatic.isPage(post)) {
+      const base = PostStatic.getDirectory(post.domainType!);
+      url.appendSegment(base).appendSegment(post.domainSlug!);
+    } else {
+      url.appendSegment(PostStatic.getDirectory(post.type!));
+    }
+
+    url.appendSegment(post.slug!);
+    post.slug = url.build();
+
+    const { title, type, datePublished, content, slug, image } = post;
+    return {
+      title,
+      type,
+      content,
+      slug,
+      image,
+      date: datePublished
+    };
+  }) as ResultEntityDAO[];
+
+  return parsedPosts;
+}
+
+/**
+ * Parse diary entries to fit in result collection.
+ * @param filterBySearchTerm The function used to filter by search term.
+ */
+async function compileDiaryEntries(
+  filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean
+): Promise<ResultEntityDAO[]> {
+  const diary = await new DiaryQueryBuilder(knex)
+    .whereStatus({ include: [DiaryStatus.PRIVATE, DiaryStatus.PUBLISHED] })
+    .build();
+
+  const parsedDiary: ResultEntityDAO[] = diary
+    .filter(filterBySearchTerm)
+    .map(({ title, date, content, entryNumber }) => {
+      return {
+        title: `Diary Entry #${entryNumber}: ${title}`,
+        type: 'Diary Entry',
+        date,
+        content,
+        slug: `/diary/${entryNumber}`
+      };
+    }) as ResultEntityDAO[];
+
+  return parsedDiary;
+}
+
 export default router;
 
 type FilterField = {
   title: string;
   content: string;
+};
+
+type GetResultEntityOptions = {
+  includePosts?: boolean;
 };
