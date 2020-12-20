@@ -12,6 +12,7 @@ import Timeline, { TimelineType } from 'src/components/timeline';
 import { isAuthenticated } from 'src/lib/cookies';
 import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Posts.module.scss';
+import { Icon } from 'src/components/icon';
 
 const DiarySingle = ({
   diaryEntry,
@@ -28,6 +29,7 @@ const DiarySingle = ({
           Diary Entry #{diaryEntry.entryNumber}: {diaryEntry.title}
         </Title>
         <div className={css['diary-single-date']}>{date}</div>
+        <FavouriteNotice diaryEntry={diaryEntry} />
         <Paragraph className={css['post-single-content']}>
           {diaryEntry.content}
         </Paragraph>
@@ -62,6 +64,16 @@ const DiarySingle = ({
         )}
       </Toolbar>
     </Spacer>
+  );
+};
+
+const FavouriteNotice = ({ diaryEntry }: { diaryEntry: DiaryDAO }) => {
+  if (!diaryEntry.isFavourite) return null;
+  return (
+    <div className={css['diary-single-favourite']}>
+      <Icon name={'star'} />
+      <span>{'This diary entry is a personal Zavid favourite.'}</span>
+    </div>
   );
 };
 

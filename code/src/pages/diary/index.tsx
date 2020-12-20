@@ -19,6 +19,7 @@ import { Fader } from 'src/components/transitioner';
 import { isAuthenticated } from 'src/lib/cookies';
 import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
 import css from 'src/styles/pages/Diary.module.scss';
+import { Icon } from 'src/components/icon';
 
 const DIARY_HEADING = `Zavid's Diary`;
 
@@ -105,10 +106,15 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
         delay={idx * 50 + 50}
         className={css[`diary-entry-${theme}`]}
         postTransitions={'background-color .4s ease'}>
-        <div className={css['diary-entry-date']}>{date}</div>
-        <Title className={css['diary-entry-title']}>
-          Diary Entry #{diaryEntry.entryNumber}: {diaryEntry.title}
-        </Title>
+        <div className={css['diary-entry-header']}>
+          <div>
+            <div className={css['diary-entry-date']}>{date}</div>
+            <Title className={css['diary-entry-title']}>
+              Diary Entry #{diaryEntry.entryNumber}: {diaryEntry.title}
+            </Title>
+          </div>
+          <FavouriteStar diaryEntry={diaryEntry} />
+        </div>
         <Paragraph
           cssOverrides={{
             paragraph: css['diary-entry-paragraph'],
@@ -123,6 +129,17 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
     </VanillaLink>
   );
 });
+
+const FavouriteStar = ({ diaryEntry }: { diaryEntry: DiaryDAO }) => {
+  if (!diaryEntry.isFavourite) return null;
+  return (
+    <Icon
+      name={'star'}
+      withRightSpace={false}
+      className={css['diary-entry-star']}
+    />
+  );
+};
 
 const DiarySearch = () => {
   const [searchTerm, setSearchTerm] = useState('');

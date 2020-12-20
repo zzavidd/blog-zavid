@@ -31,6 +31,7 @@
   @include responsive(padding, 1.5em, $md: 1em 0);
   border-radius: 15px;
   cursor: pointer;
+  position: relative;
 }
 
 .diary-entry {
@@ -63,6 +64,11 @@
   }
 }
 
+.diary-entry-header {
+  align-items: center;
+  display: flex;
+}
+
 .diary-entry-title {
   @include responsive(font-size, 1.5em, $sm: 1.3em);
   @include responsive(letter-spacing, 0, $sm: -0.5px);
@@ -75,6 +81,13 @@
 
 .diary-entry-paragraph {
   @include responsive(font-size, 0.9em, $sm: 1em);
+}
+
+.diary-entry-star {
+  @include responsive(font-size, 2em, $xxl: 1.5em);
+  margin: 0 0.4em;
+  position: absolute;
+  right: 0%;
 }
 
 .diary-entry-readmore {
@@ -93,6 +106,11 @@
 .diary-single-date {
   @include responsive(font-size, 1.3em, $sm: 1em);
   padding-bottom: 0;
+}
+
+.diary-single-favourite {
+  @include responsive(font-size, 1em, $sm: 0.7em);
+  padding: 1em 0 0;
 }
 
 .diary-search {
