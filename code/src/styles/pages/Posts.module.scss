@@ -21,6 +21,11 @@
   @include responsive(font-size, 1.3em, $sm: 1em);
 }
 
+.post-single-footnote {
+  @include responsive(font-size, 1.3em, $sm: 1em);
+  margin-top: 1em;
+}
+
 .post-single-image-container {
   border-radius: 10px;
   margin: 1em 0;

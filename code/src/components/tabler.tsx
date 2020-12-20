@@ -169,14 +169,17 @@ const TablerItemFields = ({
   const itemFields = fields
     .filter((e) => e)
     .map((cell: TablerItemCell, key: number) => {
-      let { value } = cell;
+      let value = cell.value;
       const {
         type,
         imageOptions = {
           css: ''
         },
-        subvalue = ''
+        subvalue = '',
+        showOnCondition
       } = cell.options;
+
+      if (showOnCondition && !new Boolean(showOnCondition.condition!).valueOf()) value = null;
 
       switch (type) {
         case TablerType.IMAGE:
@@ -281,10 +284,13 @@ const CrudButtons = memo(({ fields }: CrudButtons) => {
 });
 
 export class TablerColumnHeader {
-  label: string;
+  label: string | JSX.Element;
   centerAlign: boolean;
 
-  constructor(label: string, options: TablerColumnHeaderOptions = {}) {
+  constructor(
+    label: string | JSX.Element,
+    options: TablerColumnHeaderOptions = {}
+  ) {
     this.label = label;
     this.centerAlign = options.centerAlign ?? false;
   }
@@ -346,6 +352,9 @@ interface TablerItemFieldOptions {
   subvalue?: string;
   hideIfEmpty?: boolean;
   hideOnMobile?: boolean;
+  showOnCondition?: {
+    condition: boolean;
+  };
   imageOptions?: TablerImageOptions;
 }
 
@@ -368,5 +377,11 @@ interface CrudButtons {
   fields: TablerItemCell[];
 }
 
-type TableItemValue = string | number | JSX.Element | null | undefined;
+type TableItemValue =
+  | string
+  | number
+  | boolean
+  | JSX.Element
+  | null
+  | undefined;
 type CenterAlignedIndices = (number | undefined)[];

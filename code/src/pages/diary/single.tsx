@@ -32,6 +32,9 @@ const DiarySingle = ({
           {diaryEntry.content}
         </Paragraph>
         <Signature />
+        <Paragraph className={css['post-single-footnote']}>
+          {diaryEntry.footnote}
+        </Paragraph>
         <Timeline
           type={TimelineType.DIARY}
           previous={{

@@ -82,6 +82,7 @@ const DiaryAdmin = () => {
             new TablerColumnHeader('#', { centerAlign: true }),
             new TablerColumnHeader('Date'),
             new TablerColumnHeader('Title'),
+            new TablerColumnHeader(<Icon name={'star'} key={0} />, { centerAlign: true }),
             new TablerColumnHeader('Status'),
             new TablerColumnHeader('Content')
           ]}
@@ -100,6 +101,11 @@ const DiaryAdmin = () => {
                 icon: 'calendar-alt'
               }),
               new TablerItemCell(diaryEntry.title, { icon: 'heading' }),
+              new TablerItemCell(<Icon name={'star'} key={0} />, {
+                showOnCondition: {
+                  condition: diaryEntry.isFavourite!
+                }
+              }),
               new TablerItemCell(diaryEntry.status, { icon: 'lock' }),
               new TablerItemCell(content, { hideOnMobile: true }),
               new TablerItemCell(
@@ -122,7 +128,7 @@ const DiaryAdmin = () => {
               )
             ];
           })}
-          distribution={'6% 20% 1fr 10% 30% 4% 4% 4%'}
+          distribution={'6% 20% 1fr 6% 10% 30% 4% 4% 4%'}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>

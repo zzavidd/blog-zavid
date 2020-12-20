@@ -9,9 +9,11 @@ describe('Unit Tests: Diary', function () {
       assert.hasAllKeys(diaryEntry, [
         'title',
         'content',
+        'footnote',
         'date',
         'status',
-        'entryNumber'
+        'entryNumber',
+        'isFavourite'
       ]);
       finish();
     });

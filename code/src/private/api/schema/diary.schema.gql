@@ -7,16 +7,15 @@ type DiaryEntry {
   title: String
   date: String
   content: String
+  footnote: String
   slug: String
   status: DiaryStatus
   entryNumber: Int
+  isFavourite: Boolean
 }
 
 extend type Query {
-  diaryEntries(
-    sort: DiarySortOptions
-    status: DiaryStatusOptions
-  ): [DiaryEntry]
+  diaryEntries(sort: DiarySortOptions, status: DiaryStatusOptions): [DiaryEntry]
   diaryEntry(id: Int!): DiaryEntry
 }
 
@@ -60,7 +59,9 @@ input DiaryStatusOptions {
 input DiaryInput {
   title: String
   content: String
+  footnote: String
   date: String
   status: DiaryStatus
   entryNumber: Int
+  isFavourite: Boolean
 }

@@ -31,9 +31,11 @@ const DiaryCrud = ({
     id: 0,
     title: '',
     content: '',
+    footnote: '',
     date: new Date(),
     status: DiaryStatus.PROTECTED,
-    entryNumber: latestEntryNumber + 1
+    entryNumber: latestEntryNumber + 1,
+    isFavourite: false
   } as DiaryDAO);
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -150,14 +152,16 @@ const buildPayload = (
   isPublish: boolean,
   isCreateOperation: boolean
 ): DiaryRequest => {
-  const { id, title, content, status, date, entryNumber } = clientDiaryEntry;
+  const { id, title, content, footnote, status, date, entryNumber, isFavourite } = clientDiaryEntry;
 
   const diaryEntry = new DiaryEntryBuilder()
     .withTitle(title)
     .withContent(content)
+    .withFootnote(footnote)
     .withDate(zDate.formatISODate(date!))
     .withStatus(status)
     .withEntryNumber(entryNumber)
+    .setIsFavourite(isFavourite)
     .build();
 
   const payload: DiaryRequest = { diaryEntry, isPublish };

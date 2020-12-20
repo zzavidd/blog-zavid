@@ -21,7 +21,7 @@
 }
 
 .form-editor {
-  @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
+  @include responsive(width, 45%, $xxl: 50%, $xl: 60%, $lg: 70%, $md: 90%, $sm: 100%);
   margin: 0 auto;
   padding: 1em;
 }
