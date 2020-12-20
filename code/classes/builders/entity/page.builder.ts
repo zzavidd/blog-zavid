@@ -33,12 +33,17 @@ export class PageBuilder {
   }
 
   random(): PageBuilder {
+    const title = `Test: ${zString.toTitleCase(
+      faker.company.catchPhraseNoun()
+    )}`;
     this.page = {
-      title: `Test: ${zString.toTitleCase(faker.company.catchPhraseNoun())}`,
+      title,
       content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
       excerpt: faker.lorem.sentences(),
       isEmbed: true
     };
+
+    this.page.slug = zString.constructCleanSlug(title);
 
     return this;
   }
