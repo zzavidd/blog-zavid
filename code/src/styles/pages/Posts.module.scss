@@ -1,8 +1,8 @@
 @import './Diary.module';
 
 .post-single {
-  @include responsive(width, 40%, $xxl: 50%, $xl: 60%, $lg: 70%, $md: 90%, $sm: 100%);
   margin: 0 auto;
+  max-width: 650px;
   padding: 1.8em 1.2em;
 }
 

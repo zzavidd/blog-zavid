@@ -34,9 +34,10 @@
 }
 
 .user-subscribe-form {
-  @include responsive(width, 45%, $xxl: 60%, $lg: 80%, $sm: 100%);
+  @include responsive(width, $lg: 80%, $sm: 100%);
   @include responsive(padding, initial, $sm: 1em);
   margin: 0 auto;
+  max-width: 650px;
 }
 
 .user-subscribe-title {

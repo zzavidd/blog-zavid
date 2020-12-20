@@ -21,8 +21,8 @@
 }
 
 .form-editor {
-  @include responsive(width, 45%, $xxl: 50%, $xl: 60%, $lg: 70%, $md: 90%, $sm: 100%);
   margin: 0 auto;
+  max-width: 650px;
   padding: 1em;
 }
 
@@ -52,10 +52,10 @@
 }
 
 .form-footer-buttons {
-  @include responsive(width, 70%, $xl: 80%, $lg: 90%, $sm: 100%);
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
+  max-width: 1250px;
 
   button {
     min-width: 175px;
