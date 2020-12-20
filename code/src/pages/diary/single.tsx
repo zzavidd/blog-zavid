@@ -4,6 +4,7 @@ import { zDate } from 'zavid-modules';
 
 import { DiaryDAO } from 'classes';
 import { BackButton, AdminButton } from 'src/components/button';
+import { Icon } from 'src/components/icon';
 import { Signature } from 'src/components/image';
 import { Spacer, Toolbar } from 'src/components/layout';
 import ShareBlock from 'src/components/share';
@@ -12,7 +13,6 @@ import Timeline, { TimelineType } from 'src/components/timeline';
 import { isAuthenticated } from 'src/lib/cookies';
 import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Posts.module.scss';
-import { Icon } from 'src/components/icon';
 
 const DiarySingle = ({
   diaryEntry,
