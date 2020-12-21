@@ -34,7 +34,7 @@ export const getSingleDiaryEntry = (
     query: GET_SINGLE_DIARY_QUERY,
     resolver: 'diaryEntry',
     expectToFail
-  });
+  }) as Promise<DiaryDAO>;
 };
 
 export const createDiaryEntry = (
@@ -47,7 +47,7 @@ export const createDiaryEntry = (
     resolver: 'createDiaryEntry',
     anonym: ENTITY_NAME,
     extraVariables
-  });
+  }) as Promise<SubmitEntityResponse>;
 };
 
 export const updateDiaryEntry = (
@@ -61,7 +61,7 @@ export const updateDiaryEntry = (
     resolver: 'updateDiaryEntry',
     anonym: ENTITY_NAME,
     extraVariables
-  });
+  }) as Promise<DiaryDAO>;
 };
 
 export const deleteDiaryEntry = (id: number): Promise<void> => {

@@ -5,6 +5,8 @@ import { print } from 'graphql/language/printer';
 import 'mocha';
 import nodeFetch from 'node-fetch';
 
+import readline from 'readline';
+
 dotenv.config({ path: './config.env' });
 
 // Start the server when in staging environment.
@@ -59,6 +61,16 @@ export async function fetch(
     debug(err);
   }
 }
+
+export const rl = readline
+  .createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+  .on('close', function () {
+    console.info('\nExiting.');
+    process.exit(0);
+  });
 
 /**
  * A wrapper for Mocha tests which handles exceptions.

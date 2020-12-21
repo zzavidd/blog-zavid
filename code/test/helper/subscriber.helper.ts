@@ -25,7 +25,7 @@ export const getSubscribers = (variables?: Variables): Promise<SubscriberDAO[]> 
     query: GET_SUBSCRIBERS_QUERY,
     resolver: 'subscribers',
     variables
-  });
+  }) as Promise<SubscriberDAO[]>;
 };
 
 export const getSingleSubscriber = (
@@ -36,7 +36,7 @@ export const getSingleSubscriber = (
     query: GET_SINGLE_SUBSCRIBER_QUERY,
     resolver: 'subscriber',
     expectToFail
-  });
+  }) as Promise<SubscriberDAO>;
 };
 
 export const createSubscriber = (
@@ -46,7 +46,7 @@ export const createSubscriber = (
     query: CREATE_SUBSCRIBER_QUERY,
     resolver: 'createSubscriber',
     anonym: ENTITY_NAME
-  });
+  }) as Promise<SubmitEntityResponse>;
 };
 
 export const updateSubscriber = (
@@ -57,7 +57,7 @@ export const updateSubscriber = (
     query: UPDATE_SUBSCRIBER_QUERY,
     resolver: 'updateSubscriber',
     anonym: ENTITY_NAME
-  });
+  }) as Promise<SubscriberDAO>;
 };
 
 export const deleteSubscriber = (id: number): Promise<void> => {

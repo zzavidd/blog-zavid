@@ -32,6 +32,6 @@ export async function updateDiary() {
   await updateDiaryEntry(DIARY_ID, entry, {
     extraVariables: { isPublish: true }
   });
-  console.info('Completed.');
-  process.exit(0);
+
+  console.info('Email sent successfully.');
 }

@@ -1,43 +1,52 @@
-/* eslint-disable no-console */
-import readline from 'readline';
-
 import { updateDiary } from './diary.manual';
 import { raffleSubscribers } from './subscriber.manual';
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+import { rl } from '..';
 
-promptInput();
+showMenu();
 
-function promptInput() {
-  showOptions();
-  rl.question('Choice: ', async function (number) {
-    switch (number) {
-      case '1':
-        await updateDiary();
-        break;
-      case '2':
-        await raffleSubscribers();
-        break;
-      default:
-        break;
+/** Show the full menu on the console. */
+function showMenu() {
+  const options: Record<string, ManualOption> = {
+    1: {
+      name: 'Email Test (Update Diary)',
+      method: updateDiary
+    },
+    2: {
+      name: 'Subscriber Raffle',
+      method: raffleSubscribers
+    }
+  };
+
+  showOptions(options);
+
+  rl.question('Choice: ', async function (choice) {
+    try {
+      await options[choice].method();
+    } catch (err) {
+      console.error(err);
+      process.exit(0);
     }
 
-    console.log();
-    return promptInput();
+    console.info();
+    showMenu();
   });
 }
 
-function showOptions() {
-  console.log('Choose your option:');
-  console.log('(1) Email Test (Update Diary)');
-  console.log('(2) Subscriber Raffle');
-  console.log('');
+/** Show the menu options on the console. */
+function showOptions(options: Record<string, ManualOption>) {
+  console.info('**************************');
+  console.info('Choose your option:');
+
+  Object.entries(options).forEach(([key, { name }]) => {
+    console.info(`(${key}) ${name}`);
+  });
+
+  console.info('**************************');
+  console.info('');
 }
 
-rl.on('close', function () {
-  console.log('\nExiting.');
-  process.exit(0);
-});
+type ManualOption = {
+  name: string;
+  method: () => Promise<void>;
+};

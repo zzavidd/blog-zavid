@@ -23,7 +23,7 @@ export const getPosts = (variables?: Variables): Promise<PostDAO[]> => {
     query: GET_POSTS_QUERY,
     resolver: 'getAllPosts',
     variables
-  });
+  }) as Promise<PostDAO[]>;
 };
 
 export const getSinglePost = (
@@ -34,7 +34,7 @@ export const getSinglePost = (
     query: GET_SINGLE_POST_QUERY,
     resolver: 'getSinglePost',
     expectToFail
-  });
+  }) as Promise<PostDAO>;
 };
 
 export const createPost = (post: PostDAO): Promise<SubmitEntityResponse> => {
@@ -42,7 +42,7 @@ export const createPost = (post: PostDAO): Promise<SubmitEntityResponse> => {
     query: CREATE_POST_QUERY,
     resolver: 'createPost',
     anonym: ENTITY_NAME
-  });
+  }) as Promise<SubmitEntityResponse>;
 };
 
 export const updatePost = (id: number, post: PostDAO): Promise<PostDAO> => {
@@ -50,7 +50,7 @@ export const updatePost = (id: number, post: PostDAO): Promise<PostDAO> => {
     query: UPDATE_POST_QUERY,
     resolver: 'updatePost',
     anonym: ENTITY_NAME
-  });
+  }) as Promise<PostDAO>;
 };
 
 export const deletePost = (id: number): Promise<void> => {
