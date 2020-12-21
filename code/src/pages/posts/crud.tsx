@@ -14,10 +14,10 @@ import {
   ReactSelectChangeEvent
 } from 'classes';
 import { alert, AlertType, reportError, setAlert } from 'src/components/alert';
-import hooks from 'src/constants/hooks';
-import { isValidPost } from 'src/constants/validations';
-import PostForm from 'src/lib/helpers/pages/posts/form';
+import hooks from 'src/lib/hooks';
+import PostForm from 'src/lib/pages/posts/form';
 import { DAOParse } from 'src/lib/parser';
+import { isValidPost } from 'src/lib/validations';
 import {
   CREATE_POST_QUERY,
   GET_POSTS_QUERY,

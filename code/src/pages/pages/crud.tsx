@@ -5,10 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { Operation, PageDAO } from 'classes';
 import { PageBuilder } from 'classes/builders/entity/page.builder';
 import { setAlert, reportError, AlertType } from 'src/components/alert';
-import hooks from 'src/constants/hooks';
-import { isValidPage } from 'src/constants/validations';
-import PageForm from 'src/lib/helpers/pages/pages/form';
+import hooks from 'src/lib/hooks';
+import PageForm from 'src/lib/pages/pages/form';
 import { DAOParse } from 'src/lib/parser';
+import { isValidPage } from 'src/lib/validations';
 import {
   CREATE_PAGE_QUERY,
   UPDATE_PAGE_QUERY

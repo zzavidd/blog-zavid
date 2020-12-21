@@ -14,7 +14,7 @@ export const setApp = (instance: Application): void => {
 
 export const setKnex = (instance: Knex): void => {
   IKnex = instance;
-  console.info('Connected to database.');
+  console.info('Connected to database.'.green);
 };
 
 export const setServer = (instance: Server): void => {

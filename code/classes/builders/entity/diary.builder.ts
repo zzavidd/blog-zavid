@@ -27,6 +27,16 @@ export class DiaryEntryBuilder {
     return this;
   }
 
+  withFootnote(footnote?: string): DiaryEntryBuilder {
+    this.entry.footnote = footnote!.trim();
+    return this;
+  }
+
+  setIsFavourite(isFavourite?: boolean): DiaryEntryBuilder {
+    this.entry.isFavourite = new Boolean(isFavourite!).valueOf();
+    return this;
+  }
+
   withEntryNumber(entryNumber?: number): DiaryEntryBuilder {
     entryNumber =
       typeof entryNumber && parseInt((entryNumber as unknown) as string);
@@ -38,9 +48,11 @@ export class DiaryEntryBuilder {
     this.entry = {
       title: zString.toTitleCase(faker.company.catchPhraseNoun()),
       content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
+      footnote: faker.lorem.paragraphs(1).replace(/\n/g, '\n\n'),
       date: zDate.formatISODate(faker.date.past()),
       status: DiaryStatic.randomStatus(),
-      entryNumber: faker.random.number()
+      entryNumber: faker.random.number(),
+      isFavourite: Math.random() < 0.5
     };
     return this;
   }

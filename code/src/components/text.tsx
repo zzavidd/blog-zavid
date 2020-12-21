@@ -22,13 +22,17 @@ export const Paragraph = ({
   morelink,
   moretext,
   substitutions,
-  truncate = 0
+  truncate = 0,
+  keepRichFormatOnTruncate = false
 }: Paragraph) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classNames(css['paragraph'], className);
 
   let text = truncate
-    ? zText.truncateText(children as string, { limit: truncate as number })
+    ? zText.truncateText(children as string, {
+        limit: truncate as number,
+        keepRichFormatting: keepRichFormatOnTruncate
+      })
     : children;
 
   try {
@@ -145,6 +149,7 @@ interface Paragraph extends Text {
   moretext?: string;
   substitutions?: Record<string, unknown>;
   truncate?: number | boolean;
+  keepRichFormatOnTruncate?: boolean;
 }
 
 interface ReadMore extends Text {

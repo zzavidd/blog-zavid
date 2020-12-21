@@ -2,18 +2,20 @@ import diaryRoutes from './entities/diary.routes';
 import pageRoutes from './entities/page.routes';
 import postRoutes from './entities/post.routes';
 import subscriberRoutes from './entities/subscriber.routes';
-import linksRoutes from './links';
-import seoRoutes from './seo';
+import linksRoutes from './misc/links';
+import seoRoutes from './misc/seo';
+import searchRoutes from './search';
 
 import {
   DiaryQueryBuilder,
-  DiaryStatic,
+  DiaryStatus,
   PageQueryBuilder,
   PostQueryBuilder,
-  PostStatic,
+  PostStatus,
+  PostType,
   QueryOrder
 } from '../../../classes';
-import { siteTitle } from '../../constants/settings';
+import { siteTitle } from '../../settings';
 import authRoutes from '../auth';
 import { getApp, getKnex, getServer } from '../singleton';
 
@@ -27,6 +29,7 @@ app.use('/', [
   pageRoutes,
   postRoutes,
   linksRoutes,
+  searchRoutes,
   seoRoutes,
   subscriberRoutes
 ]);
@@ -34,14 +37,14 @@ app.use('/', [
 app.get(['/', '/home'], async function (req, res) {
   const getHomeText = new PageQueryBuilder(knex).whereSlug('home').build();
   const getLatestDiaryEntry = new DiaryQueryBuilder(knex)
-    .whereStatus({ include: [DiaryStatic.STATUS.PUBLISHED] })
+    .whereStatus({ include: [DiaryStatus.PUBLISHED] })
     .getLatestEntry()
     .build();
   const getLatestReverie = new PostQueryBuilder(knex)
     .whereType({
-      include: [PostStatic.TYPE.REVERIE]
+      include: [PostType.REVERIE]
     })
-    .whereStatus({ include: [PostStatic.STATUS.PUBLISHED] })
+    .whereStatus({ include: [PostStatus.PUBLISHED] })
     .getLatestPost()
     .build();
 
@@ -55,8 +58,8 @@ app.get(['/', '/home'], async function (req, res) {
 
   if (latestReverie) {
     randomPosts = await new PostQueryBuilder(knex)
-      .whereType({ exclude: [PostStatic.TYPE.PAGE] })
-      .whereStatus({ include: [PostStatic.STATUS.PUBLISHED] })
+      .whereType({ exclude: [PostType.PAGE] })
+      .whereStatus({ include: [PostStatus.PUBLISHED] })
       .exceptId(latestReverie.id!)
       .withOrder({ order: QueryOrder.RANDOM })
       .withLimit(4)

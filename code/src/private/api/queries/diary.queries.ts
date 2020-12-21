@@ -6,9 +6,11 @@ const diaryFragments = gql`
     title
     date
     content
+    footnote
     slug
     status
     entryNumber
+    isFavourite
   }
 `;
 

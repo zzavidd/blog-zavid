@@ -16,13 +16,13 @@ import {
   SubscriberQueryBuilder,
   SubscriberStatic
 } from '../../../classes';
+import { debug } from '../../private/error';
 import {
   accounts,
   cloudinaryBaseUrl,
   copyright,
   domain
-} from '../../constants/settings';
-import { debug } from '../../private/error';
+} from '../../settings';
 import { getKnex } from '../singleton';
 
 const knex = getKnex();

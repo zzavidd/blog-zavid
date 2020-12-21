@@ -1,6 +1,6 @@
 import { assert } from '..';
 import { DiaryEntryBuilder, DiaryStatic, DiaryStatus } from '../../classes';
-import { zavidBirthday } from '../../src/constants/settings';
+import { zavidBirthday } from '../../src/settings';
 
 describe('Unit Tests: Diary', function () {
   describe('Object methods', function () {
@@ -9,9 +9,11 @@ describe('Unit Tests: Diary', function () {
       assert.hasAllKeys(diaryEntry, [
         'title',
         'content',
+        'footnote',
         'date',
         'status',
-        'entryNumber'
+        'entryNumber',
+        'isFavourite'
       ]);
       finish();
     });

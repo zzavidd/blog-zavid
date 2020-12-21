@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { DiaryDAO, DiaryStatic, ReactTextAreaChangeEvent } from 'classes';
 import { GenericForm } from 'classes/interfaces/super';
 import {
+  Checkbox,
   Field,
   FieldRow,
   Form,
@@ -15,11 +16,17 @@ import {
 } from 'src/components/form';
 import DatePicker, { DateType } from 'src/components/form/datepicker';
 import { Fader } from 'src/components/transitioner';
-import { Handlers } from 'src/constants/hooks';
+import { Handlers } from 'src/lib/hooks';
 
 const DiaryEntryForm = (props: DiaryForm) => {
   const { diaryEntry, handlers, isLoaded } = props;
-  const { handleText, handleSelection, handleTextSave, handleDate } = handlers;
+  const {
+    handleText,
+    handleCheck,
+    handleSelection,
+    handleTextSave,
+    handleDate
+  } = handlers;
 
   const dispatch = useDispatch();
 
@@ -36,6 +43,19 @@ const DiaryEntryForm = (props: DiaryForm) => {
                 handleTextSave(e as ReactTextAreaChangeEvent, dispatch)
               }
               placeholder={'Scribe your thoughts and feelings...'}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <Field>
+            <Label>Footnote:</Label>
+            <LongTextArea
+              name={'footnote'}
+              value={diaryEntry.footnote!}
+              onChange={(e: ReactTextAreaChangeEvent) =>
+                handleTextSave(e as ReactTextAreaChangeEvent, dispatch)
+              }
+              placeholder={'Add any footnotes to come after the signature...'}
             />
           </Field>
         </FieldRow>
@@ -60,7 +80,7 @@ const DiaryEntryForm = (props: DiaryForm) => {
           </Field>
         </FieldRow>
         <FieldRow>
-          <Field md={6}>
+          <Field md={4}>
             <Label>Status:</Label>
             <Select
               name={'status'}
@@ -69,13 +89,26 @@ const DiaryEntryForm = (props: DiaryForm) => {
               onChange={handleSelection}
             />
           </Field>
-          <Field md={6}>
+          <Field md={8}>
             <Label>Date:</Label>
             <DatePicker
               name={'date'}
               date={diaryEntry.date!}
-              onConfirm={(date: DateType) => handleDate(date as DateType, 'date')}
+              onConfirm={(date: DateType) =>
+                handleDate(date as DateType, 'date')
+              }
               placeholderText={'Select the date...'}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <Field sm={6}>
+            <Label>Favourite?</Label>
+            <Checkbox
+              name={'isFavourite'}
+              label={'This diary entry is a favourite.'}
+              checked={diaryEntry.isFavourite!}
+              onChange={handleCheck}
             />
           </Field>
         </FieldRow>

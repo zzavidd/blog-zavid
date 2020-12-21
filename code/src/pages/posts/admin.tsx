@@ -1,4 +1,5 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
+import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { zText } from 'zavid-modules';
@@ -22,7 +23,7 @@ import Tabler, {
   TablerType
 } from 'src/components/tabler';
 import { VanillaLink } from 'src/components/text';
-import BottomToolbar from 'src/lib/helpers/pages/posts/toolbar';
+import BottomToolbar from 'src/lib/pages/posts/toolbar';
 import { updatePostFilterSettings } from 'src/lib/reducers';
 import {
   DELETE_POST_QUERY,
@@ -30,7 +31,7 @@ import {
 } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/pages/Posts.module.scss';
 
-const PostsAdmin = () => {
+const PostAdmin = () => {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({} as PostDAO);
   const [isLoaded, setLoaded] = useState(false);
@@ -221,7 +222,11 @@ const DeleteButton = ({
   );
 };
 
-export default PostsAdmin;
+PostAdmin.getInitialProps = async ({ query }: NextPageContext) => {
+  return { ...query };
+};
+
+export default PostAdmin;
 
 interface LinkButton {
   post: PostDAO;

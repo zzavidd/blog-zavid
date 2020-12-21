@@ -1,4 +1,5 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
+import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
@@ -19,7 +20,7 @@ import {
   DELETE_DIARY_QUERY
 } from 'src/private/api/queries/diary.queries';
 
-export default () => {
+const DiaryAdmin = () => {
   const [diaryEntries, setDiaryEntries] = useState([]);
   const [selectedDiaryEntry, setSelectedDiaryEntry] = useState({} as DiaryDAO);
   const [isLoaded, setLoaded] = useState(false);
@@ -81,6 +82,7 @@ export default () => {
             new TablerColumnHeader('#', { centerAlign: true }),
             new TablerColumnHeader('Date'),
             new TablerColumnHeader('Title'),
+            new TablerColumnHeader(<Icon name={'star'} key={0} />, { centerAlign: true }),
             new TablerColumnHeader('Status'),
             new TablerColumnHeader('Content')
           ]}
@@ -99,6 +101,11 @@ export default () => {
                 icon: 'calendar-alt'
               }),
               new TablerItemCell(diaryEntry.title, { icon: 'heading' }),
+              new TablerItemCell(<Icon name={'star'} key={0} />, {
+                showOnCondition: {
+                  condition: diaryEntry.isFavourite!
+                }
+              }),
               new TablerItemCell(diaryEntry.status, { icon: 'lock' }),
               new TablerItemCell(content, { hideOnMobile: true }),
               new TablerItemCell(
@@ -121,7 +128,7 @@ export default () => {
               )
             ];
           })}
-          distribution={'6% 20% 1fr 10% 30% 4% 4% 4%'}
+          distribution={'6% 20% 1fr 6% 10% 30% 4% 4% 4%'}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>
@@ -180,6 +187,12 @@ const DeleteButton = ({
     </InvisibleButton>
   );
 };
+
+DiaryAdmin.getInitialProps = async ({ query }: NextPageContext) => {
+  return { ...query };
+};
+
+export default DiaryAdmin;
 
 interface LinkButton {
   diaryEntry: DiaryDAO;

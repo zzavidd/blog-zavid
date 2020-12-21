@@ -4,6 +4,7 @@ import { zDate } from 'zavid-modules';
 
 import { DiaryDAO } from 'classes';
 import { BackButton, AdminButton } from 'src/components/button';
+import { Icon } from 'src/components/icon';
 import { Signature } from 'src/components/image';
 import { Spacer, Toolbar } from 'src/components/layout';
 import ShareBlock from 'src/components/share';
@@ -28,10 +29,14 @@ const DiarySingle = ({
           Diary Entry #{diaryEntry.entryNumber}: {diaryEntry.title}
         </Title>
         <div className={css['diary-single-date']}>{date}</div>
+        <FavouriteNotice diaryEntry={diaryEntry} />
         <Paragraph className={css['post-single-content']}>
           {diaryEntry.content}
         </Paragraph>
         <Signature />
+        <Paragraph className={css['post-single-footnote']}>
+          {diaryEntry.footnote}
+        </Paragraph>
         <Timeline
           type={TimelineType.DIARY}
           previous={{
@@ -59,6 +64,16 @@ const DiarySingle = ({
         )}
       </Toolbar>
     </Spacer>
+  );
+};
+
+const FavouriteNotice = ({ diaryEntry }: { diaryEntry: DiaryDAO }) => {
+  if (!diaryEntry.isFavourite) return null;
+  return (
+    <div className={css['diary-single-favourite']}>
+      <Icon name={'star'} />
+      <span>{'This diary entry is a personal Zavid favourite.'}</span>
+    </div>
   );
 };
 

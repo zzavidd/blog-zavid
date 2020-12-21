@@ -4,7 +4,7 @@ import { SubscriberDAO, SubscriptionsMapping } from 'classes';
 import { GenericForm } from 'classes/interfaces/super';
 import { Form, FieldRow, Field, Label, TextInput } from 'src/components/form';
 import { Fader } from 'src/components/transitioner';
-import { Handlers } from 'src/constants/hooks';
+import { Handlers } from 'src/lib/hooks';
 
 import PreferenceChecks from './preferences';
 

@@ -1,8 +1,8 @@
 @import './Diary.module';
 
 .post-single {
-  @include responsive(width, 40%, $xxl: 50%, $xl: 60%, $lg: 70%, $md: 90%, $sm: 100%);
   margin: 0 auto;
+  max-width: 650px;
   padding: 1.8em 1.2em;
 }
 
@@ -19,6 +19,11 @@
 
 .post-single-content {
   @include responsive(font-size, 1.3em, $sm: 1em);
+}
+
+.post-single-footnote {
+  @include responsive(font-size, 1.3em, $sm: 1em);
+  margin-top: 1em;
 }
 
 .post-single-image-container {

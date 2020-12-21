@@ -9,7 +9,7 @@ import {
 
 import { getApp } from './singleton';
 
-import { domain } from '../constants/settings';
+import { domain } from '../settings';
 
 const isDev = process.env.NODE_ENV !== 'production';
 const MemoryStore = memoryStore(expressSession);

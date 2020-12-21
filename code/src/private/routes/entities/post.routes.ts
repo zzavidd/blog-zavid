@@ -9,7 +9,7 @@ import {
   PostStatus,
   PostType
 } from '../../../../classes';
-import { siteTitle } from '../../../constants/settings';
+import { siteTitle } from '../../../settings';
 import { PostService } from '../../api/service';
 import { ERRORS, renderErrorPage } from '../../error';
 import { getKnex, getServer } from '../../singleton';
@@ -139,7 +139,7 @@ router.get(
     ]);
 
     return server.render(req, res, '/posts/single', {
-      title: `${epistle.title} | ${siteTitle}`,
+      title: `#${epistle.typeId}: ${epistle.title} | ${siteTitle}`,
       description: epistle.excerpt,
       ogUrl: `/epistles/${slug}`,
       cardImage: epistle.image as string,

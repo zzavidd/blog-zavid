@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'request';
 
-import { cloudinaryBaseUrl } from '../../constants/settings';
+import { cloudinaryBaseUrl } from '../../../settings';
 const router = express.Router();
 
 router.get('/resources/university-thrival-guide', function (req, res) {
