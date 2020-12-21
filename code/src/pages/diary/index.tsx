@@ -60,7 +60,7 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
           </Paragraph>
         </div>
         <DiarySearch />
-        <DiaryGrid diaryEntries={diaryEntries} />
+        <DiaryGrid diaryEntries={diaryEntries} isLoading={!isLoaded} />
       </div>
       <Toolbar spaceItems={true}>
         {isAuthenticated() && (
@@ -71,11 +71,13 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
   );
 };
 
-const DiaryGrid = ({ diaryEntries }: DiaryGrid) => {
+const DiaryGrid = ({ diaryEntries, isLoading }: DiaryGridProps) => {
+  const message = isLoading
+    ? 'Loading diary entries...'
+    : 'No diary entries found.';
+
   if (!diaryEntries.length) {
-    return (
-      <div className={css['diary-index-error']}>No diary entries found.</div>
-    );
+    return <div className={css['diary-index-error']}>{message}</div>;
   }
   return (
     <div className={css['diary-grid']}>
@@ -199,8 +201,9 @@ type DiaryIndex = {
   diaryIntro: string;
 };
 
-type DiaryGrid = {
+type DiaryGridProps = {
   diaryEntries: DiaryDAO[];
+  isLoading: boolean;
 };
 
 type DiaryEntry = {
