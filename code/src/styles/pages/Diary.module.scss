@@ -31,7 +31,6 @@
   @include responsive(padding, 1.5em, $md: 1em 0);
   border-radius: 15px;
   cursor: pointer;
-  position: relative;
 }
 
 .diary-entry {
@@ -67,6 +66,7 @@
 .diary-entry-header {
   align-items: center;
   display: flex;
+  justify-content: space-between;
 }
 
 .diary-entry-title {
@@ -86,8 +86,6 @@
 .diary-entry-star {
   @include responsive(font-size, 2em, $xxl: 1.5em);
   margin: 0 0.4em;
-  position: absolute;
-  right: 0%;
 }
 
 .diary-entry-readmore {

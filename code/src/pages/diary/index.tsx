@@ -13,13 +13,13 @@ import {
 import { alert } from 'src/components/alert';
 import { AdminButton, ConfirmButton } from 'src/components/button';
 import { SearchBar } from 'src/components/form';
+import { Icon } from 'src/components/icon';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
 import { Fader } from 'src/components/transitioner';
 import { isAuthenticated } from 'src/lib/cookies';
 import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
 import css from 'src/styles/pages/Diary.module.scss';
-import { Icon } from 'src/components/icon';
 
 const DIARY_HEADING = `Zavid's Diary`;
 
