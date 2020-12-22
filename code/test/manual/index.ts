@@ -1,7 +1,7 @@
 import { updateDiary } from './diary.manual';
 import { raffleSubscribers } from './subscriber.manual';
 
-import { rl } from '..';
+import { rl } from '../constants';
 
 showMenu();
 

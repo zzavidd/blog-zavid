@@ -4,7 +4,7 @@ import { ingestDiary } from './entities/diary.ingest';
 import { ingestEpistles, ingestReveries } from './entities/post.ingest';
 import { ingestSubscribers } from './entities/subscriber.ingest';
 
-import { rl } from '..';
+import { rl } from '../constants';
 
 const options: Record<string, () => Promise<void>> = {
   1: ingestReveries,
