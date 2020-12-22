@@ -15,7 +15,11 @@ type DiaryEntry {
 }
 
 extend type Query {
-  diaryEntries(sort: DiarySortOptions, status: DiaryStatusOptions): [DiaryEntry]
+  diaryEntries(
+    sort: DiarySortOptions
+    status: DiaryStatusOptions
+    onlyFavourites: Boolean
+  ): [DiaryEntry]
   diaryEntry(id: Int!): DiaryEntry
 }
 

@@ -112,10 +112,40 @@
 }
 
 .diary-search {
-  @include responsive(width, 40%, $xl: 60, $sm: 100%);
   align-items: center;
   display: flex;
   margin: 1em auto 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+.diary-filters {
+  align-items: center;
+  display: flex;
+  margin: 1em auto 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+.diary-check-favs {
+  font-size: 0.8em;
+  padding-left: 1.6em;
+
+  .diary-check-favs-box {
+    $size: 13px;
+    border-radius: 2px;
+    height: $size;
+    width: $size;
+  }
+
+  .diary-check-favs,
+  .diary-check-favs-box::after {
+    border-width: 0 2px 2px 0;
+    height: 9px;
+    left: 5px;
+    top: 1px;
+    width: 3px;
+  }
 }
 
 $radius: 20px;

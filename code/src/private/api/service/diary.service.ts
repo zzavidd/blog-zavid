@@ -22,11 +22,13 @@ const ENTITY_NAME = 'diary entry';
  */
 export const getDiaryEntries = ({
   sort,
-  status
+  status,
+  onlyFavourites
 }: GetDiaryOptions): Promise<DiaryDAO[]> => {
   return TryWrapper(async () => {
     const diaryEntries = await new DiaryQueryBuilder(knex)
       .whereStatus(status)
+      .whereIsFavourite(onlyFavourites)
       .withOrder(sort)
       .build();
     return diaryEntries;
@@ -120,6 +122,7 @@ export const clearDiary = () => {
 export type GetDiaryOptions = {
   sort: QuerySort;
   status: DiaryStatusFilters;
+  onlyFavourites: boolean;
 };
 
 export type GetOrDeleteDiaryEntryOptions = {

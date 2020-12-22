@@ -12,7 +12,7 @@ import {
 } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton, ConfirmButton } from 'src/components/button';
-import { SearchBar } from 'src/components/form';
+import { Checkbox, SearchBar } from 'src/components/form';
 import { Icon } from 'src/components/icon';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
@@ -22,11 +22,16 @@ import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
 import css from 'src/styles/pages/Diary.module.scss';
 
 const DIARY_HEADING = `Zavid's Diary`;
+const PARAM_ONLY_FAVOURITES = 'onlyFavourites';
 
 const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
+  const url = new URL(location.href);
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+
   const [diaryEntries, setDiaryEntries] = useState<DiaryDAO[]>([]);
   const [isLoaded, setLoaded] = useState(false);
+
+  const onlyFavs = url.searchParams.get(PARAM_ONLY_FAVOURITES) === 'true';
 
   const { data, error: queryError, loading: queryLoading } = useQuery(
     GET_DIARY_QUERY,
@@ -36,7 +41,8 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
           field: 'date',
           order: QueryOrder.DESCENDING
         },
-        status: { include: [DiaryStatus.PUBLISHED] }
+        status: { include: [DiaryStatus.PUBLISHED] },
+        onlyFavourites: onlyFavs
       }
     }
   );
@@ -59,7 +65,7 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
             {diaryIntro}
           </Paragraph>
         </div>
-        <DiarySearch />
+        <DiarySearch url={url} onlyFavs={onlyFavs} />
         <DiaryGrid diaryEntries={diaryEntries} isLoading={!isLoaded} />
       </div>
       <Toolbar spaceItems={true}>
@@ -143,7 +149,7 @@ const FavouriteStar = ({ diaryEntry }: { diaryEntry: DiaryDAO }) => {
   );
 };
 
-const DiarySearch = () => {
+const DiarySearch = ({ url, onlyFavs }: DiarySearchProps) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   /**
@@ -162,26 +168,44 @@ const DiarySearch = () => {
   };
 
   return (
-    <div className={css['diary-search']}>
-      <SearchBar
-        value={searchTerm}
-        placeholder={'Search diary entries...'}
-        onChange={searchDiaryEntries}
-        className={css['diary-search-bar']}
-        onClearInput={clearInput}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            launchSearch(searchTerm);
-          }
-        }}
-        withRightSpace={false}
-      />
-      <ConfirmButton
-        className={css['diary-search-button']}
-        onClick={() => launchSearch(searchTerm)}>
-        Search
-      </ConfirmButton>
-    </div>
+    <>
+      <div className={css['diary-search']}>
+        <SearchBar
+          value={searchTerm}
+          placeholder={'Search diary entries...'}
+          onChange={searchDiaryEntries}
+          className={css['diary-search-bar']}
+          onClearInput={clearInput}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              launchSearch(searchTerm);
+            }
+          }}
+          withRightSpace={false}
+        />
+        <ConfirmButton
+          className={css['diary-search-button']}
+          onClick={() => launchSearch(searchTerm)}>
+          Search
+        </ConfirmButton>
+      </div>
+      <div className={css['diary-filters']}>
+        <Checkbox
+          className={css['diary-check-favs']}
+          boxClassName={css['diary-check-favs-box']}
+          label={'Only favourites'}
+          checked={onlyFavs}
+          onChange={(e) => {
+            const isChecked = e.target.checked;
+            url.searchParams.set(
+              PARAM_ONLY_FAVOURITES,
+              JSON.stringify(isChecked)
+            );
+            location.href = url.toString();
+          }}
+        />
+      </div>
+    </>
   );
 };
 
@@ -199,6 +223,11 @@ export default DiaryIndex;
 
 type DiaryIndex = {
   diaryIntro: string;
+};
+
+type DiarySearchProps = {
+  url: URL;
+  onlyFavs: boolean;
 };
 
 type DiaryGridProps = {

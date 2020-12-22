@@ -18,8 +18,9 @@ export const GET_DIARY_QUERY = gql`
   query GetAllDiaryEntries(
     $sort: DiarySortOptions
     $status: DiaryStatusOptions
+    $onlyFavourites: Boolean
   ) {
-    diaryEntries(sort: $sort, status: $status) {
+    diaryEntries(sort: $sort, status: $status, onlyFavourites: $onlyFavourites) {
       ...DiaryFields
     }
   }
