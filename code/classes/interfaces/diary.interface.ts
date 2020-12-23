@@ -9,6 +9,7 @@ export interface DiaryDAO extends GenericDAO {
   entryNumber?: number;
   slug?: string;
   isFavourite?: boolean;
+  tags?: string[] | string
 }
 
 export enum DiaryStatus {

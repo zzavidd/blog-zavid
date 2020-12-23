@@ -13,7 +13,8 @@ describe('Unit Tests: Diary', function () {
         'date',
         'status',
         'entryNumber',
-        'isFavourite'
+        'isFavourite',
+        'tags'
       ]);
       finish();
     });
@@ -38,6 +39,12 @@ describe('Unit Tests: Diary', function () {
     it('Random status', function (finish) {
       const randomStatus: DiaryStatus = DiaryStatic.randomStatus();
       assert.isTrue(Object.values(DiaryStatus).includes(randomStatus));
+      finish();
+    });
+
+    it('Random tags', function (finish) {
+      const tags = DiaryStatic.generateRandomTags();
+      assert.isArray(tags);
       finish();
     });
   });

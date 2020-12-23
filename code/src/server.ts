@@ -42,6 +42,8 @@ if (!process.env.MYSQL_NAME?.includes('test')){
   if (isStaging){
     throw new Error(`Failsafe disallows tests being run against production data.`);
   }
+} else {
+  console.warn('Using development data.'.green);
 }
 
 // If not in CI environment, start server normally.

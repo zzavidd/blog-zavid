@@ -27,6 +27,7 @@ describe('Service Tests: Diary', function () {
         const diaryEntry = new DiaryEntryBuilder().random().build();
         const createdDiaryEntry = await createDiaryEntry(diaryEntry);
         const readDiaryEntry = await getSingleDiaryEntry(createdDiaryEntry.id);
+
         compareDiaryEntries(diaryEntry, readDiaryEntry);
         await deleteDiaryEntry(readDiaryEntry.id!);
       })

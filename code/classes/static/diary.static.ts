@@ -1,4 +1,5 @@
-import { zDate } from 'zavid-modules';
+import faker from 'faker';
+import { zDate, zNumber } from 'zavid-modules';
 
 import { randomEnumValue } from '../helper';
 import { DiaryDAO, DiaryStatus } from '../interfaces';
@@ -7,12 +8,34 @@ export class DiaryStatic {
   static STATUS = DiaryStatus;
   static STATUSES = Object.values(DiaryStatus);
 
-  static generateSlug(diaryEntry: DiaryDAO): string{
+  static generateSlug(diaryEntry: DiaryDAO): string {
     return zDate.formatISODate(diaryEntry.date as string);
+  }
+
+  static generateRandomTags(): string[] {
+    const tags = [];
+    for (let i = 0; i < zNumber.generateRandom(5, 10); i++) {
+      tags.push(faker.random.word().toLowerCase());
+    }
+    return tags;
   }
 
   static randomStatus(): DiaryStatus {
     return randomEnumValue(DiaryStatus);
+  }
+
+  static parse(entry: DiaryDAO): DiaryDAO {
+    if (!entry.tags) {
+      entry.tags = [];
+      return entry;
+    }
+
+    entry.tags = JSON.parse(entry.tags.toString());
+    return entry;
+  }
+
+  static parseBatch(entries: DiaryDAO[]): DiaryDAO[] {
+    return entries.map((entry: DiaryDAO) => this.parse(entry));
   }
 
   static isProtected(input: DiaryDAO): boolean {
