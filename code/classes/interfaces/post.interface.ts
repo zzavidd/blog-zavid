@@ -1,4 +1,4 @@
-import { GenericDAO } from "./super";
+import { GenericDAO } from './super';
 
 export interface PostDAO extends GenericDAO {
   title?: string;
@@ -8,13 +8,14 @@ export interface PostDAO extends GenericDAO {
   status?: PostStatus;
   excerpt?: string;
   slug?: string | null;
+  tags?: string | string[];
   datePublished?: string | Date;
   image?: PostImage | string;
   contentImages?: PostContentImages;
   domainId?: number;
   domainTitle?: string;
-  domainType?: PostType
-  domainSlug?: string
+  domainType?: PostType;
+  domainSlug?: string;
 }
 
 export interface PostImage {
@@ -24,7 +25,7 @@ export interface PostImage {
 }
 
 export interface PostContentImageMapping {
-  [key: string]: PostImage
+  [key: string]: PostImage;
 }
 
 export interface RandomPostOptions {
@@ -48,4 +49,9 @@ export enum PostType {
   PAGE = 'Page'
 }
 
-export type PostContentImages = PostImage[] | string[] | PostContentImageMapping | string | undefined;
+export type PostContentImages =
+  | PostImage[]
+  | string[]
+  | PostContentImageMapping
+  | string
+  | undefined;

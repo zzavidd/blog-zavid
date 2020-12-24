@@ -219,7 +219,7 @@
     width: 0;
 
     &:checked ~ .checkbox-mark {
-      background-color: $color;
+      background-color: $color !important;
 
       /// Show the checkmark when checked.
       &::after {
@@ -232,7 +232,8 @@
 /* Create a custom checkbox */
 .checkbox-mark {
   $size: 20px;
-  background-color: #eee;
+
+  @include themer(&, background-color, $light: #c3c3c3, $dark: #eee);
   border-radius: 5px;
   height: $size;
   left: 0;

@@ -18,6 +18,7 @@ import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
 import { Fader } from 'src/components/transitioner';
 import { isAuthenticated } from 'src/lib/cookies';
+import TagBlock from 'src/lib/pages/diary/tags';
 import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
 import css from 'src/styles/pages/Diary.module.scss';
 
@@ -107,13 +108,13 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
   });
   const link = `/diary/${diaryEntry.entryNumber}`;
   return (
-    <VanillaLink href={link}>
-      <Fader
-        determinant={isLoaded}
-        duration={750}
-        delay={idx * 50 + 50}
-        className={css[`diary-entry-${theme}`]}
-        postTransitions={'background-color .4s ease'}>
+    <Fader
+      determinant={isLoaded}
+      duration={750}
+      delay={idx * 50 + 50}
+      className={css[`diary-entry-${theme}`]}
+      postTransitions={'background-color .4s ease'}>
+      <VanillaLink href={link}>
         <div className={css['diary-entry-header']}>
           <div>
             <div className={css['diary-entry-date']}>{date}</div>
@@ -133,12 +134,13 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
           morelink={link}>
           {diaryEntry.content}
         </Paragraph>
-      </Fader>
-    </VanillaLink>
+      </VanillaLink>
+      <TagBlock diaryEntry={diaryEntry} limit={6} />
+    </Fader>
   );
 });
 
-const FavouriteStar = ({ diaryEntry }: { diaryEntry: DiaryDAO }) => {
+const FavouriteStar = ({ diaryEntry }: DiaryCommonProps) => {
   if (!diaryEntry.isFavourite) return null;
   return (
     <Icon
@@ -239,3 +241,5 @@ type DiaryEntry = {
   diaryEntry: DiaryDAO;
   idx: number;
 };
+
+type DiaryCommonProps = { diaryEntry: DiaryDAO };

@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
-import { zDate } from 'zavid-modules';
+import { zDate, zString } from 'zavid-modules';
 
 import { AlertType, reportError, setAlert } from 'src/components/alert';
 import { ConfirmModal } from 'src/components/modal';
@@ -35,7 +35,8 @@ const DiaryCrud = ({
     date: new Date(),
     status: DiaryStatus.PROTECTED,
     entryNumber: latestEntryNumber + 1,
-    isFavourite: false
+    isFavourite: false,
+    tags: ''
   } as DiaryDAO);
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -65,6 +66,13 @@ const DiaryCrud = ({
   /** Populate the form with diary entry details. */
   const populateForm = () => {
     if (isCreateOperation) return;
+
+    // Convert tags to CSV string.
+    if (serverDiaryEntry.tags) {
+      const tags = JSON.parse(serverDiaryEntry.tags as string) || [];
+      serverDiaryEntry.tags = zString.convertArrayToCsv(tags);
+    }
+
     setDiaryEntry(serverDiaryEntry);
   };
 
@@ -152,7 +160,17 @@ const buildPayload = (
   isPublish: boolean,
   isCreateOperation: boolean
 ): DiaryRequest => {
-  const { id, title, content, footnote, status, date, entryNumber, isFavourite } = clientDiaryEntry;
+  const {
+    id,
+    title,
+    content,
+    footnote,
+    status,
+    date,
+    entryNumber,
+    isFavourite,
+    tags
+  } = clientDiaryEntry;
 
   const diaryEntry = new DiaryEntryBuilder()
     .withTitle(title)
@@ -162,6 +180,7 @@ const buildPayload = (
     .withStatus(status)
     .withEntryNumber(entryNumber)
     .setIsFavourite(isFavourite)
+    .withTags(zString.convertCsvToArray(tags as string))
     .build();
 
   const payload: DiaryRequest = { diaryEntry, isPublish };

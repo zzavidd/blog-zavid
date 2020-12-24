@@ -21,7 +21,9 @@ const server = getServer();
 router.get('/search', async function (req, res) {
   const searchTerm = req.query.term as string;
   const onlyDiary = req.query.onlyDiary === 'true';
-  const entities = await getResultEntities(searchTerm, { includePosts: !onlyDiary });
+  const entities = await getResultEntities(searchTerm, {
+    includePosts: !onlyDiary
+  });
 
   const title = searchTerm ? `Results for '${searchTerm}'` : `Search`;
 
@@ -42,7 +44,7 @@ export async function getResultEntities(
   const { includePosts = true } = options;
 
   searchTerm = searchTerm.toLowerCase();
-  const fields: Array<keyof FilterField> = ['title', 'content'];
+  const fields: Array<keyof FilterField> = ['title', 'content', 'tags'];
 
   // Filter entities by matching search term.
   const filterEntities = (entry: PostDAO | DiaryDAO) => {
@@ -145,6 +147,7 @@ export default router;
 type FilterField = {
   title: string;
   content: string;
+  tags: string;
 };
 
 type GetResultEntityOptions = {

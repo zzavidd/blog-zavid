@@ -13,9 +13,10 @@ export class DiaryStatic {
   }
 
   static generateRandomTags(): string[] {
-    const tags = [];
+    const tags: string[] = [];
     for (let i = 0; i < zNumber.generateRandom(5, 10); i++) {
-      tags.push(faker.random.word().toLowerCase());
+      const word = faker.random.word().toLowerCase().replace('-', '');
+      if (!tags.includes(word)) tags.push(word);
     }
     return tags;
   }
