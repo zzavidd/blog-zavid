@@ -50,7 +50,7 @@ export async function getResultEntities(
   const filterEntities = (entry: PostDAO | DiaryDAO) => {
     const predicate = (field: keyof FilterField) => {
       const value = entry[field] as string;
-      return value.toLowerCase().includes(searchTerm);
+      return value && value.toLowerCase().includes(searchTerm);
     };
     return fields.some(predicate);
   };
