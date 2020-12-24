@@ -31,7 +31,7 @@ export const getDiaryEntries = ({
       .whereIsFavourite(onlyFavourites)
       .withOrder(sort)
       .build();
-    return diaryEntries;
+    return DiaryStatic.parseBatch(diaryEntries);
   });
 };
 
@@ -45,7 +45,7 @@ export const getSingleDiaryEntry = async ({
   return TryWrapper(async () => {
     const [diaryEntry] = await new DiaryQueryBuilder(knex).whereId(id).build();
     if (!diaryEntry) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
-    return diaryEntry;
+    return DiaryStatic.parse(diaryEntry);
   });
 };
 
@@ -59,6 +59,7 @@ export const createDiaryEntry = async ({
   isPublish
 }: CreateDiaryEntryOptions): Promise<DiaryDAO> => {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
+  diaryEntry.tags = JSON.stringify(diaryEntry.tags);
   const shouldNotify = isPublish && emailsOn;
 
   return TryWrapper(async () => {
@@ -83,6 +84,7 @@ export const updateDiaryEntry = async ({
   isPublish
 }: UpdateDiaryEntryOptions): Promise<DiaryDAO> => {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
+  diaryEntry.tags = JSON.stringify(diaryEntry.tags);
   const shouldNotify = isPublish && emailsOn;
 
   return TryWrapper(async () => {

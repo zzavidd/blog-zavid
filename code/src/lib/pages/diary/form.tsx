@@ -12,6 +12,7 @@ import {
   LongTextArea,
   NumberInput,
   Select,
+  ShortTextArea,
   TextInput
 } from 'src/components/form';
 import DatePicker, { DateType } from 'src/components/form/datepicker';
@@ -52,9 +53,7 @@ const DiaryEntryForm = (props: DiaryForm) => {
             <LongTextArea
               name={'footnote'}
               value={diaryEntry.footnote!}
-              onChange={(e: ReactTextAreaChangeEvent) =>
-                handleTextSave(e as ReactTextAreaChangeEvent, dispatch)
-              }
+              onChange={handleText}
               placeholder={'Add any footnotes to come after the signature...'}
             />
           </Field>
@@ -109,6 +108,17 @@ const DiaryEntryForm = (props: DiaryForm) => {
               label={'This diary entry is a favourite.'}
               checked={diaryEntry.isFavourite!}
               onChange={handleCheck}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <Field>
+            <Label>Tags:</Label>
+            <ShortTextArea
+              name={'tags'}
+              value={diaryEntry.tags! as string}
+              onChange={handleText}
+              placeholder={'Add tags to index the entry...'}
             />
           </Field>
         </FieldRow>

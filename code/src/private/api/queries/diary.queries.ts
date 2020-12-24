@@ -11,6 +11,7 @@ const diaryFragments = gql`
     status
     entryNumber
     isFavourite
+    tags
   }
 `;
 
@@ -20,7 +21,11 @@ export const GET_DIARY_QUERY = gql`
     $status: DiaryStatusOptions
     $onlyFavourites: Boolean
   ) {
-    diaryEntries(sort: $sort, status: $status, onlyFavourites: $onlyFavourites) {
+    diaryEntries(
+      sort: $sort
+      status: $status
+      onlyFavourites: $onlyFavourites
+    ) {
       ...DiaryFields
     }
   }

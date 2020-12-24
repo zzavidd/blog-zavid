@@ -1,7 +1,7 @@
 import * as faker from 'faker';
 import { zDate, zString } from 'zavid-modules';
 
-import { DiaryStatic, DiaryStatus, DiaryDAO } from '../../index';
+import { DiaryDAO, DiaryStatic, DiaryStatus } from '../../index';
 
 /** The class for Diary objects and methods. */
 export class DiaryEntryBuilder {
@@ -32,8 +32,8 @@ export class DiaryEntryBuilder {
     return this;
   }
 
-  setIsFavourite(isFavourite?: boolean): DiaryEntryBuilder {
-    this.entry.isFavourite = new Boolean(isFavourite!).valueOf();
+  withTags(tags?: string[]): DiaryEntryBuilder {
+    this.entry.tags = tags!;
     return this;
   }
 
@@ -44,16 +44,34 @@ export class DiaryEntryBuilder {
     return this;
   }
 
+  setIsFavourite(isFavourite?: boolean): DiaryEntryBuilder {
+    this.entry.isFavourite = new Boolean(isFavourite!).valueOf();
+    return this;
+  }
+
   random(): DiaryEntryBuilder {
-    this.entry = {
-      title: zString.toTitleCase(faker.company.catchPhraseNoun()),
-      content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
-      footnote: faker.lorem.paragraphs(1).replace(/\n/g, '\n\n'),
-      date: zDate.formatISODate(faker.date.past()),
-      status: DiaryStatic.randomStatus(),
-      entryNumber: faker.random.number(),
-      isFavourite: Math.random() < 0.5
-    };
+    const title = zString.toTitleCase(faker.company.catchPhraseNoun());
+
+    this.entry = this.withTitle(title)
+      .withContent(faker.lorem.paragraphs().replace(/\n/g, '\n\n'))
+      .withFootnote(faker.lorem.paragraphs(1))
+      .withDate(zDate.formatISODate(faker.date.past()))
+      .withStatus(DiaryStatic.randomStatus())
+      .withEntryNumber(faker.random.number())
+      .withRandomFavFlag()
+      .withRandomTags()
+      .build();
+      
+    return this;
+  }
+
+  withRandomFavFlag(): DiaryEntryBuilder {
+    this.entry.isFavourite = Math.random() < 0.5;
+    return this;
+  }
+
+  withRandomTags(): DiaryEntryBuilder {
+    this.entry.tags = DiaryStatic.generateRandomTags();
     return this;
   }
 

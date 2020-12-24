@@ -11,6 +11,7 @@ import ShareBlock from 'src/components/share';
 import { Paragraph, Title, Divider } from 'src/components/text';
 import Timeline, { TimelineType } from 'src/components/timeline';
 import { isAuthenticated } from 'src/lib/cookies';
+import TagBlock from 'src/lib/pages/diary/tags';
 import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Posts.module.scss';
 
@@ -48,6 +49,7 @@ const DiarySingle = ({
             label: `Diary Entry #${nextDiaryEntry.entryNumber}: ${nextDiaryEntry.title}`
           }}
         />
+        <TagBlock diaryEntry={diaryEntry} className={css['diary-single-tags']} />
         <Divider />
         <ShareBlock
           headline={'Share This Diary Entry'}

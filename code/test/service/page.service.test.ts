@@ -27,6 +27,7 @@ describe('Service Tests: Page', function () {
         const page = new PageBuilder().random().build();
         const createdPage = await createPage(page);
         const readPage = await getSinglePage(createdPage.id);
+
         comparePages(page, readPage);
         await deletePage(readPage.id!);
       })

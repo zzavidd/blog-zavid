@@ -12,6 +12,7 @@ type DiaryEntry {
   status: DiaryStatus
   entryNumber: Int
   isFavourite: Boolean
+  tags: [String]
 }
 
 extend type Query {
@@ -68,4 +69,5 @@ input DiaryInput {
   status: DiaryStatus
   entryNumber: Int
   isFavourite: Boolean
+  tags: [String]
 }

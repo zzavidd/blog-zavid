@@ -77,12 +77,15 @@ export const compareDiaryEntries = (
   response: DiaryDAO
 ): void => {
   assert.strictEqual(request.content, response.content);
+  assert.strictEqual(request.footnote, response.footnote);
   assert.strictEqual(request.status, response.status);
   assert.strictEqual(DiaryStatic.generateSlug(request), response.slug);
   assert.strictEqual(
     new Date(request.date as string).getUTCMilliseconds,
     new Date(parseInt(response.date as string)).getUTCMilliseconds
   );
+  assert.strictEqual(request.isFavourite, response.isFavourite);
+  assert.deepStrictEqual(request.tags, response.tags);
 };
 
 interface MutateDiaryOptions {

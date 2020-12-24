@@ -24,6 +24,9 @@ export async function ingestDiary() {
       .withStatus(DiaryStatus.PUBLISHED)
       .withDate(zDate.formatISODate(refDate))
       .withContent(faker.lorem.paragraphs(zNumber.generateRandom(3, 5)))
+      .withFootnote(faker.lorem.paragraph())
+      .withRandomFavFlag()
+      .withRandomTags()
       .build();
 
     promises.push(
