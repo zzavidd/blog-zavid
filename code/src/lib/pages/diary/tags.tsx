@@ -1,32 +1,39 @@
 import classnames from 'classnames';
 import React from 'react';
+import { zString } from 'zavid-modules';
 
-import { DiaryDAO } from 'classes';
 import { VanillaLink } from 'src/components/text';
 import css from 'src/styles/pages/Posts.module.scss';
 
 export default ({
-  diaryEntry,
+  tags,
   limit,
   className,
-  tagClassName
+  tagClassName,
+  asCSV
 }: DiaryTagProps) => {
-  if (!diaryEntry.tags) return null;
+  if (!tags) return null;
 
-  let tags = [];
+  let tagsList = [];
 
-  if (typeof diaryEntry.tags === 'string') {
-    tags = JSON.parse(diaryEntry.tags).slice(0, limit);
+  if (typeof tags === 'string') {
+    if (asCSV) {
+      tagsList = zString.convertCsvToArray(tags).slice(0, limit);
+    } else {
+      tagsList = JSON.parse(tags).slice(0, limit);
+    }
   } else {
-    tags = (diaryEntry.tags as string[]).slice(0, limit);
+    tagsList = (tags as string[]).slice(0, limit);
   }
 
   return (
     <div className={classnames(css['post-tag-block'], className)}>
-      {tags.map((tag: string, key: number) => {
+      {tagsList.map((tag: string, key: number) => {
         return (
           <VanillaLink href={`/search?term=${tag}`} key={key}>
-            <span className={classnames(css[`post-tag`], tagClassName)}>#{tag}</span>
+            <span className={classnames(css[`post-tag`], tagClassName)}>
+              #{tag}
+            </span>
           </VanillaLink>
         );
       })}
@@ -35,8 +42,9 @@ export default ({
 };
 
 type DiaryTagProps = {
-  diaryEntry: DiaryDAO;
+  tags: string | string[];
   limit?: number;
   className?: string;
   tagClassName?: string;
+  asCSV?: boolean;
 };

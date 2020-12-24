@@ -135,7 +135,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
           {diaryEntry.content}
         </Paragraph>
       </VanillaLink>
-      <TagBlock diaryEntry={diaryEntry} limit={6} />
+      <TagBlock tags={diaryEntry.tags!} limit={6} />
     </Fader>
   );
 });

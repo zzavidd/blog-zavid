@@ -18,6 +18,8 @@ import {
 import DatePicker, { DateType } from 'src/components/form/datepicker';
 import { Fader } from 'src/components/transitioner';
 import { Handlers } from 'src/lib/hooks';
+import TagBlock from 'src/lib/pages/diary/tags';
+import css from 'src/styles/pages/Diary.module.scss';
 
 const DiaryEntryForm = (props: DiaryForm) => {
   const { diaryEntry, handlers, isLoaded } = props;
@@ -119,6 +121,11 @@ const DiaryEntryForm = (props: DiaryForm) => {
               value={diaryEntry.tags! as string}
               onChange={handleText}
               placeholder={'Add tags to index the entry...'}
+            />
+            <TagBlock
+              tags={diaryEntry.tags!}
+              asCSV={true}
+              className={css['diary-form-tags']}
             />
           </Field>
         </FieldRow>

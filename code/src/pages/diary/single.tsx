@@ -49,7 +49,10 @@ const DiarySingle = ({
             label: `Diary Entry #${nextDiaryEntry.entryNumber}: ${nextDiaryEntry.title}`
           }}
         />
-        <TagBlock diaryEntry={diaryEntry} className={css['diary-single-tags']} />
+        <TagBlock
+          tags={diaryEntry.tags!}
+          className={css['diary-single-tags']}
+        />
         <Divider />
         <ShareBlock
           headline={'Share This Diary Entry'}
