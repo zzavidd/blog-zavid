@@ -14,4 +14,9 @@ router.get('/resources/dissertation', function (req, res) {
   request(url).pipe(res);
 });
 
+router.get('/images/zavid-filter/purple', function (req, res) {
+  const url = `${cloudinaryBaseUrl}/static/bg/zavid-filter-purple.jpg`;
+  request(url).pipe(res);
+});
+
 export default router;

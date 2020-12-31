@@ -3,11 +3,11 @@ import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import { PostDAO, PostStatic, PostType, Substitutions } from 'classes';
-import { BackButton as IBackButton, AdminButton } from 'src/components/button';
+import { AdminButton, BackButton as IBackButton } from 'src/components/button';
 import CloudImage, { cloudinaryBaseUrl, Signature } from 'src/components/image';
 import { Spacer, Toolbar } from 'src/components/layout';
 import ShareBlock from 'src/components/share';
-import { Paragraph, Title, Divider } from 'src/components/text';
+import { Divider, Paragraph, Title } from 'src/components/text';
 import Timeline, { TimelineType } from 'src/components/timeline';
 import { isAuthenticated } from 'src/lib/cookies';
 import { DAOParse } from 'src/lib/parser';

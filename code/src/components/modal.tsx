@@ -1,14 +1,28 @@
-import React from 'react';
+import classnames from 'classnames';
+import React, { useRef } from 'react';
 import { Modal as IModal } from 'react-bootstrap';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
-import { ButtonSpacer, CancelButton, DeleteButton } from 'src/components/button';
+import {
+  ButtonSpacer,
+  CancelButton,
+  DeleteButton
+} from 'src/components/button';
 import { Paragraph } from 'src/components/text';
 import css from 'src/styles/components/Modal.module.scss';
 
-export const Modal = (props: Modal) => {
+import { copyImageToCanvas } from './canvas';
+
+export const Modal = (props: ModalProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const { visible, modalHeader, modalBody, modalFooter, onHide } = props;
+  const {
+    visible,
+    modalHeader,
+    modalBody,
+    modalFooter,
+    onHide,
+    dialogClassName
+  } = props;
 
   const Header = () => {
     if (!modalHeader) return null;
@@ -38,7 +52,7 @@ export const Modal = (props: Modal) => {
       show={visible}
       onHide={onHide}
       centered={true}
-      dialogClassName={`modal-dialog-${theme}`}>
+      dialogClassName={classnames(dialogClassName, `modal-dialog-${theme}`)}>
       <Header />
       <Body />
       <Footer />
@@ -48,13 +62,12 @@ export const Modal = (props: Modal) => {
 
 /**
  * A modal for confirmation.
- * @param {object} props - The props.
- * @param {boolean} props.visible - Indicates if modal is showing or not.
- * @param {string} props.message - The confirmation prompt message.
- * @param {Function} props.confirmFunction - The function called on clicking confirm.
- * @param {string} props.confirmText - The text for the confirmation button.
- * @param {Function} props.closeFunction - The function called on clicking the close button.
- * @returns {JSX.Element} The component.
+ * @param props - The props.
+ * @param props.visible - Indicates if modal is showing or not.
+ * @param props.message - The confirmation prompt message.
+ * @param props.confirmFunction - The function called on clicking confirm.
+ * @param props.confirmText - The text for the confirmation button.
+ * @param props.closeFunction - The function called on clicking the close button.
  */
 export const ConfirmModal = ({
   message,
@@ -62,7 +75,7 @@ export const ConfirmModal = ({
   confirmText,
   closeFunction,
   visible
-}: ConfirmModal) => {
+}: ConfirmModalProps) => {
   return (
     <Modal
       visible={visible}
@@ -78,17 +91,64 @@ export const ConfirmModal = ({
   );
 };
 
-interface Modal {
-  visible: boolean
-  modalHeader?: JSX.Element
-  modalBody?: JSX.Element
-  modalFooter?: JSX.Element
-  onHide?: any
+export const ImageModal = ({
+  content,
+  closeFunction,
+  visible
+}: ImageModalProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+
+  const confirm = () => {
+    const canvas = canvasRef.current;
+    const content = textRef.current;
+    if (canvas !== null && content !== null) {
+      copyImageToCanvas(canvas, content);
+    }
+  };
+
+  return (
+    <Modal
+      visible={visible}
+      onHide={closeFunction}
+      dialogClassName={'modal-image-dialog'}
+      modalBody={
+        <>
+          <div className={css['modal-image-filter']}>
+            <div ref={textRef} className={css['modal-image-text']}>
+              <Paragraph>{content}</Paragraph>
+            </div>
+          </div>
+          <canvas ref={canvasRef} className={css['modal-image-canvas']} />
+        </>
+      }
+      modalFooter={
+        <ButtonSpacer>
+          <DeleteButton onClick={confirm}>Download</DeleteButton>
+          <CancelButton onClick={closeFunction}>Cancel</CancelButton>
+        </ButtonSpacer>
+      }
+    />
+  );
+};
+
+interface ModalProps {
+  visible: boolean;
+  modalHeader?: JSX.Element;
+  modalBody?: JSX.Element;
+  modalFooter?: JSX.Element;
+  onHide?: any;
+  dialogClassName?: string;
 }
 
-interface ConfirmModal extends Modal {
-  message: string
-  confirmFunction: any
-  confirmText: string
-  closeFunction: any
+interface ConfirmModalProps extends ModalProps {
+  message: string;
+  confirmFunction: any;
+  confirmText: string;
+  closeFunction: any;
+}
+
+interface ImageModalProps extends ModalProps {
+  content: string;
+  closeFunction: any;
 }

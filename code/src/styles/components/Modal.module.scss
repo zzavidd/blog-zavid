@@ -11,3 +11,36 @@
     min-width: 130px;
   }
 }
+
+.modal-image-canvas {
+  width: 100%;
+
+  &::after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+}
+
+.modal-image-filter {
+  align-items: center;
+  background-image: url('/images/zavid-filter/purple');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: flex;
+  width: 100%;
+
+  &::after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+}
+
+.modal-image-text {
+  background-color: #000;
+  font-size: 80%;
+  padding: 0 1.5em;
+  margin: 0 2em;
+}
