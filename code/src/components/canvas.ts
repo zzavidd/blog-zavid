@@ -12,7 +12,12 @@ export function createCanvasFromContent(
   colour: FilterThemeOption
 ) {
   const ctx = canvas.getContext('2d');
-  const text = content.innerText;
+  const text: string[] = [];
+
+  content.firstChild?.childNodes.forEach((value) => {
+    text.push(value.textContent!);
+  });
+
   if (ctx !== null) {
     const img = new Image();
     img.src = `/images/zavid-filter/${colour}`;
@@ -22,7 +27,7 @@ export function createCanvasFromContent(
       const TEXT_PADDING_X = 90;
       const TEXT_PADDING_Y = 200;
 
-      const LINE_LIMIT = 9;
+      const LINE_LIMIT = 8 + text.length;
       const INITIAL_FONT_SIZE = 85;
 
       let fontSize = INITIAL_FONT_SIZE;
@@ -83,29 +88,39 @@ export function createCanvasFromContent(
  */
 function insertText(
   ctx: CanvasRenderingContext2D,
-  text: string,
+  paragraphs: string[],
   x: number,
   y: number,
   maxWidth: number,
   lineHeight: number
 ): number {
-  const words = text.split(' ');
   let line = '';
   let textHeight = 0;
 
-  for (let i = 0; i < words.length; i++) {
-    const textLine = line + words[i] + ' ';
-    const textWidth = ctx.measureText(textLine).width;
+  paragraphs.forEach((paragraph, i) => {
+    const words = paragraph.split(' ');
+    words.forEach((word, j) => {
+      const textLine = line + word + ' ';
+      const textWidth = ctx.measureText(textLine).width;
 
-    if (textWidth > maxWidth && i > 0) {
+      if (textWidth > maxWidth && j > 0) {
+        ctx.fillText(line, x, y);
+        line = word + ' ';
+        y += lineHeight;
+        textHeight += lineHeight;
+      } else {
+        line = textLine;
+      }
+    });
+
+    // If last paragraph, add extra space.
+    if (i < paragraphs.length - 1) {
       ctx.fillText(line, x, y);
-      line = words[i] + ' ';
-      y += lineHeight;
-      textHeight += lineHeight;
-    } else {
-      line = textLine;
+      line = '';
+      y += lineHeight * 1.5;
+      textHeight += lineHeight * 1.5;
     }
-  }
+  });
 
   ctx.fillText(line, x, y);
   textHeight += lineHeight;
@@ -134,6 +149,10 @@ export function downloadImage(image: string) {
     .catch(console.error);
 }
 
+/**
+ * Generate the font style from a specified font size.
+ * @param fontSize The size of the font.
+ */
 function getFontStyle(fontSize: number): [string, number] {
   const lineHeight = (7 / 4) * fontSize;
   return [`${fontSize}px Mulish`, lineHeight];
