@@ -1,43 +1,122 @@
-export const copyImageToCanvas = (
+import { FilterThemeOption, Theme, ThemeOption } from 'classes';
+
+/**
+ * Creates a canvas from a div element.
+ * @param canvas The base canvas.
+ * @param content The div element to create the canvas from.
+ */
+export function createCanvasFromContent(
   canvas: HTMLCanvasElement,
-  text: HTMLDivElement
-) => {
+  content: HTMLDivElement,
+  theme: ThemeOption,
+  colour: FilterThemeOption
+) {
   const ctx = canvas.getContext('2d');
+  const text = content.innerText;
   if (ctx !== null) {
     const img = new Image();
-    img.src = '/images/zavid-filter/purple';
-    img.onload = async () => {
+    img.src = `/images/zavid-filter/${colour}`;
+    img.onload = () => {
+      const RECT_PADDING_X = 225;
+      const RECT_PADDING_Y = 200;
+      const TEXT_PADDING_X = 90;
+      const TEXT_PADDING_Y = 200;
+
+      const LINE_LIMIT = 9;
+      const INITIAL_FONT_SIZE = 85;
+
+      let fontSize = INITIAL_FONT_SIZE;
+      let [fontStyle, lineHeight] = getFontStyle(fontSize);
+
       canvas.width = img.width;
       canvas.height = img.height;
-      ctx.drawImage(img, 0, 0, 2160, 2160);
 
-      const rectPaddingX = 300;
-      const rectPaddingY = 800;
+      const rectWidth = canvas.width - RECT_PADDING_X;
+      const maxTextWidth = rectWidth - TEXT_PADDING_X * 2;
 
-      const rectWidth = canvas.width - rectPaddingX;
-      const rectHeight = canvas.height - rectPaddingY;
-      const midWidth = canvas.width / 2 - rectWidth / 2;
-      const midHeight = canvas.height / 2 - rectHeight / 2;
+      // Draft text on canvas to determine text height.
+      // Do until number of lines is less than or equal to limit.
+      let textHeight = 0;
+      let numOfLines = 0;
+      do {
+        if (fontSize < INITIAL_FONT_SIZE * (2 / 3)) break;
 
-      ctx.fillRect(midWidth, midHeight, rectWidth, rectHeight);
+        [fontStyle, lineHeight] = getFontStyle(fontSize);
+        ctx.font = fontStyle;
+        textHeight = insertText(ctx, text, 0, 0, maxTextWidth, lineHeight);
+        numOfLines = textHeight / lineHeight;
+        fontSize -= 3;
+      } while (numOfLines > LINE_LIMIT);
 
-      ctx.font = '80px Mulish';
-      ctx.fillStyle = 'white';
-      insertText(
-        ctx,
-        text.innerText,
-        midWidth + 100,
-        midHeight + 200,
-        rectWidth - 200,
-        130
-      );
+      // Draw background image.
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-      // downloadImage(canvas.toDataURL());
+      const rectHeight = textHeight + RECT_PADDING_Y;
+      const extraYShift = numOfLines === LINE_LIMIT ? 30 : 0;
+
+      const startRectX = canvas.width / 2 - rectWidth / 2;
+      const startRectY = canvas.height / 2 - rectHeight / 2 - extraYShift;
+      const startTextX = startRectX + TEXT_PADDING_X;
+      const startTextY = startRectY + TEXT_PADDING_Y;
+
+      // Draw bounding box for text.
+      ctx.fillStyle = Theme.isLight(theme)
+        ? 'rgba(255,255,255,0.85)'
+        : 'rgba(0,0,0,0.8)';
+      ctx.fillRect(startRectX, startRectY, rectWidth, rectHeight);
+
+      // Insert text into bounding box.
+      ctx.fillStyle = Theme.isLight(theme) ? 'black' : 'white';
+      insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
     };
   }
-};
+}
 
-const downloadImage = (image: string) => {
+/**
+ * Draws the text onto the canvas, wrapping long lines.
+ * @param ctx The cavnvas context.
+ * @param text The text to be inserted.
+ * @param x The x-coordinate of the text's start point.
+ * @param y The y-coordinate of the text's start point.
+ * @param maxWidth The maximum width of the text box.
+ * @param lineHeight The height for each line of text.
+ */
+function insertText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  lineHeight: number
+): number {
+  const words = text.split(' ');
+  let line = '';
+  let textHeight = 0;
+
+  for (let i = 0; i < words.length; i++) {
+    const textLine = line + words[i] + ' ';
+    const textWidth = ctx.measureText(textLine).width;
+
+    if (textWidth > maxWidth && i > 0) {
+      ctx.fillText(line, x, y);
+      line = words[i] + ' ';
+      y += lineHeight;
+      textHeight += lineHeight;
+    } else {
+      line = textLine;
+    }
+  }
+
+  ctx.fillText(line, x, y);
+  textHeight += lineHeight;
+  return textHeight;
+}
+
+/**
+ * Downloads the image on the canvas.
+ * @param image The URL of the image.
+ */
+export function downloadImage(image: string) {
   fetch(image, {
     method: 'GET',
     headers: {}
@@ -53,30 +132,9 @@ const downloadImage = (image: string) => {
       });
     })
     .catch(console.error);
-};
+}
 
-function insertText(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  maxWidth: number,
-  lineHeight: number
-) {
-  const words = text.split(' ');
-  let line = '';
-
-  for (let n = 0; n < words.length; n++) {
-    const testLine = line + words[n] + ' ';
-    const metrics = ctx.measureText(testLine);
-    const testWidth = metrics.width;
-    if (testWidth > maxWidth && n > 0) {
-      ctx.fillText(line, x, y);
-      line = words[n] + ' ';
-      y += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-  ctx.fillText(line, x, y);
+function getFontStyle(fontSize: number): [string, number] {
+  const lineHeight = (7 / 4) * fontSize;
+  return [`${fontSize}px Mulish`, lineHeight];
 }

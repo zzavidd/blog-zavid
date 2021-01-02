@@ -26,7 +26,7 @@ export const Checkbox = ({
   );
   return (
     <label className={classes}>
-      <span className={css['checkbox-label']}>{label}</span>
+      <span>{label}</span>
       <input
         className={boxClasses}
         type={'checkbox'}

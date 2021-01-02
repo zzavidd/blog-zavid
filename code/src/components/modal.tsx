@@ -1,8 +1,9 @@
 import classnames from 'classnames';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Modal as IModal } from 'react-bootstrap';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
+import { FilterTheme, FilterThemeOption, Theme, ThemeOption } from 'classes';
 import {
   ButtonSpacer,
   CancelButton,
@@ -11,7 +12,9 @@ import {
 import { Paragraph } from 'src/components/text';
 import css from 'src/styles/components/Modal.module.scss';
 
-import { copyImageToCanvas } from './canvas';
+import { createCanvasFromContent, downloadImage } from './canvas';
+import { Field, FieldRow, Label, Switch } from './form';
+import { RadioGroup } from './form/radio';
 
 export const Modal = (props: ModalProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
@@ -96,14 +99,47 @@ export const ImageModal = ({
   closeFunction,
   visible
 }: ImageModalProps) => {
+  const [contentTheme, setContentTheme] = useState(ThemeOption.DARK);
+  const [filterTheme, setFilterTheme] = useState(FilterThemeOption.PURPLE);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
-  const confirm = () => {
+  useEffect(() => {
+    drawCanvas();
+    setCanvasMinHeight();
+  }, [visible, contentTheme, filterTheme]);
+
+  /** Set the minimum height of the canvas to prevent blips on redraw. */
+  const setCanvasMinHeight = () => {
+    const canvas = canvasRef.current;
+    if (canvas !== null) {
+      const height = canvas.offsetHeight * 2;
+      canvas.style.minHeight = `${height}px`;
+    }
+  };
+
+  /** Toggle the theme of the image content. */
+  const toggleContentTheme = () => {
+    const theme = Theme.switchTheme(contentTheme);
+    setContentTheme(theme);
+    drawCanvas();
+  };
+
+  /** Redraw the canvas with new properties. */
+  const drawCanvas = () => {
     const canvas = canvasRef.current;
     const content = textRef.current;
     if (canvas !== null && content !== null) {
-      copyImageToCanvas(canvas, content);
+      createCanvasFromContent(canvas, content, contentTheme, filterTheme);
+    }
+  };
+
+  /** Download the canvas as an image. */
+  const downloadCanvasAsImage = () => {
+    const canvas = canvasRef.current;
+    if (canvas !== null) {
+      downloadImage(canvas?.toDataURL());
     }
   };
 
@@ -114,17 +150,40 @@ export const ImageModal = ({
       dialogClassName={'modal-image-dialog'}
       modalBody={
         <>
-          <div className={css['modal-image-filter']}>
-            <div ref={textRef} className={css['modal-image-text']}>
-              <Paragraph>{content}</Paragraph>
-            </div>
-          </div>
           <canvas ref={canvasRef} className={css['modal-image-canvas']} />
+          <img />
+          <div ref={textRef} hidden>
+            <Paragraph>{content}</Paragraph>
+          </div>
+          <FieldRow className={css['modal-image-options']}>
+            <Field xs={6}>
+              <Label>Filter:</Label>
+              <RadioGroup
+                name={'filterTheme'}
+                value={filterTheme}
+                defaultValue={FilterThemeOption.PURPLE}
+                options={FilterTheme.OPTIONS}
+                onChange={(e) => {
+                  setFilterTheme(e.target.value as FilterThemeOption);
+                  drawCanvas();
+                }}
+              />
+            </Field>
+            <Field xs={6}>
+              <Label>Theme:</Label>
+              <Switch
+                onChange={toggleContentTheme}
+                checked={!Theme.isLight(contentTheme)}
+                checkedIcon={'moon'}
+                uncheckedIcon={'sun'}
+              />
+            </Field>
+          </FieldRow>
         </>
       }
       modalFooter={
         <ButtonSpacer>
-          <DeleteButton onClick={confirm}>Download</DeleteButton>
+          <DeleteButton onClick={downloadCanvasAsImage}>Download</DeleteButton>
           <CancelButton onClick={closeFunction}>Cancel</CancelButton>
         </ButtonSpacer>
       }
@@ -137,18 +196,18 @@ interface ModalProps {
   modalHeader?: JSX.Element;
   modalBody?: JSX.Element;
   modalFooter?: JSX.Element;
-  onHide?: any;
+  onHide?: () => void;
   dialogClassName?: string;
 }
 
 interface ConfirmModalProps extends ModalProps {
   message: string;
-  confirmFunction: any;
+  confirmFunction: () => void;
   confirmText: string;
-  closeFunction: any;
+  closeFunction: () => void;
 }
 
 interface ImageModalProps extends ModalProps {
   content: string;
-  closeFunction: any;
+  closeFunction: () => void;
 }
