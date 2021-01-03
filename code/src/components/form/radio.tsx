@@ -10,13 +10,17 @@ export const RadioGroup = ({
   name,
   onChange,
   options,
-  className,
   value,
   defaultValue,
-  inline = false
+  className,
+  grid = false
 }: RadioGroupProps): JSX.Element => {
+  const radioGroupClasses = classnames(
+    className,
+    grid && css['radio-group-inline']
+  );
   return (
-    <div className={className}>
+    <div className={radioGroupClasses}>
       {options.map((option, key) => {
         const isChecked =
           value === option || (!value && defaultValue === option);
@@ -71,8 +75,8 @@ type RadioGroupProps = {
   defaultValue: string;
   onChange: OnInputChangeType;
   options: string[];
+  grid?: boolean;
   className?: string;
-  inline?: boolean;
 };
 
 type RadioButtonProps = {

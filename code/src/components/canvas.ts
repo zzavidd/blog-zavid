@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 import { FilterThemeOption, Theme, ThemeOption } from 'classes';
 
 /**
@@ -9,7 +11,8 @@ export function createCanvasFromContent(
   canvas: HTMLCanvasElement,
   content: HTMLDivElement,
   theme: ThemeOption,
-  colour: FilterThemeOption
+  colour: FilterThemeOption,
+  setImageSource: Dispatch<SetStateAction<string>>
 ) {
   const ctx = canvas.getContext('2d');
   const text: string[] = [];
@@ -73,6 +76,13 @@ export function createCanvasFromContent(
       // Insert text into bounding box.
       ctx.fillStyle = Theme.isLight(theme) ? 'black' : 'white';
       insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
+
+      // Marshal data source to image element.
+      const image = new Image();
+      image.src = canvas.toDataURL();
+      image.onload = () => {
+        setImageSource(image.src);
+      };
     };
   }
 }
@@ -141,7 +151,7 @@ export function downloadImage(image: string) {
         const url = window.URL.createObjectURL(new Blob([buffer]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'image.jpg');
+        link.setAttribute('download', 'zavid-excerpt.jpg');
         document.body.appendChild(link);
         link.click();
       });

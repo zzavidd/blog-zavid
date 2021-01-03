@@ -347,6 +347,13 @@
 /// Radio
 ////////////////////////////////
 
+.radio-group {
+  &-inline {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+  }
+}
+
 .radio-button {
   $color: #ac1ef3;
   display: block;

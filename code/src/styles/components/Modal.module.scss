@@ -14,7 +14,10 @@
   }
 }
 
-.modal-image-canvas {
+// .curator-canvas,
+.curator-image {
+  border-bottom: 1px solid;
+  padding-bottom: 1em;
   user-select: none;
   width: 100%;
 
@@ -25,6 +28,15 @@
   }
 }
 
-.modal-image-options {
+.curator-label {
+  display: block;
+  font-weight: bold;
+}
+
+.curator-options {
   padding: 0 1em;
+}
+
+.curator-tip {
+  font-size: 0.7em;
 }
