@@ -65,7 +65,7 @@
     "redux-persist": "^6.0.0",
     "sitemap": "^6.3.0",
     "uuid": "^8.3.0",
-    "zavid-modules": "^4.2.0"
+    "zavid-modules": "^4.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

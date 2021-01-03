@@ -15,7 +15,7 @@ import { RadioGroup } from './form/radio';
 import { Responsive } from './layout';
 import { Modal, ModalProps } from './modal';
 
-export const Curator = ({ content, closeFunction, visible }: CuratorProps) => {
+export const Curator = ({ sourceTitle, content, closeFunction, visible }: CuratorProps) => {
   const [contentTheme, setContentTheme] = useState(ThemeOption.DARK);
   const [filterTheme, setFilterTheme] = useState(FilterThemeOption.PURPLE);
   const [imageSource, setImageSource] = useState('');
@@ -56,6 +56,7 @@ export const Curator = ({ content, closeFunction, visible }: CuratorProps) => {
       createCanvasFromContent(
         canvas,
         content,
+        sourceTitle,
         contentTheme,
         filterTheme,
         setImageSource
@@ -136,6 +137,7 @@ export const Curator = ({ content, closeFunction, visible }: CuratorProps) => {
 };
 
 interface CuratorProps extends ModalProps {
+  sourceTitle: string;
   content: string;
   closeFunction: () => void;
 }

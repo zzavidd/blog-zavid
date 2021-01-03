@@ -10,6 +10,7 @@ import { FilterThemeOption, Theme, ThemeOption } from 'classes';
 export function createCanvasFromContent(
   canvas: HTMLCanvasElement,
   content: HTMLDivElement,
+  sourceTitle: string,
   theme: ThemeOption,
   colour: FilterThemeOption,
   setImageSource: Dispatch<SetStateAction<string>>
@@ -76,6 +77,11 @@ export function createCanvasFromContent(
       // Insert text into bounding box.
       ctx.fillStyle = Theme.isLight(theme) ? 'black' : 'white';
       insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
+
+      // Draw source title at top left corner.
+      ctx.fillStyle = 'white';
+      ctx.font = '70px Calistoga';
+      insertText(ctx, [sourceTitle], 60, 135, canvas.width * (4 / 7), 90);
 
       // Marshal data source to image element.
       const image = new Image();

@@ -6,7 +6,6 @@ import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zText } from 'zavid-modules';
 import { FormatCSS } from 'zavid-modules/_dist/constants/text';
 
-import { onMouseUpType } from 'classes';
 import css from 'src/styles/components/Text.module.scss';
 
 import { Icon } from './icon';
@@ -26,7 +25,7 @@ export const Paragraph = ({
   substitutions,
   truncate = 0,
   keepRichFormatOnTruncate = false,
-  onMouseUpEachParagraph
+  onLongPress
 }: Paragraph) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css['paragraph'], className);
@@ -64,7 +63,7 @@ export const Paragraph = ({
       Tweet: EmbeddedTweet,
       InstagramPost: EmbeddedInsta
     },
-    onMouseUpEachParagraph
+    onLongPress
   });
 
   const ReadMoreLabel = () => {
@@ -154,7 +153,7 @@ interface Paragraph extends Text {
   substitutions?: Record<string, unknown>;
   truncate?: number | boolean;
   keepRichFormatOnTruncate?: boolean;
-  onMouseUpEachParagraph?: onMouseUpType
+  onLongPress?: (text: string) => void;
 }
 
 interface ReadMore extends Text {

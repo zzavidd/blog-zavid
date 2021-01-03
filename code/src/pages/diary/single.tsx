@@ -38,8 +38,8 @@ const DiarySingle = ({
           <FavouriteNotice diaryEntry={diaryEntry} />
           <Paragraph
             className={css['post-single-content']}
-            onMouseUpEachParagraph={(e) => {
-              setImageContent(e.currentTarget.innerText);
+            onLongPress={(text) => {
+              setImageContent(text);
               setImageModalVisibility(true);
             }}>
             {diaryEntry.content}
@@ -82,6 +82,7 @@ const DiarySingle = ({
       <Curator
         visible={isImageModalVisible}
         closeFunction={() => setImageModalVisibility(false)}
+        sourceTitle={`Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`}
         content={imageContent}
       />
     </>
