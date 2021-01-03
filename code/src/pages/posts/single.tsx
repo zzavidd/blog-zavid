@@ -26,6 +26,10 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
   const [isImageModalVisible, setImageModalVisibility] = useState(false);
   const [imageContent, setImageContent] = useState('');
 
+  const sourceTitle = PostStatic.isPage(post)
+    ? `${post.domainTitle}: ${post.title}`
+    : `${post.type} #${post.typeId}: ${post.title}`;
+
   return (
     <>
       <Spacer>
@@ -77,7 +81,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
       <Curator
         visible={isImageModalVisible}
         closeFunction={() => setImageModalVisibility(false)}
-        sourceTitle={`${post.type} #${post.typeId}: ${post.title}`}
+        sourceTitle={sourceTitle}
         content={imageContent}
       />
     </>

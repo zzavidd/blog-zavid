@@ -26,6 +26,7 @@
 .post-single-paragraph {
   line-height: 1.7;
   margin: 1.3em 0;
+  user-select: none;
 
   &-light:hover {
     background-color: $dark;
