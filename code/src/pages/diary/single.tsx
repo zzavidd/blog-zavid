@@ -45,7 +45,12 @@ const DiarySingle = ({
             {diaryEntry.content}
           </Paragraph>
           <Signature />
-          <Paragraph className={css['post-single-footnote']}>
+          <Paragraph
+            className={css['post-single-footnote']}
+            onLongPress={(text) => {
+              setImageContent(text);
+              setImageModalVisibility(true);
+            }}>
             {diaryEntry.footnote}
           </Paragraph>
           <Timeline
