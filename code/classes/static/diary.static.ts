@@ -40,14 +40,14 @@ export class DiaryStatic {
   }
 
   static isProtected(input: DiaryDAO): boolean {
-    return input.status === DiaryStatus.PROTECTED;
+    return input?.status === DiaryStatus.PROTECTED;
   }
 
   static isPrivate(input: DiaryDAO): boolean {
-    return input.status === DiaryStatus.PRIVATE;
+    return input?.status === DiaryStatus.PRIVATE;
   }
 
   static isPublish(input: DiaryDAO): boolean {
-    return input.status === DiaryStatus.PUBLISHED;
+    return input?.status === DiaryStatus.PUBLISHED;
   }
 }

@@ -89,7 +89,7 @@ export class PostStatic {
    * @returns {boolean} True if post is PAGE.
    */
   static isPage(input: PostDAO): boolean {
-    return input.type === PostType.PAGE;
+    return input?.type === PostType.PAGE;
   }
 
   /**
@@ -97,7 +97,7 @@ export class PostStatic {
    * @param input - The post or its type value.
    */
   static isReverie(input: PostDAO): boolean {
-    return input.type === PostType.REVERIE;
+    return input?.type === PostType.REVERIE;
   }
 
   /**
@@ -105,7 +105,7 @@ export class PostStatic {
    * @param input - The post or its type value.
    */
   static isEpistle(input: PostDAO): boolean {
-    return input.type === PostType.EPISTLE;
+    return input?.type === PostType.EPISTLE;
   }
 
   static randomStatus(): PostStatus {
