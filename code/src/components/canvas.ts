@@ -1,6 +1,40 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { FilterThemeOption, Theme, ThemeOption } from 'classes';
+import {
+  FilterShapeOption,
+  FilterThemeOption,
+  Theme,
+  ThemeOption
+} from 'classes';
+
+const constants = {
+  [FilterShapeOption.SQUARE]: {
+    RECT_PADDING_X: 115,
+    RECT_PADDING_Y: 80,
+    TEXT_PADDING_X: 45,
+    TEXT_PADDING_Y: 90,
+    EXTRA_Y_SHIFT: 30,
+    INITIAL_FONT_SIZE: 42,
+    INITIAL_LINE_LIMIT: 8,
+    TITLE_FONT_SIZE: 35,
+    TITLE_LINE_HEIGHT: 45,
+    TITLE_START_X: 30,
+    TITLE_START_Y: 65
+  },
+  [FilterShapeOption.TALL]: {
+    RECT_PADDING_X: 175,
+    RECT_PADDING_Y: 120,
+    TEXT_PADDING_X: 60,
+    TEXT_PADDING_Y: 145,
+    EXTRA_Y_SHIFT: 45,
+    INITIAL_FONT_SIZE: 65,
+    INITIAL_LINE_LIMIT: 12,
+    TITLE_FONT_SIZE: 50,
+    TITLE_LINE_HEIGHT: 70,
+    TITLE_START_X: 45,
+    TITLE_START_Y: 90
+  }
+};
 
 /**
  * Creates a canvas from a div element.
@@ -13,6 +47,7 @@ export function createCanvasFromContent(
   sourceTitle: string,
   theme: ThemeOption,
   colour: FilterThemeOption,
+  shape: FilterShapeOption,
   setImageSource: Dispatch<SetStateAction<string>>
 ) {
   const ctx = canvas.getContext('2d');
@@ -22,33 +57,29 @@ export function createCanvasFromContent(
     text.push(value.textContent!);
   });
 
+  const SHAPE = constants[shape];
+
   if (ctx !== null) {
     const img = new Image();
-    img.src = `/images/zavid-filter/${colour}`;
+    img.src = `/images/filters/${shape}/${colour}`;
     img.onload = () => {
-      const RECT_PADDING_X = 225;
-      const RECT_PADDING_Y = 200;
-      const TEXT_PADDING_X = 90;
-      const TEXT_PADDING_Y = 200;
+      const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
 
-      const LINE_LIMIT = 8 + text.length;
-      const INITIAL_FONT_SIZE = 85;
-
-      let fontSize = INITIAL_FONT_SIZE;
+      let fontSize = SHAPE.INITIAL_FONT_SIZE;
       let [fontStyle, lineHeight] = getFontStyle(fontSize);
 
       canvas.width = img.width;
       canvas.height = img.height;
 
-      const rectWidth = canvas.width - RECT_PADDING_X;
-      const maxTextWidth = rectWidth - TEXT_PADDING_X * 2;
+      const rectWidth = canvas.width - SHAPE.RECT_PADDING_X;
+      const maxTextWidth = rectWidth - SHAPE.TEXT_PADDING_X * 2;
 
       // Draft text on canvas to determine text height.
       // Do until number of lines is less than or equal to limit.
       let textHeight = 0;
       let numOfLines = 0;
       do {
-        if (fontSize < INITIAL_FONT_SIZE * (2 / 3)) break;
+        if (fontSize < SHAPE.INITIAL_FONT_SIZE * (2 / 3)) break;
 
         [fontStyle, lineHeight] = getFontStyle(fontSize);
         ctx.font = fontStyle;
@@ -60,13 +91,13 @@ export function createCanvasFromContent(
       // Draw background image.
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-      const rectHeight = textHeight + RECT_PADDING_Y;
-      const extraYShift = numOfLines === LINE_LIMIT ? 30 : 0;
+      const rectHeight = textHeight + SHAPE.RECT_PADDING_Y;
+      const extraYShift = Math.ceil(numOfLines) === LINE_LIMIT ? SHAPE.EXTRA_Y_SHIFT : 0;
 
       const startRectX = canvas.width / 2 - rectWidth / 2;
       const startRectY = canvas.height / 2 - rectHeight / 2 - extraYShift;
-      const startTextX = startRectX + TEXT_PADDING_X;
-      const startTextY = startRectY + TEXT_PADDING_Y;
+      const startTextX = startRectX + SHAPE.TEXT_PADDING_X;
+      const startTextY = startRectY + SHAPE.TEXT_PADDING_Y;
 
       // Draw bounding box for text.
       ctx.fillStyle = Theme.isLight(theme)
@@ -80,8 +111,15 @@ export function createCanvasFromContent(
 
       // Draw source title at top left corner.
       ctx.fillStyle = 'white';
-      ctx.font = '70px Calistoga';
-      insertText(ctx, [sourceTitle], 60, 135, canvas.width * (4 / 7), 90);
+      ctx.font = `${SHAPE.TITLE_FONT_SIZE}px Calistoga`;
+      insertText(
+        ctx,
+        [sourceTitle],
+        SHAPE.TITLE_START_X,
+        SHAPE.TITLE_START_Y,
+        canvas.width * (4 / 7),
+        SHAPE.TITLE_LINE_HEIGHT
+      );
 
       // Marshal data source to image element.
       canvas.toBlob((blob) => {

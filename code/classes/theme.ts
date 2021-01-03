@@ -10,6 +10,11 @@ export enum FilterThemeOption {
   GREEN = 'green'
 }
 
+export enum FilterShapeOption {
+  SQUARE = 'square',
+  TALL = 'tall'
+}
+
 export class Theme {
   static LIGHT = ThemeOption.LIGHT;
   static DARK = ThemeOption.DARK;
@@ -30,4 +35,12 @@ export class Theme {
 
 export class FilterTheme {
   static OPTIONS = Object.values(FilterThemeOption);
+}
+
+export class FilterShape {
+  static OPTIONS = Object.values(FilterShapeOption);
+
+  static isSquare(shape: FilterShapeOption) {
+    return shape === FilterShapeOption.SQUARE;
+  }
 }
