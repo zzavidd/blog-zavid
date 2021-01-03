@@ -12,10 +12,10 @@ const constants = {
     RECT_PADDING_X: 115,
     RECT_PADDING_Y: 80,
     TEXT_PADDING_X: 45,
-    TEXT_PADDING_Y: 90,
-    EXTRA_Y_SHIFT: 30,
+    TEXT_PADDING_Y: 85,
+    EXTRA_Y_SHIFT: 20,
     INITIAL_FONT_SIZE: 42,
-    INITIAL_LINE_LIMIT: 8,
+    INITIAL_LINE_LIMIT: 9,
     TITLE_FONT_SIZE: 35,
     TITLE_LINE_HEIGHT: 45,
     TITLE_START_X: 30,
@@ -28,7 +28,7 @@ const constants = {
     TEXT_PADDING_Y: 130,
     EXTRA_Y_SHIFT: 45,
     INITIAL_FONT_SIZE: 55,
-    INITIAL_LINE_LIMIT: 12,
+    INITIAL_LINE_LIMIT: 14,
     TITLE_FONT_SIZE: 50,
     TITLE_LINE_HEIGHT: 65,
     TITLE_START_X: 45,
@@ -60,16 +60,16 @@ export function createCanvasFromContent(
   const SHAPE = constants[shape];
 
   if (ctx !== null) {
-    const img = new Image();
-    img.src = `/images/filters/${shape}/${colour}`;
-    img.onload = () => {
+    const bgImage = new Image();
+    bgImage.src = `/images/filters/${shape}/${colour}`;
+    bgImage.onload = () => {
       const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
 
       let fontSize = SHAPE.INITIAL_FONT_SIZE;
       let [fontStyle, lineHeight] = getFontStyle(fontSize);
 
-      canvas.width = img.width;
-      canvas.height = img.height;
+      canvas.width = bgImage.width;
+      canvas.height = bgImage.height;
 
       const rectWidth = canvas.width - SHAPE.RECT_PADDING_X;
       const maxTextWidth = rectWidth - SHAPE.TEXT_PADDING_X * 2;
@@ -85,11 +85,11 @@ export function createCanvasFromContent(
         ctx.font = fontStyle;
         textHeight = insertText(ctx, text, 0, 0, maxTextWidth, lineHeight);
         numOfLines = textHeight / lineHeight;
-        fontSize -= 3;
+        fontSize -= 2;
       } while (numOfLines > LINE_LIMIT);
 
       // Draw background image.
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 
       const rectHeight = textHeight + SHAPE.RECT_PADDING_Y;
       const extraYShift = Math.ceil(numOfLines) === LINE_LIMIT ? SHAPE.EXTRA_Y_SHIFT : 0;
