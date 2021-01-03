@@ -8,6 +8,12 @@
   }
 }
 
+.curator-dialog {
+  .modal-content {
+    max-width: 500px;
+  }
+}
+
 .modal-content {
   border-radius: 8px !important;
   overflow: hidden;

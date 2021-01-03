@@ -21,6 +21,27 @@
   @include responsive(font-size, 1.3em, $sm: 1em);
 }
 
+.post-single-paragraph {
+  line-height: 1.7;
+  margin: 1.3em 0;
+
+  &-light:hover {
+    background-color: $dark;
+
+    * {
+      color: #fff !important;
+    }
+  }
+
+  &-dark:hover {
+    background-color: #cacaca;
+
+    * {
+      color: #000 !important;
+    }
+  }
+}
+
 .post-single-footnote {
   @include responsive(font-size, 1.3em, $sm: 1em);
   margin-top: 1em;
@@ -59,6 +80,10 @@
     font-style: italic;
     font-weight: bold;
     padding-right: 0.5em;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 

@@ -3,6 +3,13 @@ export enum ThemeOption {
   DARK = 'dark'
 }
 
+export enum FilterThemeOption {
+  PURPLE = 'purple',
+  PINK = 'pink',
+  BLUE = 'blue',
+  GREEN = 'green'
+}
+
 export class Theme {
   static LIGHT = ThemeOption.LIGHT;
   static DARK = ThemeOption.DARK;
@@ -19,4 +26,8 @@ export class Theme {
   static isValid(input: string) {
     return input !== ThemeOption.LIGHT && input !== ThemeOption.DARK;
   }
+}
+
+export class FilterTheme {
+  static OPTIONS = Object.values(FilterThemeOption);
 }

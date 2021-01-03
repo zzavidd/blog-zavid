@@ -30,10 +30,11 @@ export default ({
     <div className={classnames(css['post-tag-block'], className)}>
       {tagsList.map((tag: string, key: number) => {
         return (
-          <VanillaLink href={`/search?term=${tag}`} key={key}>
-            <span className={classnames(css[`post-tag`], tagClassName)}>
-              #{tag}
-            </span>
+          <VanillaLink
+            href={`/search?term=${tag}`}
+            className={classnames(css[`post-tag`], tagClassName)}
+            key={key}>
+            #{tag}
           </VanillaLink>
         );
       })}

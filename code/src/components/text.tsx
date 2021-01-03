@@ -1,16 +1,17 @@
 import InstagramEmbed from '@aarnila/react-instagram-embed';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import React, { CSSProperties, ReactNode } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zText } from 'zavid-modules';
+import { FormatCSS } from 'zavid-modules/_dist/constants/text';
 
 import css from 'src/styles/components/Text.module.scss';
 
 import { Icon } from './icon';
 
 export const Title = ({ children, className }: Text) => {
-  const classes = classNames(css['title'], className);
+  const classes = classnames(css['title'], className);
   return <div className={classes}>{children as string}</div>;
 };
 
@@ -23,10 +24,11 @@ export const Paragraph = ({
   moretext,
   substitutions,
   truncate = 0,
-  keepRichFormatOnTruncate = false
+  keepRichFormatOnTruncate = false,
+  onLongPress
 }: Paragraph) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const classes = classNames(css['paragraph'], className);
+  const classes = classnames(css['paragraph'], className);
 
   let text = truncate
     ? zText.truncateText(children as string, {
@@ -60,7 +62,8 @@ export const Paragraph = ({
     socialWrappers: {
       Tweet: EmbeddedTweet,
       InstagramPost: EmbeddedInsta
-    }
+    },
+    onLongPress
   });
 
   const ReadMoreLabel = () => {
@@ -81,7 +84,7 @@ export const Paragraph = ({
 
 export const ReadMore = ({ link, text = 'Read more', className }: ReadMore) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const classes = classNames(css[`paragraph-read-more-${theme}`], className);
+  const classes = classnames(css[`paragraph-read-more-${theme}`], className);
   return (
     <VanillaLink href={link}>
       <div className={classes}>
@@ -99,7 +102,7 @@ export const VanillaLink = ({
   openNewTab = false,
   style
 }: VanillaLinkProps) => {
-  const classes = classNames(css['vanilla-link'], className);
+  const classes = classnames(css['vanilla-link'], className);
   return (
     <a
       className={classes}
@@ -116,7 +119,7 @@ export const VanillaLink = ({
 
 export const Divider = ({ className }: Text) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const classes = classNames(css[`divider-${theme}`], className);
+  const classes = classnames(css[`divider-${theme}`], className);
   return <hr className={classes} />;
 };
 
@@ -143,13 +146,14 @@ interface Text {
 }
 
 interface Paragraph extends Text {
-  cssOverrides?: Record<string, string>;
+  cssOverrides?: FormatCSS;
   moreclass?: string;
   morelink?: string;
   moretext?: string;
   substitutions?: Record<string, unknown>;
   truncate?: number | boolean;
   keepRichFormatOnTruncate?: boolean;
+  onLongPress?: (text: string) => void;
 }
 
 interface ReadMore extends Text {
