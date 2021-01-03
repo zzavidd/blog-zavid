@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { FilterTheme, FilterThemeOption, Theme, ThemeOption } from 'classes';
+import {
+  FilterShape,
+  FilterShapeOption,
+  FilterTheme,
+  FilterThemeOption,
+  Theme,
+  ThemeOption
+} from 'classes';
 import {
   ButtonSpacer,
   CancelButton,
@@ -15,9 +22,15 @@ import { RadioGroup } from './form/radio';
 import { Responsive } from './layout';
 import { Modal, ModalProps } from './modal';
 
-export const Curator = ({ sourceTitle, content, closeFunction, visible }: CuratorProps) => {
+export const Curator = ({
+  sourceTitle,
+  content,
+  closeFunction,
+  visible
+}: CuratorProps) => {
   const [contentTheme, setContentTheme] = useState(ThemeOption.DARK);
   const [filterTheme, setFilterTheme] = useState(FilterThemeOption.PURPLE);
+  const [filterShape, setFilterShape] = useState(FilterShapeOption.SQUARE);
   const [imageSource, setImageSource] = useState('');
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,7 +39,7 @@ export const Curator = ({ sourceTitle, content, closeFunction, visible }: Curato
   useEffect(() => {
     drawCanvas();
     setCanvasMinHeight();
-  }, [visible, contentTheme, filterTheme]);
+  }, [visible, contentTheme, filterTheme, filterShape]);
 
   /** Set the minimum height of the canvas to prevent blips on redraw. */
   const setCanvasMinHeight = () => {
@@ -48,6 +61,11 @@ export const Curator = ({ sourceTitle, content, closeFunction, visible }: Curato
     setFilterTheme(e.target.value as FilterThemeOption);
   };
 
+  /** Toggle the filter shape of the image. */
+  const toggleFilterShape = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterShape(e.target.value as FilterShapeOption);
+  };
+
   /** Redraw the canvas with new properties. */
   const drawCanvas = () => {
     const canvas = canvasRef.current;
@@ -59,6 +77,7 @@ export const Curator = ({ sourceTitle, content, closeFunction, visible }: Curato
         sourceTitle,
         contentTheme,
         filterTheme,
+        filterShape,
         setImageSource
       );
     }
@@ -85,15 +104,22 @@ export const Curator = ({ sourceTitle, content, closeFunction, visible }: Curato
             <Paragraph>{content}</Paragraph>
           </div>
           <FieldRow className={css['curator-options']}>
-            <Field xs={8}>
+            <Field xs={4}>
               <label className={css['curator-label']}>Filter:</label>
               <RadioGroup
                 name={'filterTheme'}
                 value={filterTheme}
-                defaultValue={FilterThemeOption.PURPLE}
                 options={FilterTheme.OPTIONS}
                 onChange={toggleFilterTheme}
-                grid={true}
+              />
+            </Field>
+            <Field xs={4}>
+              <label className={css['curator-label']}>Shape:</label>
+              <RadioGroup
+                name={'filterShape'}
+                value={filterShape}
+                options={FilterShape.OPTIONS}
+                onChange={toggleFilterShape}
               />
             </Field>
             <Field xs={4}>

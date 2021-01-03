@@ -11,7 +11,6 @@ export const RadioGroup = ({
   onChange,
   options,
   value,
-  defaultValue,
   className,
   grid = false
 }: RadioGroupProps): JSX.Element => {
@@ -22,8 +21,7 @@ export const RadioGroup = ({
   return (
     <div className={radioGroupClasses}>
       {options.map((option, key) => {
-        const isChecked =
-          value === option || (!value && defaultValue === option);
+        const isChecked = value === option;
         return (
           <RadioButton
             name={name}
@@ -72,7 +70,6 @@ const RadioButton = ({
 type RadioGroupProps = {
   name: string;
   value: string;
-  defaultValue: string;
   onChange: OnInputChangeType;
   options: string[];
   grid?: boolean;
