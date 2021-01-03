@@ -84,11 +84,13 @@ export function createCanvasFromContent(
       insertText(ctx, [sourceTitle], 60, 135, canvas.width * (4 / 7), 90);
 
       // Marshal data source to image element.
-      const image = new Image();
-      image.src = canvas.toDataURL();
-      image.onload = () => {
-        setImageSource(image.src);
-      };
+      canvas.toBlob((blob) => {
+        const image = new Image();
+        image.src = URL.createObjectURL(blob);
+        image.onload = () => {
+          setImageSource(image.src);
+        };
+      }, 'image/jpeg');
     };
   }
 }
