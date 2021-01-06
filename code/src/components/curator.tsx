@@ -17,7 +17,7 @@ import { Paragraph } from 'src/components/text';
 import css from 'src/styles/components/Modal.module.scss';
 
 import { createCanvasFromContent, downloadImage } from './canvas';
-import { Field, FieldRow, Switch } from './form';
+import { Checkbox, Field, FieldRow, Switch } from './form';
 import { RadioGroup } from './form/radio';
 import { Responsive } from './layout';
 import { Modal, ModalProps } from './modal';
@@ -32,6 +32,7 @@ export const Curator = ({
   const [filterTheme, setFilterTheme] = useState(FilterThemeOption.PURPLE);
   const [filterShape, setFilterShape] = useState(FilterShapeOption.SQUARE);
   const [imageSource, setImageSource] = useState('');
+  const [isTitleOnly, setTitleOnly] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -39,7 +40,7 @@ export const Curator = ({
   useEffect(() => {
     drawCanvas();
     setCanvasMinHeight();
-  }, [visible, contentTheme, filterTheme, filterShape]);
+  }, [visible, contentTheme, filterTheme, filterShape, isTitleOnly]);
 
   /** Set the minimum height of the canvas to prevent blips on redraw. */
   const setCanvasMinHeight = () => {
@@ -66,6 +67,11 @@ export const Curator = ({
     setFilterShape(e.target.value as FilterShapeOption);
   };
 
+  /** Toggle whether curation is title only. */
+  const toggleTitleOnly = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleOnly(e.target.checked);
+  };
+
   /** Redraw the canvas with new properties. */
   const drawCanvas = () => {
     const canvas = canvasRef.current;
@@ -78,7 +84,8 @@ export const Curator = ({
         contentTheme,
         filterTheme,
         filterShape,
-        setImageSource
+        setImageSource,
+        isTitleOnly
       );
     }
   };
@@ -87,7 +94,10 @@ export const Curator = ({
   const downloadCanvasAsImage = () => {
     const canvas = canvasRef.current;
     if (canvas !== null) {
-      downloadImage(canvas.toDataURL());
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        downloadImage(url);
+      }, 'image/jpeg');
     }
   };
 
@@ -99,7 +109,14 @@ export const Curator = ({
       modalBody={
         <>
           <canvas ref={canvasRef} className={css['curator-canvas']} hidden />
-          <img src={imageSource} className={css['curator-image']} />
+          <div className={css['curator-image-container']}>
+            <img src={imageSource} className={css['curator-image']} />
+            <Checkbox
+              label={'Curate just the title'}
+              checked={isTitleOnly}
+              onChange={toggleTitleOnly}
+            />
+          </div>
           <div ref={textRef} hidden>
             <Paragraph>{content}</Paragraph>
           </div>
