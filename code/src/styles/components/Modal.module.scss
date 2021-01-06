@@ -15,8 +15,12 @@
 }
 
 // .curator-canvas,
-.curator-image {
+.curator-image-container {
   border-bottom: 1px solid;
+  width: 100%;
+}
+
+.curator-image {
   padding-bottom: 1em;
   user-select: none;
   width: 100%;

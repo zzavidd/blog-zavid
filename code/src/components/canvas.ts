@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 
 import {
+  FilterShape,
   FilterShapeOption,
   FilterThemeOption,
   Theme,
@@ -16,10 +17,10 @@ const constants = {
     EXTRA_Y_SHIFT: 20,
     INITIAL_FONT_SIZE: 42,
     INITIAL_LINE_LIMIT: 9,
-    TITLE_FONT_SIZE: 35,
-    TITLE_LINE_HEIGHT: 45,
-    TITLE_START_X: 30,
-    TITLE_START_Y: 65
+    ST_FONT_SIZE: 35,
+    ST_LINE_HEIGHT: 45,
+    ST_START_X: 30,
+    ST_START_Y: 65
   },
   [FilterShapeOption.TALL]: {
     RECT_PADDING_X: 175,
@@ -29,10 +30,14 @@ const constants = {
     EXTRA_Y_SHIFT: 45,
     INITIAL_FONT_SIZE: 55,
     INITIAL_LINE_LIMIT: 14,
-    TITLE_FONT_SIZE: 50,
-    TITLE_LINE_HEIGHT: 65,
-    TITLE_START_X: 45,
-    TITLE_START_Y: 90
+    ST_FONT_SIZE: 50,
+    ST_LINE_HEIGHT: 65,
+    ST_START_X: 45,
+    ST_START_Y: 90
+  },
+  common: {
+    TITLE_FONT_SIZE: 80,
+    TITLE_LINE_HEIGHT: 100
   }
 };
 
@@ -40,6 +45,12 @@ const constants = {
  * Creates a canvas from a div element.
  * @param canvas The base canvas.
  * @param content The div element to create the canvas from.
+ * @param sourceTitle The title of the source post.
+ * @param theme The theme of the context text to be displayed.
+ * @param colour The colour of the background image filter.
+ * @param shape The dimensions of the image.
+ * @param setImageSource The dispatch function to set the image source.
+ * @param isTitleOnly Flag indicating to only curate title..
  */
 export function createCanvasFromContent(
   canvas: HTMLCanvasElement,
@@ -48,16 +59,25 @@ export function createCanvasFromContent(
   theme: ThemeOption,
   colour: FilterThemeOption,
   shape: FilterShapeOption,
-  setImageSource: Dispatch<SetStateAction<string>>
+  setImageSource: Dispatch<SetStateAction<string>>,
+  isTitleOnly: boolean
 ) {
   const ctx = canvas.getContext('2d');
+  const SHAPE = Object.assign({}, constants[shape], constants.common);
   const text: string[] = [];
 
-  content.firstChild?.childNodes.forEach((value) => {
-    text.push(value.textContent!);
-  });
+  if (isTitleOnly) {
+    text.push(sourceTitle);
+  } else {
+    content.firstChild?.childNodes.forEach((value) => {
+      text.push(value.textContent!);
+    });
+  }
 
-  const SHAPE = constants[shape];
+  const fontStyleOptions = {
+    isTitleOnly,
+    constantLineHeight: SHAPE.TITLE_LINE_HEIGHT
+  };
 
   if (ctx !== null) {
     const bgImage = new Image();
@@ -65,8 +85,10 @@ export function createCanvasFromContent(
     bgImage.onload = () => {
       const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
 
-      let fontSize = SHAPE.INITIAL_FONT_SIZE;
-      let [fontStyle, lineHeight] = getFontStyle(fontSize);
+      let fontSize = isTitleOnly
+        ? SHAPE.TITLE_FONT_SIZE
+        : SHAPE.INITIAL_FONT_SIZE;
+      let [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
 
       canvas.width = bgImage.width;
       canvas.height = bgImage.height;
@@ -81,7 +103,7 @@ export function createCanvasFromContent(
       do {
         if (fontSize < SHAPE.INITIAL_FONT_SIZE * (2 / 3)) break;
 
-        [fontStyle, lineHeight] = getFontStyle(fontSize);
+        [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
         ctx.font = fontStyle;
         textHeight = insertText(ctx, text, 0, 0, maxTextWidth, lineHeight);
         numOfLines = textHeight / lineHeight;
@@ -92,12 +114,16 @@ export function createCanvasFromContent(
       ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 
       const rectHeight = textHeight + SHAPE.RECT_PADDING_Y;
-      const extraYShift = Math.ceil(numOfLines) === LINE_LIMIT ? SHAPE.EXTRA_Y_SHIFT : 0;
+      const extraYShift =
+        Math.ceil(numOfLines) === LINE_LIMIT ? SHAPE.EXTRA_Y_SHIFT : 0;
 
       const startRectX = canvas.width / 2 - rectWidth / 2;
       const startRectY = canvas.height / 2 - rectHeight / 2 - extraYShift;
       const startTextX = startRectX + SHAPE.TEXT_PADDING_X;
-      const startTextY = startRectY + SHAPE.TEXT_PADDING_Y;
+      const startTextY =
+        startRectY +
+        SHAPE.TEXT_PADDING_Y +
+        (isTitleOnly && FilterShape.isSquare(shape) ? 30 : 0);
 
       // Draw bounding box for text.
       ctx.fillStyle = Theme.isLight(theme)
@@ -109,17 +135,19 @@ export function createCanvasFromContent(
       ctx.fillStyle = Theme.isLight(theme) ? 'black' : 'white';
       insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
 
-      // Draw source title at top left corner.
-      ctx.fillStyle = 'white';
-      ctx.font = `${SHAPE.TITLE_FONT_SIZE}px Calistoga`;
-      insertText(
-        ctx,
-        [sourceTitle],
-        SHAPE.TITLE_START_X,
-        SHAPE.TITLE_START_Y,
-        canvas.width * (4 / 7),
-        SHAPE.TITLE_LINE_HEIGHT
-      );
+      // Draw source title at top left corner if not title only.
+      if (!isTitleOnly) {
+        ctx.fillStyle = 'white';
+        ctx.font = `${SHAPE.ST_FONT_SIZE}px Calistoga`;
+        insertText(
+          ctx,
+          [sourceTitle],
+          SHAPE.ST_START_X,
+          SHAPE.ST_START_Y,
+          canvas.width * (4 / 7),
+          SHAPE.ST_LINE_HEIGHT
+        );
+      }
 
       // Marshal data source to image element.
       canvas.toBlob((blob) => {
@@ -208,8 +236,19 @@ export function downloadImage(image: string) {
 /**
  * Generate the font style from a specified font size.
  * @param fontSize The size of the font.
+ * @param isTitleOnly Flag indicating to only curate title.
  */
-function getFontStyle(fontSize: number): [string, number] {
-  const lineHeight = (7 / 4) * fontSize;
-  return [`${fontSize}px Mulish`, lineHeight];
+function getFontStyle(
+  fontSize: number,
+  options: FontStyleOptions
+): [string, number] {
+  const { isTitleOnly, constantLineHeight } = options;
+  const lineHeight = isTitleOnly ? constantLineHeight! : (7 / 4) * fontSize;
+  const fontfamily = isTitleOnly ? 'Calistoga' : 'Mulish';
+  return [`${fontSize}px ${fontfamily}`, lineHeight];
 }
+
+type FontStyleOptions = {
+  isTitleOnly?: boolean;
+  constantLineHeight?: number;
+};
