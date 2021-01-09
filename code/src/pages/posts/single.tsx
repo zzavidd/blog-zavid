@@ -1,12 +1,20 @@
 import { NextPageContext } from 'next';
 import React, { useState } from 'react';
+import { Overlay } from 'react-bootstrap';
+import { useSelector, RootStateOrAny } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import { zDate } from 'zavid-modules';
 
-import { PostDAO, PostStatic, PostType, Substitutions } from 'classes';
-import { AdminButton, BackButton as IBackButton } from 'src/components/button';
+import { PostDAO, PostStatic, PostType, Substitutions, Theme } from 'classes';
+import {
+  AdminButton,
+  BackButton as IBackButton,
+  InvisibleButton
+} from 'src/components/button';
 import { Curator } from 'src/components/curator';
+import { Icon } from 'src/components/icon';
 import CloudImage, { cloudinaryBaseUrl, Signature } from 'src/components/image';
-import { Spacer, Toolbar } from 'src/components/layout';
+import { ScreenWidth, Spacer, Toolbar } from 'src/components/layout';
 import ShareBlock from 'src/components/share';
 import { Divider, Paragraph, Title } from 'src/components/text';
 import Timeline, { TimelineType } from 'src/components/timeline';
@@ -15,6 +23,14 @@ import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+  const isMedium = useMediaQuery({ query: ScreenWidth.MEDIUM });
+
+  const [isImageModalVisible, setImageModalVisibility] = useState(false);
+  const [isCuratePromptVisible, setCuratePromptVisible] = useState(false);
+  const [curatePromptRef, setCuratePromptRef] = useState<HTMLElement>();
+  const [imageContent, setImageContent] = useState('');
+
   const shareMessage = `"${post.title}" on ZAVID`;
 
   const substitutions: Substitutions = {};
@@ -22,9 +38,6 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
   contentImages.forEach((image: string, key: number) => {
     substitutions[`image${key + 1}`] = `![](${cloudinaryBaseUrl}/${image})`;
   });
-
-  const [isImageModalVisible, setImageModalVisibility] = useState(false);
-  const [imageContent, setImageContent] = useState('');
 
   const sourceTitle = PostStatic.isPage(post)
     ? `${post.domainTitle}: ${post.title}`
@@ -46,9 +59,10 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
           <Paragraph
             className={css['post-single-content']}
             substitutions={substitutions}
-            onLongPress={(text) => {
-              setImageContent(text);
-              setImageModalVisibility(true);
+            onLongPress={(target: HTMLElement) => {
+              setImageContent(target.innerText);
+              setCuratePromptRef(target);
+              setCuratePromptVisible(true);
             }}>
             {post.content}
           </Paragraph>
@@ -84,6 +98,42 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
         sourceTitle={sourceTitle}
         content={imageContent}
       />
+      <Overlay
+        target={curatePromptRef!}
+        show={isCuratePromptVisible}
+        onHide={() => setCuratePromptVisible(false)}
+        placement={isMedium ? 'top-end' : 'right'}
+        rootClose={true}
+        rootCloseEvent={'mousedown'}>
+        {({ ...props }) => {
+          return (
+            <div
+              {...props}
+              style={{
+                backgroundColor: Theme.isLight(theme)
+                  ? 'rgb(168 131 187)'
+                  : 'rgb(119, 77, 140)',
+                boxShadow: `0 0 5px 3px ${
+                  Theme.isLight(theme)
+                    ? 'rgba(255, 255, 255, 0.2)'
+                    : 'rgba(0, 0, 0, 0.2)'
+                }`,
+                borderRadius: '5px',
+                padding: '0.2em 0.6em',
+                ...props.style
+              }}>
+              <Icon name={'image'} withRightSpace={false} />
+              <InvisibleButton
+                onClick={() => {
+                  setImageModalVisibility(true);
+                  setCuratePromptVisible(false);
+                }}>
+                Curate
+              </InvisibleButton>
+            </div>
+          );
+        }}
+      </Overlay>
     </>
   );
 };

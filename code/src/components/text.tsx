@@ -63,7 +63,10 @@ export const Paragraph = ({
       Tweet: EmbeddedTweet,
       InstagramPost: EmbeddedInsta
     },
-    onLongPress
+    onLongPress: {
+      action: onLongPress,
+      duration: 1000
+    }
   });
 
   const ReadMoreLabel = () => {
@@ -153,7 +156,7 @@ interface Paragraph extends Text {
   substitutions?: Record<string, unknown>;
   truncate?: number | boolean;
   keepRichFormatOnTruncate?: boolean;
-  onLongPress?: (text: string) => void;
+  onLongPress?: (target: EventTarget & HTMLElement) => void;
 }
 
 interface ReadMore extends Text {
