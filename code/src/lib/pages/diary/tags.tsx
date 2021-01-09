@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import React from 'react';
+import { useSelector, RootStateOrAny } from 'react-redux';
 import { zString } from 'zavid-modules';
 
 import { VanillaLink } from 'src/components/text';
@@ -13,6 +14,8 @@ export default ({
   asCSV
 }: DiaryTagProps) => {
   if (!tags) return null;
+
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   let tagsList = [];
 
@@ -32,7 +35,11 @@ export default ({
         return (
           <VanillaLink
             href={`/search?term=${tag}`}
-            className={classnames(css[`post-tag`], tagClassName)}
+            className={classnames(
+              css['post-tag'],
+              css[`post-tag-${theme}`],
+              tagClassName
+            )}
             key={key}>
             #{tag}
           </VanillaLink>

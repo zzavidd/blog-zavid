@@ -1,25 +1,20 @@
 import { NextPageContext } from 'next';
 import React, { useState } from 'react';
-import { Overlay } from 'react-bootstrap';
-import { RootStateOrAny, useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import { zDate } from 'zavid-modules';
 
-import { DiaryDAO, Theme } from 'classes';
-import {
-  AdminButton,
-  BackButton,
-  InvisibleButton
-} from 'src/components/button';
+import { DiaryDAO } from 'classes';
+import { AdminButton, BackButton } from 'src/components/button';
 import { Curator } from 'src/components/curator';
+import { Label } from 'src/components/form';
 import { Icon } from 'src/components/icon';
 import { Signature } from 'src/components/image';
-import { ScreenWidth, Spacer, Toolbar } from 'src/components/layout';
+import { Spacer, Toolbar } from 'src/components/layout';
 import ShareBlock from 'src/components/share';
 import { Divider, Paragraph, Title } from 'src/components/text';
 import Timeline, { TimelineType } from 'src/components/timeline';
 import { isAuthenticated } from 'src/lib/cookies';
 import TagBlock from 'src/lib/pages/diary/tags';
+import { CuratePrompt } from 'src/lib/pages/posts/prompt';
 import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Posts.module.scss';
 
@@ -28,9 +23,6 @@ const DiarySingle = ({
   previousDiaryEntry = {},
   nextDiaryEntry = {}
 }: DiarySingle) => {
-  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const isMedium = useMediaQuery({ query: ScreenWidth.MEDIUM });
-
   const [isImageModalVisible, setImageModalVisibility] = useState(false);
   const [isCuratePromptVisible, setCuratePromptVisible] = useState(false);
   const [curatePromptRef, setCuratePromptRef] = useState<HTMLElement>();
@@ -76,11 +68,9 @@ const DiarySingle = ({
               label: `Diary Entry #${nextDiaryEntry.entryNumber}: ${nextDiaryEntry.title}`
             }}
           />
-          <TagBlock
-            tags={diaryEntry.tags!}
-            className={css['diary-single-tags']}
-          />
           <Divider />
+          <Label>Tags:</Label>
+          <TagBlock tags={diaryEntry.tags!} />
           <ShareBlock
             headline={'Share This Diary Entry'}
             message={shareMessage}
@@ -102,43 +92,15 @@ const DiarySingle = ({
         sourceTitle={`Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`}
         content={imageContent}
       />
-      {/* TODO: Abstract this for diary and post */}
-      <Overlay
+      <CuratePrompt
         target={curatePromptRef!}
-        show={isCuratePromptVisible}
+        visible={isCuratePromptVisible}
         onHide={() => setCuratePromptVisible(false)}
-        placement={isMedium ? 'top-end' : 'right'}
-        rootClose={true}
-        rootCloseEvent={'mousedown'}>
-        {({ ...props }) => {
-          return (
-            <div
-              {...props}
-              style={{
-                backgroundColor: Theme.isLight(theme)
-                  ? 'rgb(168 131 187)'
-                  : 'rgb(119, 77, 140)',
-                boxShadow: `0 0 5px 3px ${
-                  Theme.isLight(theme)
-                    ? 'rgba(255, 255, 255, 0.2)'
-                    : 'rgba(0, 0, 0, 0.2)'
-                }`,
-                borderRadius: '5px',
-                padding: '0.2em 0.6em',
-                ...props.style
-              }}>
-              <Icon name={'image'} withRightSpace={false} />
-              <InvisibleButton
-                onClick={() => {
-                  setImageModalVisibility(true);
-                  setCuratePromptVisible(false);
-                }}>
-                Curate
-              </InvisibleButton>
-            </div>
-          );
+        onClick={() => {
+          setImageModalVisibility(true);
+          setCuratePromptVisible(false);
         }}
-      </Overlay>
+      />
     </>
   );
 };

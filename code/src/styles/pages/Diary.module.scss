@@ -27,16 +27,19 @@
   padding: 0.5em 0;
 }
 
-%diary-entry {
-  @include responsive(padding, 1.5em, $md: 1em 0);
+.diary-entry {
+  @include responsive(padding, 1.5em, $sm: 1.5em 0);
   border-radius: 15px;
   cursor: pointer;
-}
 
-.diary-entry {
+  &:not(:last-child) {
+    @media (max-width: $break-md) {
+      border-bottom: 1px solid;
+      border-radius: 0;
+    }
+  }
+
   &-light {
-    @extend %diary-entry;
-
     @media (min-width: $break-md) {
       &:hover {
         background-color: $dark;
@@ -49,8 +52,6 @@
   }
 
   &-dark {
-    @extend %diary-entry;
-
     @media (min-width: $break-md) {
       &:hover {
         background-color: #cacaca;
@@ -86,6 +87,10 @@
 .diary-entry-star {
   @include responsive(font-size, 2em, $xxl: 1.5em);
   margin: 0 0.4em;
+}
+
+.diary-index-tags {
+  margin-top: 0.5em;
 }
 
 .diary-entry-readmore {
@@ -171,7 +176,6 @@ $radius: 20px;
   border-top-left-radius: 0;
   border-top-right-radius: $radius;
 }
-
 
 .diary-form-tags {
   margin-top: 1em;

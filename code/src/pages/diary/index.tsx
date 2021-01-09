@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import classnames from 'classnames';
 import { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
@@ -112,7 +113,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
       determinant={isLoaded}
       duration={750}
       delay={idx * 50 + 50}
-      className={css[`diary-entry-${theme}`]}
+      className={classnames(css['diary-entry'], css[`diary-entry-${theme}`])}
       postTransitions={'background-color .4s ease'}>
       <VanillaLink href={link}>
         <div className={css['diary-entry-header']}>
@@ -131,11 +132,16 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
           }}
           truncate={40}
           moreclass={css['diary-entry-readmore']}
-          morelink={link}>
+          morelink={link}
+          moretext={`Read #${diaryEntry.entryNumber}: ${diaryEntry.title}`}>
           {diaryEntry.content}
         </Paragraph>
       </VanillaLink>
-      <TagBlock tags={diaryEntry.tags!} limit={6} />
+      <TagBlock
+        className={css['diary-index-tags']}
+        tags={diaryEntry.tags!}
+        limit={9}
+      />
     </Fader>
   );
 });
