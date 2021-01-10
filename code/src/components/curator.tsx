@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { zString } from 'zavid-modules';
 
 import {
   FilterShape,
@@ -17,7 +18,7 @@ import { Paragraph } from 'src/components/text';
 import css from 'src/styles/components/Modal.module.scss';
 
 import { createCanvasFromContent, downloadImage } from './canvas';
-import { Checkbox, Field, FieldRow, Switch } from './form';
+import { Checkbox, Field, FieldRow, Select, Switch } from './form';
 import { RadioGroup } from './form/radio';
 import { Responsive } from './layout';
 import { Modal, ModalProps } from './modal';
@@ -58,7 +59,7 @@ export const Curator = ({
   };
 
   /** Toggle the filter theme of the image background. */
-  const toggleFilterTheme = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const toggleFilterTheme = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilterTheme(e.target.value as FilterThemeOption);
   };
 
@@ -111,23 +112,38 @@ export const Curator = ({
           <canvas ref={canvasRef} className={css['curator-canvas']} hidden />
           <div className={css['curator-image-container']}>
             <img src={imageSource} className={css['curator-image']} />
-            <Checkbox
-              label={'Curate just the title'}
-              checked={isTitleOnly}
-              onChange={toggleTitleOnly}
-            />
+            <div className={css['curator-image-footer']}>
+              <Checkbox
+                label={'Curate title only'}
+                checked={isTitleOnly}
+                onChange={toggleTitleOnly}
+                className={css['curator-check-group']}
+                boxClassName={css['curator-check-box']}
+              />
+              <Responsive
+                mobileView={
+                  <div className={css['curator-tip']}>
+                    Note: Long-press on the image to save it to your camera
+                    roll.
+                  </div>
+                }
+              />
+            </div>
           </div>
           <div ref={textRef} hidden>
             <Paragraph>{content}</Paragraph>
           </div>
           <FieldRow className={css['curator-options']}>
-            <Field xs={4}>
-              <label className={css['curator-label']}>Filter:</label>
-              <RadioGroup
-                name={'filterTheme'}
+            <Field xs={5}>
+              <label className={css['curator-label']}>Colour:</label>
+              <Select
                 value={filterTheme}
-                options={FilterTheme.OPTIONS}
+                items={FilterTheme.OPTIONS.map((colour) => ({
+                  label: zString.toTitleCase(colour),
+                  value: colour
+                }))}
                 onChange={toggleFilterTheme}
+                className={css['curator-colour-select']}
               />
             </Field>
             <Field xs={4}>
@@ -139,7 +155,7 @@ export const Curator = ({
                 onChange={toggleFilterShape}
               />
             </Field>
-            <Field xs={4}>
+            <Field xs={3}>
               <label className={css['curator-label']}>Theme:</label>
               <Switch
                 onChange={toggleContentTheme}
@@ -149,13 +165,6 @@ export const Curator = ({
               />
             </Field>
           </FieldRow>
-          <Responsive
-            mobileView={
-              <div className={css['curator-tip']}>
-                Note: Long-press on the image to save it to your camera roll.
-              </div>
-            }
-          />
         </>
       }
       modalFooter={
@@ -170,7 +179,11 @@ export const Curator = ({
               </>
             }
             mobileView={
-              <CancelButton onClick={closeFunction}>Close</CancelButton>
+              <CancelButton
+                onClick={closeFunction}
+                className={css['curator-close-button']}>
+                Close
+              </CancelButton>
             }
           />
         </ButtonSpacer>

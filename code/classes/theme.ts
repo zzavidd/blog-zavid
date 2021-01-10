@@ -5,9 +5,12 @@ export enum ThemeOption {
 
 export enum FilterThemeOption {
   PURPLE = 'purple',
-  PINK = 'pink',
   BLUE = 'blue',
-  GREEN = 'green'
+  TEAL = 'teal',
+  GREEN = 'green',
+  YELLOW = 'yellow',
+  RED = 'red',
+  PINK = 'pink'
 }
 
 export enum FilterShapeOption {
