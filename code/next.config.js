@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path');
+
 module.exports = {
   webpack: function (config) {
     config.module.rules.push(
@@ -20,7 +23,7 @@ module.exports = {
     config.resolve.extensions.push('.ts', '.tsx');
     config.resolve.alias = {
       ...config.resolve.alias,
-      react: import('path').resolve('./node_modules/react')
+      react: path.resolve('./node_modules/react')
     };
 
     return config;
