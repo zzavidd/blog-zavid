@@ -1,3 +1,5 @@
+import path from 'path';
+
 module.exports = {
   webpack: function (config) {
     config.module.rules.push(
@@ -18,6 +20,10 @@ module.exports = {
     );
 
     config.resolve.extensions.push('.ts', '.tsx');
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      react: path.resolve('./node_modules/react')
+    };
 
     return config;
   },

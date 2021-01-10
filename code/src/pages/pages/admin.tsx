@@ -9,11 +9,7 @@ import { AdminButton, InvisibleButton } from 'src/components/button';
 import { Icon } from 'src/components/icon';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
-import Tabler, {
-  TablerColumnHeader,
-  TablerItemCell,
-  TablerType
-} from 'src/components/tabler';
+import { Tabler, TablerColumnHeader, TablerFieldType, TablerItemCell } from 'src/lib/library';
 import {
   GET_PAGES_QUERY,
   DELETE_PAGE_QUERY
@@ -61,7 +57,7 @@ const PageAdmin = () => {
   return (
     <>
       <Spacer>
-        <Tabler
+        <Tabler<9>
           heading={'List of Pages'}
           itemsLoaded={
             isLoaded && !queryLoading && networkStatus !== NetworkStatus.refetch
@@ -77,7 +73,7 @@ const PageAdmin = () => {
           ]}
           items={pages.map((page: PageDAO, key: number) => {
             return [
-              new TablerItemCell(key + 1, { type: TablerType.INDEX }),
+              new TablerItemCell(key + 1, { type: TablerFieldType.INDEX }),
               new TablerItemCell(page.title!, { icon: 'heading' }),
               new TablerItemCell(page.slug ? `/${page.slug}` : '', {
                 icon: 'link',
@@ -96,10 +92,10 @@ const PageAdmin = () => {
                 { icon: 'clock' }
               ),
               new TablerItemCell(<LinkButton page={page} key={key} />, {
-                type: TablerType.BUTTON
+                type: TablerFieldType.BUTTON
               }),
               new TablerItemCell(<EditButton id={page.id!} key={key} />, {
-                type: TablerType.BUTTON
+                type: TablerFieldType.BUTTON
               }),
               new TablerItemCell(
                 (
@@ -110,11 +106,11 @@ const PageAdmin = () => {
                     setSelectedPage={setSelectedPage}
                   />
                 ),
-                { type: TablerType.BUTTON }
+                { type: TablerFieldType.BUTTON }
               )
             ];
           })}
-          distribution={'6% 0.8fr 10% 1fr 1fr 30% 4% 4% 4%'}
+          distribution={['6%', '0.8fr', '10%', '1fr', '1fr', '30%', '4%', '4%', '4%']}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>Add New Page</AdminButton>

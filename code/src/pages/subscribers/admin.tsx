@@ -14,11 +14,12 @@ import { AdminButton, InvisibleButton } from 'src/components/button';
 import { Icon } from 'src/components/icon';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
-import Tabler, {
+import {
+  Tabler,
   TablerColumnHeader,
-  TablerItemCell,
-  TablerType
-} from 'src/components/tabler';
+  TablerFieldType,
+  TablerItemCell
+} from 'src/lib/library';
 import {
   GET_SUBSCRIBERS_QUERY,
   DELETE_SUBSCRIBER_QUERY
@@ -74,7 +75,7 @@ const SubscriberAdmin = () => {
   return (
     <>
       <Spacer>
-        <Tabler
+        <Tabler<7>
           heading={'List of Subscribers'}
           itemsLoaded={
             isLoaded && !queryLoading && networkStatus !== NetworkStatus.refetch
@@ -90,7 +91,7 @@ const SubscriberAdmin = () => {
           items={subscribers.map((subscriber: SubscriberDAO, key: number) => {
             return [
               new TablerItemCell(subscribers.length - key, {
-                type: TablerType.INDEX
+                type: TablerFieldType.INDEX
               }),
               new TablerItemCell(subscriber.email, { icon: 'at' }),
               new TablerItemCell(subscriber.firstname, {
@@ -108,7 +109,7 @@ const SubscriberAdmin = () => {
                 { icon: 'check-square', hideIfEmpty: true }
               ),
               new TablerItemCell(<EditButton id={subscriber.id!} key={key} />, {
-                type: TablerType.BUTTON
+                type: TablerFieldType.BUTTON
               }),
               new TablerItemCell(
                 (
@@ -119,11 +120,11 @@ const SubscriberAdmin = () => {
                     setSelectedSubscriber={setSelectedSubscriber}
                   />
                 ),
-                { type: TablerType.BUTTON }
+                { type: TablerFieldType.BUTTON }
               )
             ];
           })}
-          distribution={'6% 1fr 0.7fr 0.7fr 30% 4% 4%'}
+          distribution={['6%', '1fr', '0.7fr', '0.7fr', '30%', '4%', '4%']}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>
