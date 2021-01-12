@@ -12,7 +12,7 @@ import CloudImage from 'src/components/image';
 import { ScreenWidth, Spacer, Toolbar } from 'src/components/layout';
 import { LazyLoader } from 'src/components/loader';
 import { Divider, Paragraph, Title, VanillaLink } from 'src/components/text';
-import { Zoomer } from 'src/components/transitioner';
+import { Zoomer } from 'src/lib/library';
 import { isAuthenticated } from 'src/lib/cookies';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/pages/Epistles.module.scss';

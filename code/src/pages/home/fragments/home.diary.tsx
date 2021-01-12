@@ -5,7 +5,7 @@ import { DiaryDAO } from 'classes';
 import { Icon } from 'src/components/icon';
 import { Flexer } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 import css from 'src/styles/pages/Home.module.scss';
 
 export default ({ entry }: LatestDiaryEntry) => {

@@ -3,7 +3,7 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 
 import { InvisibleButton } from 'src/components/button';
 import { Icon } from 'src/components/icon';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 
 export const CookiePrompt = ({ acceptCookies }: CookiePrompt) => {
   const [isLoaded, setLoaded] = useState(false);

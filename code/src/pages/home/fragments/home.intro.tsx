@@ -3,7 +3,7 @@ import { zDate } from 'zavid-modules';
 
 import { Signature } from 'src/components/image';
 import { Paragraph, Title } from 'src/components/text';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 import { redevelopmentDate } from 'src/settings';
 import css from 'src/styles/pages/Home.module.scss';
 

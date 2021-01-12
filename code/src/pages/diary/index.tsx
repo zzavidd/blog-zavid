@@ -17,7 +17,7 @@ import { Checkbox, SearchBar } from 'src/components/form';
 import { Icon } from 'src/components/icon';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 import { isAuthenticated } from 'src/lib/cookies';
 import TagBlock from 'src/lib/pages/diary/tags';
 import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';

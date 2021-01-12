@@ -7,7 +7,7 @@ import { alert, reportError } from 'src/components/alert';
 import { ConfirmButton } from 'src/components/button';
 import { Field, FieldRow, Label, TextInput } from 'src/components/form';
 import { Title } from 'src/components/text';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 import hooks from 'src/lib/hooks';
 import { isValidSubscriber } from 'src/lib/validations';
 import { CREATE_SUBSCRIBER_QUERY } from 'src/private/api/queries/subscriber.queries';

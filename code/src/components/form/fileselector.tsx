@@ -14,7 +14,7 @@ import {
   cloudinaryBaseUrl,
   validateCloudinaryImage
 } from 'src/components/image';
-import { Zoomer } from 'src/components/transitioner';
+import { Zoomer } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
 export const FileSelector = (props: FileSelector) => {

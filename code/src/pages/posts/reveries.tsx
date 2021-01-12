@@ -16,7 +16,7 @@ import {
 } from 'src/components/layout';
 import { LazyLoader } from 'src/components/loader';
 import { Divider, Paragraph, Title } from 'src/components/text';
-import { Zoomer } from 'src/components/transitioner';
+import { Zoomer } from 'src/lib/library';
 import { isAuthenticated } from 'src/lib/cookies';
 import { RightSidebar } from 'src/partials/sidebar';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';

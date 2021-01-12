@@ -3,7 +3,7 @@ import React from 'react';
 import { SubscriberDAO, SubscriptionsMapping } from 'classes';
 import { GenericForm } from 'classes/interfaces/super';
 import { Form, FieldRow, Field, Label, TextInput } from 'src/components/form';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 import { Handlers } from 'src/lib/hooks';
 
 import PreferenceChecks from './preferences';

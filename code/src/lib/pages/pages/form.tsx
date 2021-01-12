@@ -12,7 +12,7 @@ import {
   TextInput,
   Checkbox
 } from 'src/components/form';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 import { Handlers } from 'src/lib/hooks';
 
 export default (props: PageForm) => {
