@@ -14,12 +14,11 @@ import {
 } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/lib/library';
 import CloudImage from 'src/components/image';
 import { Spacer } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
 import { VanillaLink } from 'src/components/text';
-import { Tabler, TablerColumnHeader, TablerFieldType, TablerItemCell } from 'src/lib/library';
+import { Icon, Tabler, TablerColumnHeader, TablerFieldType, TablerItemCell } from 'src/lib/library';
 import BottomToolbar from 'src/lib/pages/posts/toolbar';
 import { updatePostFilterSettings } from 'src/lib/reducers';
 import {

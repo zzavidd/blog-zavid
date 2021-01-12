@@ -6,11 +6,16 @@ import { zDate, zText } from 'zavid-modules';
 import { DiaryDAO, EditButton, QueryOrder, ReactHook } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { AdminButton, InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/lib/library';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
 import { VanillaLink } from 'src/components/text';
-import { Tabler, TablerColumnHeader, TablerFieldType, TablerItemCell } from 'src/lib/library';
+import {
+  Icon,
+  Tabler,
+  TablerColumnHeader,
+  TablerFieldType,
+  TablerItemCell
+} from 'src/lib/library';
 import {
   GET_DIARY_QUERY,
   DELETE_DIARY_QUERY
@@ -126,7 +131,17 @@ const DiaryAdmin = () => {
               )
             ];
           })}
-          distribution={['6%', '20%', '1fr', '6%', '10%', '30%', '4%', '4%', '4%']}
+          distribution={[
+            '6%',
+            '20%',
+            '1fr',
+            '6%',
+            '10%',
+            '30%',
+            '4%',
+            '4%',
+            '4%'
+          ]}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>

@@ -5,8 +5,8 @@ import { useMediaQuery } from 'react-responsive';
 
 import { Theme } from 'classes';
 import { InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/lib/library';
 import { ScreenWidth } from 'src/components/layout';
+import { Icon } from 'src/lib/library';
 
 const OVERLAY_CONSTANTS = {
   [Theme.LIGHT]: {

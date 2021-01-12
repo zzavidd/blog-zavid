@@ -14,10 +14,9 @@ import {
   Spacer,
   Toolbar
 } from 'src/components/layout';
-import { LazyLoader } from 'src/lib/library';
 import { Divider, Paragraph, Title } from 'src/components/text';
-import { Zoomer } from 'src/lib/library';
 import { isAuthenticated } from 'src/lib/cookies';
+import { LazyLoader, Zoomer } from 'src/lib/library';
 import { RightSidebar } from 'src/partials/sidebar';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/pages/Reveries.module.scss';

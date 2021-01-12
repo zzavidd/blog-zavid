@@ -11,10 +11,10 @@ import {
 } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { AdminButton, InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/lib/library';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
 import {
+  Icon,
   Tabler,
   TablerColumnHeader,
   TablerFieldType,
