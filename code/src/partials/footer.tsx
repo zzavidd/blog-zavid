@@ -6,7 +6,7 @@ import { SubscriberStatic } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { ConfirmButton } from 'src/components/button';
 import { FieldRow, Field, TextInput } from 'src/components/form';
-import { Icon } from 'src/components/icon';
+import { Icon } from 'src/lib/library';
 import { Title, VanillaLink } from 'src/components/text';
 import { isValidEmail } from 'src/lib/validations';
 import { CREATE_SUBSCRIBER_QUERY } from 'src/private/api/queries/subscriber.queries';

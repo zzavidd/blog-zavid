@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
 import { InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/components/icon';
-import { Fader } from 'src/lib/library';
+import { Icon, Fader } from 'src/lib/library';
 
 export const CookiePrompt = ({ acceptCookies }: CookiePrompt) => {
   const [isLoaded, setLoaded] = useState(false);
@@ -53,7 +52,11 @@ export const readCookie = (cookieName: string): string => {
   return '';
 };
 
-export const setCookie = (name: string, value: unknown, hours: number): void => {
+export const setCookie = (
+  name: string,
+  value: unknown,
+  hours: number
+): void => {
   const date = new Date();
   date.setTime(date.getTime() + hours * 60 * 60 * 1000);
   const expires = `expires=${date.toUTCString()}`;

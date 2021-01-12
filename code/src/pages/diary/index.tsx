@@ -14,7 +14,7 @@ import {
 import { alert } from 'src/components/alert';
 import { AdminButton, ConfirmButton } from 'src/components/button';
 import { Checkbox, SearchBar } from 'src/components/form';
-import { Icon } from 'src/components/icon';
+import { Icon } from 'src/lib/library';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
 import { Fader } from 'src/lib/library';

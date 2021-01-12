@@ -14,7 +14,7 @@ import {
 } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/components/icon';
+import { Icon } from 'src/lib/library';
 import CloudImage from 'src/components/image';
 import { Spacer } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';

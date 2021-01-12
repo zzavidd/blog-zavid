@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import { DiaryDAO } from 'classes';
-import { Icon } from 'src/components/icon';
+import { Icon } from 'src/lib/library';
 import { Flexer } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
 import { Fader } from 'src/lib/library';

@@ -11,7 +11,10 @@ const {
   TablerFieldType,
   Fader,
   Slider,
-  Zoomer
+  Zoomer,
+  Icon,
+  LazyLoader,
+  Responsive
 } = zComponents;
 
 const Tabler = <L extends number>({
@@ -57,5 +60,8 @@ export {
   TablerFieldType,
   Fader,
   Slider,
-  Zoomer
+  Zoomer,
+  Icon,
+  LazyLoader,
+  Responsive
 };

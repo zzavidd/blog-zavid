@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 
 import { InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/components/icon';
+import { Icon } from 'src/lib/library';
 import {
   cloudinaryBaseUrl,
   validateCloudinaryImage

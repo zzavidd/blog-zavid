@@ -6,7 +6,7 @@ import { DiaryDAO } from 'classes';
 import { AdminButton, BackButton } from 'src/components/button';
 import { Curator } from 'src/components/curator';
 import { Label } from 'src/components/form';
-import { Icon } from 'src/components/icon';
+import { Icon } from 'src/lib/library';
 import { Signature } from 'src/components/image';
 import { Spacer, Toolbar } from 'src/components/layout';
 import ShareBlock from 'src/components/share';

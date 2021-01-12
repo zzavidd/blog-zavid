@@ -6,7 +6,7 @@ import { zDate, zText } from 'zavid-modules';
 import { DiaryDAO, EditButton, QueryOrder, ReactHook } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { AdminButton, InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/components/icon';
+import { Icon } from 'src/lib/library';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
 import { VanillaLink } from 'src/components/text';
