@@ -15,12 +15,12 @@ import {
   DeleteButton
 } from 'src/components/button';
 import { Paragraph } from 'src/components/text';
+import { Responsive } from 'src/lib/library';
 import css from 'src/styles/components/Modal.module.scss';
 
 import { createCanvasFromContent, downloadImage } from './canvas';
 import { Checkbox, Field, FieldRow, Select, Switch } from './form';
 import { RadioGroup } from './form/radio';
-import { Responsive } from './layout';
 import { Modal, ModalProps } from './modal';
 
 export const Curator = ({

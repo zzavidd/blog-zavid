@@ -14,7 +14,8 @@ const {
   Zoomer,
   Icon,
   LazyLoader,
-  Responsive
+  Responsive,
+  ScreenWidth
 } = zComponents;
 
 const Tabler = <L extends number>({
@@ -63,5 +64,6 @@ export {
   Zoomer,
   Icon,
   LazyLoader,
-  Responsive
+  Responsive,
+  ScreenWidth
 };

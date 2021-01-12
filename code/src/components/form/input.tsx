@@ -4,9 +4,8 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 
 import { OnClickType, OnInputChangeType, OnKeyPressType } from 'classes';
 import { InvisibleButton } from 'src/components/button';
+import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
-
-import { Icon } from '../icon';
 
 export const TextInput = (props: TextInputProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);

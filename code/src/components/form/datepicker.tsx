@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import { ReactSelectChangeEvent, ReactHook } from 'classes';
+import { Icon } from 'src/lib/library';
 import { creationDate } from 'src/settings';
 import css from 'src/styles/components/Form.module.scss';
 
 import { Field, FieldRow, Select, TextInput } from '.';
 import { alert } from '../alert';
 import { ConfirmButton, CancelButton, InvisibleButton } from '../button';
-import { Icon } from '../icon';
 import { Modal, ConfirmModal } from '../modal';
 
 export default ({ name, date, onConfirm, placeholderText }: DatePicker) => {

@@ -9,10 +9,10 @@ import { PostDAO, PostStatus, PostType, QueryOrder } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton } from 'src/components/button';
 import CloudImage from 'src/components/image';
-import { ScreenWidth, Spacer, Toolbar } from 'src/components/layout';
+import { Spacer, Toolbar } from 'src/components/layout';
 import { Divider, Paragraph, Title, VanillaLink } from 'src/components/text';
 import { isAuthenticated } from 'src/lib/cookies';
-import { LazyLoader, Zoomer } from 'src/lib/library';
+import { LazyLoader, ScreenWidth, Zoomer } from 'src/lib/library';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/pages/Epistles.module.scss';
 
