@@ -62,7 +62,7 @@ pipeline {
       }
     }
     success {
-      telegramSend(messsage: 'test message')
+      telegramSend(message: 'test message')
     }
   }
 }
