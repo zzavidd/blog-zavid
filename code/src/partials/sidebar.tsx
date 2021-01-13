@@ -7,7 +7,7 @@ import { PostDAO, PostStatic } from 'classes';
 import { alert } from 'src/components/alert';
 import CloudImage from 'src/components/image';
 import { Title, VanillaLink } from 'src/components/text';
-import { Zoomer } from 'src/components/transitioner';
+import { Zoomer } from 'src/lib/library';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/Partials.module.scss';
 

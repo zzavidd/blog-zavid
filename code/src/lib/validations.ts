@@ -2,6 +2,7 @@ import { validate as validateEmail } from 'email-validator';
 
 import {
   DiaryDAO,
+  PageDAO,
   PostDAO,
   PostImage,
   PostStatic,
@@ -73,8 +74,7 @@ export const isValidSubscriber = (
   return true;
 };
 
-// TODO: Use PageDAO
-export const isValidPage = (page: any): boolean => {
+export const isValidPage = (page: PageDAO): boolean => {
   if (!ifExists(page.title, `Enter the page's title.`)) return false;
   if (!ifExists(page.slug, `Enter the page's title.`)) return false;
 
@@ -132,12 +132,13 @@ const isUnderFileSizeLimit = (
   return true;
 };
 
-const ifExists = (value: any, message: string): boolean => {
+const ifExists = (value: unknown, message: string): boolean => {
   if (typeof value === 'string') {
     value = value.trim();
+    if ((value as string).length === 0) return false;
   }
 
-  if (!value || value.length === 0) {
+  if (!value) {
     alert.error(message);
     return false;
   } else {
@@ -154,11 +155,11 @@ const ifTrue = (condition: boolean, message: string) => {
   }
 };
 
-interface ValidImageOptions {
+type ValidImageOptions = {
   mustExist?: boolean;
 }
 
-interface FileSizeLimitOptions {
+type FileSizeLimitOptions = {
   limit?: number;
   reference?: string;
 }

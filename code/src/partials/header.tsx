@@ -5,9 +5,8 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { ReactComponent, Theme } from 'classes';
 import { InvisibleButton } from 'src/components/button';
 import { Switch } from 'src/components/form/checkbox';
-import { Icon } from 'src/components/icon';
 import CloudImage from 'src/components/image';
-import { Responsive } from 'src/components/layout';
+import { Icon, Responsive } from 'src/lib/library';
 import { setTheme } from 'src/lib/reducers';
 import css from 'src/styles/Partials.module.scss';
 

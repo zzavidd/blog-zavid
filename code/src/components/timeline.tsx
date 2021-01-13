@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
-import { Icon } from './icon';
 import CloudImage, { AspectRatio } from './image';
 import { Title, VanillaLink } from './text';
 

@@ -6,9 +6,8 @@ import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zText } from 'zavid-modules';
 import { FormatCSS } from 'zavid-modules/_dist/constants/text';
 
+import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Text.module.scss';
-
-import { Icon } from './icon';
 
 export const Title = ({ children, className }: Text) => {
   const classes = classnames(css['title'], className);

@@ -9,12 +9,11 @@ import React, {
 } from 'react';
 
 import { InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/components/icon';
 import {
   cloudinaryBaseUrl,
   validateCloudinaryImage
 } from 'src/components/image';
-import { Zoomer } from 'src/components/transitioner';
+import { Icon, Zoomer } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
 export const FileSelector = (props: FileSelector) => {
@@ -134,7 +133,7 @@ interface FileSelector {
   isCreateOperation: boolean;
   className?: string;
   setImage?: Dispatch<SetStateAction<FSImage>>;
-  imageRef?: RefObject<any>;
+  imageRef?: RefObject<HTMLImageElement>;
   aspectRatio?: FSAspectRatio;
 }
 

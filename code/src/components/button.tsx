@@ -7,10 +7,8 @@ import React, {
 } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
+import { Icon , Responsive } from 'src/lib/library';
 import css from 'src/styles/components/Button.module.scss';
-
-import { Icon } from './icon';
-import { Responsive } from './layout';
 
 const Button = (props: Button) => {
   const { children, className, onClick, isRequestPending } = props;

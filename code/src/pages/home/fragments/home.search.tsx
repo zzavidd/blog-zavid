@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { ConfirmButton } from 'src/components/button';
 import { SearchBar } from 'src/components/form';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 import css from 'src/styles/pages/Home.module.scss';
 
 import { HomeRow } from '..';

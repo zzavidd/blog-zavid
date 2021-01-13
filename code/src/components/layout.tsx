@@ -1,19 +1,10 @@
 import classnames from 'classnames';
 import React, { MouseEventHandler, ReactNode } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
-import MediaQuery from 'react-responsive';
 
 import css from 'src/styles/components/Layout.module.scss';
 
 import { InvisibleButton } from './button';
-
-export enum ScreenWidth {
-  SMALL = '(max-width: 576px)',
-  MEDIUM = '(max-width: 768px)',
-  LARGE = '(max-width: 992px)',
-  XLARGE = '(max-width: 1200px)',
-  XXLARGE = '(max-width: 1408px)',
-}
 
 export const Container = ({ children, className }: Layout) => {
   const classes = classnames(css['container'], className);
@@ -62,45 +53,6 @@ export const ToolbarToggle = ({ children, toggle }: ToolbarToggle) => {
   );
 };
 
-export const Responsive = ({
-  defaultView,
-  xl,
-  laptopView,
-  tabletView,
-  mobileView
-}: ResponsiveOptions) => {
-  if (!defaultView) defaultView = null;
-  if (xl) {
-    return (
-      <>
-        <MediaQuery minWidth={1200}>{defaultView}</MediaQuery>
-        <MediaQuery maxWidth={1200}>{xl}</MediaQuery>
-      </>
-    );
-  } else if (laptopView) {
-    return (
-      <>
-        <MediaQuery minWidth={992}>{defaultView}</MediaQuery>
-        <MediaQuery maxWidth={992}>{laptopView}</MediaQuery>
-      </>
-    );
-  } else if (tabletView) {
-    return (
-      <>
-        <MediaQuery minWidth={768}>{defaultView}</MediaQuery>
-        <MediaQuery maxWidth={768}>{tabletView}</MediaQuery>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <MediaQuery minWidth={576}>{defaultView}</MediaQuery>
-        <MediaQuery maxWidth={576}>{mobileView}</MediaQuery>
-      </>
-    );
-  }
-};
-
 interface Layout {
   className?: string;
   children: ReactNode;
@@ -113,12 +65,4 @@ interface Toolbar extends Layout {
 
 interface ToolbarToggle extends Layout {
   toggle: MouseEventHandler;
-}
-
-interface ResponsiveOptions {
-  defaultView?: ReactNode;
-  xl?: ReactNode;
-  laptopView?: ReactNode;
-  tabletView?: ReactNode;
-  mobileView?: ReactNode;
 }

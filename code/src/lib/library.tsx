@@ -5,13 +5,20 @@ import type { TablerProps } from 'zavid-modules/_dist/components/tabler';
 
 import tablerClasses from 'src/styles/components/Tabler.module.scss';
 
-export {
+const {
   TablerColumnHeader,
   TablerItemCell,
-  TablerFieldType
-} from 'zavid-modules/_dist/components/tabler';
+  TablerFieldType,
+  Fader,
+  Slider,
+  Zoomer,
+  Icon,
+  LazyLoader,
+  Responsive,
+  ScreenWidth
+} = zComponents;
 
-export const Tabler = <L extends number>({
+const Tabler = <L extends number>({
   columns,
   distribution,
   heading,
@@ -45,4 +52,18 @@ export const Tabler = <L extends number>({
       }}
     />
   );
+};
+
+export {
+  Tabler,
+  TablerColumnHeader,
+  TablerItemCell,
+  TablerFieldType,
+  Fader,
+  Slider,
+  Zoomer,
+  Icon,
+  LazyLoader,
+  Responsive,
+  ScreenWidth
 };

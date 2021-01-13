@@ -12,8 +12,8 @@ import {
   TextInput,
   Checkbox
 } from 'src/components/form';
-import { Fader } from 'src/components/transitioner';
 import { Handlers } from 'src/lib/hooks';
+import { Fader } from 'src/lib/library';
 
 export default (props: PageForm) => {
   const { page, handlers, isLoaded } = props;

@@ -1,4 +1,3 @@
-import { getSingleDiaryEntry } from './diary.service';
 import { TryWrapper } from './helper';
 
 import {

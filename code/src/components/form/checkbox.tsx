@@ -4,10 +4,10 @@ import React from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
 import { OnClickType, OnInputChangeType } from 'classes';
+import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
 import { InvisibleButton } from '../button';
-import { Icon } from '../icon';
 
 export const Checkbox = ({
   name,

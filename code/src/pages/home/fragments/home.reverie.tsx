@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import { PostDAO } from 'classes';
-import { Icon } from 'src/components/icon';
 import CloudImage, { AspectRatio } from 'src/components/image';
-import { Flexer, Responsive } from 'src/components/layout';
+import { Flexer } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
-import { Fader } from 'src/components/transitioner';
+import { Icon, Fader, Responsive } from 'src/lib/library';
 import css from 'src/styles/pages/Home.module.scss';
 
 export default ({ reverie }: LatestReverieProps) => {
@@ -32,7 +31,7 @@ export default ({ reverie }: LatestReverieProps) => {
             <LatestReverieImage image={reverie.image as string} />
           </Flexer>
         }
-        xl={
+        desktopView={
           <>
             <LatestReverieHeader reverie={reverie} />
             <LatestReverieImage image={reverie.image as string} />
@@ -88,7 +87,7 @@ const LatestReverieImage = ({ image }: LatestReverieImageProps) => {
   return (
     <Responsive
       defaultView={<ReverieImage aspectRatio={AspectRatio.SQUARE} />}
-      xl={<ReverieImage aspectRatio={AspectRatio.WIDE} />}
+      desktopView={<ReverieImage aspectRatio={AspectRatio.WIDE} />}
     />
   );
 };

@@ -12,7 +12,7 @@ import {
 } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph } from 'src/components/text';
-import { Fader, Slider } from 'src/components/transitioner';
+import { Fader, Slider } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
 export * from './checkbox';
