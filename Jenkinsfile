@@ -61,5 +61,8 @@ pipeline {
         sh 'rm -rf node_modules test-results.xml'
       }
     }
+    success {
+      telegramSend(messsage: 'test message')
+    }
   }
 }
