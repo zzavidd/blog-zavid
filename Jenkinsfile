@@ -18,6 +18,8 @@ pipeline {
     GOOGLE_ACCOUNT_ID = credentials('GOOGLE_ACCOUNT_ID')
     GOOGLE_CLIENT_ID = credentials('GOOGLE_CLIENT_ID')
     GOOGLE_CLIENT_SECRET = credentials('GOOGLE_CLIENT_SECRET')
+
+    CHAT_ID = 
   }
 
   options {
@@ -28,7 +30,12 @@ pipeline {
   stages {
     stage('Send Telegram message') {
       steps {
-        telegramSend(message: 'Telegram bot message', chatId: chatId)
+        script {
+          // withCredentials([string(credentialsId: ‘telegramToken’, variable: ‘TOKEN’),
+          //   string(credentialsId: ‘telegramChatId’, variable: CHAT_ID)]) {
+              telegramSend(message: 'test message', chatId: 1582000137)
+            // }
+        }
       }
     }
     // stage('Install dependencies') {
