@@ -27,7 +27,9 @@ pipeline {
 
   stages {
     stage {
-      telegramSend(message: 'Telegram bot message', chatId: chatId)
+      steps {
+        telegramSend(message: 'Telegram bot message', chatId: chatId)
+      }
     }
     // stage('Install dependencies') {
     //   steps {
