@@ -32,7 +32,7 @@ pipeline {
     stage('Send Telegram message') {
       steps {
         script {
-          def body = """{ "chat_id": ${CHAT_ID}, "text": "IT WORKS!!!"}"""
+          def body = '{ "chat_id": 1582000137, "text": "IT WORKS!!!"}'
           httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage", httpMode: 'POST', requestBody: body
 
           // telegramSend(message: "IT WORKS", chatId: CHAT_ID)
