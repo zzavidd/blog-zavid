@@ -26,7 +26,7 @@ pipeline {
   }
 
   stages {
-    stage {
+    stage('Send Telegram message') {
       steps {
         telegramSend(message: 'Telegram bot message', chatId: chatId)
       }
