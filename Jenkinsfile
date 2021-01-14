@@ -26,6 +26,9 @@ pipeline {
   }
 
   stages {
+    stage {
+      telegramSend(message: 'Telegram bot message', chatId: chatId)
+    }
     // stage('Install dependencies') {
     //   steps {
     //     dir(cwd) {
@@ -62,8 +65,8 @@ pipeline {
     //     sh 'rm -rf node_modules test-results.xml'
     //   }
     // }
-    always {
-      telegramSend(message: 'Telegram bot message', chatId: chatId)
-    }
+    // always {
+    //   telegramSend(message: 'Telegram bot message', chatId: chatId)
+    // }
   }
 }
