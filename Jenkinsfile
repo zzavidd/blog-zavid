@@ -60,15 +60,15 @@ pipeline {
     //   }
     // }
   }
-  post {
-    // always {
-    //   dir(cwd) {
-    //     junit '**/test-results.xml'
-    //     sh 'rm -rf node_modules test-results.xml'
-    //   }
-    // }
-    // always {
-    //   telegramSend(message: 'Telegram bot message', chatId: chatId)
-    // }
-  }
+  // post {
+  //   always {
+  //     dir(cwd) {
+  //       junit '**/test-results.xml'
+  //       sh 'rm -rf node_modules test-results.xml'
+  //     }
+  //   }
+  //   always {
+  //     telegramSend(message: 'Telegram bot message', chatId: chatId)
+  //   }
+  // }
 }
