@@ -31,9 +31,18 @@ pipeline {
   stages {
     stage('Send Telegram message') {
       steps {
-        sh """
-        curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=”HTML” -d text=”Hello”
-        """
+        script {
+          def body = """
+          { "chat_id": ${CHAT_ID}, "text": "IT WORKS!!!"}
+          """
+
+          httpRequest url: 'https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage', httpMode: 'POST', requestBody: body
+          
+
+          // sh '''
+          // curl -s -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$CHAT_ID -d parse_mode=”HTML” -d text=”IT WORKS”
+          // '''
+        }
       }
     }
     // stage('Install dependencies') {
