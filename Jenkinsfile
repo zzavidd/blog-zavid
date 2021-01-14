@@ -31,11 +31,9 @@ pipeline {
   stages {
     stage('Send Telegram message') {
       steps {
-        script {
-          withCredentials([string(credentialsId: ‘telegramToken’, variable: TELEGRAM_TOKEN),
-            string(credentialsId: ‘telegramChatId’, variable: CHAT_ID)]) {
-              telegramSend(message: 'test message', chatId: CHAT_ID)
-            }
+        sh """
+        curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=”HTML” -d text=”Hello”
+        """
         }
       }
     }
