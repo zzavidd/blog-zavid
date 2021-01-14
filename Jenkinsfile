@@ -18,8 +18,6 @@ pipeline {
     GOOGLE_ACCOUNT_ID = credentials('GOOGLE_ACCOUNT_ID')
     GOOGLE_CLIENT_ID = credentials('GOOGLE_CLIENT_ID')
     GOOGLE_CLIENT_SECRET = credentials('GOOGLE_CLIENT_SECRET')
-
-    CHAT_ID = 
   }
 
   options {
