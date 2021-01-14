@@ -40,9 +40,7 @@ pipeline {
   stages {
     stage('Send Telegram message') {
       steps {
-        script {
-          sendTelegramMessage()
-        }
+        sendTelegramMessage()
       }
     }
     // stage('Install dependencies') {
