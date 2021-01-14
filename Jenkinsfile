@@ -62,7 +62,7 @@ pipeline {
       }
     }
     success {
-      telegramSend(message: 'test message')
+      telegramSend(message: 'test message', chatId: 1582000137)
     }
   }
 }
