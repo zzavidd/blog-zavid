@@ -5,11 +5,13 @@ String TELEGRAM_MESSAGE = isMaster
   : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
 
 def sendTelegramMessage(message){
-  def body = """{
+  def body = """
+  {
     "chat_id": $CHAT_ID,
     "parse_mode": "MarkdownV2",
     "text": "$message"
-  }"""
+  }
+  """
 
   httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
   httpMode: 'POST',
