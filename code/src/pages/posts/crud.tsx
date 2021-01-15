@@ -11,7 +11,8 @@ import {
   PostImage,
   PostStatic,
   PostStatus,
-  ReactSelectChangeEvent
+  ReactSelectChangeEvent,
+  URLBuilder
 } from 'classes';
 import { alert, AlertType, reportError, setAlert } from 'src/components/alert';
 import hooks from 'src/lib/hooks';
@@ -23,6 +24,7 @@ import {
   GET_POSTS_QUERY,
   UPDATE_POST_QUERY
 } from 'src/private/api/queries/post.queries';
+import { domain } from 'src/settings';
 
 interface PostInitialProps {
   post: PostDAO;
@@ -175,7 +177,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
         type: AlertType.SUCCESS,
         message: `You've successfully added the new post titled "${clientPost.title}".`
       });
-      returnToAdminPosts();
+      returnToPostAdmin();
     } catch (err) {
       reportError(err);
     }
@@ -193,7 +195,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
         type: AlertType.SUCCESS,
         message: `You've successfully updated "${clientPost.title}".`
       });
-      returnToAdminPosts();
+      returnAfterUpdate(clientPost);
     } catch (err) {
       reportError(err);
     }
@@ -208,7 +210,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       handlers={{ ...hooks(setPost, clientPost), setDefaultTypeId }}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
-      cancelFunction={returnToAdminPosts}
+      cancelFunction={returnToPostAdmin}
       isRequestPending={isRequestPending}
     />
   );
@@ -264,8 +266,32 @@ const buildPayload = (
 };
 
 /** Return to the admin page. */
-const returnToAdminPosts = (): void => {
+const returnToPostAdmin = (): void => {
   location.href = '/admin/posts';
+};
+
+const returnAfterUpdate = (post: PostDAO) => {
+  const url = new URLBuilder();
+  url.append(domain);
+
+  if (PostStatic.isPage(post)) {
+    const base = PostStatic.getDirectory(post.domainType!);
+    url.appendSegment(base);
+    url.appendSegment(post.domainSlug!);
+    url.appendSegment(post.slug!);
+  } else {
+    const base = PostStatic.getDirectory(post.type!);
+    url.appendSegment(base);
+    url.appendSegment(post.slug!);
+  }
+
+  const postUrl = url.build();
+
+  if (document.referrer === postUrl) {
+    location.href = postUrl;
+  } else {
+    returnToPostAdmin();
+  }
 };
 
 PostCrud.getInitialProps = async ({ query }: NextPageContext) => {

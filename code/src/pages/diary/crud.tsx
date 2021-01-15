@@ -13,6 +13,7 @@ import {
   CREATE_DIARY_QUERY,
   UPDATE_DIARY_QUERY
 } from 'src/private/api/queries/diary.queries';
+import { domain } from 'src/settings';
 
 import {
   DiaryDAO,
@@ -115,7 +116,7 @@ const DiaryCrud = ({
           clientDiaryEntry.date!
         )}.`
       });
-      returnToDiaryAdmin();
+      returnAfterUpdate(clientDiaryEntry.entryNumber!);
     } catch (err) {
       return reportError(err);
     }
@@ -193,8 +194,17 @@ const buildPayload = (
 };
 
 /** Return to the admin page. */
-const returnToDiaryAdmin = (): void => {
+const returnToDiaryAdmin = () => {
   location.href = '/admin/diary';
+};
+
+const returnAfterUpdate = (entryNumber: number) => {
+  const pageUrl = `${domain}/diary/${entryNumber}`;
+  if (document.referrer === pageUrl) {
+    location.href = pageUrl;
+  } else {
+    returnToDiaryAdmin();
+  }
 };
 
 DiaryCrud.getInitialProps = async ({ query }: NextPageContext) => {
