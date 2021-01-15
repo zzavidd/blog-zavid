@@ -48,49 +48,53 @@ pipeline {
   }
 
   stages {
-    stage('Send Telegram message') {
+    stage('Install dependencies') {
       steps {
-        sendTelegramMessage("$TELEGRAM_MESSAGE succeeded.")
+        dir(CWD) {
+          sh 'npm ci'
+        }
       }
     }
-    // stage('Install dependencies') {
-    //   steps {
-    //     dir(CWD) {
-    //       sh 'npm ci'
-    //     }
-    //   }
-    // }
-    // stage('Check') {
-    //   steps {
-    //     dir(CWD) {
-    //       sh 'npm run check'
-    //     }
-    //   }
-    // }
-    // stage('Build') {
-    //   steps {
-    //     dir(CWD) {
-    //       sh 'npm run build'
-    //     }
-    //   }
-    // }
-    // stage('Test') {
-    //   steps {
-    //     dir(CWD) {
-    //       sh 'npm run test:ci'
-    //     }
-    //   }
-    // }
+    stage('Check') {
+      steps {
+        dir(CWD) {
+          sh 'npm run check'
+        }
+      }
+    }
+    stage('Build') {
+      steps {
+        dir(CWD) {
+          sh 'npm run build'
+        }
+      }
+    }
+    stage('Test') {
+      steps {
+        dir(CWD) {
+          sh 'npm run test:ci'
+        }
+      }
+    }
   }
-  // post {
-  //   always {
-  //     dir(CWD) {
-  //       junit '**/test-results.xml'
-  //       sh 'rm -rf node_modules test-results.xml'
-  //     }
-  //   }
-  //   always {
-  //     telegramSend(message: 'Telegram bot message', chatId: chatId)
-  //   }
-  // }
+  post {
+    always {
+      dir(CWD) {
+        junit '**/test-results.xml'
+        sh 'rm -rf node_modules test-results.xml'
+      }
+    }
+
+    success {
+      sendTelegramMessage("$TELEGRAM_MESSAGE SUCCEEDED.")
+    }
+
+    failure {
+      sendTelegramMessage("$TELEGRAM_MESSAGE FAILED.")
+    }
+
+    aborted {
+      sendTelegramMessage("$TELEGRAM_MESSAGE TIMED OUT.")
+    }
+  }
 }
