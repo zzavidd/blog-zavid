@@ -13,8 +13,7 @@ def sendTelegramMessage(message){
   }
   """
 
-  httpRequest
-  url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
+  httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
   httpMode: 'POST',
   requestBody: body,
   acceptType: 'APPLICATION_JSON',
