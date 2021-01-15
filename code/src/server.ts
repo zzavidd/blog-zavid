@@ -17,6 +17,8 @@ const dotenv = Dotenv.config({ path: './config.env' });
 import 'colors';
 
 const isStaging = process.argv.includes('--staging');
+const database =
+  process.env.MYSQL_NAME + (process.argv.includes('--prod') ? '' : 'test');
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
@@ -27,7 +29,7 @@ const knex = Knex({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PWD,
-    database: process.env.MYSQL_NAME
+    database
   }
 });
 
@@ -37,10 +39,12 @@ if (dotenv.error && !process.env.PORT) {
 }
 
 // Warn if using production database. Prohibit if running tests.
-if (!process.env.MYSQL_NAME?.includes('test')){
+if (!database.includes('test')) {
   console.warn('WARNING: Using production data.'.yellow);
-  if (isStaging){
-    throw new Error(`Failsafe disallows tests being run against production data.`);
+  if (isStaging) {
+    throw new Error(
+      `Failsafe disallows tests being run against production data.`
+    );
   }
 } else {
   console.warn('Using development data.'.green);
