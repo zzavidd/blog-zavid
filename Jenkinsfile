@@ -1,11 +1,15 @@
 String CWD = 'code'
 boolean isMaster = env.JOB_NAME == 'zavid'
 String TELEGRAM_MESSAGE = isMaster
-  ? "Master build #$env.BUILD_NUMBER"
-  : "PR build #$env.BUILD_NUMBER on $env.CHANGE_BRANCH branch"
+  ? "Master build *#$env.BUILD_NUMBER*"
+  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
 
 def sendTelegramMessage(message){
-  def body = """{ "chat_id": $CHAT_ID, "text": "$message" }"""
+  def body = """{
+    "chat_id": $CHAT_ID,
+    "parse_mode": "MarkdownV2",
+    "text": "$message"
+  }"""
 
   httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
   httpMode: 'POST',
