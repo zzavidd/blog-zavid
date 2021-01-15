@@ -1,7 +1,11 @@
-String cwd = 'code'
+String CWD = 'code'
+boolean isMaster = env.JOB_NAME == 'zavid'
+String TELEGRAM_MESSAGE = isMaster
+  ? "Master build #$env.BUILD_NUMBER"
+  : "PR build #$env.BUILD_NUMBER on $env.CHANGE_BRANCH branch"
 
-def sendTelegramMessage(){
-  def body = """{ "chat_id": $CHAT_ID, "text": "IT WORKS!!!" }"""
+def sendTelegramMessage(message){
+  def body = """{ "chat_id": $CHAT_ID, "text": "$message" }"""
 
   httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
   httpMode: 'POST',
@@ -40,33 +44,33 @@ pipeline {
   stages {
     stage('Send Telegram message') {
       steps {
-        sendTelegramMessage()
+        sendTelegramMessage("$TELEGRAM_MESSAGE succeeded.")
       }
     }
     // stage('Install dependencies') {
     //   steps {
-    //     dir(cwd) {
+    //     dir(CWD) {
     //       sh 'npm ci'
     //     }
     //   }
     // }
     // stage('Check') {
     //   steps {
-    //     dir(cwd) {
+    //     dir(CWD) {
     //       sh 'npm run check'
     //     }
     //   }
     // }
     // stage('Build') {
     //   steps {
-    //     dir(cwd) {
+    //     dir(CWD) {
     //       sh 'npm run build'
     //     }
     //   }
     // }
     // stage('Test') {
     //   steps {
-    //     dir(cwd) {
+    //     dir(CWD) {
     //       sh 'npm run test:ci'
     //     }
     //   }
@@ -74,7 +78,7 @@ pipeline {
   }
   // post {
   //   always {
-  //     dir(cwd) {
+  //     dir(CWD) {
   //       junit '**/test-results.xml'
   //       sh 'rm -rf node_modules test-results.xml'
   //     }
