@@ -8,6 +8,7 @@ def sendTelegramMessage(message){
   def body = """
   {
     "chat_id": $CHAT_ID,
+    "parse_mode": "Markdown",
     "text": "$message"
   }
   """
