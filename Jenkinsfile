@@ -13,7 +13,7 @@ def sendTelegramMessage(){
 
   try {
     if (result == "SUCCESS"){
-    message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
+    message = "&#128994; $TELEGRAM_MESSAGE succeeded."
   } else if (result == "FAILURE"){
     message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
   } else {
