@@ -89,6 +89,7 @@ pipeline {
       //   sh 'rm -rf node_modules test-results.xml'
       // }
       // sendTelegramMessage(":white_circle: HERE.")
+      echo 'nothing'
     }
 
     success {
