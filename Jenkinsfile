@@ -92,7 +92,9 @@ pipeline {
     stage('Test') {
       steps {
         dir(CWD) {
-          sh 'npm run test:ci'
+          catchError {
+            sh 'npm run test:ci'
+          }
         }
       }
     }
