@@ -33,6 +33,8 @@ const knex = Knex({
   }
 });
 
+console.log(process.env.MYSQL_NAME);
+
 // Check for loaded environment variables
 if (dotenv.error && !process.env.PORT) {
   throw new Error(`No environment variables loaded.`);
