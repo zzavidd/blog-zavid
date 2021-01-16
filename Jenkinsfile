@@ -1,6 +1,7 @@
 String CWD = 'code'
 
 def sendTelegramMessage(){
+  print env.JOB_NAME
   print env.JOB_NAME.indexOf('branches') < 0
 
   boolean isMaster = env.JOB_NAME.indexOf('branches') < 0
