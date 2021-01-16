@@ -48,41 +48,47 @@ pipeline {
   }
 
   stages {
-    stage('Install dependencies') {
+    stage('hi'){
       steps {
-        dir(CWD) {
-          sh 'npm ci'
-        }
+        echo 'woah'
       }
     }
-    stage('Check') {
-      steps {
-        dir(CWD) {
-          sh 'npm run check'
-        }
-      }
-    }
-    stage('Build') {
-      steps {
-        dir(CWD) {
-          sh 'npm run build'
-        }
-      }
-    }
-    stage('Test') {
-      steps {
-        dir(CWD) {
-          sh 'npm run test:ci'
-        }
-      }
-    }
+    // stage('Install dependencies') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm ci'
+    //     }
+    //   }
+    // }
+    // stage('Check') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm run check'
+    //     }
+    //   }
+    // }
+    // stage('Build') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm run build'
+    //     }
+    //   }
+    // }
+    // stage('Test') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm run test:ci'
+    //     }
+    //   }
+    // }
   }
   post {
     always {
-      dir(CWD) {
-        junit '**/test-results.xml'
-        sh 'rm -rf node_modules test-results.xml'
-      }
+      // dir(CWD) {
+      //   junit '**/test-results.xml'
+      //   sh 'rm -rf node_modules test-results.xml'
+      // }
+      sendTelegramMessage(":white_circle: HERE.")
     }
 
     success {
