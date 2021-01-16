@@ -1,6 +1,8 @@
 String CWD = 'code'
 
 def sendTelegramMessage(){
+  print env.JOB_NAME.indexOf('branches') < 0
+
   boolean isMaster = env.JOB_NAME.indexOf('branches') < 0
   String TELEGRAM_MESSAGE = isMaster
     ? "Master build *#$env.BUILD_NUMBER*"
@@ -16,12 +18,6 @@ def sendTelegramMessage(){
   } else {
     message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
   }
-
-  // if (result == "SUCCESS"){
-  //   message = "$TELEGRAM_MESSAGE} succeeded."
-  // } else {
-  //   message = "failed."
-  // }
 
   def body = """
   {
