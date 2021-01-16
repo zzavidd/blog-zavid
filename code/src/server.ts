@@ -17,7 +17,7 @@ const dotenv = Dotenv.config({ path: './config.env' });
 
 const isStaging = process.argv.includes('--staging');
 const useProdData = process.argv.includes('--prod');
-const dbNameExt = useProdData || isStaging ? '' : 'test';
+const dbNameExt = useProdData ? '' : 'test';
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
