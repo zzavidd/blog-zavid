@@ -1,26 +1,27 @@
 String CWD = 'code'
-boolean isMaster = env.JOB_NAME.indexOf('branches') < 0
-String TELEGRAM_MESSAGE = isMaster
-  ? "Master build *#$env.BUILD_NUMBER*"
-  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
 
 def sendTelegramMessage(){
-  String result = "$currentBuild.result"
-  def message = ""
+  boolean isMaster = env.JOB_NAME.indexOf('branches') < 0
+  String TELEGRAM_MESSAGE = isMaster
+    ? "Master build *#$env.BUILD_NUMBER*"
+    : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
 
-  // if (result == "SUCCESS"){
-  //   message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
-  // } else if (result == "FAILURE"){
-  //   message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
-  // } else {
-  //   message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
-  // }
+  String result = "$currentBuild.result"
+  String message = ""
 
   if (result == "SUCCESS"){
-    message = TELEGRAM_MESSAGE + ' succeeded.'
+    message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
+  } else if (result == "FAILURE"){
+    message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
   } else {
-    message = "failed."
+    message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
   }
+
+  // if (result == "SUCCESS"){
+  //   message = "$TELEGRAM_MESSAGE} succeeded."
+  // } else {
+  //   message = "failed."
+  // }
 
   def body = """
   {
