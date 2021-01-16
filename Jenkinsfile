@@ -1,8 +1,8 @@
 String CWD = 'code'
 boolean isMaster = env.JOB_NAME == 'zavid'
 String TELEGRAM_MESSAGE = isMaster
-  ? "Master build *#$env.BUILD_NUMBER* for \"$env.CHANGE_BRANCH\""
-  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch for \"$env.CHANGE_BRANCH\""
+  ? "Master build *#$env.BUILD_NUMBER* for $env.CHANGE_BRANCH"
+  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch for $env.CHANGE_BRANCH"
 
 def sendTelegramMessage(message){
   def body = """
