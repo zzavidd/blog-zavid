@@ -1,10 +1,7 @@
 String CWD = 'code'
 
 def sendTelegramMessage(){
-  print env.JOB_NAME
-  print env.JOB_NAME.indexOf('branches') < 0
-
-  boolean isMaster = env.JOB_NAME.indexOf('branches') < 0
+  boolean isMaster = env.JOB_NAME.indexOf('PR-') < 0
   String TELEGRAM_MESSAGE = isMaster
     ? "Master build *#$env.BUILD_NUMBER*"
     : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
@@ -31,8 +28,8 @@ def sendTelegramMessage(){
   httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
     httpMode: 'POST',
     requestBody: body,
-    acceptType: 'APPLICATION_JSON_UTF8',
-    contentType: 'APPLICATION_JSON_UTF8'
+    acceptType: 'APPLICATION_JSON',
+    contentType: 'APPLICATION_JSON'
 }
 
 pipeline {
