@@ -6,12 +6,10 @@ String TELEGRAM_MESSAGE = isMaster
 
 def sendTelegramMessage(){
   String result = "$currentBuild.result"
-  String message = ""
+  def message = ""
 
   if (result == "SUCCESS"){
-    echo 'yo'
     message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
-    echo message
   } else if (result == "FAILURE"){
     message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
   } else {
