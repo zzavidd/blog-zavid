@@ -1,24 +1,10 @@
 String CWD = 'code'
+boolean isMaster = env.JOB_NAME.indexOf('PR-') < 0
+String TELEGRAM_MESSAGE = !isMaster
+  ? "Master build *#$env.BUILD_NUMBER*"
+  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
 
-def sendTelegramMessage(){
-  boolean isMaster = env.JOB_NAME.indexOf('PR-') < 0
-  String TELEGRAM_MESSAGE = !isMaster
-    ? "Master build *#$env.BUILD_NUMBER*"
-    : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
-
-  String result = "$currentBuild.result"
-  String message = ""
-
-  if (result == "SUCCESS"){
-    message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
-  } else if (result == "FAILURE"){
-    message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
-  } else {
-    message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
-  }
-
-  echo message
-
+def sendTelegramMessage(message){
   def body = """
   {
     "chat_id": $CHAT_ID,
@@ -97,12 +83,23 @@ pipeline {
     // }
   }
   post {
-    always {
+    // always {
       // dir(CWD) {
       //   junit '**/test-results.xml'
       //   sh 'rm -rf node_modules test-results.xml'
       // }
-      sendTelegramMessage()
+    // }
+
+    success {
+      sendTelegramMessage("\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded.")
+    }
+
+    failure {
+      sendTelegramMessage("\uD83D\uDD34 $TELEGRAM_MESSAGE failed.")
+    }
+
+    aborted {
+      sendTelegramMessage("\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted.")
     }
   }
 }
