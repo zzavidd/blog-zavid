@@ -6,29 +6,31 @@ String TELEGRAM_MESSAGE = isMaster
 
 def sendTelegramMessage(){
   String result = "$currentBuild.result"
-  String message = "Hello"
+  def message = ""
 
   // if (result == "SUCCESS"){
   //   message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
-  // }
-  
-  // else if (result == "FAILURE"){
+  // } else if (result == "FAILURE"){
   //   message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
   // } else {
   //   message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
   // }
 
-  echo "yo"
+  if (true){
+    message = "succeeded."
+  } else {
+    message = "failed."
+  }
 
-  def body = '''
+  def body = """
   {
     "chat_id": $CHAT_ID,
     "parse_mode": "Markdown",
     "text": "$message"
   }
-  '''
+  """
 
-  httpRequest url: 'https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage',
+  httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
     httpMode: 'POST',
     requestBody: body,
     acceptType: 'APPLICATION_JSON_UTF8',
