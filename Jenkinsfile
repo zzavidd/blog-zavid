@@ -83,12 +83,12 @@ pipeline {
     // }
   }
   post {
-    always {
-      dir(CWD) {
-        junit '**/test-results.xml'
-        sh 'rm -rf node_modules test-results.xml'
-      }
-    }
+    // always {
+    //   dir(CWD) {
+    //     junit '**/test-results.xml'
+    //     sh 'rm -rf node_modules test-results.xml'
+    //   }
+    // }
 
     success {
       sendTelegramMessage("$TELEGRAM_MESSAGE SUCCEEDED.")
