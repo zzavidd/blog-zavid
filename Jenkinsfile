@@ -11,7 +11,7 @@ def sendTelegramMessage(){
   echo result == "SUCCESS"
 
   if (result == "SUCCESS"){
-    message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
+    message = "$TELEGRAM_MESSAGE succeeded."
     echo message
   } else if (result == "FAILURE"){
     message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
