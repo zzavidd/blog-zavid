@@ -95,7 +95,7 @@ pipeline {
     }
 
     failure {
-      sendTelegramMessage("$TELEGRAM_MESSAGE FAILED.")
+      sendTelegramMessage("$TELEGRAM_MESSAGE FAILED.\n```\n$currentBuild.getBuildCauses\n```")
     }
 
     aborted {
