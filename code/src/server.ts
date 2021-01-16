@@ -4,6 +4,7 @@ import * as Dotenv from 'dotenv';
 import express from 'express';
 import Knex from 'knex';
 import next from 'next';
+import 'colors';
 
 import { setApp, setKnex, setServer } from './private/singleton';
 
@@ -14,11 +15,9 @@ const handle = server.getRequestHandler();
 const port = parseInt(process.env.PORT!, 10) || 4000;
 const dotenv = Dotenv.config({ path: './config.env' });
 
-import 'colors';
-
 const isStaging = process.argv.includes('--staging');
-const database =
-  process.env.MYSQL_NAME + (process.argv.includes('--prod') ? '' : 'test');
+const useProdData = process.argv.includes('--prod');
+const dbNameExt = useProdData || isStaging ? '' : 'test';
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
@@ -29,7 +28,7 @@ const knex = Knex({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PWD,
-    database
+    database: process.env.MYSQL_NAME + dbNameExt
   }
 });
 
@@ -38,8 +37,8 @@ if (dotenv.error && !process.env.PORT) {
   throw new Error(`No environment variables loaded.`);
 }
 
-// Warn if using production database. Prohibit if running tests.
-if (!database.includes('test')) {
+// Warn if using production data. Prohibit if running tests.
+if (!dbNameExt) {
   console.warn('WARNING: Using production data.'.yellow);
   if (isStaging) {
     throw new Error(
