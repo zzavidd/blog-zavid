@@ -16,7 +16,7 @@ def sendTelegramMessage(){
     message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
   }
 
-  echo message
+  echo "yo"
 
   def body = """
   {
