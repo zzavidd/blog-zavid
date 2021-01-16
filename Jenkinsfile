@@ -1,8 +1,8 @@
 String CWD = 'code'
 boolean isMaster = env.JOB_NAME == 'zavid'
 String TELEGRAM_MESSAGE = isMaster
-  ? "Master build *#$env.BUILD_NUMBER*"
-  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
+  ? "Master build *#$env.BUILD_NUMBER* for \"$env.CHANGE_BRANCH\""
+  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch for \"$env.CHANGE_BRANCH\""
 
 def sendTelegramMessage(message){
   def body = """
@@ -48,34 +48,39 @@ pipeline {
   }
 
   stages {
-    stage('Install dependencies') {
+    stage {
       steps {
-        dir(CWD) {
-          sh 'npm ci'
-        }
+        echo 'nothing'
       }
     }
-    stage('Check') {
-      steps {
-        dir(CWD) {
-          sh 'npm run check'
-        }
-      }
-    }
-    stage('Build') {
-      steps {
-        dir(CWD) {
-          sh 'npm run build'
-        }
-      }
-    }
-    stage('Test') {
-      steps {
-        dir(CWD) {
-          sh 'npm run test:ci'
-        }
-      }
-    }
+    // stage('Install dependencies') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm ci'
+    //     }
+    //   }
+    // }
+    // stage('Check') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm run check'
+    //     }
+    //   }
+    // }
+    // stage('Build') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm run build'
+    //     }
+    //   }
+    // }
+    // stage('Test') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm run test:ci'
+    //     }
+    //   }
+    // }
   }
   post {
     always {
