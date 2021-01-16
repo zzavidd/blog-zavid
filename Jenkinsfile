@@ -16,7 +16,7 @@ def sendTelegramMessage(){
   //   message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
   // }
 
-  if (true){
+  if (result == "SUCCESS"){
     message = "succeeded."
   } else {
     message = "failed."
