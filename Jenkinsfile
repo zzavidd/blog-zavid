@@ -1,5 +1,5 @@
 String CWD = 'code'
-boolean isMaster = !env.JOB_NAME.includes('branches')
+boolean isMaster = env.JOB_NAME.indexOf('branches') < 0
 String TELEGRAM_MESSAGE = isMaster
   ? "Master build *#$env.BUILD_NUMBER*"
   : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
