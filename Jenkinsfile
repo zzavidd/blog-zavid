@@ -68,7 +68,6 @@ pipeline {
   }
 
   stages {
-    stage('hi'){
     stage('Install dependencies') {
       steps {
         dir(CWD) {
