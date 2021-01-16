@@ -16,8 +16,8 @@ def sendTelegramMessage(message){
   httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
   httpMode: 'POST',
   requestBody: body,
-  acceptType: 'APPLICATION_JSON',
-  contentType: 'APPLICATION_JSON'
+  acceptType: 'APPLICATION_JSON_UTF8',
+  contentType: 'APPLICATION_JSON_UTF8'
 }
 
 pipeline {
