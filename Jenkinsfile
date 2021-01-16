@@ -34,7 +34,7 @@ def sendTelegramMessage(){
     acceptType: 'APPLICATION_JSON',
     contentType: 'APPLICATION_JSON'
   } catch(Exception ex) {
-    print ex.
+    ex.printStackTrace()
   }
 
   
