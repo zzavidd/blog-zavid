@@ -17,7 +17,7 @@ def sendTelegramMessage(){
   // }
 
   if (result == "SUCCESS"){
-    message = "succeeded."
+    message = "$TELEGRAM_MESSAGE succeeded."
   } else {
     message = "failed."
   }
