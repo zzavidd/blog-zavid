@@ -5,6 +5,8 @@ String TELEGRAM_MESSAGE = isMaster
   : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
 
 def sendTelegramMessage(message){
+  echo "$currentBuild.result"
+
   def body = """
   {
     "chat_id": $CHAT_ID,
