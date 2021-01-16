@@ -4,7 +4,7 @@ String greenCircle
 
 def sendTelegramMessage(){
   boolean isMaster = env.JOB_NAME.indexOf('PR-') < 0
-  String TELEGRAM_MESSAGE = !isMaster
+  String TELEGRAM_MESSAGE = isMaster
     ? "Master build <b>#$env.BUILD_NUMBER</b>"
     : "PR build <b>#$env.BUILD_NUMBER</b> on <b>$env.CHANGE_BRANCH</b> branch"
 
@@ -13,26 +13,26 @@ def sendTelegramMessage(){
 
   try {
     if (result == "SUCCESS"){
-    message = "&#128994; $TELEGRAM_MESSAGE succeeded."
-  } else if (result == "FAILURE"){
-    message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
-  } else {
-    message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
-  }
+      message = "&#128994; $TELEGRAM_MESSAGE succeeded."
+    } else if (result == "FAILURE"){
+      message = "&#128308; $TELEGRAM_MESSAGE failed."
+    } else {
+      message = "&#128993; $TELEGRAM_MESSAGE aborted."
+    }
 
-  def body = """
-  {
-    "chat_id": $CHAT_ID,
-    "parse_mode": "HTML",
-    "text": "$message"
-  }
-  """
+    def body = """
+    {
+      "chat_id": $CHAT_ID,
+      "parse_mode": "HTML",
+      "text": "$message"
+    }
+    """
 
-  httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
-    httpMode: 'POST',
-    requestBody: body,
-    acceptType: 'APPLICATION_JSON',
-    contentType: 'APPLICATION_JSON'
+    httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
+      httpMode: 'POST',
+      requestBody: body,
+      acceptType: 'APPLICATION_JSON',
+      contentType: 'APPLICATION_JSON'
   } catch(Exception ex) {
     ex.printStackTrace()
   }
