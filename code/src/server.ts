@@ -18,6 +18,7 @@ const dotenv = Dotenv.config({ path: './config.env' });
 const isStaging = process.argv.includes('--staging');
 const useProdData = process.argv.includes('--prod');
 const dbNameExt = useProdData ? '' : 'test';
+const database = `${process.env.MYSQL_NAME}${dbNameExt}`;
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
@@ -28,7 +29,7 @@ const knex = Knex({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PWD,
-    database: process.env.MYSQL_NAME + dbNameExt
+    database
   }
 });
 
