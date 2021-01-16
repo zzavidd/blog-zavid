@@ -4,8 +4,17 @@ String TELEGRAM_MESSAGE = isMaster
   ? "Master build *#$env.BUILD_NUMBER*"
   : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
 
-def sendTelegramMessage(message){
-  echo "$currentBuild.result"
+def sendTelegramMessage(){
+  String result = "$currentBuild.result"
+  String message
+
+  if (result == "SUCCESS"){
+    message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
+  } else if (result == "FAILURE"){
+    message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
+  } else {
+    message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
+  }
 
   def body = """
   {
@@ -90,20 +99,7 @@ pipeline {
       //   junit '**/test-results.xml'
       //   sh 'rm -rf node_modules test-results.xml'
       // }
-      // sendTelegramMessage(":white_circle: HERE.")
-      echo 'nothing'
-    }
-
-    success {
-      sendTelegramMessage("\uD83D\uDFE2 $TELEGRAM_MESSAGE SUCCEEDED.")
-    }
-
-    failure {
-      sendTelegramMessage("$TELEGRAM_MESSAGE FAILED.")
-    }
-
-    aborted {
-      sendTelegramMessage("$TELEGRAM_MESSAGE TIMED OUT.")
+      sendTelegramMessage()
     }
   }
 }
