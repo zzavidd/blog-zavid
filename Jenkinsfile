@@ -18,6 +18,8 @@ def sendTelegramMessage(){
     message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
   }
 
+  echo message
+
   def body = """
   {
     "chat_id": $CHAT_ID,
@@ -27,10 +29,10 @@ def sendTelegramMessage(){
   """
 
   httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
-  httpMode: 'POST',
-  requestBody: body,
-  acceptType: 'APPLICATION_JSON_UTF8',
-  contentType: 'APPLICATION_JSON_UTF8'
+    httpMode: 'POST',
+    requestBody: body,
+    acceptType: 'APPLICATION_JSON_UTF8',
+    contentType: 'APPLICATION_JSON_UTF8'
 }
 
 pipeline {
