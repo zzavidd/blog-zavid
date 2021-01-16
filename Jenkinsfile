@@ -4,7 +4,7 @@ def sendTelegramMessage(){
   boolean isMaster = env.JOB_NAME.indexOf('PR-') < 0
   String TELEGRAM_MESSAGE = isMaster
     ? "Master build *#$env.BUILD_NUMBER*"
-    : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
+    : "PR build *#$env.BUILD_NUMBER* on \"*$env.CHANGE_BRANCH*\" branch"
 
   String result = "$currentBuild.result"
   String message = ""
