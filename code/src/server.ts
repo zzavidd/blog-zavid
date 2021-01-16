@@ -17,7 +17,7 @@ const dotenv = Dotenv.config({ path: './config.env' });
 
 const isStaging = process.argv.includes('--staging');
 const useProdData = process.argv.includes('--prod');
-const dbNameExt = useProdData ? '' : 'test';
+const dbNameExt = useProdData || isStaging ? '' : 'test';
 const database = `${process.env.MYSQL_NAME}${dbNameExt}`;
 
 app.use(bodyParser.json({ limit: '2MB' }));
@@ -32,8 +32,6 @@ const knex = Knex({
     database
   }
 });
-
-console.log(process.env.MYSQL_NAME);
 
 // Check for loaded environment variables
 if (dotenv.error && !process.env.PORT) {
