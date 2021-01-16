@@ -93,7 +93,7 @@ pipeline {
     }
 
     success {
-      sendTelegramMessage("\u1F7E2 $TELEGRAM_MESSAGE SUCCEEDED.")
+      sendTelegramMessage("\U0001F7E2 + $TELEGRAM_MESSAGE SUCCEEDED.")
     }
 
     failure {
