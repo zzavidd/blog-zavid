@@ -10,7 +10,7 @@ def sendTelegramMessage(){
   String message = ""
 
   if (result == "SUCCESS"){
-    message = "\uD83D\uDFE3 $TELEGRAM_MESSAGE succeeded."
+    message = "\uD83D\uDFE3 succeeded."
   } else if (result == "FAILURE"){
     message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
   } else {
