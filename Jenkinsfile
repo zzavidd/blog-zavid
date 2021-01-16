@@ -10,12 +10,14 @@ def sendTelegramMessage(){
   String message = ""
 
   if (result == "SUCCESS"){
-    message = "\uD83D\uDFE3 succeeded."
+    message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
   } else if (result == "FAILURE"){
     message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
   } else {
     message = "\uD83D\uDFE1 $TELEGRAM_MESSAGE aborted."
   }
+
+  echo message
 
   def body = """
   {
