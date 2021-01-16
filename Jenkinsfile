@@ -1,5 +1,5 @@
 String CWD = 'code'
-boolean isMaster = env.JOB_NAME == 'zavid'
+boolean isMaster = !env.JOB_NAME.includes('branches')
 String TELEGRAM_MESSAGE = isMaster
   ? "Master build *#$env.BUILD_NUMBER*"
   : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
@@ -8,10 +8,9 @@ def sendTelegramMessage(){
   String result = "$currentBuild.result"
   String message = ""
 
-  echo result == "SUCCESS"
-
   if (result == "SUCCESS"){
-    message = "$TELEGRAM_MESSAGE succeeded."
+    echo 'yo'
+    message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
     echo message
   } else if (result == "FAILURE"){
     message = "\uD83D\uDD34 $TELEGRAM_MESSAGE failed."
