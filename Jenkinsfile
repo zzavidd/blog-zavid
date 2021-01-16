@@ -88,11 +88,11 @@ pipeline {
       //   junit '**/test-results.xml'
       //   sh 'rm -rf node_modules test-results.xml'
       // }
-      sendTelegramMessage(":white_circle: HERE.")
+      // sendTelegramMessage(":white_circle: HERE.")
     }
 
     success {
-      sendTelegramMessage(":green_circle: $TELEGRAM_MESSAGE SUCCEEDED.")
+      sendTelegramMessage(":red_circle: $TELEGRAM_MESSAGE SUCCEEDED.")
     }
 
     failure {
