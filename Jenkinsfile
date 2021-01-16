@@ -8,7 +8,7 @@ def sendTelegramMessage(){
   String result = "$currentBuild.result"
   String message = ""
 
-  echo result
+  echo result == "SUCCESS"
 
   if (result == "SUCCESS"){
     message = "\uD83D\uDFE2 $TELEGRAM_MESSAGE succeeded."
