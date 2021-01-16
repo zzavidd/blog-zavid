@@ -2,7 +2,7 @@ String CWD = 'code'
 boolean isMaster = env.JOB_NAME == 'zavid'
 String TELEGRAM_MESSAGE = isMaster
   ? "Master build *#$env.BUILD_NUMBER* for $env.CHANGE_BRANCH"
-  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch for $env.CHANGE_BRANCH"
+  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch for $currentBuild.description"
 
 def sendTelegramMessage(message){
   def body = """
@@ -91,11 +91,11 @@ pipeline {
     // }
 
     success {
-      sendTelegramMessage("$TELEGRAM_MESSAGE SUCCEEDED.\n```\n$currentBuild.getBuildCauses()\n```")
+      sendTelegramMessage("$TELEGRAM_MESSAGE SUCCEEDED.")
     }
 
     failure {
-      sendTelegramMessage("$TELEGRAM_MESSAGE FAILED.\n```\n$currentBuild.getBuildCauses\n```")
+      sendTelegramMessage("$TELEGRAM_MESSAGE FAILED.")
     }
 
     aborted {
