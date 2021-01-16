@@ -48,7 +48,7 @@ pipeline {
   }
 
   stages {
-    stage {
+    stage('Hi') {
       steps {
         echo 'nothing'
       }
