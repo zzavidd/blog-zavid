@@ -20,15 +20,15 @@ def sendTelegramMessage(){
 
   echo "yo"
 
-  def body = """
+  def body = '''
   {
     "chat_id": $CHAT_ID,
     "parse_mode": "Markdown",
     "text": "$message"
   }
-  """
+  '''
 
-  httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
+  httpRequest url: 'https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage',
     httpMode: 'POST',
     requestBody: body,
     acceptType: 'APPLICATION_JSON_UTF8',
