@@ -81,7 +81,6 @@ pipeline {
     always {
       dir(CWD) {
         junit '**/test-results.xml'
-        sh 'rm -rf node_modules test-results.xml'
       }
     }
 
@@ -95,6 +94,10 @@ pipeline {
 
     aborted {
       sendTelegramMessage("&#128993; $TELEGRAM_MESSAGE aborted.")
+    }
+
+    cleanup {
+      sh 'rm -rf node_modules test-results.xml'
     }
   }
 }
