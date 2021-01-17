@@ -16,12 +16,23 @@ const port = parseInt(process.env.PORT!, 10) || 4000;
 const dotenv = Dotenv.config({ path: './config.env' });
 
 const isStaging = process.argv.includes('--staging');
-const useProdData = dev && !isStaging && process.argv.includes('--prod');
-const database = `${process.env.MYSQL_NAME}${useProdData ? '' : 'test'}`;
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
 
+// Check for loaded environment variables.
+if (dotenv.error && !process.env.PORT) {
+  throw new Error(`No environment variables loaded.`);
+}
+
+let database = process.env.MYSQL_NAME!;
+if (!isStaging) {
+  if (dev && !process.argv.includes('--prod')) {
+    database += 'test';
+  }
+}
+
+// Initialise database connection.
 const knex = Knex({
   client: 'mysql',
   connection: {
@@ -31,11 +42,6 @@ const knex = Knex({
     database
   }
 });
-
-// Check for loaded environment variables
-if (dotenv.error && !process.env.PORT) {
-  throw new Error(`No environment variables loaded.`);
-}
 
 // Warn if using production data. Prohibit if running tests.
 if (!database.includes('test')) {
