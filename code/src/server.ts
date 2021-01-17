@@ -16,9 +16,8 @@ const port = parseInt(process.env.PORT!, 10) || 4000;
 const dotenv = Dotenv.config({ path: './config.env' });
 
 const isStaging = process.argv.includes('--staging');
-const useProdData = process.argv.includes('--prod') || !dev;
-const dbNameExt = useProdData || isStaging ? '' : 'test';
-const database = `${process.env.MYSQL_NAME}${dbNameExt}`;
+const useProdData = process.argv.includes('--prod');
+const database = `${process.env.MYSQL_NAME}${dev && useProdData ? '' : 'test'}`;
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
@@ -39,7 +38,7 @@ if (dotenv.error && !process.env.PORT) {
 }
 
 // Warn if using production data. Prohibit if running tests.
-if (!dbNameExt) {
+if (!database.includes('test')) {
   console.warn('WARNING: Using production data.'.yellow);
   if (isStaging) {
     throw new Error(
