@@ -16,8 +16,8 @@ const port = parseInt(process.env.PORT!, 10) || 4000;
 const dotenv = Dotenv.config({ path: './config.env' });
 
 const isStaging = process.argv.includes('--staging');
-const useProdData = process.argv.includes('--prod');
-const database = `${process.env.MYSQL_NAME}${dev && useProdData ? '' : 'test'}`;
+const useProdData = dev && !isStaging && process.argv.includes('--prod');
+const database = `${process.env.MYSQL_NAME}${useProdData ? '' : 'test'}`;
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
