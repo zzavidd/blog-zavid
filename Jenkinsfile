@@ -105,6 +105,17 @@ pipeline {
         junit '**/test-results.xml'
         sh 'rm -rf node_modules test-results.xml'
       }
+    }
+
+    success {
+      sendTelegramMessage()
+    }
+
+    failure {
+      sendTelegramMessage()
+    }
+
+    aborted {
       sendTelegramMessage()
     }
   }
