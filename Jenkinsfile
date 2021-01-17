@@ -1,23 +1,23 @@
 String CWD = 'code'
-boolean isMaster = env.JOB_NAME == 'zavid'
+boolean isMaster = env.JOB_NAME.indexOf('PR-') < 0
 String TELEGRAM_MESSAGE = isMaster
-  ? "Master build *#$env.BUILD_NUMBER*"
-  : "PR build *#$env.BUILD_NUMBER* on *$env.CHANGE_BRANCH* branch"
+  ? "Master build <b>#$env.BUILD_NUMBER</b>"
+  : "PR build <b>#$env.BUILD_NUMBER</b> on <b>$env.CHANGE_BRANCH</b> branch"
 
 def sendTelegramMessage(message){
   def body = """
   {
     "chat_id": $CHAT_ID,
-    "parse_mode": "Markdown",
+    "parse_mode": "HTML",
     "text": "$message"
   }
   """
 
   httpRequest url: "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage",
-  httpMode: 'POST',
-  requestBody: body,
-  acceptType: 'APPLICATION_JSON',
-  contentType: 'APPLICATION_JSON'
+    httpMode: 'POST',
+    requestBody: body,
+    acceptType: 'APPLICATION_JSON',
+    contentType: 'APPLICATION_JSON'
 }
 
 pipeline {
@@ -81,20 +81,23 @@ pipeline {
     always {
       dir(CWD) {
         junit '**/test-results.xml'
-        sh 'rm -rf node_modules test-results.xml'
       }
     }
 
     success {
-      sendTelegramMessage("$TELEGRAM_MESSAGE SUCCEEDED.")
+      sendTelegramMessage("&#128994; $TELEGRAM_MESSAGE succeeded.")
     }
 
     failure {
-      sendTelegramMessage("$TELEGRAM_MESSAGE FAILED.")
+      sendTelegramMessage("&#128308; $TELEGRAM_MESSAGE failed.")
     }
 
     aborted {
-      sendTelegramMessage("$TELEGRAM_MESSAGE TIMED OUT.")
+      sendTelegramMessage("&#128993; $TELEGRAM_MESSAGE aborted.")
+    }
+
+    cleanup {
+      sh 'rm -rf node_modules test-results.xml'
     }
   }
 }
