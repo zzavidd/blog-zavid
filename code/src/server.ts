@@ -9,13 +9,13 @@ import 'colors';
 import { setApp, setKnex, setServer } from './private/singleton';
 
 const app = express();
-const dev = process.env.NODE_ENV !== 'production';
-const server = next({ dev });
+const isDev = process.env.NODE_ENV !== 'production';
+const server = next({ dev: isDev });
 const handle = server.getRequestHandler();
 const port = parseInt(process.env.PORT!, 10) || 4000;
 const dotenv = Dotenv.config({ path: './config.env' });
-
 const isStaging = process.argv.includes('--staging');
+const useProdDataInDev = process.argv.includes('--prod');
 
 app.use(bodyParser.json({ limit: '2MB' }));
 app.use(cors());
@@ -26,10 +26,8 @@ if (dotenv.error && !process.env.PORT) {
 }
 
 let database = process.env.MYSQL_NAME!;
-if (!isStaging) {
-  if (dev && !process.argv.includes('--prod')) {
-    database += 'test';
-  }
+if (isDev && !isStaging && !useProdDataInDev) {
+  database += 'test';
 }
 
 // Initialise database connection.
