@@ -38,8 +38,6 @@ export class DiaryEntryBuilder {
   }
 
   withEntryNumber(entryNumber?: number): DiaryEntryBuilder {
-    entryNumber =
-      typeof entryNumber && parseInt((entryNumber as unknown) as string);
     this.entry.entryNumber = entryNumber;
     return this;
   }

@@ -43,10 +43,10 @@ export const isValidPost = (post: PostDAO): boolean => {
   return true;
 };
 
-export const isValidDiaryEntry = (diaryEntry: DiaryDAO): boolean => {
-  if (
-    !ifExists(diaryEntry.content, 'Write out the content of this diary entry.')
-  )
+export const isValidDiaryEntry = (entry: DiaryDAO): boolean => {
+  if (!ifExists(entry.content, 'Write out the content of this diary entry.'))
+    return false;
+  if (!ifExists(entry.entryNumber, 'Set the entry number for the diary entry.'))
     return false;
 
   return true;
@@ -157,9 +157,9 @@ const ifTrue = (condition: boolean, message: string) => {
 
 type ValidImageOptions = {
   mustExist?: boolean;
-}
+};
 
 type FileSizeLimitOptions = {
   limit?: number;
   reference?: string;
-}
+};

@@ -25,6 +25,7 @@ const DiaryEntryForm = (props: DiaryForm) => {
   const { diaryEntry, handlers, isLoaded } = props;
   const {
     handleText,
+    handleNumber,
     handleCheck,
     handleSelection,
     handleTextSave,
@@ -75,7 +76,7 @@ const DiaryEntryForm = (props: DiaryForm) => {
             <NumberInput
               name={'entryNumber'}
               value={diaryEntry.entryNumber!}
-              onChange={handleText}
+              onChange={handleNumber}
               placeholder={'No.'}
             />
           </Field>

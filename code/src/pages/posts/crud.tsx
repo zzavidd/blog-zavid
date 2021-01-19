@@ -44,7 +44,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
     title: '',
     content: '',
     type: undefined,
-    typeId: 1,
+    typeId: undefined,
     excerpt: '',
     image: {
       source: '',
@@ -57,7 +57,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
   } as PostDAO);
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
-  const [domains, setDomains] = useState([]);
+  const [domains, setDomains] = useState<PostDAO[]>([]);
 
   // Initialise query variables.
   const { data, error: queryError, loading: queryLoading } = useQuery(
@@ -141,13 +141,34 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
     setDomains(domainList);
   };
 
-  const setDefaultTypeId = (e: ReactSelectChangeEvent): void => {
+  const onTypeChange = (e: ReactSelectChangeEvent): void => {
     const selectedType = e.target.value;
-    const postsOfType = domains.filter(({ type }) => selectedType === type);
+    const postsOfType = domains.filter(({ type, status }) => {
+      return selectedType === type && status != PostStatus.DRAFT;
+    });
+    const newTypeId = postsOfType.length + 1;
+    const typeId = !PostStatic.isDraft(clientPost) ? newTypeId : null;
+
     setPost(
       Object.assign({}, clientPost, {
         type: selectedType,
-        typeId: postsOfType.length + 1
+        typeId
+      })
+    );
+  };
+
+  const onStatusChange = (e: ReactSelectChangeEvent): void => {
+    const selectedStatus = e.target.value;
+    const postsOfType = domains.filter(({ type, status }) => {
+      return clientPost.type === type && status != PostStatus.DRAFT;
+    });
+    const newTypeId = postsOfType.length + 1;
+    const typeId = selectedStatus !== PostStatus.DRAFT ? newTypeId : null;
+
+    setPost(
+      Object.assign({}, clientPost, {
+        status: selectedStatus,
+        typeId
       })
     );
   };
@@ -207,7 +228,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       post={clientPost}
       domains={domains}
       isCreateOperation={isCreateOperation}
-      handlers={{ ...hooks(setPost, clientPost), setDefaultTypeId }}
+      handlers={{ ...hooks(setPost, clientPost), onTypeChange, onStatusChange }}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
       cancelFunction={returnToPostAdmin}
@@ -238,6 +259,7 @@ const buildPayload = (
   const post = new PostBuilder()
     .withTitle(title)
     .withType(type)
+    .withTypeId(typeId)
     .withContent(content)
     .withStatus(status)
     .withImage(image)
@@ -253,8 +275,6 @@ const buildPayload = (
 
   if (PostStatic.isPage(clientPost)) {
     post.withDomain(domainId);
-  } else {
-    post.withTypeId(typeId);
   }
 
   const payload: PostRequest = { post: post.build(), isPublish, isTest: true };

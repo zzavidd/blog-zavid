@@ -25,7 +25,6 @@ export class PostBuilder {
   }
 
   withTypeId(typeId?: number): PostBuilder {
-    typeId = typeof typeId && parseInt((typeId as unknown) as string);
     this.post.typeId = typeId;
     return this;
   }
