@@ -17,7 +17,7 @@ export default ({
 
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
-  let tagsList = [];
+  let tagsList: Array<string> = [];
 
   if (typeof tags === 'string') {
     if (asCSV) {
@@ -32,6 +32,7 @@ export default ({
   return (
     <div className={classnames(css['post-tag-block'], className)}>
       {tagsList.map((tag: string, key: number) => {
+        tag = tag.replace(/\s/, '');
         return (
           <VanillaLink
             href={`/search?term=${tag}`}
