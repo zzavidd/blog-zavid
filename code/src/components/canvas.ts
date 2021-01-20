@@ -35,6 +35,19 @@ const constants = {
     ST_START_X: 45,
     ST_START_Y: 90
   },
+  [FilterShapeOption.WIDE]: {
+    RECT_PADDING_X: 500,
+    RECT_PADDING_Y: 80,
+    TEXT_PADDING_X: 45,
+    TEXT_PADDING_Y: 85,
+    EXTRA_Y_SHIFT: 20,
+    INITIAL_FONT_SIZE: 42,
+    INITIAL_LINE_LIMIT: 9,
+    ST_FONT_SIZE: 35,
+    ST_LINE_HEIGHT: 45,
+    ST_START_X: 30,
+    ST_START_Y: 65
+  },
   common: {
     TITLE_FONT_SIZE: 80,
     TITLE_LINE_HEIGHT: 100

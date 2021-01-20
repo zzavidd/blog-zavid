@@ -6,6 +6,8 @@ import { zString } from 'zavid-modules';
 import { VanillaLink } from 'src/components/text';
 import css from 'src/styles/pages/Posts.module.scss';
 
+// TODO: Use better tags; convertCSVToArray should be createTags, producing
+// tag labels and values
 export default ({
   tags,
   limit,

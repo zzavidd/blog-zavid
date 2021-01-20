@@ -15,7 +15,8 @@ export enum FilterThemeOption {
 
 export enum FilterShapeOption {
   SQUARE = 'square',
-  TALL = 'tall'
+  TALL = 'tall',
+  WIDE = 'wide'
 }
 
 export class Theme {
