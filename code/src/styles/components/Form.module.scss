@@ -47,6 +47,10 @@
   padding: 2em;
 }
 
+.form-preview-title {
+  font-size: 2em;
+}
+
 .form-preview-text {
   font-size: 1.1em;
 }
@@ -168,7 +172,7 @@
 
 .textarea {
   @include theme-extend(&, '%themed-input');
-  overflow: auto;
+  overflow: overlay;
 }
 
 %select {
@@ -341,6 +345,24 @@
       color: rgba(0, 0, 0, 0.9) !important;
     }
   }
+}
+
+////////////////////////////////
+/// Foldable
+////////////////////////////////
+
+.foldable-toggle {
+  $color: rgb(209, 141, 255) !important;
+  color: $color;
+  font-size: 0.85em;
+
+  path {
+    color: $color;
+  }
+}
+
+.foldable-content {
+  margin-top: 1em;
 }
 
 ////////////////////////////////

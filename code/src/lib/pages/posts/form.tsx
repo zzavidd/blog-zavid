@@ -32,6 +32,7 @@ import css from 'src/styles/pages/Posts.module.scss';
 
 const NUMBER_OF_CONTENT_IMAGES = 6;
 
+// TODO: Use foldable for images
 const PostForm = (props: PostForm) => {
   const { post, domains, handlers, isCreateOperation, isLoaded } = props;
   const {
