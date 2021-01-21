@@ -42,6 +42,19 @@ export const Form = ({
 }: FormProps) => {
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
 
+  const restrictNavigation = (e: Event) => {
+    if (process.env.NODE_ENV !== 'development') {
+      e.returnValue = true;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', restrictNavigation);
+    return () => {
+      window.removeEventListener('beforeunload', restrictNavigation);
+    };
+  }, []);
+
   const formClasses = classnames(
     formClassName?.[isPreviewVisible ? 'previewOn' : 'previewOff'],
     css[isPreviewVisible ? 'form-pv' : 'form']
