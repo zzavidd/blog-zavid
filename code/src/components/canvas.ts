@@ -239,10 +239,10 @@ function insertText(
 
 /**
  * Downloads the image on the canvas.
- * @param image The URL of the image.
+ * @param imageUrl The URL of the image.
  */
-export function downloadImage(image: string) {
-  fetch(image, {
+export function downloadImage(imageUrl: string) {
+  fetch(imageUrl, {
     method: 'GET',
     headers: {}
   })

@@ -36,6 +36,7 @@ export const Curator = ({
   const [isTitleOnly, setTitleOnly] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -93,12 +94,9 @@ export const Curator = ({
 
   /** Download the canvas as an image. */
   const downloadCanvasAsImage = () => {
-    const canvas = canvasRef.current;
-    if (canvas !== null) {
-      canvas.toBlob((blob) => {
-        const url = URL.createObjectURL(blob);
-        downloadImage(url);
-      }, 'image/jpeg');
+    const image = imageRef.current;
+    if (image !== null) {
+      downloadImage(image.src);
     }
   };
 
@@ -111,7 +109,11 @@ export const Curator = ({
         <>
           <canvas ref={canvasRef} className={css['curator-canvas']} hidden />
           <div className={css['curator-image-container']}>
-            <img src={imageSource} className={css['curator-image']} />
+            <img
+              src={imageSource}
+              className={css['curator-image']}
+              ref={imageRef}
+            />
             <div className={css['curator-image-footer']}>
               <Checkbox
                 label={'Curate title only'}
