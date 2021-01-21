@@ -195,22 +195,35 @@ function insertText(
   let textHeight = 0;
 
   paragraphs.forEach((paragraph, i) => {
-    const words = paragraph.split(' ');
-    words.forEach((word, j) => {
-      const textLine = line + word + ' ';
-      const textWidth = ctx.measureText(textLine).width;
+    const stanzaLines = paragraph.split(/\n/);
 
-      if (textWidth > maxWidth && j > 0) {
+    stanzaLines.forEach((stanzaLine, j) => {
+      const words = stanzaLine.split(' ');
+
+      words.forEach((word, k) => {
+        const textLine = line + word + ' ';
+        const textWidth = ctx.measureText(textLine).width;
+
+        if (textWidth > maxWidth && k > 0) {
+          ctx.fillText(line, x, y);
+          line = word + ' ';
+          y += lineHeight;
+          textHeight += lineHeight;
+        } else {
+          line = textLine;
+        }
+      });
+
+      // If line is not last, add extra line.
+      if (j < stanzaLines.length - 1) {
         ctx.fillText(line, x, y);
-        line = word + ' ';
+        line = '';
         y += lineHeight;
         textHeight += lineHeight;
-      } else {
-        line = textLine;
       }
     });
 
-    // If last paragraph, add extra space.
+    // If paragraph is not last, add extra space.
     if (i < paragraphs.length - 1) {
       ctx.fillText(line, x, y);
       line = '';
