@@ -1,3 +1,6 @@
+import faker from 'faker';
+import { zNumber } from 'zavid-modules';
+
 import { isString, randomEnumValue, randomElementFromList } from '../helper';
 import { PostDAO, PostImage, PostType, PostStatus } from '../interfaces';
 
@@ -8,6 +11,11 @@ const PostDirectory: Record<PostType, string> = {
   [PostType.MUSING]: 'musings',
   [PostType.PAGE]: 'pages'
 };
+
+enum ContentType {
+  PROSE = 'prose',
+  POETRY = 'poetry'
+}
 
 export class PostStatic {
   static TYPE = PostType;
@@ -22,6 +30,28 @@ export class PostStatic {
       return true;
     });
     return randomElementFromList(postTypes);
+  }
+
+  static randomContent(
+    contentType: ContentType = ContentType.PROSE,
+    threshold = 3,
+    limit = 6
+  ): string {
+    let content = faker.lorem.paragraphs(
+      zNumber.generateRandom(threshold, limit),
+      '\n\n'
+    );
+
+    if (contentType === ContentType.POETRY) {
+      content = content.replace(/\.\s/g, ',\n');
+    }
+
+    return content;
+  }
+
+  static getContentType(type: PostType): ContentType {
+    const isProse = !type || type === PostType.REVERIE || type === PostType.PAGE;
+    return isProse ? ContentType.PROSE : ContentType.POETRY;
   }
 
   /**
