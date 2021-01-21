@@ -120,7 +120,7 @@ export class PostBuilder {
   withRandomImage(withImage: boolean): PostBuilder {
     this.post.image = {
       source: withImage ? faker.image.image() : '',
-      hasChanged: true
+      hasChanged: withImage
     };
     return this;
   }
