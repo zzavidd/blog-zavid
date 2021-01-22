@@ -95,6 +95,8 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
+    "@zzavidd/eslint-config": "^0.1.4",
+    "@zzavidd/prettier-config": "^0.1.4",
     "apollo-fetch": "^0.7.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
