@@ -9,9 +9,9 @@ import {
   PostTypeFilters,
   QuerySort
 } from '../../../../classes';
-import * as Emails from '../../emails';
 import { ERRORS } from '../../error';
 import * as Filer from '../../filer';
+import * as Emails from '../../notifications/emails';
 import { getKnex } from '../../singleton';
 
 const knex = getKnex();

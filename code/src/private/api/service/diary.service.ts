@@ -8,8 +8,8 @@ import {
   DiaryStatusFilters,
   QuerySort
 } from '../../../../classes';
-import * as Emails from '../../emails';
 import { ERRORS } from '../../error';
+import * as Emails from '../../notifications/emails';
 import { getKnex } from '../../singleton';
 
 const knex = getKnex();
