@@ -187,17 +187,39 @@
 
 .select {
   @extend %select;
-  @include theme-extend(&, '%themed-input');
+  &-light {
+    @extend %themed-input-light;
+    option {
+      background-color: #fff;
+    }
+  }
+  &-dark {
+    @extend %themed-input-dark;
+    option {
+      background-color: $dark;
+    }
+  }
 }
 
 .select-round {
   @extend %input;
-  @extend %select;
+  @include responsive(font-size, 1.2em, $sm: 1em);
   @include themer(&, border-color, $light: $fade-dark, $dark: $fade-light);
   border: 2px solid;
   border-radius: 10px;
   margin-right: 1em;
-  padding: 0.4em;
+  padding: 0.4em 0 0.4em 0.6em !important;
+
+  &-light {
+    option {
+      background-color: #fff;
+    }
+  }
+  &-dark {
+    option {
+      background-color: $dark;
+    }
+  }
 }
 
 ////////////////////////////////
