@@ -18,6 +18,8 @@
       class="signature"
       alt="Signature"
     />
+
+    <div class="diary-content"><%- diaryEntry.footnote %></div>
   </div>
   <%- include("partials/footer.ejs", { url: diaryEntry.slug, token:
   subscriber.token }) %>
