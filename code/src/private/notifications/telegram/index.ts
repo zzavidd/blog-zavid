@@ -4,7 +4,7 @@ import { zDate } from 'zavid-modules';
 import { DiaryDAO, PostDAO, PostStatic } from '../../../../classes';
 import { domain } from '../../../settings';
 
-const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!, { polling: true });
+const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!);
 const dev = process.env.NODE_ENV !== 'production';
 
 const TEST_LINK = 'https://www.zavidegbue.com';
