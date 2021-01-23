@@ -25,7 +25,6 @@ export class PostBuilder {
   }
 
   withTypeId(typeId?: number): PostBuilder {
-    typeId = typeof typeId && parseInt((typeId as unknown) as string);
     this.post.typeId = typeId;
     return this;
   }
@@ -73,27 +72,43 @@ export class PostBuilder {
       numberOfContentImages = 0
     } = options;
 
-    this.post = {
-      title: `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`,
-      type: PostStatic.randomType({ allowPageTypes }),
-      content: faker.lorem.paragraphs().replace(/\n/g, '\n\n'),
-      excerpt: faker.lorem.sentences(),
-      status: PostStatic.randomStatus(),
-      datePublished: zDate.formatISODate(faker.date.past()),
-      image: {
-        source: withImage ? faker.image.image() : '',
-        hasChanged: withImage
-      },
-      contentImages: new Array(numberOfContentImages).fill({
-        source: faker.image.image(),
-        hasChanged: true
-      })
-    };
+    const title = `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`;
 
-    if (this.post.type !== PostType.PAGE) {
+    this.post = this.withTitle(title)
+      .withRandomType(allowPageTypes)
+      .withRandomContent()
+      .withRandomExcerpt()
+      .withRandomStatus()
+      .withRandomDate()
+      .withRandomImage(withImage)
+      .withRandomContentImages(numberOfContentImages)
+      .build();
+
+    if (!PostStatic.isPage(this.post)) {
       this.post.typeId = faker.random.number();
     }
 
+    return this;
+  }
+
+  withRandomType(allowPageTypes?: boolean): PostBuilder {
+    this.post.type = PostStatic.randomType({ allowPageTypes });
+    return this;
+  }
+
+  withRandomStatus(): PostBuilder {
+    this.post.status = PostStatic.randomStatus();
+    return this;
+  }
+
+  withRandomDate(): PostBuilder {
+    this.post.datePublished = zDate.formatISODate(faker.date.past());
+    return this;
+  }
+
+  withRandomContent(threshold?: number, limit?: number): PostBuilder {
+    const contentType = PostStatic.getContentType(this.post.type!);
+    this.post.content = PostStatic.randomContent(contentType, threshold, limit);
     return this;
   }
 
@@ -102,11 +117,19 @@ export class PostBuilder {
     return this;
   }
 
-  withRandomImage(): PostBuilder {
+  withRandomImage(withImage: boolean): PostBuilder {
     this.post.image = {
+      source: withImage ? faker.image.image() : '',
+      hasChanged: withImage
+    };
+    return this;
+  }
+
+  withRandomContentImages(quantity: number): PostBuilder {
+    this.post.contentImages = new Array(quantity).fill({
       source: faker.image.image(),
       hasChanged: true
-    };
+    });
     return this;
   }
 

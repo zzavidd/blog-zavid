@@ -14,14 +14,14 @@ cloudinary.config({
 
 export async function getEntities<T>(
   options: GetEntitiesOptions
-): Promise<T[]> | never {
+): Promise<T[] | void> {
   const { query, resolver, variables = {} } = options;
   try {
     const { data } = (await fetch(query, {
       variables
     })) as FetchResponse;
 
-    const entities = data[resolver] as T[];
+    const entities = data![resolver] as T[];
     return entities;
   } catch (err) {
     debug(err);
@@ -31,7 +31,7 @@ export async function getEntities<T>(
 export async function getSingleEntity<T>(
   id: number,
   options: GetSingleEntityOptions
-): Promise<T> | never {
+): Promise<T | void> {
   const { query, resolver, expectToFail = false } = options;
   try {
     const { data, errors } = (await fetch(query, {
@@ -44,7 +44,7 @@ export async function getSingleEntity<T>(
       return;
     }
 
-    const entity = data[resolver] as T;
+    const entity = data![resolver] as T;
     return entity;
   } catch (err) {
     debug(err);
@@ -54,14 +54,14 @@ export async function getSingleEntity<T>(
 export async function createEntity<T>(
   entity: T,
   options: MutateEntityOptions
-): Promise<SubmitEntityResponse> | never {
+): Promise<SubmitEntityResponse | void> {
   const { query, resolver, anonym, extraVariables = {} } = options;
   try {
     const { data } = (await fetch(query, {
       variables: { [anonym]: entity, isTest: true, ...extraVariables }
     })) as FetchResponse;
 
-    const createdEntity = data[resolver] as SubmitEntityResponse;
+    const createdEntity = data![resolver] as SubmitEntityResponse;
     assert.property(createdEntity, 'id');
     assert.isNumber(createdEntity.id);
     return createdEntity;
@@ -74,14 +74,14 @@ export async function updateEntity<T extends GenericDAO>(
   id: number,
   entity: T,
   options: MutateEntityOptions
-): Promise<T> {
+): Promise<T | void> {
   const { query, resolver, anonym, extraVariables = {} } = options;
   try {
     const { data } = (await fetch(query, {
       variables: { id, [anonym]: entity, isTest: true, ...extraVariables }
     })) as FetchResponse;
 
-    const updatedEntity = data[resolver] as T;
+    const updatedEntity = data![resolver] as T;
     assert.strictEqual(updatedEntity.id, id);
     return updatedEntity;
   } catch (err) {
@@ -98,7 +98,7 @@ export async function deleteEntity<T extends GenericDAO>(
     const { data } = (await fetch(query, {
       variables: { id }
     })) as FetchResponse;
-    const deletedEntity = data[resolver] as T;
+    const deletedEntity = data![resolver] as T;
     assert.property(deletedEntity, 'id');
 
     verifyDelete();
@@ -134,7 +134,7 @@ export function extractPublicId(image: string): string {
   );
   const match = image.match(regex);
   assert.isOk(match);
-  return match[1];
+  return match![1];
 }
 
 interface QueryOptions {

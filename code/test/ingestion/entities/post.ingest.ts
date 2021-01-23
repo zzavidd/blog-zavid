@@ -59,22 +59,16 @@ async function ingestPost(options: IngestPostOptions) {
     refDate.setDate(refDate.getDate() + 30);
     refDate = faker.date.soon(30, refDate);
     const index = i + 1;
-    let postbuilder = new PostBuilder()
+    const post = new PostBuilder()
       .withTitle(zString.toTitleCase(generateTitle(index)))
       .withType(type)
       .withTypeId(index)
-      .withContent(
-        faker.lorem.paragraphs(
-          zNumber.generateRandom(contentThreshold, contentLimit)
-        )
-      )
       .withStatus(PostStatus.PUBLISHED)
       .withDatePublished(zDate.formatISODate(refDate))
-      .withRandomExcerpt();
-
-    if (includeImage) postbuilder = postbuilder.withRandomImage();
-
-    const post = postbuilder.build();
+      .withRandomContent(contentThreshold, contentLimit)
+      .withRandomExcerpt()
+      .withRandomImage(includeImage)
+      .build();
 
     promises.push(
       fetch(CREATE_POST_QUERY, {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { ConfirmButton } from 'src/components/button';
 import { SearchBar } from 'src/components/form';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 import css from 'src/styles/pages/Home.module.scss';
 
 import { HomeRow } from '..';
@@ -17,8 +17,8 @@ export default () => {
 
   return (
     <Fader determinant={isLoaded} duration={800} delay={500} hollow={true}>
-      <HomeRow className={css['search-row']}>
-        <div className={css['search-container']}>
+      <HomeRow className={css['home-search-row']}>
+        <div className={css['home-search-container']}>
           <SearchBar
             value={searchTerm}
             placeholder={'Search this entire blog...'}
@@ -28,12 +28,12 @@ export default () => {
                 launchSearch(searchTerm);
               }
             }}
-            className={css['search-bar']}
+            className={css['home-search-bar']}
             onClearInput={() => setSearchTerm('')}
           />
-          <div className={css['search-button-container']}>
+          <div className={css['home-search-button-container']}>
             <ConfirmButton
-              className={css['search-button']}
+              className={css['home-search-button']}
               onClick={() => launchSearch(searchTerm)}>
               Search
             </ConfirmButton>

@@ -1,12 +1,13 @@
 import type { IconName } from '@fortawesome/fontawesome-svg-core';
 import classnames from 'classnames';
 import React from 'react';
+import { RootStateOrAny, useSelector } from 'react-redux';
 
 import { OnClickType, OnInputChangeType } from 'classes';
+import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
 import { InvisibleButton } from '../button';
-import { Icon } from '../icon';
 
 export const Checkbox = ({
   name,
@@ -16,11 +17,16 @@ export const Checkbox = ({
   className,
   boxClassName
 }: Checkbox): JSX.Element => {
+  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css['checkbox-group'], className);
-  const boxClasses = classnames(css['checkbox-mark'], boxClassName);
+  const boxClasses = classnames(
+    css['checkbox-mark'],
+    css[`checkbox-mark-${theme}`],
+    boxClassName
+  );
   return (
     <label className={classes}>
-      <span className={css['checkbox-label']}>{label}</span>
+      <span>{label}</span>
       <input
         className={boxClasses}
         type={'checkbox'}

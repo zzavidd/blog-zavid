@@ -1,4 +1,4 @@
-import { emailsOn, TryWrapper } from './helper';
+import { emailsOn, telegramOn, TryWrapper } from './helper';
 
 import {
   PostDAO,
@@ -9,9 +9,10 @@ import {
   PostTypeFilters,
   QuerySort
 } from '../../../../classes';
-import * as Emails from '../../emails';
 import { ERRORS } from '../../error';
 import * as Filer from '../../filer';
+import * as Emails from '../../notifications/emails';
+import * as Telegram from '../../notifications/telegram';
 import { getKnex } from '../../singleton';
 
 const knex = getKnex();
@@ -67,12 +68,17 @@ export const createPost = ({
   isPublish,
   isTest
 }: CreatePostOptions): Promise<PostDAO> => {
-  const shouldNotify = isPublish && !PostStatic.isPage(post) && emailsOn;
+  const { shouldSendEmail, shouldSendTelegram } = getPermissions(
+    post,
+    isPublish
+  );
+
   return TryWrapper(async () => {
     post = await Filer.uploadImages(post, { isTest });
     const [[id]] = await Promise.all([
       new PostMutationBuilder(knex).insert(post).build(),
-      shouldNotify ? Emails.notifyNewPost(post) : null
+      shouldSendEmail ? Emails.notifyNewPost(post) : null,
+      shouldSendTelegram ? Telegram.notifyNewPost(post) : null
     ]);
     return { id };
   });
@@ -92,11 +98,16 @@ export const updatePost = ({
   isTest
 }: UpdatePostOptions): Promise<PostDAO> => {
   return TryWrapper(async () => {
-    const shouldNotify = isPublish && !PostStatic.isPage(post) && emailsOn;
+    const { shouldSendEmail, shouldSendTelegram } = getPermissions(
+      post,
+      isPublish
+    );
+
     post = await Filer.replaceImages(id, post, { isTest });
     await Promise.all([
       new PostMutationBuilder(knex).update(post).whereId(id).build(),
-      shouldNotify ? Emails.notifyNewPost(post) : null
+      shouldSendEmail ? Emails.notifyNewPost(post) : null,
+      shouldSendTelegram ? Telegram.notifyNewPost(post) : null
     ]);
     return getSinglePost({ id });
   });
@@ -132,6 +143,18 @@ export const clearPosts = () => {
     await new PostMutationBuilder(knex).truncate().build();
   });
 };
+
+/**
+ * Get permissions for notifications based on CLI arguments.
+ * @param post The post in question.
+ * @param isPublish Indicates if post was a publish.
+ */
+function getPermissions(post: PostDAO, isPublish: boolean) {
+  const isPublishable = isPublish && !PostStatic.isPage(post);
+  const shouldSendEmail = isPublishable && emailsOn;
+  const shouldSendTelegram = isPublishable && telegramOn;
+  return { shouldSendEmail, shouldSendTelegram };
+}
 
 export type GetAllPostOptions = {
   limit?: number;

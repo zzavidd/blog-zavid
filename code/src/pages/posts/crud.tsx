@@ -11,7 +11,8 @@ import {
   PostImage,
   PostStatic,
   PostStatus,
-  ReactSelectChangeEvent
+  ReactSelectChangeEvent,
+  URLBuilder
 } from 'classes';
 import { alert, AlertType, reportError, setAlert } from 'src/components/alert';
 import hooks from 'src/lib/hooks';
@@ -23,6 +24,7 @@ import {
   GET_POSTS_QUERY,
   UPDATE_POST_QUERY
 } from 'src/private/api/queries/post.queries';
+import { domain } from 'src/settings';
 
 interface PostInitialProps {
   post: PostDAO;
@@ -42,7 +44,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
     title: '',
     content: '',
     type: undefined,
-    typeId: 1,
+    typeId: undefined,
     excerpt: '',
     image: {
       source: '',
@@ -55,7 +57,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
   } as PostDAO);
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
-  const [domains, setDomains] = useState([]);
+  const [domains, setDomains] = useState<PostDAO[]>([]);
 
   // Initialise query variables.
   const { data, error: queryError, loading: queryLoading } = useQuery(
@@ -139,13 +141,34 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
     setDomains(domainList);
   };
 
-  const setDefaultTypeId = (e: ReactSelectChangeEvent): void => {
+  const onTypeChange = (e: ReactSelectChangeEvent): void => {
     const selectedType = e.target.value;
-    const postsOfType = domains.filter(({ type }) => selectedType === type);
+    const postsOfType = domains.filter(({ type, status }) => {
+      return selectedType === type && status != PostStatus.DRAFT;
+    });
+    const newTypeId = postsOfType.length + 1;
+    const typeId = !PostStatic.isDraft(clientPost) ? newTypeId : null;
+
     setPost(
       Object.assign({}, clientPost, {
         type: selectedType,
-        typeId: postsOfType.length + 1
+        typeId
+      })
+    );
+  };
+
+  const onStatusChange = (e: ReactSelectChangeEvent): void => {
+    const selectedStatus = e.target.value;
+    const postsOfType = domains.filter(({ type, status }) => {
+      return clientPost.type === type && status != PostStatus.DRAFT;
+    });
+    const newTypeId = postsOfType.length + 1;
+    const typeId = selectedStatus !== PostStatus.DRAFT ? newTypeId : null;
+
+    setPost(
+      Object.assign({}, clientPost, {
+        status: selectedStatus,
+        typeId
       })
     );
   };
@@ -175,7 +198,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
         type: AlertType.SUCCESS,
         message: `You've successfully added the new post titled "${clientPost.title}".`
       });
-      returnToAdminPosts();
+      returnToPostAdmin();
     } catch (err) {
       reportError(err);
     }
@@ -193,7 +216,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
         type: AlertType.SUCCESS,
         message: `You've successfully updated "${clientPost.title}".`
       });
-      returnToAdminPosts();
+      returnAfterUpdate(clientPost);
     } catch (err) {
       reportError(err);
     }
@@ -205,10 +228,10 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       post={clientPost}
       domains={domains}
       isCreateOperation={isCreateOperation}
-      handlers={{ ...hooks(setPost, clientPost), setDefaultTypeId }}
+      handlers={{ ...hooks(setPost, clientPost), onTypeChange, onStatusChange }}
       confirmFunction={isCreateOperation ? submitPost : updatePost}
       confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
-      cancelFunction={returnToAdminPosts}
+      cancelFunction={returnToPostAdmin}
       isRequestPending={isRequestPending}
     />
   );
@@ -236,6 +259,7 @@ const buildPayload = (
   const post = new PostBuilder()
     .withTitle(title)
     .withType(type)
+    .withTypeId(typeId)
     .withContent(content)
     .withStatus(status)
     .withImage(image)
@@ -251,8 +275,6 @@ const buildPayload = (
 
   if (PostStatic.isPage(clientPost)) {
     post.withDomain(domainId);
-  } else {
-    post.withTypeId(typeId);
   }
 
   const payload: PostRequest = { post: post.build(), isPublish, isTest: true };
@@ -264,8 +286,32 @@ const buildPayload = (
 };
 
 /** Return to the admin page. */
-const returnToAdminPosts = (): void => {
+const returnToPostAdmin = (): void => {
   location.href = '/admin/posts';
+};
+
+const returnAfterUpdate = (post: PostDAO) => {
+  const url = new URLBuilder();
+  url.append(domain);
+
+  if (PostStatic.isPage(post)) {
+    const base = PostStatic.getDirectory(post.domainType!);
+    url.appendSegment(base);
+    url.appendSegment(post.domainSlug!);
+    url.appendSegment(post.slug!);
+  } else {
+    const base = PostStatic.getDirectory(post.type!);
+    url.appendSegment(base);
+    url.appendSegment(post.slug!);
+  }
+
+  const postUrl = url.build();
+
+  if (document.referrer === postUrl) {
+    location.href = postUrl;
+  } else {
+    returnToPostAdmin();
+  }
 };
 
 PostCrud.getInitialProps = async ({ query }: NextPageContext) => {

@@ -9,9 +9,9 @@ import { Checkbox, SearchBar } from 'src/components/form';
 import CloudImage, { AspectRatio } from 'src/components/image';
 import { Spacer } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
-import { Fader } from 'src/components/transitioner';
+import { Fader } from 'src/lib/library';
 import { DAOParse } from 'src/lib/parser';
-import css from 'src/styles/pages/Home.module.scss';
+import css from 'src/styles/pages/Search.module.scss';
 
 const COMBINED_EMPHASIS_REGEX = zText.getCombinedEmphasisRegex();
 const PARAM_ONLY_DIARY = 'onlyDiary';
@@ -51,7 +51,7 @@ const SearchResults = (props: SearchResultsProps) => {
           checked={onlyDiary}
           onChange={(e) => {
             const isChecked = e.target.checked;
-            url.searchParams.set('onlyDiary', JSON.stringify(isChecked));
+            url.searchParams.set(PARAM_ONLY_DIARY, JSON.stringify(isChecked));
             setOnlyDiaryFlag(isChecked);
             location.href = url.toString();
           }}

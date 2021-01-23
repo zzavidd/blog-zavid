@@ -1,11 +1,14 @@
 import classnames from 'classnames';
-import React, { useState, useEffect, MouseEventHandler, ReactNode } from 'react';
+import React, {
+  useState,
+  useEffect,
+  MouseEventHandler,
+  ReactNode
+} from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
+import { Icon , Responsive } from 'src/lib/library';
 import css from 'src/styles/components/Button.module.scss';
-
-import { Icon } from './icon';
-import { Responsive } from './layout';
 
 const Button = (props: Button) => {
   const { children, className, onClick, isRequestPending } = props;
@@ -41,7 +44,9 @@ export const ConfirmButton = (props: Button) => {
 export const CancelButton = (props: Button) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
-    <Button {...props} className={css[`button-cancel-${theme}`]}>
+    <Button
+      {...props}
+      className={classnames(props.className, css[`button-cancel-${theme}`])}>
       {props.children}
     </Button>
   );
@@ -101,12 +106,12 @@ export const InvisibleButton = (props: Button): JSX.Element => {
 };
 
 interface Button {
-  children: ReactNode
-  className?: string
-  onClick?: MouseEventHandler<HTMLButtonElement>
-  isRequestPending?: boolean
+  children: ReactNode;
+  className?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  isRequestPending?: boolean;
 }
 
-interface AdminButton extends Button  {
-  mobileText?: string
+interface AdminButton extends Button {
+  mobileText?: string;
 }

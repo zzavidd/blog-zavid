@@ -1,4 +1,3 @@
-import { getSingleDiaryEntry } from './diary.service';
 import { TryWrapper } from './helper';
 
 import {
@@ -68,7 +67,7 @@ export const updatePage = ({ id, page }: UpdatePageOptions) => {
  */
 export const deletePage = ({ id }: GetOrDeletePageOptions) => {
   return TryWrapper(async () => {
-    await getSingleDiaryEntry({ id });
+    await getSinglePage({ id });
     await new PageMutationBuilder(knex).delete(id).build();
     return { id };
   });

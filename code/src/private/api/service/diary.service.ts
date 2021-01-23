@@ -1,4 +1,4 @@
-import { TryWrapper, emailsOn } from './helper';
+import { TryWrapper, emailsOn, telegramOn } from './helper';
 
 import {
   DiaryDAO,
@@ -8,8 +8,9 @@ import {
   DiaryStatusFilters,
   QuerySort
 } from '../../../../classes';
-import * as Emails from '../../emails';
 import { ERRORS } from '../../error';
+import * as Emails from '../../notifications/emails';
+import * as Telegram from '../../notifications/telegram';
 import { getKnex } from '../../singleton';
 
 const knex = getKnex();
@@ -22,14 +23,16 @@ const ENTITY_NAME = 'diary entry';
  */
 export const getDiaryEntries = ({
   sort,
-  status
+  status,
+  onlyFavourites
 }: GetDiaryOptions): Promise<DiaryDAO[]> => {
   return TryWrapper(async () => {
     const diaryEntries = await new DiaryQueryBuilder(knex)
       .whereStatus(status)
+      .whereIsFavourite(onlyFavourites)
       .withOrder(sort)
       .build();
-    return diaryEntries;
+    return DiaryStatic.parseBatch(diaryEntries);
   });
 };
 
@@ -43,7 +46,7 @@ export const getSingleDiaryEntry = async ({
   return TryWrapper(async () => {
     const [diaryEntry] = await new DiaryQueryBuilder(knex).whereId(id).build();
     if (!diaryEntry) throw ERRORS.NONEXISTENT_ID(id, ENTITY_NAME);
-    return diaryEntry;
+    return DiaryStatic.parse(diaryEntry);
   });
 };
 
@@ -57,12 +60,17 @@ export const createDiaryEntry = async ({
   isPublish
 }: CreateDiaryEntryOptions): Promise<DiaryDAO> => {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
-  const shouldNotify = isPublish && emailsOn;
+  diaryEntry.tags = JSON.stringify(diaryEntry.tags);
+  
+  const { shouldSendEmail, shouldSendTelegram } = getPermissions(
+    isPublish
+  );
 
   return TryWrapper(async () => {
     const [[id]] = await Promise.all([
       new DiaryMutationBuilder(knex).insert(diaryEntry).build(),
-      shouldNotify ? Emails.notifyNewDiaryEntry(diaryEntry) : null
+      shouldSendEmail ? Emails.notifyNewDiaryEntry(diaryEntry) : null,
+      shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null
     ]);
 
     return { id } as DiaryDAO;
@@ -81,12 +89,17 @@ export const updateDiaryEntry = async ({
   isPublish
 }: UpdateDiaryEntryOptions): Promise<DiaryDAO> => {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
-  const shouldNotify = isPublish && emailsOn;
+  diaryEntry.tags = JSON.stringify(diaryEntry.tags);
+
+  const { shouldSendEmail, shouldSendTelegram } = getPermissions(
+    isPublish
+  );
 
   return TryWrapper(async () => {
     await Promise.all([
       new DiaryMutationBuilder(knex).update(diaryEntry).whereId(id).build(),
-      shouldNotify ? Emails.notifyNewDiaryEntry(diaryEntry) : null
+      shouldSendEmail ? Emails.notifyNewDiaryEntry(diaryEntry) : null,
+      shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null
     ]);
 
     const updatedDiaryEntry = await getSingleDiaryEntry({ id });
@@ -117,9 +130,20 @@ export const clearDiary = () => {
   });
 };
 
+/**
+ * Get permissions for notifications based on CLI arguments.
+ * @param isPublish Indicates if diary entry was a publish.
+ */
+function getPermissions(isPublish: boolean) {
+  const shouldSendEmail = isPublish && emailsOn;
+  const shouldSendTelegram = isPublish && telegramOn;
+  return { shouldSendEmail, shouldSendTelegram };
+}
+
 export type GetDiaryOptions = {
   sort: QuerySort;
   status: DiaryStatusFilters;
+  onlyFavourites: boolean;
 };
 
 export type GetOrDeleteDiaryEntryOptions = {

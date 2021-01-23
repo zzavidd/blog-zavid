@@ -14,4 +14,10 @@ router.get('/resources/dissertation', function (req, res) {
   request(url).pipe(res);
 });
 
+router.get('/images/filters/:shape/:colour', function (req, res) {
+  const { shape, colour } = req.params;
+  const url = `${cloudinaryBaseUrl}/static/bg/filters/${shape}-${colour}.jpg`;
+  request(url).pipe(res);
+});
+
 export default router;

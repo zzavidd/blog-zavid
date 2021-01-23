@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
-import { zDate } from 'zavid-modules';
+import { zDate, zString } from 'zavid-modules';
 
 import { AlertType, reportError, setAlert } from 'src/components/alert';
 import { ConfirmModal } from 'src/components/modal';
@@ -13,6 +13,7 @@ import {
   CREATE_DIARY_QUERY,
   UPDATE_DIARY_QUERY
 } from 'src/private/api/queries/diary.queries';
+import { domain } from 'src/settings';
 
 import {
   DiaryDAO,
@@ -35,7 +36,8 @@ const DiaryCrud = ({
     date: new Date(),
     status: DiaryStatus.PROTECTED,
     entryNumber: latestEntryNumber + 1,
-    isFavourite: false
+    isFavourite: false,
+    tags: ''
   } as DiaryDAO);
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -65,6 +67,13 @@ const DiaryCrud = ({
   /** Populate the form with diary entry details. */
   const populateForm = () => {
     if (isCreateOperation) return;
+
+    // Convert tags to CSV string.
+    if (serverDiaryEntry.tags) {
+      const tags = JSON.parse(serverDiaryEntry.tags as string) || [];
+      serverDiaryEntry.tags = zString.convertArrayToCsv(tags);
+    }
+
     setDiaryEntry(serverDiaryEntry);
   };
 
@@ -107,7 +116,7 @@ const DiaryCrud = ({
           clientDiaryEntry.date!
         )}.`
       });
-      returnToDiaryAdmin();
+      returnAfterUpdate(clientDiaryEntry.entryNumber!);
     } catch (err) {
       return reportError(err);
     }
@@ -152,7 +161,17 @@ const buildPayload = (
   isPublish: boolean,
   isCreateOperation: boolean
 ): DiaryRequest => {
-  const { id, title, content, footnote, status, date, entryNumber, isFavourite } = clientDiaryEntry;
+  const {
+    id,
+    title,
+    content,
+    footnote,
+    status,
+    date,
+    entryNumber,
+    isFavourite,
+    tags
+  } = clientDiaryEntry;
 
   const diaryEntry = new DiaryEntryBuilder()
     .withTitle(title)
@@ -162,6 +181,7 @@ const buildPayload = (
     .withStatus(status)
     .withEntryNumber(entryNumber)
     .setIsFavourite(isFavourite)
+    .withTags(zString.convertCsvToArray(tags as string))
     .build();
 
   const payload: DiaryRequest = { diaryEntry, isPublish };
@@ -174,8 +194,17 @@ const buildPayload = (
 };
 
 /** Return to the admin page. */
-const returnToDiaryAdmin = (): void => {
+const returnToDiaryAdmin = () => {
   location.href = '/admin/diary';
+};
+
+const returnAfterUpdate = (entryNumber: number) => {
+  const pageUrl = `${domain}/diary/${entryNumber}`;
+  if (document.referrer === pageUrl) {
+    location.href = pageUrl;
+  } else {
+    returnToDiaryAdmin();
+  }
 };
 
 DiaryCrud.getInitialProps = async ({ query }: NextPageContext) => {

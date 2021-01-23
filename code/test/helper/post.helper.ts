@@ -23,7 +23,7 @@ export const getPosts = (variables?: Variables): Promise<PostDAO[]> => {
     query: GET_POSTS_QUERY,
     resolver: 'getAllPosts',
     variables
-  });
+  }) as Promise<PostDAO[]>;
 };
 
 export const getSinglePost = (
@@ -34,23 +34,34 @@ export const getSinglePost = (
     query: GET_SINGLE_POST_QUERY,
     resolver: 'getSinglePost',
     expectToFail
-  });
+  }) as Promise<PostDAO>;
 };
 
-export const createPost = (post: PostDAO): Promise<SubmitEntityResponse> => {
+export const createPost = (
+  post: PostDAO,
+  options: MutatePostOptions = {}
+): Promise<SubmitEntityResponse> => {
+  const { extraVariables } = options;
   return createEntity(post, {
     query: CREATE_POST_QUERY,
     resolver: 'createPost',
-    anonym: ENTITY_NAME
-  });
+    anonym: ENTITY_NAME,
+    extraVariables
+  }) as Promise<SubmitEntityResponse>;
 };
 
-export const updatePost = (id: number, post: PostDAO): Promise<PostDAO> => {
+export const updatePost = (
+  id: number,
+  post: PostDAO,
+  options: MutatePostOptions = {}
+): Promise<PostDAO> => {
+  const { extraVariables } = options;
   return updateEntity(id, post, {
     query: UPDATE_POST_QUERY,
     resolver: 'updatePost',
-    anonym: ENTITY_NAME
-  });
+    anonym: ENTITY_NAME,
+    extraVariables
+  }) as Promise<PostDAO>;
 };
 
 export const deletePost = (id: number): Promise<void> => {
@@ -71,4 +82,8 @@ export const comparePosts = (submission: PostDAO, output: PostDAO) => {
     new Date(submission.datePublished as string).getUTCMilliseconds,
     new Date(parseInt(output.datePublished as string)).getUTCMilliseconds
   );
+};
+
+type MutatePostOptions = {
+  extraVariables?: Record<string, unknown>;
 };

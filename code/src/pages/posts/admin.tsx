@@ -14,15 +14,11 @@ import {
 } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/components/icon';
+import CloudImage from 'src/components/image';
 import { Spacer } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
-import Tabler, {
-  TablerColumnHeader,
-  TablerItemCell,
-  TablerType
-} from 'src/components/tabler';
 import { VanillaLink } from 'src/components/text';
+import { Icon, Tabler, TablerColumnHeader, TablerFieldType, TablerItemCell } from 'src/lib/library';
 import BottomToolbar from 'src/lib/pages/posts/toolbar';
 import { updatePostFilterSettings } from 'src/lib/reducers';
 import {
@@ -97,7 +93,7 @@ const PostAdmin = () => {
   return (
     <>
       <Spacer>
-        <Tabler
+        <Tabler<9>
           heading={'List of Posts'}
           itemsLoaded={
             isLoaded && !queryLoading && networkStatus !== NetworkStatus.refetch
@@ -114,7 +110,7 @@ const PostAdmin = () => {
           items={posts.map((post: PostDAO, key: number) => {
             return [
               new TablerItemCell(key + 1, {
-                type: TablerType.INDEX
+                type: TablerFieldType.INDEX
               }),
               new TablerItemCell(post.title, { icon: 'heading' }),
               new TablerItemCell(post.type, {
@@ -126,15 +122,20 @@ const PostAdmin = () => {
                 { hideOnMobile: true }
               ),
               new TablerItemCell(post.status, { icon: 'lock' }),
-              new TablerItemCell(post.image as string, {
-                type: TablerType.IMAGE,
-                imageOptions: { css: css['post-admin-image'] }
-              }),
+              new TablerItemCell(
+                (
+                  <CloudImage
+                    src={post.image as string}
+                    containerClassName={css['post-admin-image']}
+                  />
+                ),
+                { type: TablerFieldType.IMAGE }
+              ),
               new TablerItemCell(<LinkButton post={post} key={key} />, {
-                type: TablerType.BUTTON
+                type: TablerFieldType.BUTTON
               }),
               new TablerItemCell(<EditButton id={post.id!} key={key} />, {
-                type: TablerType.BUTTON
+                type: TablerFieldType.BUTTON
               }),
               new TablerItemCell(
                 (
@@ -145,11 +146,21 @@ const PostAdmin = () => {
                     setSelectedPost={setSelectedPost}
                   />
                 ),
-                { type: TablerType.BUTTON }
+                { type: TablerFieldType.BUTTON }
               )
             ];
           })}
-          distribution={'6% 1fr 10% 1fr 10% 8% 4% 4% 4%'}
+          distribution={[
+            '6%',
+            '1fr',
+            '10%',
+            '1fr',
+            '10%',
+            '8%',
+            '4%',
+            '4%',
+            '4%'
+          ]}
         />
         <BottomToolbar
           options={options}

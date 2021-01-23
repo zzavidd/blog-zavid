@@ -11,9 +11,11 @@ import {
   ConfirmButton
 } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
-import { Paragraph } from 'src/components/text';
-import { Fader, Slider } from 'src/components/transitioner';
+import { Paragraph, Title } from 'src/components/text';
+import { Fader, Slider } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
+
+import { Signature } from '../image';
 
 export * from './checkbox';
 export * from './fileselector';
@@ -21,28 +23,58 @@ export * from './input';
 export * from './select';
 export * from './textarea';
 
+// TODO: Use single previewInfo object for title, text and footnote
+// TODO: Rename previewText to previewContent
 export const Form = ({
   confirmButtonText = 'Submit',
   confirmFunction,
   cancelFunction,
   isRequestPending,
+  previewTitle,
   previewText = false,
+  previewFootnotes,
   substitutions,
-  children
-}: Form) => {
+  children,
+  formClassName,
+  editorClassName,
+  previewClassName,
+  onPreviewToggle
+}: FormProps) => {
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
+
+  const restrictNavigation = (e: Event) => {
+    if (process.env.NODE_ENV !== 'development') {
+      e.returnValue = true;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', restrictNavigation);
+    return () => {
+      window.removeEventListener('beforeunload', restrictNavigation);
+    };
+  }, []);
+
+  const formClasses = classnames(
+    formClassName?.[isPreviewVisible ? 'previewOn' : 'previewOff'],
+    css[isPreviewVisible ? 'form-pv' : 'form']
+  );
+  const formEditorClasses = classnames(
+    editorClassName?.[isPreviewVisible ? 'previewOn' : 'previewOff'],
+    css[isPreviewVisible ? 'form-editor-pv' : 'form-editor']
+  );
 
   return (
     <Spacer>
-      <div className={css[isPreviewVisible ? 'form-pv' : 'form']}>
-        <div
-          className={css[isPreviewVisible ? 'form-editor-pv' : 'form-editor']}>
-          {children}
-        </div>
+      <div className={formClasses}>
+        <div className={formEditorClasses}>{children}</div>
         <FormPreview
           isPreviewVisible={isPreviewVisible}
+          previewTitle={previewTitle}
           previewText={previewText}
+          previewFootnotes={previewFootnotes}
           substitutions={substitutions}
+          className={previewClassName}
         />
       </div>
       <Toolbar>
@@ -51,6 +83,7 @@ export const Form = ({
             previewText={previewText}
             setPreviewVisibility={setPreviewVisibility}
             isPreviewVisible={isPreviewVisible}
+            onPreviewToggle={onPreviewToggle}
           />
           <ButtonSpacer className={css['form-footer-button-spacer']}>
             <ConfirmButton
@@ -67,23 +100,32 @@ export const Form = ({
 };
 
 const FormPreview = ({
+  className,
   isPreviewVisible,
+  previewTitle,
   previewText,
+  previewFootnotes,
   substitutions = {}
 }: FormPreview) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+  const classes = classnames(className, css[`form-preview-${theme}`]);
 
   return (
     <Slider
       determinant={isPreviewVisible}
       duration={300}
       direction={'right'}
-      className={css[`form-preview-${theme}`]}
+      className={classes}
       style={{ display: isPreviewVisible ? 'block' : 'none' }}>
+      <Title className={css['form-preview-title']}>{previewTitle}</Title>
       <Paragraph
         className={css['form-preview-text']}
         substitutions={substitutions}>
         {previewText as string}
+      </Paragraph>
+      <Signature />
+      <Paragraph className={css['form-preview-text']}>
+        {previewFootnotes}
       </Paragraph>
     </Slider>
   );
@@ -92,13 +134,15 @@ const FormPreview = ({
 const FormPreviewToggle = ({
   previewText,
   setPreviewVisibility,
-  isPreviewVisible
+  isPreviewVisible,
+  onPreviewToggle
 }: FormPreviewToggle) => {
   // TODO: Make previewText just string type
   if (typeof previewText !== 'string') return null;
 
   const togglePreview = () => {
     setPreviewVisibility(!isPreviewVisible);
+    onPreviewToggle?.(!isPreviewVisible);
   };
 
   return (
@@ -153,33 +197,52 @@ export const Label = ({ children }: Label) => {
   return <label className={css['label']}>{children}</label>;
 };
 
-interface Form {
-  confirmButtonText?: string;
-  confirmFunction?: () => void;
-  cancelFunction?: () => void;
-  isRequestPending?: boolean;
-  previewText?: string | boolean;
-  substitutions?: Substitutions;
-  children: ReactNode;
-}
-
-interface FormPreview {
-  isPreviewVisible: boolean;
-  previewText: string | boolean;
-  substitutions?: Substitutions;
-}
-
-interface FormPreviewToggle {
-  isPreviewVisible: boolean;
-  previewText: string | boolean;
-  setPreviewVisibility: ReactHook<boolean>;
-}
-
 interface DynamicField extends ColProps {
   precondition: boolean;
   dependency: unknown;
 }
 
-interface Label {
+type FormProps = {
   children: ReactNode;
+  isRequestPending?: boolean;
+  previewTitle?: string;
+  previewText?: string | boolean;
+  previewFootnotes?: string;
+  substitutions?: Substitutions;
+  formClassName?: FormCSSOptions;
+  editorClassName?: FormCSSOptions;
+  previewClassName?: FormCSSOptions;
+  confirmButtonText?: string;
+  confirmFunction?: () => void;
+  cancelFunction?: () => void;
+  onPreviewToggle?: (isVisible: boolean) => void;
+};
+
+type FormPreview = {
+  isPreviewVisible: boolean;
+  previewTitle?: string;
+  previewText?: string | boolean;
+  previewFootnotes?: string;
+  substitutions?: Substitutions;
+  className?: FormCSSOptions;
+};
+
+type FormPreviewToggle = {
+  isPreviewVisible: boolean;
+  previewText: string | boolean;
+  setPreviewVisibility: ReactHook<boolean>;
+  onPreviewToggle?: (isVisible: boolean) => void;
+};
+
+type Label = {
+  children: ReactNode;
+};
+
+type FormCSSOptions = {
+  [key in PreviewOption]?: string;
+};
+
+enum PreviewOption {
+  previewOn = 'previewOn',
+  previewOff = 'previewOff'
 }

@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import classnames from 'classnames';
 import { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
@@ -12,21 +13,26 @@ import {
 } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton, ConfirmButton } from 'src/components/button';
-import { SearchBar } from 'src/components/form';
+import { Checkbox, SearchBar } from 'src/components/form';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
-import { Fader } from 'src/components/transitioner';
 import { isAuthenticated } from 'src/lib/cookies';
+import { Fader, Icon } from 'src/lib/library';
+import TagBlock from 'src/lib/pages/diary/tags';
 import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
 import css from 'src/styles/pages/Diary.module.scss';
-import { Icon } from 'src/components/icon';
 
 const DIARY_HEADING = `Zavid's Diary`;
+const PARAM_ONLY_FAVOURITES = 'onlyFavourites';
 
 const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
+  const url = new URL(location.href);
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+
   const [diaryEntries, setDiaryEntries] = useState<DiaryDAO[]>([]);
   const [isLoaded, setLoaded] = useState(false);
+
+  const onlyFavs = url.searchParams.get(PARAM_ONLY_FAVOURITES) === 'true';
 
   const { data, error: queryError, loading: queryLoading } = useQuery(
     GET_DIARY_QUERY,
@@ -36,7 +42,8 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
           field: 'date',
           order: QueryOrder.DESCENDING
         },
-        status: { include: [DiaryStatus.PUBLISHED] }
+        status: { include: [DiaryStatus.PUBLISHED] },
+        onlyFavourites: onlyFavs
       }
     }
   );
@@ -59,8 +66,8 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
             {diaryIntro}
           </Paragraph>
         </div>
-        <DiarySearch />
-        <DiaryGrid diaryEntries={diaryEntries} />
+        <DiarySearch url={url} onlyFavs={onlyFavs} />
+        <DiaryGrid diaryEntries={diaryEntries} isLoading={!isLoaded} />
       </div>
       <Toolbar spaceItems={true}>
         {isAuthenticated() && (
@@ -71,11 +78,13 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
   );
 };
 
-const DiaryGrid = ({ diaryEntries }: DiaryGrid) => {
+const DiaryGrid = ({ diaryEntries, isLoading }: DiaryGridProps) => {
+  const message = isLoading
+    ? 'Loading diary entries...'
+    : 'No diary entries found.';
+
   if (!diaryEntries.length) {
-    return (
-      <div className={css['diary-index-error']}>No diary entries found.</div>
-    );
+    return <div className={css['diary-index-error']}>{message}</div>;
   }
   return (
     <div className={css['diary-grid']}>
@@ -99,13 +108,13 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
   });
   const link = `/diary/${diaryEntry.entryNumber}`;
   return (
-    <VanillaLink href={link}>
-      <Fader
-        determinant={isLoaded}
-        duration={750}
-        delay={idx * 50 + 50}
-        className={css[`diary-entry-${theme}`]}
-        postTransitions={'background-color .4s ease'}>
+    <Fader
+      determinant={isLoaded}
+      duration={750}
+      delay={idx * 50 + 50}
+      className={classnames(css['diary-entry'], css[`diary-entry-${theme}`])}
+      postTransitions={'background-color .4s ease'}>
+      <VanillaLink href={link}>
         <div className={css['diary-entry-header']}>
           <div>
             <div className={css['diary-entry-date']}>{date}</div>
@@ -122,15 +131,21 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
           }}
           truncate={40}
           moreclass={css['diary-entry-readmore']}
-          morelink={link}>
+          morelink={link}
+          moretext={`Read #${diaryEntry.entryNumber}: ${diaryEntry.title}`}>
           {diaryEntry.content}
         </Paragraph>
-      </Fader>
-    </VanillaLink>
+      </VanillaLink>
+      <TagBlock
+        className={css['diary-index-tags']}
+        tags={diaryEntry.tags!}
+        limit={9}
+      />
+    </Fader>
   );
 });
 
-const FavouriteStar = ({ diaryEntry }: { diaryEntry: DiaryDAO }) => {
+const FavouriteStar = ({ diaryEntry }: DiaryCommonProps) => {
   if (!diaryEntry.isFavourite) return null;
   return (
     <Icon
@@ -141,7 +156,7 @@ const FavouriteStar = ({ diaryEntry }: { diaryEntry: DiaryDAO }) => {
   );
 };
 
-const DiarySearch = () => {
+const DiarySearch = ({ url, onlyFavs }: DiarySearchProps) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   /**
@@ -160,26 +175,44 @@ const DiarySearch = () => {
   };
 
   return (
-    <div className={css['diary-search']}>
-      <SearchBar
-        value={searchTerm}
-        placeholder={'Search diary entries...'}
-        onChange={searchDiaryEntries}
-        className={css['diary-search-bar']}
-        onClearInput={clearInput}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            launchSearch(searchTerm);
-          }
-        }}
-        withRightSpace={false}
-      />
-      <ConfirmButton
-        className={css['diary-search-button']}
-        onClick={() => launchSearch(searchTerm)}>
-        Search
-      </ConfirmButton>
-    </div>
+    <>
+      <div className={css['diary-search']}>
+        <SearchBar
+          value={searchTerm}
+          placeholder={'Search diary entries...'}
+          onChange={searchDiaryEntries}
+          className={css['diary-search-bar']}
+          onClearInput={clearInput}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              launchSearch(searchTerm);
+            }
+          }}
+          withRightSpace={false}
+        />
+        <ConfirmButton
+          className={css['diary-search-button']}
+          onClick={() => launchSearch(searchTerm)}>
+          Search
+        </ConfirmButton>
+      </div>
+      <div className={css['diary-filters']}>
+        <Checkbox
+          className={css['diary-check-favs']}
+          boxClassName={css['diary-check-favs-box']}
+          label={'Only favourites'}
+          checked={onlyFavs}
+          onChange={(e) => {
+            const isChecked = e.target.checked;
+            url.searchParams.set(
+              PARAM_ONLY_FAVOURITES,
+              JSON.stringify(isChecked)
+            );
+            location.href = url.toString();
+          }}
+        />
+      </div>
+    </>
   );
 };
 
@@ -199,11 +232,19 @@ type DiaryIndex = {
   diaryIntro: string;
 };
 
-type DiaryGrid = {
+type DiarySearchProps = {
+  url: URL;
+  onlyFavs: boolean;
+};
+
+type DiaryGridProps = {
   diaryEntries: DiaryDAO[];
+  isLoading: boolean;
 };
 
 type DiaryEntry = {
   diaryEntry: DiaryDAO;
   idx: number;
 };
+
+type DiaryCommonProps = { diaryEntry: DiaryDAO };

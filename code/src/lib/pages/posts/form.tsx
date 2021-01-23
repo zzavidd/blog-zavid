@@ -6,6 +6,7 @@ import {
   PostDAO,
   PostImage,
   PostStatic,
+  ReactSelectChangeEvent,
   ReactTextAreaChangeEvent,
   Substitutions
 } from 'classes';
@@ -25,22 +26,25 @@ import {
 import DatePicker, { DateType } from 'src/components/form/datepicker';
 import { FileSelector, FSAspectRatio } from 'src/components/form/fileselector';
 import { cloudinaryBaseUrl } from 'src/components/image';
-import { Fader } from 'src/components/transitioner';
 import { Handlers } from 'src/lib/hooks';
+import { Fader } from 'src/lib/library';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const NUMBER_OF_CONTENT_IMAGES = 6;
 
+// TODO: Use foldable for images
 const PostForm = (props: PostForm) => {
   const { post, domains, handlers, isCreateOperation, isLoaded } = props;
   const {
     handleText,
+    handleNumber,
     handleTextSave,
     handleSelection,
     handleDate,
     handleFile,
     handleContentImages,
-    setDefaultTypeId
+    onTypeChange,
+    onStatusChange
   } = handlers;
 
   const dispatch = useDispatch();
@@ -74,7 +78,7 @@ const PostForm = (props: PostForm) => {
               name={'type'}
               items={PostStatic.TYPES}
               value={post.type}
-              onChange={setDefaultTypeId!}
+              onChange={onTypeChange!}
               placeholder={'Select post type'}
             />
           </Field>
@@ -86,7 +90,7 @@ const PostForm = (props: PostForm) => {
             <NumberInput
               name={'typeId'}
               value={post.typeId!}
-              onChange={handleText}
+              onChange={handleNumber}
               placeholder={'Type ID'}
             />
           </DynamicField>
@@ -126,7 +130,7 @@ const PostForm = (props: PostForm) => {
               name={'status'}
               items={PostStatic.STATUSES}
               value={post.status}
-              onChange={handleSelection}
+              onChange={onStatusChange}
             />
           </Field>
           <DynamicField
@@ -137,7 +141,9 @@ const PostForm = (props: PostForm) => {
             <DatePicker
               name={'datePublished'}
               date={post.datePublished!}
-              onConfirm={(date: DateType) => handleDate(date as DateType, 'datePublished')}
+              onConfirm={(date: DateType) =>
+                handleDate(date as DateType, 'datePublished')
+              }
               placeholderText={'Select the publish date...'}
             />
           </DynamicField>
@@ -211,12 +217,15 @@ interface PostForm extends GenericForm {
   isLoaded: boolean;
   post: PostDAO;
   domains: PostDAO[];
-  handlers: Handlers;
+  handlers: Handlers & {
+    onTypeChange: (e: ReactSelectChangeEvent) => void;
+    onStatusChange: (e: ReactSelectChangeEvent) => void;
+  };
   isCreateOperation: boolean;
 }
 
-interface PostContentImageInputs {
+type PostContentImageInputs = {
   post: PostDAO;
   isCreateOperation: boolean;
   handleContentImages: (file: string, i: number) => void;
-}
+};

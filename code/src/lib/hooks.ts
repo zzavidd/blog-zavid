@@ -25,6 +25,11 @@ const handlers = <T extends GenericDAO>(
     hook(Object.assign({}, state, { [name]: value }));
   };
 
+  const handleNumber = (event: ReactInputChangeEvent) => {
+    const { name, valueAsNumber } = event.target;
+    hook(Object.assign({}, state, { [name]: valueAsNumber }));
+  };
+
   const handleSelection = (event: ReactSelectChangeEvent): void => {
     const { name, value } = event.target;
     hook(Object.assign({}, state, { [name]: value }));
@@ -76,6 +81,7 @@ const handlers = <T extends GenericDAO>(
 
   return {
     handleText,
+    handleNumber,
     handleTextSave,
     handleSelection,
     handleDate,
@@ -89,6 +95,7 @@ export default handlers;
 
 export interface Handlers {
   handleText: (event: ReactInputChangeEvent | ReactTextAreaChangeEvent) => void;
+  handleNumber: (event: ReactInputChangeEvent) => void;
   handleTextSave: (
     event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
     dispatch: Dispatch
@@ -98,6 +105,5 @@ export interface Handlers {
   handleCheck: (event: ReactInputChangeEvent) => void;
   handleFile: (file: string | null, name?: string) => void;
   handleContentImages: (file: string, i: number) => void;
-  setDefaultTypeId?: (e: ReactSelectChangeEvent) => void
-  setPreferences?: ReactHook<SubscriptionsMapping>
+  setPreferences?: ReactHook<SubscriptionsMapping>;
 }

@@ -30,6 +30,11 @@ export class DiaryQueryBuilder extends QueryBuilder<DiaryDAO> {
     return this;
   }
 
+  whereIsFavourite(isFavourite: boolean): DiaryQueryBuilder {
+    if (isFavourite) this.query.where('isFavourite', isFavourite);
+    return this;
+  }
+
   getLatestEntry(): DiaryQueryBuilder {
     this.query.orderBy('date', QueryOrder.DESCENDING).limit(1);
     return this;
@@ -65,9 +70,9 @@ export class DiaryMutationBuilder extends MutationBuilder<DiaryDAO> {
   }
 }
 
-export interface DiaryStatusFilters {
+export type DiaryStatusFilters = {
   include?: DiaryStatus[];
   exclude?: DiaryStatus[];
-}
+};
 
 type KnexMaxQuery = TypePreservingAggregation<unknown, unknown, unknown>;

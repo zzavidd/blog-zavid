@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import { PostStatic, ReactSelectChangeEvent } from 'classes';
 import { AdminButton } from 'src/components/button';
 import { Field, FieldRow, Select, SelectProps } from 'src/components/form';
-import { Icon } from 'src/components/icon';
-import { Responsive, Toolbar, ToolbarToggle } from 'src/components/layout';
-import { Slider } from 'src/components/transitioner';
+import { Toolbar, ToolbarToggle } from 'src/components/layout';
+import { Icon, Slider, Responsive } from 'src/lib/library';
 import { PostFiltersState } from 'src/lib/reducers';
 import css from 'src/styles/pages/Posts.module.scss';
 

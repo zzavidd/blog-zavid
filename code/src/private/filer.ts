@@ -208,7 +208,7 @@ async function generateFilename(post: PostDAO, slug: string) {
       debug(err);
     }
   } else {
-    const number = post.typeId!.toString().padStart(3, '0');
+    const number = post.typeId?.toString().padStart(3, '0');
     filename = `${number}-${slug}`;
   }
 

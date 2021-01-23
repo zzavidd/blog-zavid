@@ -23,7 +23,7 @@ export const getPages = (variables?: Variables): Promise<PageDAO[]> => {
     query: GET_PAGES_QUERY,
     resolver: 'pages',
     variables
-  });
+  }) as Promise<PageDAO[]>;
 };
 
 export const getSinglePage = (
@@ -34,7 +34,7 @@ export const getSinglePage = (
     query: GET_SINGLE_PAGE_QUERY,
     resolver: 'page',
     expectToFail
-  });
+  }) as Promise<PageDAO>;
 };
 
 export const createPage = (page: PageDAO): Promise<SubmitEntityResponse> => {
@@ -42,7 +42,7 @@ export const createPage = (page: PageDAO): Promise<SubmitEntityResponse> => {
     query: CREATE_PAGE_QUERY,
     resolver: 'createPage',
     anonym: ENTITY_NAME
-  });
+  }) as Promise<SubmitEntityResponse>;
 };
 
 export const updatePage = (id: number, page: PageDAO): Promise<PageDAO> => {
@@ -50,7 +50,7 @@ export const updatePage = (id: number, page: PageDAO): Promise<PageDAO> => {
     query: UPDATE_PAGE_QUERY,
     resolver: 'updatePage',
     anonym: ENTITY_NAME
-  });
+  }) as Promise<PageDAO>;
 };
 
 export const deletePage = (id: number): Promise<void> => {

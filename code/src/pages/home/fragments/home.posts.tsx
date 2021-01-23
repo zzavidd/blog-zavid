@@ -4,7 +4,7 @@ import { zDate } from 'zavid-modules';
 import { PostDAO, PostStatic } from 'classes';
 import CloudImage, { AspectRatio } from 'src/components/image';
 import { Title, VanillaLink } from 'src/components/text';
-import { Zoomer } from 'src/components/transitioner';
+import { Zoomer } from 'src/lib/library';
 import css from 'src/styles/pages/Home.module.scss';
 
 export default ({ posts }: RandomPostsGridProps) => {

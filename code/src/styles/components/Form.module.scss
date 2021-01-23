@@ -47,6 +47,10 @@
   padding: 2em;
 }
 
+.form-preview-title {
+  font-size: 2em;
+}
+
 .form-preview-text {
   font-size: 1.1em;
 }
@@ -168,7 +172,7 @@
 
 .textarea {
   @include theme-extend(&, '%themed-input');
-  overflow: auto;
+  overflow: overlay;
 }
 
 %select {
@@ -241,7 +245,7 @@
     width: 0;
 
     &:checked ~ .checkbox-mark {
-      background-color: $color;
+      background-color: $color !important;
 
       /// Show the checkmark when checked.
       &::after {
@@ -254,7 +258,8 @@
 /* Create a custom checkbox */
 .checkbox-mark {
   $size: 20px;
-  background-color: #eee;
+
+  @include themer(&, background-color, $light: #c3c3c3, $dark: #eee);
   border-radius: 5px;
   height: $size;
   left: 0;
@@ -365,6 +370,88 @@
 }
 
 ////////////////////////////////
+/// Foldable
+////////////////////////////////
+
+.foldable-toggle {
+  $color: rgb(209, 141, 255) !important;
+  color: $color;
+  font-size: 0.85em;
+
+  path {
+    color: $color;
+  }
+}
+
+.foldable-content {
+  margin-top: 1em;
+}
+
+////////////////////////////////
+/// Radio
+////////////////////////////////
+
+.radio-group {
+  &-inline {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+  }
+}
+
+.radio-button {
+  $color: #ac1ef3;
+  display: block;
+  position: relative;
+
+  input {
+    &:checked ~ .radio-mark {
+      background-color: $color !important;
+
+      /// Show the checkmark when checked.
+      &::after {
+        display: block;
+      }
+    }
+  }
+}
+
+.radio-button-label {
+  margin-left: 1.4em;
+}
+
+/* Create a custom radio-button */
+.radio-mark {
+  $size: 16px;
+
+  @include themer(&, background-color, $light: #c3c3c3, $dark: #eee);
+  border-radius: 10px;
+  height: $size;
+  left: 0;
+  position: absolute;
+  top: 5px;
+  transition-duration: 0.4s;
+  width: $size;
+
+  /// Create the checkmark (hidden when not checked)
+  &::after {
+    content: '';
+    display: none;
+    position: absolute;
+    transition-duration: 0.8s;
+  }
+}
+
+/// Style the checkmark.
+.radio-button .radio-mark::after {
+  border: 5px solid #fff;
+  border-radius: 50%;
+  height: 9px;
+  left: 2.5px;
+  top: 3px;
+  width: 9px;
+}
+
+////////////////////////////////
 /// Switch
 ////////////////////////////////
 
@@ -432,7 +519,7 @@ $switch-height: 20px;
 }
 
 ////////////////////////////////
-/// Timelime
+/// Timeline
 ////////////////////////////////
 
 .timeline {

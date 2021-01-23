@@ -12,10 +12,15 @@ type DiaryEntry {
   status: DiaryStatus
   entryNumber: Int
   isFavourite: Boolean
+  tags: [String]
 }
 
 extend type Query {
-  diaryEntries(sort: DiarySortOptions, status: DiaryStatusOptions): [DiaryEntry]
+  diaryEntries(
+    sort: DiarySortOptions
+    status: DiaryStatusOptions
+    onlyFavourites: Boolean
+  ): [DiaryEntry]
   diaryEntry(id: Int!): DiaryEntry
 }
 
@@ -64,4 +69,5 @@ input DiaryInput {
   status: DiaryStatus
   entryNumber: Int
   isFavourite: Boolean
+  tags: [String]
 }

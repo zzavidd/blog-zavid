@@ -27,17 +27,19 @@
   padding: 0.5em 0;
 }
 
-%diary-entry {
-  @include responsive(padding, 1.5em, $md: 1em 0);
+.diary-entry {
+  @include responsive(padding, 1.5em, $sm: 1.5em 0);
   border-radius: 15px;
   cursor: pointer;
-  position: relative;
-}
 
-.diary-entry {
+  &:not(:last-child) {
+    @media (max-width: $break-md) {
+      border-bottom: 1px solid;
+      border-radius: 0;
+    }
+  }
+
   &-light {
-    @extend %diary-entry;
-
     @media (min-width: $break-md) {
       &:hover {
         background-color: $dark;
@@ -50,8 +52,6 @@
   }
 
   &-dark {
-    @extend %diary-entry;
-
     @media (min-width: $break-md) {
       &:hover {
         background-color: #cacaca;
@@ -67,6 +67,7 @@
 .diary-entry-header {
   align-items: center;
   display: flex;
+  justify-content: space-between;
 }
 
 .diary-entry-title {
@@ -86,8 +87,10 @@
 .diary-entry-star {
   @include responsive(font-size, 2em, $xxl: 1.5em);
   margin: 0 0.4em;
-  position: absolute;
-  right: 0%;
+}
+
+.diary-index-tags {
+  margin-top: 0.5em;
 }
 
 .diary-entry-readmore {
@@ -113,11 +116,45 @@
   padding: 1em 0 0;
 }
 
+.diary-single-tags {
+  margin-top: 1em;
+}
+
 .diary-search {
-  @include responsive(width, 40%, $xl: 60, $sm: 100%);
   align-items: center;
   display: flex;
   margin: 1em auto 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+.diary-filters {
+  align-items: center;
+  display: flex;
+  margin: 1em auto 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+.diary-check-favs {
+  font-size: 0.8em;
+  padding-left: 1.6em;
+
+  .diary-check-favs-box {
+    $size: 13px;
+    border-radius: 2px;
+    height: $size;
+    width: $size;
+  }
+
+  .diary-check-favs,
+  .diary-check-favs-box::after {
+    border-width: 0 2px 2px 0;
+    height: 9px;
+    left: 5px;
+    top: 1px;
+    width: 3px;
+  }
 }
 
 $radius: 20px;
@@ -138,4 +175,18 @@ $radius: 20px;
   border-style: none;
   border-top-left-radius: 0;
   border-top-right-radius: $radius;
+}
+
+.diary-form-pv {
+  @media (min-width: $break-xxxl) {
+    grid-template-columns: 66% 33%;
+  }
+}
+
+.diary-form-editor {
+  max-width: 1300px;
+}
+
+.diary-form-tags {
+  margin-top: 1em;
 }

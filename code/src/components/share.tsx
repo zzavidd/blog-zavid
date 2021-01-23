@@ -10,11 +10,11 @@ import {
   WhatsappIcon
 } from 'react-share';
 
+import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Share.module.scss';
 
 import { alert } from './alert';
 import { InvisibleButton } from './button';
-import { Icon } from './icon';
 
 export default (props: Share) => {
   const { headline = 'Share This Post' } = props;

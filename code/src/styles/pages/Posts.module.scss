@@ -19,6 +19,30 @@
 
 .post-single-content {
   @include responsive(font-size, 1.3em, $sm: 1em);
+  cursor: pointer;
+  user-select: none;
+}
+
+.post-single-paragraph {
+  line-height: 1.7;
+  margin: 1.3em 0;
+  user-select: none;
+
+  &-light:hover {
+    background-color: $dark;
+
+    * {
+      color: #fff !important;
+    }
+  }
+
+  &-dark:hover {
+    background-color: #cacaca;
+
+    * {
+      color: #000 !important;
+    }
+  }
 }
 
 .post-single-footnote {
@@ -48,6 +72,30 @@
 
 .post-filter {
   font-size: 1em;
+}
+
+.post-tag-block {
+  display: flex;
+  flex-wrap: wrap;
+
+  .post-tag {
+    @include responsive(font-size, 0.9em, $sm: 0.8em);
+    font-style: italic;
+    font-weight: bold;
+    padding-right: 0.5em;
+
+    &-light {
+      color: rgb(103, 103, 103) !important;
+    }
+
+    &-dark {
+      color: rgb(204, 204, 204) !important;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .post-admin-image {

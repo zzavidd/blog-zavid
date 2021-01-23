@@ -6,15 +6,16 @@ import { zDate, zText } from 'zavid-modules';
 import { DiaryDAO, EditButton, QueryOrder, ReactHook } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { AdminButton, InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/components/icon';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
-import Tabler, {
-  TablerColumnHeader,
-  TablerItemCell,
-  TablerType
-} from 'src/components/tabler';
 import { VanillaLink } from 'src/components/text';
+import {
+  Icon,
+  Tabler,
+  TablerColumnHeader,
+  TablerFieldType,
+  TablerItemCell
+} from 'src/lib/library';
 import {
   GET_DIARY_QUERY,
   DELETE_DIARY_QUERY
@@ -72,7 +73,7 @@ const DiaryAdmin = () => {
   return (
     <>
       <Spacer>
-        <Tabler
+        <Tabler<9>
           heading={'List of Diary Entries'}
           itemsLoaded={
             isLoaded && !queryLoading && networkStatus !== NetworkStatus.refetch
@@ -82,7 +83,9 @@ const DiaryAdmin = () => {
             new TablerColumnHeader('#', { centerAlign: true }),
             new TablerColumnHeader('Date'),
             new TablerColumnHeader('Title'),
-            new TablerColumnHeader(<Icon name={'star'} key={0} />, { centerAlign: true }),
+            new TablerColumnHeader(<Icon name={'star'} key={0} />, {
+              centerAlign: true
+            }),
             new TablerColumnHeader('Status'),
             new TablerColumnHeader('Content')
           ]}
@@ -95,7 +98,7 @@ const DiaryAdmin = () => {
             });
             return [
               new TablerItemCell(key + 1, {
-                type: TablerType.INDEX
+                type: TablerFieldType.INDEX
               }),
               new TablerItemCell(date, {
                 icon: 'calendar-alt'
@@ -110,10 +113,10 @@ const DiaryAdmin = () => {
               new TablerItemCell(content, { hideOnMobile: true }),
               new TablerItemCell(
                 <LinkButton diaryEntry={diaryEntry} key={key} />,
-                { type: TablerType.BUTTON }
+                { type: TablerFieldType.BUTTON }
               ),
               new TablerItemCell(<EditButton id={diaryEntry.id!} key={key} />, {
-                type: TablerType.BUTTON
+                type: TablerFieldType.BUTTON
               }),
               new TablerItemCell(
                 (
@@ -124,11 +127,21 @@ const DiaryAdmin = () => {
                     setSelectedDiaryEntry={setSelectedDiaryEntry}
                   />
                 ),
-                { type: TablerType.BUTTON }
+                { type: TablerFieldType.BUTTON }
               )
             ];
           })}
-          distribution={'6% 20% 1fr 6% 10% 30% 4% 4% 4%'}
+          distribution={[
+            '6%',
+            '20%',
+            '1fr',
+            '6%',
+            '10%',
+            '30%',
+            '4%',
+            '4%',
+            '4%'
+          ]}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>
