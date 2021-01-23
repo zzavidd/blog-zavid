@@ -47,4 +47,12 @@ export class FilterShape {
   static isSquare(shape: FilterShapeOption) {
     return shape === FilterShapeOption.SQUARE;
   }
+
+  static isTall(shape: FilterShapeOption) {
+    return shape === FilterShapeOption.TALL;
+  }
+
+  static isWide(shape: FilterShapeOption) {
+    return shape === FilterShapeOption.WIDE;
+  }
 }

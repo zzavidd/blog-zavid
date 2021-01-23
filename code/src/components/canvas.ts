@@ -136,7 +136,7 @@ export function createCanvasFromContent(
       const startTextY =
         startRectY +
         SHAPE.TEXT_PADDING_Y +
-        (isTitleOnly && FilterShape.isSquare(shape) ? 30 : 0);
+        (isTitleOnly && !FilterShape.isTall(shape) ? 30 : 0);
 
       // Draw bounding box for text.
       ctx.fillStyle = Theme.isLight(theme)
