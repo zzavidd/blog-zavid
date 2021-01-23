@@ -15,15 +15,15 @@ import {
   SubscriberDAO,
   SubscriberQueryBuilder,
   SubscriberStatic
-} from '../../../classes';
-import { debug } from '../../private/error';
+} from '../../../../classes';
+import { debug } from '../../../private/error';
 import {
   accounts,
   cloudinaryBaseUrl,
   copyright,
   domain
-} from '../../settings';
-import { getKnex } from '../singleton';
+} from '../../../settings';
+import { getKnex } from '../../singleton';
 
 const knex = getKnex();
 
@@ -211,10 +211,9 @@ const sendMailToSubscriber = (
   );
 };
 
-interface TestRecipient {
+type TestRecipient = {
   email: string;
   token: string;
 }
-
 type SubscriptionType = { [key in PostType]?: string };
 type Callback = (pass: null | Error) => void;

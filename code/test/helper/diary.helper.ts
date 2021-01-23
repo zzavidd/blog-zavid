@@ -88,6 +88,6 @@ export const compareDiaryEntries = (
   assert.deepStrictEqual(request.tags, response.tags);
 };
 
-interface MutateDiaryOptions {
+type MutateDiaryOptions = {
   extraVariables?: Record<string, unknown>;
 }
