@@ -41,9 +41,10 @@ export const Form = ({
   onPreviewToggle
 }: FormProps) => {
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
+  const [isConfirmed, setConfirmed] = useState(false);
 
   const restrictNavigation = (e: Event) => {
-    if (process.env.NODE_ENV !== 'development') {
+    if (!isConfirmed && process.env.NODE_ENV !== 'development') {
       e.returnValue = true;
     }
   };
@@ -87,7 +88,10 @@ export const Form = ({
           />
           <ButtonSpacer className={css['form-footer-button-spacer']}>
             <ConfirmButton
-              onClick={confirmFunction}
+              onClick={() => {
+                confirmFunction!();
+                setConfirmed(true)
+              }}
               isRequestPending={isRequestPending}>
               {confirmButtonText}
             </ConfirmButton>
