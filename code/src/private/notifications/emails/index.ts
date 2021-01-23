@@ -92,7 +92,7 @@ export const notifyNewPost = (post: PostDAO) => {
  * @param diaryEntry The subject diary entry for the email.
  */
 export const notifyNewDiaryEntry = (diaryEntry: DiaryDAO): Promise<void> => {
-  const { title, date, content, slug, entryNumber } = diaryEntry;
+  const { title, date, content, footnote, slug, entryNumber } = diaryEntry;
   const subject = `Diary Entry #${entryNumber}: ${title}`;
 
   const options = {
@@ -104,11 +104,14 @@ export const notifyNewDiaryEntry = (diaryEntry: DiaryDAO): Promise<void> => {
     }
   };
 
+  const format = (text: string) => {
+    return ReactDOMServer.renderToStaticMarkup(zText.formatText(text, options));
+  };
+
   const entity = {
     diaryEntry: Object.assign({}, diaryEntry, {
-      content: ReactDOMServer.renderToStaticMarkup(
-        zText.formatText(content!, options)
-      ),
+      content: format(content!),
+      footnote: format(footnote!),
       slug: `${domain}/diary/${slug}`,
       date: zDate.formatDate(date!, { withWeekday: true })
     })
@@ -214,6 +217,6 @@ const sendMailToSubscriber = (
 type TestRecipient = {
   email: string;
   token: string;
-}
+};
 type SubscriptionType = { [key in PostType]?: string };
 type Callback = (pass: null | Error) => void;

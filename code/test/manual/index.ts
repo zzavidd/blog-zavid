@@ -3,7 +3,7 @@ import { submitPost, updatePost } from './entities/post.manual';
 import { raffleSubscribers } from './entities/subscriber.manual';
 import 'colors';
 
-import { rl } from '../constants';
+import { rl, exit } from '../constants';
 
 const COLOR = 'cyan';
 const COUNT = 40;
@@ -34,6 +34,10 @@ function showMenu() {
     5: {
       name: 'Subscriber Raffle',
       method: raffleSubscribers
+    },
+    6: {
+      name: 'Exit',
+      method: exit
     }
   };
 

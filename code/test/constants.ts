@@ -5,7 +5,9 @@ export const rl = readline
     input: process.stdin,
     output: process.stdout
   })
-  .on('close', function () {
-    console.info('\nExiting.');
-    process.exit(0);
-  });
+  .on('close', exit);
+
+export function exit(): Promise<void> {
+  console.info('\nExiting.');
+  return process.exit(0);
+}
