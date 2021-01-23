@@ -211,10 +211,9 @@ const sendMailToSubscriber = (
   );
 };
 
-interface TestRecipient {
+type TestRecipient = {
   email: string;
   token: string;
 }
-
 type SubscriptionType = { [key in PostType]?: string };
 type Callback = (pass: null | Error) => void;

@@ -1,4 +1,4 @@
-import { TryWrapper, emailsOn } from './helper';
+import { TryWrapper, emailsOn, telegramOn } from './helper';
 
 import {
   DiaryDAO,
@@ -10,6 +10,7 @@ import {
 } from '../../../../classes';
 import { ERRORS } from '../../error';
 import * as Emails from '../../notifications/emails';
+import * as Telegram from '../../notifications/telegram';
 import { getKnex } from '../../singleton';
 
 const knex = getKnex();
@@ -60,12 +61,16 @@ export const createDiaryEntry = async ({
 }: CreateDiaryEntryOptions): Promise<DiaryDAO> => {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
-  const shouldNotify = isPublish && emailsOn;
+  
+  const { shouldSendEmail, shouldSendTelegram } = getPermissions(
+    isPublish
+  );
 
   return TryWrapper(async () => {
     const [[id]] = await Promise.all([
       new DiaryMutationBuilder(knex).insert(diaryEntry).build(),
-      shouldNotify ? Emails.notifyNewDiaryEntry(diaryEntry) : null
+      shouldSendEmail ? Emails.notifyNewDiaryEntry(diaryEntry) : null,
+      shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null
     ]);
 
     return { id } as DiaryDAO;
@@ -85,12 +90,16 @@ export const updateDiaryEntry = async ({
 }: UpdateDiaryEntryOptions): Promise<DiaryDAO> => {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
-  const shouldNotify = isPublish && emailsOn;
+
+  const { shouldSendEmail, shouldSendTelegram } = getPermissions(
+    isPublish
+  );
 
   return TryWrapper(async () => {
     await Promise.all([
       new DiaryMutationBuilder(knex).update(diaryEntry).whereId(id).build(),
-      shouldNotify ? Emails.notifyNewDiaryEntry(diaryEntry) : null
+      shouldSendEmail ? Emails.notifyNewDiaryEntry(diaryEntry) : null,
+      shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null
     ]);
 
     const updatedDiaryEntry = await getSingleDiaryEntry({ id });
@@ -120,6 +129,16 @@ export const clearDiary = () => {
     await new DiaryMutationBuilder(knex).truncate().build();
   });
 };
+
+/**
+ * Get permissions for notifications based on CLI arguments.
+ * @param isPublish Indicates if diary entry was a publish.
+ */
+function getPermissions(isPublish: boolean) {
+  const shouldSendEmail = isPublish && emailsOn;
+  const shouldSendTelegram = isPublish && telegramOn;
+  return { shouldSendEmail, shouldSendTelegram };
+}
 
 export type GetDiaryOptions = {
   sort: QuerySort;

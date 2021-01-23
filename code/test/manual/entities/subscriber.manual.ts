@@ -1,6 +1,6 @@
 import { zNumber } from 'zavid-modules';
 
-import { getSubscribers } from '../helper/subscriber.helper';
+import { getSubscribers } from '../../helper/subscriber.helper';
 
 export async function raffleSubscribers() {
   const subscribers = await getSubscribers();
