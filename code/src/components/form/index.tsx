@@ -54,7 +54,7 @@ export const Form = ({
     return () => {
       window.removeEventListener('beforeunload', restrictNavigation);
     };
-  }, []);
+  }, [isConfirmed]);
 
   const formClasses = classnames(
     formClassName?.[isPreviewVisible ? 'previewOn' : 'previewOff'],
@@ -89,8 +89,8 @@ export const Form = ({
           <ButtonSpacer className={css['form-footer-button-spacer']}>
             <ConfirmButton
               onClick={() => {
+                setConfirmed(true);
                 confirmFunction!();
-                setConfirmed(true)
               }}
               isRequestPending={isRequestPending}>
               {confirmButtonText}
