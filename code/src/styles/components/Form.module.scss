@@ -187,14 +187,18 @@
 
 .select {
   @extend %select;
+
   &-light {
     @extend %themed-input-light;
+
     option {
       background-color: #fff;
     }
   }
+
   &-dark {
     @extend %themed-input-dark;
+
     option {
       background-color: $dark;
     }
@@ -215,6 +219,7 @@
       background-color: #fff;
     }
   }
+
   &-dark {
     option {
       background-color: $dark;
