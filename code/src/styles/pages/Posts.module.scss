@@ -112,3 +112,14 @@
   display: grid;
   grid-template-columns: repeat(4, 25%);
 }
+
+
+.post-form-pv {
+  @media (min-width: $break-xxxl) {
+    grid-template-columns: 66% 33%;
+  }
+}
+
+.post-form-editor {
+  max-width: 1300px;
+}

@@ -5,7 +5,12 @@ import css from 'src/styles/components/Form.module.scss';
 
 import { InvisibleButton } from '../button';
 
-export const Foldable = ({ switcher, visible, children }: FoldableProps) => {
+export const Foldable = ({
+  label,
+  switcher,
+  visible,
+  children
+}: FoldableProps) => {
   return (
     <>
       <InvisibleButton onClick={switcher} className={css['foldable-toggle']}>
@@ -13,7 +18,7 @@ export const Foldable = ({ switcher, visible, children }: FoldableProps) => {
           name={visible ? 'chevron-up' : 'chevron-down'}
           className={css['foldable-toggle']}
         />
-        Add footnote
+        {label}
       </InvisibleButton>
       <div className={css['foldable-content']} hidden={!visible}>
         {children}
@@ -23,6 +28,7 @@ export const Foldable = ({ switcher, visible, children }: FoldableProps) => {
 };
 
 type FoldableProps = {
+  label: string;
   switcher: () => void;
   visible: boolean;
   children: ReactNode;

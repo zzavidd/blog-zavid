@@ -43,7 +43,6 @@ const DiaryEntryForm = (props: DiaryForm) => {
   };
 
   const isXXXLarge = useMediaQuery({ query: ScreenWidth.XXXLARGE });
-
   const fieldSpan = isPreviewVisible ? (isXXXLarge ? 12 : 6) : 6;
   const contentOrder = isPreviewVisible ? (isXXXLarge ? 1 : 2) : 1;
 
@@ -100,7 +99,10 @@ const DiaryEntryForm = (props: DiaryForm) => {
             </FieldRow>
             <FieldRow>
               <Field>
-                <Foldable visible={isFootnoteVisible} switcher={toggleFootnote}>
+                <Foldable
+                  label={'Add footnote'}
+                  visible={isFootnoteVisible}
+                  switcher={toggleFootnote}>
                   <Label>Footnote:</Label>
                   <LongTextArea
                     name={'footnote'}
