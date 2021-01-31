@@ -21,7 +21,7 @@ def sendTelegramMessage(message){
 }
 
 pipeline {
-  agent { docker { image 'node:13-alpine' } }
+  agent { docker { image 'node:14-alpine' } }
 
   environment {
     PORT = 4000
@@ -51,9 +51,9 @@ pipeline {
     stage('Docker') {
       steps {
         script {
-          sh 'ls'
-          sh 'pwd'
-          def customImage = docker.build("zavid:$env.BUILD_ID", '-f Dockerfile ./docker')
+          sh 'node -v'
+          sh 'docker -v'
+          def customImage = docker.build("zavid:$env.BUILD_ID", './docker')
           customImage.push('latest')
         }
       }
