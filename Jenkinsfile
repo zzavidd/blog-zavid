@@ -50,8 +50,10 @@ pipeline {
   stages {
     stage('Docker') {
       steps {
-        def customImage = docker.build("zavid:${env.BUILD_ID}", './docker')
-        customImage.push('latest')
+        script {
+          def customImage = docker.build("zavid:${env.BUILD_ID}", './docker')
+          customImage.push('latest')
+        }
       }
     }
     // stage('Install dependencies') {
