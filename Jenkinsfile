@@ -48,41 +48,47 @@ pipeline {
   }
 
   stages {
-    stage('Install dependencies') {
+    stage('Docker') {
       steps {
-        dir(CWD) {
-          sh 'npm ci'
-        }
+        def customImage = docker.build("zavid:${env.BUILD_ID}", './docker')
+        customImage.push('latest')
       }
     }
-    stage('Check') {
-      steps {
-        dir(CWD) {
-          sh 'npm run check'
-        }
-      }
-    }
-    stage('Build') {
-      steps {
-        dir(CWD) {
-          sh 'npm run build'
-        }
-      }
-    }
-    stage('Test') {
-      steps {
-        dir(CWD) {
-          sh 'npm run test:ci'
-        }
-      }
-    }
+    // stage('Install dependencies') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm ci'
+    //     }
+    //   }
+    // }
+    // stage('Check') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm run check'
+    //     }
+    //   }
+    // }
+    // stage('Build') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm run build'
+    //     }
+    //   }
+    // }
+    // stage('Test') {
+    //   steps {
+    //     dir(CWD) {
+    //       sh 'npm run test:ci'
+    //     }
+    //   }
+    // }
   }
   post {
-    always {
-      dir(CWD) {
-        junit '**/test-results.xml'
-      }
-    }
+    // always {
+    //   dir(CWD) {
+    //     junit '**/test-results.xml'
+    //   }
+    // }
 
     success {
       sendTelegramMessage("&#128994; $TELEGRAM_MESSAGE succeeded.")
