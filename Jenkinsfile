@@ -51,7 +51,9 @@ pipeline {
     stage('Docker') {
       steps {
         script {
-          def customImage = docker.build("zavid:${env.BUILD_ID}", './docker')
+          sh 'ls'
+          sh 'pwd'
+          def customImage = docker.build("zavid:$env.BUILD_ID", '-f Dockerfile ./docker')
           customImage.push('latest')
         }
       }
