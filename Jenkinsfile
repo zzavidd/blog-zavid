@@ -21,7 +21,7 @@ def sendTelegramMessage(message){
 }
 
 pipeline {
-  agent any
+  agent { docker { image 'node:14-alpine' } }
 
   environment {
     PORT = 4000
