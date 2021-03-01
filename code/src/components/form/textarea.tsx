@@ -21,6 +21,31 @@ const TextArea = ({
   minRows
 }: TextArea) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+
+  /**
+   * Embeds copied text as a hyperlink into highlighted text.
+   * @param e The textarea element.
+   */
+  const embedLinkInText = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const { selectionStart, selectionEnd, textContent } = e.currentTarget;
+    if (!textContent) return;
+
+    const highlitText = textContent.substring(selectionStart, selectionEnd);
+    if (!highlitText) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const clipboardText = e.clipboardData.getData('text');
+    const changeEvent = {
+      target: {
+        name,
+        value: textContent.replace(highlitText, `[$&](${clipboardText})`)
+      }
+    } as React.ChangeEvent<HTMLTextAreaElement>;
+    onChange(changeEvent);
+  };
+
   return (
     <TextareaAutosize
       name={name}
@@ -29,6 +54,7 @@ const TextArea = ({
       onChange={onChange}
       placeholder={placeholder}
       className={css[`textarea-${theme}`]}
+      onPaste={embedLinkInText}
     />
   );
 };
