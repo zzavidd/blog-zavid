@@ -4,6 +4,8 @@ import { RootStateOrAny, useSelector } from 'react-redux';
 import { OnTextAreaChangeType } from 'classes';
 import css from 'src/styles/components/Form.module.scss';
 
+const SPACEBAR_KEY = ' ';
+
 export const ShortTextArea = (props: TextArea) => {
   return <TextArea {...props} minRows={1} />;
 };
@@ -13,7 +15,6 @@ export const LongTextArea = (props: TextArea) => {
 };
 
 // TODO: Allow holding onto Ctrl key
-// TODO: Implement undo
 const TextArea = ({
   name,
   value,
@@ -26,23 +27,16 @@ const TextArea = ({
   const [shouldSetCursor, setShouldSetCursor] = useState(false);
   const [cursorPosition, setCursorPosition] = useState(0);
   const [textHistory, setTextHistory] = useState<Array<string>>([]);
-  const [isUndo, setIsUndo] = useState(false);
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-resize textarea on content change.
-  // Record text history on content change.
   useEffect(() => {
     const textArea = textAreaRef.current;
     if (textArea) {
       const lineCount = textArea.value.split(/\r*\n/).length;
       textArea.rows = Math.max(lineCount, minRows);
     }
-
-    if (!isUndo) {
-      setTextHistory([...textHistory, value]);
-    }
-    setIsUndo(false);
   }, [value]);
 
   // Refocus and set the cursor appropriately.
@@ -60,16 +54,24 @@ const TextArea = ({
   /**
    * Set the textarea content by replicating and manually triggering an onChange
    * event.
-   * @param text The text to set.
+   * @param content The text to set.
    */
-  const setText = (text: string) => {
+  const setContent = (content: string) => {
     const changeEvent = {
       target: {
         name,
-        value: text
+        value: content
       }
     } as React.ChangeEvent<HTMLTextAreaElement>;
     onChange(changeEvent);
+  };
+
+  /**
+   * Update the text history with a new state
+   * @param textState The new text state.
+   */
+  const addToTextHistory = (textState: string) => {
+    setTextHistory([...textHistory, textState]);
   };
 
   /**
@@ -95,18 +97,24 @@ const TextArea = ({
           applyRichTextMarkup(e, { symphasis: '~' });
           break;
         case 'z':
-          setIsUndo(true);
-          const lastTextState = textHistory.pop() ?? '';
-          const newHistory = textHistory;
-          setText(lastTextState);
-          setTextHistory(newHistory);
+          // if (keysPressed['Shift']) {}
+          setContent(textHistory.pop() ?? '');
+          setTextHistory(textHistory);
           break;
       }
     }
   };
 
-  /** Clear the recorded key presses. */
-  const onKeyUp = () => {
+  /**
+   * Records text history if the spacebar is pressed.
+   * Clears the recorded key presses.
+   * @param e The textarea keyboard event.
+   */
+  const onKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === SPACEBAR_KEY) {
+      addToTextHistory(value);
+    }
+
     setKeysPressed({});
   };
 
@@ -144,10 +152,12 @@ const TextArea = ({
 
     const highlitText = text.substring(selectionStart, selectionEnd) ?? '';
 
+    let replacement = '';
+    let cursorPosition = 0;
+
     // Derive second argument for string replacement.
     // If the highlighted text is already formatted, deformat it.
     // If not, apply rich text formatting.
-    let replacement = '';
     if (symphasis) {
       const escapedSymbol = `\\${symphasis}`.repeat(quantity);
       const regex = new RegExp(`${escapedSymbol}(.*?)${escapedSymbol}`);
@@ -158,8 +168,10 @@ const TextArea = ({
         const symbol = symphasis.repeat(quantity);
         replacement = `${symbol}$&${symbol}`;
       }
+      cursorPosition = selectionEnd + symphasis?.length * quantity;
     } else if (fullReplacement) {
       replacement = fullReplacement;
+      cursorPosition = selectionEnd + fullReplacement.length - 2;
     } else {
       return;
     }
@@ -169,18 +181,16 @@ const TextArea = ({
     // Get the new content to overwrite the existing text content with.
     // If text is highlighted, replace the text with derived replacement.
     // If not, insert the rich text formatting closures at cursor position.
-    if (highlitText) {
-      newContent = text!.replace(highlitText, replacement);
-    } else {
-      if (stopIfNoTextSelected) return;
-      const precedent = text.slice(0, selectionStart);
-      const succedent = text.slice(selectionStart);
-      const closures = ''.replace('', replacement);
-      newContent = [precedent, closures, succedent].join('');
-    }
+    if (!highlitText && stopIfNoTextSelected) return;
+    const subject = highlitText ?? '';
+    const precedent = text.slice(0, selectionStart);
+    const succedent = text.slice(selectionEnd);
+    const closures = subject.replace(subject, replacement);
+    newContent = [precedent, closures, succedent].join('');
 
-    setText(newContent);
-    setCursorPosition(selectionEnd);
+    addToTextHistory(newContent);
+    setContent(newContent);
+    setCursorPosition(cursorPosition);
     setShouldSetCursor(true);
 
     e.preventDefault();
