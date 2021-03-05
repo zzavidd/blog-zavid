@@ -61,6 +61,7 @@
     "react-redux": "^7.2.1",
     "react-responsive": "^8.1.0",
     "react-share": "^4.2.1",
+    "react-textarea-autosize": "^8.3.2",
     "react-toastify": "^6.0.8",
     "react-twitter-embed": "^3.0.3",
     "react-visibility-sensor": "^5.1.1",

@@ -105,9 +105,7 @@
   @include responsive(padding, 0.4em, $sm: 0.4em 0);
   background: none;
   border-style: none;
-  font-size: 1.2em;
   outline: none;
-  padding: 0.4em;
   width: 100%;
 }
 
@@ -173,6 +171,16 @@
 .textarea {
   @include theme-extend(&, '%themed-input');
   overflow: overlay;
+  // scrollbar-width: none;
+
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
+}
+
+.textarea__preview {
+  @include responsive(font-size, 1.2em, $sm: 1em);
+  white-space: pre-line;
 }
 
 %select {

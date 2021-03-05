@@ -1,52 +1,43 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
+import Textarea from 'react-textarea-autosize';
 
 import { OnTextAreaChangeType } from 'classes';
 import css from 'src/styles/components/Form.module.scss';
 
-const SPACEBAR_KEY = ' ';
-
-export const ShortTextArea = (props: TextArea) => {
+export const ShortTextArea = (props: TextAreaProps) => {
   return <TextArea {...props} minRows={1} />;
 };
 
-export const LongTextArea = (props: TextArea) => {
+export const LongTextArea = (props: TextAreaProps) => {
   return <TextArea {...props} minRows={2} />;
 };
 
-// TODO: Allow holding onto Ctrl key
 const TextArea = ({
   name,
   value,
-  onChange,
+  onChange: onSuperChange,
   placeholder,
   minRows = 1
-}: TextArea) => {
+}: TextAreaProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [keysPressed, setKeysPressed] = useState<Record<string, boolean>>({});
   const [shouldSetCursor, setShouldSetCursor] = useState(false);
   const [cursorPosition, setCursorPosition] = useState(0);
-  const [textHistory, setTextHistory] = useState<Array<string>>([]);
-
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
-  // Auto-resize textarea on content change.
-  useEffect(() => {
-    const textArea = textAreaRef.current;
-    if (textArea) {
-      const lineCount = textArea.value.split(/\r*\n/).length;
-      textArea.rows = Math.max(lineCount, minRows);
-    }
-  }, [value]);
+  const [textHistory, setTextHistory] = useState<Array<string>>(['']);
+  const [justUndid, setJustUndid] = useState(false);
+  const [
+    textAreaElement,
+    setTextAreaElement
+  ] = useState<HTMLTextAreaElement | null>(null);
 
   // Refocus and set the cursor appropriately.
   useEffect(() => {
     if (!shouldSetCursor) return;
 
-    const textArea = textAreaRef.current;
-    if (textArea) {
-      textArea.focus();
-      textArea.setSelectionRange(cursorPosition, cursorPosition);
+    if (textAreaElement) {
+      textAreaElement.focus();
+      textAreaElement.setSelectionRange(cursorPosition, cursorPosition);
     }
     setShouldSetCursor(false);
   }, [shouldSetCursor]);
@@ -63,7 +54,7 @@ const TextArea = ({
         value: content
       }
     } as React.ChangeEvent<HTMLTextAreaElement>;
-    onChange(changeEvent);
+    onSuperChange(changeEvent);
   };
 
   /**
@@ -72,50 +63,6 @@ const TextArea = ({
    */
   const addToTextHistory = (textState: string) => {
     setTextHistory([...textHistory, textState]);
-  };
-
-  /**
-   * Record key presses. Key combinations can trigger rich text auto-formatting.
-   * @param e The textarea keyboard event.
-   */
-  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    setKeysPressed({ ...keysPressed, [e.key]: true });
-
-    const COMMAND_KEY = navigator.platform.includes('Mac') ? 'Meta' : 'Control';
-    if (keysPressed[COMMAND_KEY]) {
-      switch (e.key) {
-        case 'b':
-          applyRichTextMarkup(e, { symphasis: '*', quantity: 2 });
-          break;
-        case 'i':
-          applyRichTextMarkup(e, { symphasis: '*' });
-          break;
-        case 'u':
-          applyRichTextMarkup(e, { symphasis: '_' });
-          break;
-        case 's':
-          applyRichTextMarkup(e, { symphasis: '~' });
-          break;
-        case 'z':
-          // if (keysPressed['Shift']) {}
-          setContent(textHistory.pop() ?? '');
-          setTextHistory(textHistory);
-          break;
-      }
-    }
-  };
-
-  /**
-   * Records text history if the spacebar is pressed.
-   * Clears the recorded key presses.
-   * @param e The textarea keyboard event.
-   */
-  const onKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === SPACEBAR_KEY) {
-      addToTextHistory(value);
-    }
-
-    setKeysPressed({});
   };
 
   /**
@@ -188,7 +135,7 @@ const TextArea = ({
     const closures = subject.replace(subject, replacement);
     newContent = [precedent, closures, succedent].join('');
 
-    addToTextHistory(newContent);
+    addToTextHistory(value);
     setContent(newContent);
     setCursorPosition(cursorPosition);
     setShouldSetCursor(true);
@@ -197,10 +144,77 @@ const TextArea = ({
     e.stopPropagation();
   };
 
+  /**
+   * Record key presses. Key combinations can trigger rich text auto-formatting.
+   * @param e The textarea keyboard event.
+   */
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    setKeysPressed({ ...keysPressed, [e.key]: true });
+
+    const COMMAND_KEY = navigator.platform.includes('Mac') ? 'Meta' : 'Control';
+    if (keysPressed[COMMAND_KEY]) {
+      switch (e.key) {
+        case 'b':
+          applyRichTextMarkup(e, { symphasis: '*', quantity: 2 });
+          break;
+        case 'i':
+          applyRichTextMarkup(e, { symphasis: '*' });
+          break;
+        case 'u':
+          applyRichTextMarkup(e, { symphasis: '_' });
+          break;
+        case 's':
+          applyRichTextMarkup(e, { symphasis: '~' });
+          break;
+        case 'z':
+          executeUndo();
+          break;
+      }
+    }
+  };
+
+  /**
+   * Trigger a text undo.
+   */
+  const executeUndo = () => {
+    const lastState = textHistory[textHistory.length - 1];
+    setContent(lastState);
+
+    if (lastState !== '') {
+      const newTextHistory = textHistory.slice(0, textHistory.length - 1);
+      setTextHistory(newTextHistory);
+      setJustUndid(true);
+    }
+  };
+
+  /**
+   * Clears the recorded key presses.
+   */
+  const onKeyUp = () => {
+    setKeysPressed({});
+  };
+
+  /**
+   * Records text history after each word.
+   * @param e The textarea content change event.
+   */
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (justUndid) {
+      setJustUndid(false);
+    } else {
+      const lastChar = value[value.length - 1];
+      const lastState = textHistory[textHistory.length - 1];
+      if (/\s/.test(lastChar) && lastState !== value) {
+        addToTextHistory(value);
+      }
+    }
+    onSuperChange(e);
+  };
+
   return (
-    <textarea
+    <Textarea
       name={name}
-      rows={minRows}
+      minRows={minRows}
       value={value}
       onChange={onChange}
       onKeyUp={onKeyUp}
@@ -208,12 +222,12 @@ const TextArea = ({
       placeholder={placeholder}
       className={css[`textarea-${theme}`]}
       onPaste={embedLinkInText}
-      ref={textAreaRef}
+      ref={(element) => setTextAreaElement(element)}
     />
   );
 };
 
-type TextArea = {
+type TextAreaProps = {
   name: string;
   value: string;
   onChange: OnTextAreaChangeType;
