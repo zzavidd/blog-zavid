@@ -16,7 +16,9 @@ import {
   QueryOrder
 } from '../../../classes';
 import { siteTitle } from '../../settings';
+import * as SubscriberService from '../api/service/subscriber.service';
 import authRoutes from '../auth';
+import * as TelegramAPI from '../notifications/telegram';
 import { getApp, getKnex, getServer } from '../singleton';
 
 const app = getApp();
@@ -48,10 +50,18 @@ app.get(['/', '/home'], async function (req, res) {
     .getLatestPost()
     .build();
 
-  const [[homepage], [latestDiaryEntry], [latestReverie]] = await Promise.all([
+  const [
+    [homepage],
+    [latestDiaryEntry],
+    [latestReverie],
+    emailSubscribers,
+    tgSubCount
+  ] = await Promise.all([
     getHomeText,
     getLatestDiaryEntry,
-    getLatestReverie
+    getLatestReverie,
+    SubscriberService.getAllSubscribers(),
+    TelegramAPI.getSubscriberCount()
   ]);
 
   let randomPosts;
@@ -73,7 +83,9 @@ app.get(['/', '/home'], async function (req, res) {
     homeText: homepage.content,
     latestDiaryEntry: JSON.stringify(latestDiaryEntry),
     latestReverie: JSON.stringify(latestReverie),
-    randomPosts: JSON.stringify(randomPosts)
+    randomPosts: JSON.stringify(randomPosts),
+    emailSubCount: JSON.stringify(emailSubscribers.length),
+    tgSubCount: JSON.stringify(tgSubCount)
   });
 });
 

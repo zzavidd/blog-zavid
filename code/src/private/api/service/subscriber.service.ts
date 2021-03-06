@@ -19,9 +19,10 @@ const ENTITY_NAME = 'subscriber';
  * Retrieves all subscriber from database.
  * @param args.sort The sort options.
  */
-export const getAllSubscribers = ({
-  sort
-}: GetAllSubscriberOptions): Promise<SubscriberDAO[]> => {
+export const getAllSubscribers = (
+  options: GetAllSubscriberOptions = {}
+): Promise<SubscriberDAO[]> => {
+  const { sort = {} } = options;
   return TryWrapper(async () => {
     const subscribers = await new SubscriberQueryBuilder(knex)
       .withOrder(sort)
@@ -114,7 +115,7 @@ export const clearSubscribers = () => {
 };
 
 export type GetAllSubscriberOptions = {
-  sort: QuerySort;
+  sort?: QuerySort;
 };
 
 export type GetOrDeleteSubscriberOptions = {

@@ -8,6 +8,7 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!);
 const dev = process.env.NODE_ENV !== 'production';
 
 const TEST_LINK = 'https://www.zavidegbue.com';
+const CHANNEL = process.env.TELEGRAM_BOT_CHANNEL!;
 
 /**
  * Notify Telegram channel of new post.
@@ -39,7 +40,7 @@ export function notifyNewDiaryEntry(entry: DiaryDAO): Promise<void> {
 async function notify(content: string): Promise<void> {
   try {
     const value = await bot.sendMessage(
-      process.env.TELEGRAM_BOT_CHANNEL!,
+      CHANNEL!,
       content,
       {
         parse_mode: 'Markdown'
@@ -58,6 +59,12 @@ async function notify(content: string): Promise<void> {
         .red
     );
   }
+}
+ /**
+  * Get the number of subscribers to the Telegram channel.
+  */
+export async function getSubscriberCount(): Promise<number> {
+  return await bot.getChatMembersCount(CHANNEL);
 }
 
 /** Returns the current timestamp. */

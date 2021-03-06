@@ -18,12 +18,18 @@ const Home = ({
   homeText,
   latestDiaryEntry,
   latestReverie,
-  randomPosts
+  randomPosts,
+  emailSubCount,
+  tgSubCount
 }: HomeProps) => {
   return (
     <>
       <div className={css['home-page']}>
-        <Introduction content={homeText} />
+        <Introduction
+          content={homeText}
+          emailSubCount={emailSubCount}
+          tgSubCount={tgSubCount}
+        />
         <Search />
         <HomeRow>
           <HomeField xl={6}>
@@ -63,14 +69,25 @@ Home.getInitialProps = async ({ query }: NextPageContext) => {
   const latestDiaryEntry = DAOParse<DiaryDAO>(query.latestDiaryEntry as string);
   const latestReverie = DAOParse<PostDAO>(query.latestReverie as string);
   const randomPosts = DAOParse<PostDAO[]>(query.randomPosts as string);
-  return { homeText, latestDiaryEntry, latestReverie, randomPosts };
+  const emailSubCount = DAOParse<number>(query.emailSubCount);
+  const tgSubCount = DAOParse<number>(query.tgSubCount);
+  return {
+    homeText,
+    latestDiaryEntry,
+    latestReverie,
+    randomPosts,
+    emailSubCount,
+    tgSubCount
+  };
 };
 
 export default Home;
 
-interface HomeProps {
+type HomeProps = {
   homeText: string;
   latestDiaryEntry: DiaryDAO;
   latestReverie: PostDAO;
   randomPosts: PostDAO[];
-}
+  emailSubCount: number;
+  tgSubCount: number;
+};

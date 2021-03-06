@@ -9,9 +9,13 @@ import css from 'src/styles/pages/Home.module.scss';
 
 import { HomeField, HomeRow } from '..';
 
-export default ({ content }: IntroductionProps) => {
+export default ({
+  content,
+  emailSubCount,
+  tgSubCount
+}: IntroductionProps) => {
   const [isLoaded, setLoaded] = useState(false);
-  
+
   useEffect(() => {
     setLoaded(true);
   }, [isLoaded]);
@@ -29,7 +33,9 @@ export default ({ content }: IntroductionProps) => {
           <Paragraph
             className={css['introduction-message']}
             substitutions={{
-              redevelopmentDate: zDate.formatDate(redevelopmentDate)
+              redevelopmentDate: zDate.formatDate(redevelopmentDate),
+              emailSubCount,
+              tgSubCount
             }}>
             {content}
           </Paragraph>
@@ -44,6 +50,8 @@ export default ({ content }: IntroductionProps) => {
   );
 };
 
-interface IntroductionProps {
+type IntroductionProps = {
   content: string;
-}
+  emailSubCount: number;
+  tgSubCount: number;
+};
