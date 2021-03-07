@@ -12,7 +12,7 @@ import {
 } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
-import { Fader, Slider } from 'src/lib/library';
+import { Slider } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
 import { Signature } from '../image';
@@ -183,17 +183,14 @@ export const DynamicField = (props: DynamicField) => {
   }, [dependency]);
 
   const breakpoints = Object.assign({}, { xs, sm, md, lg, xl });
+  const classes = classnames(css['form-field-dynamic'], {
+    [css['form-field-dynamic--hidden']]: !isVisible
+  });
 
   return (
-    <Fader
-      determinant={isVisible}
-      duration={400}
-      hollow={true}
-      style={{ display: isVisible ? 'block' : 'none' }}>
-      <Col {...breakpoints} className={css['form-field']}>
-        {props.children}
-      </Col>
-    </Fader>
+    <Col {...breakpoints} className={classes}>
+      {props.children}
+    </Col>
   );
 };
 

@@ -82,8 +82,18 @@
   margin: 0;
 }
 
+%form-field,
 .form-field {
   @include responsive(padding, 1em, $sm: 0.8em 1em);
+}
+
+.form-field-dynamic {
+  @extend %form-field;
+  animation: g-fadein 0.4s;
+}
+
+.form-field-dynamic--hidden {
+  display: none;
 }
 
 ////////////////////////////////
@@ -171,16 +181,11 @@
 .textarea {
   @include theme-extend(&, '%themed-input');
   overflow: overlay;
-  // scrollbar-width: none;
+  scrollbar-width: none;
 
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
-}
-
-.textarea__preview {
-  @include responsive(font-size, 1.2em, $sm: 1em);
-  white-space: pre-line;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 %select {

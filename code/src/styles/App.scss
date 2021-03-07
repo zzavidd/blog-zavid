@@ -1,3 +1,4 @@
+@import 'Animations';
 @import 'Variables';
 @import 'Mixins';
 
@@ -73,7 +74,7 @@
 /// Cookies
 ////////////////////////////////
 
-.cookie-prompt-wrapper {
+.cookie-prompt {
   @include responsive(font-size, 1em, $md: 0.8em);
   background-color: rgba(0, 0, 0, 0.95);
   bottom: 0%;
@@ -83,32 +84,55 @@
   padding: 0.7em;
   position: sticky;
   width: 100%;
-  z-index: 1100;
+  z-index: 1;
 
-  .cookie-prompt {
-    @include responsive(width, 50%, $xl: 80%, $lg: 90%, $sm: 100%);
-    align-items: center;
-    display: flex;
-    padding: 0.5em;
+  &--initial {
+    display: none;
+  }
 
-    span {
-      color: #fff;
-      font-family: $title-font;
-      margin: 0 auto;
-      padding-right: 1em;
+  &--visible {
+    animation: g-fadein 0.5s ease 2s 1 normal backwards;
+  }
 
-      a {
-        color: #fff;
-        text-decoration: underline;
-      }
+  &--hidden {
+    animation: l-fadeout 0.5s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes l-fadeout {
+    from {
+      opacity: 1;
     }
 
-    svg {
-      font-size: 1.35em;
+    to {
+      opacity: 0;
+    }
+  }
+}
 
-      path {
-        color: #fff !important;
-      }
+.cookie-prompt__wrapper {
+  @include responsive(width, 50%, $xl: 80%, $lg: 90%, $sm: 100%);
+  align-items: center;
+  display: flex;
+  padding: 0.5em;
+
+  span {
+    color: #fff;
+    font-family: $title-font;
+    margin: 0 auto;
+    padding-right: 1em;
+
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+
+  svg {
+    font-size: 1.35em;
+
+    path {
+      color: #fff !important;
     }
   }
 }

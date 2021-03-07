@@ -1,34 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import classnames from 'classnames';
+import React, { useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
 import { InvisibleButton } from 'src/components/button';
-import { Icon, Fader } from 'src/lib/library';
+import { Icon } from 'src/lib/library';
 
-export const CookiePrompt = ({ acceptCookies }: CookiePrompt) => {
-  const [isLoaded, setLoaded] = useState(false);
+export const CookiePrompt = () => {
+  const initialState = checkCookiePolicyAccepted();
+  const [wasAccepted] = useState(initialState);
+  const [isAccepted, setAcceptance] = useState(initialState);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoaded(true);
-    }, 2000);
-  }, [isLoaded]);
-
+  const state = wasAccepted ? 'initial' : isAccepted ? 'hidden' : 'visible';
+  const classes = classnames('cookie-prompt', `cookie-prompt--${state}`);
   return (
-    <Fader determinant={isLoaded} duration={500} hollow={true}>
-      <div className={'cookie-prompt-wrapper'}>
-        <div className={'cookie-prompt'}>
-          <span>
-            My site uses cookies and similar technologies to recognise your
-            preferences. Clue up on cookies by viewing my{' '}
-            <a href={'/cookies'}>Cookie Policy</a>. By closing this pop-up, you
-            consent to my use of cookies.
-          </span>
-          <InvisibleButton onClick={acceptCookies}>
-            <Icon name={'times'} />
-          </InvisibleButton>
-        </div>
+    <div className={classes}>
+      <div className={'cookie-prompt__wrapper'}>
+        <span>
+          My site uses cookies and similar technologies to recognise your
+          preferences. Clue up on cookies by viewing my{' '}
+          <a href={'/cookies'}>Cookie Policy</a>. By closing this pop-up, you
+          consent to my use of cookies.
+        </span>
+        <InvisibleButton
+          onClick={() => {
+            setCookie('cookiesAccepted', true, 365 * 24);
+            setAcceptance(true);
+          }}>
+          <Icon name={'times'} />
+        </InvisibleButton>
       </div>
-    </Fader>
+    </div>
   );
 };
 
@@ -75,7 +76,3 @@ export const isAuthenticated = (): boolean => {
   const user = useSelector(({ user }: RootStateOrAny) => user);
   return user.isAuthenticated;
 };
-
-interface CookiePrompt {
-  acceptCookies: () => void;
-}

@@ -9,11 +9,7 @@ import css from 'src/styles/pages/Home.module.scss';
 
 import { HomeField, HomeRow } from '..';
 
-export default ({
-  content,
-  emailSubCount,
-  tgSubCount
-}: IntroductionProps) => {
+export default ({ content, emailSubCount, tgSubCount }: IntroductionProps) => {
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -23,10 +19,7 @@ export default ({
   return (
     <HomeRow className={css['introduction-wrapper']}>
       <HomeField xl={7}>
-        <Fader
-          determinant={isLoaded}
-          duration={800}
-          className={css['introduction-text']}>
+        <div className={css['introduction-text']}>
           <Title className={css['introduction-welcome']}>
             You&#39;ve arrived. Welcome.
           </Title>
@@ -39,7 +32,7 @@ export default ({
             }}>
             {content}
           </Paragraph>
-        </Fader>
+        </div>
       </HomeField>
       <HomeField xl={5}>
         <Fader determinant={isLoaded} duration={800} delay={600}>
