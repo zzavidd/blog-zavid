@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { SubscriberDAO, SubscriptionsMapping } from 'classes';
-import { GenericForm } from 'classes/interfaces/super';
+import { GenericFormProps } from 'classes/interfaces/super';
 import { Form, FieldRow, Field, Label, TextInput } from 'src/components/form';
 import { Handlers } from 'src/lib/hooks';
 import { Fader } from 'src/lib/library';
 
 import PreferenceChecks from './preferences';
 
-export default (props: SubscribeForm) => {
+export default (props: SubscribeFormProps) => {
   const { subscriber, preferences, handlers, isLoaded } = props;
   const { handleText, setPreferences } = handlers;
 
@@ -60,7 +60,7 @@ export default (props: SubscribeForm) => {
   );
 };
 
-interface SubscribeForm extends GenericForm {
+interface SubscribeFormProps extends GenericFormProps {
   subscriber: SubscriberDAO
   preferences: SubscriptionsMapping
   handlers: Handlers

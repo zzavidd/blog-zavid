@@ -5,6 +5,7 @@
 ////////////////////////////////
 
 .form {
+  animation: g-fadein 0.5s;
   display: block;
 }
 
@@ -47,11 +48,11 @@
   padding: 2em;
 }
 
-.form-preview-title {
+.form-preview__title {
   font-size: 2em;
 }
 
-.form-preview-text {
+.form-preview__text {
   font-size: 1.1em;
 }
 
@@ -85,14 +86,10 @@
 %form-field,
 .form-field {
   @include responsive(padding, 1em, $sm: 0.8em 1em);
-}
-
-.form-field-dynamic {
-  @extend %form-field;
   animation: g-fadein 0.4s;
 }
 
-.form-field-dynamic--hidden {
+.form-field--hidden {
   display: none;
 }
 

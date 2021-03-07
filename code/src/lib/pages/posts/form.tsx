@@ -11,7 +11,7 @@ import {
   ReactTextAreaChangeEvent,
   Substitutions
 } from 'classes';
-import { GenericForm } from 'classes/interfaces/super';
+import { GenericFormProps } from 'classes/interfaces/super';
 import {
   DynamicField,
   Field,
@@ -35,7 +35,7 @@ import css from 'src/styles/pages/Posts.module.scss';
 const NUMBER_OF_CONTENT_IMAGES = 6;
 
 // TODO: Use foldable for images
-const PostForm = (props: PostForm) => {
+const PostForm = (props: PostFormProps) => {
   const { post, domains, handlers, isCreateOperation, isLoaded } = props;
   const {
     handleText,
@@ -258,7 +258,7 @@ const ContentImages = ({
 
 export default PostForm;
 
-interface PostForm extends GenericForm {
+interface PostFormProps extends GenericFormProps {
   isLoaded: boolean;
   post: PostDAO;
   domains: PostDAO[];

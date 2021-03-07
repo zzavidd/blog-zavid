@@ -135,7 +135,6 @@ const DiaryCrud = ({
   return (
     <>
       <DiaryEntryForm
-        isLoaded={isLoaded}
         diaryEntry={clientDiaryEntry}
         handlers={hooks(setDiaryEntry, clientDiaryEntry)}
         confirmFunction={confirmFunction}

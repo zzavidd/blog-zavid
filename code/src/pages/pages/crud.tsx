@@ -88,7 +88,6 @@ const PageCrud = ({ page: serverPage, operation }: PageCrud) => {
 
   return (
     <PageForm
-      isLoaded={isLoaded}
       page={clientPage}
       handlers={hooks(setPage, clientPage)}
       confirmFunction={isCreateOperation ? submitPage : updatePage}

@@ -43,18 +43,22 @@ export const Form = ({
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
   const [isConfirmed, setConfirmed] = useState(false);
 
-  const restrictNavigation = (e: Event) => {
-    if (!isConfirmed && process.env.NODE_ENV !== 'development') {
-      e.returnValue = true;
-    }
-  };
-
   useEffect(() => {
     window.addEventListener('beforeunload', restrictNavigation);
     return () => {
       window.removeEventListener('beforeunload', restrictNavigation);
     };
   }, [isConfirmed]);
+
+  /**
+   * Prompt for confirmation before leaving the form in production.
+   * @param e The event context.
+   */
+  const restrictNavigation = (e: Event) => {
+    if (!isConfirmed && process.env.NODE_ENV !== 'development') {
+      e.returnValue = true;
+    }
+  };
 
   const formClasses = classnames(
     formClassName?.[isPreviewVisible ? 'previewOn' : 'previewOff'],
@@ -121,14 +125,14 @@ const FormPreview = ({
       direction={'right'}
       className={classes}
       style={{ display: isPreviewVisible ? 'block' : 'none' }}>
-      <Title className={css['form-preview-title']}>{previewTitle}</Title>
+      <Title className={css['form-preview__title']}>{previewTitle}</Title>
       <Paragraph
-        className={css['form-preview-text']}
+        className={css['form-preview__text']}
         substitutions={substitutions}>
         {previewText as string}
       </Paragraph>
       <Signature />
-      <Paragraph className={css['form-preview-text']}>
+      <Paragraph className={css['form-preview__text']}>
         {previewFootnotes}
       </Paragraph>
     </Slider>
@@ -183,8 +187,8 @@ export const DynamicField = (props: DynamicField) => {
   }, [dependency]);
 
   const breakpoints = Object.assign({}, { xs, sm, md, lg, xl });
-  const classes = classnames(css['form-field-dynamic'], {
-    [css['form-field-dynamic--hidden']]: !isVisible
+  const classes = classnames(css['form-field'], {
+    [css['form-field--hidden']]: !isVisible
   });
 
   return (
