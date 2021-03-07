@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import { DiaryDAO } from 'classes';
 import { Flexer } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
-import { Icon, Fader } from 'src/lib/library';
+import { Icon } from 'src/lib/library';
 import css from 'src/styles/pages/Home.module.scss';
 
-export default ({ entry }: LatestDiaryEntry) => {
+export default ({ entry }: LatestDiaryEntryProps) => {
   if (!entry) return null;
-
-  const [isLoaded, setLoaded] = useState(false);
-  useEffect(() => {
-    setLoaded(true);
-  }, [isLoaded]);
 
   const date = zDate.formatDate(entry.date!, { withWeekday: true });
   return (
-    <Fader
-      determinant={isLoaded}
-      duration={800}
-      delay={1000}
-      className={css['latest-diary']}>
+    <div className={css['latest-diary']}>
       <Flexer>
         <div>
           <div className={css['latest-shared-heading']}>
@@ -42,10 +33,10 @@ export default ({ entry }: LatestDiaryEntry) => {
         morelink={`/diary/${entry.slug}`}>
         {entry.content}
       </Paragraph>
-    </Fader>
+    </div>
   );
 };
 
-interface LatestDiaryEntry {
+type LatestDiaryEntryProps = {
   entry: DiaryDAO;
-}
+};

@@ -1,5 +1,17 @@
 @import '../App';
 
+$delay-intro-text: 400ms;
+$delay-intro-signature: 800ms;
+$delay-home-search: 1200ms;
+$delay-latest-entity: 1600ms;
+$delay-random-posts: 2000ms;
+
+/// Provides default animation styling.
+/// @param {string} $delay - The value when the theme is light.
+@mixin animate($delay) {
+  animation: g-fadein 600ms ease $delay 1 normal both; 
+}
+
 .home-page {
   display: grid;
   grid-template-rows: 1fr auto;
@@ -24,20 +36,21 @@
   justify-self: center;
 
   .introduction-text {
-    animation: g-fadein 0.8s;
+    @include animate($delay-intro-text);
     height: 100%;
-  }
 
-  .introduction-welcome {
-    @include responsive(font-size, 2.5em, $md: 2em);
-    margin-bottom: 0.5em;
-  }
-
-  .introduction-message {
-    @include responsive(font-size, 1.3em, $md: 1em);
+    &__heading {
+      @include responsive(font-size, 2.5em, $md: 2em);
+      margin-bottom: 0.5em;
+    }
+  
+    &__message {
+      @include responsive(font-size, 1.3em, $md: 1em);
+    }
   }
 
   .introduction-signature {
+    @include animate($delay-intro-signature);
     @include responsive(margin, 1em 0 0, $xl: 0 0 0);
     @include responsive(max-width, 100%, $xl: 250px, $sm: 150px);
     @include responsive(padding, 1em, $xl: 0 0 2em);
@@ -49,6 +62,7 @@
 ////////////////////////////////
 
 .home-search-row {
+  @include animate($delay-home-search);
   @include responsive(padding, 4em 0, $sm: 2em 0);
   @include responsive(width, 80%, $lg: 90%, $sm: 100%);
   justify-self: center;
@@ -113,6 +127,7 @@
 
 .latest-diary {
   @extend %latest-segment;
+  @include animate($delay-latest-entity);
 
   .latest-diary-title {
     @extend %latest-title;
@@ -139,7 +154,7 @@
 
 .latest-reverie {
   @extend %latest-segment;
-  @include responsive(border-left, 1px solid, $xl: none);
+  @include animate($delay-latest-entity);
 
   .latest-reverie-icon {
     @extend %latest-icon;
@@ -178,6 +193,7 @@
 ////////////////////////////////
 
 .random-posts-wrapper {
+  @include animate($delay-random-posts);
   @include responsive(padding, 0.5em 2em, $md: 0 1em);
   background: rgba($color: #000, $alpha: 0.7);
   border-top: 1px solid #fff;
