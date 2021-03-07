@@ -101,7 +101,6 @@ const SubscriberCrud = ({
 
   return (
     <SubscriberForm
-      isLoaded={isLoaded}
       subscriber={clientSubscriber}
       preferences={preferences}
       handlers={{ ...hooks(setSubscriber, clientSubscriber), setPreferences }}

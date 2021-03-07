@@ -29,14 +29,13 @@ import { FileSelector, FSAspectRatio } from 'src/components/form/fileselector';
 import { Foldable } from 'src/components/form/foldable';
 import { cloudinaryBaseUrl } from 'src/components/image';
 import { Handlers } from 'src/lib/hooks';
-import { Fader, ScreenWidth } from 'src/lib/library';
+import { ScreenWidth } from 'src/lib/library';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const NUMBER_OF_CONTENT_IMAGES = 6;
 
-// TODO: Use foldable for images
 const PostForm = (props: PostFormProps) => {
-  const { post, domains, handlers, isCreateOperation, isLoaded } = props;
+  const { post, domains, handlers, isCreateOperation } = props;
   const {
     handleText,
     handleNumber,
@@ -77,158 +76,156 @@ const PostForm = (props: PostFormProps) => {
   const contentOrder = isPreviewVisible ? (isXXXLarge ? 1 : 2) : 1;
 
   return (
-    <Fader determinant={isLoaded} duration={500} hollow={true}>
-      <Form
-        {...props}
-        previewTitle={post.title}
-        previewText={post.content}
-        substitutions={substitutions}
-        onPreviewToggle={setPreviewVisible}
-        formClassName={{
-          previewOn: css['post-form-pv']
-        }}
-        editorClassName={{
-          previewOff: css['post-form-editor']
-        }}>
-        <FieldRow>
-          <Field xl={{ span: fieldSpan, order: contentOrder }}>
-            <FieldRow>
-              <Field>
-                <Label>Content:</Label>
-                <LongTextArea
-                  name={'content'}
-                  value={post.content!}
-                  onChange={(e: ReactTextAreaChangeEvent) =>
-                    handleTextSave(e, dispatch)
-                  }
-                  placeholder={"Write out the post's content..."}
+    <Form
+      {...props}
+      previewTitle={post.title}
+      previewText={post.content}
+      substitutions={substitutions}
+      onPreviewToggle={setPreviewVisible}
+      formClassName={{
+        previewOn: css['post-form-pv']
+      }}
+      editorClassName={{
+        previewOff: css['post-form-editor']
+      }}>
+      <FieldRow>
+        <Field xl={{ span: fieldSpan, order: contentOrder }}>
+          <FieldRow>
+            <Field>
+              <Label>Content:</Label>
+              <LongTextArea
+                name={'content'}
+                value={post.content!}
+                onChange={(e: ReactTextAreaChangeEvent) =>
+                  handleTextSave(e, dispatch)
+                }
+                placeholder={"Write out the post's content..."}
+              />
+            </Field>
+          </FieldRow>
+        </Field>
+        <Field xl={{ span: fieldSpan, order: contentOrder === 1 ? 2 : 1 }}>
+          <FieldRow>
+            <Field sm={9}>
+              <FieldRow></FieldRow>
+              <Label>Title:</Label>
+              <TextInput
+                name={'title'}
+                value={post.title!}
+                onChange={handleText}
+                placeholder={'Enter the title'}
+              />
+            </Field>
+            <Field sm={3}>
+              <Label>Type:</Label>
+              <Select
+                name={'type'}
+                items={PostStatic.TYPES}
+                value={post.type}
+                onChange={onTypeChange!}
+                placeholder={'Select post type'}
+              />
+            </Field>
+          </FieldRow>
+          <FieldRow>
+            <DynamicField
+              sm={4}
+              precondition={!PostStatic.isPage(post)}
+              dependency={post.type}>
+              <Label>Type ID:</Label>
+              <NumberInput
+                name={'typeId'}
+                value={post.typeId!}
+                onChange={handleNumber}
+                placeholder={'Type ID'}
+              />
+            </DynamicField>
+            <DynamicField
+              md={8}
+              precondition={PostStatic.isPage(post)}
+              dependency={post.type}>
+              <Label>Domain</Label>
+              <Select
+                name={'domainId'}
+                items={domains}
+                value={post.domainId}
+                onChange={handleSelection}
+                placeholder={'Select page domain'}
+              />
+            </DynamicField>
+          </FieldRow>
+          <FieldRow>
+            <Field md={5}>
+              <Label>Status:</Label>
+              <Select
+                name={'status'}
+                items={PostStatic.STATUSES}
+                value={post.status}
+                onChange={onStatusChange}
+              />
+            </Field>
+            <DynamicField
+              md={7}
+              precondition={PostStatic.isPublish(post)}
+              dependency={post.status}>
+              <Label>Date Published:</Label>
+              <DatePicker
+                name={'datePublished'}
+                date={post.datePublished!}
+                onConfirm={(date: DateType) =>
+                  handleDate(date as DateType, 'datePublished')
+                }
+                placeholderText={'Select the publish date...'}
+              />
+            </DynamicField>
+          </FieldRow>
+          <FieldRow>
+            <Field>
+              <Label>Excerpt:</Label>
+              <ShortTextArea
+                name={'excerpt'}
+                value={post.excerpt!}
+                onChange={handleText}
+                placeholder={"Enter the post's excerpt..."}
+              />
+            </Field>
+          </FieldRow>
+          <FieldRow>
+            <Field sm={6}>
+              <Foldable
+                label={'Upload image'}
+                visible={isImageVisible}
+                switcher={toggleImage}>
+                <Label>Image:</Label>
+                <FileSelector
+                  image={(post.image as PostImage).source}
+                  isCreateOperation={isCreateOperation}
+                  onChange={handleFile}
+                  aspectRatio={FSAspectRatio.WIDE}
                 />
-              </Field>
-            </FieldRow>
-          </Field>
-          <Field xl={{ span: fieldSpan, order: contentOrder === 1 ? 2 : 1 }}>
-            <FieldRow>
-              <Field sm={9}>
-                <FieldRow></FieldRow>
-                <Label>Title:</Label>
-                <TextInput
-                  name={'title'}
-                  value={post.title!}
-                  onChange={handleText}
-                  placeholder={'Enter the title'}
-                />
-              </Field>
-              <Field sm={3}>
-                <Label>Type:</Label>
-                <Select
-                  name={'type'}
-                  items={PostStatic.TYPES}
-                  value={post.type}
-                  onChange={onTypeChange!}
-                  placeholder={'Select post type'}
-                />
-              </Field>
-            </FieldRow>
-            <FieldRow>
-              <DynamicField
-                sm={4}
-                precondition={!PostStatic.isPage(post)}
-                dependency={post.type}>
-                <Label>Type ID:</Label>
-                <NumberInput
-                  name={'typeId'}
-                  value={post.typeId!}
-                  onChange={handleNumber}
-                  placeholder={'Type ID'}
-                />
-              </DynamicField>
-              <DynamicField
-                md={8}
-                precondition={PostStatic.isPage(post)}
-                dependency={post.type}>
-                <Label>Domain</Label>
-                <Select
-                  name={'domainId'}
-                  items={domains}
-                  value={post.domainId}
-                  onChange={handleSelection}
-                  placeholder={'Select page domain'}
-                />
-              </DynamicField>
-            </FieldRow>
-            <FieldRow>
-              <Field md={5}>
-                <Label>Status:</Label>
-                <Select
-                  name={'status'}
-                  items={PostStatic.STATUSES}
-                  value={post.status}
-                  onChange={onStatusChange}
-                />
-              </Field>
-              <DynamicField
-                md={7}
-                precondition={PostStatic.isPublish(post)}
-                dependency={post.status}>
-                <Label>Date Published:</Label>
-                <DatePicker
-                  name={'datePublished'}
-                  date={post.datePublished!}
-                  onConfirm={(date: DateType) =>
-                    handleDate(date as DateType, 'datePublished')
-                  }
-                  placeholderText={'Select the publish date...'}
-                />
-              </DynamicField>
-            </FieldRow>
-            <FieldRow>
-              <Field>
-                <Label>Excerpt:</Label>
-                <ShortTextArea
-                  name={'excerpt'}
-                  value={post.excerpt!}
-                  onChange={handleText}
-                  placeholder={"Enter the post's excerpt..."}
-                />
-              </Field>
-            </FieldRow>
-            <FieldRow>
-              <Field sm={6}>
-                <Foldable
-                  label={'Upload image'}
-                  visible={isImageVisible}
-                  switcher={toggleImage}>
-                  <Label>Image:</Label>
-                  <FileSelector
-                    image={(post.image as PostImage).source}
+              </Foldable>
+            </Field>
+          </FieldRow>
+          <FieldRow>
+            <Field>
+              <Foldable
+                label={'Upload content images'}
+                visible={isContentImagesVisible}
+                switcher={toggleContentImages}>
+                <Label>Content Images:</Label>
+                <div className={css['content-images-wrapper']}>
+                  <ContentImages
+                    post={post}
                     isCreateOperation={isCreateOperation}
-                    onChange={handleFile}
-                    aspectRatio={FSAspectRatio.WIDE}
+                    handleContentImages={handleContentImages}
                   />
-                </Foldable>
-              </Field>
-            </FieldRow>
-            <FieldRow>
-              <Field>
-                <Foldable
-                  label={'Upload content images'}
-                  visible={isContentImagesVisible}
-                  switcher={toggleContentImages}>
-                  <Label>Content Images:</Label>
-                  <div className={css['content-images-wrapper']}>
-                    <ContentImages
-                      post={post}
-                      isCreateOperation={isCreateOperation}
-                      handleContentImages={handleContentImages}
-                    />
-                  </div>
-                </Foldable>
-              </Field>
-            </FieldRow>
-          </Field>
-        </FieldRow>
-      </Form>
-    </Fader>
+                </div>
+              </Foldable>
+            </Field>
+          </FieldRow>
+        </Field>
+      </FieldRow>
+    </Form>
   );
 };
 
@@ -259,7 +256,6 @@ const ContentImages = ({
 export default PostForm;
 
 interface PostFormProps extends GenericFormProps {
-  isLoaded: boolean;
   post: PostDAO;
   domains: PostDAO[];
   handlers: Handlers & {

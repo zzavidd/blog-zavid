@@ -225,7 +225,6 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
 
   return (
     <PostForm
-      isLoaded={isLoaded}
       post={clientPost}
       domains={domains}
       isCreateOperation={isCreateOperation}

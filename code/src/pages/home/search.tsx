@@ -9,7 +9,6 @@ import { Checkbox, SearchBar } from 'src/components/form';
 import CloudImage, { AspectRatio } from 'src/components/image';
 import { Spacer } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
-import { Fader } from 'src/lib/library';
 import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Search.module.scss';
 
@@ -98,23 +97,18 @@ const ResultEntity = memo(({ entity, searchTerm, idx }: ResultEntityProps) => {
 
   const classes = classnames(
     css[`search-results-entity`],
-    css[`search-results-entity-${theme}`]
+    css[`search-results-entity--${theme}`]
   );
 
   return (
     <VanillaLink href={entity.slug!}>
-      <Fader
-        determinant={isLoaded}
-        duration={750}
-        delay={idx * 50 + 50}
-        className={classes}
-        postTransitions={'background-color .4s ease'}>
+      <div className={classes} style={{ animationDelay: `${idx * 75 + 50}ms` }}>
         <div className={css['search-results-index']}>#{entity.index}</div>
         <Title className={css['search-results-title']}>{entity.title}</Title>
         <div className={css['search-results-metadata']}>{date}</div>
         <MatchedContent entity={entity} searchTerm={searchTerm} />
         <ResultEntityImage entity={entity} />
-      </Fader>
+      </div>
     </VanillaLink>
   );
 });

@@ -24,6 +24,7 @@ export const Partitioner = ({ children, className }: Layout) => {
 export const Spacer = ({ children }: Layout) => {
   return <div className={css['spacer']}>{children}</div>;
 };
+
 export const Toolbar = ({
   className,
   children,

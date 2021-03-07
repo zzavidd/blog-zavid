@@ -29,8 +29,11 @@
 
 .diary-entry {
   @include responsive(padding, 1.5em, $sm: 1.5em 0);
+  animation: g-fadein 0.75s;
+  animation-fill-mode: both;
   border-radius: 15px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 
   &:not(:last-child) {
     @media (max-width: $break-md) {
@@ -39,7 +42,7 @@
     }
   }
 
-  &-light {
+  &--light {
     @media (min-width: $break-md) {
       &:hover {
         background-color: $dark;
@@ -51,7 +54,7 @@
     }
   }
 
-  &-dark {
+  &--dark {
     @media (min-width: $break-md) {
       &:hover {
         background-color: #cacaca;

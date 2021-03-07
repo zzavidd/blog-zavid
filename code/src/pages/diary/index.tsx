@@ -17,7 +17,7 @@ import { Checkbox, SearchBar } from 'src/components/form';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title, VanillaLink } from 'src/components/text';
 import { isAuthenticated } from 'src/lib/cookies';
-import { Fader, Icon } from 'src/lib/library';
+import { Icon } from 'src/lib/library';
 import TagBlock from 'src/lib/pages/diary/tags';
 import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
 import css from 'src/styles/pages/Diary.module.scss';
@@ -107,13 +107,9 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
     withWeekday: true
   });
   const link = `/diary/${diaryEntry.entryNumber}`;
+  const classes = classnames(css['diary-entry'], css[`diary-entry--${theme}`]);
   return (
-    <Fader
-      determinant={isLoaded}
-      duration={750}
-      delay={idx * 50 + 50}
-      className={classnames(css['diary-entry'], css[`diary-entry-${theme}`])}
-      postTransitions={'background-color .4s ease'}>
+    <div className={classes} style={{ animationDelay: `${idx * 75 + 50}ms` }}>
       <VanillaLink href={link}>
         <div className={css['diary-entry-header']}>
           <div>
@@ -141,7 +137,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
         tags={diaryEntry.tags!}
         limit={9}
       />
-    </Fader>
+    </div>
   );
 });
 
