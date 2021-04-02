@@ -102,11 +102,11 @@
   }
 
   &--hidden {
-    animation: l-slidein-reverse 0.4s ease 0s 1 normal both;
+    animation: l-slideout 0.4s ease 0s 1 normal both;
   }
 
   @keyframes l-slidein {
-    from {
+    0% {
       left: 100vw;
       visibility: hidden;
     }
@@ -115,13 +115,13 @@
       height: 100vh;
     }
 
-    to {
+    100% {
       left: 0;
       visibility: visible;
     }
   }
 
-  @keyframes l-slidein-reverse {
+  @keyframes l-slideout {
     0% {
       left: 0;
       visibility: visible;

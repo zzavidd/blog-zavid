@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import classnames from 'classnames';
+import React, { useState, useEffect } from 'react';
 
 import { PostStatic, ReactSelectChangeEvent } from 'classes';
 import { AdminButton } from 'src/components/button';
 import { Field, FieldRow, Select, SelectProps } from 'src/components/form';
 import { Toolbar, ToolbarToggle } from 'src/components/layout';
-import { Icon, Slider, Responsive } from 'src/lib/library';
+import { Icon, Responsive } from 'src/lib/library';
 import { PostFiltersState } from 'src/lib/reducers';
 import css from 'src/styles/pages/Posts.module.scss';
 
@@ -16,11 +17,28 @@ const sortOptions = [
 ];
 
 export default ({ options, handleOptionSelection }: Toolbar) => {
-  const [filtersVisible, setFilterVisibility] = useState(false);
+  const [isFiltersVisible, setFilterVisibility] = useState(false);
+  const [isInitialState, setIsInitialState] = useState(true);
+
+  useEffect(() => {
+    if (isInitialState) {
+      setIsInitialState(false);
+    }
+  }, [isFiltersVisible]);
 
   const toggleFilterVisibility = () => {
-    setFilterVisibility(!filtersVisible);
+    setFilterVisibility(!isFiltersVisible);
   };
+
+  const state = isInitialState
+    ? 'initial'
+    : isFiltersVisible
+    ? 'visible'
+    : 'hidden';
+  const filterClasses = classnames(
+    css[`post-toolbar__filters`],
+    css[`post-toolbar__filters--${state}`]
+  );
 
   const TOOLBAR = toolbarWidgets(options, handleOptionSelection);
   return (
@@ -45,11 +63,12 @@ export default ({ options, handleOptionSelection }: Toolbar) => {
               <Icon name={'chevron-up'} />
             </ToolbarToggle>
           </div>
-          <Slider
+          {/* <Slider
             determinant={filtersVisible}
             duration={300}
             direction={'up'}
-            style={{ display: filtersVisible ? 'block' : 'none' }}>
+            style={{ display: filtersVisible ? 'block' : 'none' }}> */}
+          <div className={filterClasses}>
             <FieldRow>
               <Field>{TOOLBAR.FILTERS.FIELD}</Field>
             </FieldRow>
@@ -61,7 +80,8 @@ export default ({ options, handleOptionSelection }: Toolbar) => {
               <Field xs={6}>{TOOLBAR.FILTERS.STATUS}</Field>
               <Field xs={6}>{TOOLBAR.FILTERS.LIMIT}</Field>
             </FieldRow>
-          </Slider>
+          </div>
+          {/* </Slider> */}
         </Toolbar>
       }
     />

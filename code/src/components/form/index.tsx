@@ -132,7 +132,9 @@ const FormPreview = ({
   const [isInitialState, setIsInitialState] = useState(true);
 
   useEffect(() => {
-    setIsInitialState(false);
+    if (isInitialState) {
+      setIsInitialState(false);
+    }
   }, [isPreviewVisible]);
 
   const state = isInitialState
