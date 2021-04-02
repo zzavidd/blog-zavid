@@ -4,6 +4,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/scss/bootstrap.scss';
+import Cookies from 'js-cookie';
 import App, { AppContext, AppProps } from 'next/app';
 import React, { useEffect, useState } from 'react';
 import ReactGA from 'react-ga';
@@ -17,7 +18,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { Theme } from 'classes';
 import { alert, checkForSetAlerts } from 'src/components/alert';
-import { CookiePrompt, readCookie, clearCookie } from 'src/lib/cookies';
+import { CookiePrompt } from 'src/lib/cookies';
 import configureStore, { setTheme, setUser, clearUser } from 'src/lib/reducers';
 import Footer from 'src/partials/footer';
 import Header from 'src/partials/header';
@@ -73,14 +74,14 @@ const ZAVIDApp = ({ Component, pageProps }: AppProps) => {
 
     document.body.classList.add(`body-${theme}`);
 
-    if (readCookie(AUTH_COOKIE)) {
+    if (Cookies.get(AUTH_COOKIE)) {
       dispatch(setUser({ isAuthenticated: true }));
       alert.success("You've successfully logged in.");
-      clearCookie(AUTH_COOKIE);
-    } else if (readCookie(DEAUTH_COOKIE)) {
+      Cookies.remove(AUTH_COOKIE);
+    } else if (Cookies.get(DEAUTH_COOKIE)) {
       dispatch(clearUser());
       alert.success("You've successfully logged out.");
-      clearCookie(DEAUTH_COOKIE);
+      Cookies.remove(DEAUTH_COOKIE);
     }
 
     checkForSetAlerts();

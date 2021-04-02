@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
 
@@ -23,7 +24,7 @@ export const CookiePrompt = () => {
         </span>
         <InvisibleButton
           onClick={() => {
-            setCookie('cookiesAccepted', true, 365 * 24);
+            Cookies.set('cookiesAccepted', 'true', { expires: 365 * 24 });
             setAcceptance(true);
           }}>
           <Icon name={'times'} />
@@ -33,43 +34,8 @@ export const CookiePrompt = () => {
   );
 };
 
-export const readCookie = (cookieName: string): string => {
-  const name = cookieName + '=';
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const ca = decodedCookie.split(';');
-
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-
-  return '';
-};
-
-export const setCookie = (
-  name: string,
-  value: unknown,
-  hours: number
-): void => {
-  const date = new Date();
-  date.setTime(date.getTime() + hours * 60 * 60 * 1000);
-  const expires = `expires=${date.toUTCString()}`;
-  document.cookie = `${name}=${value};${expires};path=/`;
-};
-
-export const clearCookie = (name: string): void => {
-  setCookie(name, '', -1);
-};
-
 export const checkCookiePolicyAccepted = (): boolean => {
-  return readCookie('cookiesAccepted') === 'true';
+  return Cookies.get('cookiesAccepted') === 'true';
 };
 
 export const isAuthenticated = (): boolean => {
