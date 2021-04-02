@@ -8,3 +8,25 @@
     opacity: 1;
   }
 }
+
+@mixin g-grid-anim($value) {
+  @keyframes l-grid {
+    from {
+      grid-template-columns: 100%;
+    }
+  
+    to {
+      grid-template-columns: $value;
+    }
+  }
+  
+  @keyframes l-grid-reverse {
+    from {
+      grid-template-columns: $value;
+    }
+  
+    to {
+      grid-template-columns: 100%;
+    }
+  }
+}
