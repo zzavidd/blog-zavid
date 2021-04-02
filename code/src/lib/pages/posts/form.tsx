@@ -32,7 +32,7 @@ import { Handlers } from 'src/lib/hooks';
 import { ScreenWidth } from 'src/lib/library';
 import css from 'src/styles/pages/Posts.module.scss';
 
-const NUMBER_OF_CONTENT_IMAGES = 6;
+const MAX_NUM_CONTENT_IMAGES = 6;
 
 const PostForm = (props: PostFormProps) => {
   const { post, domains, handlers, isCreateOperation } = props;
@@ -233,9 +233,9 @@ const ContentImages = ({
   post,
   isCreateOperation,
   handleContentImages
-}: PostContentImageInputs): JSX.Element => {
+}: PostContentImageInputs) => {
   const contentImages = [];
-  for (let i = 0; i < NUMBER_OF_CONTENT_IMAGES; i++) {
+  for (let i = 0; i < MAX_NUM_CONTENT_IMAGES; i++) {
     const mapping = post.contentImages as PostContentImageMapping;
     const image = mapping[`image${i}`] as PostImage;
     const source = image ? image.source : null;

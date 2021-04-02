@@ -4,7 +4,6 @@ import { zDate } from 'zavid-modules';
 import { PostDAO, PostStatic } from 'classes';
 import CloudImage, { AspectRatio } from 'src/components/image';
 import { Title, VanillaLink } from 'src/components/text';
-import { Zoomer } from 'src/lib/library';
 import css from 'src/styles/pages/Home.module.scss';
 
 export default ({ posts }: RandomPostsGridProps) => {
@@ -13,7 +12,7 @@ export default ({ posts }: RandomPostsGridProps) => {
   useEffect(() => {
     setLoaded(true);
   }, [isLoaded]);
-  
+
   return (
     <div className={css['random-posts-wrapper']}>
       <Title className={css['random-posts-heading']}>
@@ -23,11 +22,7 @@ export default ({ posts }: RandomPostsGridProps) => {
         {posts.map((post, key) => {
           const directory = PostStatic.getDirectory(post.type!);
           return (
-            <Zoomer
-              determinant={isLoaded}
-              duration={500}
-              className={css['random-post-unit']}
-              key={key}>
+            <div className={css['random-post-unit']} key={key}>
               <VanillaLink href={`/${directory}/${post.slug}`}>
                 <CloudImage
                   src={post.image as string}
@@ -43,7 +38,7 @@ export default ({ posts }: RandomPostsGridProps) => {
                   {zDate.formatDate(post.datePublished!, { withWeekday: true })}
                 </div>
               </VanillaLink>
-            </Zoomer>
+            </div>
           );
         })}
       </div>

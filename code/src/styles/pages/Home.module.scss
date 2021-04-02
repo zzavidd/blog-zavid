@@ -218,6 +218,7 @@ $delay-random-posts: 2000ms;
 
   .random-post-unit {
     @include hover-scale(1.08);
+    animation: g-zoomin 0.5s ease $delay-random-posts 1 normal both;
     cursor: pointer;
     margin: 1em;
   }

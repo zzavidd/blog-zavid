@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import classnames from 'classnames';
 import { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
@@ -8,14 +9,10 @@ import { PostDAO, PostStatus, PostType, QueryOrder } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton } from 'src/components/button';
 import CloudImage from 'src/components/image';
-import {
-  Partitioner,
-  Spacer,
-  Toolbar
-} from 'src/components/layout';
+import { Partitioner, Spacer, Toolbar } from 'src/components/layout';
 import { Divider, Paragraph, Title } from 'src/components/text';
 import { isAuthenticated } from 'src/lib/cookies';
-import { LazyLoader, Responsive, Zoomer } from 'src/lib/library';
+import { LazyLoader, Responsive } from 'src/lib/library';
 import { RightSidebar } from 'src/partials/sidebar';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/pages/Reveries.module.scss';
@@ -109,12 +106,13 @@ const Reverie = memo(({ reverie }: ReverieProps) => {
     withWeekday: true
   });
   const link = `/reveries/${reverie.slug}`;
+
+  const classes = classnames(css[`reveries-unit-${theme}`], {
+    [css[`reveries-unit--visible`]]: isInView
+  });
   return (
     <LazyLoader setInView={setInView}>
-      <Zoomer
-        determinant={isInView}
-        duration={400}
-        className={css[`reveries-unit-${theme}`]}>
+      <div className={classes}>
         <Title className={css['reveries-title']}>{reverie.title}</Title>
         <div className={css['reveries-date']}>{datePublished}</div>
         <a href={link}>
@@ -130,7 +128,7 @@ const Reverie = memo(({ reverie }: ReverieProps) => {
           morelink={link}>
           {reverie.content}
         </Paragraph>
-      </Zoomer>
+      </div>
     </LazyLoader>
   );
 });

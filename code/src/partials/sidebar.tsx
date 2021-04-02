@@ -7,7 +7,6 @@ import { PostDAO, PostStatic } from 'classes';
 import { alert } from 'src/components/alert';
 import CloudImage from 'src/components/image';
 import { Title, VanillaLink } from 'src/components/text';
-import { Zoomer } from 'src/lib/library';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/Partials.module.scss';
 
@@ -50,28 +49,20 @@ export const RightSidebar = () => {
 
 const RecentPost = memo(({ post }: RecentPostProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const [isLoaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
-
   const datePublished = zDate.formatDate(post.datePublished as string, {
     withWeekday: true
   });
   const link = `/reveries/${post.slug}`;
+
   return (
     <VanillaLink href={link}>
-      <Zoomer
-        determinant={isLoaded}
-        duration={400}
-        className={css[`recent-post-unit-${theme}`]}>
+      <div className={css[`recent-post-unit-${theme}`]}>
         <RecentPostImage post={post} />
         <Title className={css['recent-post-title']}>{post.title}</Title>
         <div className={css['recent-post-date']}>
           {post.type} | {datePublished}
         </div>
-      </Zoomer>
+      </div>
     </VanillaLink>
   );
 });

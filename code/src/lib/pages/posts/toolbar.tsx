@@ -30,15 +30,10 @@ export default ({ options, handleOptionSelection }: Toolbar) => {
     setFilterVisibility(!isFiltersVisible);
   };
 
-  const state = isInitialState
-    ? 'initial'
-    : isFiltersVisible
-    ? 'visible'
-    : 'hidden';
-  const filterClasses = classnames(
-    css[`post-toolbar__filters`],
-    css[`post-toolbar__filters--${state}`]
-  );
+  const state = isFiltersVisible ? 'visible' : 'hidden';
+  const filterClasses = classnames(css[`post-toolbar__filters`], {
+    [css[`post-toolbar__filters--${state}`]]: !isInitialState
+  });
 
   const TOOLBAR = toolbarWidgets(options, handleOptionSelection);
   return (
@@ -63,11 +58,6 @@ export default ({ options, handleOptionSelection }: Toolbar) => {
               <Icon name={'chevron-up'} />
             </ToolbarToggle>
           </div>
-          {/* <Slider
-            determinant={filtersVisible}
-            duration={300}
-            direction={'up'}
-            style={{ display: filtersVisible ? 'block' : 'none' }}> */}
           <div className={filterClasses}>
             <FieldRow>
               <Field>{TOOLBAR.FILTERS.FIELD}</Field>
@@ -81,7 +71,6 @@ export default ({ options, handleOptionSelection }: Toolbar) => {
               <Field xs={6}>{TOOLBAR.FILTERS.LIMIT}</Field>
             </FieldRow>
           </div>
-          {/* </Slider> */}
         </Toolbar>
       }
     />
