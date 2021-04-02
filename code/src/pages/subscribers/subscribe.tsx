@@ -8,7 +8,6 @@ import { ConfirmButton } from 'src/components/button';
 import { Field, FieldRow, Label, TextInput } from 'src/components/form';
 import { Title } from 'src/components/text';
 import hooks from 'src/lib/hooks';
-import { Fader } from 'src/lib/library';
 import { isValidSubscriber } from 'src/lib/validations';
 import { CREATE_SUBSCRIBER_QUERY } from 'src/private/api/queries/subscriber.queries';
 import css from 'src/styles/pages/Subscribers.module.scss';
@@ -60,10 +59,7 @@ const SubscribeForm = () => {
   const { handleText } = hooks(setSubscriber, subscriber);
 
   return (
-    <Fader
-      determinant={isLoaded}
-      duration={500}
-      className={css['user-subscribe-form']}>
+    <div className={css['user-subscribe-form']}>
       <Title className={css['user-subscribe-title']}>
         Subscribe to the ZAVID Blog
       </Title>
@@ -109,7 +105,7 @@ const SubscribeForm = () => {
           Submit
         </ConfirmButton>
       </FieldRow>
-    </Fader>
+    </div>
   );
 };
 

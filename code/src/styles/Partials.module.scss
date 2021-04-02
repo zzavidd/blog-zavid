@@ -172,9 +172,12 @@
 
 .recent-post-unit {
   @include themer(&, border-color, $dark, $border-color);
+  animation: g-zoomin 0.4s ease 0s 1 normal both;
   border-top: 2px solid;
   padding: 1.2em 0;
   width: 100%;
+
+
 }
 
 .recent-post-title {

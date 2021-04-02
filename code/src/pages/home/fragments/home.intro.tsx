@@ -1,37 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import { Signature } from 'src/components/image';
 import { Paragraph, Title } from 'src/components/text';
-import { Fader } from 'src/lib/library';
 import { redevelopmentDate } from 'src/settings';
 import css from 'src/styles/pages/Home.module.scss';
 
 import { HomeField, HomeRow } from '..';
 
-export default ({
-  content,
-  emailSubCount,
-  tgSubCount
-}: IntroductionProps) => {
-  const [isLoaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, [isLoaded]);
-
+export default ({ content, emailSubCount, tgSubCount }: IntroductionProps) => {
   return (
     <HomeRow className={css['introduction-wrapper']}>
       <HomeField xl={7}>
-        <Fader
-          determinant={isLoaded}
-          duration={800}
-          className={css['introduction-text']}>
-          <Title className={css['introduction-welcome']}>
+        <div className={css['introduction-text']}>
+          <Title className={css['introduction-text__heading']}>
             You&#39;ve arrived. Welcome.
           </Title>
           <Paragraph
-            className={css['introduction-message']}
+            className={css['introduction-text__message']}
             substitutions={{
               redevelopmentDate: zDate.formatDate(redevelopmentDate),
               emailSubCount,
@@ -39,12 +25,10 @@ export default ({
             }}>
             {content}
           </Paragraph>
-        </Fader>
+        </div>
       </HomeField>
       <HomeField xl={5}>
-        <Fader determinant={isLoaded} duration={800} delay={600}>
-          <Signature className={css['introduction-signature']} />
-        </Fader>
+        <Signature className={css['introduction-signature']} />
       </HomeField>
     </HomeRow>
   );

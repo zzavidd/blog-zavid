@@ -15,7 +15,7 @@ export interface ResultEntityDAO {
   image?: string
 }
 
-export interface GenericForm {
+export interface GenericFormProps {
   confirmFunction?: () => void;
   confirmButtonText: string;
   cancelFunction?: () => void;

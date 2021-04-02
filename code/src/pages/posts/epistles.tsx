@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import classnames from 'classnames';
 import { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
 import { RootStateOrAny, useSelector } from 'react-redux';
@@ -12,7 +13,7 @@ import CloudImage from 'src/components/image';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Divider, Paragraph, Title, VanillaLink } from 'src/components/text';
 import { isAuthenticated } from 'src/lib/cookies';
-import { LazyLoader, ScreenWidth, Zoomer } from 'src/lib/library';
+import { LazyLoader, ScreenWidth } from 'src/lib/library';
 import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/pages/Epistles.module.scss';
 
@@ -122,12 +123,12 @@ const Epistle = memo(({ epistle }: EpistleProps) => {
   const link = `/epistles/${epistle.slug}`;
   const title = `#${epistle.typeId}: ${epistle.title}`;
 
+  const classes = classnames(css[`epistles-unit-${theme}`], {
+    [css[`epistles-unit--visible`]]: isInView
+  });
   return (
     <LazyLoader setInView={setInView}>
-      <Zoomer
-        determinant={isInView}
-        duration={400}
-        className={css[`epistles-unit-${theme}`]}>
+      <div className={classes}>
         <VanillaLink href={link}>
           <EpistleImage epistle={epistle} />
           <div className={css['epistles-unit-text']}>
@@ -136,7 +137,7 @@ const Epistle = memo(({ epistle }: EpistleProps) => {
             <EpistleParagraph epistle={epistle} link={link} />
           </div>
         </VanillaLink>
-      </Zoomer>
+      </div>
     </LazyLoader>
   );
 });

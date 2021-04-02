@@ -13,7 +13,7 @@ import {
   cloudinaryBaseUrl,
   validateCloudinaryImage
 } from 'src/components/image';
-import { Icon, Zoomer } from 'src/lib/library';
+import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
 export const FileSelector = (props: FileSelector) => {
@@ -62,7 +62,6 @@ const ChoosePrompt = ({
     const file: Blob = fileRef.current!.files![0];
 
     const reader = new FileReader();
-
     reader.addEventListener(
       'load',
       () => {
@@ -85,10 +84,10 @@ const ChoosePrompt = ({
       }}>
       <input
         type={'file'}
-        style={{ display: 'none' }}
         onChange={previewImage}
         ref={fileRef}
         accept={'image/*'}
+        hidden
       />
       <span>{placeholder}</span>
     </label>
@@ -101,19 +100,33 @@ const ChoiceImage = ({
   imageRef,
   setImage
 }: ChoiceImage) => {
+  const [isInitialState, setIsInitialState] = useState(true);
+  const isImageVisible = stateImage && stateImage !== null;
+
+  useEffect(() => {
+    if (isInitialState && isImageVisible) {
+      setIsInitialState(false);
+    }
+  }, [isImageVisible]);
+
   /** Remove selected image. */
   const removeImage = () => {
     onChange(null);
     setImage!(null);
   };
 
+  const state = isInitialState
+    ? 'initial'
+    : isImageVisible
+    ? 'visible'
+    : 'hidden';
+  const classes = classnames(
+    css['fs-image-wrapper'],
+    css[`fs-image-wrapper--${state}`]
+  );
+
   return (
-    <Zoomer
-      determinant={stateImage !== null}
-      duration={400}
-      style={{
-        display: stateImage ? 'block' : 'none'
-      }}>
+    <div className={classes}>
       <img
         src={stateImage}
         alt={'Image preview...'}
@@ -123,7 +136,7 @@ const ChoiceImage = ({
       <InvisibleButton className={css['fs-image-button']} onClick={removeImage}>
         <Icon name={'times'} />
       </InvisibleButton>
-    </Zoomer>
+    </div>
   );
 };
 

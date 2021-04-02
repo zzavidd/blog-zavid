@@ -17,13 +17,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { Theme } from 'classes';
 import { alert, checkForSetAlerts } from 'src/components/alert';
-import {
-  CookiePrompt,
-  setCookie,
-  readCookie,
-  clearCookie,
-  checkCookiePolicyAccepted
-} from 'src/lib/cookies';
+import { CookiePrompt, readCookie, clearCookie } from 'src/lib/cookies';
 import configureStore, { setTheme, setUser, clearUser } from 'src/lib/reducers';
 import Footer from 'src/partials/footer';
 import Header from 'src/partials/header';
@@ -55,16 +49,13 @@ export default (props: AppProps) => {
 
 /**
  * The root of the ZAVID blog.
- * @param {object} props - The inherited props from the Next App.
- * @param {object} props.Component - The current component in view.
- * @param {object} props.pageProps - The properties for each page.
- * @returns {React.Component} - The full page including the header and footer.
+ * @param props The inherited props from the Next App.
+ * @param props.Component The current component in view.
+ * @param props.pageProps The properties for each page.
+ * @returns The full page including the header and footer.
  */
 const ZAVIDApp = ({ Component, pageProps }: AppProps) => {
   const [isLoaded, setLoaded] = useState(false);
-  const [isCookiePolicyAccepted, setCookieAcceptance] = useState(
-    checkCookiePolicyAccepted()
-  );
   const dispatch = useDispatch();
 
   const theme = useSelector(({ theme }: RootStateOrAny) => {
@@ -96,28 +87,12 @@ const ZAVIDApp = ({ Component, pageProps }: AppProps) => {
     setLoaded(true);
   }, [isLoaded]);
 
-  /**
-   * Show the cookies prompt if the cookie policy has not been accepted.
-   * @returns {React.Component}The cookie prompt component. Null if cookies have been accepted.
-   */
-  const CookiePolicyAlert = () => {
-    if (isCookiePolicyAccepted) return null;
-    return (
-      <CookiePrompt
-        acceptCookies={() => {
-          setCookie('cookiesAccepted', true, 365 * 24);
-          setCookieAcceptance(true);
-        }}
-      />
-    );
-  };
-
   return (
     <>
       <Header />
       <Component {...pageProps} />
       <Footer />
-      <CookiePolicyAlert />
+      <CookiePrompt />
     </>
   );
 };

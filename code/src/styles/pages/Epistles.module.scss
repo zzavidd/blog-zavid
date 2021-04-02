@@ -50,6 +50,10 @@
   margin-bottom: 0.4em;
   overflow: hidden;
   width: 100%;
+
+  &--visible {
+    animation: g-zoomin 0.4s ease 0s 1 normal both;
+  }
 }
 
 .epistles-unit-text {

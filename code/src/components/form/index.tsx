@@ -12,7 +12,6 @@ import {
 } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
-import { Fader, Slider } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
 import { Signature } from '../image';
@@ -41,13 +40,8 @@ export const Form = ({
   onPreviewToggle
 }: FormProps) => {
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
+  const [isInitialState, setIsInitialState] = useState(true);
   const [isConfirmed, setConfirmed] = useState(false);
-
-  const restrictNavigation = (e: Event) => {
-    if (!isConfirmed && process.env.NODE_ENV !== 'development') {
-      e.returnValue = true;
-    }
-  };
 
   useEffect(() => {
     window.addEventListener('beforeunload', restrictNavigation);
@@ -56,13 +50,36 @@ export const Form = ({
     };
   }, [isConfirmed]);
 
+  useEffect(() => {
+    setIsInitialState(false);
+  }, [isPreviewVisible]);
+
+  /**
+   * Prompt for confirmation before leaving the form in production.
+   * @param e The event context.
+   */
+  const restrictNavigation = (e: Event) => {
+    if (!isConfirmed && process.env.NODE_ENV !== 'development') {
+      e.returnValue = true;
+    }
+  };
+
+  const state = isInitialState
+    ? 'initial'
+    : isPreviewVisible
+    ? 'preview-visible'
+    : 'preview-hidden';
+  const previewState = isPreviewVisible ? 'previewOn' : 'previewOff';
+
   const formClasses = classnames(
-    formClassName?.[isPreviewVisible ? 'previewOn' : 'previewOff'],
-    css[isPreviewVisible ? 'form-pv' : 'form']
+    css[`form`],
+    css[`form--${state}`],
+    formClassName?.[previewState]
   );
   const formEditorClasses = classnames(
-    editorClassName?.[isPreviewVisible ? 'previewOn' : 'previewOff'],
-    css[isPreviewVisible ? 'form-editor-pv' : 'form-editor']
+    css[`form-editor`],
+    css[`form-editor--${state}`],
+    editorClassName?.[previewState]
   );
 
   return (
@@ -112,26 +129,38 @@ const FormPreview = ({
   substitutions = {}
 }: FormPreview) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const classes = classnames(className, css[`form-preview-${theme}`]);
+  const [isInitialState, setIsInitialState] = useState(true);
+
+  useEffect(() => {
+    if (isInitialState) {
+      setIsInitialState(false);
+    }
+  }, [isPreviewVisible]);
+
+  const state = isInitialState
+    ? 'initial'
+    : isPreviewVisible
+    ? 'visible'
+    : 'hidden';
+  const classes = classnames(
+    className,
+    css[`form-preview-${theme}`],
+    css[`form-preview--${state}`]
+  );
 
   return (
-    <Slider
-      determinant={isPreviewVisible}
-      duration={300}
-      direction={'right'}
-      className={classes}
-      style={{ display: isPreviewVisible ? 'block' : 'none' }}>
-      <Title className={css['form-preview-title']}>{previewTitle}</Title>
+    <div className={classes}>
+      <Title className={css['form-preview__title']}>{previewTitle}</Title>
       <Paragraph
-        className={css['form-preview-text']}
+        className={css['form-preview__content']}
         substitutions={substitutions}>
         {previewText as string}
       </Paragraph>
       <Signature />
-      <Paragraph className={css['form-preview-text']}>
+      <Paragraph className={css['form-preview__content']}>
         {previewFootnotes}
       </Paragraph>
-    </Slider>
+    </div>
   );
 };
 
@@ -183,17 +212,14 @@ export const DynamicField = (props: DynamicField) => {
   }, [dependency]);
 
   const breakpoints = Object.assign({}, { xs, sm, md, lg, xl });
+  const classes = classnames(css['form-field'], {
+    [css['form-field--hidden']]: !isVisible
+  });
 
   return (
-    <Fader
-      determinant={isVisible}
-      duration={400}
-      hollow={true}
-      style={{ display: isVisible ? 'block' : 'none' }}>
-      <Col {...breakpoints} className={css['form-field']}>
-        {props.children}
-      </Col>
-    </Fader>
+    <Col {...breakpoints} className={classes}>
+      {props.children}
+    </Col>
   );
 };
 

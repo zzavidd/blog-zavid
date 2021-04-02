@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import React, { ReactNode } from 'react';
 
 import { Icon } from 'src/lib/library';
@@ -11,6 +12,11 @@ export const Foldable = ({
   visible,
   children
 }: FoldableProps) => {
+  const state = visible ? 'visible' : 'hidden';
+  const contentClasses = classnames(
+    css['foldable-content'],
+    css[`foldable-content--${state}`]
+  );
   return (
     <>
       <InvisibleButton onClick={switcher} className={css['foldable-toggle']}>
@@ -20,9 +26,7 @@ export const Foldable = ({
         />
         {label}
       </InvisibleButton>
-      <div className={css['foldable-content']} hidden={!visible}>
-        {children}
-      </div>
+      <div className={contentClasses}>{children}</div>
     </>
   );
 };

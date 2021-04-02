@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import { PostDAO } from 'classes';
 import CloudImage, { AspectRatio } from 'src/components/image';
 import { Flexer } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
-import { Icon, Fader, Responsive } from 'src/lib/library';
+import { Icon, Responsive } from 'src/lib/library';
 import css from 'src/styles/pages/Home.module.scss';
 
 export default ({ reverie }: LatestReverieProps) => {
-  const [isLoaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, [isLoaded]);
-
   return (
-    <Fader
-      determinant={isLoaded}
-      duration={800}
-      delay={1200}
-      className={css['latest-reverie']}>
+    <div className={css['latest-reverie']}>
       <Responsive
         defaultView={
           <Flexer>
@@ -39,7 +29,7 @@ export default ({ reverie }: LatestReverieProps) => {
           </>
         }
       />
-    </Fader>
+    </div>
   );
 };
 
@@ -92,10 +82,10 @@ const LatestReverieImage = ({ image }: LatestReverieImageProps) => {
   );
 };
 
-interface LatestReverieProps {
+type LatestReverieProps = {
   reverie: PostDAO;
-}
+};
 
-interface LatestReverieImageProps {
+type LatestReverieImageProps = {
   image: string;
-}
+};

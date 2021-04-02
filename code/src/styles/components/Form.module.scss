@@ -5,37 +5,99 @@
 ////////////////////////////////
 
 .form {
-  display: block;
-}
+  $gtc: repeat(2, 50%);
 
-.form-pv {
-  @include responsive(display, grid, $lg: block);
-  grid-template-columns: repeat(2, 50%);
+  @include g-grid-anim($gtc);
+  animation: g-fadein 0.5s;
+  display: grid;
+  height: 100%;
+  overflow: hidden;
+
+  &--initial {
+    grid-template-columns: $gtc;
+  }
+
+  &--preview-visible {
+    @include responsive(
+      animation,
+      l-grid 0.4s ease 0s 1 normal both,
+      $lg: none
+    );
+  }
+
+  &--preview-hidden {
+    @include responsive(
+      animation,
+      l-grid-reverse 0.4s ease 0s 1 normal both,
+      $lg: none
+    );
+  }
 }
 
 %form-pane {
-  @media (min-width: $break-md) {
+  @media (min-width: $break-lg) {
     height: 100vh;
     overflow-y: scroll;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 
 .form-editor {
-  margin: 0 auto;
-  max-width: 650px;
   padding: 1em;
-}
+  transition: all 0.5s ease;
 
-.form-editor-pv {
-  @extend %form-pane;
-  margin: 0 auto;
-  padding: 1em 2em;
-  width: 100%;
+  &--initial {
+    max-width: 650px;
+  }
+
+  &--preview-visible {
+    @extend %form-pane;
+    @include responsive(
+      animation,
+      l-editor-grid 0.4s ease 0s 1 normal both,
+      $lg: none
+    );
+    width: 100%;
+  }
+
+  &--preview-hidden {
+    @include responsive(
+      animation,
+      l-editor-grid-reverse 0.4s ease 0s 1 normal both,
+      $lg: none
+    );
+    margin: 0 auto;
+    max-width: 650px;
+  }
+
+  @keyframes l-editor-grid {
+    from {
+      width: 100%;
+    }
+
+    to {
+      width: initial;
+    }
+  }
+
+  @keyframes l-editor-grid-reverse {
+    from {
+      width: initial;
+    }
+
+    to {
+      width: 100%;
+    }
+  }
 }
 
 .form-preview {
   @extend %form-pane;
-  @include responsive(display, block, $md: none);
+  @include responsive(display, block, $lg: none);
   @include themer(&, border-color, #000, #fff);
   @include themer(
     $class: &,
@@ -45,13 +107,59 @@
   );
   border-left: 1px solid;
   padding: 2em;
+  position: relative;
+
+  &--initial {
+    height: 0;
+  }
+
+  &--visible {
+    animation: l-slidein 0.4s ease 0s 1 normal both;
+  }
+
+  &--hidden {
+    animation: l-slideout 0.4s ease 0s 1 normal both;
+  }
+
+  @keyframes l-slidein {
+    0% {
+      left: 100vw;
+      visibility: hidden;
+    }
+
+    1% {
+      height: 100vh;
+    }
+
+    100% {
+      left: 0;
+      visibility: visible;
+    }
+  }
+
+  @keyframes l-slideout {
+    0% {
+      left: 0;
+      visibility: visible;
+    }
+
+    99% {
+      left: 100vw;
+      visibility: hidden;
+    }
+
+    100% {
+      height: 0;
+      padding: 0;
+    }
+  }
 }
 
-.form-preview-title {
+.form-preview__title {
   font-size: 2em;
 }
 
-.form-preview-text {
+.form-preview__content {
   font-size: 1.1em;
 }
 
@@ -75,15 +183,21 @@
 }
 
 .form-admin-button {
-  @include responsive(display, block, $md: none);
+  @include responsive(display, block, $lg: none);
 }
 
 .form-field-row {
   margin: 0;
 }
 
+%form-field,
 .form-field {
   @include responsive(padding, 1em, $sm: 0.8em 1em);
+  animation: g-fadein 0.4s;
+}
+
+.form-field--hidden {
+  display: none;
 }
 
 ////////////////////////////////
@@ -171,16 +285,11 @@
 .textarea {
   @include theme-extend(&, '%themed-input');
   overflow: overlay;
-  // scrollbar-width: none;
+  scrollbar-width: none;
 
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
-}
-
-.textarea__preview {
-  @include responsive(font-size, 1.2em, $sm: 1em);
-  white-space: pre-line;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 %select {
@@ -357,6 +466,45 @@
   margin: 0;
 }
 
+.fs-image-wrapper {
+  position: relative;
+
+  &--initial {
+    max-width: 0;
+    overflow: hidden;
+  }
+
+  &--visible {
+    animation: l-zoomin 0.4s ease 0s 1 normal both;
+  }
+
+  &--hidden {
+    animation: l-zoomout 0.4s ease 0s 1 normal both;
+  }
+
+  @keyframes l-zoomin {
+    from {
+      transform: scale(0);
+    }
+  
+    to {
+      max-width: 100vw;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes l-zoomout {
+    from {
+      transform: scale(1);
+    }
+  
+    to {
+      max-width: 0;
+      transform: scale(0);
+    }
+  }
+}
+
 .fs-image {
   height: 100%;
   object-fit: cover;
@@ -398,6 +546,14 @@
 
 .foldable-content {
   margin-top: 1em;
+
+  &--visible {
+    animation: g-expand 0.4s ease 0s 1 normal both;
+  }
+
+  &--hidden {
+    animation: g-collapse 0.4s ease 0s 1 normal both;
+  }
 }
 
 ////////////////////////////////

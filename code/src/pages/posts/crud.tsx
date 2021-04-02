@@ -147,7 +147,6 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
     const postsOfType = domains.filter(({ type, status }) => {
       return selectedType === type && status != PostStatus.DRAFT;
     });
-    console.log(postsOfType);
     const newTypeId = postsOfType.length + 1;
     const typeId = !PostStatic.isDraft(clientPost) ? newTypeId : null;
 
@@ -226,7 +225,6 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
 
   return (
     <PostForm
-      isLoaded={isLoaded}
       post={clientPost}
       domains={domains}
       isCreateOperation={isCreateOperation}
