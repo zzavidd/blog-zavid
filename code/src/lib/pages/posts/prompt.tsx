@@ -35,8 +35,7 @@ export const CuratePrompt = ({
         show={visible}
         onHide={onHide}
         placement={isMedium ? 'top-end' : 'right'}
-        rootClose={true}
-        rootCloseEvent={'mousedown'}>
+        rootClose={true}>
         {({ ...props }) => {
           return (
             <div
