@@ -3,8 +3,6 @@
 IMAGE_NAME=zavid
 CONTAINER_NAME=zavid_blog
 PORT=4000
-REPO_SRC=git@github.com:zzavidd/blog-zavid.git
-LOCAL_REPO=blog-zavid
 
 git pull
 
