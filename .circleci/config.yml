@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: kroniak/ssh-client
     steps:
-      - run: ssh -oStrictHostKeyChecking=no -v $USER@$IP "cd blog-zavid/deploy; chmod +x deploy.sh; ./deploy.sh"
+      - run: ssh -oStrictHostKeyChecking=no -v $USER@$IP "cd blog-zavid/deploy; ./deploy.sh"
 
 workflows:
   version: 2
