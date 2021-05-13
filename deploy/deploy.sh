@@ -6,7 +6,7 @@ PORT=4000
 REPO_SRC=git@github.com:zzavidd/blog-zavid.git
 LOCAL_REPO=blog-zavid
 
-git clone $REPOSRC || (cd $LOCAL_REPO ; git pull)
+git pull
 
 cp ~/config.env .
 cp ~/secrets.env .
