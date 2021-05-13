@@ -5,7 +5,7 @@ CONTAINER_NAME=zavid_blog
 PORT=4000
 
 echo 'Building ZAVID image...'
-docker build -f Dockerfile -t $IMAGE_NAME .
+docker build -f ../Dockerfile -t $IMAGE_NAME .
 
 if [ $? -eq 0 ]; then
   echo 'Successfully built ZAVID image.'
