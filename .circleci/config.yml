@@ -3,9 +3,8 @@ version: 2.1
 jobs:
   deploy:
     docker:
-      - image: alpine/git
+      - image: kroniak/ssh-client
     steps:
-      - checkout
       - run: ssh -oStrictHostKeyChecking=no -v $USER@$IP "./blog-zavid/docker/deploy.sh"
 
 workflows:
