@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: kroniak/ssh-client
     steps:
-      - run: ssh -o StrictHostKeyChecking=no -v $USER@$IP "run-ci.sh"
+      - run: ssh -o StrictHostKeyChecking=no -v $USER@$IP "./run-ci.sh"
 
 workflows:
   version: 2
