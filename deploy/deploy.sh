@@ -4,6 +4,9 @@ IMAGE_NAME=zavid
 CONTAINER_NAME=zavid_blog
 PORT=4000
 
+cp ~/config.env .
+cp ~/secrets.env .
+
 echo 'Building ZAVID image...'
 docker build -f Dockerfile -t $IMAGE_NAME .
 

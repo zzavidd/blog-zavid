@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  pull-and-build:
+  deploy:
     docker:
       - image: arvindr226/alpine-ssh
     steps:
@@ -12,7 +12,7 @@ workflows:
   version: 2
   build-project:
     jobs:
-      - pull-and-build:
+      - deploy:
           filters:
             branches:
               only:
