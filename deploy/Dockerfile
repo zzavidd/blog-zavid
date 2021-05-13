@@ -12,7 +12,8 @@ WORKDIR /var/www/zavid
 
 COPY ./config.env /var/www/zavid/
 COPY ./.env.local /var/www/zavid/
-COPY ../code/package*.json /var/www/zavid/
+COPY ../code/package.json /var/www/zavid/
+COPY ../code/package-lock.json /var/www/zavid/
 
 RUN npm ci
 
