@@ -42,7 +42,7 @@ router.get('/admin/pages/add', function (req, res) {
 
 router.get('/admin/pages/edit/:id', async function (req, res) {
   const id = parseInt(req.params.id);
-  const page = await PageService.getSinglePage({id});
+  const page = await PageService.getSinglePage({ id });
   return server.render(req, res, '/pages/crud', {
     title: `Edit Page`,
     operation: Operation.UPDATE,

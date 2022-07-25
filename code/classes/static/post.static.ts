@@ -50,7 +50,8 @@ export class PostStatic {
   }
 
   static getContentType(type: PostType): ContentType {
-    const isProse = !type || type === PostType.REVERIE || type === PostType.PAGE;
+    const isProse =
+      !type || type === PostType.REVERIE || type === PostType.PAGE;
     return isProse ? ContentType.PROSE : ContentType.POETRY;
   }
 

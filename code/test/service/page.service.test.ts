@@ -42,10 +42,7 @@ describe('Service Tests: Page', function () {
         const pageForUpdate = new PageBuilder().random().build();
 
         const createdPage = await createPage(pageToSubmit);
-        const updatedPage = await updatePage(
-          createdPage.id,
-          pageForUpdate
-        );
+        const updatedPage = await updatePage(createdPage.id, pageForUpdate);
 
         comparePages(pageForUpdate, updatedPage);
         assert.strictEqual(createdPage.id, updatedPage.id!);

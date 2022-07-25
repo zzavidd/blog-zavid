@@ -21,5 +21,5 @@ export async function ingestSubscribers() {
   }
 
   await Promise.all(promises);
-  console.info("Finished ingesting subscribers.");
+  console.info('Finished ingesting subscribers.');
 }

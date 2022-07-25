@@ -10,7 +10,8 @@ export const accounts = {
 };
 
 /** The base URL for Cloudinary media. */
-export const cloudinaryBaseUrl = 'https://res.cloudinary.com/zavid/image/upload';
+export const cloudinaryBaseUrl =
+  'https://res.cloudinary.com/zavid/image/upload';
 
 /** The copyright declaration. */
 export const copyright = `\u00A9 ${new Date().getFullYear()} ZAVID`;
@@ -22,7 +23,9 @@ export const creationDate = new Date(2017, 8, 2);
 export const redevelopmentDate = new Date(2020, 8, 21);
 
 /** Domain to use dependent on environment. */
-export const domain = dev ? 'http://localhost:4000' : 'https://www.zavidegbue.com';
+export const domain = dev
+  ? 'http://localhost:4000'
+  : 'https://www.zavidegbue.com';
 
 /** The website title. */
 export const siteTitle = 'ZAVID';

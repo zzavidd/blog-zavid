@@ -2,7 +2,13 @@ import Knex from 'knex';
 
 import { MutationBuilder, QueryBuilder } from './super';
 
-import { PostDAO, PostStatic, PostStatus, PostType, QueryOrder } from '../../index';
+import {
+  PostDAO,
+  PostStatic,
+  PostStatus,
+  PostType,
+  QueryOrder
+} from '../../index';
 
 const TABLE_NAME = 'posts';
 const columns = [
@@ -100,9 +106,9 @@ export class PostMutationBuilder extends MutationBuilder<PostDAO> {
 export type PostTypeFilters = {
   include?: PostType[];
   exclude?: PostType[];
-}
+};
 
 export type PostStatusFilters = {
   include?: PostStatus[];
   exclude?: PostStatus[];
-}
+};
