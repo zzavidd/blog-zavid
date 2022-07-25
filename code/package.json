@@ -8,17 +8,14 @@
     "check:test": "tsc --project ./test/tsconfig.test.json",
     "dev": "nodemon",
     "manual": "ts-node --project test/tsconfig.test.json test/manual",
-    "preprod": "tsc --project tsconfig.override.json",
-    "prod": "NODE_ENV=production node src/server.js",
+    "prod": "tsc --project tsconfig.override.json && NODE_ENV=production node src/server.js",
     "ingestion": "ts-node --project test/tsconfig.test.json test/ingestion",
     "test": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/suite.ts",
     "test:unit": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/unit/**/*.test.ts",
     "test:service": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/service/**/*.test.ts",
-    "test:ci": "npm run test -- --staging --reporter mocha-junit-reporter",
+    "test:ci": "yarn run test -- --staging --reporter mocha-junit-reporter",
     "lint": "eslint --ignore-path ../.gitignore --ext .ts,.tsx src/",
-    "prettify": "prettier --ignore-path ../../.gitignore --write \"**/**/*.ts\"",
-    "update:zm": "npm i zavid-modules@latest",
-    "update:config": "npm i -D @zzavidd/eslint-config@latest @zzavidd/prettier-config@latest @zzavidd/stylelint-config@latest"
+    "prettify": "prettier --ignore-path ../../.gitignore --write \"**/**/*.ts\""
   },
   "dependencies": {
     "@aarnila/react-instagram-embed": "^2.0.2",

@@ -15,11 +15,11 @@ COPY ./deploy/.env.local /var/www/zavid/
 COPY ./code/package.json /var/www/zavid/
 COPY ./code/package-lock.json /var/www/zavid/
 
-RUN npm ci
+RUN yarn install
 
 COPY ./code /var/www/zavid
 
-RUN npm run build:ci
+RUN yarn run build:ci
 
 EXPOSE 4000
 
