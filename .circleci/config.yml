@@ -69,7 +69,7 @@ jobs:
           command: yarn test
           working_directory: ./code/test
           no_output_timeout: 2m
-  deploy_dev:
+  deploy_staging:
     executor: ssh
     steps:
       - transfer_scripts:
@@ -85,8 +85,8 @@ workflows:
     jobs:
       # - inspect
       # - test
-      - deploy_dev:
-      # - deploy_dev:
+      - deploy_staging
+      # - deploy_staging:
       #     requires:
       #       - inspect
       #       - test
