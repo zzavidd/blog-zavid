@@ -69,8 +69,8 @@ passport.use(
   )
 );
 
-passport.serializeUser(function (user: AuthenticatedUser, done) {
-  done(null, user.id);
+passport.serializeUser((user, done) => {
+  done(null, (user as AuthenticatedUser).id);
 });
 
 passport.deserializeUser(function (id: number, done) {
@@ -96,9 +96,10 @@ router.get(
 router.get('/logout', function (req, res) {
   if (!req.session) return res.redirect('/');
   req.session.destroy(() => {
-    req.logout();
-    res.cookie('justDeauthenticated', true, authCookieOptions);
-    res.redirect('/');
+    req.logOut(() => {
+      res.cookie('justDeauthenticated', true, authCookieOptions);
+      res.redirect('/');
+    });
   });
 });
 

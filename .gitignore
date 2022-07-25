@@ -4,3 +4,6 @@ config.env
 sessions/
 dist/
 .env.local
+
+**/.yarn/*
+!**/.yarn/releases

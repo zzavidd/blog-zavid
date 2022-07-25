@@ -152,7 +152,7 @@ const prepareEmail = async <T extends GenericDAO>(
           return isSubscribed;
         });
   } catch (err) {
-    debug(err);
+    debug(err as Error);
   }
 
   return new Promise((resolve, reject) => {

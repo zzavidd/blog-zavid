@@ -201,7 +201,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       });
       returnToPostAdmin();
     } catch (err) {
-      reportError(err);
+      reportError(err as Error);
     }
   };
 
@@ -219,7 +219,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       });
       returnAfterUpdate(clientPost);
     } catch (err) {
-      reportError(err);
+      reportError(err as Error);
     }
   };
 

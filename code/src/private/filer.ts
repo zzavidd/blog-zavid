@@ -205,7 +205,7 @@ async function generateFilename(post: PostDAO, slug: string) {
         `${postDomain.title!} ${post.title}`
       );
     } catch (err) {
-      debug(err);
+      debug(err as Error);
     }
   } else {
     const number = post.typeId?.toString().padStart(3, '0');

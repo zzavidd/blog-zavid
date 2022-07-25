@@ -99,7 +99,7 @@ const DiaryCrud = ({
       });
       returnToDiaryAdmin();
     } catch (err) {
-      return reportError(err);
+      return reportError(err as Error);
     }
   };
 
@@ -118,7 +118,7 @@ const DiaryCrud = ({
       });
       returnAfterUpdate(clientDiaryEntry.entryNumber!);
     } catch (err) {
-      return reportError(err);
+      return reportError(err as Error);
     }
   };
 

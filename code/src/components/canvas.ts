@@ -165,7 +165,7 @@ export function createCanvasFromContent(
       // Marshal data source to image element.
       canvas.toBlob((blob) => {
         const image = new Image();
-        image.src = URL.createObjectURL(blob);
+        image.src = URL.createObjectURL(blob!);
         image.onload = () => {
           setImageSource(image.src);
         };
