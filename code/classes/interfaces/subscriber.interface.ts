@@ -1,4 +1,4 @@
-import { GenericDAO } from "./super";
+import { GenericDAO } from './super';
 
 export interface SubscriberDAO extends GenericDAO {
   email?: string;
@@ -9,7 +9,7 @@ export interface SubscriberDAO extends GenericDAO {
 }
 
 export interface SubscriptionsMapping {
-  [type: string]: boolean
+  [type: string]: boolean;
 }
 
 export enum SubscriptionType {

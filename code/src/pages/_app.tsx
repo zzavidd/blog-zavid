@@ -7,7 +7,7 @@ import 'bootstrap/scss/bootstrap.scss';
 import Cookies from 'js-cookie';
 import App, { AppContext, AppProps } from 'next/app';
 import React, { useEffect, useState } from 'react';
-import ReactGA from 'react-ga';
+import * as ReactGA from 'react-ga';
 import {
   Provider,
   useSelector,

@@ -16,7 +16,7 @@ export class PageQueryBuilder extends QueryBuilder<PageDAO> {
     return this;
   }
 
-  whereIsEmbed(isEmbed: boolean): PageQueryBuilder{
+  whereIsEmbed(isEmbed: boolean): PageQueryBuilder {
     this.query.where('isEmbed', isEmbed);
     return this;
   }

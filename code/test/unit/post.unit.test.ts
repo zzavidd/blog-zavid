@@ -118,7 +118,10 @@ describe('Unit Tests: Post', function () {
   });
 });
 
-const isArrayOfLength = (array: PostImage[] | PostContentImages, number: number): void => {
+const isArrayOfLength = (
+  array: PostImage[] | PostContentImages,
+  number: number
+): void => {
   assert.isArray(array);
   assert.lengthOf(array, number);
 };

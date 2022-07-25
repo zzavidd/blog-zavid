@@ -61,10 +61,8 @@ export const createDiaryEntry = async ({
 }: CreateDiaryEntryOptions): Promise<DiaryDAO> => {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
-  
-  const { shouldSendEmail, shouldSendTelegram } = getPermissions(
-    isPublish
-  );
+
+  const { shouldSendEmail, shouldSendTelegram } = getPermissions(isPublish);
 
   return TryWrapper(async () => {
     const [[id]] = await Promise.all([
@@ -91,9 +89,7 @@ export const updateDiaryEntry = async ({
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
 
-  const { shouldSendEmail, shouldSendTelegram } = getPermissions(
-    isPublish
-  );
+  const { shouldSendEmail, shouldSendTelegram } = getPermissions(isPublish);
 
   return TryWrapper(async () => {
     await Promise.all([

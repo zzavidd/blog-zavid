@@ -35,4 +35,4 @@ async.map(
   }
 );
 
-type CallbackError = Error | null | undefined
+type CallbackError = Error | null | undefined;

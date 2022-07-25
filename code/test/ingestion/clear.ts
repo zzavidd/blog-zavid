@@ -24,5 +24,5 @@ export async function clearAllData() {
     fetch(CLEAR_SUBSCRIBERS_QUERY),
     cloudinary.api.delete_resources_by_prefix('test')
   ]);
-  console.info("Successfully cleared all data from database.");
+  console.info('Successfully cleared all data from database.');
 }

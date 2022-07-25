@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import { getServer } from './singleton';
 
@@ -16,8 +16,7 @@ export const debug = (err: Error) => {
 export const renderErrorPage = (
   err: CustomError,
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   console.error(err.toString());
   const errorPage = err.status === 404 ? '/404' : '/_error';

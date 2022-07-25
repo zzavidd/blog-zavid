@@ -90,4 +90,4 @@ export const compareDiaryEntries = (
 
 type MutateDiaryOptions = {
   extraVariables?: Record<string, unknown>;
-}
+};
