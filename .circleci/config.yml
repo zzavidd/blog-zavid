@@ -1,9 +1,9 @@
 version: 2.1
 
 executors:
-  ssh:
+  node:
     docker:
-      - image: arvindr226/alpine-ssh
+      - image: circleci/node:16.3
 
 commands:
   install_dependencies:
