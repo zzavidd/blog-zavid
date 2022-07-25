@@ -39,20 +39,16 @@ export function notifyNewDiaryEntry(entry: DiaryDAO): Promise<void> {
  */
 async function notify(content: string): Promise<void> {
   try {
-    const value = await bot.sendMessage(
-      CHANNEL!,
-      content,
-      {
-        parse_mode: 'Markdown'
-      }
-    );
+    const value = await bot.sendMessage(CHANNEL!, content, {
+      parse_mode: 'Markdown'
+    });
     const { title, type } = value.chat;
     const timestamp = getTimestamp();
     console.info(
       `(${timestamp}) Sent Telegram message to "${title} ${type}".`.green
     );
   } catch (error) {
-    const description: string = error.response.body.description;
+    const description: string = (error as any).response.body.description;
     const timestamp = getTimestamp();
     console.error(
       `(${timestamp}) Attempt to send Telegram message failed with response: "${description}."`
@@ -60,9 +56,9 @@ async function notify(content: string): Promise<void> {
     );
   }
 }
- /**
-  * Get the number of subscribers to the Telegram channel.
-  */
+/**
+ * Get the number of subscribers to the Telegram channel.
+ */
 export async function getSubscriberCount(): Promise<number> {
   return await bot.getChatMembersCount(CHANNEL);
 }

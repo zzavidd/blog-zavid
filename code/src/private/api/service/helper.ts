@@ -17,7 +17,7 @@ export const TryWrapper = <T extends unknown>(
   try {
     result = consumer();
   } catch (err) {
-    debug(err);
+    debug(err as Error);
   }
 
   return result as Promise<T>;
