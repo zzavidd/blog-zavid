@@ -3,9 +3,8 @@ FROM node:16.13.1-alpine
 ARG PORT
 ARG WORKDIR
 
-WORKDIR /var/www/$WORKDIR
-COPY ./code/package.json .
-COPY ./code/yarn.lock .
+WORKDIR /var/www/$WORKDIR/code
+COPY ./code/package.json ./code/yarn.lock ./
 
 RUN yarn install
 
