@@ -1,6 +1,6 @@
 **/.next
 **/.git
 **/node_modules
-**/deploy
+**/deploy/scripts
 **/.yarn/cache
 **/test
