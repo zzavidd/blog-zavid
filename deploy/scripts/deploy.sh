@@ -5,7 +5,7 @@ source "$(dirname -- "$0")"/utils.sh
 
 BRANCH=$1
 WORKDIR=$2
-NGINX_CONF_SRC=$3
+NGINX_CONF_SRC="/var/www/${WORKDIR}/deploy/$3"
 NGINX_CONF_DEST="/etc/nginx/sites-available/${WORKDIR}egbue.com"
 
 ## Update the project
@@ -16,7 +16,7 @@ git pull origin "$BRANCH"
 
 ## Update nginx.conf
 function copyNginxFiles {
-  cp "./deploy/${NGINX_CONF_SRC}" "${NGINX_CONF_DEST}"
+  cp "${NGINX_CONF_SRC}" "${NGINX_CONF_DEST}"
   ln -sf "${NGINX_CONF_DEST}" /etc/nginx/sites-enabled/
   sudo nginx -t
   sudo service nginx restart
@@ -26,7 +26,7 @@ if [ -e "$NGINX_CONF_DEST" ]; then
   HASH_SRC=$(md5sum "${NGINX_CONF_SRC}" | awk '{print $1;}')
   HASH_DEST=$(md5sum "${NGINX_CONF_DEST}" | awk '{print $1;}')
 
-  if [ "$HASH_SRC" -ne "$HASH_DEST" ]; then
+  if [ "$HASH_SRC" != "$HASH_DEST" ]; then
     warn 'Nginx configuration has changed. Copying files...'
     copyNginxFiles
   else
