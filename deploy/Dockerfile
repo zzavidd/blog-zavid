@@ -9,7 +9,7 @@ COPY ./code/yarn.lock .
 
 RUN yarn install
 
-COPY ./code .
+COPY ./code ./
 
 RUN yarn run build:ci
 
