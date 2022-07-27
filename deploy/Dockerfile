@@ -4,16 +4,16 @@ ARG PORT
 ARG WORKDIR
 
 WORKDIR /var/www/$WORKDIR/code
-COPY ./code/package.json ./code/yarn.lock ./
+COPY ./code/.yarn ./code/package.json ./code/yarn.lock ./
 
 RUN yarn install
 
 COPY ./code ./
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
 
-# RUN yarn run build
+RUN yarn run build
 
-# EXPOSE $PORT
+EXPOSE $PORT
 
-# CMD ["yarn", "run", "prod"]
+CMD ["yarn", "run", "prod"]
