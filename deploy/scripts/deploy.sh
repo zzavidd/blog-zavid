@@ -16,8 +16,8 @@ git pull origin "$BRANCH"
 
 ## Update nginx.conf
 function copyNginxFiles {
-  sudo cp "./deploy/${NGINX_CONF_SRC}" "${NGINX_CONF_DEST}"
-  sudo ln -sf "${NGINX_CONF_DEST}" /etc/nginx/sites-enabled/
+  cp "./deploy/${NGINX_CONF_SRC}" "${NGINX_CONF_DEST}"
+  ln -sf "${NGINX_CONF_DEST}" /etc/nginx/sites-enabled/
   sudo nginx -t
   sudo service nginx restart
 }
