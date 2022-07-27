@@ -5,7 +5,7 @@ import { print } from 'graphql/language/printer';
 import 'mocha';
 import nodeFetch from 'node-fetch';
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './.env' });
 
 // Start the server when in staging environment.
 if (process.argv.includes('--staging')) {

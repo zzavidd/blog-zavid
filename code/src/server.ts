@@ -13,7 +13,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 const server = next({ dev: isDev });
 const handle = server.getRequestHandler();
 const port = parseInt(process.env.PORT!, 10) || 4000;
-const dotenv = Dotenv.config({ path: './config.env' });
+const dotenv = Dotenv.config({ path: './.env' });
 const isStaging = process.argv.includes('--staging');
 const useProdDataInDev = process.argv.includes('--prod');
 

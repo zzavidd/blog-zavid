@@ -4,7 +4,7 @@ set -e
 
 file=secrets.env
 
-# Retrieve token from config.env
+# Retrieve token from .env
 token=$(grep TELEGRAM_JENKINS_TOKEN $file | cut -d '=' -f 2-)
 chat_id=$(grep TELEGRAM_JENKINS_CHAT_ID $file | cut -d '=' -f 2-)
 
