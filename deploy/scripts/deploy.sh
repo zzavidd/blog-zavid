@@ -16,10 +16,18 @@ git pull origin "$BRANCH"
 
 ## Update nginx.conf
 function copyNginxFiles {
+  cp "${NGINX_CONF_DEST}" "${NGINX_CONF_DEST}-copy"
   cp "${NGINX_CONF_SRC}" "${NGINX_CONF_DEST}"
   ln -sf "${NGINX_CONF_DEST}" /etc/nginx/sites-enabled/
-  sudo nginx -t
-  sudo service nginx restart
+
+  if [ "(sudo nginx -t)" ]; then
+    success 'Restarting Nginx...'
+    sudo service nginx restart
+    rm -rf "${NGINX_CONF_DEST}-copy"
+  else
+    warn 'Reverting copied configuration...'
+    mv "${NGINX_CONF_DEST}-copy" "${NGINX_CONF_DEST}"
+  fi
 }
 
 if [ -e "${NGINX_CONF_DEST}" ]; then
