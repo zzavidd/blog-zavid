@@ -11,4 +11,4 @@ NGINX_CONF=nginx.conf
 
 ## Run the docker script from project
 cd "/var/www/${WORKDIR}"
-./docker/scripts/build-run.sh
+./deploy/scripts/build-run.sh

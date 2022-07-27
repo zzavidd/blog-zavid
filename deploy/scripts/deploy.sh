@@ -7,7 +7,7 @@ BRANCH=$1
 WORKDIR=$2
 NGINX_CONF_SRC=$3
 
-## Update the Ziventi project
+## Update the project
 info 'Checking out project...'
 cd "/var/www/${WORKDIR}"
 git checkout "$BRANCH"
@@ -15,7 +15,7 @@ git pull origin "$BRANCH"
 
 ## Update nginx.conf
 function copyNginxFiles {
-  cp "./docker/${NGINX_CONF_SRC}" "${NGINX_CONF_DEST}"
+  cp "./deploy/${NGINX_CONF_SRC}" "${NGINX_CONF_DEST}"
   ln -sf "${NGINX_CONF_DEST}" /etc/nginx/sites-enabled/
   sudo nginx -t
   sudo service nginx restart

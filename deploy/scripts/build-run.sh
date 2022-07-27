@@ -23,7 +23,7 @@ fi
 
 info "Building '$IMAGE_NAME' image..."
 if
-  docker build -f "$CWD/../Dockerfile.node" \
+  docker build -f "$CWD/../Dockerfile" \
     -t $IMAGE_NAME \
     --build-arg NODE_ENV="$NODE_ENV" \
     --build-arg PORT="$PORT" \
