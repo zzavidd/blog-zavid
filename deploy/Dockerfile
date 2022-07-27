@@ -14,7 +14,7 @@ RUN yarn install
 
 COPY ./code ./
 
-
+RUN yarn install
 RUN yarn run build
 
 EXPOSE $PORT
