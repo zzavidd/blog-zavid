@@ -3,7 +3,7 @@ FROM node:16.13.1-alpine
 ARG PORT
 ARG WORKDIR
 
-WORKDIR $WORKDIR
+WORKDIR /var/www/$WORKDIR
 # COPY ./deploy/config.env $WORKDIR
 # COPY ./deploy/.env.local $WORKDIR
 COPY ./code/package.json $WORKDIR
