@@ -10,8 +10,10 @@ RUN yarn install
 
 COPY ./code ./
 
-RUN yarn run build
+ENTRYPOINT ["tail", "-f", "/dev/null"]
 
-EXPOSE $PORT
+# RUN yarn run build
 
-CMD ["yarn", "run", "prod"]
+# EXPOSE $PORT
+
+# CMD ["yarn", "run", "prod"]
