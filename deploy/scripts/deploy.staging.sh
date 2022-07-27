@@ -5,7 +5,7 @@ set -e
 SCRIPTS_DIR="$(dirname -- "$0")"
 
 # TODO: Return to "main"
-BRANCH=staging
+BRANCH=main
 WORKDIR=dev.zavid
 NGINX_CONF=nginx.dev.conf
 "$SCRIPTS_DIR"/deploy.sh "${BRANCH}" "${WORKDIR}" "${NGINX_CONF}"

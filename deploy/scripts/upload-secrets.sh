@@ -8,7 +8,7 @@ source ./utils.sh
 CODE_DIR="../../code"
 
 # TODO: Add prod "zavid"
-for domain in dev.zavid; do
+for domain in zavid dev.zavid; do
   scp \
     "$CODE_DIR/.env" \
     "$CODE_DIR/.env.local" \

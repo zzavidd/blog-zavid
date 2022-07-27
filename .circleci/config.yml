@@ -83,17 +83,16 @@ jobs:
 workflows:
   build-inspect-test:
     jobs:
-      # - inspect
-      # - test
-      - deploy_staging
-      # - deploy_staging:
-      #     requires:
-      #       - inspect
-      #       - test
-      # filters:
-      #   branches:
-      #     only:
-      #       - main
+      - inspect
+      - test
+      - deploy_staging:
+          requires:
+            - inspect
+            - test
+          filters:
+            branches:
+              only:
+                - main
       # - deploy_prod:
       #     requires:
       #       - inspect
