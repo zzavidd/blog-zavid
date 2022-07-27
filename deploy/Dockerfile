@@ -10,7 +10,7 @@ RUN yarn install
 
 COPY ./code ./
 
-RUN yarn run build:ci
+RUN yarn run build
 
 EXPOSE $PORT
 
