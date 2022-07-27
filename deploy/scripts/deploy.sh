@@ -21,7 +21,7 @@ function copyNginxFiles {
   sudo service nginx restart
 }
 
-NGINX_CONF_DEST="/etc/nginx/sites-available/${WORKDIR}.co.uk.conf"
+NGINX_CONF_DEST="/etc/nginx/sites-available/${WORKDIR}egbue.com"
 if [ -e "$NGINX_CONF_DEST" ]; then
   HASH_SRC=$(md5sum "${NGINX_CONF_SRC}" | awk '{print $1;}')
   HASH_DEST=$(md5sum "${NGINX_CONF_DEST}" | awk '{print $1;}')
