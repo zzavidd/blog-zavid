@@ -4,12 +4,12 @@ ARG PORT
 ARG WORKDIR
 
 WORKDIR /var/www/$WORKDIR
-COPY ./code/package.json $WORKDIR
-COPY ./code/package-lock.json $WORKDIR
+COPY ./code/package.json .
+COPY ./code/yarn.lock .
 
 RUN yarn install
 
-COPY ./code /var/www/zavid
+COPY ./code .
 
 RUN yarn run build:ci
 
