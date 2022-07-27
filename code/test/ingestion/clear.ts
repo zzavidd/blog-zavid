@@ -8,7 +8,7 @@ import { CLEAR_SUBSCRIBERS_QUERY } from '../../src/private/api/queries/subscribe
 
 const cloudinary = Cloudinary.v2;
 
-dotenv.config({ path: '../../config.env' });
+dotenv.config({ path: '../../.env' });
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
