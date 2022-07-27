@@ -22,17 +22,17 @@ function copyNginxFiles {
   sudo service nginx restart
 }
 
-# if [ -e "$NGINX_CONF_DEST" ]; then
-#   HASH_SRC=$(md5sum "${NGINX_CONF_SRC}" | awk '{print $1;}')
-#   HASH_DEST=$(md5sum "${NGINX_CONF_DEST}" | awk '{print $1;}')
+if [ -e "$NGINX_CONF_DEST" ]; then
+  HASH_SRC=$(md5sum "${NGINX_CONF_SRC}" | awk '{print $1;}')
+  HASH_DEST=$(md5sum "${NGINX_CONF_DEST}" | awk '{print $1;}')
 
-#   if [ "$HASH_SRC" -ne "$HASH_DEST" ]; then
-#     warn 'Nginx configuration has changed. Copying files...'
-#     copyNginxFiles
-#   else
-#     success 'No changes to nginx configuration. Skipping copy.'
-#   fi
-# else
-#   warn 'No nginx configuration exists at destination. Copying files...'
-#   copyNginxFiles
-# fi
+  if [ "$HASH_SRC" -ne "$HASH_DEST" ]; then
+    warn 'Nginx configuration has changed. Copying files...'
+    copyNginxFiles
+  else
+    success 'No changes to nginx configuration. Skipping copy.'
+  fi
+else
+  warn 'No nginx configuration exists at destination. Copying files...'
+  copyNginxFiles
+fi
