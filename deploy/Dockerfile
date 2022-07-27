@@ -7,15 +7,15 @@ WORKDIR /var/www/$WORKDIR/code
 COPY ./code/.yarn ./.yarn/
 COPY ./code/package.json ./code/yarn.lock ./
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
 
-# RUN yarn install
+RUN yarn install
 
-# COPY ./code ./
+COPY ./code ./
 
 
-# RUN yarn run build
+RUN yarn run build
 
-# EXPOSE $PORT
+EXPOSE $PORT
 
-# CMD ["yarn", "run", "prod"]
+CMD ["yarn", "run", "prod"]
