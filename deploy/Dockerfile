@@ -4,7 +4,7 @@ ARG PORT
 ARG WORKDIR
 
 WORKDIR /var/www/$WORKDIR/code
-COPY ./code/.yarn ./code/package.json ./code/yarn.lock ./
+COPY ./code/.yarn/ ./code/package.json ./code/yarn.lock ./
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
 
