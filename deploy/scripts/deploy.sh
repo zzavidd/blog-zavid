@@ -19,7 +19,7 @@ function copyNginxFiles {
   cp "${NGINX_CONF_SRC}" "${NGINX_CONF_DEST}"
   ln -sf "${NGINX_CONF_DEST}" /etc/nginx/sites-enabled/
 
-  if [ "(sudo nginx -t)" ]; then
+  if sudo nginx -t; then
     success 'Restarting Nginx...'
     sudo service nginx restart
     rm -rf "${NGINX_CONF_DEST}-copy"
