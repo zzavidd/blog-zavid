@@ -16,7 +16,6 @@ git pull origin "$BRANCH"
 
 ## Update nginx.conf
 function copyNginxFiles {
-  cp "${NGINX_CONF_DEST}" "${NGINX_CONF_DEST}-copy"
   cp "${NGINX_CONF_SRC}" "${NGINX_CONF_DEST}"
   ln -sf "${NGINX_CONF_DEST}" /etc/nginx/sites-enabled/
 
@@ -36,6 +35,7 @@ if [ -e "${NGINX_CONF_DEST}" ]; then
 
   if [ "$HASH_SRC" != "$HASH_DEST" ]; then
     warn 'Nginx configuration has changed. Copying files...'
+    cp "${NGINX_CONF_DEST}" "${NGINX_CONF_DEST}-copy"
     copyNginxFiles
   else
     success 'No changes to nginx configuration. Skipping copy.'
