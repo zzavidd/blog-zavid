@@ -74,17 +74,25 @@ jobs:
     steps:
       - transfer_scripts:
           mode: staging
-  # deploy_prod:
-  #   executor: ssh
-  #   steps:
-  #     - transfer_scripts:
-  #         mode: production
+  deploy_prod:
+    executor: ssh
+    steps:
+      - transfer_scripts:
+          mode: production
 
 workflows:
-  build-inspect-test:
+  inspect_test_deploy:
     jobs:
-      - inspect
-      - test
+      - inspect:
+          filters:
+            branches:
+              ignore:
+                - production
+      - test:
+          filters:
+            branches:
+              ignore:
+                - production
       - deploy_staging:
           requires:
             - inspect
@@ -93,11 +101,8 @@ workflows:
             branches:
               only:
                 - main
-      # - deploy_prod:
-      #     requires:
-      #       - inspect
-      #       - test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
+      - deploy_prod:
+          filters:
+            branches:
+              only:
+                - production

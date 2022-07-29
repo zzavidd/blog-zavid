@@ -6,17 +6,17 @@ CWD="$(dirname -- "$0")"
 source "$CWD"/utils.sh
 
 if [ "$1" == "dev" ]; then
-  warn "Building for development."
+  warn "Building for staging."
   IMAGE_NAME='zavid-dev'
-  CONTAINER_NAME='zavid-dev-blog'
+  CONTAINER_NAME='zavid_blog_staging'
   PORT='3333'
   WORKDIR='dev.zavid'
   NODE_ENV='staging'
 else
   warn 'Building for production.'
   IMAGE_NAME='zavid'
-  CONTAINER_NAME='zavid-blog'
-  PORT='3000'
+  CONTAINER_NAME='zavid_blog'
+  PORT='4000'
   WORKDIR='zavid'
   NODE_ENV='production'
 fi
@@ -37,7 +37,7 @@ else
   exit 1
 fi
 
-if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+if docker ps -q -f name=$CONTAINER_NAME; then
   warn "Destroying $CONTAINER_NAME container..."
   docker stop $CONTAINER_NAME >/dev/null
   docker rm $CONTAINER_NAME >/dev/null
