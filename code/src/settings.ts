@@ -23,7 +23,7 @@ export const redevelopmentDate = new Date(2020, 8, 21);
 /** Domain to use dependent on environment. */
 export const domain =
   process.env.NODE_ENV === 'production'
-    ? 'https://zavidegbue.com'
+    ? 'https://www.zavidegbue.com'
     : process.env.NODE_ENV === 'staging' as 'test'
     ? 'https://dev.zavidegbue.com'
     : 'http://localhost:4000';

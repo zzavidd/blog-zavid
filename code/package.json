@@ -1,5 +1,9 @@
 {
+  "name": "zavid-blog",
   "packageManager": "yarn@3.2.2",
+  "stylelint": {
+    "extends": "@zzavidd/stylelint-config"
+  },
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
     "build": "next build",
@@ -97,9 +101,9 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
-    "@zzavidd/eslint-config": "^0.2.2",
-    "@zzavidd/prettier-config": "^0.2.0",
-    "@zzavidd/stylelint-config": "^0.2.4",
+    "@zzavidd/eslint-config": "^1.4.2",
+    "@zzavidd/prettier-config": "^1.4.2",
+    "@zzavidd/stylelint-config": "^1.4.2",
     "apollo-fetch": "^0.7.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
