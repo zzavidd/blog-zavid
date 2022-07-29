@@ -18,7 +18,8 @@
     "test:service": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/service/**/*.test.ts",
     "eslint": "eslint --ext .ts,.tsx src/ --cache",
     "prettier:check": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
-    "prettier:write": "yarn run prettier:check --write"
+    "prettier:write": "yarn run prettier:check --write",
+    "prune": "ts-prune -p ./tsconfig.json -s **/*.ts"
   },
   "dependencies": {
     "@aarnila/react-instagram-embed": "^2.0.2",
@@ -126,6 +127,7 @@
     "ts-loader": "^8.0.7",
     "ts-mocha": "^7.0.0",
     "ts-node": "^10.9.1",
+    "ts-prune": "^0.10.3",
     "typescript": "^4.7.4",
     "webpack": "^4.44.0"
   }
