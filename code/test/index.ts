@@ -8,7 +8,7 @@ import nodeFetch from 'node-fetch';
 dotenv.config({ path: './.env' });
 
 // Start the server when in staging environment.
-if (process.argv.includes('--staging')) {
+if (process.env.CI) {
   (async () => {
     const server = await import('../src/server');
     before(function (done) {

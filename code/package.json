@@ -12,7 +12,6 @@
     "test": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/suite.ts",
     "test:unit": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/unit/**/*.test.ts",
     "test:service": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/service/**/*.test.ts",
-    "test:ci": "yarn run test -- --staging --reporter mocha-junit-reporter",
     "lint": "eslint --ignore-path ../.gitignore --ext .ts,.tsx src/",
     "prettify": "prettier --ignore-path ../../.gitignore --write \"**/**/*.ts\""
   },

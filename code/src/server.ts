@@ -14,7 +14,6 @@ const server = next({ dev: isDev });
 const handle = server.getRequestHandler();
 const port = parseInt(process.env.PORT!, 10) || 4000;
 const dotenv = Dotenv.config({ path: './.env' });
-const isStaging = process.argv.includes('--staging');
 const useProdDataInDev = process.argv.includes('--prod');
 
 app.use(bodyParser.json({ limit: '2MB' }));
@@ -26,7 +25,7 @@ if (dotenv.error && !process.env.PORT) {
 }
 
 let database = process.env.MYSQL_NAME!;
-if (isDev && !isStaging && !useProdDataInDev) {
+if (isDev && !process.env.CI && !useProdDataInDev) {
   database += 'test';
 }
 
@@ -45,7 +44,7 @@ const knex = Knex({
 // Warn if using production data. Prohibit if running tests.
 if (!database.includes('test')) {
   console.warn('WARNING: Using production data.'.yellow);
-  if (isStaging) {
+  if (process.env.CI) {
     throw new Error(
       `Failsafe disallows tests being run against production data.`
     );
@@ -55,7 +54,7 @@ if (!database.includes('test')) {
 }
 
 // If not in CI environment, start server normally.
-if (!isStaging) {
+if (!process.env.CI) {
   startDevServer();
 }
 
