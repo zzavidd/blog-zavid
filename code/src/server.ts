@@ -1,10 +1,10 @@
 import bodyParser from 'body-parser';
+import 'colors';
 import cors from 'cors';
 import * as Dotenv from 'dotenv';
 import express from 'express';
 import Knex from 'knex';
 import next from 'next';
-import 'colors';
 
 import { setApp, setKnex, setServer } from './private/singleton';
 

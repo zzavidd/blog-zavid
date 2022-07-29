@@ -16,7 +16,7 @@
     "test": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/suite.ts",
     "test:unit": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/unit/**/*.test.ts",
     "test:service": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/service/**/*.test.ts",
-    "lint": "eslint --ext .ts,.tsx src/ --cache",
+    "eslint": "eslint --ext .ts,.tsx src/ --cache",
     "prettier:check": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
     "prettier:write": "yarn run prettier:check --write"
   },

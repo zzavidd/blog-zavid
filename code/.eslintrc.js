@@ -7,4 +7,11 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['**/tsconfig.json'],
   },
+  rules: {
+    'require-await': 0,
+    'react-hooks/exhaustive-deps': 0,
+    'react-hooks/rules-of-hooks': 0,
+    '@typescript-eslint/explicit-function-return-type': 0,
+    '@typescript-eslint/no-floating-promises': 0,
+  }
 };

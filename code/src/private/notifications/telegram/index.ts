@@ -61,7 +61,7 @@ async function notify(content: string): Promise<void> {
  * Get the number of subscribers to the Telegram channel.
  */
 export async function getSubscriberCount(): Promise<number> {
-  return await bot.getChatMembersCount(CHANNEL);
+  return bot.getChatMembersCount(CHANNEL);
 }
 
 /** Returns the current timestamp. */
