@@ -7,7 +7,7 @@ const resolvers = [
   diaryResolvers,
   pageResolvers,
   postResolvers,
-  subscriberResolvers
+  subscriberResolvers,
 ];
 
 const Query = {};

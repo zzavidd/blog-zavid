@@ -23,20 +23,20 @@ router.get('/:slug', async function (req, res, next) {
     title: `${page.title} | ${siteTitle}`,
     description: zText.extractExcerpt(page.content!),
     ogUrl: `/${slug}`,
-    page: JSON.stringify(page)
+    page: JSON.stringify(page),
   });
 });
 
 router.get('/admin/pages', function (req, res) {
   return server.render(req, res, '/pages/admin', {
-    title: `List of Pages`
+    title: `List of Pages`,
   });
 });
 
 router.get('/admin/pages/add', function (req, res) {
   return server.render(req, res, '/pages/crud', {
     title: `Add New Page`,
-    operation: Operation.CREATE
+    operation: Operation.CREATE,
   });
 });
 
@@ -46,7 +46,7 @@ router.get('/admin/pages/edit/:id', async function (req, res) {
   return server.render(req, res, '/pages/crud', {
     title: `Edit Page`,
     operation: Operation.UPDATE,
-    page: JSON.stringify(page)
+    page: JSON.stringify(page),
   });
 });
 

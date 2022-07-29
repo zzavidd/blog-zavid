@@ -1,8 +1,10 @@
 import classnames from 'classnames';
-import React, { CSSProperties } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { CSSProperties } from 'react';
+import React from 'react';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { OnClickType, OnInputChangeType, OnKeyPressType } from 'classes';
+import type { OnClickType, OnInputChangeType, OnKeyPressType } from 'classes';
 import { InvisibleButton } from 'src/components/button';
 import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
@@ -70,7 +72,7 @@ const Input = ({
   onChange,
   placeholder,
   onClick,
-  onKeyPress
+  onKeyPress,
 }: InputProps) => {
   if (value === null) value = '';
   return (
@@ -110,5 +112,5 @@ interface TextInputProps extends InputProps {
 
 interface SearchBarProps extends TextInputProps {
   onClearInput: () => void;
-  withRightSpace?: boolean
+  withRightSpace?: boolean;
 }

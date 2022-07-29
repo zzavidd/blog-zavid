@@ -5,7 +5,7 @@ import * as DiaryService from '../service/diary.service';
  */
 const getAllDiaryEntries = (
   parent: unknown,
-  args: DiaryService.GetDiaryOptions
+  args: DiaryService.GetDiaryOptions,
 ) => DiaryService.getDiaryEntries(args);
 
 /**
@@ -13,7 +13,7 @@ const getAllDiaryEntries = (
  */
 const getSingleDiaryEntry = (
   parent: unknown,
-  args: DiaryService.GetOrDeleteDiaryEntryOptions
+  args: DiaryService.GetOrDeleteDiaryEntryOptions,
 ) => DiaryService.getSingleDiaryEntry(args);
 
 /**
@@ -21,7 +21,7 @@ const getSingleDiaryEntry = (
  */
 const createDiaryEntry = (
   parent: unknown,
-  args: DiaryService.CreateDiaryEntryOptions
+  args: DiaryService.CreateDiaryEntryOptions,
 ) => DiaryService.createDiaryEntry(args);
 
 /**
@@ -29,7 +29,7 @@ const createDiaryEntry = (
  */
 const updateDiaryEntry = (
   parent: unknown,
-  args: DiaryService.UpdateDiaryEntryOptions
+  args: DiaryService.UpdateDiaryEntryOptions,
 ) => DiaryService.updateDiaryEntry(args);
 
 /**
@@ -37,7 +37,7 @@ const updateDiaryEntry = (
  */
 const deleteDiaryEntry = (
   parent: unknown,
-  args: DiaryService.GetOrDeleteDiaryEntryOptions
+  args: DiaryService.GetOrDeleteDiaryEntryOptions,
 ) => DiaryService.deleteDiaryEntry(args);
 
 /**
@@ -48,12 +48,12 @@ const clearDiary = () => DiaryService.clearDiary();
 export default {
   Query: {
     diaryEntries: getAllDiaryEntries,
-    diaryEntry: getSingleDiaryEntry
+    diaryEntry: getSingleDiaryEntry,
   },
   Mutation: {
     createDiaryEntry,
     updateDiaryEntry,
     deleteDiaryEntry,
-    clearDiary
-  }
+    clearDiary,
+  },
 };

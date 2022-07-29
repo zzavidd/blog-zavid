@@ -50,7 +50,7 @@
 @mixin themer($class, $attr, $light, $dark, $pseudo: 0) {
   $values: (
     light: $light,
-    dark: $dark
+    dark: $dark,
   );
   @each $theme in $themes {
     $value: map-get($values, $theme);
@@ -73,7 +73,7 @@
 @mixin button-designer($class, $base) {
   $colors: (
     light: change-color($base, $alpha: 0.9),
-    dark: change-color($base, $alpha: 0.5)
+    dark: change-color($base, $alpha: 0.5),
   );
   @each $theme in $themes {
     $color: map-get($colors, $theme);

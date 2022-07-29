@@ -1,6 +1,8 @@
 import classnames from 'classnames';
-import React, { MouseEventHandler, ReactNode } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { MouseEventHandler, ReactNode } from 'react';
+import React from 'react';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import css from 'src/styles/components/Layout.module.scss';
 
@@ -29,7 +31,7 @@ export const Toolbar = ({
   className,
   children,
   spaceItems,
-  hasBackButton
+  hasBackButton,
 }: Toolbar) => {
   if (!children) return null;
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
@@ -37,7 +39,7 @@ export const Toolbar = ({
     css[`toolbar-${theme}`],
     spaceItems ? css['toolbar-spaced'] : null,
     hasBackButton ? css['toolbar-with-back'] : css['toolbar-no-back'],
-    className
+    className,
   );
 
   return <div className={classes}>{children}</div>;

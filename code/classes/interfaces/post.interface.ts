@@ -38,7 +38,7 @@ export enum PostStatus {
   DRAFT = 'DRAFT',
   PROTECTED = 'PROTECTED',
   PRIVATE = 'PRIVATE',
-  PUBLISHED = 'PUBLISHED'
+  PUBLISHED = 'PUBLISHED',
 }
 
 export enum PostType {
@@ -46,7 +46,7 @@ export enum PostType {
   EPISTLE = 'Epistle',
   POEM = 'Poem',
   MUSING = 'Musing',
-  PAGE = 'Page'
+  PAGE = 'Page',
 }
 
 export type PostContentImages =

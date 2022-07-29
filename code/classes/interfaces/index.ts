@@ -9,12 +9,12 @@ export * from './super';
 export enum QueryOrder {
   ASCENDING = 'ASC',
   DESCENDING = 'DESC',
-  RANDOM = 'RANDOM'
+  RANDOM = 'RANDOM',
 }
 
 export enum Operation {
   CREATE = 'add',
-  UPDATE = 'edit'
+  UPDATE = 'edit',
 }
 
 export interface CustomError extends Error {
@@ -32,17 +32,17 @@ export type ReactSelectChangeEvent = React.ChangeEvent<HTMLSelectElement>;
 export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export type OnInputChangeType = (
-  event: React.ChangeEvent<HTMLInputElement>
+  event: React.ChangeEvent<HTMLInputElement>,
 ) => void;
 export type OnTextAreaChangeType = (
-  event: React.ChangeEvent<HTMLTextAreaElement>
+  event: React.ChangeEvent<HTMLTextAreaElement>,
 ) => void;
 export type OnClickType = (event: React.MouseEvent<HTMLButtonElement>) => void;
 export type OnKeyPressType = (
-  event: React.KeyboardEvent<HTMLInputElement>
+  event: React.KeyboardEvent<HTMLInputElement>,
 ) => void;
 export type OnSelectChangeType = (
-  event: React.ChangeEvent<HTMLSelectElement>
+  event: React.ChangeEvent<HTMLSelectElement>,
 ) => void;
 
 export interface Substitutions {

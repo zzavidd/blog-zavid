@@ -17,28 +17,28 @@ function showMenu() {
   const options: Record<string, ManualOption> = {
     1: {
       name: 'Post Submit (Notification Test)',
-      method: submitPost
+      method: submitPost,
     },
     2: {
       name: 'Post Update (Notification Test)',
-      method: updatePost
+      method: updatePost,
     },
     3: {
       name: 'Diary Submit (Notification Test)',
-      method: submitDiary
+      method: submitDiary,
     },
     4: {
       name: 'Diary Update (Notification Test)',
-      method: updateDiary
+      method: updateDiary,
     },
     5: {
       name: 'Subscriber Raffle',
-      method: raffleSubscribers
+      method: raffleSubscribers,
     },
     6: {
       name: 'Exit',
-      method: exit
-    }
+      method: exit,
+    },
   };
 
   showOptions(options);

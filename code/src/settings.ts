@@ -4,7 +4,7 @@ export const accounts = {
   twitter: 'https://www.twitter.com/zzavidd',
   instagram: 'https://www.instagram.com/zavidd',
   linkedin: 'https://www.linkedin.com/in/david-egbue',
-  snapchat: 'https://www.snapchat.com/add/zzavidd'
+  snapchat: 'https://www.snapchat.com/add/zzavidd',
 };
 
 /** The base URL for Cloudinary media. */
@@ -24,7 +24,7 @@ export const redevelopmentDate = new Date(2020, 8, 21);
 export const domain =
   process.env.NODE_ENV === 'production'
     ? 'https://www.zavidegbue.com'
-    : process.env.NODE_ENV === 'staging' as 'test'
+    : process.env.NODE_ENV === ('staging' as 'test')
     ? 'https://dev.zavidegbue.com'
     : 'http://localhost:4000';
 

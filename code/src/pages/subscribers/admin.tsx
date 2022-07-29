@@ -1,14 +1,9 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 
-import {
-  EditButton,
-  QueryOrder,
-  ReactHook,
-  SubscriberDAO,
-  SubscriptionsMapping
-} from 'classes';
+import type { ReactHook, SubscriberDAO, SubscriptionsMapping } from 'classes';
+import { EditButton, QueryOrder } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { AdminButton, InvisibleButton } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
@@ -18,17 +13,17 @@ import {
   Tabler,
   TablerColumnHeader,
   TablerFieldType,
-  TablerItemCell
+  TablerItemCell,
 } from 'src/lib/library';
 import {
   GET_SUBSCRIBERS_QUERY,
-  DELETE_SUBSCRIBER_QUERY
+  DELETE_SUBSCRIBER_QUERY,
 } from 'src/private/api/queries/subscriber.queries';
 
 const SubscriberAdmin = () => {
   const [subscribers, setSubscribers] = useState([]);
   const [selectedSubscriber, setSelectedSubscriber] = useState(
-    {} as SubscriberDAO
+    {} as SubscriberDAO,
   );
   const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
@@ -38,16 +33,16 @@ const SubscriberAdmin = () => {
     error: queryError,
     loading: queryLoading,
     refetch,
-    networkStatus
+    networkStatus,
   } = useQuery(GET_SUBSCRIBERS_QUERY, {
     variables: {
       sort: {
         field: 'createTime',
-        order: QueryOrder.DESCENDING
-      }
+        order: QueryOrder.DESCENDING,
+      },
     },
     errorPolicy: 'all',
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   });
   const [deleteSubscriberMutation] = useMutation(DELETE_SUBSCRIBER_QUERY);
 
@@ -86,30 +81,30 @@ const SubscriberAdmin = () => {
             new TablerColumnHeader('Email'),
             new TablerColumnHeader('First Name'),
             new TablerColumnHeader('Last Name'),
-            new TablerColumnHeader('Subscriptions')
+            new TablerColumnHeader('Subscriptions'),
           ]}
           items={subscribers.map((subscriber: SubscriberDAO, key: number) => {
             return [
               new TablerItemCell(subscribers.length - key, {
-                type: TablerFieldType.INDEX
+                type: TablerFieldType.INDEX,
               }),
               new TablerItemCell(subscriber.email, { icon: 'at' }),
               new TablerItemCell(subscriber.firstname, {
                 icon: 'user',
-                hideIfEmpty: true
+                hideIfEmpty: true,
               }),
               new TablerItemCell(subscriber.lastname, {
                 icon: 'user',
-                hideIfEmpty: true
+                hideIfEmpty: true,
               }),
               new TablerItemCell(
                 showSubscriptionPreferences(
-                  subscriber.subscriptions as SubscriptionsMapping
+                  subscriber.subscriptions as SubscriptionsMapping,
                 ),
-                { icon: 'check-square', hideIfEmpty: true }
+                { icon: 'check-square', hideIfEmpty: true },
               ),
               new TablerItemCell(<EditButton id={subscriber.id!} key={key} />, {
-                type: TablerFieldType.BUTTON
+                type: TablerFieldType.BUTTON,
               }),
               new TablerItemCell(
                 (
@@ -120,8 +115,8 @@ const SubscriberAdmin = () => {
                     setSelectedSubscriber={setSelectedSubscriber}
                   />
                 ),
-                { type: TablerFieldType.BUTTON }
-              )
+                { type: TablerFieldType.BUTTON },
+              ),
             ];
           })}
           distribution={['6%', '1fr', '0.7fr', '0.7fr', '30%', '4%', '4%']}
@@ -179,7 +174,7 @@ const EditButton = ({ id }: EditButton) => {
 const DeleteButton = ({
   subscriber,
   setDeleteModalVisibility,
-  setSelectedSubscriber
+  setSelectedSubscriber,
 }: DeleteButton) => {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);

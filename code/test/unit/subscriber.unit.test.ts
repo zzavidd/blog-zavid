@@ -9,7 +9,7 @@ describe('Unit Tests: Subscriber', function () {
         'email',
         'firstname',
         'lastname',
-        'subscriptions'
+        'subscriptions',
       ]);
       finish();
     });

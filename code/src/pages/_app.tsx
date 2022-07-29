@@ -5,15 +5,12 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/scss/bootstrap.scss';
 import Cookies from 'js-cookie';
-import App, { AppContext, AppProps } from 'next/app';
+import type { AppContext, AppProps } from 'next/app';
+import App from 'next/app';
 import React, { useEffect, useState } from 'react';
 import * as ReactGA from 'react-ga';
-import {
-  Provider,
-  useSelector,
-  useDispatch,
-  RootStateOrAny
-} from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { Provider, useSelector, useDispatch } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { Theme } from 'classes';
@@ -22,7 +19,6 @@ import { CookiePrompt } from 'src/lib/cookies';
 import configureStore, { setTheme, setUser, clearUser } from 'src/lib/reducers';
 import Footer from 'src/partials/footer';
 import Header from 'src/partials/header';
-
 import 'src/styles/App.scss';
 
 library.add(fab, far, fas);
@@ -30,7 +26,7 @@ library.add(fab, far, fas);
 const { store, persistor } = configureStore();
 const client = new ApolloClient({
   uri: '/api',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 const AUTH_COOKIE = 'justAuthenticated';

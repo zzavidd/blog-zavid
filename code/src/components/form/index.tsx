@@ -1,14 +1,17 @@
 import classnames from 'classnames';
-import React, { ReactNode, useEffect, useState } from 'react';
-import { Col, ColProps, Row } from 'react-bootstrap';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { ReactNode } from 'react';
+import React, { useEffect, useState } from 'react';
+import type { ColProps } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { ReactComponent, ReactHook, Substitutions } from 'classes';
+import type { ReactComponent, ReactHook, Substitutions } from 'classes';
 import {
   AdminButton,
   ButtonSpacer,
   CancelButton,
-  ConfirmButton
+  ConfirmButton,
 } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
@@ -37,7 +40,7 @@ export const Form = ({
   formClassName,
   editorClassName,
   previewClassName,
-  onPreviewToggle
+  onPreviewToggle,
 }: FormProps) => {
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
   const [isInitialState, setIsInitialState] = useState(true);
@@ -74,12 +77,12 @@ export const Form = ({
   const formClasses = classnames(
     css[`form`],
     css[`form--${state}`],
-    formClassName?.[previewState]
+    formClassName?.[previewState],
   );
   const formEditorClasses = classnames(
     css[`form-editor`],
     css[`form-editor--${state}`],
-    editorClassName?.[previewState]
+    editorClassName?.[previewState],
   );
 
   return (
@@ -126,7 +129,7 @@ const FormPreview = ({
   previewTitle,
   previewText,
   previewFootnotes,
-  substitutions = {}
+  substitutions = {},
 }: FormPreview) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [isInitialState, setIsInitialState] = useState(true);
@@ -145,7 +148,7 @@ const FormPreview = ({
   const classes = classnames(
     className,
     css[`form-preview-${theme}`],
-    css[`form-preview--${state}`]
+    css[`form-preview--${state}`],
   );
 
   return (
@@ -168,7 +171,7 @@ const FormPreviewToggle = ({
   previewText,
   setPreviewVisibility,
   isPreviewVisible,
-  onPreviewToggle
+  onPreviewToggle,
 }: FormPreviewToggle) => {
   // TODO: Make previewText just string type
   if (typeof previewText !== 'string') return null;
@@ -213,7 +216,7 @@ export const DynamicField = (props: DynamicField) => {
 
   const breakpoints = Object.assign({}, { xs, sm, md, lg, xl });
   const classes = classnames(css['form-field'], {
-    [css['form-field--hidden']]: !isVisible
+    [css['form-field--hidden']]: !isVisible,
   });
 
   return (
@@ -274,5 +277,5 @@ type FormCSSOptions = {
 
 enum PreviewOption {
   previewOn = 'previewOn',
-  previewOff = 'previewOff'
+  previewOff = 'previewOff',
 }

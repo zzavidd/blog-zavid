@@ -1,12 +1,14 @@
 import { useQuery } from '@apollo/client';
 import classnames from 'classnames';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { zDate } from 'zavid-modules';
 
-import { PostDAO, PostStatus, PostType, QueryOrder } from 'classes';
+import type { PostDAO } from 'classes';
+import { PostStatus, PostType, QueryOrder } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton } from 'src/components/button';
 import CloudImage from 'src/components/image';
@@ -23,19 +25,20 @@ const EpistlesIndex = ({ epistlesIntro }: EpistlesIndexProps) => {
   const [epistles, setEpistles] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
-  const { data, error: queryError, loading: queryLoading } = useQuery(
-    GET_POSTS_QUERY,
-    {
-      variables: {
-        sort: {
-          field: 'datePublished',
-          order: QueryOrder.DESCENDING
-        },
-        type: { include: [PostType.EPISTLE] },
-        status: { include: [PostStatus.PUBLISHED] }
-      }
-    }
-  );
+  const {
+    data,
+    error: queryError,
+    loading: queryLoading,
+  } = useQuery(GET_POSTS_QUERY, {
+    variables: {
+      sort: {
+        field: 'datePublished',
+        order: QueryOrder.DESCENDING,
+      },
+      type: { include: [PostType.EPISTLE] },
+      status: { include: [PostStatus.PUBLISHED] },
+    },
+  });
 
   useEffect(() => {
     if (queryLoading) return;
@@ -75,7 +78,7 @@ const EpistlesHeading = ({ epistlesIntro }: EpistlesIndexProps) => {
 
 const EpistleGrid = ({
   epistles,
-  epistlesIntro
+  epistlesIntro,
 }: EpistleGridProps): JSX.Element => {
   return (
     <div className={css['epistles-index-page']}>
@@ -106,7 +109,7 @@ const EpistleGridder = ({ epistles }: EpistleGridderProps) => {
         {epistles.filter((epistle: JSX.Element, key: number) => {
           return key % COLUMN_NUMBER === i;
         })}
-      </div>
+      </div>,
     );
   }
 
@@ -118,13 +121,13 @@ const Epistle = memo(({ epistle }: EpistleProps) => {
   const [isInView, setInView] = useState(false);
 
   const datePublished = zDate.formatDate(epistle.datePublished as string, {
-    withWeekday: true
+    withWeekday: true,
   });
   const link = `/epistles/${epistle.slug}`;
   const title = `#${epistle.typeId}: ${epistle.title}`;
 
   const classes = classnames(css[`epistles-unit-${theme}`], {
-    [css[`epistles-unit--visible`]]: isInView
+    [css[`epistles-unit--visible`]]: isInView,
   });
   return (
     <LazyLoader setInView={setInView}>
@@ -149,7 +152,7 @@ const EpistleParagraph = ({ epistle, link }: EpistleParagraphProps) => {
     <Paragraph
       cssOverrides={{
         paragraph: css['epistles-paragraph'],
-        hyperlink: css['epistles-readmore']
+        hyperlink: css['epistles-readmore'],
       }}
       truncate={isSmall ? 20 : 30}
       moreclass={css['epistles-readmore']}

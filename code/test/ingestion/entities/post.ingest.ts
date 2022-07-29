@@ -15,8 +15,8 @@ export const ingestReveries = () => {
       generateTitle: () => faker.company.catchPhrase(),
       type: PostType.REVERIE,
       contentThreshold: 20,
-      contentLimit: 25
-    }
+      contentLimit: 25,
+    },
   });
 };
 
@@ -31,8 +31,8 @@ export const ingestEpistles = () => {
       },
       type: PostType.EPISTLE,
       contentThreshold: 3,
-      contentLimit: 5
-    }
+      contentLimit: 5,
+    },
   });
 };
 
@@ -46,8 +46,8 @@ async function ingestPost(options: IngestPostOptions) {
       type,
       contentThreshold = 1,
       contentLimit = 3,
-      includeImage = true
-    }
+      includeImage = true,
+    },
   } = options;
 
   console.info(startMessage);
@@ -72,8 +72,8 @@ async function ingestPost(options: IngestPostOptions) {
 
     promises.push(
       fetch(CREATE_POST_QUERY, {
-        variables: { post, isTest: true }
-      })
+        variables: { post, isTest: true },
+      }),
     );
   }
 

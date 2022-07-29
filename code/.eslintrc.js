@@ -1,7 +1,7 @@
 /**
  * @type {import('eslint').Linter.Config}
  */
- module.exports = {
+module.exports = {
   extends: '@zzavidd/eslint-config/react-ts',
   parserOptions: {
     tsconfigRootDir: __dirname,

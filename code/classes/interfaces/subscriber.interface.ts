@@ -14,7 +14,7 @@ export interface SubscriptionsMapping {
 
 export enum SubscriptionType {
   Reverie = 'Reveries',
-  Diary = 'Diary'
+  Diary = 'Diary',
 }
 
 export interface SubscriberPayload {

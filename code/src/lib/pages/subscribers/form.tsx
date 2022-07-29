@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { SubscriberDAO, SubscriptionsMapping } from 'classes';
-import { GenericFormProps } from 'classes/interfaces/super';
+import type { SubscriberDAO, SubscriptionsMapping } from 'classes';
+import type { GenericFormProps } from 'classes/interfaces/super';
 import { Form, FieldRow, Field, Label, TextInput } from 'src/components/form';
-import { Handlers } from 'src/lib/hooks';
+import type { Handlers } from 'src/lib/hooks';
 
 import PreferenceChecks from './preferences';
 

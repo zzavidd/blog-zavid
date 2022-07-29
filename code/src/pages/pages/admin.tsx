@@ -1,17 +1,24 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
-import { EditButton, PageDAO, ReactHook } from 'classes';
+import type { PageDAO, ReactHook } from 'classes';
+import { EditButton } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { AdminButton, InvisibleButton } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
-import { Icon, Tabler, TablerColumnHeader, TablerFieldType, TablerItemCell } from 'src/lib/library';
+import {
+  Icon,
+  Tabler,
+  TablerColumnHeader,
+  TablerFieldType,
+  TablerItemCell,
+} from 'src/lib/library';
 import {
   GET_PAGES_QUERY,
-  DELETE_PAGE_QUERY
+  DELETE_PAGE_QUERY,
 } from 'src/private/api/queries/page.queries';
 
 const PageAdmin = () => {
@@ -25,10 +32,10 @@ const PageAdmin = () => {
     error: queryError,
     loading: queryLoading,
     refetch,
-    networkStatus
+    networkStatus,
   } = useQuery(GET_PAGES_QUERY, {
     errorPolicy: 'all',
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   });
   const [deletePageMutation] = useMutation(DELETE_PAGE_QUERY);
 
@@ -68,7 +75,7 @@ const PageAdmin = () => {
             new TablerColumnHeader('Slug'),
             new TablerColumnHeader('Excerpt'),
             new TablerColumnHeader('Content'),
-            new TablerColumnHeader('Last Modified')
+            new TablerColumnHeader('Last Modified'),
           ]}
           items={pages.map((page: PageDAO, key: number) => {
             return [
@@ -76,25 +83,24 @@ const PageAdmin = () => {
               new TablerItemCell(page.title!, { icon: 'heading' }),
               new TablerItemCell(page.slug ? `/${page.slug}` : '', {
                 icon: 'link',
-                hideIfEmpty: true
+                hideIfEmpty: true,
               }),
               new TablerItemCell(
                 zText.truncateText(page.excerpt!, { limit: 30 }),
-                { hideOnMobile: true }
+                { hideOnMobile: true },
               ),
               new TablerItemCell(
                 zText.truncateText(page.content!, { limit: 30 }),
-                { hideOnMobile: true }
+                { hideOnMobile: true },
               ),
-              new TablerItemCell(
-                zDate.formatDate(page.lastModified!),
-                { icon: 'clock' }
-              ),
+              new TablerItemCell(zDate.formatDate(page.lastModified!), {
+                icon: 'clock',
+              }),
               new TablerItemCell(<LinkButton page={page} key={key} />, {
-                type: TablerFieldType.BUTTON
+                type: TablerFieldType.BUTTON,
               }),
               new TablerItemCell(<EditButton id={page.id!} key={key} />, {
-                type: TablerFieldType.BUTTON
+                type: TablerFieldType.BUTTON,
               }),
               new TablerItemCell(
                 (
@@ -105,11 +111,21 @@ const PageAdmin = () => {
                     setSelectedPage={setSelectedPage}
                   />
                 ),
-                { type: TablerFieldType.BUTTON }
-              )
+                { type: TablerFieldType.BUTTON },
+              ),
             ];
           })}
-          distribution={['6%', '0.8fr', '10%', '1fr', '1fr', '30%', '4%', '4%', '4%']}
+          distribution={[
+            '6%',
+            '0.8fr',
+            '10%',
+            '1fr',
+            '1fr',
+            '30%',
+            '4%',
+            '4%',
+            '4%',
+          ]}
         />
         <Toolbar>
           <AdminButton onClick={navigateToCreateForm}>Add New Page</AdminButton>
@@ -154,7 +170,7 @@ const EditButton = ({ id }: EditButton) => {
 const DeleteButton = ({
   page,
   setDeleteModalVisibility,
-  setSelectedPage
+  setSelectedPage,
 }: DeleteButton) => {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);

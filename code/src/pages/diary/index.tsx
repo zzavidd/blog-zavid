@@ -1,16 +1,13 @@
 import { useQuery } from '@apollo/client';
 import classnames from 'classnames';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import {
-  DiaryDAO,
-  DiaryStatus,
-  QueryOrder,
-  ReactInputChangeEvent
-} from 'classes';
+import type { DiaryDAO, ReactInputChangeEvent } from 'classes';
+import { DiaryStatus, QueryOrder } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton, ConfirmButton } from 'src/components/button';
 import { Checkbox, SearchBar } from 'src/components/form';
@@ -34,19 +31,20 @@ const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
 
   const onlyFavs = url.searchParams.get(PARAM_ONLY_FAVOURITES) === 'true';
 
-  const { data, error: queryError, loading: queryLoading } = useQuery(
-    GET_DIARY_QUERY,
-    {
-      variables: {
-        sort: {
-          field: 'date',
-          order: QueryOrder.DESCENDING
-        },
-        status: { include: [DiaryStatus.PUBLISHED] },
-        onlyFavourites: onlyFavs
-      }
-    }
-  );
+  const {
+    data,
+    error: queryError,
+    loading: queryLoading,
+  } = useQuery(GET_DIARY_QUERY, {
+    variables: {
+      sort: {
+        field: 'date',
+        order: QueryOrder.DESCENDING,
+      },
+      status: { include: [DiaryStatus.PUBLISHED] },
+      onlyFavourites: onlyFavs,
+    },
+  });
 
   useEffect(() => {
     if (queryLoading) return;
@@ -104,7 +102,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
   }, [isLoaded]);
 
   const date = zDate.formatDate(diaryEntry.date as string, {
-    withWeekday: true
+    withWeekday: true,
   });
   const link = `/diary/${diaryEntry.entryNumber}`;
   const classes = classnames(css['diary-entry'], css[`diary-entry--${theme}`]);
@@ -123,7 +121,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
         <Paragraph
           cssOverrides={{
             paragraph: css['diary-entry-paragraph'],
-            hyperlink: css['diary-entry-readmore']
+            hyperlink: css['diary-entry-readmore'],
           }}
           truncate={40}
           moreclass={css['diary-entry-readmore']}
@@ -202,7 +200,7 @@ const DiarySearch = ({ url, onlyFavs }: DiarySearchProps) => {
             const isChecked = e.target.checked;
             url.searchParams.set(
               PARAM_ONLY_FAVOURITES,
-              JSON.stringify(isChecked)
+              JSON.stringify(isChecked),
             );
             location.href = url.toString();
           }}

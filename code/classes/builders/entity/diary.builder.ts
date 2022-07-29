@@ -71,7 +71,7 @@ export class DiaryEntryBuilder {
   withRandomContent(threshold = 5, limit = 10): DiaryEntryBuilder {
     this.entry.content = faker.lorem.paragraphs(
       zNumber.generateRandom(threshold, limit),
-      '\n\n'
+      '\n\n',
     );
     return this;
   }
@@ -84,7 +84,7 @@ export class DiaryEntryBuilder {
   withRandomFootnote(): DiaryEntryBuilder {
     this.entry.footnote = faker.lorem.paragraphs(
       zNumber.generateRandom(1, 2),
-      '\n\n'
+      '\n\n',
     );
     return this;
   }

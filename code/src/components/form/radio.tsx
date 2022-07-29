@@ -1,9 +1,11 @@
 import classnames from 'classnames';
-import React, { CSSProperties } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { CSSProperties } from 'react';
+import React from 'react';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { zString } from 'zavid-modules';
 
-import { OnInputChangeType } from 'classes';
+import type { OnInputChangeType } from 'classes';
 import css from 'src/styles/components/Form.module.scss';
 
 export const RadioGroup = ({
@@ -12,11 +14,11 @@ export const RadioGroup = ({
   options,
   value,
   className,
-  grid = false
+  grid = false,
 }: RadioGroupProps): JSX.Element => {
   const radioGroupClasses = classnames(
     className,
-    grid && css['radio-group-inline']
+    grid && css['radio-group-inline'],
   );
   return (
     <div className={radioGroupClasses}>
@@ -41,13 +43,13 @@ const RadioButton = ({
   value,
   checked,
   onChange,
-  checkClassName
+  checkClassName,
 }: RadioButtonProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const checkClasses = classnames(
     css['radio-mark'],
     css[`radio-mark-${theme}`],
-    checkClassName
+    checkClassName,
   );
   return (
     <label className={css['radio-button']}>

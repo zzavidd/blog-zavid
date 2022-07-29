@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 
-import { DiaryDAO, DiaryStatic, ReactTextAreaChangeEvent } from 'classes';
-import { GenericFormProps } from 'classes/interfaces/super';
+import type { DiaryDAO, ReactTextAreaChangeEvent } from 'classes';
+import { DiaryStatic } from 'classes';
+import type { GenericFormProps } from 'classes/interfaces/super';
 import {
   Checkbox,
   Field,
@@ -14,11 +15,12 @@ import {
   NumberInput,
   Select,
   ShortTextArea,
-  TextInput
+  TextInput,
 } from 'src/components/form';
-import DatePicker, { DateType } from 'src/components/form/datepicker';
+import type { DateType } from 'src/components/form/datepicker';
+import DatePicker from 'src/components/form/datepicker';
 import { Foldable } from 'src/components/form/foldable';
-import { Handlers } from 'src/lib/hooks';
+import type { Handlers } from 'src/lib/hooks';
 import { ScreenWidth } from 'src/lib/library';
 import TagBlock from 'src/lib/pages/diary/tags';
 import css from 'src/styles/pages/Diary.module.scss';
@@ -31,7 +33,7 @@ const DiaryEntryForm = (props: DiaryFormProps) => {
     handleCheck,
     handleSelection,
     handleTextSave,
-    handleDate
+    handleDate,
   } = handlers;
 
   const [isFootnoteVisible, setFootnoteVisible] = useState(false);
@@ -54,10 +56,10 @@ const DiaryEntryForm = (props: DiaryFormProps) => {
       previewFootnotes={diaryEntry.footnote}
       onPreviewToggle={setPreviewVisible}
       formClassName={{
-        previewOn: css['diary-form-pv']
+        previewOn: css['diary-form-pv'],
       }}
       editorClassName={{
-        previewOff: css['diary-form-editor']
+        previewOff: css['diary-form-editor'],
       }}>
       <FieldRow>
         <Field xl={{ span: fieldSpan, order: contentOrder }}>

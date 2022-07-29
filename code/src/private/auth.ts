@@ -1,15 +1,15 @@
-import express, { Request } from 'express';
-import expressSession, { Session } from 'express-session';
+import type { Request } from 'express';
+import express from 'express';
+import type { Session } from 'express-session';
+import expressSession from 'express-session';
 import memoryStore from 'memorystore';
 import passport from 'passport';
-import {
-  Strategy as GoogleStrategy,
-  VerifyCallback
-} from 'passport-google-oauth2';
-
-import { getApp } from './singleton';
+import type { VerifyCallback } from 'passport-google-oauth2';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 
 import { domain } from '../settings';
+
+import { getApp } from './singleton';
 
 const isDev = process.env.NODE_ENV !== 'production';
 const MemoryStore = memoryStore(expressSession);
@@ -18,7 +18,7 @@ const app = getApp();
 
 const authCookieOptions = {
   maxAge: 2 * 60 * 1000,
-  httpOnly: false
+  httpOnly: false,
 };
 
 app.set('trust proxy', 1);
@@ -28,15 +28,15 @@ app.use(
     cookie: {
       httpOnly: false,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      secure: !isDev
+      secure: !isDev,
     },
     store: new MemoryStore({
-      checkPeriod: 24 * 60 * 60 * 1000
+      checkPeriod: 24 * 60 * 60 * 1000,
     }),
     secret: process.env.SESSION_SECRET!,
     resave: false,
-    saveUninitialized: false
-  })
+    saveUninitialized: false,
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -47,14 +47,14 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       callbackURL: `${domain}/login/redirect`,
-      passReqToCallback: true
+      passReqToCallback: true,
     },
     function (
       req: Request,
       accessToken: string,
       refreshToken: string,
       profile: GoogleProfile,
-      done: VerifyCallback
+      done: VerifyCallback,
     ) {
       const isZavid = profile.id === process.env.GOOGLE_ACCOUNT_ID;
       if (isZavid) {
@@ -65,8 +65,8 @@ passport.use(
           done(null, false);
         });
       }
-    }
-  )
+    },
+  ),
 );
 
 passport.serializeUser((user, done) => {
@@ -80,8 +80,8 @@ passport.deserializeUser(function (id: number, done) {
 router.get(
   '/login',
   passport.authenticate('google', {
-    scope: ['profile']
-  })
+    scope: ['profile'],
+  }),
 );
 
 router.get(
@@ -90,7 +90,7 @@ router.get(
   function (req, res) {
     res.cookie('justAuthenticated', true, authCookieOptions);
     res.redirect((req.session as CustomSession).returnTo || '/');
-  }
+  },
 );
 
 router.get('/logout', function (req, res) {

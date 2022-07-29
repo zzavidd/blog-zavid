@@ -1,18 +1,20 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import {
-  Operation,
-  PostBuilder,
+import type {
   PostContentImageMapping,
   PostDAO,
   PostImage,
+  ReactSelectChangeEvent,
+} from 'classes';
+import {
+  Operation,
+  PostBuilder,
   PostStatic,
   PostStatus,
-  ReactSelectChangeEvent,
-  URLBuilder
+  URLBuilder,
 } from 'classes';
 import { alert, AlertType, reportError, setAlert } from 'src/components/alert';
 import hooks from 'src/lib/hooks';
@@ -22,7 +24,7 @@ import { isValidPost } from 'src/lib/validations';
 import {
   CREATE_POST_QUERY,
   GET_POSTS_QUERY,
-  UPDATE_POST_QUERY
+  UPDATE_POST_QUERY,
 } from 'src/private/api/queries/post.queries';
 import { domain } from 'src/settings';
 
@@ -48,37 +50,36 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
     excerpt: '',
     image: {
       source: '',
-      hasChanged: false
+      hasChanged: false,
     },
     contentImages: {},
     status: PostStatus.DRAFT,
     datePublished: undefined,
-    domainId: undefined
+    domainId: undefined,
   } as PostDAO);
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
   const [domains, setDomains] = useState<PostDAO[]>([]);
 
   // Initialise query variables.
-  const { data, error: queryError, loading: queryLoading } = useQuery(
-    GET_POSTS_QUERY,
-    {
-      variables: {
-        sort: {
-          field: 'type',
-          order: 'DESC'
-        }
-      }
-    }
-  );
+  const {
+    data,
+    error: queryError,
+    loading: queryLoading,
+  } = useQuery(GET_POSTS_QUERY, {
+    variables: {
+      sort: {
+        field: 'type',
+        order: 'DESC',
+      },
+    },
+  });
 
   // Initialise mutation functions.
-  const [createPostMutation, { loading: createLoading }] = useMutation(
-    CREATE_POST_QUERY
-  );
-  const [updatePostMutation, { loading: updateLoading }] = useMutation(
-    UPDATE_POST_QUERY
-  );
+  const [createPostMutation, { loading: createLoading }] =
+    useMutation(CREATE_POST_QUERY);
+  const [updatePostMutation, { loading: updateLoading }] =
+    useMutation(UPDATE_POST_QUERY);
 
   // Determine operation type.
   const isCreateOperation = operation === Operation.CREATE;
@@ -98,7 +99,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
 
     const image: PostImage = {
       source: serverPost.image as string,
-      hasChanged: false
+      hasChanged: false,
     };
 
     // Transform array of images into map values.
@@ -108,7 +109,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       medium.forEach((value: string, i: number) => {
         contentImages[`image${i}`] = {
           source: value,
-          hasChanged: false
+          hasChanged: false,
         } as PostImage;
       });
     } catch {
@@ -117,7 +118,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
 
     const postWithImages = Object.assign({}, serverPost, {
       image,
-      contentImages
+      contentImages,
     });
     setPost(postWithImages);
   };
@@ -134,9 +135,9 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
           label: `${type}: ${title}`,
           type,
           status,
-          datePublished: new Date(parseInt(datePublished as string))
+          datePublished: new Date(parseInt(datePublished as string)),
         };
-      }
+      },
     );
 
     setDomains(domainList);
@@ -153,8 +154,8 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
     setPost(
       Object.assign({}, clientPost, {
         type: selectedType,
-        typeId
-      })
+        typeId,
+      }),
     );
   };
 
@@ -169,8 +170,8 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
     setPost(
       Object.assign({}, clientPost, {
         status: selectedStatus,
-        typeId
-      })
+        typeId,
+      }),
     );
   };
 
@@ -197,7 +198,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       await createPostMutation({ variables });
       setAlert({
         type: AlertType.SUCCESS,
-        message: `You've successfully added the new post titled "${clientPost.title}".`
+        message: `You've successfully added the new post titled "${clientPost.title}".`,
       });
       returnToPostAdmin();
     } catch (err) {
@@ -215,7 +216,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       await updatePostMutation({ variables });
       setAlert({
         type: AlertType.SUCCESS,
-        message: `You've successfully updated "${clientPost.title}".`
+        message: `You've successfully updated "${clientPost.title}".`,
       });
       returnAfterUpdate(clientPost);
     } catch (err) {
@@ -240,7 +241,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
 const buildPayload = (
   clientPost: PostDAO,
   isPublish: boolean,
-  isCreateOperation: boolean
+  isCreateOperation: boolean,
 ): PostRequest => {
   const {
     id,
@@ -253,7 +254,7 @@ const buildPayload = (
     contentImages,
     status,
     datePublished,
-    domainId
+    domainId,
   } = clientPost;
 
   const post = new PostBuilder()

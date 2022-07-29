@@ -11,7 +11,7 @@ const getAllPosts = (parent: unknown, args: PostService.GetAllPostOptions) =>
  */
 const getSinglePost = async (
   parent: unknown,
-  args: PostService.GetOrDeletePostOptions
+  args: PostService.GetOrDeletePostOptions,
 ) => PostService.getSinglePost(args);
 
 /**
@@ -32,7 +32,7 @@ const updatePost = (parent: unknown, args: PostService.UpdatePostOptions) =>
  */
 const deletePost = (
   parent: unknown,
-  args: PostService.GetOrDeletePostOptions
+  args: PostService.GetOrDeletePostOptions,
 ) => PostService.deletePost(args);
 
 /**
@@ -43,12 +43,12 @@ const clearPosts = () => PostService.clearPosts();
 export default {
   Query: {
     getAllPosts,
-    getSinglePost
+    getSinglePost,
   },
   Mutation: {
     createPost,
     updatePost,
     deletePost,
-    clearPosts
-  }
+    clearPosts,
+  },
 };

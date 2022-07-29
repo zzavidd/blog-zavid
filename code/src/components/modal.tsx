@@ -1,12 +1,13 @@
 import classnames from 'classnames';
 import React from 'react';
 import { Modal as IModal } from 'react-bootstrap';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   ButtonSpacer,
   CancelButton,
-  DeleteButton
+  DeleteButton,
 } from 'src/components/button';
 import { Paragraph } from 'src/components/text';
 import css from 'src/styles/components/Modal.module.scss';
@@ -19,7 +20,7 @@ export const Modal = (props: ModalProps) => {
     modalBody,
     modalFooter,
     onHide,
-    dialogClassName
+    dialogClassName,
   } = props;
 
   const Header = () => {
@@ -72,7 +73,7 @@ export const ConfirmModal = ({
   confirmFunction,
   confirmText,
   closeFunction,
-  visible
+  visible,
 }: ConfirmModalProps) => {
   return (
     <Modal

@@ -1,9 +1,10 @@
 import { useMutation } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useState } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { SubscriberDAO, SubscriptionsMapping } from 'classes';
+import type { SubscriberDAO, SubscriptionsMapping } from 'classes';
 import { alert, setAlert, reportError, AlertType } from 'src/components/alert';
 import { ConfirmButton, InvisibleButton } from 'src/components/button';
 import { Container } from 'src/components/layout';
@@ -13,7 +14,7 @@ import PreferenceChecks from 'src/lib/pages/subscribers/preferences';
 import { DAOParse } from 'src/lib/parser';
 import {
   UPDATE_SUBSCRIBER_QUERY,
-  DELETE_SUBSCRIBER_QUERY
+  DELETE_SUBSCRIBER_QUERY,
 } from 'src/private/api/queries/subscriber.queries';
 import css from 'src/styles/pages/Subscribers.module.scss';
 
@@ -21,7 +22,7 @@ const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   const [preferences, setPreferences] = useState(
-    subscriber.subscriptions as SubscriptionsMapping
+    subscriber.subscriptions as SubscriptionsMapping,
   );
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
   const [updateSubscriberMutation] = useMutation(UPDATE_SUBSCRIBER_QUERY);
@@ -35,15 +36,15 @@ const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
         firstname,
         lastname,
         email,
-        subscriptions: preferences
-      }
+        subscriptions: preferences,
+      },
     };
 
     Promise.resolve()
       .then(() => updateSubscriberMutation({ variables }))
       .then(() => {
         alert.success(
-          `You've successfully updated your subscription preferences.`
+          `You've successfully updated your subscription preferences.`,
         );
       })
       .catch(reportError);
@@ -56,7 +57,7 @@ const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
       .then(() => {
         setAlert({
           type: AlertType.SUCCESS,
-          message: `You've successfully unsubscribed from my blog.`
+          message: `You've successfully unsubscribed from my blog.`,
         });
         setDeleteModalVisibility(false);
         location.href = '/';
@@ -99,7 +100,7 @@ const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
 };
 
 SubscriptionPreferences.getInitialProps = async ({
-  query
+  query,
 }: NextPageContext) => {
   const subscriber = DAOParse<SubscriberDAO>(query.subscriber);
   return { subscriber };

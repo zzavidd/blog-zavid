@@ -7,7 +7,7 @@ import {
   FacebookIcon,
   TwitterIcon,
   LinkedinIcon,
-  WhatsappIcon
+  WhatsappIcon,
 } from 'react-share';
 
 import { Icon } from 'src/lib/library';

@@ -1,12 +1,13 @@
-import express, { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import { zText } from 'zavid-modules';
 
+import type { DiaryDAO } from '../../../../classes';
 import {
-  DiaryDAO,
   DiaryQueryBuilder,
   DiaryStatic,
   Operation,
-  PageQueryBuilder
+  PageQueryBuilder,
 } from '../../../../classes';
 import { siteTitle } from '../../../settings';
 import { ERRORS, renderErrorPage } from '../../error';
@@ -27,7 +28,7 @@ router.get('/diary', async function (req: Request, res: Response) {
     title: `Diary | ${siteTitle}`,
     description: 'Dear Zavid, how have you been feeling?',
     ogUrl: '/diary',
-    diaryIntro
+    diaryIntro,
   });
 });
 
@@ -43,7 +44,7 @@ router.get(
 
     return res.redirect(`/diary/${diaryEntry.entryNumber}`);
   },
-  renderErrorPage
+  renderErrorPage,
 );
 
 router.get(
@@ -55,13 +56,13 @@ router.get(
     res.locals.promise = Promise.all([
       new DiaryQueryBuilder(knex).whereSlug(slug).build(),
       new DiaryQueryBuilder(knex).getPreviousEntry(slug, field).build(),
-      new DiaryQueryBuilder(knex).getNextEntry(slug, field).build()
+      new DiaryQueryBuilder(knex).getNextEntry(slug, field).build(),
     ]);
 
     next();
   },
   serveDiaryEntries,
-  renderErrorPage
+  renderErrorPage,
 );
 
 router.get(
@@ -73,17 +74,17 @@ router.get(
     res.locals.promise = Promise.all([
       new DiaryQueryBuilder(knex).whereEntryNumber(number).build(),
       new DiaryQueryBuilder(knex).getPreviousEntry(number, field).build(),
-      new DiaryQueryBuilder(knex).getNextEntry(number, field).build()
+      new DiaryQueryBuilder(knex).getNextEntry(number, field).build(),
     ]);
     next();
   },
   serveDiaryEntries,
-  renderErrorPage
+  renderErrorPage,
 );
 
 router.get('/admin/diary', function (req, res) {
   return server.render(req, res, '/diary/admin', {
-    title: `List of Diary Entries`
+    title: `List of Diary Entries`,
   });
 });
 
@@ -100,13 +101,13 @@ router.get(
       return server.render(req, res, '/diary/crud', {
         title: `Add New Diary Entry`,
         operation: Operation.CREATE,
-        latestEntryNumber: latestEntryNumber.toString()
+        latestEntryNumber: latestEntryNumber.toString(),
       });
     } catch (err) {
       next(err);
     }
   },
-  renderErrorPage
+  renderErrorPage,
 );
 
 router.get('/admin/diary/edit/:id', async function (req, res) {
@@ -118,22 +119,19 @@ router.get('/admin/diary/edit/:id', async function (req, res) {
   return server.render(req, res, '/diary/crud', {
     title: `Edit Diary Entry`,
     operation: Operation.UPDATE,
-    diaryEntry: JSON.stringify(diaryEntry)
+    diaryEntry: JSON.stringify(diaryEntry),
   });
 });
 
 async function serveDiaryEntries(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
     const promises: Promise<DiaryDAO[][]> = res.locals.promise;
-    const [
-      [diaryEntry],
-      [previousDiaryEntry],
-      [nextDiaryEntry]
-    ] = await promises;
+    const [[diaryEntry], [previousDiaryEntry], [nextDiaryEntry]] =
+      await promises;
 
     const isUnauthorized =
       DiaryStatic.isProtected(diaryEntry) && !req.isAuthenticated();
@@ -148,7 +146,7 @@ async function serveDiaryEntries(
       ogUrl: `/diary/${diaryEntry.slug}`,
       diaryEntry: JSON.stringify(diaryEntry),
       previousDiaryEntry: JSON.stringify(previousDiaryEntry),
-      nextDiaryEntry: JSON.stringify(nextDiaryEntry)
+      nextDiaryEntry: JSON.stringify(nextDiaryEntry),
     });
   } catch (err) {
     next(err);

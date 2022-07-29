@@ -10,7 +10,7 @@ console.warn(emailWarning);
 console.warn(telegramWarning);
 
 export const TryWrapper = <T extends unknown>(
-  consumer: () => Promise<T>
+  consumer: () => Promise<T>,
 ): Promise<T> => {
   let result;
 

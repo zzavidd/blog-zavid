@@ -1,7 +1,7 @@
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React from 'react';
 
-import { CustomError } from 'classes';
+import type { CustomError } from 'classes';
 import css from 'src/styles/Partials.module.scss';
 
 const Error = ({ message }: CustomError) => {

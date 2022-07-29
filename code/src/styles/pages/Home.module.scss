@@ -9,7 +9,7 @@ $delay-random-posts: 2000ms;
 /// Provides default animation styling.
 /// @param {string} $delay - The value when the theme is light.
 @mixin animate($delay) {
-  animation: g-fadein 600ms ease $delay 1 normal both; 
+  animation: g-fadein 600ms ease $delay 1 normal both;
 }
 
 .home-page {
@@ -43,7 +43,7 @@ $delay-random-posts: 2000ms;
       @include responsive(font-size, 2.5em, $md: 2em);
       margin-bottom: 0.5em;
     }
-  
+
     &__message {
       @include responsive(font-size, 1.3em, $md: 1em);
     }

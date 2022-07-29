@@ -1,9 +1,10 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
-import { DiaryDAO, EditButton, QueryOrder, ReactHook } from 'classes';
+import type { DiaryDAO, ReactHook } from 'classes';
+import { EditButton, QueryOrder } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { AdminButton, InvisibleButton } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
@@ -14,11 +15,11 @@ import {
   Tabler,
   TablerColumnHeader,
   TablerFieldType,
-  TablerItemCell
+  TablerItemCell,
 } from 'src/lib/library';
 import {
   GET_DIARY_QUERY,
-  DELETE_DIARY_QUERY
+  DELETE_DIARY_QUERY,
 } from 'src/private/api/queries/diary.queries';
 
 const DiaryAdmin = () => {
@@ -32,16 +33,16 @@ const DiaryAdmin = () => {
     error: queryError,
     loading: queryLoading,
     refetch,
-    networkStatus
+    networkStatus,
   } = useQuery(GET_DIARY_QUERY, {
     variables: {
       sort: {
         field: 'date',
-        order: QueryOrder.DESCENDING
-      }
+        order: QueryOrder.DESCENDING,
+      },
     },
     errorPolicy: 'all',
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   });
   const [deleteDiaryEntryMutation] = useMutation(DELETE_DIARY_QUERY);
 
@@ -61,8 +62,8 @@ const DiaryAdmin = () => {
       .then(() => {
         alert.success(
           `You've deleted the diary entry for ${zDate.formatDate(date!, {
-            withWeekday: true
-          })}.`
+            withWeekday: true,
+          })}.`,
         );
         setDeleteModalVisibility(false);
         refetch();
@@ -84,39 +85,39 @@ const DiaryAdmin = () => {
             new TablerColumnHeader('Date'),
             new TablerColumnHeader('Title'),
             new TablerColumnHeader(<Icon name={'star'} key={0} />, {
-              centerAlign: true
+              centerAlign: true,
             }),
             new TablerColumnHeader('Status'),
-            new TablerColumnHeader('Content')
+            new TablerColumnHeader('Content'),
           ]}
           items={diaryEntries.map((diaryEntry: DiaryDAO, key: number) => {
             const content = zText.truncateText(diaryEntry.content!, {
-              limit: 20
+              limit: 20,
             });
             const date = zDate.formatDate(diaryEntry.date!, {
-              withWeekday: true
+              withWeekday: true,
             });
             return [
               new TablerItemCell(key + 1, {
-                type: TablerFieldType.INDEX
+                type: TablerFieldType.INDEX,
               }),
               new TablerItemCell(date, {
-                icon: 'calendar-alt'
+                icon: 'calendar-alt',
               }),
               new TablerItemCell(diaryEntry.title, { icon: 'heading' }),
               new TablerItemCell(<Icon name={'star'} key={0} />, {
                 showOnCondition: {
-                  condition: diaryEntry.isFavourite!
-                }
+                  condition: diaryEntry.isFavourite!,
+                },
               }),
               new TablerItemCell(diaryEntry.status, { icon: 'lock' }),
               new TablerItemCell(content, { hideOnMobile: true }),
               new TablerItemCell(
                 <LinkButton diaryEntry={diaryEntry} key={key} />,
-                { type: TablerFieldType.BUTTON }
+                { type: TablerFieldType.BUTTON },
               ),
               new TablerItemCell(<EditButton id={diaryEntry.id!} key={key} />, {
-                type: TablerFieldType.BUTTON
+                type: TablerFieldType.BUTTON,
               }),
               new TablerItemCell(
                 (
@@ -127,8 +128,8 @@ const DiaryAdmin = () => {
                     setSelectedDiaryEntry={setSelectedDiaryEntry}
                   />
                 ),
-                { type: TablerFieldType.BUTTON }
-              )
+                { type: TablerFieldType.BUTTON },
+              ),
             ];
           })}
           distribution={[
@@ -140,7 +141,7 @@ const DiaryAdmin = () => {
             '30%',
             '4%',
             '4%',
-            '4%'
+            '4%',
           ]}
         />
         <Toolbar>
@@ -153,7 +154,7 @@ const DiaryAdmin = () => {
         visible={deleteModalVisible}
         message={`Are you sure you want to delete the diary entry for **${zDate.formatDate(
           selectedDiaryEntry.date as string,
-          { withWeekday: true }
+          { withWeekday: true },
         )}**?`}
         confirmFunction={deleteDiaryEntry}
         confirmText={'Delete'}
@@ -187,7 +188,7 @@ const EditButton = ({ id }: EditButton) => {
 const DeleteButton = ({
   diaryEntry,
   setDeleteModalVisibility,
-  setSelectedDiaryEntry
+  setSelectedDiaryEntry,
 }: DeleteButton) => {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);

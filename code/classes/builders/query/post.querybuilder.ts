@@ -7,7 +7,7 @@ import {
   PostStatic,
   PostStatus,
   PostType,
-  QueryOrder
+  QueryOrder,
 } from '../../index';
 
 const TABLE_NAME = 'posts';
@@ -15,7 +15,7 @@ const columns = [
   `${TABLE_NAME}.*`,
   'domain.title AS domainTitle',
   'domain.slug AS domainSlug',
-  'domain.type AS domainType'
+  'domain.type AS domainType',
 ];
 
 /** Builds a post query with conditions. */
@@ -27,7 +27,7 @@ export class PostQueryBuilder extends QueryBuilder<PostDAO> {
       `${TABLE_NAME} AS domain`,
       `${TABLE_NAME}.domainId`,
       '=',
-      'domain.id'
+      'domain.id',
     );
   }
 
@@ -79,7 +79,7 @@ export class PostQueryBuilder extends QueryBuilder<PostDAO> {
         .max(typeIdField)
         .where(typeIdField, '<', typeId),
       [`${TABLE_NAME}.type`]: type,
-      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED
+      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED,
     });
     return this;
   }
@@ -91,7 +91,7 @@ export class PostQueryBuilder extends QueryBuilder<PostDAO> {
         .min(typeIdField)
         .where(typeIdField, '>', typeId),
       [`${TABLE_NAME}.type`]: type,
-      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED
+      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED,
     });
     return this;
   }

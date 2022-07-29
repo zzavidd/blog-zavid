@@ -1,8 +1,8 @@
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { DiaryDAO } from 'classes';
+import type { DiaryDAO } from 'classes';
 import { AdminButton, BackButton } from 'src/components/button';
 import { Curator } from 'src/components/curator';
 import { Label } from 'src/components/form';
@@ -21,7 +21,7 @@ import css from 'src/styles/pages/Posts.module.scss';
 const DiarySingle = ({
   diaryEntry,
   previousDiaryEntry = {},
-  nextDiaryEntry = {}
+  nextDiaryEntry = {},
 }: DiarySingle) => {
   const [isImageModalVisible, setImageModalVisibility] = useState(false);
   const [isCuratePromptVisible, setCuratePromptVisible] = useState(false);
@@ -61,11 +61,11 @@ const DiarySingle = ({
             type={TimelineType.DIARY}
             previous={{
               slug: previousDiaryEntry.entryNumber?.toString(),
-              label: `Diary Entry #${previousDiaryEntry.entryNumber}: ${previousDiaryEntry.title}`
+              label: `Diary Entry #${previousDiaryEntry.entryNumber}: ${previousDiaryEntry.title}`,
             }}
             next={{
               slug: nextDiaryEntry.entryNumber?.toString(),
-              label: `Diary Entry #${nextDiaryEntry.entryNumber}: ${nextDiaryEntry.title}`
+              label: `Diary Entry #${nextDiaryEntry.entryNumber}: ${nextDiaryEntry.title}`,
             }}
           />
           <Divider />

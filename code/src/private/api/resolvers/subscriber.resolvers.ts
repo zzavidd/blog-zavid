@@ -5,7 +5,7 @@ import { SubscriberService } from '../service';
  */
 const getAllSubscribers = (
   parent: unknown,
-  args: SubscriberService.GetAllSubscriberOptions
+  args: SubscriberService.GetAllSubscriberOptions,
 ) => SubscriberService.getAllSubscribers(args);
 
 /**
@@ -13,7 +13,7 @@ const getAllSubscribers = (
  */
 const getSingleSubscriber = (
   parent: unknown,
-  args: SubscriberService.GetOrDeleteSubscriberOptions
+  args: SubscriberService.GetOrDeleteSubscriberOptions,
 ) => SubscriberService.getSingleSubscriber(args);
 
 /**
@@ -21,7 +21,7 @@ const getSingleSubscriber = (
  */
 const createSubscriber = (
   parent: unknown,
-  args: SubscriberService.CreateSubscriberOptions
+  args: SubscriberService.CreateSubscriberOptions,
 ) => SubscriberService.createSubscriber(args);
 
 /**
@@ -29,7 +29,7 @@ const createSubscriber = (
  */
 const updateSubscriber = (
   parent: unknown,
-  args: SubscriberService.UpdateSubscriberOptions
+  args: SubscriberService.UpdateSubscriberOptions,
 ) => SubscriberService.updateSubscriber(args);
 
 /**
@@ -37,7 +37,7 @@ const updateSubscriber = (
  */
 const deleteSubscriber = (
   parent: unknown,
-  args: SubscriberService.GetOrDeleteSubscriberOptions
+  args: SubscriberService.GetOrDeleteSubscriberOptions,
 ) => SubscriberService.deleteSubscriber(args);
 
 /**
@@ -48,12 +48,12 @@ const clearSubscribers = () => SubscriberService.clearSubscribers();
 export default {
   Query: {
     subscribers: getAllSubscribers,
-    subscriber: getSingleSubscriber
+    subscriber: getSingleSubscriber,
   },
   Mutation: {
     createSubscriber,
     updateSubscriber,
     deleteSubscriber,
-    clearSubscribers
-  }
+    clearSubscribers,
+  },
 };

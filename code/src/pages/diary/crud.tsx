@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 import { zDate, zString } from 'zavid-modules';
 
@@ -11,22 +11,22 @@ import { DAOParse, NumberParse } from 'src/lib/parser';
 import { isValidDiaryEntry } from 'src/lib/validations';
 import {
   CREATE_DIARY_QUERY,
-  UPDATE_DIARY_QUERY
+  UPDATE_DIARY_QUERY,
 } from 'src/private/api/queries/diary.queries';
 import { domain } from 'src/settings';
 
+import type { DiaryDAO } from '../../../classes';
 import {
-  DiaryDAO,
   DiaryEntryBuilder,
   DiaryStatic,
   DiaryStatus,
-  Operation
+  Operation,
 } from '../../../classes';
 
 const DiaryCrud = ({
   diaryEntry: serverDiaryEntry,
   operation,
-  latestEntryNumber = 0
+  latestEntryNumber = 0,
 }: DiaryInitialProps) => {
   const [clientDiaryEntry, setDiaryEntry] = useState({
     id: 0,
@@ -37,19 +37,17 @@ const DiaryCrud = ({
     status: DiaryStatus.PROTECTED,
     entryNumber: latestEntryNumber + 1,
     isFavourite: false,
-    tags: ''
+    tags: '',
   } as DiaryDAO);
   const [isLoaded, setLoaded] = useState(true);
   const [isRequestPending, setRequestPending] = useState(false);
   const [isPublishModalVisible, setPublishModalVisibility] = useState(false);
 
   // Initialise mutation functions.
-  const [createDiaryEntryMutation, { loading: createLoading }] = useMutation(
-    CREATE_DIARY_QUERY
-  );
-  const [updateDiaryEntryMutation, { loading: updateLoading }] = useMutation(
-    UPDATE_DIARY_QUERY
-  );
+  const [createDiaryEntryMutation, { loading: createLoading }] =
+    useMutation(CREATE_DIARY_QUERY);
+  const [updateDiaryEntryMutation, { loading: updateLoading }] =
+    useMutation(UPDATE_DIARY_QUERY);
 
   // Determine operation type.
   const isCreateOperation = operation === Operation.CREATE;
@@ -95,7 +93,7 @@ const DiaryCrud = ({
       await createDiaryEntryMutation({ variables });
       setAlert({
         type: AlertType.SUCCESS,
-        message: `You've successfully added a new diary entry.`
+        message: `You've successfully added a new diary entry.`,
       });
       returnToDiaryAdmin();
     } catch (err) {
@@ -113,8 +111,8 @@ const DiaryCrud = ({
       setAlert({
         type: AlertType.SUCCESS,
         message: `You've successfully updated the diary entry for ${zDate.formatDate(
-          clientDiaryEntry.date!
-        )}.`
+          clientDiaryEntry.date!,
+        )}.`,
       });
       returnAfterUpdate(clientDiaryEntry.entryNumber!);
     } catch (err) {
@@ -158,7 +156,7 @@ const DiaryCrud = ({
 const buildPayload = (
   clientDiaryEntry: DiaryDAO,
   isPublish: boolean,
-  isCreateOperation: boolean
+  isCreateOperation: boolean,
 ): DiaryRequest => {
   const {
     id,
@@ -169,7 +167,7 @@ const buildPayload = (
     date,
     entryNumber,
     isFavourite,
-    tags
+    tags,
   } = clientDiaryEntry;
 
   const diaryEntry = new DiaryEntryBuilder()

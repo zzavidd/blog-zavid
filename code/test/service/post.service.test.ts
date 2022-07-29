@@ -7,7 +7,7 @@ import {
   getPosts,
   getSinglePost,
   createPost,
-  updatePost
+  updatePost,
 } from '../helper/post.helper';
 
 describe('Service Tests: Post', function () {
@@ -17,7 +17,7 @@ describe('Service Tests: Post', function () {
       testWrapper(async () => {
         const posts = await getPosts();
         assert.isOk(posts);
-      })
+      }),
     );
 
     it(
@@ -26,7 +26,7 @@ describe('Service Tests: Post', function () {
         const limit = 5;
         const posts = await getPosts({ limit: 5 });
         assert.lengthOf(posts, limit);
-      })
+      }),
     );
 
     it(
@@ -42,7 +42,7 @@ describe('Service Tests: Post', function () {
           assert.include(includedTypes, post.type);
           assert.notInclude(excludedTypes, post.type);
         });
-      })
+      }),
     );
 
     it(
@@ -59,7 +59,7 @@ describe('Service Tests: Post', function () {
           assert.include(includedTypes, post.type);
           assert.notInclude(excludedTypes, post.type);
         });
-      })
+      }),
     );
   });
 
@@ -75,7 +75,7 @@ describe('Service Tests: Post', function () {
 
         comparePosts(postToCreate, readPost);
         await deletePost(readPost.id!);
-      })
+      }),
     );
 
     it(
@@ -85,7 +85,7 @@ describe('Service Tests: Post', function () {
           .random({
             allowPageTypes: false,
             withImage: true,
-            numberOfContentImages: 2
+            numberOfContentImages: 2,
           })
           .build();
 
@@ -99,34 +99,34 @@ describe('Service Tests: Post', function () {
         assert.isNotEmpty(resources);
         assert.strictEqual(resources[0].public_id, publicId);
         await deletePost(postId);
-      })
+      }),
     );
 
     it('Different statuses', function () {
       const promiseDraft = createPostStatusPromise(PostStatus.DRAFT, {
         expectNullSlug: true,
-        failMessage: 'A slug was incorrectly generated for this DRAFT post.'
+        failMessage: 'A slug was incorrectly generated for this DRAFT post.',
       });
 
       const promiseProtected = createPostStatusPromise(PostStatus.PROTECTED, {
         failMessage:
-          'A slug should have been generated for this PROTECTED post.'
+          'A slug should have been generated for this PROTECTED post.',
       });
 
       const promisePrivate = createPostStatusPromise(PostStatus.PRIVATE, {
-        failMessage: 'A slug should have been generated for this PRIVATE post.'
+        failMessage: 'A slug should have been generated for this PRIVATE post.',
       });
 
       const promisePublished = createPostStatusPromise(PostStatus.PUBLISHED, {
         failMessage:
-          'A slug should have been generated for this PUBLISHED post.'
+          'A slug should have been generated for this PUBLISHED post.',
       });
 
       return Promise.all([
         promiseDraft,
         promiseProtected,
         promisePrivate,
-        promisePublished
+        promisePublished,
       ]);
     });
   });
@@ -147,7 +147,7 @@ describe('Service Tests: Post', function () {
         comparePosts(postForUpdate, updatedPost);
         assert.strictEqual(createdPost.id, updatedPost.id);
         await deletePost(createdPost.id);
-      })
+      }),
     );
 
     it(
@@ -157,14 +157,14 @@ describe('Service Tests: Post', function () {
           .random({
             allowPageTypes: false,
             withImage: true,
-            numberOfContentImages: 2
+            numberOfContentImages: 2,
           })
           .build();
         const postForUpdate = new PostBuilder()
           .random({
             allowPageTypes: false,
             withImage: true,
-            numberOfContentImages: 2
+            numberOfContentImages: 2,
           })
           .build();
 
@@ -178,7 +178,7 @@ describe('Service Tests: Post', function () {
         const publicIdUpdate = extractPublicId(updatedPost.image as string);
         assert.notEqual(publicIdSubmit, publicIdUpdate);
         await deletePost(postId);
-      })
+      }),
     );
   });
 });
@@ -190,7 +190,7 @@ describe('Service Tests: Post', function () {
  */
 async function createPostStatusPromise(
   status: PostStatus,
-  options: CreatePromiseOptions
+  options: CreatePromiseOptions,
 ) {
   const { failMessage, expectNullSlug = false } = options;
   return promiseWrapper(async () => {

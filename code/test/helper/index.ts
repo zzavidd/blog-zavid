@@ -9,16 +9,16 @@ import { GenericDAO } from '../../classes/interfaces/super';
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 export async function getEntities<T>(
-  options: GetEntitiesOptions
+  options: GetEntitiesOptions,
 ): Promise<T[] | void> {
   const { query, resolver, variables = {} } = options;
   try {
     const { data } = (await fetch(query, {
-      variables
+      variables,
     })) as FetchResponse;
 
     const entities = data![resolver] as T[];
@@ -30,13 +30,13 @@ export async function getEntities<T>(
 
 export async function getSingleEntity<T>(
   id: number,
-  options: GetSingleEntityOptions
+  options: GetSingleEntityOptions,
 ): Promise<T | void> {
   const { query, resolver, expectToFail = false } = options;
   try {
     const { data, errors } = (await fetch(query, {
       variables: { id },
-      expectToFail
+      expectToFail,
     })) as FetchResponse;
 
     if (expectToFail) {
@@ -53,12 +53,12 @@ export async function getSingleEntity<T>(
 
 export async function createEntity<T>(
   entity: T,
-  options: MutateEntityOptions
+  options: MutateEntityOptions,
 ): Promise<SubmitEntityResponse | void> {
   const { query, resolver, anonym, extraVariables = {} } = options;
   try {
     const { data } = (await fetch(query, {
-      variables: { [anonym]: entity, isTest: true, ...extraVariables }
+      variables: { [anonym]: entity, isTest: true, ...extraVariables },
     })) as FetchResponse;
 
     const createdEntity = data![resolver] as SubmitEntityResponse;
@@ -73,12 +73,12 @@ export async function createEntity<T>(
 export async function updateEntity<T extends GenericDAO>(
   id: number,
   entity: T,
-  options: MutateEntityOptions
+  options: MutateEntityOptions,
 ): Promise<T | void> {
   const { query, resolver, anonym, extraVariables = {} } = options;
   try {
     const { data } = (await fetch(query, {
-      variables: { id, [anonym]: entity, isTest: true, ...extraVariables }
+      variables: { id, [anonym]: entity, isTest: true, ...extraVariables },
     })) as FetchResponse;
 
     const updatedEntity = data![resolver] as T;
@@ -91,12 +91,12 @@ export async function updateEntity<T extends GenericDAO>(
 
 export async function deleteEntity<T extends GenericDAO>(
   id: number,
-  options: DeleteEntityOptions
+  options: DeleteEntityOptions,
 ): Promise<void> {
   const { query, resolver, verifyDelete } = options;
   try {
     const { data } = (await fetch(query, {
-      variables: { id }
+      variables: { id },
     })) as FetchResponse;
     const deletedEntity = data![resolver] as T;
     assert.property(deletedEntity, 'id');
@@ -112,7 +112,7 @@ export async function deleteEntity<T extends GenericDAO>(
  * @param publicId A resource Cloudinary public ID.
  */
 export function retrieveResource(
-  publicId: string
+  publicId: string,
 ): Promise<ResourceApiResponse> {
   return new Promise((resolve) => {
     cloudinary.api.resources_by_ids(publicId, function (err, result) {
@@ -130,7 +130,7 @@ export function extractPublicId(image: string): string {
   if (!image) throw ex;
 
   const regex = new RegExp(
-    /^(?:v[0-9]+\/)?((?:dynamic|static|test)\/.*)(?:\.[a-z]+)$/
+    /^(?:v[0-9]+\/)?((?:dynamic|static|test)\/.*)(?:\.[a-z]+)$/,
   );
   const match = image.match(regex);
   assert.isOk(match);

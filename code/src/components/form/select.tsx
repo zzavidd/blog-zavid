@@ -1,8 +1,9 @@
 import classnames from 'classnames';
 import React from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { OnSelectChangeType } from 'classes';
+import type { OnSelectChangeType } from 'classes';
 import css from 'src/styles/components/Form.module.scss';
 
 export const Select = (props: SelectProps) => {
@@ -14,19 +15,19 @@ export const Select = (props: SelectProps) => {
     className,
     placeholder = '',
     isPlaceholderSelectable = false,
-    isRound = false
+    isRound = false,
   } = props;
 
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   // Make widgets account for values of '00' (time)
   const selectedValue = value === 0 ? '00' : value;
-  const color = (!selectedValue && placeholder) ? '#8E8E8E' : 'inherit';
+  const color = !selectedValue && placeholder ? '#8E8E8E' : 'inherit';
 
   const classes = classnames(
     css[isRound ? `select-round` : `select`],
     css[isRound ? `select-round-${theme}` : `select-${theme}`],
-    className
+    className,
   );
 
   return (

@@ -1,10 +1,12 @@
 import InstagramEmbed from '@aarnila/react-instagram-embed';
 import classnames from 'classnames';
-import React, { CSSProperties, ReactNode } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { CSSProperties, ReactNode } from 'react';
+import React from 'react';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zText } from 'zavid-modules';
-import { FormatCSS } from 'zavid-modules/_dist/constants/text';
+import type { FormatCSS } from 'zavid-modules/_dist/constants/text';
 
 import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Text.module.scss';
@@ -24,7 +26,7 @@ export const Paragraph = ({
   substitutions,
   truncate = 0,
   keepRichFormatOnTruncate = false,
-  onLongPress
+  onLongPress,
 }: Paragraph) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css['paragraph'], className);
@@ -32,14 +34,14 @@ export const Paragraph = ({
   let text = truncate
     ? zText.truncateText(children as string, {
         limit: truncate as number,
-        keepRichFormatting: keepRichFormatOnTruncate
+        keepRichFormatting: keepRichFormatOnTruncate,
       })
     : children;
 
   try {
     text = zText.applySubstitutions(
       text as string,
-      substitutions as Record<string, string>
+      substitutions as Record<string, string>,
     );
   } catch (e) {
     // Don't apply substitutions.
@@ -50,22 +52,22 @@ export const Paragraph = ({
       heading: css['paragraph-heading'],
       subheading: css['paragraph-subheading'],
       image: {
-        full: css['paragraph-image-full']
+        full: css['paragraph-image-full'],
       },
       blockquote: css['paragraph-blockquote'],
       paragraph: css['paragraph-body'],
       divider: css['paragraph-divider'],
       hyperlink: css[`paragraph-hyperlink-${theme}`],
-      ...cssOverrides
+      ...cssOverrides,
     },
     socialWrappers: {
       Tweet: EmbeddedTweet,
-      InstagramPost: EmbeddedInsta
+      InstagramPost: EmbeddedInsta,
     },
     onLongPress: {
       action: onLongPress,
-      duration: 1000
-    }
+      duration: 1000,
+    },
   });
 
   const ReadMoreLabel = () => {
@@ -102,7 +104,7 @@ export const VanillaLink = ({
   href,
   children,
   openNewTab = false,
-  style
+  style,
 }: VanillaLinkProps) => {
   const classes = classnames(css['vanilla-link'], className);
   return (
@@ -112,7 +114,7 @@ export const VanillaLink = ({
       style={style}
       {...(openNewTab && {
         target: '_blank',
-        rel: 'noopener noreferrer'
+        rel: 'noopener noreferrer',
       })}>
       {children}
     </a>

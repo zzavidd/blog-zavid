@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { ReactSelectChangeEvent, ReactHook } from 'classes';
+import type { ReactSelectChangeEvent, ReactHook } from 'classes';
 import { Icon } from 'src/lib/library';
 import { creationDate } from 'src/settings';
 import css from 'src/styles/components/Form.module.scss';
 
-import { Field, FieldRow, Select, TextInput } from '.';
 import { alert } from '../alert';
 import { ConfirmButton, CancelButton, InvisibleButton } from '../button';
 import { Modal, ConfirmModal } from '../modal';
+
+import { Field, FieldRow, Select, TextInput } from '.';
 
 export default ({ name, date, onConfirm, placeholderText }: DatePicker) => {
   return (
@@ -38,7 +39,7 @@ const DatePicker = (props: BaseDatePicker) => {
   const {
     day: initialDay,
     month: initialMonth,
-    year: initialYear
+    year: initialYear,
   } = extractDates(date);
 
   useEffect(() => {
@@ -123,7 +124,7 @@ const DatePickerBody = ({
   selectedYear,
   setDay,
   setMonth,
-  setYear
+  setYear,
 }: DatePickerBody) => {
   const startYear = minDate && minDate.getFullYear();
   const endYear = maxDate && maxDate.getFullYear();
@@ -133,20 +134,20 @@ const DatePickerBody = ({
     .map((label, key) => {
       return {
         label,
-        value: key + 1
+        value: key + 1,
       };
     });
 
   const monthList = zDate.getAllMonths().map((label, key) => {
     return {
       label,
-      value: key + 1
+      value: key + 1,
     };
   });
 
   const changeDatePart = (
     event: ReactSelectChangeEvent,
-    hook: ReactHook<number>
+    hook: ReactHook<number>,
   ): void => {
     const { value } = event.target;
     hook(parseInt(value));
@@ -191,7 +192,7 @@ const DatePickerFooter = ({
   month,
   year,
   onConfirm,
-  setDatePickerVisibility
+  setDatePickerVisibility,
 }: DatePickerFooter) => {
   /** Close the datepicker. */
   const closeDatePicker = (): void => setDatePickerVisibility(false);
@@ -217,7 +218,7 @@ const DatePickerFooter = ({
 
 const ClearDateButton = ({
   date,
-  setClearDateModalVisibility
+  setClearDateModalVisibility,
 }: ClearDateButton) => {
   if (date === null) return null;
   return (

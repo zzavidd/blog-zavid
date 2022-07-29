@@ -1,8 +1,9 @@
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { PostDAO, PostStatic, PostType, Substitutions } from 'classes';
+import type { PostDAO, PostType, Substitutions } from 'classes';
+import { PostStatic } from 'classes';
 import { AdminButton, BackButton as IBackButton } from 'src/components/button';
 import { Curator } from 'src/components/curator';
 import CloudImage, { cloudinaryBaseUrl, Signature } from 'src/components/image';
@@ -62,12 +63,12 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
             previous={{
               slug: previousPost.slug!,
               image: previousPost.image as string,
-              label: PostStatic.getPostTitle(previousPost)
+              label: PostStatic.getPostTitle(previousPost),
             }}
             next={{
               slug: nextPost.slug!,
               image: nextPost.image as string,
-              label: PostStatic.getPostTitle(nextPost)
+              label: PostStatic.getPostTitle(nextPost),
             }}
           />
           <Divider />
@@ -137,7 +138,7 @@ const PostDate = ({ post }: PostDate) => {
   if (PostStatic.isPrivate(post)) return null;
 
   const datePublished = zDate.formatDate(post.datePublished as string, {
-    withWeekday: true
+    withWeekday: true,
   });
   return <div className={css['post-single-date']}>{datePublished}</div>;
 };

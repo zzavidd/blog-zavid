@@ -1,6 +1,6 @@
 export enum ThemeOption {
   LIGHT = 'light',
-  DARK = 'dark'
+  DARK = 'dark',
 }
 
 export enum FilterThemeOption {
@@ -10,13 +10,13 @@ export enum FilterThemeOption {
   GREEN = 'green',
   YELLOW = 'yellow',
   RED = 'red',
-  PINK = 'pink'
+  PINK = 'pink',
 }
 
 export enum FilterShapeOption {
   SQUARE = 'square',
   TALL = 'tall',
-  WIDE = 'wide'
+  WIDE = 'wide',
 }
 
 export class Theme {

@@ -15,8 +15,8 @@ toast.configure({
   transition: cssTransition({
     enter: css['toast-transition-fadein'],
     exit: css['toast-transition-fadeout'],
-    duration: 500
-  })
+    duration: 500,
+  }),
 });
 
 interface Alert {
@@ -27,7 +27,7 @@ interface Alert {
 export enum AlertType {
   SUCCESS = 'success',
   ERROR = 'error',
-  INFO = 'info'
+  INFO = 'info',
 }
 
 const classes = ['alert', css['toast-message']];
@@ -38,12 +38,12 @@ export const alert = {
   },
   error: (message: string | Error): void => {
     toast(message.toString(), {
-      className: classnames('alert-danger', classes)
+      className: classnames('alert-danger', classes),
     });
   },
   info: (message: string): void => {
     toast(message, { className: classnames('alert-info', classes) });
-  }
+  },
 };
 
 export const setAlert = ({ type, message }: Alert): void => {
@@ -61,7 +61,7 @@ export const reportError = (error: Error): void => {
 
 export const checkForSetAlerts = (): void => {
   const notification: Alert = JSON.parse(
-    sessionStorage.getItem('alert') as string
+    sessionStorage.getItem('alert') as string,
   );
   if (notification) {
     const { type, message } = notification;

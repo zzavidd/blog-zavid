@@ -8,8 +8,8 @@ export async function submitPost() {
   const post = new PostBuilder().random().build();
   await tryWrapper(
     PostHelper.createPost(post, {
-      extraVariables: { isPublish: true }
-    })
+      extraVariables: { isPublish: true },
+    }),
   );
 }
 
@@ -21,7 +21,7 @@ export async function updatePost() {
 
   await tryWrapper(
     PostHelper.updatePost(POST_ID, post, {
-      extraVariables: { isPublish: true }
-    })
+      extraVariables: { isPublish: true },
+    }),
   );
 }

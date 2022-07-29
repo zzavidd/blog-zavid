@@ -1,15 +1,13 @@
 import express from 'express';
 
+import type { DiaryDAO, PostDAO, ResultEntityDAO } from '../../../classes';
 import {
-  DiaryDAO,
   DiaryQueryBuilder,
   DiaryStatus,
-  PostDAO,
   PostQueryBuilder,
   PostStatic,
   PostStatus,
-  ResultEntityDAO,
-  URLBuilder
+  URLBuilder,
 } from '../../../classes';
 import { siteTitle } from '../../settings';
 import { getKnex, getServer } from '../singleton';
@@ -22,7 +20,7 @@ router.get('/search', async function (req, res) {
   const searchTerm = req.query.term as string;
   const onlyDiary = req.query.onlyDiary === 'true';
   const entities = await getResultEntities(searchTerm, {
-    includePosts: !onlyDiary
+    includePosts: !onlyDiary,
   });
 
   const title = searchTerm ? `Results for '${searchTerm}'` : `Search`;
@@ -30,13 +28,13 @@ router.get('/search', async function (req, res) {
   return server.render(req, res, '/home/search', {
     title: `${title} | ${siteTitle}`,
     searchTerm,
-    results: JSON.stringify(entities)
+    results: JSON.stringify(entities),
   });
 });
 
 export async function getResultEntities(
   searchTerm: string,
-  options: GetResultEntityOptions = {}
+  options: GetResultEntityOptions = {},
 ): Promise<ResultEntityDAO[]> {
   let entities: ResultEntityDAO[] = [];
   if (!searchTerm) return entities;
@@ -68,7 +66,7 @@ export async function getResultEntities(
     .map((entity, index) => {
       return {
         ...entity,
-        index: index + 1
+        index: index + 1,
       };
     });
   return entities;
@@ -79,7 +77,7 @@ export async function getResultEntities(
  * @param filterBySearchTerm The function used to filter by search term.
  */
 async function compilePosts(
-  filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean
+  filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean,
 ): Promise<ResultEntityDAO[]> {
   const posts = await new PostQueryBuilder(knex)
     .whereStatus({ include: [PostStatus.PRIVATE, PostStatus.PUBLISHED] })
@@ -109,7 +107,7 @@ async function compilePosts(
       content,
       slug,
       image,
-      date: datePublished
+      date: datePublished,
     };
   }) as ResultEntityDAO[];
 
@@ -121,7 +119,7 @@ async function compilePosts(
  * @param filterBySearchTerm The function used to filter by search term.
  */
 async function compileDiaryEntries(
-  filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean
+  filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean,
 ): Promise<ResultEntityDAO[]> {
   const diary = await new DiaryQueryBuilder(knex)
     .whereStatus({ include: [DiaryStatus.PRIVATE, DiaryStatus.PUBLISHED] })
@@ -135,7 +133,7 @@ async function compileDiaryEntries(
         type: 'Diary Entry',
         date,
         content,
-        slug: `/diary/${entryNumber}`
+        slug: `/diary/${entryNumber}`,
       };
     }) as ResultEntityDAO[];
 

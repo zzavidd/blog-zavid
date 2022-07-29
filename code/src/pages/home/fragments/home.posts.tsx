@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import { PostDAO, PostStatic } from 'classes';
+import type { PostDAO } from 'classes';
+import { PostStatic } from 'classes';
 import CloudImage, { AspectRatio } from 'src/components/image';
 import { Title, VanillaLink } from 'src/components/text';
 import css from 'src/styles/pages/Home.module.scss';

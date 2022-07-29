@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
+
+import type { CustomError } from '../../classes';
 
 import { getServer } from './singleton';
-
-import { CustomError } from '../../classes';
 
 const isDev = process.env.NODE_ENV !== 'production';
 const server = getServer();
@@ -16,7 +16,7 @@ export const debug = (err: Error) => {
 export const renderErrorPage = (
   err: CustomError,
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   console.error(err.toString());
   const errorPage = err.status === 404 ? '/404' : '/_error';
@@ -32,8 +32,8 @@ export const ERRORS = {
   },
   NONEXISTENT_ID: (id: number, entity: string) => {
     const error: CustomError = new Error(
-      `There exists no ${entity} with ID '${id}'.`
+      `There exists no ${entity} with ID '${id}'.`,
     );
     return error;
-  }
+  },
 };

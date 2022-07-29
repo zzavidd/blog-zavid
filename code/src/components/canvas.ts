@@ -1,12 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
-import {
-  FilterShape,
-  FilterShapeOption,
-  FilterThemeOption,
-  Theme,
-  ThemeOption
-} from 'classes';
+import type { FilterThemeOption, ThemeOption } from 'classes';
+import { FilterShape, FilterShapeOption, Theme } from 'classes';
 
 const constants = {
   [FilterShapeOption.SQUARE]: {
@@ -20,7 +15,7 @@ const constants = {
     ST_FONT_SIZE: 35,
     ST_LINE_HEIGHT: 45,
     ST_START_X: 30,
-    ST_START_Y: 65
+    ST_START_Y: 65,
   },
   [FilterShapeOption.TALL]: {
     RECT_PADDING_X: 175,
@@ -33,7 +28,7 @@ const constants = {
     ST_FONT_SIZE: 50,
     ST_LINE_HEIGHT: 65,
     ST_START_X: 45,
-    ST_START_Y: 90
+    ST_START_Y: 90,
   },
   [FilterShapeOption.WIDE]: {
     RECT_PADDING_X: 500,
@@ -46,12 +41,12 @@ const constants = {
     ST_FONT_SIZE: 35,
     ST_LINE_HEIGHT: 45,
     ST_START_X: 30,
-    ST_START_Y: 65
+    ST_START_Y: 65,
   },
   common: {
     TITLE_FONT_SIZE: 80,
-    TITLE_LINE_HEIGHT: 100
-  }
+    TITLE_LINE_HEIGHT: 100,
+  },
 };
 
 /**
@@ -73,7 +68,7 @@ export function createCanvasFromContent(
   colour: FilterThemeOption,
   shape: FilterShapeOption,
   setImageSource: Dispatch<SetStateAction<string>>,
-  isTitleOnly: boolean
+  isTitleOnly: boolean,
 ) {
   const ctx = canvas.getContext('2d');
   const SHAPE = Object.assign({}, constants[shape], constants.common);
@@ -89,7 +84,7 @@ export function createCanvasFromContent(
 
   const fontStyleOptions = {
     isTitleOnly,
-    constantLineHeight: SHAPE.TITLE_LINE_HEIGHT
+    constantLineHeight: SHAPE.TITLE_LINE_HEIGHT,
   };
 
   if (ctx !== null) {
@@ -158,7 +153,7 @@ export function createCanvasFromContent(
           SHAPE.ST_START_X,
           SHAPE.ST_START_Y,
           canvas.width * (4 / 7),
-          SHAPE.ST_LINE_HEIGHT
+          SHAPE.ST_LINE_HEIGHT,
         );
       }
 
@@ -189,7 +184,7 @@ function insertText(
   x: number,
   y: number,
   maxWidth: number,
-  lineHeight: number
+  lineHeight: number,
 ): number {
   let line = '';
   let textHeight = 0;
@@ -244,7 +239,7 @@ function insertText(
 export function downloadImage(imageUrl: string) {
   fetch(imageUrl, {
     method: 'GET',
-    headers: {}
+    headers: {},
   })
     .then((response) => {
       response.arrayBuffer().then(function (buffer) {
@@ -266,7 +261,7 @@ export function downloadImage(imageUrl: string) {
  */
 function getFontStyle(
   fontSize: number,
-  options: FontStyleOptions
+  options: FontStyleOptions,
 ): [string, number] {
   const { isTitleOnly, constantLineHeight } = options;
   const lineHeight = isTitleOnly ? constantLineHeight! : (7 / 4) * fontSize;

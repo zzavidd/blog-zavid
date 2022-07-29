@@ -1,19 +1,21 @@
-import { emailsOn, telegramOn, TryWrapper } from './helper';
-
-import {
+import type {
   PostDAO,
+  PostStatusFilters,
+  PostTypeFilters,
+  QuerySort,
+} from '../../../../classes';
+import {
   PostMutationBuilder,
   PostQueryBuilder,
   PostStatic,
-  PostStatusFilters,
-  PostTypeFilters,
-  QuerySort
 } from '../../../../classes';
 import { ERRORS } from '../../error';
 import * as Filer from '../../filer';
 import * as Emails from '../../notifications/emails';
 import * as Telegram from '../../notifications/telegram';
 import { getKnex } from '../../singleton';
+
+import { emailsOn, telegramOn, TryWrapper } from './helper';
 
 const knex = getKnex();
 const ENTITY_NAME = 'post';
@@ -29,7 +31,7 @@ export const getAllPosts = ({
   limit = 0,
   sort,
   type,
-  status
+  status,
 }: GetAllPostOptions): Promise<PostDAO[]> => {
   return TryWrapper(async () => {
     const posts = await new PostQueryBuilder(knex)
@@ -48,7 +50,7 @@ export const getAllPosts = ({
  * @param args.id The ID of the post to retrieve.
  */
 export const getSinglePost = async ({
-  id
+  id,
 }: GetOrDeletePostOptions): Promise<PostDAO> => {
   return TryWrapper(async () => {
     const [post] = await new PostQueryBuilder(knex).whereId(id).build();
@@ -66,11 +68,11 @@ export const getSinglePost = async ({
 export const createPost = ({
   post,
   isPublish,
-  isTest
+  isTest,
 }: CreatePostOptions): Promise<PostDAO> => {
   const { shouldSendEmail, shouldSendTelegram } = getPermissions(
     post,
-    isPublish
+    isPublish,
   );
 
   return TryWrapper(async () => {
@@ -78,7 +80,7 @@ export const createPost = ({
     const [[id]] = await Promise.all([
       new PostMutationBuilder(knex).insert(post).build(),
       shouldSendEmail ? Emails.notifyNewPost(post) : null,
-      shouldSendTelegram ? Telegram.notifyNewPost(post) : null
+      shouldSendTelegram ? Telegram.notifyNewPost(post) : null,
     ]);
     return { id };
   });
@@ -95,19 +97,19 @@ export const updatePost = ({
   id,
   post,
   isPublish,
-  isTest
+  isTest,
 }: UpdatePostOptions): Promise<PostDAO> => {
   return TryWrapper(async () => {
     const { shouldSendEmail, shouldSendTelegram } = getPermissions(
       post,
-      isPublish
+      isPublish,
     );
 
     post = await Filer.replaceImages(id, post, { isTest });
     await Promise.all([
       new PostMutationBuilder(knex).update(post).whereId(id).build(),
       shouldSendEmail ? Emails.notifyNewPost(post) : null,
-      shouldSendTelegram ? Telegram.notifyNewPost(post) : null
+      shouldSendTelegram ? Telegram.notifyNewPost(post) : null,
     ]);
     return getSinglePost({ id });
   });
@@ -118,7 +120,7 @@ export const updatePost = ({
  * @param args.id - The ID of the post to delete.
  */
 export const deletePost = ({
-  id
+  id,
 }: GetOrDeletePostOptions): Promise<PostDAO> => {
   return TryWrapper(async () => {
     const post = await getSinglePost({ id });

@@ -1,6 +1,6 @@
-import { Dispatch } from 'redux';
+import type { Dispatch } from 'redux';
 
-import {
+import type {
   PostContentImageMapping,
   PostDAO,
   PostImage,
@@ -8,18 +8,18 @@ import {
   ReactInputChangeEvent,
   ReactSelectChangeEvent,
   ReactTextAreaChangeEvent,
-  SubscriptionsMapping
+  SubscriptionsMapping,
 } from 'classes';
-import { GenericDAO } from 'classes/interfaces/super';
-import { DateType } from 'src/components/form/datepicker';
+import type { GenericDAO } from 'classes/interfaces/super';
+import type { DateType } from 'src/components/form/datepicker';
 import { saveText } from 'src/lib/reducers';
 
 const handlers = <T extends GenericDAO>(
   hook: ReactHook<T>,
-  state: T
+  state: T,
 ): Handlers => {
   const handleText = (
-    event: ReactInputChangeEvent | ReactTextAreaChangeEvent
+    event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
   ): void => {
     const { name, value } = event.target;
     hook(Object.assign({}, state, { [name]: value }));
@@ -37,7 +37,7 @@ const handlers = <T extends GenericDAO>(
 
   const handleTextSave = (
     event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
-    dispatch: Dispatch
+    dispatch: Dispatch,
   ): void => {
     handleText(event);
     dispatch(saveText(event.target.value));
@@ -57,9 +57,9 @@ const handlers = <T extends GenericDAO>(
       Object.assign({}, state, {
         [name]: {
           source: file,
-          hasChanged: true
-        }
-      })
+          hasChanged: true,
+        },
+      }),
     );
   };
 
@@ -69,13 +69,13 @@ const handlers = <T extends GenericDAO>(
 
     contentImages[`image${i}`] = {
       source: file,
-      hasChanged: true
+      hasChanged: true,
     } as PostImage;
 
     hook(
       Object.assign({}, state, {
-        contentImages
-      })
+        contentImages,
+      }),
     );
   };
 
@@ -87,7 +87,7 @@ const handlers = <T extends GenericDAO>(
     handleDate,
     handleCheck,
     handleFile,
-    handleContentImages
+    handleContentImages,
   };
 };
 
@@ -98,7 +98,7 @@ export interface Handlers {
   handleNumber: (event: ReactInputChangeEvent) => void;
   handleTextSave: (
     event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
-    dispatch: Dispatch
+    dispatch: Dispatch,
   ) => void;
   handleSelection: (event: ReactSelectChangeEvent) => void;
   handleDate: (date: DateType, name: string) => void;

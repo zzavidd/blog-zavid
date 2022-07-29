@@ -1,8 +1,10 @@
-import { AnyAction, combineReducers, createStore } from 'redux';
+import type { AnyAction } from 'redux';
+import { combineReducers, createStore } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { PostStatus, PostType, ThemeOption } from 'classes';
+import type { PostStatus, PostType } from 'classes';
+import { ThemeOption } from 'classes';
 
 /**
  * ACTIONS.
@@ -10,28 +12,28 @@ import { PostStatus, PostType, ThemeOption } from 'classes';
 
 export const setTheme = (theme: ThemeOption): AnyAction => ({
   type: 'SET_THEME',
-  payload: theme
+  payload: theme,
 });
 
 export const updatePostFilterSettings = (
-  settings: PostFiltersState
+  settings: PostFiltersState,
 ): AnyAction => ({
   type: 'UPDATE_POST_FILTER_SETTINGS',
-  payload: settings
+  payload: settings,
 });
 
 export const setUser = (user: UserState): AnyAction => ({
   type: 'SET_USER',
-  payload: user
+  payload: user,
 });
 
 export const clearUser = (): AnyAction => ({
-  type: 'CLEAR_USER'
+  type: 'CLEAR_USER',
 });
 
 export const saveText = (text: string): AnyAction => ({
   type: 'SAVE_TEXT',
-  payload: text
+  payload: text,
 });
 
 /**
@@ -40,7 +42,7 @@ export const saveText = (text: string): AnyAction => ({
 
 const themeReducer = (
   state = ThemeOption.DARK,
-  { type, payload }: AnyAction
+  { type, payload }: AnyAction,
 ): string => {
   switch (type) {
     case 'SET_THEME':
@@ -55,9 +57,9 @@ const postReducer = (
     limit: 20,
     field: 'id',
     order: 'DESC',
-    type: null
+    type: null,
   },
-  { type, payload }: AnyAction
+  { type, payload }: AnyAction,
 ): PostFiltersState => {
   switch (type) {
     case 'UPDATE_POST_FILTER_SETTINGS':
@@ -69,7 +71,7 @@ const postReducer = (
 
 const userReducer = (
   state = { isAuthenticated: false },
-  { type, payload }: AnyAction
+  { type, payload }: AnyAction,
 ): UserState => {
   switch (type) {
     case 'SET_USER':
@@ -95,7 +97,7 @@ const textReducer = (state = '', { type, payload }: AnyAction): string => {
 
 const config = {
   key: 'root',
-  storage: storage
+  storage: storage,
 };
 
 const persistedReducer = persistReducer(
@@ -104,8 +106,8 @@ const persistedReducer = persistReducer(
     theme: themeReducer,
     postFilterOptions: postReducer,
     user: userReducer,
-    savedText: textReducer
-  })
+    savedText: textReducer,
+  }),
 );
 
 export default () => {

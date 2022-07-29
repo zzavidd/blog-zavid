@@ -2,26 +2,25 @@ import async from 'async';
 import ejs from 'ejs';
 import htmlToText from 'html-to-text';
 import nodemailer from 'nodemailer';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import ReactDOMServer from 'react-dom/server';
 import { v4 as uuidv4 } from 'uuid';
 import { zDate, zText } from 'zavid-modules';
 
-import {
+import type {
   DiaryDAO,
   GenericDAO,
   PostDAO,
   PostType,
   SubscriberDAO,
-  SubscriberQueryBuilder,
-  SubscriberStatic
 } from '../../../../classes';
+import { SubscriberQueryBuilder, SubscriberStatic } from '../../../../classes';
 import { debug } from '../../../private/error';
 import {
   accounts,
   cloudinaryBaseUrl,
   copyright,
-  domain
+  domain,
 } from '../../../settings';
 import { getKnex } from '../../singleton';
 
@@ -34,7 +33,7 @@ const ejsLocals = {
   accounts,
   cloudinaryBaseUrl,
   copyright,
-  domain
+  domain,
 };
 
 /** The common HTML-to-text options for all emails. */
@@ -44,13 +43,13 @@ const htmlToTextOptions = {
   noLinkBrackets: true,
   preserveNewlines: true,
   uppercaseHeadings: false,
-  wordwrap: 80
+  wordwrap: 80,
 };
 
 /** The email address of the recipient in development. */
 const testRecipient: TestRecipient = {
   email: process.env.ETHEREAL_EMAIL!,
-  token: uuidv4()
+  token: uuidv4(),
 };
 
 /** Initialise the mail transporter */
@@ -59,12 +58,12 @@ const transporter = nodemailer.createTransport({
   port: parseInt(process.env[isDev ? 'ETHEREAL_PORT' : 'EMAIL_PORT'] as string),
   auth: {
     user: process.env[isDev ? 'ETHEREAL_EMAIL' : 'EMAIL_USER'],
-    pass: process.env[isDev ? 'ETHEREAL_PWD' : 'EMAIL_PWD']
-  }
+    pass: process.env[isDev ? 'ETHEREAL_PWD' : 'EMAIL_PWD'],
+  },
 } as SMTPTransport.Options);
 
 const typeToSubscription: SubscriptionType = {
-  Reverie: 'Reveries'
+  Reverie: 'Reveries',
 };
 
 /**
@@ -80,8 +79,8 @@ export const notifyNewPost = (post: PostDAO) => {
       content: zText.truncateText(content!),
       slug: `${domain}/reveries/${slug}`,
       datePublished: zDate.formatDate(datePublished!, { withWeekday: true }),
-      image: `${cloudinaryBaseUrl}/w_768,c_lfill/${image}`
-    })
+      image: `${cloudinaryBaseUrl}/w_768,c_lfill/${image}`,
+    }),
   };
 
   return prepareEmail(entity, typeToSubscription[type!]!, 'post', subject);
@@ -100,8 +99,8 @@ export const notifyNewDiaryEntry = (diaryEntry: DiaryDAO): Promise<void> => {
       hyperlink: 'hyperlink-content',
       blockquote: 'blockquote',
       ['twitter-button']: 'button',
-      ['instagram-button']: 'button'
-    }
+      ['instagram-button']: 'button',
+    },
   };
 
   const format = (text: string) => {
@@ -113,15 +112,15 @@ export const notifyNewDiaryEntry = (diaryEntry: DiaryDAO): Promise<void> => {
       content: format(content!),
       footnote: format(footnote!),
       slug: `${domain}/diary/${slug}`,
-      date: zDate.formatDate(date!, { withWeekday: true })
-    })
+      date: zDate.formatDate(date!, { withWeekday: true }),
+    }),
   };
 
   return prepareEmail<DiaryDAO>(
     entity,
     SubscriberStatic.SUBSCRIPTIONS.Diary,
     'diary',
-    subject
+    subject,
   );
 };
 
@@ -136,7 +135,7 @@ const prepareEmail = async <T extends GenericDAO>(
   entity: Record<string, T>,
   type: string,
   template: string,
-  subject: string
+  subject: string,
 ): Promise<void> => {
   let mailList: SubscriberDAO[];
 
@@ -165,22 +164,22 @@ const prepareEmail = async <T extends GenericDAO>(
           {
             ...entity,
             subscriber: recipient,
-            ...ejsLocals
+            ...ejsLocals,
           },
           {},
           function (err, message) {
             if (err) return callback(err);
             sendMailToSubscriber(recipient.email!, subject, message, callback);
-          }
+          },
         );
       },
       function (err) {
         if (err) return reject(err);
         console.info(
-          `Emails: "${subject}" email sent to ${mailList.length} subscribers.`
+          `Emails: "${subject}" email sent to ${mailList.length} subscribers.`,
         );
         resolve();
-      }
+      },
     );
   });
 };
@@ -196,7 +195,7 @@ const sendMailToSubscriber = (
   recipient: string,
   subject: string,
   message: string,
-  callback: Callback
+  callback: Callback,
 ): void => {
   transporter.sendMail(
     {
@@ -204,13 +203,13 @@ const sendMailToSubscriber = (
       to: recipient,
       subject,
       html: message,
-      text: htmlToText.fromString(message, htmlToTextOptions)
+      text: htmlToText.fromString(message, htmlToTextOptions),
     },
     function (err, info) {
       if (err) return callback(err);
       console.info(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`);
       callback(null);
-    }
+    },
   );
 };
 

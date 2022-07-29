@@ -1,7 +1,7 @@
 import {
   SubscriptionsMapping,
   SubscriptionType,
-  SubscriberDAO
+  SubscriberDAO,
 } from '../interfaces';
 
 export class SubscriberStatic {

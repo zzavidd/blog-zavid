@@ -4,7 +4,7 @@ import {
   SubscriberStatic,
   SubscriberDAO,
   SubscriptionsMapping,
-  SubscriptionType
+  SubscriptionType,
 } from '../../index';
 
 /** The class for building Subscriber objects. */
@@ -50,7 +50,7 @@ export class SubscriberBuilder {
       firstname,
       lastname,
       email,
-      subscriptions
+      subscriptions,
     };
 
     return this;

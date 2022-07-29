@@ -1,4 +1,5 @@
-import express, { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import { zText } from 'zavid-modules';
 
 import {
@@ -7,7 +8,7 @@ import {
   PostQueryBuilder,
   PostStatic,
   PostStatus,
-  PostType
+  PostType,
 } from '../../../../classes';
 import { siteTitle } from '../../../settings';
 import { PostService } from '../../api/service';
@@ -27,7 +28,7 @@ router.get('/reveries', async function (req: Request, res: Response) {
     title: `Reveries | ${siteTitle}`,
     description: reveriePage.excerpt,
     ogUrl: `/${url}`,
-    reveriesIntro: reveriePage.content
+    reveriesIntro: reveriePage.content,
   });
 });
 
@@ -53,7 +54,7 @@ router.get(
     const { type, typeId } = reverie;
     const [[previousReverie], [nextReverie]] = await Promise.all([
       new PostQueryBuilder(knex).getPreviousPost(typeId!, type!).build(),
-      new PostQueryBuilder(knex).getNextPost(typeId!, type!).build()
+      new PostQueryBuilder(knex).getNextPost(typeId!, type!).build(),
     ]);
 
     return server.render(req, res, '/posts/single', {
@@ -63,10 +64,10 @@ router.get(
       cardImage: reverie.image as string,
       post: JSON.stringify(reverie),
       previousPost: JSON.stringify(previousReverie),
-      nextPost: JSON.stringify(nextReverie)
+      nextPost: JSON.stringify(nextReverie),
     });
   },
-  renderErrorPage
+  renderErrorPage,
 );
 
 /** Route for pages with reverie domains. */
@@ -94,10 +95,10 @@ router.get(
       description: page.excerpt || zText.extractExcerpt(page.content!),
       ogUrl: `/reveries/${domain}/${slug}`,
       cardImage: page.image as string,
-      post: JSON.stringify(page)
+      post: JSON.stringify(page),
     });
   },
-  renderErrorPage
+  renderErrorPage,
 );
 
 /** Route for index of epistles. */
@@ -109,7 +110,7 @@ router.get('/epistles', async function (req, res) {
     title: `Epistles | ${siteTitle}`,
     description: epistlePage.excerpt,
     ogUrl: `/${url}`,
-    epistlesIntro: epistlePage.content
+    epistlesIntro: epistlePage.content,
   });
 });
 
@@ -135,7 +136,7 @@ router.get(
     const { type, typeId } = epistle;
     const [[previousEpistle], [nextEpistle]] = await Promise.all([
       new PostQueryBuilder(knex).getPreviousPost(typeId!, type!).build(),
-      new PostQueryBuilder(knex).getNextPost(typeId!, type!).build()
+      new PostQueryBuilder(knex).getNextPost(typeId!, type!).build(),
     ]);
 
     return server.render(req, res, '/posts/single', {
@@ -145,22 +146,22 @@ router.get(
       cardImage: epistle.image as string,
       post: JSON.stringify(epistle),
       previousPost: JSON.stringify(previousEpistle),
-      nextPost: JSON.stringify(nextEpistle)
+      nextPost: JSON.stringify(nextEpistle),
     });
   },
-  renderErrorPage
+  renderErrorPage,
 );
 
 router.get('/admin/posts', function (req, res) {
   return server.render(req, res, '/posts/admin', {
-    title: `List of Posts`
+    title: `List of Posts`,
   });
 });
 
 router.get('/admin/posts/add', function (req, res) {
   return server.render(req, res, '/posts/crud', {
     title: `Add New Post`,
-    operation: Operation.CREATE
+    operation: Operation.CREATE,
   });
 });
 
@@ -173,7 +174,7 @@ router.get('/admin/posts/edit/:id', async function (req, res) {
   return server.render(req, res, '/posts/crud', {
     title: `Edit Post`,
     operation: Operation.UPDATE,
-    post: JSON.stringify(post)
+    post: JSON.stringify(post),
   });
 });
 

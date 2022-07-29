@@ -1,9 +1,10 @@
 import type { IconName } from '@fortawesome/fontawesome-svg-core';
 import classnames from 'classnames';
 import React from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { OnClickType, OnInputChangeType } from 'classes';
+import type { OnClickType, OnInputChangeType } from 'classes';
 import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
 
@@ -15,14 +16,14 @@ export const Checkbox = ({
   checked,
   onChange,
   className,
-  boxClassName
+  boxClassName,
 }: Checkbox): JSX.Element => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css['checkbox-group'], className);
   const boxClasses = classnames(
     css['checkbox-mark'],
     css[`checkbox-mark-${theme}`],
-    boxClassName
+    boxClassName,
   );
   return (
     <label className={classes}>
@@ -43,7 +44,7 @@ export const Switch = ({
   onChange,
   checked,
   checkedIcon,
-  uncheckedIcon
+  uncheckedIcon,
 }: Switch) => {
   return (
     <InvisibleButton onClick={onChange}>

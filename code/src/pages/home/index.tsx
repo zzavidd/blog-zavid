@@ -1,9 +1,9 @@
 import classnames from 'classnames';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React from 'react';
-import { ColProps } from 'react-bootstrap';
+import type { ColProps } from 'react-bootstrap';
 
-import { DiaryDAO, PostDAO, ReactComponent } from 'classes';
+import type { DiaryDAO, PostDAO, ReactComponent } from 'classes';
 import { Field, FieldRow } from 'src/components/form';
 import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Home.module.scss';
@@ -20,7 +20,7 @@ const Home = ({
   latestReverie,
   randomPosts,
   emailSubCount,
-  tgSubCount
+  tgSubCount,
 }: HomeProps) => {
   return (
     <>
@@ -77,7 +77,7 @@ Home.getInitialProps = async ({ query }: NextPageContext) => {
     latestReverie,
     randomPosts,
     emailSubCount,
-    tgSubCount
+    tgSubCount,
   };
 };
 

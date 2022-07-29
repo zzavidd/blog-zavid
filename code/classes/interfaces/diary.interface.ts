@@ -15,5 +15,5 @@ export interface DiaryDAO extends GenericDAO {
 export enum DiaryStatus {
   PROTECTED = 'PROTECTED',
   PRIVATE = 'PRIVATE',
-  PUBLISHED = 'PUBLISHED'
+  PUBLISHED = 'PUBLISHED',
 }

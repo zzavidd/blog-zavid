@@ -42,7 +42,7 @@ export class DiaryQueryBuilder extends QueryBuilder<DiaryDAO> {
 
   getLatestEntryNumber(): DiaryQueryBuilder {
     (this.query.max as KnexMaxQuery)('entryNumber', {
-      as: 'latestEntryNumber'
+      as: 'latestEntryNumber',
     });
     return this;
   }
@@ -50,7 +50,7 @@ export class DiaryQueryBuilder extends QueryBuilder<DiaryDAO> {
   getPreviousEntry(operand: string | number, field: string): DiaryQueryBuilder {
     this.query.where({
       [field]: this.knex(TABLE_NAME).max(field).where(field, '<', operand),
-      status: DiaryStatus.PUBLISHED
+      status: DiaryStatus.PUBLISHED,
     });
     return this;
   }
@@ -58,7 +58,7 @@ export class DiaryQueryBuilder extends QueryBuilder<DiaryDAO> {
   getNextEntry(operand: string | number, field: string): DiaryQueryBuilder {
     this.query.where({
       [field]: this.knex(TABLE_NAME).min(field).where(field, '>', operand),
-      status: DiaryStatus.PUBLISHED
+      status: DiaryStatus.PUBLISHED,
     });
     return this;
   }

@@ -34,7 +34,7 @@ export class QueryBuilder<T> {
    */
   withOrder(
     sort: QuerySort = {},
-    options: QuerySortOptions = {}
+    options: QuerySortOptions = {},
   ): QueryBuilder<T> {
     let { order } = sort;
     const { field } = sort;
@@ -48,7 +48,7 @@ export class QueryBuilder<T> {
       if (forStringsWithNumbers) {
         const cases = [
           `CAST((REGEXP_REPLACE(${this.table}.${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
-          `REGEXP_REPLACE(${this.table}.${field}, "[^a-z0-9]+", '') ${order}`
+          `REGEXP_REPLACE(${this.table}.${field}, "[^a-z0-9]+", '') ${order}`,
         ];
         (this.query.orderByRaw as RawQueryBuilder)(cases.join(', '));
       } else {

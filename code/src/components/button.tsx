@@ -1,13 +1,10 @@
 import classnames from 'classnames';
-import React, {
-  useState,
-  useEffect,
-  MouseEventHandler,
-  ReactNode
-} from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { MouseEventHandler, ReactNode } from 'react';
+import React, { useState, useEffect } from 'react';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { Icon , Responsive } from 'src/lib/library';
+import { Icon, Responsive } from 'src/lib/library';
 import css from 'src/styles/components/Button.module.scss';
 
 const Button = (props: Button) => {

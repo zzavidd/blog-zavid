@@ -10,25 +10,25 @@ module.exports = {
           loader: 'url-loader',
           options: {
             limit: 100000,
-            name: '[name].[ext]'
-          }
-        }
+            name: '[name].[ext]',
+          },
+        },
       },
       {
         test: /\.tsx?$/,
-        use: [{ loader: 'ts-loader', options: { transpileOnly: true } }]
-      }
+        use: [{ loader: 'ts-loader', options: { transpileOnly: true } }],
+      },
     );
 
     config.resolve.extensions.push('.ts', '.tsx');
     config.resolve.alias = {
       ...config.resolve.alias,
-      react: path.resolve('./node_modules/react')
+      react: path.resolve('./node_modules/react'),
     };
 
     return config;
   },
   typescript: {
-    ignoreBuildErrors: true
-  }
+    ignoreBuildErrors: true,
+  },
 };

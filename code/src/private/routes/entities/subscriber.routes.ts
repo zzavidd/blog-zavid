@@ -3,7 +3,7 @@ import express from 'express';
 import {
   SubscriberStatic,
   SubscriberQueryBuilder,
-  Operation
+  Operation,
 } from '../../../../classes';
 import { siteTitle } from '../../../settings';
 import { getKnex, getServer } from '../../singleton';
@@ -21,27 +21,27 @@ router.get('/subscriptions/:token', async function (req, res) {
   if (!subscriber) return res.redirect('/');
   return server.render(req, res, '/subscribers/subscriptions', {
     title: `Subscription Preferences | ${siteTitle}`,
-    subscriber: JSON.stringify(SubscriberStatic.parse(subscriber))
+    subscriber: JSON.stringify(SubscriberStatic.parse(subscriber)),
   });
 });
 
 router.get('/subscribe', function (req, res) {
   return server.render(req, res, '/subscribers/subscribe', {
     title: `Subscribe | ${siteTitle}`,
-    ogUrl: '/subscribe'
+    ogUrl: '/subscribe',
   });
 });
 
 router.get('/admin/subscribers', function (req, res) {
   return server.render(req, res, '/subscribers/admin', {
-    title: `List of Subscribers`
+    title: `List of Subscribers`,
   });
 });
 
 router.get('/admin/subscribers/add', function (req, res) {
   return server.render(req, res, '/subscribers/crud', {
     title: `Add New Subscriber`,
-    operation: Operation.CREATE
+    operation: Operation.CREATE,
   });
 });
 
@@ -53,7 +53,7 @@ router.get('/admin/subscribers/edit/:id', async function (req, res) {
   return server.render(req, res, '/subscribers/crud', {
     title: `Edit Subscriber`,
     operation: Operation.UPDATE,
-    subscriber: JSON.stringify(SubscriberStatic.parse(subscriber))
+    subscriber: JSON.stringify(SubscriberStatic.parse(subscriber)),
   });
 });
 

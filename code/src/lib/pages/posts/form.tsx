@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 
-import {
+import type {
   PostContentImageMapping,
   PostDAO,
   PostImage,
-  PostStatic,
   ReactSelectChangeEvent,
   ReactTextAreaChangeEvent,
-  Substitutions
+  Substitutions,
 } from 'classes';
-import { GenericFormProps } from 'classes/interfaces/super';
+import { PostStatic } from 'classes';
+import type { GenericFormProps } from 'classes/interfaces/super';
 import {
   DynamicField,
   Field,
@@ -22,13 +22,14 @@ import {
   NumberInput,
   Select,
   ShortTextArea,
-  TextInput
+  TextInput,
 } from 'src/components/form';
-import DatePicker, { DateType } from 'src/components/form/datepicker';
+import type { DateType } from 'src/components/form/datepicker';
+import DatePicker from 'src/components/form/datepicker';
 import { FileSelector, FSAspectRatio } from 'src/components/form/fileselector';
 import { Foldable } from 'src/components/form/foldable';
 import { cloudinaryBaseUrl } from 'src/components/image';
-import { Handlers } from 'src/lib/hooks';
+import type { Handlers } from 'src/lib/hooks';
 import { ScreenWidth } from 'src/lib/library';
 import css from 'src/styles/pages/Posts.module.scss';
 
@@ -45,7 +46,7 @@ const PostForm = (props: PostFormProps) => {
     handleFile,
     handleContentImages,
     onTypeChange,
-    onStatusChange
+    onStatusChange,
   } = handlers;
 
   const substitutions: Substitutions = {};
@@ -83,10 +84,10 @@ const PostForm = (props: PostFormProps) => {
       substitutions={substitutions}
       onPreviewToggle={setPreviewVisible}
       formClassName={{
-        previewOn: css['post-form-pv']
+        previewOn: css['post-form-pv'],
       }}
       editorClassName={{
-        previewOff: css['post-form-editor']
+        previewOff: css['post-form-editor'],
       }}>
       <FieldRow>
         <Field xl={{ span: fieldSpan, order: contentOrder }}>
@@ -232,7 +233,7 @@ const PostForm = (props: PostFormProps) => {
 const ContentImages = ({
   post,
   isCreateOperation,
-  handleContentImages
+  handleContentImages,
 }: PostContentImageInputs) => {
   const contentImages = [];
   for (let i = 0; i < MAX_NUM_CONTENT_IMAGES; i++) {
@@ -247,7 +248,7 @@ const ContentImages = ({
         isCreateOperation={isCreateOperation}
         onChange={(img) => handleContentImages(img as string, i)}
         aspectRatio={FSAspectRatio.WIDE}
-      />
+      />,
     );
   }
   return <>{contentImages}</>;

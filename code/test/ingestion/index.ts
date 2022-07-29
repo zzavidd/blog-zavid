@@ -13,7 +13,7 @@ const options: Record<string, () => Promise<void>> = {
   4: ingestSubscribers,
   5: ingestAll,
   6: clearAllData,
-  7: clearAndIngestAll
+  7: clearAndIngestAll,
 };
 
 async function ingestAll() {
@@ -21,7 +21,7 @@ async function ingestAll() {
     ingestReveries(),
     ingestEpistles(),
     ingestDiary(),
-    ingestSubscribers()
+    ingestSubscribers(),
   ]);
 }
 

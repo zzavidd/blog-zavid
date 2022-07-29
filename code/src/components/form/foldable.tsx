@@ -1,5 +1,6 @@
 import classnames from 'classnames';
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 
 import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
@@ -10,12 +11,12 @@ export const Foldable = ({
   label,
   switcher,
   visible,
-  children
+  children,
 }: FoldableProps) => {
   const state = visible ? 'visible' : 'hidden';
   const contentClasses = classnames(
     css['foldable-content'],
-    css[`foldable-content--${state}`]
+    css[`foldable-content--${state}`],
   );
   return (
     <>

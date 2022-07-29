@@ -9,12 +9,12 @@ const PostDirectory: Record<PostType, string> = {
   [PostType.EPISTLE]: 'epistles',
   [PostType.POEM]: 'poetry',
   [PostType.MUSING]: 'musings',
-  [PostType.PAGE]: 'pages'
+  [PostType.PAGE]: 'pages',
 };
 
 enum ContentType {
   PROSE = 'prose',
-  POETRY = 'poetry'
+  POETRY = 'poetry',
 }
 
 export class PostStatic {
@@ -35,11 +35,11 @@ export class PostStatic {
   static randomContent(
     contentType: ContentType = ContentType.PROSE,
     threshold = 3,
-    limit = 6
+    limit = 6,
   ): string {
     let content = faker.lorem.paragraphs(
       zNumber.generateRandom(threshold, limit),
-      '\n\n'
+      '\n\n',
     );
 
     if (contentType === ContentType.POETRY) {
@@ -83,7 +83,7 @@ export class PostStatic {
    */
   static collateImages(
     post: PostDAO,
-    options: CollateImageOptions = {}
+    options: CollateImageOptions = {},
   ): (PostImage | string)[] {
     const { includeNulls = false } = options;
 

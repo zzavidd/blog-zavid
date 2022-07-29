@@ -1,8 +1,10 @@
 import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { ReactComponent, Theme } from 'classes';
+import type { ReactComponent } from 'classes';
+import { Theme } from 'classes';
 import { InvisibleButton } from 'src/components/button';
 import { Switch } from 'src/components/form/checkbox';
 import CloudImage from 'src/components/image';

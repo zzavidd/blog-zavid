@@ -6,7 +6,7 @@ import {
   deleteSubscriber,
   getSingleSubscriber,
   getSubscribers,
-  updateSubscriber
+  updateSubscriber,
 } from '../helper/subscriber.helper';
 
 describe('Service Tests: Subscriber', function () {
@@ -16,7 +16,7 @@ describe('Service Tests: Subscriber', function () {
       testWrapper(async () => {
         const subscribers = await getSubscribers();
         assert.isOk(subscribers);
-      })
+      }),
     );
   });
 
@@ -29,7 +29,7 @@ describe('Service Tests: Subscriber', function () {
         const readSubscriber = await getSingleSubscriber(createdSubscriber.id);
         compareSubscribers(subscriber, readSubscriber);
         await deleteSubscriber(readSubscriber.id!);
-      })
+      }),
     );
   });
 
@@ -43,13 +43,13 @@ describe('Service Tests: Subscriber', function () {
         const createdSubscriber = await createSubscriber(subscriberToSubmit);
         const updatedSubscriber = await updateSubscriber(
           createdSubscriber.id,
-          subscriberForUpdate
+          subscriberForUpdate,
         );
 
         compareSubscribers(subscriberForUpdate, updatedSubscriber);
         assert.strictEqual(createdSubscriber.id, updatedSubscriber.id!);
         await deleteSubscriber(createdSubscriber.id);
-      })
+      }),
     );
   });
 });
