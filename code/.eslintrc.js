@@ -13,5 +13,5 @@ module.exports = {
     'react-hooks/rules-of-hooks': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/no-floating-promises': 0,
-  }
+  },
 };
