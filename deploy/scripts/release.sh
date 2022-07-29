@@ -12,8 +12,8 @@ if [[ $(git rev-parse --abbrev-ref HEAD) != "$BRANCH" ]]; then
   git checkout $BRANCH
 fi
 
-git pull
-git rebase main
-git push origin $BRANCH
+git fetch origin main
+git reset --hard origin/main
+git push -f origin $BRANCH
 
 git checkout main

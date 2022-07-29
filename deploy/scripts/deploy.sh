@@ -12,7 +12,8 @@ NGINX_CONF_DEST="/etc/nginx/sites-available/${WORKDIR}egbue.com"
 info 'Checking out project...'
 cd "/var/www/${WORKDIR}"
 git checkout "$BRANCH"
-git pull origin "$BRANCH"
+git fetch origin "$BRANCH"
+git reset --hard "origin/$BRANCH"
 
 ## Update nginx.conf
 function copyNginxFiles {
