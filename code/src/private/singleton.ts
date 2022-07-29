@@ -1,8 +1,7 @@
-import { Application } from 'express';
-import Knex from 'knex';
-import Server from 'next/dist/next-server/server/next-server';
-
 import assert from 'assert';
+import type { Application } from 'express';
+import type Knex from 'knex';
+import type Server from 'next/dist/next-server/server/next-server';
 
 let IApp: Application;
 let IKnex: Knex;

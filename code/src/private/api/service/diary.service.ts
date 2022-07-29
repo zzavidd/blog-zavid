@@ -1,17 +1,19 @@
-import { TryWrapper, emailsOn, telegramOn } from './helper';
-
-import {
+import type {
   DiaryDAO,
+  DiaryStatusFilters,
+  QuerySort,
+} from '../../../../classes';
+import {
   DiaryMutationBuilder,
   DiaryQueryBuilder,
   DiaryStatic,
-  DiaryStatusFilters,
-  QuerySort
 } from '../../../../classes';
 import { ERRORS } from '../../error';
 import * as Emails from '../../notifications/emails';
 import * as Telegram from '../../notifications/telegram';
 import { getKnex } from '../../singleton';
+
+import { TryWrapper, emailsOn, telegramOn } from './helper';
 
 const knex = getKnex();
 const ENTITY_NAME = 'diary entry';
@@ -24,7 +26,7 @@ const ENTITY_NAME = 'diary entry';
 export const getDiaryEntries = ({
   sort,
   status,
-  onlyFavourites
+  onlyFavourites,
 }: GetDiaryOptions): Promise<DiaryDAO[]> => {
   return TryWrapper(async () => {
     const diaryEntries = await new DiaryQueryBuilder(knex)
@@ -41,7 +43,7 @@ export const getDiaryEntries = ({
  * @param option.id The ID of the diary entry.
  */
 export const getSingleDiaryEntry = async ({
-  id
+  id,
 }: GetOrDeleteDiaryEntryOptions): Promise<DiaryDAO> => {
   return TryWrapper(async () => {
     const [diaryEntry] = await new DiaryQueryBuilder(knex).whereId(id).build();
@@ -57,7 +59,7 @@ export const getSingleDiaryEntry = async ({
  */
 export const createDiaryEntry = async ({
   diaryEntry,
-  isPublish
+  isPublish,
 }: CreateDiaryEntryOptions): Promise<DiaryDAO> => {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
@@ -68,7 +70,7 @@ export const createDiaryEntry = async ({
     const [[id]] = await Promise.all([
       new DiaryMutationBuilder(knex).insert(diaryEntry).build(),
       shouldSendEmail ? Emails.notifyNewDiaryEntry(diaryEntry) : null,
-      shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null
+      shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null,
     ]);
 
     return { id } as DiaryDAO;
@@ -84,7 +86,7 @@ export const createDiaryEntry = async ({
 export const updateDiaryEntry = async ({
   id,
   diaryEntry,
-  isPublish
+  isPublish,
 }: UpdateDiaryEntryOptions): Promise<DiaryDAO> => {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
@@ -95,7 +97,7 @@ export const updateDiaryEntry = async ({
     await Promise.all([
       new DiaryMutationBuilder(knex).update(diaryEntry).whereId(id).build(),
       shouldSendEmail ? Emails.notifyNewDiaryEntry(diaryEntry) : null,
-      shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null
+      shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null,
     ]);
 
     const updatedDiaryEntry = await getSingleDiaryEntry({ id });
@@ -108,7 +110,7 @@ export const updateDiaryEntry = async ({
  * @param options.id - The ID of the diary entry to delete.
  */
 export const deleteDiaryEntry = async ({
-  id
+  id,
 }: GetOrDeleteDiaryEntryOptions): Promise<DiaryDAO> => {
   return TryWrapper(async () => {
     await getSingleDiaryEntry({ id });

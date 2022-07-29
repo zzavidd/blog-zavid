@@ -1,19 +1,21 @@
 import classnames from 'classnames';
 import React, { useState, useEffect } from 'react';
 
-import { PostStatic, ReactSelectChangeEvent } from 'classes';
+import type { ReactSelectChangeEvent } from 'classes';
+import { PostStatic } from 'classes';
 import { AdminButton } from 'src/components/button';
-import { Field, FieldRow, Select, SelectProps } from 'src/components/form';
+import type { SelectProps } from 'src/components/form';
+import { Field, FieldRow, Select } from 'src/components/form';
 import { Toolbar, ToolbarToggle } from 'src/components/layout';
 import { Icon, Responsive } from 'src/lib/library';
-import { PostFiltersState } from 'src/lib/reducers';
+import type { PostFiltersState } from 'src/lib/reducers';
 import css from 'src/styles/pages/Posts.module.scss';
 
 const sortOptions = [
   { value: 'createTime', label: 'Sort by Creation Time' },
   { value: 'title', label: 'Sort by Title' },
   { value: 'type', label: 'Sort by Type' },
-  { value: 'status', label: 'Sort by Status' }
+  { value: 'status', label: 'Sort by Status' },
 ];
 
 export default ({ options, handleOptionSelection }: Toolbar) => {
@@ -32,7 +34,7 @@ export default ({ options, handleOptionSelection }: Toolbar) => {
 
   const state = isFiltersVisible ? 'visible' : 'hidden';
   const filterClasses = classnames(css[`post-toolbar__filters`], {
-    [css[`post-toolbar__filters--${state}`]]: !isInitialState
+    [css[`post-toolbar__filters--${state}`]]: !isInitialState,
   });
 
   const TOOLBAR = toolbarWidgets(options, handleOptionSelection);
@@ -79,7 +81,7 @@ export default ({ options, handleOptionSelection }: Toolbar) => {
 
 const toolbarWidgets = (
   options: PostFiltersState,
-  handleOptionSelection: (event: ReactSelectChangeEvent) => void
+  handleOptionSelection: (event: ReactSelectChangeEvent) => void,
 ) => {
   const navigateToCreateForm = () => {
     location.href = '/admin/posts/add';
@@ -134,8 +136,8 @@ const toolbarWidgets = (
           placeholder={'Show All'}
           isPlaceholderSelectable={true}
         />
-      )
-    }
+      ),
+    },
   };
 };
 

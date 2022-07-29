@@ -1,7 +1,7 @@
 import React from 'react';
 import { zDate } from 'zavid-modules';
 
-import { PostDAO } from 'classes';
+import type { PostDAO } from 'classes';
 import CloudImage, { AspectRatio } from 'src/components/image';
 import { Flexer } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';

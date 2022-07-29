@@ -31,7 +31,7 @@ $readmore-dark: #87ceeb;
 .paragraph-hyperlink {
   $values: (
     light: $hyperlink-light,
-    dark: $hyperlink-dark
+    dark: $hyperlink-dark,
   );
   @each $theme in $themes {
     $value: map-get($values, $theme);
@@ -86,7 +86,7 @@ $readmore-dark: #87ceeb;
 .paragraph-read-more {
   $values: (
     light: $readmore-light,
-    dark: $readmore-dark
+    dark: $readmore-dark,
   );
   @each $theme in $themes {
     $value: map-get($values, $theme);

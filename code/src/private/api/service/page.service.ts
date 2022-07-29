@@ -1,12 +1,9 @@
-import { TryWrapper } from './helper';
-
-import {
-  PageDAO,
-  PageMutationBuilder,
-  PageQueryBuilder
-} from '../../../../classes';
+import type { PageDAO } from '../../../../classes';
+import { PageMutationBuilder, PageQueryBuilder } from '../../../../classes';
 import { ERRORS } from '../../error';
 import { getKnex } from '../../singleton';
+
+import { TryWrapper } from './helper';
 
 const knex = getKnex();
 const ENTITY_NAME = 'page';
@@ -26,7 +23,7 @@ export const getAllPages = (): Promise<PageDAO[]> => {
  * @param options.id The ID of the page.
  */
 export const getSinglePage = ({
-  id
+  id,
 }: GetOrDeletePageOptions): Promise<PageDAO> => {
   return TryWrapper(async () => {
     const [page] = await new PageQueryBuilder(knex).whereId(id).build();

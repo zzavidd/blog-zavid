@@ -1,5 +1,6 @@
 import React from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { zComponents } from 'zavid-modules';
 import type { TablerProps } from 'zavid-modules/_dist/components/tabler';
 
@@ -12,7 +13,7 @@ const {
   Icon,
   LazyLoader,
   Responsive,
-  ScreenWidth
+  ScreenWidth,
 } = zComponents;
 
 const Tabler = <L extends number>({
@@ -20,7 +21,7 @@ const Tabler = <L extends number>({
   distribution,
   heading,
   items,
-  itemsLoaded
+  itemsLoaded,
 }: TablerProps<L>) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
@@ -45,7 +46,7 @@ const Tabler = <L extends number>({
         tablerItemSubvalue: tablerClasses['tabler-item-subvalue'],
         tablerItemIndex: tablerClasses['tabler-item-index'],
         tablerMobileField: tablerClasses['tabler-field-mobile'],
-        tablerCrudButtons: tablerClasses['tabler-item-buttons']
+        tablerCrudButtons: tablerClasses['tabler-item-buttons'],
       }}
     />
   );
@@ -59,5 +60,5 @@ export {
   Icon,
   LazyLoader,
   Responsive,
-  ScreenWidth
+  ScreenWidth,
 };

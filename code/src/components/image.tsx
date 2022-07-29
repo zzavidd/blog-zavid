@@ -1,7 +1,9 @@
 import classnames from 'classnames';
 import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
-import React, { CSSProperties } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { CSSProperties } from 'react';
+import React from 'react';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Theme } from 'classes';
 
@@ -21,7 +23,7 @@ interface CloudImageProps {
 export enum AspectRatio {
   SQUARE = '1:1',
   TALL = '9:16',
-  WIDE = '16:9'
+  WIDE = '16:9',
 }
 
 export const validateCloudinaryImage = (image: string) => {
@@ -42,7 +44,7 @@ const CloudImage = ({
   src,
   style,
   title,
-  version
+  version,
 }: CloudImageProps) => {
   if (!src) return null;
 

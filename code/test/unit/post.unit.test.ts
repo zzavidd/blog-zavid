@@ -5,7 +5,7 @@ import {
   PostImage,
   PostStatic,
   PostStatus,
-  PostType
+  PostType,
 } from '../../classes';
 
 describe('Unit Tests: Post', function () {
@@ -91,7 +91,7 @@ describe('Unit Tests: Post', function () {
       isArrayOfLength(images, 2);
 
       images = PostStatic.collateImages(post, {
-        includeNulls: true
+        includeNulls: true,
       }) as PostImage[];
       isArrayOfLength(images, 3);
 
@@ -109,7 +109,7 @@ describe('Unit Tests: Post', function () {
       assert.isTrue(Object.values(PostType).includes(randomType));
 
       const randomNonPageType = PostStatic.randomType({
-        allowPageTypes: false
+        allowPageTypes: false,
       });
 
       assert.notEqual(randomNonPageType, PostType.PAGE);
@@ -120,7 +120,7 @@ describe('Unit Tests: Post', function () {
 
 const isArrayOfLength = (
   array: PostImage[] | PostContentImages,
-  number: number
+  number: number,
 ): void => {
   assert.isArray(array);
   assert.lengthOf(array, number);

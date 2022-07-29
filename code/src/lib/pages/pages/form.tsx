@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { PageDAO } from 'classes';
-import { GenericFormProps } from 'classes/interfaces/super';
+import type { PageDAO } from 'classes';
+import type { GenericFormProps } from 'classes/interfaces/super';
 import {
   Form,
   FieldRow,
@@ -10,9 +10,9 @@ import {
   ShortTextArea,
   LongTextArea,
   TextInput,
-  Checkbox
+  Checkbox,
 } from 'src/components/form';
-import { Handlers } from 'src/lib/hooks';
+import type { Handlers } from 'src/lib/hooks';
 
 export default (props: PageFormProps) => {
   const { page, handlers } = props;

@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 
-import { SubscriberBuilder, SubscriberDAO, SubscriberPayload } from 'classes';
+import type { SubscriberDAO, SubscriberPayload } from 'classes';
+import { SubscriberBuilder } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { ConfirmButton } from 'src/components/button';
 import { Field, FieldRow, Label, TextInput } from 'src/components/form';
@@ -16,14 +17,14 @@ const SubscribeForm = () => {
   const [subscriber, setSubscriber] = useState({
     email: '',
     firstname: '',
-    lastname: ''
+    lastname: '',
   } as SubscriberDAO);
   const [isLoaded, setLoaded] = useState(false);
   const [isRequestPending, setRequestPending] = useState(false);
 
   // Initialise mutation functions.
   const [createSubscriberMutation, { loading: createLoading }] = useMutation(
-    CREATE_SUBSCRIBER_QUERY
+    CREATE_SUBSCRIBER_QUERY,
   );
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const SubscribeForm = () => {
       .then(() => createSubscriberMutation({ variables }))
       .then(() => {
         alert.success(
-          `Thank you for subscribing!\nI've added ${subscriber.email} to my mailing list.`
+          `Thank you for subscribing!\nI've added ${subscriber.email} to my mailing list.`,
         );
         setTimeout(() => (location.href = '/'), 2000);
       })

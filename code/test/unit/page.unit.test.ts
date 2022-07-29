@@ -10,7 +10,7 @@ describe('Unit Tests: Page', function () {
         'content',
         'excerpt',
         'slug',
-        'isEmbed'
+        'isEmbed',
       ]);
       finish();
     });

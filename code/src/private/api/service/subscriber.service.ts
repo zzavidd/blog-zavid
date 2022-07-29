@@ -1,16 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { TryWrapper } from './helper';
-
+import type { QuerySort, SubscriberDAO } from '../../../../classes';
 import {
-  QuerySort,
-  SubscriberDAO,
   SubscriberMutationBuilder,
   SubscriberQueryBuilder,
-  SubscriberStatic
+  SubscriberStatic,
 } from '../../../../classes';
 import { ERRORS } from '../../error';
 import { getKnex } from '../../singleton';
+
+import { TryWrapper } from './helper';
 
 const knex = getKnex();
 const ENTITY_NAME = 'subscriber';
@@ -20,7 +19,7 @@ const ENTITY_NAME = 'subscriber';
  * @param args.sort The sort options.
  */
 export const getAllSubscribers = (
-  options: GetAllSubscriberOptions = {}
+  options: GetAllSubscriberOptions = {},
 ): Promise<SubscriberDAO[]> => {
   const { sort = {} } = options;
   return TryWrapper(async () => {
@@ -28,7 +27,7 @@ export const getAllSubscribers = (
       .withOrder(sort)
       .build();
     const parsedSubscribers = subscribers.map((subscriber) =>
-      SubscriberStatic.parse(subscriber)
+      SubscriberStatic.parse(subscriber),
     );
     return parsedSubscribers;
   });
@@ -39,7 +38,7 @@ export const getAllSubscribers = (
  * @param args.id The ID of the subscriber.
  */
 export const getSingleSubscriber = ({
-  id
+  id,
 }: GetOrDeleteSubscriberOptions): Promise<SubscriberDAO> => {
   return TryWrapper(async () => {
     const [subscriber] = await new SubscriberQueryBuilder(knex)
@@ -55,11 +54,11 @@ export const getSingleSubscriber = ({
  * @param args.subscriber - The subscriber object to be inserted.
  */
 export const createSubscriber = ({
-  subscriber
+  subscriber,
 }: CreateSubscriberOptions): Promise<SubscriberDAO> => {
   Object.assign(subscriber, {
     subscriptions: JSON.stringify(subscriber.subscriptions),
-    token: uuidv4()
+    token: uuidv4(),
   });
 
   return TryWrapper(async () => {
@@ -77,10 +76,10 @@ export const createSubscriber = ({
  */
 export const updateSubscriber = ({
   id,
-  subscriber
+  subscriber,
 }: UpdateSubscriberOptions): Promise<SubscriberDAO> => {
   Object.assign(subscriber, {
-    subscriptions: JSON.stringify(subscriber.subscriptions)
+    subscriptions: JSON.stringify(subscriber.subscriptions),
   });
   return TryWrapper(async () => {
     await new SubscriberMutationBuilder(knex)
@@ -96,7 +95,7 @@ export const updateSubscriber = ({
  * @param {number} args.id - The ID of the subscriber to delete.
  */
 export const deleteSubscriber = ({
-  id
+  id,
 }: GetOrDeleteSubscriberOptions): Promise<SubscriberDAO> => {
   return TryWrapper(async () => {
     await getSingleSubscriber({ id });

@@ -18,7 +18,7 @@ export async function ingestDiary() {
     const index = i + 1;
     const diaryEntry = new DiaryEntryBuilder()
       .withTitle(
-        zString.toTitleCase(faker.lorem.words(zNumber.generateRandom(1, 3)))
+        zString.toTitleCase(faker.lorem.words(zNumber.generateRandom(1, 3))),
       )
       .withEntryNumber(index)
       .withStatus(DiaryStatus.PUBLISHED)
@@ -31,8 +31,8 @@ export async function ingestDiary() {
 
     promises.push(
       fetch(CREATE_DIARY_QUERY, {
-        variables: { diaryEntry }
-      })
+        variables: { diaryEntry },
+      }),
     );
   }
 

@@ -6,7 +6,7 @@ import {
   deletePage,
   getSinglePage,
   getPages,
-  updatePage
+  updatePage,
 } from '../helper/page.helper';
 
 describe('Service Tests: Page', function () {
@@ -16,7 +16,7 @@ describe('Service Tests: Page', function () {
       testWrapper(async () => {
         const pages = await getPages();
         assert.isOk(pages);
-      })
+      }),
     );
   });
 
@@ -30,7 +30,7 @@ describe('Service Tests: Page', function () {
 
         comparePages(page, readPage);
         await deletePage(readPage.id!);
-      })
+      }),
     );
   });
 
@@ -47,7 +47,7 @@ describe('Service Tests: Page', function () {
         comparePages(pageForUpdate, updatedPage);
         assert.strictEqual(createdPage.id, updatedPage.id!);
         await deletePage(createdPage.id);
-      })
+      }),
     );
   });
 });

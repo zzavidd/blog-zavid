@@ -7,12 +7,12 @@ import {
   FilterTheme,
   FilterThemeOption,
   Theme,
-  ThemeOption
+  ThemeOption,
 } from 'classes';
 import {
   ButtonSpacer,
   CancelButton,
-  DeleteButton
+  DeleteButton,
 } from 'src/components/button';
 import { Paragraph } from 'src/components/text';
 import { Responsive } from 'src/lib/library';
@@ -21,13 +21,14 @@ import css from 'src/styles/components/Modal.module.scss';
 import { createCanvasFromContent, downloadImage } from './canvas';
 import { Checkbox, Field, FieldRow, Select, Switch } from './form';
 import { RadioGroup } from './form/radio';
-import { Modal, ModalProps } from './modal';
+import type { ModalProps } from './modal';
+import { Modal } from './modal';
 
 export const Curator = ({
   sourceTitle,
   content,
   closeFunction,
-  visible
+  visible,
 }: CuratorProps) => {
   const [contentTheme, setContentTheme] = useState(ThemeOption.DARK);
   const [filterTheme, setFilterTheme] = useState(FilterThemeOption.PURPLE);
@@ -87,7 +88,7 @@ export const Curator = ({
         filterTheme,
         filterShape,
         setImageSource,
-        isTitleOnly
+        isTitleOnly,
       );
     }
   };
@@ -142,7 +143,7 @@ export const Curator = ({
                 value={filterTheme}
                 items={FilterTheme.OPTIONS.map((colour) => ({
                   label: zString.toTitleCase(colour),
-                  value: colour
+                  value: colour,
                 }))}
                 onChange={toggleFilterTheme}
                 className={css['curator-colour-select']}

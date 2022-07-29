@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { zString } from 'zavid-modules';
 
 import { VanillaLink } from 'src/components/text';
@@ -13,7 +14,7 @@ export default ({
   limit,
   className,
   tagClassName,
-  asCSV
+  asCSV,
 }: DiaryTagProps) => {
   if (!tags) return null;
 
@@ -41,7 +42,7 @@ export default ({
             className={classnames(
               css['post-tag'],
               css[`post-tag-${theme}`],
-              tagClassName
+              tagClassName,
             )}
             key={key}>
             #{tag}

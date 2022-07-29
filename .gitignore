@@ -1,9 +1,11 @@
-node_modules
-.env
-.next
+**/node_modules
+**/.next
 sessions/
-dist/
-.env.local
+**/dist/
+
+**/.env*
+**/.eslintcache
 
 **/.yarn/*
+!**/.yarn/plugins
 !**/.yarn/releases

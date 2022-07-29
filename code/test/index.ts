@@ -40,14 +40,14 @@ export const debug = (err: Error) => {
  */
 export async function fetch(
   query: DocumentNode,
-  options: FetchOptions = {}
+  options: FetchOptions = {},
 ): Promise<FetchResponse | undefined> {
   const { variables = {}, expectToFail = false } = options;
   try {
     const res = await nodeFetch(`http://localhost:4000/api`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: print(query), variables })
+      body: JSON.stringify({ query: print(query), variables }),
     });
     const { data, errors } = await res.json();
     if (!expectToFail) {

@@ -12,11 +12,11 @@ export const randomElementFromList = <T extends unknown>(list: T[]): T => {
 };
 
 export const randomEnumValue = <T extends unknown>(
-  enumeration: T
+  enumeration: T,
 ): T[keyof T] => {
-  const keys = (Object.entries(enumeration as T[])
+  const keys = Object.entries(enumeration as T[])
     .filter(([k]) => isNaN(parseInt(k, 10)))
-    .map(([, v]) => v) as unknown) as T[keyof T][];
+    .map(([, v]) => v) as unknown as T[keyof T][];
   const random = Math.floor(Math.random() * keys.length);
   return keys[random];
 };

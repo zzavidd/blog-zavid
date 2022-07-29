@@ -21,7 +21,7 @@ export default ({ content, emailSubCount, tgSubCount }: IntroductionProps) => {
             substitutions={{
               redevelopmentDate: zDate.formatDate(redevelopmentDate),
               emailSubCount,
-              tgSubCount
+              tgSubCount,
             }}>
             {content}
           </Paragraph>

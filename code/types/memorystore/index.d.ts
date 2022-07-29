@@ -1,6 +1,6 @@
 declare module 'memorystore' {
   import expressSession, {
-    MemoryStore as ExpressMemoryStore
+    MemoryStore as ExpressMemoryStore,
   } from 'express-session';
 
   interface MemoryStoreOptions {
@@ -80,7 +80,7 @@ declare module 'memorystore' {
    * ```
    */
   function createMemoryStore(
-    session: typeof expressSession
+    session: typeof expressSession,
   ): typeof MemoryStore;
   export = createMemoryStore;
 }

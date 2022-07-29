@@ -1,29 +1,30 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { zText } from 'zavid-modules';
 
-import {
-  EditButton,
-  PostDAO,
-  PostStatic,
-  ReactHook,
-  ReactSelectChangeEvent,
-  URLBuilder
-} from 'classes';
+import type { PostDAO, ReactHook, ReactSelectChangeEvent } from 'classes';
+import { EditButton, PostStatic, URLBuilder } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { InvisibleButton } from 'src/components/button';
 import CloudImage from 'src/components/image';
 import { Spacer } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
 import { VanillaLink } from 'src/components/text';
-import { Icon, Tabler, TablerColumnHeader, TablerFieldType, TablerItemCell } from 'src/lib/library';
+import {
+  Icon,
+  Tabler,
+  TablerColumnHeader,
+  TablerFieldType,
+  TablerItemCell,
+} from 'src/lib/library';
 import BottomToolbar from 'src/lib/pages/posts/toolbar';
 import { updatePostFilterSettings } from 'src/lib/reducers';
 import {
   DELETE_POST_QUERY,
-  GET_POSTS_QUERY
+  GET_POSTS_QUERY,
 } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/pages/Posts.module.scss';
 
@@ -35,7 +36,7 @@ const PostAdmin = () => {
 
   const dispatch = useDispatch();
   const options = useSelector(
-    ({ postFilterOptions }: RootStateOrAny) => postFilterOptions
+    ({ postFilterOptions }: RootStateOrAny) => postFilterOptions,
   );
 
   const handleOptionSelection = (event: ReactSelectChangeEvent) => {
@@ -48,23 +49,23 @@ const PostAdmin = () => {
     error: queryError,
     loading: queryLoading,
     refetch,
-    networkStatus
+    networkStatus,
   } = useQuery(GET_POSTS_QUERY, {
     variables: {
       limit: parseInt(options.limit),
       sort: {
         field: options.field || null,
-        order: options.order
+        order: options.order,
       },
       type: {
-        include: options.type ? [options.type] : []
+        include: options.type ? [options.type] : [],
       },
       status: {
-        include: options.status ? [options.status] : []
-      }
+        include: options.status ? [options.status] : [],
+      },
     },
     errorPolicy: 'all',
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   });
   const [deletePostMutation] = useMutation(DELETE_POST_QUERY);
 
@@ -105,21 +106,21 @@ const PostAdmin = () => {
             new TablerColumnHeader('Type'),
             new TablerColumnHeader('Content'),
             new TablerColumnHeader('Status'),
-            new TablerColumnHeader('Image', { centerAlign: true })
+            new TablerColumnHeader('Image', { centerAlign: true }),
           ]}
           items={posts.map((post: PostDAO, key: number) => {
             return [
               new TablerItemCell(key + 1, {
-                type: TablerFieldType.INDEX
+                type: TablerFieldType.INDEX,
               }),
               new TablerItemCell(post.title, { icon: 'heading' }),
               new TablerItemCell(post.type, {
                 icon: 'newspaper',
-                subvalue: (post.domainId && post.domainTitle) as string
+                subvalue: (post.domainId && post.domainTitle) as string,
               }),
               new TablerItemCell(
                 zText.truncateText(post.content!, { limit: 30 }),
-                { hideOnMobile: true }
+                { hideOnMobile: true },
               ),
               new TablerItemCell(post.status, { icon: 'lock' }),
               new TablerItemCell(
@@ -129,13 +130,13 @@ const PostAdmin = () => {
                     containerClassName={css['post-admin-image']}
                   />
                 ),
-                { type: TablerFieldType.IMAGE }
+                { type: TablerFieldType.IMAGE },
               ),
               new TablerItemCell(<LinkButton post={post} key={key} />, {
-                type: TablerFieldType.BUTTON
+                type: TablerFieldType.BUTTON,
               }),
               new TablerItemCell(<EditButton id={post.id!} key={key} />, {
-                type: TablerFieldType.BUTTON
+                type: TablerFieldType.BUTTON,
               }),
               new TablerItemCell(
                 (
@@ -146,8 +147,8 @@ const PostAdmin = () => {
                     setSelectedPost={setSelectedPost}
                   />
                 ),
-                { type: TablerFieldType.BUTTON }
-              )
+                { type: TablerFieldType.BUTTON },
+              ),
             ];
           })}
           distribution={[
@@ -159,7 +160,7 @@ const PostAdmin = () => {
             '8%',
             '4%',
             '4%',
-            '4%'
+            '4%',
           ]}
         />
         <BottomToolbar
@@ -215,14 +216,14 @@ const EditButton = ({ id }: EditButton) => {
 const DeleteButton = ({
   post,
   setDeleteModalVisibility,
-  setSelectedPost
+  setSelectedPost,
 }: DeleteButton) => {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);
     setSelectedPost(
       Object.assign({}, post, {
-        type: post.type ? post.type.toLowerCase() : 'post'
-      })
+        type: post.type ? post.type.toLowerCase() : 'post',
+      }),
     );
   };
 

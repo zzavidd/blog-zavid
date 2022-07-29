@@ -14,6 +14,6 @@ export async function tryWrapper<T extends GenericDAO>(callable: Promise<T>) {
 
 export function importText(file: string) {
   return fs.readFileSync(path.join(__dirname, `./text/${file}`), {
-    encoding: 'utf-8'
+    encoding: 'utf-8',
   });
 }

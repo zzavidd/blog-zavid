@@ -1,10 +1,10 @@
 import bodyParser from 'body-parser';
+import 'colors';
 import cors from 'cors';
 import * as Dotenv from 'dotenv';
 import express from 'express';
 import Knex from 'knex';
 import next from 'next';
-import 'colors';
 
 import { setApp, setKnex, setServer } from './private/singleton';
 
@@ -37,8 +37,8 @@ const knex = Knex({
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PWD,
     database,
-    charset: 'utf8mb4'
-  }
+    charset: 'utf8mb4',
+  },
 });
 
 // Warn if using production data. Prohibit if running tests.
@@ -46,7 +46,7 @@ if (!database.includes('test')) {
   console.warn('WARNING: Using production data.'.yellow);
   if (process.env.CI) {
     throw new Error(
-      `Failsafe disallows tests being run against production data.`
+      `Failsafe disallows tests being run against production data.`,
     );
   }
 } else {

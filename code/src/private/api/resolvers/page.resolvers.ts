@@ -12,7 +12,7 @@ const getAllPages = () => {
  */
 const getSinglePage = (
   parent: unknown,
-  args: PageService.GetOrDeletePageOptions
+  args: PageService.GetOrDeletePageOptions,
 ) => PageService.getSinglePage(args);
 
 /**
@@ -31,17 +31,17 @@ const updatePage = (parent: unknown, args: PageService.UpdatePageOptions) =>
  */
 const deletePage = (
   parent: unknown,
-  args: PageService.GetOrDeletePageOptions
+  args: PageService.GetOrDeletePageOptions,
 ) => PageService.deletePage(args);
 
 export default {
   Query: {
     pages: getAllPages,
-    page: getSinglePage
+    page: getSinglePage,
   },
   Mutation: {
     createPage,
     updatePage,
-    deletePage
-  }
+    deletePage,
+  },
 };

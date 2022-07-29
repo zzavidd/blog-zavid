@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 
-import { Operation, PageDAO } from 'classes';
+import type { PageDAO } from 'classes';
+import { Operation } from 'classes';
 import { PageBuilder } from 'classes/builders/entity/page.builder';
 import { setAlert, reportError, AlertType } from 'src/components/alert';
 import hooks from 'src/lib/hooks';
@@ -11,7 +12,7 @@ import { DAOParse } from 'src/lib/parser';
 import { isValidPage } from 'src/lib/validations';
 import {
   CREATE_PAGE_QUERY,
-  UPDATE_PAGE_QUERY
+  UPDATE_PAGE_QUERY,
 } from 'src/private/api/queries/page.queries';
 
 const PageCrud = ({ page: serverPage, operation }: PageCrud) => {
@@ -21,18 +22,16 @@ const PageCrud = ({ page: serverPage, operation }: PageCrud) => {
     content: '',
     slug: '',
     excerpt: '',
-    isEmbed: false
+    isEmbed: false,
   } as PageDAO);
   const [isLoaded, setLoaded] = useState(false);
   const [isRequestPending, setRequestPending] = useState(false);
 
   // Initialise mutation functions.
-  const [createPageMutation, { loading: createLoading }] = useMutation(
-    CREATE_PAGE_QUERY
-  );
-  const [updatePageMutation, { loading: updateLoading }] = useMutation(
-    UPDATE_PAGE_QUERY
-  );
+  const [createPageMutation, { loading: createLoading }] =
+    useMutation(CREATE_PAGE_QUERY);
+  const [updatePageMutation, { loading: updateLoading }] =
+    useMutation(UPDATE_PAGE_QUERY);
 
   // Determine operation type.
   const isCreateOperation = operation === Operation.CREATE;
@@ -62,7 +61,7 @@ const PageCrud = ({ page: serverPage, operation }: PageCrud) => {
       .then(() => {
         setAlert({
           type: AlertType.SUCCESS,
-          message: `You've successfully added a new page.`
+          message: `You've successfully added a new page.`,
         });
         returnToPageAdmin();
       })
@@ -79,7 +78,7 @@ const PageCrud = ({ page: serverPage, operation }: PageCrud) => {
       .then(() => {
         setAlert({
           type: AlertType.SUCCESS,
-          message: `You've successfully updated the ${clientPage.title} page.`
+          message: `You've successfully updated the ${clientPage.title} page.`,
         });
         returnToPageAdmin();
       })
@@ -100,7 +99,7 @@ const PageCrud = ({ page: serverPage, operation }: PageCrud) => {
 
 const buildPayload = (
   clientPage: PageDAO,
-  isCreateOperation: boolean
+  isCreateOperation: boolean,
 ): PageRequestPayload => {
   const { id, title, content, slug, excerpt, isEmbed } = clientPage;
 

@@ -1,11 +1,13 @@
 import { useQuery } from '@apollo/client';
 import classnames from 'classnames';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { PostDAO, PostStatus, PostType, QueryOrder } from 'classes';
+import type { PostDAO } from 'classes';
+import { PostStatus, PostType, QueryOrder } from 'classes';
 import { alert } from 'src/components/alert';
 import { AdminButton } from 'src/components/button';
 import CloudImage from 'src/components/image';
@@ -23,19 +25,20 @@ const ReveriesIndex = ({ reveriesIntro }: ReveriesIndexProps) => {
   const [reveries, setReveries] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
-  const { data, error: queryError, loading: queryLoading } = useQuery(
-    GET_POSTS_QUERY,
-    {
-      variables: {
-        sort: {
-          field: 'datePublished',
-          order: QueryOrder.DESCENDING
-        },
-        type: { include: [PostType.REVERIE] },
-        status: { include: [PostStatus.PUBLISHED] }
-      }
-    }
-  );
+  const {
+    data,
+    error: queryError,
+    loading: queryLoading,
+  } = useQuery(GET_POSTS_QUERY, {
+    variables: {
+      sort: {
+        field: 'datePublished',
+        order: QueryOrder.DESCENDING,
+      },
+      type: { include: [PostType.REVERIE] },
+      status: { include: [PostStatus.PUBLISHED] },
+    },
+  });
 
   useEffect(() => {
     if (queryLoading) return;
@@ -103,12 +106,12 @@ const Reverie = memo(({ reverie }: ReverieProps) => {
   const [isInView, setInView] = useState(false);
 
   const datePublished = zDate.formatDate(reverie.datePublished as string, {
-    withWeekday: true
+    withWeekday: true,
   });
   const link = `/reveries/${reverie.slug}`;
 
   const classes = classnames(css[`reveries-unit-${theme}`], {
-    [css[`reveries-unit--visible`]]: isInView
+    [css[`reveries-unit--visible`]]: isInView,
   });
   return (
     <LazyLoader setInView={setInView}>
@@ -121,7 +124,7 @@ const Reverie = memo(({ reverie }: ReverieProps) => {
         <Paragraph
           cssOverrides={{
             paragraph: css['reveries-paragraph'],
-            hyperlink: css['reveries-readmore']
+            hyperlink: css['reveries-readmore'],
           }}
           truncate={60}
           moreclass={css['reveries-readmore']}

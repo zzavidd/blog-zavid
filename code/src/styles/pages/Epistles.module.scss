@@ -33,13 +33,7 @@
 }
 
 .epistles-grid-column {
-  @include responsive(
-    flex,
-    20%,
-    $xl: 25%,
-    $lg: calc(100% / 3),
-    $md: 50%
-  );
+  @include responsive(flex, 20%, $xl: 25%, $lg: calc(100% / 3), $md: 50%);
   padding: 0.2em;
 }
 

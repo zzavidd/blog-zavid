@@ -1,9 +1,11 @@
 import { useQuery } from '@apollo/client';
 import React, { memo, useEffect, useState } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import { PostDAO, PostStatic } from 'classes';
+import type { PostDAO } from 'classes';
+import { PostStatic } from 'classes';
 import { alert } from 'src/components/alert';
 import CloudImage from 'src/components/image';
 import { Title, VanillaLink } from 'src/components/text';
@@ -15,20 +17,21 @@ export const RightSidebar = () => {
   const [recentPosts, setRecentPosts] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
 
-  const { data, error: queryError, loading: queryLoading } = useQuery(
-    GET_POSTS_QUERY,
-    {
-      variables: {
-        limit: 4,
-        sort: {
-          field: 'datePublished',
-          order: 'DESC'
-        },
-        type: { exclude: [PostStatic.TYPE.PAGE] },
-        status: { include: [PostStatic.STATUS.PUBLISHED] }
-      }
-    }
-  );
+  const {
+    data,
+    error: queryError,
+    loading: queryLoading,
+  } = useQuery(GET_POSTS_QUERY, {
+    variables: {
+      limit: 4,
+      sort: {
+        field: 'datePublished',
+        order: 'DESC',
+      },
+      type: { exclude: [PostStatic.TYPE.PAGE] },
+      status: { include: [PostStatic.STATUS.PUBLISHED] },
+    },
+  });
 
   useEffect(() => {
     if (queryLoading) return;
@@ -50,7 +53,7 @@ export const RightSidebar = () => {
 const RecentPost = memo(({ post }: RecentPostProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const datePublished = zDate.formatDate(post.datePublished as string, {
-    withWeekday: true
+    withWeekday: true,
   });
   const link = `/reveries/${post.slug}`;
 

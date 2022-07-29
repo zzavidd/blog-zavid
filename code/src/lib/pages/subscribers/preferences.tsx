@@ -1,16 +1,23 @@
 import React from 'react';
 
-import { ReactHook, ReactInputChangeEvent, SubscriptionsMapping } from 'classes';
+import type {
+  ReactHook,
+  ReactInputChangeEvent,
+  SubscriptionsMapping,
+} from 'classes';
 import { Checkbox } from 'src/components/form/checkbox';
 import css from 'src/styles/pages/Subscribers.module.scss';
 
-export default ({ preferences = {}, setPreferences }: SubscriptionPreferenceProps) => {
+export default ({
+  preferences = {},
+  setPreferences,
+}: SubscriptionPreferenceProps) => {
   const checkPreference = (e: ReactInputChangeEvent) => {
     const { name, checked } = e.target;
     setPreferences(
       Object.assign({}, preferences, {
-        [name]: checked
-      })
+        [name]: checked,
+      }),
     );
   };
 
@@ -33,6 +40,6 @@ export default ({ preferences = {}, setPreferences }: SubscriptionPreferenceProp
 };
 
 interface SubscriptionPreferenceProps {
-  preferences: SubscriptionsMapping
-  setPreferences: ReactHook<SubscriptionsMapping>
+  preferences: SubscriptionsMapping;
+  setPreferences: ReactHook<SubscriptionsMapping>;
 }

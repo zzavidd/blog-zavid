@@ -13,7 +13,7 @@ dotenv.config({ path: '../../.env' });
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 export async function clearAllData() {
@@ -22,7 +22,7 @@ export async function clearAllData() {
     fetch(CLEAR_POSTS_QUERY),
     fetch(CLEAR_DIARY_QUERY),
     fetch(CLEAR_SUBSCRIBERS_QUERY),
-    cloudinary.api.delete_resources_by_prefix('test')
+    cloudinary.api.delete_resources_by_prefix('test'),
   ]);
   console.info('Successfully cleared all data from database.');
 }

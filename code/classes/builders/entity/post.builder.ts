@@ -7,7 +7,7 @@ import {
   RandomPostOptions,
   PostType,
   PostStatus,
-  PostImage
+  PostImage,
 } from '../../index';
 
 /** The class for Post objects and methods. */
@@ -60,7 +60,7 @@ export class PostBuilder {
   }
 
   withDomain(id?: number): PostBuilder {
-    id = typeof id && parseInt((id as unknown) as string);
+    id = typeof id && parseInt(id as unknown as string);
     this.post.domainId = id;
     return this;
   }
@@ -69,7 +69,7 @@ export class PostBuilder {
     const {
       allowPageTypes = true,
       withImage = false,
-      numberOfContentImages = 0
+      numberOfContentImages = 0,
     } = options;
 
     const title = `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`;
@@ -120,7 +120,7 @@ export class PostBuilder {
   withRandomImage(withImage: boolean): PostBuilder {
     this.post.image = {
       source: withImage ? faker.image.image() : '',
-      hasChanged: withImage
+      hasChanged: withImage,
     };
     return this;
   }
@@ -128,7 +128,7 @@ export class PostBuilder {
   withRandomContentImages(quantity: number): PostBuilder {
     this.post.contentImages = new Array(quantity).fill({
       source: faker.image.image(),
-      hasChanged: true
+      hasChanged: true,
     });
     return this;
   }

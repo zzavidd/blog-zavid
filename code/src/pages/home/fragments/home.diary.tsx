@@ -1,7 +1,7 @@
 import React from 'react';
 import { zDate } from 'zavid-modules';
 
-import { DiaryDAO } from 'classes';
+import type { DiaryDAO } from 'classes';
 import { Flexer } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
 import { Icon } from 'src/lib/library';

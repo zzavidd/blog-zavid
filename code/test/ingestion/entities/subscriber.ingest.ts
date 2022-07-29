@@ -15,8 +15,8 @@ export async function ingestSubscribers() {
 
     promises.push(
       fetch(CREATE_SUBSCRIBER_QUERY, {
-        variables: { subscriber }
-      })
+        variables: { subscriber },
+      }),
     );
   }
 

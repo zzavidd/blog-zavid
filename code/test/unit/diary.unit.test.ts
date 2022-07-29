@@ -14,7 +14,7 @@ describe('Unit Tests: Diary', function () {
         'status',
         'entryNumber',
         'isFavourite',
-        'tags'
+        'tags',
       ]);
       finish();
     });
@@ -31,7 +31,7 @@ describe('Unit Tests: Diary', function () {
       assert.property(diaryEntry, 'slug');
       assert.deepEqual(
         new Date(diaryEntry.date as string),
-        new Date('1996-12-02')
+        new Date('1996-12-02'),
       );
       finish();
     });

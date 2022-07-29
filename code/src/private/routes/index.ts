@@ -1,11 +1,3 @@
-import diaryRoutes from './entities/diary.routes';
-import pageRoutes from './entities/page.routes';
-import postRoutes from './entities/post.routes';
-import subscriberRoutes from './entities/subscriber.routes';
-import linksRoutes from './misc/links';
-import seoRoutes from './misc/seo';
-import searchRoutes from './search';
-
 import {
   DiaryQueryBuilder,
   DiaryStatus,
@@ -13,13 +5,21 @@ import {
   PostQueryBuilder,
   PostStatus,
   PostType,
-  QueryOrder
+  QueryOrder,
 } from '../../../classes';
 import { siteTitle } from '../../settings';
 import * as SubscriberService from '../api/service/subscriber.service';
 import authRoutes from '../auth';
 import * as TelegramAPI from '../notifications/telegram';
 import { getApp, getKnex, getServer } from '../singleton';
+
+import diaryRoutes from './entities/diary.routes';
+import pageRoutes from './entities/page.routes';
+import postRoutes from './entities/post.routes';
+import subscriberRoutes from './entities/subscriber.routes';
+import linksRoutes from './misc/links';
+import seoRoutes from './misc/seo';
+import searchRoutes from './search';
 
 const app = getApp();
 const knex = getKnex();
@@ -33,7 +33,7 @@ app.use('/', [
   linksRoutes,
   searchRoutes,
   seoRoutes,
-  subscriberRoutes
+  subscriberRoutes,
 ]);
 
 app.get(['/', '/home'], async function (req, res) {
@@ -44,7 +44,7 @@ app.get(['/', '/home'], async function (req, res) {
     .build();
   const getLatestReverie = new PostQueryBuilder(knex)
     .whereType({
-      include: [PostType.REVERIE]
+      include: [PostType.REVERIE],
     })
     .whereStatus({ include: [PostStatus.PUBLISHED] })
     .getLatestPost()
@@ -55,13 +55,13 @@ app.get(['/', '/home'], async function (req, res) {
     [latestDiaryEntry],
     [latestReverie],
     emailSubscribers,
-    tgSubCount
+    tgSubCount,
   ] = await Promise.all([
     getHomeText,
     getLatestDiaryEntry,
     getLatestReverie,
     SubscriberService.getAllSubscribers(),
-    TelegramAPI.getSubscriberCount()
+    TelegramAPI.getSubscriberCount(),
   ]);
 
   let randomPosts;
@@ -85,12 +85,12 @@ app.get(['/', '/home'], async function (req, res) {
     latestReverie: JSON.stringify(latestReverie),
     randomPosts: JSON.stringify(randomPosts),
     emailSubCount: JSON.stringify(emailSubscribers.length),
-    tgSubCount: JSON.stringify(tgSubCount)
+    tgSubCount: JSON.stringify(tgSubCount),
   });
 });
 
 app.get('/admin', function (req, res) {
   return server.render(req, res, '/admin', {
-    title: `Admin Console | ${siteTitle}`
+    title: `Admin Console | ${siteTitle}`,
   });
 });

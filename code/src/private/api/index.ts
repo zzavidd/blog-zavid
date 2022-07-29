@@ -1,12 +1,12 @@
 import { ApolloServer } from 'apollo-server-express';
-import async, { AsyncResultCallback } from 'async';
-
+import type { AsyncResultCallback } from 'async';
+import async from 'async';
 import fs from 'fs';
 import path from 'path';
 
-import resolvers from './resolvers';
-
 import { getApp } from '../singleton';
+
+import resolvers from './resolvers';
 
 const app = getApp();
 
@@ -20,7 +20,7 @@ async.map(
       { encoding: 'utf-8' },
       function (err, data) {
         callback(err, data!);
-      }
+      },
     );
   },
   function (err: CallbackError, typeDefs) {
@@ -28,11 +28,11 @@ async.map(
 
     const apolloServer = new ApolloServer({
       typeDefs: typeDefs as string[],
-      resolvers
+      resolvers,
     });
 
     apolloServer.applyMiddleware({ app, path: '/api' });
-  }
+  },
 );
 
 type CallbackError = Error | null | undefined;

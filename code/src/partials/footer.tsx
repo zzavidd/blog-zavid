@@ -16,7 +16,7 @@ import css from 'src/styles/Partials.module.scss';
 const footerLinks = [
   { name: 'About Zavid', url: '/about' },
   { name: 'Privacy Policy', url: '/privacy' },
-  { name: 'Cookie Policy', url: '/cookies' }
+  { name: 'Cookie Policy', url: '/cookies' },
 ];
 
 export default () => {
@@ -92,7 +92,7 @@ const SubscribeForm = () => {
 
   // Initialise mutation functions.
   const [createSubscriberMutation, { loading: createLoading }] = useMutation(
-    CREATE_SUBSCRIBER_QUERY
+    CREATE_SUBSCRIBER_QUERY,
   );
 
   useEffect(() => {
@@ -114,14 +114,14 @@ const SubscribeForm = () => {
               email,
               firstname: '',
               lastname: '',
-              subscriptions: SubscriberStatic.defaultSubscriptions()
-            }
-          }
-        })
+              subscriptions: SubscriberStatic.defaultSubscriptions(),
+            },
+          },
+        }),
       )
       .then(() => {
         alert.success(
-          `Thank you for subscribing!\nI've added ${email} to my mailing list.`
+          `Thank you for subscribing!\nI've added ${email} to my mailing list.`,
         );
       })
       .catch(({ message: error }) => {

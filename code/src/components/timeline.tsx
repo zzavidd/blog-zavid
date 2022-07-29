@@ -9,7 +9,7 @@ import { Title, VanillaLink } from './text';
 export const TimelineType: TimelineTypes = {
   REVERIE: { label: 'Reverie', segment: 'reveries' },
   EPISTLE: { label: 'Epistle', segment: 'epistles' },
-  DIARY: { label: 'Entry', segment: 'diary' }
+  DIARY: { label: 'Entry', segment: 'diary' },
 };
 
 export default ({ type, previous, next }: Timeline) => {
@@ -25,7 +25,7 @@ export default ({ type, previous, next }: Timeline) => {
 const PrevNextEntity = ({
   entity = {},
   isPrevious,
-  type
+  type,
 }: PrevNextEntityProps) => {
   const prefix = isPrevious ? 'Previous' : 'Next';
   const { label, segment } = type!;

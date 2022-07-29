@@ -1,15 +1,13 @@
 import { useMutation } from '@apollo/client';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { useEffect, useState } from 'react';
 
-import {
-  Operation,
-  SubscriberBuilder,
+import type {
   SubscriberDAO,
   SubscriberPayload,
-  SubscriberStatic,
-  SubscriptionsMapping
+  SubscriptionsMapping,
 } from 'classes';
+import { Operation, SubscriberBuilder, SubscriberStatic } from 'classes';
 import { setAlert, reportError, alert, AlertType } from 'src/components/alert';
 import hooks from 'src/lib/hooks';
 import SubscriberForm from 'src/lib/pages/subscribers/form';
@@ -17,31 +15,31 @@ import { DAOParse } from 'src/lib/parser';
 import { isValidSubscriber } from 'src/lib/validations';
 import {
   CREATE_SUBSCRIBER_QUERY,
-  UPDATE_SUBSCRIBER_QUERY
+  UPDATE_SUBSCRIBER_QUERY,
 } from 'src/private/api/queries/subscriber.queries';
 
 const SubscriberCrud = ({
   subscriber: serverSubscriber,
-  operation
+  operation,
 }: SubscriberCrud) => {
   const [clientSubscriber, setSubscriber] = useState({
     id: 0,
     email: '',
     firstname: '',
-    lastname: ''
+    lastname: '',
   } as SubscriberDAO);
   const [preferences, setPreferences] = useState(
-    SubscriberStatic.defaultSubscriptions()
+    SubscriberStatic.defaultSubscriptions(),
   );
   const [isLoaded, setLoaded] = useState(false);
   const [isRequestPending, setRequestPending] = useState(false);
 
   // Initialise mutation functions.
   const [createSubscriberMutation, { loading: createLoading }] = useMutation(
-    CREATE_SUBSCRIBER_QUERY
+    CREATE_SUBSCRIBER_QUERY,
   );
   const [updateSubscriberMutation, { loading: updateLoading }] = useMutation(
-    UPDATE_SUBSCRIBER_QUERY
+    UPDATE_SUBSCRIBER_QUERY,
   );
 
   // Determine operation type.
@@ -87,7 +85,7 @@ const SubscriberCrud = ({
       .then(() => {
         setAlert({
           type: AlertType.SUCCESS,
-          message: `You've successfully updated the subscriber with email: ${clientSubscriber.email}.`
+          message: `You've successfully updated the subscriber with email: ${clientSubscriber.email}.`,
         });
         returnToSubscriberAdmin();
       })
@@ -115,7 +113,7 @@ const SubscriberCrud = ({
 const buildPayload = (
   clientSubscriber: SubscriberDAO,
   subscriptions: SubscriptionsMapping,
-  isCreateOperation: boolean
+  isCreateOperation: boolean,
 ): SubscriberPayload => {
   const { id, email, firstname, lastname } = clientSubscriber;
 

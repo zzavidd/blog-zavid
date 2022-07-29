@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
 
-import { OnTextAreaChangeType } from 'classes';
+import type { OnTextAreaChangeType } from 'classes';
 import css from 'src/styles/components/Form.module.scss';
 
 export const ShortTextArea = (props: TextAreaProps) => {
@@ -18,7 +19,7 @@ const TextArea = ({
   value,
   onChange: onSuperChange,
   placeholder,
-  minRows = 1
+  minRows = 1,
 }: TextAreaProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [keysPressed, setKeysPressed] = useState<Record<string, boolean>>({});
@@ -26,10 +27,8 @@ const TextArea = ({
   const [cursorPosition, setCursorPosition] = useState(0);
   const [textHistory, setTextHistory] = useState<Array<string>>(['']);
   const [justUndid, setJustUndid] = useState(false);
-  const [
-    textAreaElement,
-    setTextAreaElement
-  ] = useState<HTMLTextAreaElement | null>(null);
+  const [textAreaElement, setTextAreaElement] =
+    useState<HTMLTextAreaElement | null>(null);
 
   // Refocus and set the cursor appropriately.
   useEffect(() => {
@@ -51,8 +50,8 @@ const TextArea = ({
     const changeEvent = {
       target: {
         name,
-        value: content
-      }
+        value: content,
+      },
     } as React.ChangeEvent<HTMLTextAreaElement>;
     onSuperChange(changeEvent);
   };
@@ -73,7 +72,7 @@ const TextArea = ({
     const clipboardText = e.clipboardData.getData('text');
     applyRichTextMarkup(e, {
       fullReplacement: `[$&](${clipboardText})`,
-      stopIfNoTextSelected: true
+      stopIfNoTextSelected: true,
     });
   };
 
@@ -84,13 +83,13 @@ const TextArea = ({
    */
   const applyRichTextMarkup = (
     e: React.SyntheticEvent<HTMLTextAreaElement>,
-    options: RichTextMarkupOptions = {}
+    options: RichTextMarkupOptions = {},
   ) => {
     const {
       fullReplacement,
       quantity = 1,
       symphasis,
-      stopIfNoTextSelected = false
+      stopIfNoTextSelected = false,
     } = options;
 
     const { selectionStart, selectionEnd, textContent } = e.currentTarget;

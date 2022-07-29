@@ -2,17 +2,18 @@ import async from 'async';
 import Cloudinary from 'cloudinary';
 import { zString } from 'zavid-modules';
 
+import type { PostDAO, PostImage } from '../../classes';
+import { PostStatic } from '../../classes';
+
 import { PostService } from './api/service';
 import { debug } from './error';
-
-import { PostDAO, PostImage, PostStatic } from '../../classes';
 
 const cloudinary = Cloudinary.v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 /**
@@ -22,7 +23,7 @@ cloudinary.config({
  */
 export const uploadImages = async (
   post: PostDAO,
-  options: PostImageUploadOptions = {}
+  options: PostImageUploadOptions = {},
 ): Promise<PostDAO> => {
   const { isTest = false } = options;
   const { directory, filename, slug } = await generateSlugAndFilename(post);
@@ -63,14 +64,14 @@ export const uploadImages = async (
           source,
           {
             public_id: publicId,
-            unique_filename: false
+            unique_filename: false,
           },
           (err, result) => {
             if (err) return callback(err);
             const { version, public_id, format } = result!;
             acc.push(`v${version}/${public_id}.${format}`);
             callback();
-          }
+          },
         );
       },
       function (err, results) {
@@ -93,7 +94,7 @@ export const uploadImages = async (
         }
 
         resolve(post);
-      }
+      },
     );
   });
 };
@@ -107,7 +108,7 @@ export const destroyImage = (image: string): Promise<void> => {
     if (!image) return resolve();
 
     const regex = new RegExp(
-      /(?:v[0-9]+\/)((?:dynamic|static|test)\/.*)(?:\.[a-z]+)/
+      /(?:v[0-9]+\/)((?:dynamic|static|test)\/.*)(?:\.[a-z]+)/,
     );
     if (!regex.test(image)) return resolve();
 
@@ -123,7 +124,7 @@ export const destroyImage = (image: string): Promise<void> => {
         }
 
         resolve();
-      }
+      },
     );
   });
 };
@@ -137,15 +138,15 @@ export const destroyImage = (image: string): Promise<void> => {
 export const replaceImages = async (
   id: number,
   post: PostDAO,
-  options: PostImageUploadOptions
+  options: PostImageUploadOptions,
 ) => {
   const { isTest = false } = options;
 
   const postInDatabase = await PostService.getSinglePost({
-    id
+    id,
   });
   const imagesFromClient = PostStatic.collateImages(post, {
-    includeNulls: true
+    includeNulls: true,
   }) as PostImage[];
   const imagesInDatabase = PostStatic.collateImages(postInDatabase);
 
@@ -170,7 +171,7 @@ export const replaceImages = async (
  * @param post The post details.
  */
 async function generateSlugAndFilename(
-  post: PostDAO
+  post: PostDAO,
 ): Promise<GenerateSlugResponse> {
   const slug = generateSlug(post);
   const directory = PostStatic.getDirectory(post.type!);
@@ -199,10 +200,10 @@ async function generateFilename(post: PostDAO, slug: string) {
   if (PostStatic.isPage(post)) {
     try {
       const postDomain = await PostService.getSinglePost({
-        id: post.domainId!
+        id: post.domainId!,
       });
       filename = zString.constructCleanSlug(
-        `${postDomain.title!} ${post.title}`
+        `${postDomain.title!} ${post.title}`,
       );
     } catch (err) {
       debug(err as Error);

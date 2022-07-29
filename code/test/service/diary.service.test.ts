@@ -6,7 +6,7 @@ import {
   getDiaryEntries,
   getSingleDiaryEntry,
   createDiaryEntry,
-  updateDiaryEntry
+  updateDiaryEntry,
 } from '../helper/diary.helper';
 
 describe('Service Tests: Diary', function () {
@@ -16,7 +16,7 @@ describe('Service Tests: Diary', function () {
       testWrapper(async () => {
         const diaryEntries = await getDiaryEntries();
         assert.isOk(diaryEntries);
-      })
+      }),
     );
   });
 
@@ -30,7 +30,7 @@ describe('Service Tests: Diary', function () {
 
         compareDiaryEntries(diaryEntry, readDiaryEntry);
         await deleteDiaryEntry(readDiaryEntry.id!);
-      })
+      }),
     );
 
     it('Different statuses', function () {
@@ -51,13 +51,13 @@ describe('Service Tests: Diary', function () {
         const createdDiaryEntry = await createDiaryEntry(diaryEntryToSubmit);
         const updatedDiaryEntry = await updateDiaryEntry(
           createdDiaryEntry.id,
-          diaryEntryForUpdate
+          diaryEntryForUpdate,
         );
 
         compareDiaryEntries(diaryEntryForUpdate, updatedDiaryEntry);
         assert.strictEqual(createdDiaryEntry.id, updatedDiaryEntry.id!);
         await deleteDiaryEntry(createdDiaryEntry.id);
-      })
+      }),
     );
   });
 });

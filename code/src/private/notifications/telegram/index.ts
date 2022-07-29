@@ -1,7 +1,8 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { zDate } from 'zavid-modules';
 
-import { DiaryDAO, PostDAO, PostStatic } from '../../../../classes';
+import type { DiaryDAO, PostDAO } from '../../../../classes';
+import { PostStatic } from '../../../../classes';
 import { domain } from '../../../settings';
 
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!);
@@ -40,19 +41,19 @@ export function notifyNewDiaryEntry(entry: DiaryDAO): Promise<void> {
 async function notify(content: string): Promise<void> {
   try {
     const value = await bot.sendMessage(CHANNEL!, content, {
-      parse_mode: 'Markdown'
+      parse_mode: 'Markdown',
     });
     const { title, type } = value.chat;
     const timestamp = getTimestamp();
     console.info(
-      `(${timestamp}) Sent Telegram message to "${title} ${type}".`.green
+      `(${timestamp}) Sent Telegram message to "${title} ${type}".`.green,
     );
   } catch (error) {
     const description: string = (error as any).response.body.description;
     const timestamp = getTimestamp();
     console.error(
       `(${timestamp}) Attempt to send Telegram message failed with response: "${description}."`
-        .red
+        .red,
     );
   }
 }
@@ -60,7 +61,7 @@ async function notify(content: string): Promise<void> {
  * Get the number of subscribers to the Telegram channel.
  */
 export async function getSubscriberCount(): Promise<number> {
-  return await bot.getChatMembersCount(CHANNEL);
+  return bot.getChatMembersCount(CHANNEL);
 }
 
 /** Returns the current timestamp. */

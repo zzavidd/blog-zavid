@@ -9,9 +9,7 @@ const telegramWarning = generateWarning('Telegram notifications', telegramOn);
 console.warn(emailWarning);
 console.warn(telegramWarning);
 
-export const TryWrapper = <T extends unknown>(
-  consumer: () => Promise<T>
-): Promise<T> => {
+export const TryWrapper = <T>(consumer: () => Promise<T>): Promise<T> => {
   let result;
 
   try {

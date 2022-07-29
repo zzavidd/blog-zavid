@@ -1,13 +1,13 @@
 import { validate as validateEmail } from 'email-validator';
 
-import {
+import type {
   DiaryDAO,
   PageDAO,
   PostDAO,
   PostImage,
-  PostStatic,
-  SubscriberDAO
+  SubscriberDAO,
 } from 'classes';
+import { PostStatic } from 'classes';
 import { alert } from 'src/components/alert';
 
 export const isValidPost = (post: PostDAO): boolean => {
@@ -29,7 +29,7 @@ export const isValidPost = (post: PostDAO): boolean => {
   if (PostStatic.isPublish(post)) {
     if (
       !isValidImage((post.image as PostImage).source, 'post', {
-        mustExist: PostStatic.isReverie(post)
+        mustExist: PostStatic.isReverie(post),
       })
     )
       return false;
@@ -54,7 +54,7 @@ export const isValidDiaryEntry = (entry: DiaryDAO): boolean => {
 
 export const isValidSubscriber = (
   subscriber: SubscriberDAO,
-  isAdminOp?: boolean
+  isAdminOp?: boolean,
 ): boolean => {
   let INVALID_EMAIL, ONLY_LASTNAME;
 
@@ -83,7 +83,7 @@ export const isValidPage = (page: PageDAO): boolean => {
 
 export const isValidEmail = (
   email: string,
-  message = 'Enter a valid email address.'
+  message = 'Enter a valid email address.',
 ): boolean => {
   if (!email) {
     alert.error(message);
@@ -101,7 +101,7 @@ export const isValidEmail = (
 const isValidImage = (
   file: string,
   entity: string,
-  options: ValidImageOptions = {}
+  options: ValidImageOptions = {},
 ): boolean => {
   const { mustExist = true } = options;
 
@@ -116,7 +116,7 @@ const isValidImage = (
 
 const isUnderFileSizeLimit = (
   file: string,
-  options: FileSizeLimitOptions = {}
+  options: FileSizeLimitOptions = {},
 ): boolean => {
   if (!file) return true;
 
@@ -125,7 +125,7 @@ const isUnderFileSizeLimit = (
   if (
     ifTrue(
       size > limit * 1024 * 1024,
-      `${reference} you selected is larger than ${limit}MB. Please compress this file or use a smaller one.`
+      `${reference} you selected is larger than ${limit}MB. Please compress this file or use a smaller one.`,
     )
   )
     return false;

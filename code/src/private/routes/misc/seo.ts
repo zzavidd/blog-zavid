@@ -1,14 +1,13 @@
 import express from 'express';
-import { SitemapStream, streamToPromise } from 'sitemap';
-
 import path from 'path';
+import { SitemapStream, streamToPromise } from 'sitemap';
 
 import {
   PostStatic,
   PostQueryBuilder,
   DiaryQueryBuilder,
   PageQueryBuilder,
-  DiaryStatus
+  DiaryStatus,
 } from '../../../../classes';
 import { domain } from '../../../settings';
 import { getKnex } from '../../singleton';
@@ -20,9 +19,9 @@ const knex = getKnex();
 router.get('/robots.txt', (req, res) =>
   res.status(200).sendFile(path.join(__dirname, 'robots.txt'), {
     headers: {
-      'Content-Type': 'text/plain;charset=UTF-8'
-    }
-  })
+      'Content-Type': 'text/plain;charset=UTF-8',
+    },
+  }),
 );
 
 /** Sitemap generated page */
@@ -34,7 +33,7 @@ router.get('/sitemap.xml', (req, res) => {
     '/diary',
     '/subscribe',
     '/resources/university-thrival-guide',
-    '/resources/dissertation'
+    '/resources/dissertation',
   ];
 
   const reveries = Promise.resolve()
@@ -42,7 +41,7 @@ router.get('/sitemap.xml', (req, res) => {
       new PostQueryBuilder(knex)
         .whereType({ include: [PostStatic.TYPE.REVERIE] })
         .whereStatus({ include: [PostStatic.STATUS.PUBLISHED] })
-        .build()
+        .build(),
     )
     .then((reveries) => {
       reveries.forEach((reverie) => routes.push(`/reveries/${reverie.slug}`));
@@ -52,11 +51,11 @@ router.get('/sitemap.xml', (req, res) => {
     .then(() =>
       new DiaryQueryBuilder(knex)
         .whereStatus({ include: [DiaryStatus.PUBLISHED] })
-        .build()
+        .build(),
     )
     .then((diaryEntries) => {
       diaryEntries.forEach((diaryEntry) =>
-        routes.push(`/diary/${diaryEntry.slug}`)
+        routes.push(`/diary/${diaryEntry.slug}`),
       );
     });
 
@@ -72,7 +71,7 @@ router.get('/sitemap.xml', (req, res) => {
       routes.forEach((route) => {
         sitemap.write({
           url: route,
-          changefreq: 'daily'
+          changefreq: 'daily',
         });
       });
       sitemap.end();

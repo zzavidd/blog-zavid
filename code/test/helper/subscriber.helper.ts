@@ -6,7 +6,7 @@ import {
   getEntities,
   getSingleEntity,
   SubmitEntityResponse,
-  updateEntity
+  updateEntity,
 } from '.';
 import { assert, Variables } from '..';
 import { SubscriberDAO } from '../../classes';
@@ -15,50 +15,50 @@ import {
   DELETE_SUBSCRIBER_QUERY,
   GET_SINGLE_SUBSCRIBER_QUERY,
   GET_SUBSCRIBERS_QUERY,
-  UPDATE_SUBSCRIBER_QUERY
+  UPDATE_SUBSCRIBER_QUERY,
 } from '../../src/private/api/queries/subscriber.queries';
 
 const ENTITY_NAME = 'subscriber';
 
 export const getSubscribers = (
-  variables?: Variables
+  variables?: Variables,
 ): Promise<SubscriberDAO[]> => {
   return getEntities({
     query: GET_SUBSCRIBERS_QUERY,
     resolver: 'subscribers',
-    variables
+    variables,
   }) as Promise<SubscriberDAO[]>;
 };
 
 export const getSingleSubscriber = (
   id: number,
-  expectToFail?: boolean
+  expectToFail?: boolean,
 ): Promise<SubscriberDAO> => {
   return getSingleEntity(id, {
     query: GET_SINGLE_SUBSCRIBER_QUERY,
     resolver: 'subscriber',
-    expectToFail
+    expectToFail,
   }) as Promise<SubscriberDAO>;
 };
 
 export const createSubscriber = (
-  subscriber: SubscriberDAO
+  subscriber: SubscriberDAO,
 ): Promise<SubmitEntityResponse> => {
   return createEntity(subscriber, {
     query: CREATE_SUBSCRIBER_QUERY,
     resolver: 'createSubscriber',
-    anonym: ENTITY_NAME
+    anonym: ENTITY_NAME,
   }) as Promise<SubmitEntityResponse>;
 };
 
 export const updateSubscriber = (
   id: number,
-  subscriber: SubscriberDAO
+  subscriber: SubscriberDAO,
 ): Promise<SubscriberDAO> => {
   return updateEntity(id, subscriber, {
     query: UPDATE_SUBSCRIBER_QUERY,
     resolver: 'updateSubscriber',
-    anonym: ENTITY_NAME
+    anonym: ENTITY_NAME,
   }) as Promise<SubscriberDAO>;
 };
 
@@ -66,13 +66,13 @@ export const deleteSubscriber = (id: number): Promise<void> => {
   return deleteEntity(id, {
     query: DELETE_SUBSCRIBER_QUERY,
     resolver: 'deleteSubscriber',
-    verifyDelete: async () => await getSingleSubscriber(id, true)
+    verifyDelete: async () => await getSingleSubscriber(id, true),
   });
 };
 
 export const compareSubscribers = (
   request: SubscriberDAO,
-  response: SubscriberDAO
+  response: SubscriberDAO,
 ) => {
   assert.strictEqual(request.email, response.email);
   assert.strictEqual(request.firstname, response.firstname);

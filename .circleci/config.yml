@@ -54,11 +54,11 @@ jobs:
           working_directory: ./code
       - run:
           name: Run ESLint
-          command: yarn run lint --max-warnings 0
+          command: yarn run eslint --max-warnings 0
           working_directory: ./code
       - run:
           name: Run Prettier checks
-          command: yarn run prettify
+          command: yarn run prettier:check
           working_directory: ./code
   test:
     executor: node
@@ -66,7 +66,7 @@ jobs:
       - install_dependencies
       - run:
           name: Run tests
-          command: yarn test
+          command: yarn run test
           working_directory: ./code/test
           no_output_timeout: 2m
   deploy_staging:

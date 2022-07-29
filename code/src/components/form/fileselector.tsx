@@ -1,17 +1,11 @@
 import classnames from 'classnames';
-import React, {
-  Dispatch,
-  RefObject,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import type { Dispatch, RefObject, SetStateAction } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { InvisibleButton } from 'src/components/button';
 import {
   cloudinaryBaseUrl,
-  validateCloudinaryImage
+  validateCloudinaryImage,
 } from 'src/components/image';
 import { Icon } from 'src/lib/library';
 import css from 'src/styles/components/Form.module.scss';
@@ -50,7 +44,7 @@ const ChoosePrompt = ({
   image,
   imageRef,
   placeholder = 'Choose an image...',
-  setImage
+  setImage,
 }: ChoosePrompt) => {
   if (image) return null;
 
@@ -70,7 +64,7 @@ const ChoosePrompt = ({
         setImage!(source);
         onChange(source as string);
       },
-      false
+      false,
     );
 
     if (file) reader.readAsDataURL(file);
@@ -80,7 +74,7 @@ const ChoosePrompt = ({
     <label
       className={css['fs-image-text']}
       style={{
-        padding: aspectRatio
+        padding: aspectRatio,
       }}>
       <input
         type={'file'}
@@ -98,7 +92,7 @@ const ChoiceImage = ({
   stateImage,
   onChange,
   imageRef,
-  setImage
+  setImage,
 }: ChoiceImage) => {
   const [isInitialState, setIsInitialState] = useState(true);
   const isImageVisible = stateImage && stateImage !== null;
@@ -122,7 +116,7 @@ const ChoiceImage = ({
     : 'hidden';
   const classes = classnames(
     css['fs-image-wrapper'],
-    css[`fs-image-wrapper--${state}`]
+    css[`fs-image-wrapper--${state}`],
   );
 
   return (
@@ -161,7 +155,7 @@ interface ChoiceImage extends FileSelector {
 
 export enum FSAspectRatio {
   SQUARE = '50% 0',
-  WIDE = '28.125% 0'
+  WIDE = '28.125% 0',
 }
 
 type FSImage = string | ArrayBuffer | null;

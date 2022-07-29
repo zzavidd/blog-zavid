@@ -12,8 +12,8 @@ export async function submitDiary() {
   const entry = new DiaryEntryBuilder().random().build();
   await tryWrapper(
     createDiaryEntry(entry, {
-      extraVariables: { isPublish: true }
-    })
+      extraVariables: { isPublish: true },
+    }),
   );
 }
 
@@ -28,7 +28,7 @@ export async function updateDiary() {
 
   await tryWrapper(
     updateDiaryEntry(DIARY_ID, entry, {
-      extraVariables: { isPublish: true }
-    })
+      extraVariables: { isPublish: true },
+    }),
   );
 }

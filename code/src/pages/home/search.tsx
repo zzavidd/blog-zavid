@@ -1,10 +1,11 @@
 import classnames from 'classnames';
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React, { memo, useEffect, useState } from 'react';
-import { RootStateOrAny, useSelector } from 'react-redux';
+import type { RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { zDate, zText } from 'zavid-modules';
 
-import { ResultEntityDAO } from 'classes';
+import type { ResultEntityDAO } from 'classes';
 import { Checkbox, SearchBar } from 'src/components/form';
 import CloudImage, { AspectRatio } from 'src/components/image';
 import { Spacer } from 'src/components/layout';
@@ -21,7 +22,7 @@ const SearchResults = (props: SearchResultsProps) => {
 
   const [term, setSearchTerm] = useState(searchTerm);
   const [onlyDiary, setOnlyDiaryFlag] = useState(
-    url.searchParams.get(PARAM_ONLY_DIARY) === 'true'
+    url.searchParams.get(PARAM_ONLY_DIARY) === 'true',
   );
 
   const heading = searchTerm ? `Results for '${searchTerm}'` : 'Search ZAVID';
@@ -92,12 +93,12 @@ const ResultEntity = memo(({ entity, searchTerm, idx }: ResultEntityProps) => {
   }, [isLoaded]);
 
   const date = zDate.formatDate(entity.date as string, {
-    withWeekday: true
+    withWeekday: true,
   });
 
   const classes = classnames(
     css[`search-results-entity`],
-    css[`search-results-entity--${theme}`]
+    css[`search-results-entity--${theme}`],
   );
 
   return (
@@ -164,7 +165,7 @@ const MatchedContent = ({ entity, searchTerm }: MatchedContentProps) => {
       cssOverrides={{
         paragraph: css['search-results-content'],
         hyperlink: css['search-results-readmore'],
-        custom: css[`search-results-highlight`]
+        custom: css[`search-results-highlight`],
       }}
       truncate={40}
       keepRichFormatOnTruncate={true}

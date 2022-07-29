@@ -1,8 +1,8 @@
-import { NextPageContext } from 'next';
+import type { NextPageContext } from 'next';
 import React from 'react';
 import { zDate } from 'zavid-modules';
 
-import { DiaryDAO, PageDAO } from 'classes';
+import type { DiaryDAO, PageDAO } from 'classes';
 import { AdminButton } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
@@ -15,7 +15,7 @@ const PageSingle = ({ page }: PageSingle) => {
   const substitutions = {
     lastModified: `**${zDate.formatDate(page.lastModified!)}**`,
     myAge: zDate.calculateAge(zavidBirthday),
-    redevelopmentDate: zDate.formatDate(redevelopmentDate)
+    redevelopmentDate: zDate.formatDate(redevelopmentDate),
   };
 
   return (
