@@ -7,11 +7,11 @@
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
     "build": "next build",
-    "check": "tsc --noEmit --project ./tsconfig.json",
+    "check": "tsc --noEmit",
     "check:test": "tsc --project ./test/tsconfig.test.json",
     "dev": "nodemon",
     "manual": "ts-node --project test/tsconfig.test.json test/manual",
-    "prod": "tsc --project tsconfig.override.json && node src/server.js",
+    "compile": "tsc --project tsconfig.override.json",
     "ingestion": "ts-node --project test/tsconfig.test.json test/ingestion",
     "test": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/suite.ts",
     "test:unit": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/unit/**/*.test.ts",

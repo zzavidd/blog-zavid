@@ -16,7 +16,8 @@ RUN yarn install
 COPY ./code ./
 
 RUN yarn run build
+RUN yarn run compile
 
 EXPOSE $PORT
 
-CMD ["yarn", "run", "prod"]
+CMD ["NODE_ENV=$NODE_ENV", "node", "src/server.js"]
