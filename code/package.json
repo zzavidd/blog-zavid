@@ -11,7 +11,7 @@
     "check:test": "tsc --project ./test/tsconfig.test.json",
     "dev": "nodemon",
     "manual": "ts-node --project test/tsconfig.test.json test/manual",
-    "prod": "tsc --project tsconfig.override.json && NODE_ENV=production node src/server.js",
+    "prod": "tsc --project tsconfig.override.json && node src/server.js",
     "ingestion": "ts-node --project test/tsconfig.test.json test/ingestion",
     "test": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/suite.ts",
     "test:unit": "ts-mocha --project test/tsconfig.test.json --recursive --no-timeout test/unit/**/*.test.ts",
