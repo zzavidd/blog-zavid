@@ -11,7 +11,7 @@ COPY ./code/.yarnrc.yml ./
 COPY ./code/package.json ./
 COPY ./code/yarn.lock ./
 
-RUN yarn install --production
+RUN yarn install
 
 COPY ./code ./
 
