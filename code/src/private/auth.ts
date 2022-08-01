@@ -96,10 +96,8 @@ router.get(
 router.get('/logout', function (req, res) {
   if (!req.session) return res.redirect('/');
   req.session.destroy(() => {
-    req.logOut(() => {
-      res.cookie('justDeauthenticated', true, authCookieOptions);
-      res.redirect('/');
-    });
+    res.cookie('justDeauthenticated', true, authCookieOptions);
+    res.redirect('/');
   });
 });
 
