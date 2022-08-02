@@ -102,7 +102,7 @@ router.get('/logout', function (req, res) {
 });
 
 router.use('/admin', (req, res, next) => {
-  if (req.isAuthenticated()) {
+  if (req.user) {
     next();
   } else {
     (req.session as CustomSession).returnTo = req.originalUrl;
