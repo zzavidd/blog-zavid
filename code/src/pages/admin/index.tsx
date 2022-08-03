@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import type { NextPageContext } from 'next';
+import type { NextPage } from 'next';
 import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -12,10 +12,10 @@ const links = [
   { name: 'Posts', url: 'posts' },
   { name: 'Diary', url: 'diary' },
   { name: 'Pages', url: 'pages' },
-  { name: 'Subscribers', url: 'subscribers' },
+  { name: 'Subscribers', url: 'subscribers' }
 ];
 
-const Admin = () => {
+const Admin: NextPage = () => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <Container>
@@ -24,7 +24,7 @@ const Admin = () => {
           const classes = classnames(
             css['admin-block'],
             css[`admin-block-${theme}`],
-            css[`admin-block-${url}`],
+            css[`admin-block-${url}`]
           );
           return (
             <VanillaLink href={`/admin/${url}`} key={key} className={classes}>
@@ -35,10 +35,6 @@ const Admin = () => {
       </div>
     </Container>
   );
-};
-
-Admin.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
 };
 
 export default Admin;

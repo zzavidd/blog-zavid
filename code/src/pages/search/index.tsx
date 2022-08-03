@@ -1,6 +1,6 @@
 import classnames from 'classnames';
-import type { NextPageContext } from 'next';
-import React, { memo, useEffect, useState } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
+import { memo, useEffect, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zDate, zText } from 'zavid-modules';
@@ -16,13 +16,13 @@ import css from 'src/styles/pages/Search.module.scss';
 const COMBINED_EMPHASIS_REGEX = zText.getCombinedEmphasisRegex();
 const PARAM_ONLY_DIARY = 'onlyDiary';
 
-const SearchResults = (props: SearchResultsProps) => {
+const SearchResults: NextPage<SearchResultsProps> = (props) => {
   const { searchTerm, results } = props;
   const url = new URL(location.href);
 
   const [term, setSearchTerm] = useState(searchTerm);
   const [onlyDiary, setOnlyDiaryFlag] = useState(
-    url.searchParams.get(PARAM_ONLY_DIARY) === 'true',
+    url.searchParams.get(PARAM_ONLY_DIARY) === 'true'
   );
 
   const heading = searchTerm ? `Results for '${searchTerm}'` : 'Search ZAVID';
@@ -93,12 +93,12 @@ const ResultEntity = memo(({ entity, searchTerm, idx }: ResultEntityProps) => {
   }, [isLoaded]);
 
   const date = zDate.formatDate(entity.date as string, {
-    withWeekday: true,
+    withWeekday: true
   });
 
   const classes = classnames(
     css[`search-results-entity`],
-    css[`search-results-entity--${theme}`],
+    css[`search-results-entity--${theme}`]
   );
 
   return (
@@ -165,7 +165,7 @@ const MatchedContent = ({ entity, searchTerm }: MatchedContentProps) => {
       cssOverrides={{
         paragraph: css['search-results-content'],
         hyperlink: css['search-results-readmore'],
-        custom: css[`search-results-highlight`],
+        custom: css[`search-results-highlight`]
       }}
       truncate={40}
       keepRichFormatOnTruncate={true}
@@ -186,30 +186,32 @@ String.prototype.standardize = function (): string {
     .toLowerCase();
 };
 
-SearchResults.getInitialProps = async ({ query }: NextPageContext) => {
+export const getServerSideProps: GetServerSideProps<Partial<
+  SearchResultsProps
+>> = async ({ query }) => {
   const searchTerm = query.searchTerm as string;
   const results = DAOParse<ResultEntityDAO[]>(query.results as string);
-  return { searchTerm, results };
+  return { props: { searchTerm, results } };
 };
 
 export default SearchResults;
 
-type SearchResultsProps = {
+interface SearchResultsProps {
   results: ResultEntityDAO[];
   searchTerm: string;
-};
+}
 
-type MatchedContentProps = {
+interface MatchedContentProps {
   entity: ResultEntityDAO;
   searchTerm: string;
-};
+}
 
-type ResultEntityProps = {
+interface ResultEntityProps {
   entity: ResultEntityDAO;
   searchTerm: string;
   idx: number;
-};
+}
 
-type ResultEntityImageProps = {
+interface ResultEntityImageProps {
   entity: ResultEntityDAO;
-};
+}
