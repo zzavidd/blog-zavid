@@ -65,9 +65,6 @@ export async function getHomePageData() {
   }
 
   return JSON.stringify({
-    title: `${siteTitle}: A Galaxy Mind in a Universe World`,
-    description: 'Explore the metaphysical manifestation of my mind.',
-    ogUrl: '/',
     homeText: homepage.content,
     latestDiaryEntry,
     latestReverie,
