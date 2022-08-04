@@ -1,4 +1,3 @@
-import Knex from 'knex';
 import type { NextApiRequest, NextApiResponse, PageConfig } from 'next';
 
 import {
@@ -10,28 +9,10 @@ import {
   PostType,
   QueryOrder
 } from 'classes';
-import { SubscriberService } from 'src/private/api/service';
+import { knex } from 'src/private/db';
 import { siteTitle } from 'src/settings';
 
-if (!process.env.PORT) {
-  throw new Error(`No environment variables loaded.`);
-}
-
-let database = process.env.MYSQL_NAME!;
-if (process.env.NODE_ENV !== 'production' && !process.env.CI) {
-  database += 'test';
-}
-
-const knex = Knex({
-  client: 'mysql',
-  connection: {
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PWD,
-    database,
-    charset: 'utf8mb4'
-  }
-});
+import { getAllSubscribers } from './subscribers';
 
 export default async function handler(
   req: NextApiRequest,
@@ -62,13 +43,13 @@ export async function getHomePageData() {
   const [
     [homepage],
     [latestDiaryEntry],
-    [latestReverie]
-    // emailSubscribers
+    [latestReverie],
+    emailSubscribers
   ] = await Promise.all([
     getHomeText,
     getLatestDiaryEntry,
-    getLatestReverie
-    // SubscriberService.getAllSubscribers()
+    getLatestReverie,
+    getAllSubscribers()
   ]);
 
   let randomPosts;
@@ -91,7 +72,7 @@ export async function getHomePageData() {
     latestDiaryEntry,
     latestReverie,
     randomPosts,
-    emailSubCount: 0
+    emailSubCount: emailSubscribers?.length || 0
   });
 }
 

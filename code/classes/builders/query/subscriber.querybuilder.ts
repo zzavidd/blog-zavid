@@ -1,8 +1,8 @@
-import Knex from 'knex';
+import type { Knex } from 'knex';
+
+import type { SubscriberDAO } from '../../interfaces';
 
 import { QueryBuilder, MutationBuilder } from './super';
-
-import { SubscriberDAO } from '../../interfaces';
 
 /** Builds a post query with conditions. */
 export class SubscriberQueryBuilder extends QueryBuilder<SubscriberDAO> {
@@ -10,7 +10,7 @@ export class SubscriberQueryBuilder extends QueryBuilder<SubscriberDAO> {
     super(knex, 'subscribers');
   }
 
-  whereToken(token: string) {
+  public whereToken(token: string) {
     this.query.where('token', token);
     return this;
   }
