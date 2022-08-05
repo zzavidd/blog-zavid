@@ -16,10 +16,6 @@ export default class AppDocument extends Document {
         <Head>
           {/* Page information */}
           <meta charSet={'UTF-8'} name={'author'} content={'Zavid Egbue'} />
-          <meta
-            name={'viewport'}
-            content={'initial-scale=1.0, maximum-scale=1, width=device-width'}
-          />
 
           {/* OpenGraph meta tags for search engine optimisation */}
           <meta property={'og:type'} content={'website'} />

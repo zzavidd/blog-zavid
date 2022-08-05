@@ -9,12 +9,16 @@ export default function PageMetadata({
   title,
   url,
   description,
-  cardImage = CARD_IMAGE
+  cardImage = CARD_IMAGE,
 }: MetaProps) {
   return (
     <Head>
       <title>{title}</title>
       <meta name={'description'} content={description} />
+      <meta
+        name={'viewport'}
+        content={'initial-scale=1.0, maximum-scale=1, width=device-width'}
+      />
       <meta property={'og:title'} content={title} />
       <meta property={'og:description'} content={description} />
       <meta property={'og:url'} content={`${domain}${url}`} />
