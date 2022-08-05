@@ -1,17 +1,17 @@
-import type { NextPageContext } from 'next';
-import React from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
 import { zDate } from 'zavid-modules';
 
-import type { DiaryDAO, PageDAO } from 'classes';
+import type { PageDAO } from 'classes';
 import { AdminButton } from 'src/components/button';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
 import { isAuthenticated } from 'src/lib/cookies';
-import { DAOParse } from 'src/lib/parser';
 import { redevelopmentDate, zavidBirthday } from 'src/settings';
 import css from 'src/styles/pages/Posts.module.scss';
 
-const PageSingle = ({ page }: PageSingle) => {
+import { getPageBySlug, getPageBySlugX } from './api/pages/[slug]';
+
+const PageSingleProps: NextPage<PageSingleProps> = ({ page }) => {
   const substitutions = {
     lastModified: `**${zDate.formatDate(page.lastModified!)}**`,
     myAge: zDate.calculateAge(zavidBirthday),
@@ -43,13 +43,15 @@ const navigateToEdit = (id: number): void => {
   location.href = `/admin/pages/edit/${id}`;
 };
 
-PageSingle.getInitialProps = async ({ query }: NextPageContext) => {
-  const page = DAOParse<DiaryDAO>(query.page);
-  return { page };
+export const getServerSideProps: GetServerSideProps<
+  Partial<PageSingleProps>
+> = async ({ query }) => {
+  const page = JSON.parse(await getPageBySlugX(query.slug as string));
+  return { props: { page } };
 };
 
-export default PageSingle;
+export default PageSingleProps;
 
-interface PageSingle {
+interface PageSingleProps {
   page: PageDAO;
 }
