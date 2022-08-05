@@ -11,14 +11,14 @@ import Search from 'src/fragments/home/home.search';
 import PageMetadata from 'src/partials/meta';
 import css from 'src/styles/pages/Home.module.scss';
 
-import { getHomePageData } from './api';
+import { getHomeProps } from './api';
 
 const Home: NextPage<HomeProps> = ({
   homeText,
   latestDiaryEntry,
   latestReverie,
   randomPosts,
-  emailSubCount
+  emailSubCount,
 }) => {
   return (
     <>
@@ -42,24 +42,24 @@ const Home: NextPage<HomeProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps<Partial<
-  HomeProps
->> = async () => {
+export const getServerSideProps: GetServerSideProps<
+  Partial<HomeProps>
+> = async () => {
   const {
     homeText,
     latestDiaryEntry,
     latestReverie,
     randomPosts,
-    emailSubCount
-  } = JSON.parse(await getHomePageData());
+    emailSubCount,
+  } = JSON.parse(await getHomeProps());
   return {
     props: {
       homeText,
       latestDiaryEntry,
       latestReverie,
       randomPosts,
-      emailSubCount
-    }
+      emailSubCount,
+    },
   };
 };
 

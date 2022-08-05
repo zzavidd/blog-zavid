@@ -1,8 +1,8 @@
-import { PostType } from './post.interface';
+import type { PostType } from './post.interface';
 
 // TODO: Rename to EntityDAO
 export interface GenericDAO {
-  id?: number;
+  id: number;
 }
 
 export interface ResultEntityDAO {
