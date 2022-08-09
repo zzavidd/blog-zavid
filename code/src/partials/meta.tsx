@@ -7,8 +7,8 @@ import { domain } from 'src/settings';
 
 export default function PageMetadata({
   title,
-  url,
-  description,
+  url = '',
+  description = '',
   cardImage = CARD_IMAGE,
 }: MetaProps) {
   return (
@@ -33,7 +33,7 @@ export default function PageMetadata({
 
 interface MetaProps {
   title: string;
-  url: string;
-  description: string;
+  url?: string;
+  description?: string;
   cardImage?: string;
 }
