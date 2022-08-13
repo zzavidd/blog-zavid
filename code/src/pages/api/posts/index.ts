@@ -6,8 +6,9 @@ import type {
   PostTypeFilters,
   QuerySort,
 } from 'classes';
-import { PostQueryBuilder, PostStatic } from 'classes';
+import { PostQueryBuilder, PostStatic, PostStatus, PostType } from 'classes';
 import { knex } from 'src/private/db';
+import { siteTitle } from 'src/settings';
 
 export default async function handler(
   req: NextApiRequest,
@@ -42,6 +43,46 @@ export async function getAllPosts({
     .withLimit(limit)
     .build();
   return posts.map((post: PostDAO) => PostStatic.parse(post));
+}
+
+export async function getReverieBySlugSSR(slug: string) {
+  const posts = await getReverieBySlug(slug);
+  return JSON.stringify({
+    pathDefinition: {
+      title: `${posts.current.title} | ${siteTitle}`,
+      description: JSON.stringify(posts.current.excerpt),
+      url: `/reveries/${slug}`,
+      cardImage: JSON.stringify(posts.current.image),
+    },
+    pageProps: posts,
+  });
+}
+
+export async function getReverieBySlug(slug: string) {
+  const [reverie] = await new PostQueryBuilder(knex)
+    .whereSlug(slug)
+    .whereType({ include: [PostType.REVERIE] })
+    .whereStatus({ exclude: [PostStatus.DRAFT] })
+    .build();
+
+  // const isUnauthorized =
+  //   PostStatic.isProtected(reverie) && !req.isAuthenticated();
+
+  // if (!reverie || isUnauthorized) {
+  //   return next(ERRORS.NO_ENTITY('reverie'));
+  // }
+
+  const { type, typeId } = reverie;
+  const [[previousReverie], [nextReverie]] = await Promise.all([
+    new PostQueryBuilder(knex).getPreviousPost(typeId!, type!).build(),
+    new PostQueryBuilder(knex).getNextPost(typeId!, type!).build(),
+  ]);
+
+  return {
+    current: reverie,
+    previous: previousReverie,
+    next: nextReverie,
+  };
 }
 
 export type GetAllPostOptions = {

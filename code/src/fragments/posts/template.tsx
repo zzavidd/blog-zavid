@@ -1,4 +1,3 @@
-import type { NextPageContext } from 'next';
 import React, { useState } from 'react';
 import { zDate } from 'zavid-modules';
 
@@ -13,10 +12,13 @@ import { Divider, Paragraph, Title } from 'src/components/text';
 import Timeline, { TimelineType } from 'src/components/timeline';
 import { isAuthenticated } from 'src/lib/cookies';
 import { CuratePrompt } from 'src/lib/pages/posts/prompt';
-import { DAOParse } from 'src/lib/parser';
 import css from 'src/styles/pages/Posts.module.scss';
 
-const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
+export default function PostTemplatePage({
+  current: post,
+  previous: previousPost = {},
+  next: nextPost = {},
+}: PostTemplatePageProps) {
   const [isImageModalVisible, setImageModalVisibility] = useState(false);
   const [isCuratePromptVisible, setCuratePromptVisible] = useState(false);
   const [curatePromptRef, setCuratePromptRef] = useState<HTMLElement>();
@@ -35,7 +37,7 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
     : `${post.type} #${post.typeId}: ${post.title}`;
 
   return (
-    <>
+    <React.Fragment>
       <Spacer>
         <div className={css['post-single']}>
           <Title className={css['post-single-title']}>
@@ -98,11 +100,11 @@ const PostSingle = ({ post, previousPost = {}, nextPost = {} }: PostSingle) => {
           setCuratePromptVisible(false);
         }}
       />
-    </>
+    </React.Fragment>
   );
-};
+}
 
-const BackButton = ({ post }: BackButtonProps) => {
+function BackButton({ post }: BackButtonProps) {
   const goBack = () => {
     let url;
     if (PostStatic.isPage(post)) {
@@ -123,17 +125,9 @@ const BackButton = ({ post }: BackButtonProps) => {
   }
 
   return <IBackButton onClick={goBack}>{buttonText}</IBackButton>;
-};
+}
 
-const getTimelineType = (type: PostType) => {
-  return Object.values(TimelineType).find(({ label }) => label === type);
-};
-
-const navigateToEdit = (id: number): void => {
-  location.href = `/admin/posts/edit/${id}`;
-};
-
-const PostDate = ({ post }: PostDate) => {
+function PostDate({ post }: PostDate) {
   if (!post || !post.datePublished) return null;
   if (PostStatic.isPrivate(post)) return null;
 
@@ -141,21 +135,20 @@ const PostDate = ({ post }: PostDate) => {
     withWeekday: true,
   });
   return <div className={css['post-single-date']}>{datePublished}</div>;
-};
+}
 
-PostSingle.getInitialProps = async ({ query }: NextPageContext) => {
-  const post = DAOParse<PostDAO>(query.post);
-  const previousPost = DAOParse<PostDAO>(query.previousPost);
-  const nextPost = DAOParse<PostDAO>(query.nextPost);
-  return { post, previousPost, nextPost };
-};
+function getTimelineType(type: PostType) {
+  return Object.values(TimelineType).find(({ label }) => label === type);
+}
 
-export default PostSingle;
+function navigateToEdit(id: number): void {
+  location.href = `/admin/posts/edit/${id}`;
+}
 
-interface PostSingle {
-  post: PostDAO;
-  nextPost: PostDAO;
-  previousPost: PostDAO;
+export interface PostTemplatePageProps {
+  current: PostDAO;
+  next: PostDAO;
+  previous: PostDAO;
 }
 
 interface PostDate {

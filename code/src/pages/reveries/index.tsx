@@ -14,6 +14,7 @@ import { Divider, Paragraph, Title } from 'src/components/text';
 import type { PathDefinition } from 'src/constants/paths';
 import { isAuthenticated } from 'src/lib/cookies';
 import { LazyLoader, Responsive } from 'src/lib/library';
+import PageMetadata from 'src/partials/meta';
 import { RightSidebar } from 'src/partials/sidebar';
 import { siteTitle } from 'src/settings';
 import css from 'src/styles/pages/Reveries.module.scss';
@@ -24,28 +25,34 @@ import { getAllPostsSSR } from '../api/posts';
 const REVERIES_HEADING = 'Reveries';
 
 const ReveriesIndex: NextPage<ReveriesIndexProps> = ({
-  reveries,
-  pageIntro,
+  pathDefinition,
+  pageProps,
 }) => {
+  const { pageIntro, reveries } = pageProps;
   return (
-    <Spacer>
-      <Partitioner>
-        <Responsive
-          defaultView={
-            <React.Fragment>
+    <React.Fragment>
+      <PageMetadata {...pathDefinition} />
+      <Spacer>
+        <Partitioner>
+          <Responsive
+            defaultView={
+              <React.Fragment>
+                <ReverieList reveries={reveries} pageIntro={pageIntro} />
+                <RightSidebar />
+              </React.Fragment>
+            }
+            laptopView={
               <ReverieList reveries={reveries} pageIntro={pageIntro} />
-              <RightSidebar />
-            </React.Fragment>
-          }
-          laptopView={<ReverieList reveries={reveries} pageIntro={pageIntro} />}
-        />
-      </Partitioner>
-      <Toolbar spaceItems={true}>
-        {isAuthenticated() && (
-          <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
-        )}
-      </Toolbar>
-    </Spacer>
+            }
+          />
+        </Partitioner>
+        <Toolbar spaceItems={true}>
+          {isAuthenticated() && (
+            <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
+          )}
+        </Toolbar>
+      </Spacer>
+    </React.Fragment>
   );
 };
 
@@ -139,11 +146,15 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: {
-      title: `Reveries | ${siteTitle}`,
-      description: page.excerpt,
-      url: `/reveries`,
-      reveries,
-      pageIntro: page.content,
+      pathDefinition: {
+        title: `Reveries | ${siteTitle}`,
+        description: page.excerpt,
+        url: `/reveries`,
+      },
+      pageProps: {
+        reveries,
+        pageIntro: page.content,
+      },
     },
   };
 };
@@ -154,7 +165,10 @@ interface ReverieProps {
   reverie: PostDAO;
 }
 
-type ReveriesIndexProps = PathDefinition & ReverieList;
+type ReveriesIndexProps = {
+  pathDefinition: PathDefinition;
+  pageProps: ReverieList;
+};
 
 interface ReverieList {
   reveries: PostDAO[];
