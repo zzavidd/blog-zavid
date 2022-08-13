@@ -2,8 +2,8 @@ import type { NextApiRequest, NextApiResponse, PageConfig } from 'next';
 
 import { getLatestDiaryEntry } from './diary/latest';
 import { getPageBySlug } from './pages/[slug]';
+import { getLatestReverie } from './posts/latest';
 import { getRandomPosts } from './posts/random';
-import { getLatestReverie } from './posts/reveries.latest';
 import { getAllSubscribers } from './subscribers';
 
 export default async function handler(

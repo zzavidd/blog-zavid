@@ -5,7 +5,7 @@ import { PageQueryBuilder } from 'classes';
 import { knex } from 'src/private/db';
 import { siteTitle } from 'src/settings';
 
-export async function getPageBySlugX(slug: string, isEmbed?: boolean) {
+export async function getPageBySlugX(slug: string, isEmbed = false) {
   const page = await getPageBySlug(slug, isEmbed);
   return JSON.stringify({
     title: `${page.title} | ${siteTitle}`,

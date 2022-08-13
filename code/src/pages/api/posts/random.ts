@@ -3,7 +3,7 @@ import { PostQueryBuilder, PostType, PostStatus, QueryOrder } from 'classes';
 import { knex } from 'src/private/db';
 
 export async function getRandomPosts({
-  exceptId
+  exceptId,
 }: RandomPostOptions): Promise<PostDAO[]> {
   const builder = new PostQueryBuilder(knex)
     .whereType({ exclude: [PostType.PAGE] })

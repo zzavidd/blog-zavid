@@ -1,65 +1,43 @@
-import { useQuery } from '@apollo/client';
 import classnames from 'classnames';
-import type { NextPageContext } from 'next';
-import React, { memo, useEffect, useState } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
+import React, { memo, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
 import type { PostDAO } from 'classes';
 import { PostStatus, PostType, QueryOrder } from 'classes';
-import { alert } from 'src/components/alert';
 import { AdminButton } from 'src/components/button';
 import CloudImage from 'src/components/image';
 import { Partitioner, Spacer, Toolbar } from 'src/components/layout';
 import { Divider, Paragraph, Title } from 'src/components/text';
+import type { PathDefinition } from 'src/constants/paths';
 import { isAuthenticated } from 'src/lib/cookies';
 import { LazyLoader, Responsive } from 'src/lib/library';
 import { RightSidebar } from 'src/partials/sidebar';
-import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
+import { siteTitle } from 'src/settings';
 import css from 'src/styles/pages/Reveries.module.scss';
+
+import { getPageBySlug } from '../api/pages/[slug]';
+import { getAllPostsSSR } from '../api/posts';
 
 const REVERIES_HEADING = 'Reveries';
 
-const ReveriesIndex = ({ reveriesIntro }: ReveriesIndexProps) => {
-  const [reveries, setReveries] = useState([]);
-  const [isLoaded, setLoaded] = useState(false);
-
-  const {
-    data,
-    error: queryError,
-    loading: queryLoading,
-  } = useQuery(GET_POSTS_QUERY, {
-    variables: {
-      sort: {
-        field: 'datePublished',
-        order: QueryOrder.DESCENDING,
-      },
-      type: { include: [PostType.REVERIE] },
-      status: { include: [PostStatus.PUBLISHED] },
-    },
-  });
-
-  useEffect(() => {
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
-    setReveries(data ? data.getAllPosts : []);
-    setLoaded(true);
-  }, [isLoaded, queryLoading]);
-
+const ReveriesIndex: NextPage<ReveriesIndexProps> = ({
+  reveries,
+  pageIntro,
+}) => {
   return (
     <Spacer>
       <Partitioner>
         <Responsive
           defaultView={
-            <>
-              <ReverieList reveries={reveries} reveriesIntro={reveriesIntro} />
+            <React.Fragment>
+              <ReverieList reveries={reveries} pageIntro={pageIntro} />
               <RightSidebar />
-            </>
+            </React.Fragment>
           }
-          laptopView={
-            <ReverieList reveries={reveries} reveriesIntro={reveriesIntro} />
-          }
+          laptopView={<ReverieList reveries={reveries} pageIntro={pageIntro} />}
         />
       </Partitioner>
       <Toolbar spaceItems={true}>
@@ -71,35 +49,27 @@ const ReveriesIndex = ({ reveriesIntro }: ReveriesIndexProps) => {
   );
 };
 
-const navigateToPostAdmin = () => (location.href = '/admin/posts');
-
-const ReveriesHeading = ({ reveriesIntro }: ReveriesIndexProps) => {
+function ReverieList({ reveries, pageIntro }: ReverieList) {
   return (
-    <div>
-      <Title className={css['reveries-heading']}>{REVERIES_HEADING}</Title>
-      <div className={css[`reveries-introduction`]}>
-        <Paragraph
-          cssOverrides={{ paragraph: css[`reveries-introduction-paragraph`] }}>
-          {reveriesIntro}
-        </Paragraph>
+    <div className={css['reveries-list']}>
+      <div>
+        <Title className={css['reveries-heading']}>{REVERIES_HEADING}</Title>
+        <div className={css[`reveries-introduction`]}>
+          <Paragraph
+            cssOverrides={{
+              paragraph: css[`reveries-introduction-paragraph`],
+            }}>
+            {pageIntro}
+          </Paragraph>
+        </div>
+        <Divider className={css['reveries-heading-divider']} />
       </div>
-      <Divider className={css['reveries-heading-divider']} />
+      {reveries.map((reverie, key) => (
+        <Reverie reverie={reverie} key={key} />
+      ))}
     </div>
   );
-};
-
-const ReverieList = ({ reveries, reveriesIntro }: ReverieList) => {
-  return (
-    <>
-      <div className={css['reveries-list']}>
-        <ReveriesHeading reveriesIntro={reveriesIntro} />
-        {reveries.map((reverie, key) => (
-          <Reverie reverie={reverie} key={key} />
-        ))}
-      </div>
-    </>
-  );
-};
+}
 
 const Reverie = memo(({ reverie }: ReverieProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
@@ -136,7 +106,7 @@ const Reverie = memo(({ reverie }: ReverieProps) => {
   );
 });
 
-const ReverieImage = ({ reverie }: ReverieProps) => {
+function ReverieImage({ reverie }: ReverieProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   if (!reverie.image) return null;
   return (
@@ -146,23 +116,47 @@ const ReverieImage = ({ reverie }: ReverieProps) => {
       containerClassName={css[`reveries-image-${theme}`]}
     />
   );
-};
+}
 
-ReveriesIndex.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+function navigateToPostAdmin() {
+  location.href = '/admin/posts';
+}
+
+export const getServerSideProps: GetServerSideProps<
+  ReveriesIndexProps
+> = async () => {
+  const page = await getPageBySlug('reveries');
+  const reveries = JSON.parse(
+    await getAllPostsSSR({
+      sort: {
+        field: 'datePublished',
+        order: QueryOrder.DESCENDING,
+      },
+      type: { include: [PostType.REVERIE] },
+      status: { include: [PostStatus.PUBLISHED] },
+    }),
+  );
+
+  return {
+    props: {
+      title: `Reveries | ${siteTitle}`,
+      description: page.excerpt,
+      url: `/reveries`,
+      reveries,
+      pageIntro: page.content,
+    },
+  };
 };
 
 export default ReveriesIndex;
 
-interface ReveriesIndexProps {
-  reveriesIntro: string;
+interface ReverieProps {
+  reverie: PostDAO;
 }
+
+type ReveriesIndexProps = PathDefinition & ReverieList;
 
 interface ReverieList {
   reveries: PostDAO[];
-  reveriesIntro: string;
-}
-
-interface ReverieProps {
-  reverie: PostDAO;
+  pageIntro: string;
 }

@@ -1,5 +1,4 @@
-import { useQuery } from '@apollo/client';
-import React, { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
@@ -9,36 +8,33 @@ import { PostStatic } from 'classes';
 import { alert } from 'src/components/alert';
 import CloudImage from 'src/components/image';
 import { Title, VanillaLink } from 'src/components/text';
-import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
 import css from 'src/styles/Partials.module.scss';
 
 export const RightSidebar = () => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [recentPosts, setRecentPosts] = useState([]);
-  const [isLoaded, setLoaded] = useState(false);
-
-  const {
-    data,
-    error: queryError,
-    loading: queryLoading,
-  } = useQuery(GET_POSTS_QUERY, {
-    variables: {
-      limit: 4,
-      sort: {
-        field: 'datePublished',
-        order: 'DESC',
-      },
-      type: { exclude: [PostStatic.TYPE.PAGE] },
-      status: { include: [PostStatic.STATUS.PUBLISHED] },
-    },
-  });
 
   useEffect(() => {
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
-    setRecentPosts(data ? data.getAllPosts : []);
-    setLoaded(true);
-  }, [isLoaded, queryLoading]);
+    async function getRecentPosts() {
+      const query = new URLSearchParams({
+        params: JSON.stringify({
+          limit: 4,
+          sort: {
+            field: 'datePublished',
+            order: 'DESC',
+          },
+          type: { exclude: [PostStatic.TYPE.PAGE] },
+          status: { include: [PostStatic.STATUS.PUBLISHED] },
+        }),
+      });
+      const res = await fetch(`/api/posts?${query.toString()}`);
+      if (!res.ok) return alert.error(res.statusText);
+      const data = await res.json();
+      setRecentPosts(data);
+    }
+
+    getRecentPosts();
+  }, []);
 
   return (
     <div className={css[`sidebar-${theme}`]}>

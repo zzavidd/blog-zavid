@@ -1,10 +1,10 @@
-import { GenericDAO } from './super';
+import type { GenericDAO } from './super';
 
 export interface PageDAO extends GenericDAO {
-  title?: string;
-  content?: string;
-  slug?: string;
-  isEmbed?: boolean;
-  excerpt?: string;
-  lastModified?: string | Date;
+  title: string;
+  content: string;
+  slug: string;
+  isEmbed: boolean;
+  excerpt: string;
+  lastModified: string | Date;
 }

@@ -5,7 +5,7 @@ import { knex } from 'src/private/db';
 export async function getLatestReverie(): Promise<PostDAO> {
   const [getLatestReverie] = await new PostQueryBuilder(knex)
     .whereType({
-      include: [PostType.REVERIE]
+      include: [PostType.REVERIE],
     })
     .whereStatus({ include: [PostStatus.PUBLISHED] })
     .getLatestPost()
