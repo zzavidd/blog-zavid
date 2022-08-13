@@ -32,7 +32,7 @@ const client = new ApolloClient({
 const AUTH_COOKIE = 'justAuthenticated';
 const DEAUTH_COOKIE = 'justDeauthenticated';
 
-export default (props: AppProps) => {
+export default function (props: AppProps) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -42,7 +42,7 @@ export default (props: AppProps) => {
       </PersistGate>
     </Provider>
   );
-};
+}
 
 /**
  * The root of the ZAVID blog.
@@ -51,7 +51,7 @@ export default (props: AppProps) => {
  * @param props.pageProps The properties for each page.
  * @returns The full page including the header and footer.
  */
-const ZAVIDApp = ({ Component, pageProps }: AppProps) => {
+function ZAVIDApp({ Component, pageProps }: AppProps) {
   const [isLoaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
 
@@ -85,14 +85,14 @@ const ZAVIDApp = ({ Component, pageProps }: AppProps) => {
   }, [isLoaded]);
 
   return (
-    <>
+    <React.Fragment>
       <Header />
       <Component {...pageProps} />
       <Footer />
       <CookiePrompt />
-    </>
+    </React.Fragment>
   );
-};
+}
 
 ZAVIDApp.getInitialProps = async (context: AppContext) => {
   const pageProps = await App.getInitialProps(context);

@@ -56,17 +56,23 @@ const navigateToEdit = (id: number): void => {
 export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
   query,
 }) => {
-  const page = JSON.parse(await getPageBySlugSSR(query.page as string));
-  return {
-    props: {
-      pathDefinition: {
-        title: `${page.title} | ${siteTitle}`,
-        description: zText.extractExcerpt(page.content!),
-        url: `/${query.page}`,
+  try {
+    const page = JSON.parse(await getPageBySlugSSR(query.page as string));
+    return {
+      props: {
+        pathDefinition: {
+          title: `${page.title} | ${siteTitle}`,
+          description: zText.extractExcerpt(page.content!),
+          url: `/${query.page}`,
+        },
+        page,
       },
-      page,
-    },
-  };
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export default PageSingleProps;

@@ -9,6 +9,7 @@ import PageMetadata from 'src/partials/meta';
 
 import { getPostSSR } from '../api/posts';
 
+// eslint-disable-next-line react/function-component-definition
 const EpistlePage: NextPage<EpistlePageProps> = ({
   pathDefinition,
   pageProps,
@@ -24,13 +25,19 @@ const EpistlePage: NextPage<EpistlePageProps> = ({
 export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
   query,
 }) => {
-  return {
-    props: JSON.parse(
-      await getPostSSR(query.slug as string, PostType.EPISTLE, {
-        exclude: [PostStatus.DRAFT],
-      }),
-    ),
-  };
+  try {
+    return {
+      props: JSON.parse(
+        await getPostSSR(query.slug as string, PostType.EPISTLE, {
+          exclude: [PostStatus.DRAFT],
+        }),
+      ),
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export default EpistlePage;

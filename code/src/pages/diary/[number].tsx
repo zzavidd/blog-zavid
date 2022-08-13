@@ -136,17 +136,23 @@ const navigateToEdit = (id: number): void => {
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryPageProps
 > = async ({ query }) => {
-  const entries = JSON.parse(await getDiaryEntrySSR(query.number as string));
-  return {
-    props: {
-      pathDefinition: {
-        title: `Diary Entry #${entries.current.entryNumber}: ${entries.current.title} | ${siteTitle}`,
-        description: zText.extractExcerpt(entries.current.content!),
-        url: `/diary/${entries.current.slug}`,
+  try {
+    const entries = JSON.parse(await getDiaryEntrySSR(query.number as string));
+    return {
+      props: {
+        pathDefinition: {
+          title: `Diary Entry #${entries.current.entryNumber}: ${entries.current.title} | ${siteTitle}`,
+          description: zText.extractExcerpt(entries.current.content!),
+          url: `/diary/${entries.current.slug}`,
+        },
+        pageProps: entries,
       },
-      pageProps: entries,
-    },
-  };
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export default DiaryEntryPage;

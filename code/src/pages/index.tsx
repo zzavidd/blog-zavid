@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import React from 'react';
 
 import type { DiaryDAO, PostDAO } from 'classes';
 import { HomeField, HomeRow } from 'src/components/pages/home';
@@ -13,6 +14,7 @@ import css from 'src/styles/pages/Home.module.scss';
 
 import { getHomeProps } from './api/home';
 
+// eslint-disable-next-line react/function-component-definition
 const Home: NextPage<HomeProps> = ({
   homeText,
   latestDiaryEntry,

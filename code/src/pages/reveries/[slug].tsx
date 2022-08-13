@@ -25,13 +25,19 @@ const ReveriePage: NextPage<ReveriePageProps> = ({
 export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
   query,
 }) => {
-  return {
-    props: JSON.parse(
-      await getPostSSR(query.slug as string, PostType.REVERIE, {
-        exclude: [PostStatus.DRAFT],
-      }),
-    ),
-  };
+  try {
+    return {
+      props: JSON.parse(
+        await getPostSSR(query.slug as string, PostType.REVERIE, {
+          exclude: [PostStatus.DRAFT],
+        }),
+      ),
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export default ReveriePage;

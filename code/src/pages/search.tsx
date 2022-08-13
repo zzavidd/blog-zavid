@@ -15,6 +15,7 @@ import { getSearchResults } from './api/search';
 
 const PARAM_ONLY_DIARY = 'onlyDiary';
 
+// eslint-disable-next-line react/function-component-definition
 const SearchResults: NextPage<SearchResultsProps> = (props) => {
   const { searchTerm, results } = props;
   const url = new URL(location.href);
