@@ -165,10 +165,10 @@ interface ReverieProps {
   reverie: PostDAO;
 }
 
-type ReveriesIndexProps = {
+interface ReveriesIndexProps {
   pathDefinition: PathDefinition;
   pageProps: ReverieList;
-};
+}
 
 interface ReverieList {
   reveries: PostDAO[];

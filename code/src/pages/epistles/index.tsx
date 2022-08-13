@@ -1,7 +1,6 @@
-import { useQuery } from '@apollo/client';
 import classnames from 'classnames';
-import type { NextPageContext } from 'next';
-import React, { memo, useEffect, useState } from 'react';
+import type { GetServerSideProps } from 'next';
+import React, { memo, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
@@ -9,92 +8,68 @@ import { zDate } from 'zavid-modules';
 
 import type { PostDAO } from 'classes';
 import { PostStatus, PostType, QueryOrder } from 'classes';
-import { alert } from 'src/components/alert';
 import { AdminButton } from 'src/components/button';
 import CloudImage from 'src/components/image';
 import { Spacer, Toolbar } from 'src/components/layout';
 import { Divider, Paragraph, Title, VanillaLink } from 'src/components/text';
+import type { PathDefinition } from 'src/constants/paths';
 import { isAuthenticated } from 'src/lib/cookies';
 import { LazyLoader, ScreenWidth } from 'src/lib/library';
-import { GET_POSTS_QUERY } from 'src/private/api/queries/post.queries';
+import PageMetadata from 'src/partials/meta';
+import { siteTitle } from 'src/settings';
 import css from 'src/styles/pages/Epistles.module.scss';
+
+import { getPageBySlug } from '../api/pages/[slug]';
+import { getAllPostsSSR } from '../api/posts';
 
 const EPISTLES_HEADING = 'Epistles';
 
-const EpistlesIndex = ({ epistlesIntro }: EpistlesIndexProps) => {
-  const [epistles, setEpistles] = useState([]);
-  const [isLoaded, setLoaded] = useState(false);
-
-  const {
-    data,
-    error: queryError,
-    loading: queryLoading,
-  } = useQuery(GET_POSTS_QUERY, {
-    variables: {
-      sort: {
-        field: 'datePublished',
-        order: QueryOrder.DESCENDING,
-      },
-      type: { include: [PostType.EPISTLE] },
-      status: { include: [PostStatus.PUBLISHED] },
-    },
-  });
-
-  useEffect(() => {
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
-    setEpistles(data ? data.getAllPosts : []);
-    setLoaded(true);
-  }, [isLoaded, queryLoading]);
-
+const EpistlesIndex = ({ pathDefinition, pageProps }: EpistlesIndexProps) => {
+  const { epistles, pageIntro } = pageProps;
   return (
-    <Spacer>
-      <EpistleGrid epistles={epistles} epistlesIntro={epistlesIntro} />
-      <Toolbar spaceItems={true}>
-        {isAuthenticated() && (
-          <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
-        )}
-      </Toolbar>
-    </Spacer>
+    <React.Fragment>
+      <PageMetadata {...pathDefinition} />
+      <Spacer>
+        <EpistleGrid epistles={epistles} pageIntro={pageIntro} />
+        <Toolbar spaceItems={true}>
+          {isAuthenticated() && (
+            <AdminButton onClick={() => (location.href = '/admin/posts')}>
+              Posts Admin
+            </AdminButton>
+          )}
+        </Toolbar>
+      </Spacer>
+    </React.Fragment>
   );
 };
 
-const navigateToPostAdmin = () => (location.href = '/admin/posts');
-
-const EpistlesHeading = ({ epistlesIntro }: EpistlesIndexProps) => {
-  return (
-    <div>
-      <Title className={css['epistles-heading']}>{EPISTLES_HEADING}</Title>
-      <div className={css[`epistles-introduction`]}>
-        <Paragraph
-          cssOverrides={{ paragraph: css[`epistles-introduction-paragraph`] }}>
-          {epistlesIntro}
-        </Paragraph>
-      </div>
-      <Divider className={css['epistles-heading-divider']} />
-    </div>
-  );
-};
-
-const EpistleGrid = ({
-  epistles,
-  epistlesIntro,
-}: EpistleGridProps): JSX.Element => {
+function EpistleGrid({ epistles, pageIntro }: EpistlesProps) {
   return (
     <div className={css['epistles-index-page']}>
-      <EpistlesHeading epistlesIntro={epistlesIntro} />
+      <div>
+        <Title className={css['epistles-heading']}>{EPISTLES_HEADING}</Title>
+        <div className={css[`epistles-introduction`]}>
+          <Paragraph
+            cssOverrides={{
+              paragraph: css[`epistles-introduction-paragraph`],
+            }}>
+            {pageIntro}
+          </Paragraph>
+        </div>
+        <Divider className={css['epistles-heading-divider']} />
+      </div>
       <div className={css['epistles-grid']}>
         <EpistleGridder
           epistles={epistles.map((epistle, key) => (
-            <Epistle epistle={epistle} key={key + 1} />
+            <EpistleEntry epistle={epistle} key={key + 1} />
           ))}
         />
       </div>
     </div>
   );
-};
+}
 
-const EpistleGridder = ({ epistles }: EpistleGridderProps) => {
+function EpistleGridder({ epistles }: EpistleGridderProps) {
   const isMedium = useMediaQuery({ query: ScreenWidth.MEDIUM });
   const isLarge = useMediaQuery({ query: ScreenWidth.LARGE });
   const isXLarge = useMediaQuery({ query: ScreenWidth.XLARGE });
@@ -106,17 +81,15 @@ const EpistleGridder = ({ epistles }: EpistleGridderProps) => {
   for (let i = 0; i <= COLUMN_NUMBER; i++) {
     array.push(
       <div className={css['epistles-grid-column']} key={i}>
-        {epistles.filter((epistle: JSX.Element, key: number) => {
-          return key % COLUMN_NUMBER === i;
-        })}
+        {epistles.filter((_, key) => key % COLUMN_NUMBER === i)}
       </div>,
     );
   }
 
-  return <>{array}</>;
-};
+  return <React.Fragment>{array}</React.Fragment>;
+}
 
-const Epistle = memo(({ epistle }: EpistleProps) => {
+const EpistleEntry = memo(({ epistle }: EpistleEntryProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [isInView, setInView] = useState(false);
 
@@ -145,7 +118,7 @@ const Epistle = memo(({ epistle }: EpistleProps) => {
   );
 });
 
-const EpistleParagraph = ({ epistle, link }: EpistleParagraphProps) => {
+function EpistleParagraph({ epistle, link }: EpistleParagraphProps) {
   const isSmall = useMediaQuery({ query: ScreenWidth.SMALL });
 
   return (
@@ -160,9 +133,9 @@ const EpistleParagraph = ({ epistle, link }: EpistleParagraphProps) => {
       {epistle.content}
     </Paragraph>
   );
-};
+}
 
-const EpistleImage = ({ epistle }: EpistleProps) => {
+function EpistleImage({ epistle }: EpistleEntryProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   if (!epistle.image) return null;
   return (
@@ -172,32 +145,59 @@ const EpistleImage = ({ epistle }: EpistleProps) => {
       containerClassName={css[`epistles-image-${theme}`]}
     />
   );
-};
+}
 
-EpistlesIndex.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+export const getServerSideProps: GetServerSideProps<
+  EpistlesIndexProps
+> = async () => {
+  const page = await getPageBySlug('epistles');
+  const epistles = JSON.parse(
+    await getAllPostsSSR({
+      sort: {
+        field: 'datePublished',
+        order: QueryOrder.DESCENDING,
+      },
+      type: { include: [PostType.EPISTLE] },
+      status: { include: [PostStatus.PUBLISHED] },
+    }),
+  );
+
+  return {
+    props: {
+      pathDefinition: {
+        title: `Epistles | ${siteTitle}`,
+        description: page.excerpt,
+        url: `/epistles`,
+      },
+      pageProps: {
+        epistles,
+        pageIntro: page.content,
+      },
+    },
+  };
 };
 
 export default EpistlesIndex;
 
-type EpistlesIndexProps = {
-  epistlesIntro: string;
-};
+interface EpistlesIndexProps {
+  pathDefinition: PathDefinition;
+  pageProps: EpistlesProps;
+}
 
-type EpistleGridProps = {
+interface EpistlesProps {
   epistles: PostDAO[];
-  epistlesIntro: string;
-};
+  pageIntro: string;
+}
 
-type EpistleGridderProps = {
-  epistles: JSX.Element[];
-};
-
-type EpistleProps = {
+interface EpistleEntryProps {
   epistle: PostDAO;
-};
+}
 
-type EpistleParagraphProps = {
+interface EpistleGridderProps {
+  epistles: JSX.Element[];
+}
+
+interface EpistleParagraphProps {
   epistle: PostDAO;
   link: string;
-};
+}

@@ -8,7 +8,10 @@ import PageMetadata from 'src/partials/meta';
 
 import { getReverieBySlugSSR } from '../api/posts';
 
-const PostPage: NextPage<PostPageProps> = ({ pathDefinition, pageProps }) => {
+const ReveriePage: NextPage<ReveriePageProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   return (
     <React.Fragment>
       <PageMetadata {...pathDefinition} />
@@ -17,15 +20,15 @@ const PostPage: NextPage<PostPageProps> = ({ pathDefinition, pageProps }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PostPageProps> = async ({
+export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
   query,
 }) => {
   return { props: JSON.parse(await getReverieBySlugSSR(query.slug as string)) };
 };
 
-export default PostPage;
+export default ReveriePage;
 
-interface PostPageProps {
+interface ReveriePageProps {
   pathDefinition: PathDefinition;
   pageProps: PostTemplatePageProps;
 }
