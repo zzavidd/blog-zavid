@@ -20,7 +20,7 @@ import { siteTitle } from 'src/settings';
 import css from 'src/styles/pages/Diary.module.scss';
 
 import { getAllDiaryEntriesSSR } from '../api/diary';
-import { getPageBySlug } from '../api/pages/[slug]';
+import { getPageBySlug } from '../api/pages';
 
 const DIARY_HEADING = `Zavid's Diary`;
 const PARAM_ONLY_FAVOURITES = 'onlyFavourites';

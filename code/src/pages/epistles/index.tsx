@@ -19,12 +19,12 @@ import PageMetadata from 'src/partials/meta';
 import { siteTitle } from 'src/settings';
 import css from 'src/styles/pages/Epistles.module.scss';
 
-import { getPageBySlug } from '../api/pages/[slug]';
+import { getPageBySlug } from '../api/pages';
 import { getAllPostsSSR } from '../api/posts';
 
 const EPISTLES_HEADING = 'Epistles';
 
-const EpistlesIndex = ({ pathDefinition, pageProps }: EpistlesIndexProps) => {
+function EpistlesIndex({ pathDefinition, pageProps }: EpistlesIndexProps) {
   const { epistles, pageIntro } = pageProps;
   return (
     <React.Fragment>
@@ -41,7 +41,7 @@ const EpistlesIndex = ({ pathDefinition, pageProps }: EpistlesIndexProps) => {
       </Spacer>
     </React.Fragment>
   );
-};
+}
 
 function EpistleGrid({ epistles, pageIntro }: EpistlesProps) {
   return (

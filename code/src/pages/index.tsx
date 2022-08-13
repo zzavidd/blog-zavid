@@ -11,7 +11,7 @@ import Search from 'src/fragments/home/home.search';
 import PageMetadata from 'src/partials/meta';
 import css from 'src/styles/pages/Home.module.scss';
 
-import { getHomeProps } from './api';
+import { getHomeProps } from './api/home';
 
 const Home: NextPage<HomeProps> = ({
   homeText,
@@ -21,7 +21,7 @@ const Home: NextPage<HomeProps> = ({
   emailSubCount,
 }) => {
   return (
-    <>
+    <React.Fragment>
       <PageMetadata {...Paths.Home} />
       <div className={css['home-page']}>
         <Introduction content={homeText} emailSubCount={emailSubCount} />
@@ -38,7 +38,7 @@ const Home: NextPage<HomeProps> = ({
       <HomeRow>
         <RandomPostsGrid posts={randomPosts} />
       </HomeRow>
-    </>
+    </React.Fragment>
   );
 };
 

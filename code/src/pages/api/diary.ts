@@ -1,5 +1,5 @@
 import type { DiaryDAO, DiaryStatusFilters, QuerySort } from 'classes';
-import { DiaryQueryBuilder, DiaryStatic } from 'classes';
+import { DiaryStatus, DiaryQueryBuilder, DiaryStatic } from 'classes';
 import type { GetDiaryOptions } from 'src/private/api/service/diary.service';
 import { knex } from 'src/private/db';
 
@@ -48,6 +48,14 @@ export async function getDiaryEntryByNumber(number: number) {
     previous,
     next,
   };
+}
+
+export async function getLatestDiaryEntry(): Promise<DiaryDAO> {
+  const [latestDiaryEntry] = await new DiaryQueryBuilder(knex)
+    .whereStatus({ include: [DiaryStatus.PUBLISHED] })
+    .getLatestEntry()
+    .build();
+  return latestDiaryEntry;
 }
 
 export interface GetAllDiaryOptions {

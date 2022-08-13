@@ -3,11 +3,16 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type {
   PostDAO,
   PostStatusFilters,
-  PostType,
   PostTypeFilters,
   QuerySort,
 } from 'classes';
-import { PostQueryBuilder, PostStatic } from 'classes';
+import {
+  QueryOrder,
+  PostStatus,
+  PostQueryBuilder,
+  PostStatic,
+  PostType,
+} from 'classes';
 import { knex } from 'src/private/db';
 import { siteTitle } from 'src/settings';
 
@@ -95,6 +100,39 @@ export async function getPost(
     previous: previousPost,
     next: nextPost,
   };
+}
+
+export async function getLatestReverie(): Promise<PostDAO> {
+  const [getLatestReverie] = await new PostQueryBuilder(knex)
+    .whereType({
+      include: [PostType.REVERIE],
+    })
+    .whereStatus({ include: [PostStatus.PUBLISHED] })
+    .getLatestPost()
+    .build();
+  return getLatestReverie;
+}
+
+export async function getRandomPosts({
+  exceptId,
+}: RandomPostOptions): Promise<PostDAO[]> {
+  const builder = new PostQueryBuilder(knex)
+    .whereType({ exclude: [PostType.PAGE] })
+    .whereStatus({ include: [PostStatus.PUBLISHED] });
+
+  if (exceptId) {
+    builder.exceptId(exceptId);
+  }
+
+  const randomPosts = await builder
+    .withOrder({ order: QueryOrder.RANDOM })
+    .withLimit(4)
+    .build();
+  return randomPosts;
+}
+
+interface RandomPostOptions {
+  exceptId?: number;
 }
 
 export interface GetAllPostOptions {

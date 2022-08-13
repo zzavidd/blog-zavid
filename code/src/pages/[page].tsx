@@ -1,6 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
-import { zDate } from 'zavid-modules';
+import { zDate, zText } from 'zavid-modules';
 
 import type { PageDAO } from 'classes';
 import { AdminButton } from 'src/components/button';
@@ -8,16 +8,16 @@ import { Spacer, Toolbar } from 'src/components/layout';
 import { Paragraph, Title } from 'src/components/text';
 import type { PathDefinition } from 'src/constants/paths';
 import { isAuthenticated } from 'src/lib/cookies';
-import { DAOParse } from 'src/lib/parser';
 import PageMetadata from 'src/partials/meta';
-import { redevelopmentDate, zavidBirthday } from 'src/settings';
+import { redevelopmentDate, siteTitle, zavidBirthday } from 'src/settings';
 import css from 'src/styles/pages/Posts.module.scss';
 
-import { getPageBySlugX } from './api/pages/[slug]';
+import { getPageBySlugSSR } from './api/pages';
 
+// eslint-disable-next-line react/function-component-definition
 const PageSingleProps: NextPage<PageSingleProps> = ({
+  pathDefinition,
   page,
-  ...pathDefinition
 }) => {
   const substitutions = {
     lastModified: `**${zDate.formatDate(page.lastModified!)}**`,
@@ -53,17 +53,25 @@ const navigateToEdit = (id: number): void => {
   location.href = `/admin/pages/edit/${id}`;
 };
 
-export const getServerSideProps: GetServerSideProps<
-  Partial<PageSingleProps>
-> = async ({ query }) => {
-  const props = DAOParse<PageSingleProps>(
-    await getPageBySlugX(query.slug as string),
-  )!;
-  return { props };
+export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
+  query,
+}) => {
+  const page = JSON.parse(await getPageBySlugSSR(query.page as string));
+  return {
+    props: {
+      pathDefinition: {
+        title: `${page.title} | ${siteTitle}`,
+        description: zText.extractExcerpt(page.content!),
+        url: `/${query.page}`,
+      },
+      page,
+    },
+  };
 };
 
 export default PageSingleProps;
 
-type PageSingleProps = PathDefinition & {
+interface PageSingleProps {
+  pathDefinition: PathDefinition;
   page: PageDAO;
-};
+}

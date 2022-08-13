@@ -12,9 +12,10 @@ const links = [
   { name: 'Posts', url: 'posts' },
   { name: 'Diary', url: 'diary' },
   { name: 'Pages', url: 'pages' },
-  { name: 'Subscribers', url: 'subscribers' }
+  { name: 'Subscribers', url: 'subscribers' },
 ];
 
+// eslint-disable-next-line react/function-component-definition
 const Admin: NextPage = () => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
@@ -24,7 +25,7 @@ const Admin: NextPage = () => {
           const classes = classnames(
             css['admin-block'],
             css[`admin-block-${theme}`],
-            css[`admin-block-${url}`]
+            css[`admin-block-${url}`],
           );
           return (
             <VanillaLink href={`/admin/${url}`} key={key} className={classes}>

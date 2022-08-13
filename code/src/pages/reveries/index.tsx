@@ -19,7 +19,7 @@ import { RightSidebar } from 'src/partials/sidebar';
 import { siteTitle } from 'src/settings';
 import css from 'src/styles/pages/Reveries.module.scss';
 
-import { getPageBySlug } from '../api/pages/[slug]';
+import { getPageBySlug } from '../api/pages';
 import { getAllPostsSSR } from '../api/posts';
 
 const REVERIES_HEADING = 'Reveries';
