@@ -1,15 +1,15 @@
-import { GenericDAO } from './super';
+import type { GenericDAO } from './super';
 
 export interface PostDAO extends GenericDAO {
-  title?: string;
-  type?: PostType;
-  typeId?: number;
-  content?: string;
-  status?: PostStatus;
-  excerpt?: string;
-  slug?: string | null;
-  tags?: string | string[];
-  datePublished?: string | Date;
+  title: string;
+  type: PostType;
+  typeId: number;
+  content: string;
+  status: PostStatus;
+  excerpt: string;
+  slug: string | null;
+  tags: string | string[];
+  datePublished: string | Date;
   image?: PostImage | string;
   contentImages?: PostContentImages;
   domainId?: number;

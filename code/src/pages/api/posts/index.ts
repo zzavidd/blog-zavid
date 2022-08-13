@@ -3,10 +3,11 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type {
   PostDAO,
   PostStatusFilters,
+  PostType,
   PostTypeFilters,
   QuerySort,
 } from 'classes';
-import { PostQueryBuilder, PostStatic, PostStatus, PostType } from 'classes';
+import { PostQueryBuilder, PostStatic } from 'classes';
 import { knex } from 'src/private/db';
 import { siteTitle } from 'src/settings';
 
@@ -45,8 +46,12 @@ export async function getAllPosts({
   return posts.map((post: PostDAO) => PostStatic.parse(post));
 }
 
-export async function getReverieBySlugSSR(slug: string) {
-  const posts = await getReverieBySlug(slug);
+export async function getPostSSR(
+  slug: string,
+  type: PostType,
+  statusFilters: PostStatusFilters,
+) {
+  const posts = await getPost(slug, type, statusFilters);
   return JSON.stringify({
     pathDefinition: {
       title: `${posts.current.title} | ${siteTitle}`,
@@ -58,11 +63,15 @@ export async function getReverieBySlugSSR(slug: string) {
   });
 }
 
-export async function getReverieBySlug(slug: string) {
-  const [reverie] = await new PostQueryBuilder(knex)
+export async function getPost(
+  slug: string,
+  type: PostType,
+  statusFilters: PostStatusFilters,
+) {
+  const [currentPost] = await new PostQueryBuilder(knex)
     .whereSlug(slug)
-    .whereType({ include: [PostType.REVERIE] })
-    .whereStatus({ exclude: [PostStatus.DRAFT] })
+    .whereType({ include: [type] })
+    .whereStatus(statusFilters)
     .build();
 
   // const isUnauthorized =
@@ -72,22 +81,30 @@ export async function getReverieBySlug(slug: string) {
   //   return next(ERRORS.NO_ENTITY('reverie'));
   // }
 
-  const { type, typeId } = reverie;
-  const [[previousReverie], [nextReverie]] = await Promise.all([
-    new PostQueryBuilder(knex).getPreviousPost(typeId!, type!).build(),
-    new PostQueryBuilder(knex).getNextPost(typeId!, type!).build(),
+  const [[previousPost], [nextPost]] = await Promise.all([
+    new PostQueryBuilder(knex)
+      .getPreviousPost(currentPost.typeId!, currentPost.type!)
+      .build(),
+    new PostQueryBuilder(knex)
+      .getNextPost(currentPost.typeId!, currentPost.type!)
+      .build(),
   ]);
 
   return {
-    current: reverie,
-    previous: previousReverie,
-    next: nextReverie,
+    current: currentPost,
+    previous: previousPost,
+    next: nextPost,
   };
 }
 
-export type GetAllPostOptions = {
-  limit?: number;
+export interface GetAllPostOptions {
   sort: QuerySort;
   status: PostStatusFilters;
   type: PostTypeFilters;
-};
+  limit?: number;
+}
+
+export interface GetPostOptions {
+  status: PostStatusFilters;
+  type: PostType;
+}
