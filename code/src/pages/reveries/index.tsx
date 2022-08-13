@@ -24,6 +24,7 @@ import { getAllPostsSSR } from '../api/posts';
 
 const REVERIES_HEADING = 'Reveries';
 
+// eslint-disable-next-line react/function-component-definition
 const ReveriesIndex: NextPage<ReveriesIndexProps> = ({
   pathDefinition,
   pageProps,

@@ -1,63 +1,71 @@
-import Knex, { TypePreservingAggregation } from 'knex';
+import type { Knex } from 'knex';
+
+import type { DiaryDAO } from '../../index';
+import { DiaryStatus, QueryOrder } from '../../index';
 
 import { MutationBuilder, QueryBuilder } from './super';
-
-import { DiaryDAO, DiaryStatus, QueryOrder } from '../../index';
 
 const TABLE_NAME = 'diary';
 
 /** Builds a post query with conditions. */
 export class DiaryQueryBuilder extends QueryBuilder<DiaryDAO> {
+  private static FIELD = 'entryNumber';
+
   constructor(knex: Knex) {
     super(knex, TABLE_NAME);
     this.knex = knex;
   }
 
-  whereSlug(slug: string | number): DiaryQueryBuilder {
-    this.query.where('slug', slug);
+  public whereSlug(slug: string | number): DiaryQueryBuilder {
+    void this.query.where('slug', slug);
     return this;
   }
 
-  whereEntryNumber(entryNumber: number): DiaryQueryBuilder {
-    this.query.where('entryNumber', entryNumber);
+  public whereEntryNumber(entryNumber: number): DiaryQueryBuilder {
+    void this.query.where('entryNumber', entryNumber);
     return this;
   }
 
-  whereStatus(filters: DiaryStatusFilters = {}): DiaryQueryBuilder {
+  public whereStatus(filters: DiaryStatusFilters = {}): DiaryQueryBuilder {
     const { include, exclude } = filters;
-    if (include && include.length) this.query.whereIn('status', include);
-    if (exclude && exclude.length) this.query.whereNotIn('status', exclude);
+    if (include && include.length) void this.query.whereIn('status', include);
+    if (exclude && exclude.length)
+      void this.query.whereNotIn('status', exclude);
     return this;
   }
 
-  whereIsFavourite(isFavourite: boolean): DiaryQueryBuilder {
-    if (isFavourite) this.query.where('isFavourite', isFavourite);
+  public whereIsFavourite(isFavourite: boolean): DiaryQueryBuilder {
+    if (isFavourite) void this.query.where('isFavourite', isFavourite);
     return this;
   }
 
-  getLatestEntry(): DiaryQueryBuilder {
-    this.query.orderBy('date', QueryOrder.DESCENDING).limit(1);
+  public getLatestEntry(): DiaryQueryBuilder {
+    void this.query.orderBy('date', QueryOrder.DESCENDING).limit(1);
     return this;
   }
 
-  getLatestEntryNumber(): DiaryQueryBuilder {
-    (this.query.max as KnexMaxQuery)('entryNumber', {
+  public getLatestEntryNumber(): DiaryQueryBuilder {
+    void (this.query.max as Knex.TypePreservingAggregation)('entryNumber', {
       as: 'latestEntryNumber',
     });
     return this;
   }
 
-  getPreviousEntry(operand: string | number, field: string): DiaryQueryBuilder {
-    this.query.where({
-      [field]: this.knex(TABLE_NAME).max(field).where(field, '<', operand),
+  public getPreviousEntry(operand: string | number): DiaryQueryBuilder {
+    void this.query.where({
+      [DiaryQueryBuilder.FIELD]: this.knex(TABLE_NAME)
+        .max(DiaryQueryBuilder.FIELD)
+        .where(DiaryQueryBuilder.FIELD, '<', operand),
       status: DiaryStatus.PUBLISHED,
     });
     return this;
   }
 
-  getNextEntry(operand: string | number, field: string): DiaryQueryBuilder {
-    this.query.where({
-      [field]: this.knex(TABLE_NAME).min(field).where(field, '>', operand),
+  public getNextEntry(operand: string | number): DiaryQueryBuilder {
+    void this.query.where({
+      [DiaryQueryBuilder.FIELD]: this.knex(TABLE_NAME)
+        .min(DiaryQueryBuilder.FIELD)
+        .where(DiaryQueryBuilder.FIELD, '>', operand),
       status: DiaryStatus.PUBLISHED,
     });
     return this;
@@ -70,9 +78,7 @@ export class DiaryMutationBuilder extends MutationBuilder<DiaryDAO> {
   }
 }
 
-export type DiaryStatusFilters = {
+export interface DiaryStatusFilters {
   include?: DiaryStatus[];
   exclude?: DiaryStatus[];
-};
-
-type KnexMaxQuery = TypePreservingAggregation<unknown, unknown, unknown>;
+}

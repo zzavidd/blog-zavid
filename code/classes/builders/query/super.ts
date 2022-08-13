@@ -1,13 +1,13 @@
-import Knex, { RawQueryBuilder } from 'knex';
+import type { Knex } from 'knex';
 
 import { QueryOrder } from '../../index';
 
 export class QueryBuilder<T> {
-  knex: Knex;
-  query: Knex | Knex.QueryBuilder;
-  table: string;
+  protected query: Knex | Knex.QueryBuilder;
+  protected table: string;
+  protected knex: Knex;
 
-  constructor(knex: Knex, table: string, isMutation = false) {
+  constructor(knex: Knex<T>, table: string, isMutation = false) {
     if (!isMutation) {
       this.query = knex.select().from(table);
     } else {
@@ -17,22 +17,22 @@ export class QueryBuilder<T> {
     this.knex = knex;
   }
 
-  whereId(id: number): QueryBuilder<T> {
+  public async whereId(id: number): Promise<QueryBuilder<T>> {
     if (!id) throw new Error(`No specified ID.`);
-    this.query.where(`${this.table}.id`, id);
+    void this.query.where(`${this.table}.id`, id);
     return this;
   }
 
-  exceptId(id: number): QueryBuilder<T> {
+  public async exceptId(id: number): Promise<QueryBuilder<T>> {
     if (!id) return this;
-    this.query.whereNot(`${this.table}.id`, id);
+    void this.query.whereNot(`${this.table}.id`, id);
     return this;
   }
 
   /**
    * Enables sorting or randomising of the results.
    */
-  withOrder(
+  public withOrder(
     sort: QuerySort = {},
     options: QuerySortOptions = {},
   ): QueryBuilder<T> {
@@ -43,16 +43,18 @@ export class QueryBuilder<T> {
     if (!order) order = QueryOrder.ASCENDING;
 
     if (order === QueryOrder.RANDOM) {
-      (this.query.orderByRaw as RawQueryBuilder)('RAND()');
+      void (this.query.orderByRaw as Knex.RawQueryBuilder)('RAND()');
     } else if (field) {
       if (forStringsWithNumbers) {
         const cases = [
           `CAST((REGEXP_REPLACE(${this.table}.${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
           `REGEXP_REPLACE(${this.table}.${field}, "[^a-z0-9]+", '') ${order}`,
         ];
-        (this.query.orderByRaw as RawQueryBuilder)(cases.join(', '));
+        this.query = (this.query.orderByRaw as Knex.RawQueryBuilder)(
+          cases.join(', '),
+        );
       } else {
-        this.query.orderBy(`${this.table}.${field}`, order);
+        void this.query.orderBy(`${this.table}.${field}`, order);
       }
     }
     return this;
@@ -61,19 +63,18 @@ export class QueryBuilder<T> {
   /**
    * Limits the number of results.
    */
-  withLimit(limit: number): QueryBuilder<T> {
-    if (limit) this.query.limit(limit);
+  public withLimit(limit: number): QueryBuilder<T> {
+    if (limit) void this.query.limit(limit);
     return this;
   }
 
-  async build(): Promise<T[]> {
-    return await this.query;
+  public async build() {
+    return this.query;
   }
 }
 
-export class MutationBuilder<T extends unknown> extends QueryBuilder<T> {
-  entity: string;
-  table: string;
+export class MutationBuilder<T> extends QueryBuilder<T> {
+  private entity: string;
 
   constructor(knex: Knex, table: string, entity: string) {
     super(knex, table, true);
@@ -82,26 +83,26 @@ export class MutationBuilder<T extends unknown> extends QueryBuilder<T> {
     this.table = table;
   }
 
-  insert<E>(input: E): MutationBuilder<number> {
+  public insert<E>(input: E): MutationBuilder<T> {
     if (!input) throw new Error(`No specified ${this.entity} to insert.`);
-    this.query.insert(input);
-    return <MutationBuilder<number>>this;
+    void this.query.insert(input);
+    return this;
   }
 
-  update<E>(input: E): MutationBuilder<T> {
+  public update<E>(input: E): MutationBuilder<T> {
     if (!input) throw new Error(`No specified ${this.entity} to update.`);
-    this.query.update(input);
+    void this.query.update(input);
     return this;
   }
 
-  delete(id: number): MutationBuilder<T> {
+  public delete(id: number): MutationBuilder<T> {
     if (!id) throw new Error(`No specified ${this.entity} to delete.`);
-    this.query.where(`${this.table}.id`, id).del();
+    void this.query.where(`${this.table}.id`, id).del();
     return this;
   }
 
-  truncate(): MutationBuilder<T> {
-    this.query.truncate();
+  public truncate(): MutationBuilder<T> {
+    void this.query.truncate();
     return this;
   }
 }

@@ -9,6 +9,7 @@ import PageMetadata from 'src/partials/meta';
 
 import { getPostSSR } from '../api/posts';
 
+// eslint-disable-next-line react/function-component-definition
 const ReveriePage: NextPage<ReveriePageProps> = ({
   pathDefinition,
   pageProps,

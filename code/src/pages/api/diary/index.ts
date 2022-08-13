@@ -23,6 +23,33 @@ export async function getAllDiaryEntries({
   return DiaryStatic.parseBatch(diaryEntries);
 }
 
+export async function getDiaryEntrySSR(id: string) {
+  const entryNumber = parseInt(id);
+  const diaryEntries = await getDiaryEntryByNumber(entryNumber);
+  return JSON.stringify(diaryEntries);
+}
+
+export async function getDiaryEntryByNumber(number: number) {
+  // const isUnauthorized =
+  //   DiaryStatic.isProtected(diaryEntry) && !req.isAuthenticated();
+
+  // if (!diaryEntry || isUnauthorized) {
+  //   return next(ERRORS.NO_ENTITY('diary entry'));
+  // }
+
+  const [[current], [previous], [next]] = await Promise.all([
+    new DiaryQueryBuilder(knex).whereEntryNumber(number).build(),
+    new DiaryQueryBuilder(knex).getPreviousEntry(number).build(),
+    new DiaryQueryBuilder(knex).getNextEntry(number).build(),
+  ]);
+
+  return {
+    current,
+    previous,
+    next,
+  };
+}
+
 export interface GetAllDiaryOptions {
   sort: QuerySort;
   status: DiaryStatusFilters;
