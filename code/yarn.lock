@@ -1613,9 +1613,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zzavidd/eslint-config@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "@zzavidd/eslint-config@npm:1.4.2"
+"@zzavidd/eslint-config@npm:^1.4.7":
+  version: 1.4.7
+  resolution: "@zzavidd/eslint-config@npm:1.4.7"
   dependencies:
     "@types/react": ">=17.0.0"
     "@typescript-eslint/eslint-plugin": ">=5.0.0"
@@ -1648,22 +1648,22 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: e75b1606e466c5975d297e0ee0cc66d6be741956bbabfe3c27c90cb7dbff3934800f764d0669bf71b81557e11643826b353c0c13f46454e861d1b92183cbb758
+  checksum: e548daa9410f06e46cb08fddcc4953f731e0d8be5d9f58d54e31e9f04655779d73d5d856a5c0c846b6cc62aa100e7858752b1b4f5f2e52bf3c1e06482598e0be
   languageName: node
   linkType: hard
 
-"@zzavidd/prettier-config@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "@zzavidd/prettier-config@npm:1.4.2"
+"@zzavidd/prettier-config@npm:^1.4.7":
+  version: 1.4.7
+  resolution: "@zzavidd/prettier-config@npm:1.4.7"
   peerDependencies:
     prettier: ">=2.6.0"
-  checksum: 2b5014d9ffbff7db5f3dae9ca43265204354180853d40806cf9e0da378fa7957285be58492b192823a7d4acf5fac4f75b58767a946ee15988be9d169de308139
+  checksum: 533f79a24582a7a322c44ee6df8cdf8ffae813c186b55850b15ce8dc459a8edf3e830df4dd30cb39549921af14dfed3d0be090c896f7b7231a62b95ebf422470
   languageName: node
   linkType: hard
 
-"@zzavidd/stylelint-config@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "@zzavidd/stylelint-config@npm:1.4.2"
+"@zzavidd/stylelint-config@npm:^1.4.7":
+  version: 1.4.7
+  resolution: "@zzavidd/stylelint-config@npm:1.4.7"
   dependencies:
     stylelint-config-styled-components: ">=0.1.1"
     stylelint-processor-styled-components: ">=1.10.0"
@@ -1676,7 +1676,7 @@ __metadata:
       optional: true
     stylelint-processor-styled-components:
       optional: true
-  checksum: b1e2e9f9e59bd77ed0f7f70a89e20f9f939f09890535bb25e0af25776ef91ac838d21269401d1bff5acc235c4dd7aaea593988f91971e1b8e47a455d6d286fca
+  checksum: ef78ca14a0633ea03d15dfeeb08ec6bfe2338d5487822edc6e12c2b54a3a489979d273e938be1b98c5a0bc7acc22fcadfac2c7073cbb5695ae6c57bd56cb7e44
   languageName: node
   linkType: hard
 
@@ -11485,9 +11485,9 @@ __metadata:
     "@types/uuid": ^8.3.0
     "@typescript-eslint/eslint-plugin": ^5.31.0
     "@typescript-eslint/parser": ^5.31.0
-    "@zzavidd/eslint-config": ^1.4.2
-    "@zzavidd/prettier-config": ^1.4.2
-    "@zzavidd/stylelint-config": ^1.4.2
+    "@zzavidd/eslint-config": ^1.4.7
+    "@zzavidd/prettier-config": ^1.4.7
+    "@zzavidd/stylelint-config": ^1.4.7
     apollo-fetch: ^0.7.0
     apollo-server: ^2.17.0
     apollo-server-express: ^2.17.0
