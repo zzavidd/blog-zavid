@@ -11,6 +11,11 @@ const pathDefinitions: Record<Path, PathDefinition> = {
     description: 'Explore the metaphysical manifestation of my mind.',
     url: '/',
   },
+  Subscribe: {
+    title: `Subscribe | ${siteTitle}`,
+    description: 'Be the first to know when a new post or diary entry drops.',
+    url: '/subscribe',
+  },
 };
 
 export default pathDefinitions;
@@ -22,4 +27,4 @@ export interface PathDefinition {
   cardImage?: string;
 }
 
-type Path = '404' | 'Home';
+type Path = '404' | 'Home' | 'Subscribe';

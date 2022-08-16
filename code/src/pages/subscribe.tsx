@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import type { SubscriberDAO } from 'classes';
 import { SubscriberBuilder } from 'classes';
@@ -7,9 +7,11 @@ import { alert, reportError } from 'src/components/alert';
 import { ConfirmButton } from 'src/components/button';
 import { Field, FieldRow, Label, TextInput } from 'src/components/form';
 import { Title } from 'src/components/text';
+import PathDefinitions from 'src/constants/paths';
 import { UIError } from 'src/lib/errors';
 import hooks from 'src/lib/hooks';
 import { checkValidSubscriber } from 'src/lib/validations';
+import PageMetadata from 'src/partials/meta';
 import css from 'src/styles/pages/Subscribers.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
@@ -66,53 +68,56 @@ const SubscribeForm: NextPage = () => {
   const { handleText } = hooks(setSubscriber, subscriber);
 
   return (
-    <div className={css['user-subscribe-form']}>
-      <Title className={css['user-subscribe-title']}>
-        Subscribe to the ZAVID Blog
-      </Title>
-      <div className={css['user-subscribe-message']}>
-        And never miss a diary entry nor a post.
+    <React.Fragment>
+      <PageMetadata {...PathDefinitions.Subscribe} />
+      <div className={css['user-subscribe-form']}>
+        <Title className={css['user-subscribe-title']}>
+          Subscribe to the ZAVID Blog
+        </Title>
+        <div className={css['user-subscribe-message']}>
+          And never miss a diary entry nor a post.
+        </div>
+        <FieldRow>
+          <Field>
+            <Label>Email:</Label>
+            <TextInput
+              name={'email'}
+              value={subscriber.email!}
+              onChange={handleText}
+              placeholder={'Enter your email address'}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <Field md={6}>
+            <Label>First Name:</Label>
+            <TextInput
+              name={'firstname'}
+              value={subscriber.firstname!}
+              onChange={handleText}
+              placeholder={'(Optional) Enter your first name'}
+            />
+          </Field>
+          <Field md={6}>
+            <Label>Last Name:</Label>
+            <TextInput
+              name={'lastname'}
+              value={subscriber.lastname!}
+              onChange={handleText}
+              placeholder={'(Optional) Enter your last name'}
+            />
+          </Field>
+        </FieldRow>
+        <FieldRow>
+          <ConfirmButton
+            onClick={submitSubscriber}
+            isRequestPending={isRequestPending}
+            className={css['user-subscribe-button']}>
+            Submit
+          </ConfirmButton>
+        </FieldRow>
       </div>
-      <FieldRow>
-        <Field>
-          <Label>Email:</Label>
-          <TextInput
-            name={'email'}
-            value={subscriber.email!}
-            onChange={handleText}
-            placeholder={'Enter your email address'}
-          />
-        </Field>
-      </FieldRow>
-      <FieldRow>
-        <Field md={6}>
-          <Label>First Name:</Label>
-          <TextInput
-            name={'firstname'}
-            value={subscriber.firstname!}
-            onChange={handleText}
-            placeholder={'(Optional) Enter your first name'}
-          />
-        </Field>
-        <Field md={6}>
-          <Label>Last Name:</Label>
-          <TextInput
-            name={'lastname'}
-            value={subscriber.lastname!}
-            onChange={handleText}
-            placeholder={'(Optional) Enter your last name'}
-          />
-        </Field>
-      </FieldRow>
-      <FieldRow>
-        <ConfirmButton
-          onClick={submitSubscriber}
-          isRequestPending={isRequestPending}
-          className={css['user-subscribe-button']}>
-          Submit
-        </ConfirmButton>
-      </FieldRow>
-    </div>
+    </React.Fragment>
   );
 };
 
