@@ -1,61 +1,67 @@
-import { useMutation } from '@apollo/client';
-import type { NextPageContext } from 'next';
-import React, { useEffect, useState } from 'react';
+import type { NextPage } from 'next';
+import { useState } from 'react';
 
-import type { SubscriberDAO, SubscriberPayload } from 'classes';
+import type { SubscriberDAO } from 'classes';
 import { SubscriberBuilder } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { ConfirmButton } from 'src/components/button';
 import { Field, FieldRow, Label, TextInput } from 'src/components/form';
 import { Title } from 'src/components/text';
+import { UIError } from 'src/lib/errors';
 import hooks from 'src/lib/hooks';
-import { isValidSubscriber } from 'src/lib/validations';
-import { CREATE_SUBSCRIBER_QUERY } from 'src/private/api/queries/subscriber.queries';
+import { checkValidSubscriber } from 'src/lib/validations';
 import css from 'src/styles/pages/Subscribers.module.scss';
 
-const SubscribeForm = () => {
+// eslint-disable-next-line react/function-component-definition
+const SubscribeForm: NextPage = () => {
   const [subscriber, setSubscriber] = useState({
     email: '',
     firstname: '',
     lastname: '',
   } as SubscriberDAO);
-  const [isLoaded, setLoaded] = useState(false);
   const [isRequestPending, setRequestPending] = useState(false);
 
-  // Initialise mutation functions.
-  const [createSubscriberMutation, { loading: createLoading }] = useMutation(
-    CREATE_SUBSCRIBER_QUERY,
-  );
-
-  useEffect(() => {
-    setLoaded(true);
-  }, [isLoaded]);
-
-  useEffect(() => {
-    setRequestPending(createLoading);
-  }, [createLoading]);
-
   /** Create new subscriber on server. */
-  const submitSubscriber = () => {
-    if (!isValidSubscriber(subscriber)) return false;
+  async function submitSubscriber() {
+    setRequestPending(true);
 
-    const variables = buildPayload(subscriber);
-    Promise.resolve()
-      .then(() => createSubscriberMutation({ variables }))
-      .then(() => {
-        alert.success(
-          `Thank you for subscribing!\nI've added ${subscriber.email} to my mailing list.`,
-        );
-        setTimeout(() => (location.href = '/'), 2000);
-      })
-      .catch(({ message: error }) => {
-        if (error.includes('ER_DUP_ENTRY')) {
-          alert.error('The email address you submitted already exists.');
-        } else {
-          reportError(error);
-        }
+    try {
+      checkValidSubscriber(subscriber);
+
+      const payload = new SubscriberBuilder()
+        .withEmail(subscriber.email)
+        .withFirstName(subscriber.firstname)
+        .withLastName(subscriber.lastname)
+        .withDefaultSubscriptions()
+        .build();
+
+      const res = await fetch('/api/subscribers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
-  };
+
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+      alert.success(
+        `Thank you for subscribing!\nI've added ${subscriber.email} to my mailing list.`,
+      );
+      setTimeout(() => (location.href = '/'), 2000);
+    } catch (e: any) {
+      if (e instanceof UIError) {
+        reportError(e.message, true);
+      } else if (e.message.includes('ER_DUP_ENTRY')) {
+        alert.error('The email address you submitted already exists.');
+      } else {
+        reportError(e.message);
+      }
+    } finally {
+      setRequestPending(false);
+    }
+  }
 
   const { handleText } = hooks(setSubscriber, subscriber);
 
@@ -108,23 +114,6 @@ const SubscribeForm = () => {
       </FieldRow>
     </div>
   );
-};
-
-const buildPayload = (clientSubscriber: SubscriberDAO): SubscriberPayload => {
-  const { email, firstname, lastname } = clientSubscriber;
-
-  const subscriber = new SubscriberBuilder()
-    .withEmail(email)
-    .withFirstName(firstname)
-    .withLastName(lastname)
-    .withDefaultSubscriptions()
-    .build();
-
-  return { subscriber };
-};
-
-SubscribeForm.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
 };
 
 export default SubscribeForm;

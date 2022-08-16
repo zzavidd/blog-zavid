@@ -8,54 +8,50 @@ import type {
   SubscriberDAO,
 } from 'classes';
 import { PostStatic } from 'classes';
-import { alert } from 'src/components/alert';
 
-export const isValidPost = (post: PostDAO): boolean => {
-  if (!ifExists(post.title, 'Enter the post title.')) return false;
-  if (!ifExists(post.type, "Select the post's type.")) return false;
+import { UIError } from './errors';
+
+export function isValidPost(post: PostDAO): void {
+  checkIfExists(post.title, 'Enter the post title.');
+  checkIfExists(post.type, "Select the post's type.");
 
   // Ensure type ID if post is NOT a DRAFT nor a PAGE.
   if (!PostStatic.isDraft(post) && !PostStatic.isPage(post)) {
-    if (!ifExists(post.typeId, "Set the post's type number.")) return false;
+    checkIfExists(post.typeId, "Set the post's type number.");
   }
 
   // Ensure page domain ID is set if post is PAGE.
   if (PostStatic.isPage(post)) {
-    if (!ifExists(post.domainId, "Select this page's domain post."))
-      return false;
+    checkIfExists(post.domainId, "Select this page's domain post.");
   }
 
   // Ensure post image, content and excerpt is PUBLISHED.
   if (PostStatic.isPublish(post)) {
-    if (
-      !isValidImage((post.image as PostImage).source, 'post', {
-        mustExist: PostStatic.isReverie(post),
-      })
-    )
-      return false;
-    if (!ifExists(post.content, 'Write out the content of this post.'))
-      return false;
+    isValidImage((post.image as PostImage).source, 'post', {
+      mustExist: PostStatic.isReverie(post),
+    });
+
+    checkIfExists(post.content, 'Write out the content of this post.');
     if (PostStatic.isReverie(post)) {
-      if (!ifExists(post.excerpt, "Enter the post's excerpt.")) return false;
+      checkIfExists(post.excerpt, "Enter the post's excerpt.");
     }
   }
+}
 
-  return true;
-};
+export function isValidDiaryEntry(entry: DiaryDAO): void {
+  checkIfExists(entry.content, 'Write out the content of this diary entry.');
+  checkIfExists(entry.entryNumber, 'Set the entry number for the diary entry.');
+}
 
-export const isValidDiaryEntry = (entry: DiaryDAO): boolean => {
-  if (!ifExists(entry.content, 'Write out the content of this diary entry.'))
-    return false;
-  if (!ifExists(entry.entryNumber, 'Set the entry number for the diary entry.'))
-    return false;
-
-  return true;
-};
-
-export const isValidSubscriber = (
+/**
+ * Check if a subscriber entry is valid.
+ * @param subscriber The subscriber to check.
+ * @param isAdminOp True if an admin operation.
+ */
+export function checkValidSubscriber(
   subscriber: SubscriberDAO,
   isAdminOp?: boolean,
-): boolean => {
+): void {
   let INVALID_EMAIL, ONLY_LASTNAME;
 
   if (isAdminOp) {
@@ -66,100 +62,86 @@ export const isValidSubscriber = (
     ONLY_LASTNAME = "I can't ONLY have your surname!";
   }
 
-  if (!isValidEmail(subscriber.email!, INVALID_EMAIL)) return false;
+  checkValidEmail(subscriber.email!, INVALID_EMAIL);
+
   if (subscriber.lastname!.trim()) {
-    if (!ifExists(subscriber.firstname, ONLY_LASTNAME)) return false;
+    checkIfExists(subscriber.firstname, ONLY_LASTNAME);
   }
+}
 
-  return true;
-};
+export function isValidPage(page: PageDAO): void {
+  checkIfExists(page.title, `Enter the page's title.`);
+  checkIfExists(page.slug, `Enter the page's title.`);
+}
 
-export const isValidPage = (page: PageDAO): boolean => {
-  if (!ifExists(page.title, `Enter the page's title.`)) return false;
-  if (!ifExists(page.slug, `Enter the page's title.`)) return false;
-
-  return true;
-};
-
-export const isValidEmail = (
+export function checkValidEmail(
   email: string,
   message = 'Enter a valid email address.',
-): boolean => {
+): void {
   if (!email) {
-    alert.error(message);
-    return false;
+    throw new UIError(message);
   }
 
   if (!validateEmail(email)) {
-    alert.error('The email address is invalid.');
-    return false;
+    throw new UIError('The email address is invalid.');
   }
+}
 
-  return true;
-};
-
-const isValidImage = (
+function isValidImage(
   file: string,
   entity: string,
   options: ValidImageOptions = {},
-): boolean => {
+): void {
   const { mustExist = true } = options;
 
   if (mustExist) {
-    if (!ifExists(file, `Please select an image for the ${entity}.`))
-      return false;
+    checkIfExists(file, `Please select an image for the ${entity}.`);
   }
 
-  if (!isUnderFileSizeLimit(file)) return false;
-  return true;
-};
+  checkIfUnderFileSizeLimit(file);
+}
 
-const isUnderFileSizeLimit = (
+function checkIfUnderFileSizeLimit(
   file: string,
   options: FileSizeLimitOptions = {},
-): boolean => {
-  if (!file) return true;
+): void {
+  if (!file) {
+    throw new UIError('File does not exist');
+  }
 
   const { reference = 'The file', limit = 2 } = options;
   const size = Buffer.from(file.substring(file.indexOf(',') + 1)).length;
-  if (
-    ifTrue(
-      size > limit * 1024 * 1024,
-      `${reference} you selected is larger than ${limit}MB. Please compress this file or use a smaller one.`,
-    )
-  )
-    return false;
-  return true;
-};
 
-const ifExists = (value: unknown, message: string): boolean => {
+  checkIfTrue(
+    size > limit * 1024 * 1024,
+    `${reference} you selected is larger than ${limit}MB. Please compress this file or use a smaller one.`,
+  );
+}
+
+function checkIfExists(value: unknown, message: string): void {
   if (typeof value === 'string') {
     value = value.trim();
-    if ((value as string).length === 0) return false;
+    if (!(value as string).length) {
+      throw new UIError(message);
+    }
   }
 
   if (!value) {
-    alert.error(message);
-    return false;
-  } else {
-    return true;
+    throw new UIError(message);
   }
-};
+}
 
-const ifTrue = (condition: boolean, message: string) => {
+function checkIfTrue(condition: boolean, message: string): void {
   if (condition === true) {
-    alert.error(message);
-    return true;
-  } else {
-    return false;
+    throw new UIError(message);
   }
-};
+}
 
-type ValidImageOptions = {
+interface ValidImageOptions {
   mustExist?: boolean;
-};
+}
 
-type FileSizeLimitOptions = {
+interface FileSizeLimitOptions {
   limit?: number;
   reference?: string;
-};
+}

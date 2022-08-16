@@ -1,16 +1,15 @@
-import { useMutation } from '@apollo/client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 
-import { SubscriberStatic } from 'classes';
+import { SubscriberBuilder } from 'classes';
 import { alert, reportError } from 'src/components/alert';
 import { ConfirmButton } from 'src/components/button';
-import { FieldRow, Field, TextInput } from 'src/components/form';
+import { Field, FieldRow, TextInput } from 'src/components/form';
 import { Title, VanillaLink } from 'src/components/text';
+import { UIError } from 'src/lib/errors';
 import { Icon } from 'src/lib/library';
-import { isValidEmail } from 'src/lib/validations';
-import { CREATE_SUBSCRIBER_QUERY } from 'src/private/api/queries/subscriber.queries';
-import { copyright, accounts } from 'src/settings';
+import { checkValidEmail } from 'src/lib/validations';
+import { accounts, copyright } from 'src/settings';
 import css from 'src/styles/Partials.module.scss';
 
 const footerLinks = [
@@ -19,7 +18,7 @@ const footerLinks = [
   { name: 'Cookie Policy', url: '/cookies' },
 ];
 
-export default () => {
+export default function Footer() {
   return (
     <footer className={css['footer']}>
       <Container className={css['footer-container']}>
@@ -42,11 +41,11 @@ export default () => {
       </Container>
     </footer>
   );
-};
+}
 
-const FooterLinks = () => {
+function FooterLinks() {
   return (
-    <>
+    <React.Fragment>
       <Title className={css['footer-links-title']}>INFORMATION</Title>
       {footerLinks.map(({ name, url }, key) => {
         return (
@@ -55,11 +54,11 @@ const FooterLinks = () => {
           </a>
         );
       })}
-    </>
+    </React.Fragment>
   );
-};
+}
 
-const SocialPlugs = () => {
+function SocialPlugs() {
   return (
     <div>
       <Title className={css['footer-socials-title']}>
@@ -83,55 +82,48 @@ const SocialPlugs = () => {
       </div>
     </div>
   );
-};
+}
 
-const SubscribeForm = () => {
+function SubscribeForm() {
   const [email, setEmail] = useState('');
-  const [isLoaded, setLoaded] = useState(false);
   const [isRequestPending, setRequestPending] = useState(false);
 
-  // Initialise mutation functions.
-  const [createSubscriberMutation, { loading: createLoading }] = useMutation(
-    CREATE_SUBSCRIBER_QUERY,
-  );
+  async function subscribeEmail() {
+    setRequestPending(true);
+    try {
+      checkValidEmail(email);
 
-  useEffect(() => {
-    setLoaded(true);
-  }, [isLoaded]);
+      const payload = new SubscriberBuilder()
+        .withEmail(email)
+        .withDefaultSubscriptions()
+        .build();
 
-  useEffect(() => {
-    setRequestPending(createLoading);
-  }, [createLoading]);
-
-  const subscribeEmail = () => {
-    if (!isValidEmail(email)) return false;
-
-    Promise.resolve()
-      .then(() =>
-        createSubscriberMutation({
-          variables: {
-            subscriber: {
-              email,
-              firstname: '',
-              lastname: '',
-              subscriptions: SubscriberStatic.defaultSubscriptions(),
-            },
-          },
-        }),
-      )
-      .then(() => {
-        alert.success(
-          `Thank you for subscribing!\nI've added ${email} to my mailing list.`,
-        );
-      })
-      .catch(({ message: error }) => {
-        if (error.includes('ER_DUP_ENTRY')) {
-          alert.error('The email address you submitted already exists.');
-        } else {
-          reportError(error);
-        }
+      const res = await fetch('/api/subscribers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
-  };
+
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+      alert.success(
+        `Thank you for subscribing!\nI've added ${email} to my mailing list.`,
+      );
+    } catch (e: any) {
+      if (e instanceof UIError) {
+        reportError(e.message, true);
+      } else if (e.message.includes('ER_DUP_ENTRY')) {
+        alert.error('The email address you submitted already exists.');
+      } else {
+        reportError(e.message);
+      }
+    } finally {
+      setRequestPending(false);
+    }
+  }
 
   return (
     <div>
@@ -153,4 +145,4 @@ const SubscribeForm = () => {
       </ConfirmButton>
     </div>
   );
-};
+}

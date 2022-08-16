@@ -1,42 +1,45 @@
 import * as faker from 'faker';
 
-import {
-  SubscriberStatic,
-  SubscriberDAO,
-  SubscriptionsMapping,
-  SubscriptionType,
-} from '../../index';
+import type { SubscriberDAO, SubscriptionsMapping } from '../../index';
+import { SubscriberStatic, SubscriptionType } from '../../index';
 
 /** The class for building Subscriber objects. */
 export class SubscriberBuilder {
   private subscriber: SubscriberDAO = {};
 
-  withEmail(email?: string): SubscriberBuilder {
+  constructor() {
+    this.subscriber.firstname = '';
+    this.subscriber.lastname = '';
+  }
+
+  public withEmail(email?: string): SubscriberBuilder {
     this.subscriber.email = email!.trim();
     return this;
   }
 
-  withFirstName(firstname?: string): SubscriberBuilder {
+  public withFirstName(firstname?: string): SubscriberBuilder {
     this.subscriber.firstname = firstname!.trim();
     return this;
   }
 
-  withLastName(lastname?: string): SubscriberBuilder {
+  public withLastName(lastname?: string): SubscriberBuilder {
     this.subscriber.lastname = lastname!.trim();
     return this;
   }
 
-  withSubscriptions(subscriptions?: SubscriptionsMapping): SubscriberBuilder {
+  public withSubscriptions(
+    subscriptions?: SubscriptionsMapping,
+  ): SubscriberBuilder {
     this.subscriber.subscriptions = subscriptions;
     return this;
   }
 
-  withDefaultSubscriptions(): SubscriberBuilder {
+  public withDefaultSubscriptions(): SubscriberBuilder {
     this.subscriber.subscriptions = SubscriberStatic.defaultSubscriptions();
     return this;
   }
 
-  random(): SubscriberBuilder {
+  public random(): SubscriberBuilder {
     const firstname = faker.name.firstName();
     const lastname = faker.name.lastName();
     const email = faker.internet.email(firstname, lastname).toLowerCase();
@@ -56,7 +59,7 @@ export class SubscriberBuilder {
     return this;
   }
 
-  build(): SubscriberDAO {
+  public build(): SubscriberDAO {
     return this.subscriber;
   }
 }

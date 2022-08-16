@@ -3,8 +3,6 @@ import { toast, cssTransition } from 'react-toastify';
 
 import css from 'src/styles/components/Alert.module.scss';
 
-const isDev = process.env.NODE_ENV !== 'production';
-
 toast.configure({
   autoClose: 2500,
   className: css['toast-container'],
@@ -50,14 +48,14 @@ export const setAlert = ({ type, message }: Alert): void => {
   sessionStorage.setItem('alert', JSON.stringify({ type, message }));
 };
 
-export const reportError = (error: Error): void => {
-  if (isDev) {
-    alert.error(error);
-  } else {
+export function reportError(message: string, asIs?: boolean): void {
+  if (process.env.NODE_ENV === 'production' && !asIs) {
     alert.error('There was a problem. Please try again later.');
-    console.error(error);
+    console.error(message);
+  } else {
+    alert.error(message);
   }
-};
+}
 
 export const checkForSetAlerts = (): void => {
   const notification: Alert = JSON.parse(

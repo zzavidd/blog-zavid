@@ -22,5 +22,17 @@ module.exports = {
         '@typescript-eslint/no-floating-promises': 'warn',
       },
     },
+    // {
+    //   files: ['*.ts'],
+    //   rules: {
+    //     'func-style': [
+    //       'warn',
+    //       'declaration',
+    //       {
+    //         allowArrowFunctions: false,
+    //       },
+    //     ],
+    //   },
+    // },
   ],
 };

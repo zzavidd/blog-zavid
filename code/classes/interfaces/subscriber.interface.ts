@@ -1,4 +1,4 @@
-import { GenericDAO } from './super';
+import type { GenericDAO } from './super';
 
 export interface SubscriberDAO extends GenericDAO {
   email?: string;

@@ -12,7 +12,7 @@ import { setAlert, reportError, alert, AlertType } from 'src/components/alert';
 import hooks from 'src/lib/hooks';
 import SubscriberForm from 'src/lib/pages/subscribers/form';
 import { DAOParse } from 'src/lib/parser';
-import { isValidSubscriber } from 'src/lib/validations';
+import { checkValidSubscriber } from 'src/lib/validations';
 import {
   CREATE_SUBSCRIBER_QUERY,
   UPDATE_SUBSCRIBER_QUERY,
@@ -63,7 +63,7 @@ const SubscriberCrud = ({
 
   /** Create new subscriber on server. */
   const submitSubscriber = () => {
-    if (!isValidSubscriber(clientSubscriber, true)) return false;
+    if (!checkValidSubscriber(clientSubscriber, true)) return false;
 
     const variables = buildPayload(clientSubscriber, preferences, true);
     Promise.resolve()
@@ -77,7 +77,7 @@ const SubscriberCrud = ({
 
   /** Update subscriber on server. */
   const updateSubscriber = () => {
-    if (!isValidSubscriber(clientSubscriber)) return false;
+    if (!checkValidSubscriber(clientSubscriber)) return false;
 
     const variables = buildPayload(clientSubscriber, preferences, false);
     Promise.resolve()

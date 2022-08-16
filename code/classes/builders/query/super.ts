@@ -83,13 +83,13 @@ export class MutationBuilder<T> extends QueryBuilder<T> {
     this.table = table;
   }
 
-  public insert<E>(input: E): MutationBuilder<T> {
+  public insert(input: T): MutationBuilder<T> {
     if (!input) throw new Error(`No specified ${this.entity} to insert.`);
     void this.query.insert(input);
     return this;
   }
 
-  public update<E>(input: E): MutationBuilder<T> {
+  public update(input: T): MutationBuilder<T> {
     if (!input) throw new Error(`No specified ${this.entity} to update.`);
     void this.query.update(input);
     return this;
