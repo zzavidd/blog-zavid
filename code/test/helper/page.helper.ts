@@ -14,7 +14,7 @@ import {
   GET_PAGES_QUERY,
   GET_SINGLE_PAGE_QUERY,
   UPDATE_PAGE_QUERY,
-} from '../../src/private/api/queries/page.queries';
+} from '../../private/api/queries/page.queries';
 
 const ENTITY_NAME = 'page';
 

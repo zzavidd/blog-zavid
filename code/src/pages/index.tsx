@@ -2,15 +2,15 @@ import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
 import type { DiaryDAO, PostDAO } from 'classes';
-import { HomeField, HomeRow } from 'src/components/pages/home';
-import Paths from 'src/constants/paths';
-import LatestDiaryEntry from 'src/fragments/home/home.diary';
-import Introduction from 'src/fragments/home/home.intro';
-import RandomPostsGrid from 'src/fragments/home/home.posts';
-import LatestReverie from 'src/fragments/home/home.reverie';
-import Search from 'src/fragments/home/home.search';
-import PageMetadata from 'src/partials/meta';
-import css from 'src/styles/pages/Home.module.scss';
+import { HomeField, HomeRow } from 'components/pages/home';
+import Paths from 'constants/paths';
+import LatestDiaryEntry from 'fragments/home/home.diary';
+import Introduction from 'fragments/home/home.intro';
+import RandomPostsGrid from 'fragments/home/home.posts';
+import LatestReverie from 'fragments/home/home.reverie';
+import Search from 'fragments/home/home.search';
+import PageMetadata from 'partials/meta';
+import css from 'styles/pages/Home.module.scss';
 
 import { getHomeProps } from './api/home';
 

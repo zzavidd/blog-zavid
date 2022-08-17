@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import type { QuerySort, SubscriberDAO } from '../../../../classes';
+import type { QuerySort, SubscriberDAO } from '../../../classes';
 import {
   SubscriberMutationBuilder,
   SubscriberQueryBuilder,
   SubscriberStatic,
-} from '../../../../classes';
+} from '../../../classes';
 import { ERRORS } from '../../error';
 import { getKnex } from '../../singleton';
 
@@ -113,19 +113,19 @@ export const clearSubscribers = () => {
   });
 };
 
-export type GetAllSubscriberOptions = {
+export interface GetAllSubscriberOptions {
   sort?: QuerySort;
-};
+}
 
-export type GetOrDeleteSubscriberOptions = {
+export interface GetOrDeleteSubscriberOptions {
   id: number;
-};
+}
 
-export type CreateSubscriberOptions = {
+export interface CreateSubscriberOptions {
   subscriber: SubscriberDAO;
-};
+}
 
-export type UpdateSubscriberOptions = {
+export interface UpdateSubscriberOptions {
   id: number;
   subscriber: SubscriberDAO;
-};
+}

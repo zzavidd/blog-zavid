@@ -9,14 +9,10 @@ import {
   Theme,
   ThemeOption,
 } from 'classes';
-import {
-  ButtonSpacer,
-  CancelButton,
-  DeleteButton,
-} from 'src/components/button';
-import { Paragraph } from 'src/components/text';
-import { Responsive } from 'src/lib/library';
-import css from 'src/styles/components/Modal.module.scss';
+import { ButtonSpacer, CancelButton, DeleteButton } from 'components/button';
+import { Paragraph } from 'components/text';
+import { Responsive } from 'lib/library';
+import css from 'styles/components/Modal.module.scss';
 
 import { createCanvasFromContent, downloadImage } from './canvas';
 import { Checkbox, Field, FieldRow, Select, Switch } from './form';
@@ -24,12 +20,12 @@ import { RadioGroup } from './form/radio';
 import type { ModalProps } from './modal';
 import { Modal } from './modal';
 
-export const Curator = ({
+export function Curator({
   sourceTitle,
   content,
   closeFunction,
   visible,
-}: CuratorProps) => {
+}: CuratorProps) {
   const [contentTheme, setContentTheme] = useState(ThemeOption.DARK);
   const [filterTheme, setFilterTheme] = useState(FilterThemeOption.PURPLE);
   const [filterShape, setFilterShape] = useState(FilterShapeOption.SQUARE);
@@ -107,7 +103,7 @@ export const Curator = ({
       onHide={closeFunction}
       dialogClassName={'curator-dialog'}
       modalBody={
-        <>
+        <React.Fragment>
           <canvas ref={canvasRef} className={css['curator-canvas']} hidden />
           <div className={css['curator-image-container']}>
             <img
@@ -168,18 +164,18 @@ export const Curator = ({
               />
             </Field>
           </FieldRow>
-        </>
+        </React.Fragment>
       }
       modalFooter={
         <ButtonSpacer>
           <Responsive
             defaultView={
-              <>
+              <React.Fragment>
                 <DeleteButton onClick={downloadCanvasAsImage}>
                   Download
                 </DeleteButton>
                 <CancelButton onClick={closeFunction}>Cancel</CancelButton>
-              </>
+              </React.Fragment>
             }
             mobileView={
               <CancelButton
@@ -193,7 +189,7 @@ export const Curator = ({
       }
     />
   );
-};
+}
 
 interface CuratorProps extends ModalProps {
   sourceTitle: string;

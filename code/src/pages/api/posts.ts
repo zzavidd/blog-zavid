@@ -13,8 +13,8 @@ import {
   PostStatic,
   PostType,
 } from 'classes';
-import { knex } from 'src/private/db';
-import { siteTitle } from 'src/settings';
+import { knex } from 'private/db';
+import { siteTitle } from 'settings';
 
 export default async function handler(
   req: NextApiRequest,

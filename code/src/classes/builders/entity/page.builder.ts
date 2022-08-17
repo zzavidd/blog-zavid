@@ -1,38 +1,38 @@
 import * as faker from 'faker';
 import { zString } from 'zavid-modules';
 
-import { PageDAO } from '../../index';
+import type { PageDAO } from 'classes';
 
 /** The class for Page objects and methods. */
 export class PageBuilder {
   private page: PageDAO = {};
 
-  withTitle(title?: string): PageBuilder {
+  public withTitle(title?: string): PageBuilder {
     this.page.title = title!.trim();
     return this;
   }
 
-  withContent(content?: string): PageBuilder {
+  public withContent(content?: string): PageBuilder {
     this.page.content = content!.trim();
     return this;
   }
 
-  withExcerpt(excerpt?: string): PageBuilder {
+  public withExcerpt(excerpt?: string): PageBuilder {
     this.page.excerpt = excerpt!.trim();
     return this;
   }
 
-  withSlug(slug?: string): PageBuilder {
+  public withSlug(slug?: string): PageBuilder {
     this.page.slug = slug!.trim();
     return this;
   }
 
-  setIsEmbed(isEmbed?: boolean): PageBuilder {
+  public setIsEmbed(isEmbed?: boolean): PageBuilder {
     this.page.isEmbed = new Boolean(isEmbed!).valueOf();
     return this;
   }
 
-  random(): PageBuilder {
+  public random(): PageBuilder {
     const title = `Test: ${zString.toTitleCase(
       faker.company.catchPhraseNoun(),
     )}`;
@@ -48,12 +48,12 @@ export class PageBuilder {
     return this;
   }
 
-  withRandomExcerpt(): PageBuilder {
+  public withRandomExcerpt(): PageBuilder {
     this.page.excerpt = faker.lorem.sentences(1);
     return this;
   }
 
-  build(): PageDAO {
+  public build(): PageDAO {
     return this.page;
   }
 }

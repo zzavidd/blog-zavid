@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import React from 'react';
 
-import { cloudinaryBaseUrl } from 'src/components/image';
-import { CARD_IMAGE } from 'src/constants/defaults';
-import { domain } from 'src/settings';
+import { cloudinaryBaseUrl } from 'components/image';
+import { CARD_IMAGE } from 'constants/defaults';
+import { domain } from 'settings';
 
 export default function PageMetadata({
   title,

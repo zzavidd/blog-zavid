@@ -8,7 +8,7 @@ import {
   DiaryQueryBuilder,
   PageQueryBuilder,
   DiaryStatus,
-} from '../../../../classes';
+} from '../../../classes';
 import { domain } from '../../../settings';
 import { getKnex } from '../../singleton';
 

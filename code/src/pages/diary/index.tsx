@@ -7,17 +7,17 @@ import { zDate } from 'zavid-modules';
 
 import type { DiaryDAO, ReactInputChangeEvent } from 'classes';
 import { DiaryStatus, QueryOrder } from 'classes';
-import { AdminButton, ConfirmButton } from 'src/components/button';
-import { Checkbox, SearchBar } from 'src/components/form';
-import { Spacer, Toolbar } from 'src/components/layout';
-import { Paragraph, Title, VanillaLink } from 'src/components/text';
-import type { PathDefinition } from 'src/constants/paths';
-import { isAuthenticated } from 'src/lib/cookies';
-import { Icon } from 'src/lib/library';
-import TagBlock from 'src/lib/pages/diary/tags';
-import PageMetadata from 'src/partials/meta';
-import { siteTitle } from 'src/settings';
-import css from 'src/styles/pages/Diary.module.scss';
+import { AdminButton, ConfirmButton } from 'components/button';
+import { Checkbox, SearchBar } from 'components/form';
+import { Spacer, Toolbar } from 'components/layout';
+import { Paragraph, Title, VanillaLink } from 'components/text';
+import type { PathDefinition } from 'constants/paths';
+import { isAuthenticated } from 'lib/cookies';
+import { Icon } from 'lib/library';
+import TagBlock from 'lib/pages/diary/tags';
+import PageMetadata from 'partials/meta';
+import { siteTitle } from 'settings';
+import css from 'styles/pages/Diary.module.scss';
 
 import { getAllDiaryEntriesSSR } from '../api/diary';
 import { getPageBySlug } from '../api/pages';
@@ -219,12 +219,12 @@ export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
     props: {
       pathDefinition: {
         title: `Diary | ${siteTitle}`,
-        description: page.excerpt,
+        description: page.excerpt!,
         url: '/diary',
       },
       pageProps: {
         diaryEntries,
-        pageIntro: page.content,
+        pageIntro: page.content!,
         onlyFavourites,
       },
     },

@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import { toast, cssTransition } from 'react-toastify';
 
-import css from 'src/styles/components/Alert.module.scss';
+import css from 'styles/components/Alert.module.scss';
 
 toast.configure({
   autoClose: 2500,

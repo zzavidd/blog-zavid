@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import { InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/lib/library';
+import { InvisibleButton } from 'components/button';
+import { Icon } from 'lib/library';
 
-export const CookiePrompt = () => {
+export function CookiePrompt() {
   const initialState = checkCookiePolicyAccepted();
   const [wasAccepted] = useState(initialState);
   const [isAccepted, setAcceptance] = useState(initialState);
@@ -33,7 +33,7 @@ export const CookiePrompt = () => {
       </div>
     </div>
   );
-};
+}
 
 export const checkCookiePolicyAccepted = (): boolean => {
   return Cookies.get('cookiesAccepted') === 'true';

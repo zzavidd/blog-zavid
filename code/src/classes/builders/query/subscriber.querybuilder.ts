@@ -10,8 +10,8 @@ export class SubscriberQueryBuilder extends QueryBuilder<SubscriberDAO> {
     super(knex, 'subscribers');
   }
 
-  public whereToken(token: string) {
-    this.query.where('token', token);
+  public whereToken(token: string): SubscriberQueryBuilder {
+    void this.query.where('token', token);
     return this;
   }
 }

@@ -1,12 +1,12 @@
 import { zText } from 'zavid-modules';
 
 import type { ResultEntityDAO } from 'classes';
-import { Paragraph } from 'src/components/text';
-import css from 'src/styles/pages/Search.module.scss';
+import { Paragraph } from 'components/text';
+import css from 'styles/pages/Search.module.scss';
 
 const COMBINED_EMPHASIS_REGEX = zText.getCombinedEmphasisRegex();
 
-export const MatchedContent = ({ entity, searchTerm }: MatchedContentProps) => {
+export function MatchedContent({ entity, searchTerm }: MatchedContentProps) {
   if (!entity.content) return null;
 
   const content: string[] = entity.content.split(/[\.\?\!]\s|\n/);
@@ -54,7 +54,7 @@ export const MatchedContent = ({ entity, searchTerm }: MatchedContentProps) => {
       {entity.content}
     </Paragraph>
   );
-};
+}
 
 export const containsSearchTerm = (
   string: string,

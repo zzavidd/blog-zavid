@@ -6,7 +6,7 @@ import {
   PostStatus,
   PostType,
   QueryOrder,
-} from '../../../classes';
+} from '../../classes';
 import { siteTitle } from '../../settings';
 import * as SubscriberService from '../api/service/subscriber.service';
 import authRoutes from '../auth';

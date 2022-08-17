@@ -1,5 +1,5 @@
-import type { PageDAO } from '../../../../classes';
-import { PageMutationBuilder, PageQueryBuilder } from '../../../../classes';
+import type { PageDAO } from '../../../classes';
+import { PageMutationBuilder, PageQueryBuilder } from '../../../classes';
 import { ERRORS } from '../../error';
 import { getKnex } from '../../singleton';
 
@@ -70,15 +70,15 @@ export const deletePage = ({ id }: GetOrDeletePageOptions) => {
   });
 };
 
-export type GetOrDeletePageOptions = {
+export interface GetOrDeletePageOptions {
   id: number;
-};
+}
 
-export type CreatePageOptions = {
+export interface CreatePageOptions {
   page: PageDAO;
-};
+}
 
-export type UpdatePageOptions = {
+export interface UpdatePageOptions {
   id: number;
   page: PageDAO;
-};
+}

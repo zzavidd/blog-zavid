@@ -8,15 +8,15 @@ import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zText } from 'zavid-modules';
 import type { FormatCSS } from 'zavid-modules/_dist/constants/text';
 
-import { Icon } from 'src/lib/library';
-import css from 'src/styles/components/Text.module.scss';
+import { Icon } from 'lib/library';
+import css from 'styles/components/Text.module.scss';
 
-export const Title = ({ children, className }: Text) => {
+export function Title({ children, className }: Text) {
   const classes = classnames(css['title'], className);
   return <div className={classes}>{children as string}</div>;
-};
+}
 
-export const Paragraph = ({
+export function Paragraph({
   children,
   className,
   cssOverrides,
@@ -27,7 +27,7 @@ export const Paragraph = ({
   truncate = 0,
   keepRichFormatOnTruncate = false,
   onLongPress,
-}: Paragraph) => {
+}: Paragraph) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css['paragraph'], className);
 
@@ -70,23 +70,23 @@ export const Paragraph = ({
     },
   });
 
-  const ReadMoreLabel = () => {
+  function ReadMoreLabel() {
     if (typeof children !== 'string') return null;
     if (children.length <= truncate) return null;
     if (!moretext || !morelink) return null;
 
     return <ReadMore className={moreclass} link={morelink} text={moretext} />;
-  };
+  }
 
   return (
-    <>
+    <React.Fragment>
       <pre className={classes}>{text}</pre>
       <ReadMoreLabel />
-    </>
+    </React.Fragment>
   );
-};
+}
 
-export const ReadMore = ({ link, text = 'Read more', className }: ReadMore) => {
+export function ReadMore({ link, text = 'Read more', className }: ReadMore) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`paragraph-read-more-${theme}`], className);
   return (
@@ -97,15 +97,15 @@ export const ReadMore = ({ link, text = 'Read more', className }: ReadMore) => {
       </div>
     </VanillaLink>
   );
-};
+}
 
-export const VanillaLink = ({
+export function VanillaLink({
   className,
   href,
   children,
   openNewTab = false,
   style,
-}: VanillaLinkProps) => {
+}: VanillaLinkProps) {
   const classes = classnames(css['vanilla-link'], className);
   return (
     <a
@@ -119,19 +119,19 @@ export const VanillaLink = ({
       {children}
     </a>
   );
-};
+}
 
-export const Divider = ({ className }: Text) => {
+export function Divider({ className }: Text) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`divider-${theme}`], className);
   return <hr className={classes} />;
-};
+}
 
-const EmbeddedTweet = ({ id }: EmbeddedTweet) => {
+function EmbeddedTweet({ id }: EmbeddedTweet) {
   return <TwitterTweetEmbed tweetId={id} />;
-};
+}
 
-const EmbeddedInsta = ({ url }: EmbeddedInsta) => {
+function EmbeddedInsta({ url }: EmbeddedInsta) {
   const accessToken = `${process.env.NEXT_PUBLIC_FB_APP_ID}|${process.env.NEXT_PUBLIC_FB_APP_CLIENT}`;
   return (
     <InstagramEmbed
@@ -141,7 +141,7 @@ const EmbeddedInsta = ({ url }: EmbeddedInsta) => {
       hideCaption={false}
     />
   );
-};
+}
 
 interface Text {
   className?: string;

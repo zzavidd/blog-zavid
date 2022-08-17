@@ -3,22 +3,22 @@ import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes';
-import { AdminButton, BackButton } from 'src/components/button';
-import { Curator } from 'src/components/curator';
-import { Label } from 'src/components/form';
-import { Signature } from 'src/components/image';
-import { Spacer, Toolbar } from 'src/components/layout';
-import ShareBlock from 'src/components/share';
-import { Divider, Paragraph, Title } from 'src/components/text';
-import Timeline, { TimelineType } from 'src/components/timeline';
-import type { PathDefinition } from 'src/constants/paths';
-import { isAuthenticated } from 'src/lib/cookies';
-import { Icon } from 'src/lib/library';
-import TagBlock from 'src/lib/pages/diary/tags';
-import { CuratePrompt } from 'src/lib/pages/posts/prompt';
-import PageMetadata from 'src/partials/meta';
-import { siteTitle } from 'src/settings';
-import css from 'src/styles/pages/Posts.module.scss';
+import { AdminButton, BackButton } from 'components/button';
+import { Curator } from 'components/curator';
+import { Label } from 'components/form';
+import { Signature } from 'components/image';
+import { Spacer, Toolbar } from 'components/layout';
+import ShareBlock from 'components/share';
+import { Divider, Paragraph, Title } from 'components/text';
+import Timeline, { TimelineType } from 'components/timeline';
+import type { PathDefinition } from 'constants/paths';
+import { isAuthenticated } from 'lib/cookies';
+import { Icon } from 'lib/library';
+import TagBlock from 'lib/pages/diary/tags';
+import { CuratePrompt } from 'lib/pages/posts/prompt';
+import PageMetadata from 'partials/meta';
+import { siteTitle } from 'settings';
+import css from 'styles/pages/Posts.module.scss';
 
 import { getDiaryEntrySSR } from '../api/diary';
 

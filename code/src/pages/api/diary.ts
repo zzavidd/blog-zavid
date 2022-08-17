@@ -1,7 +1,7 @@
 import type { DiaryDAO, DiaryStatusFilters, QuerySort } from 'classes';
 import { DiaryStatus, DiaryQueryBuilder, DiaryStatic } from 'classes';
-import type { GetDiaryOptions } from 'src/private/api/service/diary.service';
-import { knex } from 'src/private/db';
+import type { GetDiaryOptions } from 'private/api/service/diary.service';
+import { knex } from 'private/db';
 
 export async function getAllDiaryEntriesSSR(
   options: GetDiaryOptions,

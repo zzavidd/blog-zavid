@@ -1,71 +1,71 @@
 import * as faker from 'faker';
 import { zDate, zString } from 'zavid-modules';
 
-import {
-  PostStatic,
+import type {
   PostDAO,
   RandomPostOptions,
   PostType,
   PostStatus,
   PostImage,
-} from '../../index';
+} from 'classes';
+import { PostStatic } from 'classes';
 
 /** The class for Post objects and methods. */
 export class PostBuilder {
   private post: PostDAO = {};
 
-  withTitle(title?: string): PostBuilder {
+  public withTitle(title?: string): PostBuilder {
     this.post.title = title!.trim();
     return this;
   }
 
-  withType(type?: PostType): PostBuilder {
+  public withType(type?: PostType): PostBuilder {
     this.post.type = type;
     return this;
   }
 
-  withTypeId(typeId?: number): PostBuilder {
+  public withTypeId(typeId?: number): PostBuilder {
     this.post.typeId = typeId;
     return this;
   }
 
-  withContent(content?: string): PostBuilder {
+  public withContent(content?: string): PostBuilder {
     this.post.content = content!.trim();
     return this;
   }
 
-  withStatus(status?: PostStatus): PostBuilder {
+  public withStatus(status?: PostStatus): PostBuilder {
     this.post.status = status;
     return this;
   }
 
-  withExcerpt(excerpt?: string): PostBuilder {
+  public withExcerpt(excerpt?: string): PostBuilder {
     this.post.excerpt = excerpt!.trim();
     return this;
   }
 
-  withImage(image?: PostImage | string): PostBuilder {
+  public withImage(image?: PostImage | string): PostBuilder {
     this.post.image = image;
     return this;
   }
 
-  withContentImages(contentImages?: PostImage[]): PostBuilder {
+  public withContentImages(contentImages?: PostImage[]): PostBuilder {
     this.post.contentImages = contentImages;
     return this;
   }
 
-  withDatePublished(date?: string | Date): PostBuilder {
+  public withDatePublished(date?: string | Date): PostBuilder {
     this.post.datePublished = date;
     return this;
   }
 
-  withDomain(id?: number): PostBuilder {
+  public withDomain(id?: number): PostBuilder {
     id = typeof id && parseInt(id as unknown as string);
     this.post.domainId = id;
     return this;
   }
 
-  random(options: RandomPostOptions = {}): PostBuilder {
+  public random(options: RandomPostOptions = {}): PostBuilder {
     const {
       allowPageTypes = true,
       withImage = false,
@@ -91,33 +91,33 @@ export class PostBuilder {
     return this;
   }
 
-  withRandomType(allowPageTypes?: boolean): PostBuilder {
+  public withRandomType(allowPageTypes?: boolean): PostBuilder {
     this.post.type = PostStatic.randomType({ allowPageTypes });
     return this;
   }
 
-  withRandomStatus(): PostBuilder {
+  public withRandomStatus(): PostBuilder {
     this.post.status = PostStatic.randomStatus();
     return this;
   }
 
-  withRandomDate(): PostBuilder {
+  public withRandomDate(): PostBuilder {
     this.post.datePublished = zDate.formatISODate(faker.date.past());
     return this;
   }
 
-  withRandomContent(threshold?: number, limit?: number): PostBuilder {
+  public withRandomContent(threshold?: number, limit?: number): PostBuilder {
     const contentType = PostStatic.getContentType(this.post.type!);
     this.post.content = PostStatic.randomContent(contentType, threshold, limit);
     return this;
   }
 
-  withRandomExcerpt(): PostBuilder {
+  public withRandomExcerpt(): PostBuilder {
     this.post.excerpt = faker.lorem.sentences(1);
     return this;
   }
 
-  withRandomImage(withImage: boolean): PostBuilder {
+  public withRandomImage(withImage: boolean): PostBuilder {
     this.post.image = {
       source: withImage ? faker.image.image() : '',
       hasChanged: withImage,
@@ -125,7 +125,7 @@ export class PostBuilder {
     return this;
   }
 
-  withRandomContentImages(quantity: number): PostBuilder {
+  public withRandomContentImages(quantity: number): PostBuilder {
     this.post.contentImages = new Array(quantity).fill({
       source: faker.image.image(),
       hasChanged: true,
@@ -133,7 +133,7 @@ export class PostBuilder {
     return this;
   }
 
-  build(): PostDAO {
+  public build(): PostDAO {
     return this.post;
   }
 }

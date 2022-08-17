@@ -5,15 +5,15 @@ import { useSelector } from 'react-redux';
 
 import type { SubscriberDAO, SubscriptionsMapping } from 'classes';
 import { SubscriberBuilder } from 'classes';
-import { alert, AlertType, reportError, setAlert } from 'src/components/alert';
-import { ConfirmButton, InvisibleButton } from 'src/components/button';
-import { Container } from 'src/components/layout';
-import { ConfirmModal } from 'src/components/modal';
-import { Title } from 'src/components/text';
-import PathDefinitions from 'src/constants/paths';
-import PreferenceChecks from 'src/lib/pages/subscribers/preferences';
-import PageMetadata from 'src/partials/meta';
-import css from 'src/styles/pages/Subscribers.module.scss';
+import { alert, AlertType, reportError, setAlert } from 'components/alert';
+import { ConfirmButton, InvisibleButton } from 'components/button';
+import { Container } from 'components/layout';
+import { ConfirmModal } from 'components/modal';
+import { Title } from 'components/text';
+import PathDefinitions from 'constants/paths';
+import PreferenceChecks from 'lib/pages/subscribers/preferences';
+import PageMetadata from 'partials/meta';
+import css from 'styles/pages/Subscribers.module.scss';
 
 import { getSubscriberByTokenSSR } from './api/subscribers';
 

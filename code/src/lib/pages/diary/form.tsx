@@ -16,16 +16,16 @@ import {
   Select,
   ShortTextArea,
   TextInput,
-} from 'src/components/form';
-import type { DateType } from 'src/components/form/datepicker';
-import DatePicker from 'src/components/form/datepicker';
-import { Foldable } from 'src/components/form/foldable';
-import type { Handlers } from 'src/lib/hooks';
-import { ScreenWidth } from 'src/lib/library';
-import TagBlock from 'src/lib/pages/diary/tags';
-import css from 'src/styles/pages/Diary.module.scss';
+} from 'components/form';
+import type { DateType } from 'components/form/datepicker';
+import DatePicker from 'components/form/datepicker';
+import { Foldable } from 'components/form/foldable';
+import type { Handlers } from 'lib/hooks';
+import { ScreenWidth } from 'lib/library';
+import TagBlock from 'lib/pages/diary/tags';
+import css from 'styles/pages/Diary.module.scss';
 
-const DiaryEntryForm = (props: DiaryFormProps) => {
+function DiaryEntryForm(props: DiaryFormProps) {
   const { diaryEntry, handlers } = props;
   const {
     handleText,
@@ -169,7 +169,7 @@ const DiaryEntryForm = (props: DiaryFormProps) => {
       </FieldRow>
     </Form>
   );
-};
+}
 
 export default DiaryEntryForm;
 

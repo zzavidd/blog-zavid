@@ -7,17 +7,17 @@ import { zDate } from 'zavid-modules';
 
 import type { PostDAO } from 'classes';
 import { PostStatus, PostType, QueryOrder } from 'classes';
-import { AdminButton } from 'src/components/button';
-import CloudImage from 'src/components/image';
-import { Partitioner, Spacer, Toolbar } from 'src/components/layout';
-import { Divider, Paragraph, Title } from 'src/components/text';
-import type { PathDefinition } from 'src/constants/paths';
-import { isAuthenticated } from 'src/lib/cookies';
-import { LazyLoader, Responsive } from 'src/lib/library';
-import PageMetadata from 'src/partials/meta';
-import { RightSidebar } from 'src/partials/sidebar';
-import { siteTitle } from 'src/settings';
-import css from 'src/styles/pages/Reveries.module.scss';
+import { AdminButton } from 'components/button';
+import CloudImage from 'components/image';
+import { Partitioner, Spacer, Toolbar } from 'components/layout';
+import { Divider, Paragraph, Title } from 'components/text';
+import type { PathDefinition } from 'constants/paths';
+import { isAuthenticated } from 'lib/cookies';
+import { LazyLoader, Responsive } from 'lib/library';
+import PageMetadata from 'partials/meta';
+import { RightSidebar } from 'partials/sidebar';
+import { siteTitle } from 'settings';
+import css from 'styles/pages/Reveries.module.scss';
 
 import { getPageBySlug } from '../api/pages';
 import { getAllPostsSSR } from '../api/posts';
@@ -149,12 +149,12 @@ export const getServerSideProps: GetServerSideProps<
     props: {
       pathDefinition: {
         title: `Reveries | ${siteTitle}`,
-        description: page.excerpt,
+        description: page.excerpt!,
         url: `/reveries`,
       },
       pageProps: {
         reveries,
-        pageIntro: page.content,
+        pageIntro: page.content!,
       },
     },
   };

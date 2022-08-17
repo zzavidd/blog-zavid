@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { zComponents } from 'zavid-modules';
 import type { TablerProps } from 'zavid-modules/_dist/components/tabler';
 
-import tablerClasses from 'src/styles/components/Tabler.module.scss';
+import tablerClasses from 'styles/components/Tabler.module.scss';
 
 const {
   TablerColumnHeader,
@@ -16,13 +16,13 @@ const {
   ScreenWidth,
 } = zComponents;
 
-const Tabler = <L extends number>({
+function Tabler<L extends number>({
   columns,
   distribution,
   heading,
   items,
   itemsLoaded,
-}: TablerProps<L>) => {
+}: TablerProps<L>) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <zComponents.Tabler<L>
@@ -50,7 +50,7 @@ const Tabler = <L extends number>({
       }}
     />
   );
-};
+}
 
 export {
   Tabler,

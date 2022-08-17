@@ -4,9 +4,9 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import type { OnSelectChangeType } from 'classes';
-import css from 'src/styles/components/Form.module.scss';
+import css from 'styles/components/Form.module.scss';
 
-export const Select = (props: SelectProps) => {
+export function Select(props: SelectProps) {
   const {
     name,
     items,
@@ -53,7 +53,7 @@ export const Select = (props: SelectProps) => {
       })}
     </select>
   );
-};
+}
 
 export interface SelectProps {
   name?: string;

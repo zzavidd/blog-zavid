@@ -3,12 +3,12 @@ import type {
   PostStatusFilters,
   PostTypeFilters,
   QuerySort,
-} from '../../../../classes';
+} from '../../../classes';
 import {
   PostMutationBuilder,
   PostQueryBuilder,
   PostStatic,
-} from '../../../../classes';
+} from '../../../classes';
 import { ERRORS } from '../../error';
 import * as Filer from '../../filer';
 import * as Emails from '../../notifications/emails';
@@ -158,26 +158,26 @@ function getPermissions(post: PostDAO, isPublish: boolean) {
   return { shouldSendEmail, shouldSendTelegram };
 }
 
-export type GetAllPostOptions = {
+export interface GetAllPostOptions {
   limit?: number;
   sort: QuerySort;
   status: PostStatusFilters;
   type: PostTypeFilters;
-};
+}
 
-export type GetOrDeletePostOptions = {
+export interface GetOrDeletePostOptions {
   id: number;
-};
+}
 
-export type CreatePostOptions = {
+export interface CreatePostOptions {
   post: PostDAO;
   isPublish: boolean;
   isTest: boolean;
-};
+}
 
-export type UpdatePostOptions = {
+export interface UpdatePostOptions {
   id: number;
   post: PostDAO;
   isPublish: boolean;
   isTest: boolean;
-};
+}

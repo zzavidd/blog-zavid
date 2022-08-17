@@ -3,16 +3,16 @@ import { zDate } from 'zavid-modules';
 
 import type { PostDAO, PostType, Substitutions } from 'classes';
 import { PostStatic } from 'classes';
-import { AdminButton, BackButton as IBackButton } from 'src/components/button';
-import { Curator } from 'src/components/curator';
-import CloudImage, { cloudinaryBaseUrl, Signature } from 'src/components/image';
-import { Spacer, Toolbar } from 'src/components/layout';
-import ShareBlock from 'src/components/share';
-import { Divider, Paragraph, Title } from 'src/components/text';
-import Timeline, { TimelineType } from 'src/components/timeline';
-import { isAuthenticated } from 'src/lib/cookies';
-import { CuratePrompt } from 'src/lib/pages/posts/prompt';
-import css from 'src/styles/pages/Posts.module.scss';
+import { AdminButton, BackButton as IBackButton } from 'components/button';
+import { Curator } from 'components/curator';
+import CloudImage, { cloudinaryBaseUrl, Signature } from 'components/image';
+import { Spacer, Toolbar } from 'components/layout';
+import ShareBlock from 'components/share';
+import { Divider, Paragraph, Title } from 'components/text';
+import Timeline, { TimelineType } from 'components/timeline';
+import { isAuthenticated } from 'lib/cookies';
+import { CuratePrompt } from 'lib/pages/posts/prompt';
+import css from 'styles/pages/Posts.module.scss';
 
 export default function PostTemplatePage({
   current: post,
@@ -155,6 +155,6 @@ interface PostDate {
   post: PostDAO;
 }
 
-type BackButtonProps = {
+interface BackButtonProps {
   post: PostDAO;
-};
+}

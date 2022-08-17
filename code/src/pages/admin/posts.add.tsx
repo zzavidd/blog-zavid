@@ -1,5 +1,10 @@
 import { useMutation, useQuery } from '@apollo/client';
 import type { NextPageContext } from 'next';
+import {
+  CREATE_POST_QUERY,
+  GET_POSTS_QUERY,
+  UPDATE_POST_QUERY,
+} from 'private/api/queries/post.queries';
 import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
@@ -16,17 +21,12 @@ import {
   PostStatus,
   URLBuilder,
 } from 'classes';
-import { alert, AlertType, reportError, setAlert } from 'src/components/alert';
-import hooks from 'src/lib/hooks';
-import PostForm from 'src/lib/pages/posts/form';
-import { DAOParse } from 'src/lib/parser';
-import { isValidPost } from 'src/lib/validations';
-import {
-  CREATE_POST_QUERY,
-  GET_POSTS_QUERY,
-  UPDATE_POST_QUERY,
-} from 'src/private/api/queries/post.queries';
-import { domain } from 'src/settings';
+import { alert, AlertType, reportError, setAlert } from 'components/alert';
+import hooks from 'lib/hooks';
+import PostForm from 'lib/pages/posts/form';
+import { DAOParse } from 'lib/parser';
+import { isValidPost } from 'lib/validations';
+import { domain } from 'settings';
 
 interface PostInitialProps {
   post: PostDAO;
@@ -40,7 +40,7 @@ interface PostRequest {
   isTest: boolean;
 }
 
-const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
+function PostCrud({ post: serverPost, operation }: PostInitialProps) {
   const [clientPost, setPost] = useState({
     id: 0,
     title: '',
@@ -236,7 +236,7 @@ const PostCrud = ({ post: serverPost, operation }: PostInitialProps) => {
       isRequestPending={isRequestPending}
     />
   );
-};
+}
 
 const buildPayload = (
   clientPost: PostDAO,

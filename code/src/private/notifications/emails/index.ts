@@ -13,8 +13,8 @@ import type {
   PostDAO,
   PostType,
   SubscriberDAO,
-} from '../../../../classes';
-import { SubscriberQueryBuilder, SubscriberStatic } from '../../../../classes';
+} from '../../../classes';
+import { SubscriberQueryBuilder, SubscriberStatic } from '../../../classes';
 import { debug } from '../../../private/error';
 import {
   accounts,
@@ -213,9 +213,9 @@ const sendMailToSubscriber = (
   );
 };
 
-type TestRecipient = {
+interface TestRecipient {
   email: string;
   token: string;
-};
+}
 type SubscriptionType = { [key in PostType]?: string };
 type Callback = (pass: null | Error) => void;

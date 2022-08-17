@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import { ConfirmButton } from 'src/components/button';
-import { SearchBar } from 'src/components/form';
-import { HomeRow } from 'src/components/pages/home';
-import css from 'src/styles/pages/Home.module.scss';
+import { ConfirmButton } from 'components/button';
+import { SearchBar } from 'components/form';
+import { HomeRow } from 'components/pages/home';
+import css from 'styles/pages/Home.module.scss';
 
-export default () => {
+export default function () {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
@@ -33,7 +33,7 @@ export default () => {
       </div>
     </HomeRow>
   );
-};
+}
 
 const launchSearch = (searchTerm: string) => {
   location.href = `/search?term=${searchTerm}`;

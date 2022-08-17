@@ -5,13 +5,13 @@ import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
 import type { ResultEntityDAO } from 'classes';
-import CloudImage, { AspectRatio } from 'src/components/image';
-import { Title, VanillaLink } from 'src/components/text';
-import css from 'src/styles/pages/Search.module.scss';
+import CloudImage, { AspectRatio } from 'components/image';
+import { Title, VanillaLink } from 'components/text';
+import css from 'styles/pages/Search.module.scss';
 
 import { MatchedContent } from './matched';
 
-export const ResultsGrid = ({ results, searchTerm }: ResultsGridProps) => {
+export function ResultsGrid({ results, searchTerm }: ResultsGridProps) {
   if (!results.length) {
     return (
       <div className={css['search-results-error']}>
@@ -31,7 +31,7 @@ export const ResultsGrid = ({ results, searchTerm }: ResultsGridProps) => {
       ))}
     </div>
   );
-};
+}
 
 export const ResultEntity = memo(
   ({ entity, searchTerm, idx }: ResultEntityProps) => {
@@ -67,7 +67,7 @@ export const ResultEntity = memo(
   },
 );
 
-export const ResultEntityImage = ({ entity }: ResultEntityImageProps) => {
+export function ResultEntityImage({ entity }: ResultEntityImageProps) {
   if (!entity.image) return null;
   return (
     <CloudImage
@@ -77,7 +77,7 @@ export const ResultEntityImage = ({ entity }: ResultEntityImageProps) => {
       containerClassName={css[`search-results-image`]}
     />
   );
-};
+}
 
 interface ResultsGridProps {
   results: ResultEntityDAO[];

@@ -1,26 +1,26 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import type { NextPageContext } from 'next';
+import {
+  GET_SUBSCRIBERS_QUERY,
+  DELETE_SUBSCRIBER_QUERY,
+} from 'private/api/queries/subscriber.queries';
 import React, { useEffect, useState } from 'react';
 
 import type { ReactHook, SubscriberDAO, SubscriptionsMapping } from 'classes';
 import { EditButton, QueryOrder } from 'classes';
-import { alert, reportError } from 'src/components/alert';
-import { AdminButton, InvisibleButton } from 'src/components/button';
-import { Spacer, Toolbar } from 'src/components/layout';
-import { ConfirmModal } from 'src/components/modal';
+import { alert, reportError } from 'components/alert';
+import { AdminButton, InvisibleButton } from 'components/button';
+import { Spacer, Toolbar } from 'components/layout';
+import { ConfirmModal } from 'components/modal';
 import {
   Icon,
   Tabler,
   TablerColumnHeader,
   TablerFieldType,
   TablerItemCell,
-} from 'src/lib/library';
-import {
-  GET_SUBSCRIBERS_QUERY,
-  DELETE_SUBSCRIBER_QUERY,
-} from 'src/private/api/queries/subscriber.queries';
+} from 'lib/library';
 
-const SubscriberAdmin = () => {
+function SubscriberAdmin() {
   const [subscribers, setSubscribers] = useState([]);
   const [selectedSubscriber, setSelectedSubscriber] = useState(
     {} as SubscriberDAO,
@@ -68,7 +68,7 @@ const SubscriberAdmin = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Spacer>
         <Tabler<7>
           heading={'List of Subscribers'}
@@ -134,13 +134,13 @@ const SubscriberAdmin = () => {
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </>
+    </React.Fragment>
   );
-};
+}
 
 const showSubscriptionPreferences = (subscriptions: SubscriptionsMapping) => {
   return (
-    <>
+    <React.Fragment>
       {Object.entries(subscriptions)
         .filter(([key]) => !key.startsWith('_'))
         .map(([label, checked], key) => {
@@ -153,7 +153,7 @@ const showSubscriptionPreferences = (subscriptions: SubscriptionsMapping) => {
             );
           }
         })}
-    </>
+    </React.Fragment>
   );
 };
 
@@ -161,7 +161,7 @@ const navigateToCreateForm = (): void => {
   location.href = '/admin/subscribers/add';
 };
 
-const EditButton = ({ id }: EditButton) => {
+function EditButton({ id }: EditButton) {
   const navigateToLink = () =>
     (location.href = `/admin/subscribers/edit/${id}`);
   return (
@@ -169,13 +169,13 @@ const EditButton = ({ id }: EditButton) => {
       <Icon name={'pen-alt'} />
     </InvisibleButton>
   );
-};
+}
 
-const DeleteButton = ({
+function DeleteButton({
   subscriber,
   setDeleteModalVisibility,
   setSelectedSubscriber,
-}: DeleteButton) => {
+}: DeleteButton) {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);
     setSelectedSubscriber(subscriber);
@@ -186,7 +186,7 @@ const DeleteButton = ({
       <Icon name={'trash'} />
     </InvisibleButton>
   );
-};
+}
 
 SubscriberAdmin.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };

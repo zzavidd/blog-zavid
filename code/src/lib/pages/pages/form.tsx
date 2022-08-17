@@ -11,10 +11,10 @@ import {
   LongTextArea,
   TextInput,
   Checkbox,
-} from 'src/components/form';
-import type { Handlers } from 'src/lib/hooks';
+} from 'components/form';
+import type { Handlers } from 'lib/hooks';
 
-export default (props: PageFormProps) => {
+export default function (props: PageFormProps) {
   const { page, handlers } = props;
   const { handleText, handleCheck } = handlers;
 
@@ -74,7 +74,7 @@ export default (props: PageFormProps) => {
       </FieldRow>
     </Form>
   );
-};
+}
 
 export interface PageFormProps extends GenericFormProps {
   page: PageDAO;

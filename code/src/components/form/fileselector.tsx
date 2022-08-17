@@ -2,15 +2,12 @@ import classnames from 'classnames';
 import type { Dispatch, RefObject, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { InvisibleButton } from 'src/components/button';
-import {
-  cloudinaryBaseUrl,
-  validateCloudinaryImage,
-} from 'src/components/image';
-import { Icon } from 'src/lib/library';
-import css from 'src/styles/components/Form.module.scss';
+import { InvisibleButton } from 'components/button';
+import { cloudinaryBaseUrl, validateCloudinaryImage } from 'components/image';
+import { Icon } from 'lib/library';
+import css from 'styles/components/Form.module.scss';
 
-export const FileSelector = (props: FileSelector) => {
+export function FileSelector(props: FileSelector) {
   const { className, image, isCreateOperation } = props;
 
   const [stateImage, setImage] = useState(image as FSImage);
@@ -36,16 +33,16 @@ export const FileSelector = (props: FileSelector) => {
       />
     </div>
   );
-};
+}
 
-const ChoosePrompt = ({
+function ChoosePrompt({
   aspectRatio,
   onChange,
   image,
   imageRef,
   placeholder = 'Choose an image...',
   setImage,
-}: ChoosePrompt) => {
+}: ChoosePrompt) {
   if (image) return null;
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -86,14 +83,14 @@ const ChoosePrompt = ({
       <span>{placeholder}</span>
     </label>
   );
-};
+}
 
-const ChoiceImage = ({
+function ChoiceImage({
   stateImage,
   onChange,
   imageRef,
   setImage,
-}: ChoiceImage) => {
+}: ChoiceImage) {
   const [isInitialState, setIsInitialState] = useState(true);
   const isImageVisible = stateImage && stateImage !== null;
 
@@ -132,7 +129,7 @@ const ChoiceImage = ({
       </InvisibleButton>
     </div>
   );
-};
+}
 
 interface FileSelector {
   image: string;

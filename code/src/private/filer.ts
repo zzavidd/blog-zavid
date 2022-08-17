@@ -2,8 +2,8 @@ import async from 'async';
 import Cloudinary from 'cloudinary';
 import { zString } from 'zavid-modules';
 
-import type { PostDAO, PostImage } from '../../classes';
-import { PostStatic } from '../../classes';
+import type { PostDAO, PostImage } from '../classes';
+import { PostStatic } from '../classes';
 
 import { PostService } from './api/service';
 import { debug } from './error';
@@ -216,12 +216,12 @@ async function generateFilename(post: PostDAO, slug: string) {
   return filename;
 }
 
-type PostImageUploadOptions = {
+interface PostImageUploadOptions {
   isTest?: boolean;
-};
+}
 
-type GenerateSlugResponse = {
+interface GenerateSlugResponse {
   directory: string;
   filename: string;
   slug: string;
-};
+}

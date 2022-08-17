@@ -1,8 +1,8 @@
-import Knex from 'knex';
+import type { Knex } from 'knex';
+
+import type { PageDAO } from 'classes';
 
 import { QueryBuilder, MutationBuilder } from './super';
-
-import { PageDAO } from '../../interfaces';
 
 /** Builds a post query with conditions. */
 export class PageQueryBuilder extends QueryBuilder<PageDAO> {
@@ -10,14 +10,14 @@ export class PageQueryBuilder extends QueryBuilder<PageDAO> {
     super(knex, 'pages');
   }
 
-  whereSlug(slug: string): PageQueryBuilder {
+  public whereSlug(slug: string): PageQueryBuilder {
     if (!slug) throw new Error(`No specified slug.`);
-    this.query.where('slug', slug);
+    void this.query.where('slug', slug);
     return this;
   }
 
-  whereIsEmbed(isEmbed: boolean): PageQueryBuilder {
-    this.query.where('isEmbed', isEmbed);
+  public whereIsEmbed(isEmbed: boolean): PageQueryBuilder {
+    void this.query.where('isEmbed', isEmbed);
     return this;
   }
 }

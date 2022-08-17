@@ -103,7 +103,7 @@ async function startServer(options: ServerOptions = {}) {
 
 export { startStagingServer };
 
-type ServerOptions = {
+interface ServerOptions {
   isFullServer?: boolean;
   callback?: () => void;
-};
+}

@@ -2,12 +2,12 @@ import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes';
-import { Flexer } from 'src/components/layout';
-import { Paragraph, Title } from 'src/components/text';
-import { Icon } from 'src/lib/library';
-import css from 'src/styles/pages/Home.module.scss';
+import { Flexer } from 'components/layout';
+import { Paragraph, Title } from 'components/text';
+import { Icon } from 'lib/library';
+import css from 'styles/pages/Home.module.scss';
 
-export default ({ entry }: LatestDiaryEntryProps) => {
+export default function ({ entry }: LatestDiaryEntryProps) {
   if (!entry) return null;
 
   const date = zDate.formatDate(entry.date!, { withWeekday: true });
@@ -35,8 +35,8 @@ export default ({ entry }: LatestDiaryEntryProps) => {
       </Paragraph>
     </div>
   );
-};
+}
 
-type LatestDiaryEntryProps = {
+interface LatestDiaryEntryProps {
   entry: DiaryDAO;
-};
+}

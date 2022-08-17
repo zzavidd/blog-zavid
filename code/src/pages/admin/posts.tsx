@@ -1,5 +1,9 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import type { NextPageContext } from 'next';
+import {
+  DELETE_POST_QUERY,
+  GET_POSTS_QUERY,
+} from 'private/api/queries/post.queries';
 import React, { useEffect, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,28 +11,24 @@ import { zText } from 'zavid-modules';
 
 import type { PostDAO, ReactHook, ReactSelectChangeEvent } from 'classes';
 import { EditButton, PostStatic, URLBuilder } from 'classes';
-import { alert, reportError } from 'src/components/alert';
-import { InvisibleButton } from 'src/components/button';
-import CloudImage from 'src/components/image';
-import { Spacer } from 'src/components/layout';
-import { ConfirmModal } from 'src/components/modal';
-import { VanillaLink } from 'src/components/text';
+import { alert, reportError } from 'components/alert';
+import { InvisibleButton } from 'components/button';
+import CloudImage from 'components/image';
+import { Spacer } from 'components/layout';
+import { ConfirmModal } from 'components/modal';
+import { VanillaLink } from 'components/text';
 import {
   Icon,
   Tabler,
   TablerColumnHeader,
   TablerFieldType,
   TablerItemCell,
-} from 'src/lib/library';
-import BottomToolbar from 'src/lib/pages/posts/toolbar';
-import { updatePostFilterSettings } from 'src/lib/reducers';
-import {
-  DELETE_POST_QUERY,
-  GET_POSTS_QUERY,
-} from 'src/private/api/queries/post.queries';
-import css from 'src/styles/pages/Posts.module.scss';
+} from 'lib/library';
+import BottomToolbar from 'lib/pages/posts/toolbar';
+import { updatePostFilterSettings } from 'lib/reducers';
+import css from 'styles/pages/Posts.module.scss';
 
-const PostAdmin = () => {
+function PostAdmin() {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({} as PostDAO);
   const [isLoaded, setLoaded] = useState(false);
@@ -92,7 +92,7 @@ const PostAdmin = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Spacer>
         <Tabler<9>
           heading={'List of Posts'}
@@ -175,11 +175,11 @@ const PostAdmin = () => {
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </>
+    </React.Fragment>
   );
-};
+}
 
-const LinkButton = ({ post }: LinkButton) => {
+function LinkButton({ post }: LinkButton) {
   if (!post.slug) return null;
 
   const url = new URLBuilder();
@@ -202,22 +202,22 @@ const LinkButton = ({ post }: LinkButton) => {
       <Icon name={'paper-plane'} />
     </VanillaLink>
   );
-};
+}
 
-const EditButton = ({ id }: EditButton) => {
+function EditButton({ id }: EditButton) {
   const navigateToLink = () => (location.href = `/admin/posts/edit/${id}`);
   return (
     <InvisibleButton onClick={navigateToLink}>
       <Icon name={'pen-alt'} />
     </InvisibleButton>
   );
-};
+}
 
-const DeleteButton = ({
+function DeleteButton({
   post,
   setDeleteModalVisibility,
   setSelectedPost,
-}: DeleteButton) => {
+}: DeleteButton) {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);
     setSelectedPost(
@@ -232,7 +232,7 @@ const DeleteButton = ({
       <Icon name={'trash'} />
     </InvisibleButton>
   );
-};
+}
 
 PostAdmin.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };

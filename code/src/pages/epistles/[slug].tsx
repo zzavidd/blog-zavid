@@ -2,10 +2,10 @@ import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
 import { PostType, PostStatus } from 'classes';
-import type { PathDefinition } from 'src/constants/paths';
-import type { PostTemplatePageProps } from 'src/fragments/posts/template';
-import PostTemplatePage from 'src/fragments/posts/template';
-import PageMetadata from 'src/partials/meta';
+import type { PathDefinition } from 'constants/paths';
+import type { PostTemplatePageProps } from 'fragments/posts/template';
+import PostTemplatePage from 'fragments/posts/template';
+import PageMetadata from 'partials/meta';
 
 import { getPostSSR } from '../api/posts';
 

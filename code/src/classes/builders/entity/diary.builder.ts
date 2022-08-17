@@ -1,53 +1,54 @@
 import * as faker from 'faker';
 import { zDate, zNumber, zString } from 'zavid-modules';
 
-import { DiaryDAO, DiaryStatic, DiaryStatus } from '../../index';
+import type { DiaryDAO, DiaryStatus } from '../../index';
+import { DiaryStatic } from '../../index';
 
 /** The class for Diary objects and methods. */
 export class DiaryEntryBuilder {
   private entry: DiaryDAO = {};
 
-  withTitle(title?: string): DiaryEntryBuilder {
+  public withTitle(title?: string): DiaryEntryBuilder {
     this.entry.title = title!.trim();
     return this;
   }
 
-  withDate(date?: string | Date): DiaryEntryBuilder {
+  public withDate(date?: string | Date): DiaryEntryBuilder {
     this.entry.date = date!;
     return this;
   }
 
-  withStatus(status?: DiaryStatus): DiaryEntryBuilder {
+  public withStatus(status?: DiaryStatus): DiaryEntryBuilder {
     this.entry.status = status!;
     return this;
   }
 
-  withContent(content?: string): DiaryEntryBuilder {
+  public withContent(content?: string): DiaryEntryBuilder {
     this.entry.content = content!.trim();
     return this;
   }
 
-  withFootnote(footnote?: string): DiaryEntryBuilder {
+  public withFootnote(footnote?: string): DiaryEntryBuilder {
     this.entry.footnote = footnote!.trim();
     return this;
   }
 
-  withTags(tags?: string[]): DiaryEntryBuilder {
+  public withTags(tags?: string[]): DiaryEntryBuilder {
     this.entry.tags = tags!;
     return this;
   }
 
-  withEntryNumber(entryNumber?: number): DiaryEntryBuilder {
+  public withEntryNumber(entryNumber?: number): DiaryEntryBuilder {
     this.entry.entryNumber = entryNumber;
     return this;
   }
 
-  setIsFavourite(isFavourite?: boolean): DiaryEntryBuilder {
+  public setIsFavourite(isFavourite?: boolean): DiaryEntryBuilder {
     this.entry.isFavourite = new Boolean(isFavourite!).valueOf();
     return this;
   }
 
-  random(): DiaryEntryBuilder {
+  public random(): DiaryEntryBuilder {
     const title = zString.toTitleCase(faker.company.catchPhraseNoun());
 
     this.entry = this.withTitle(title)
@@ -63,12 +64,12 @@ export class DiaryEntryBuilder {
     return this;
   }
 
-  withRandomStatus(): DiaryEntryBuilder {
+  public withRandomStatus(): DiaryEntryBuilder {
     this.entry.status = DiaryStatic.randomStatus();
     return this;
   }
 
-  withRandomContent(threshold = 5, limit = 10): DiaryEntryBuilder {
+  public withRandomContent(threshold = 5, limit = 10): DiaryEntryBuilder {
     this.entry.content = faker.lorem.paragraphs(
       zNumber.generateRandom(threshold, limit),
       '\n\n',
@@ -76,12 +77,12 @@ export class DiaryEntryBuilder {
     return this;
   }
 
-  withRandomDate(): DiaryEntryBuilder {
+  public withRandomDate(): DiaryEntryBuilder {
     this.entry.date = zDate.formatISODate(faker.date.past());
     return this;
   }
 
-  withRandomFootnote(): DiaryEntryBuilder {
+  public withRandomFootnote(): DiaryEntryBuilder {
     this.entry.footnote = faker.lorem.paragraphs(
       zNumber.generateRandom(1, 2),
       '\n\n',
@@ -89,12 +90,12 @@ export class DiaryEntryBuilder {
     return this;
   }
 
-  withRandomFavouriteFlag(): DiaryEntryBuilder {
+  public withRandomFavouriteFlag(): DiaryEntryBuilder {
     this.entry.isFavourite = Math.random() < 0.5;
     return this;
   }
 
-  withRandomTags(): DiaryEntryBuilder {
+  public withRandomTags(): DiaryEntryBuilder {
     this.entry.tags = DiaryStatic.generateRandomTags();
     return this;
   }
@@ -102,7 +103,7 @@ export class DiaryEntryBuilder {
   /**
    * Builds the diary entry object.
    */
-  build(): DiaryDAO {
+  public build(): DiaryDAO {
     return this.entry;
   }
 }

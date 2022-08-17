@@ -2,7 +2,7 @@ import type { NextPageContext } from 'next';
 import React from 'react';
 
 import type { CustomError } from 'classes';
-import css from 'src/styles/Partials.module.scss';
+import css from 'styles/Partials.module.scss';
 
 export default function ErrorPage({ message }: CustomError) {
   return (

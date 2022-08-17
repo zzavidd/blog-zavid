@@ -1,27 +1,27 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import type { NextPageContext } from 'next';
+import {
+  GET_PAGES_QUERY,
+  DELETE_PAGE_QUERY,
+} from 'private/api/queries/page.queries';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { PageDAO, ReactHook } from 'classes';
 import { EditButton } from 'classes';
-import { alert, reportError } from 'src/components/alert';
-import { AdminButton, InvisibleButton } from 'src/components/button';
-import { Spacer, Toolbar } from 'src/components/layout';
-import { ConfirmModal } from 'src/components/modal';
+import { alert, reportError } from 'components/alert';
+import { AdminButton, InvisibleButton } from 'components/button';
+import { Spacer, Toolbar } from 'components/layout';
+import { ConfirmModal } from 'components/modal';
 import {
   Icon,
   Tabler,
   TablerColumnHeader,
   TablerFieldType,
   TablerItemCell,
-} from 'src/lib/library';
-import {
-  GET_PAGES_QUERY,
-  DELETE_PAGE_QUERY,
-} from 'src/private/api/queries/page.queries';
+} from 'lib/library';
 
-const PageAdmin = () => {
+function PageAdmin() {
   const [pages, setPages] = useState([]);
   const [selectedPage, setSelectedPage] = useState({} as PageDAO);
   const [isLoaded, setLoaded] = useState(false);
@@ -61,7 +61,7 @@ const PageAdmin = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Spacer>
         <Tabler<9>
           heading={'List of Pages'}
@@ -138,15 +138,15 @@ const PageAdmin = () => {
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </>
+    </React.Fragment>
   );
-};
+}
 
 const navigateToCreateForm = () => {
   location.href = '/admin/pages/add';
 };
 
-const LinkButton = ({ page }: LinkButton) => {
+function LinkButton({ page }: LinkButton) {
   if (page.isEmbed) return null;
 
   const navigateToLink = () => (location.href = `/${page.slug}`);
@@ -156,22 +156,22 @@ const LinkButton = ({ page }: LinkButton) => {
       <Icon name={'paper-plane'} />
     </InvisibleButton>
   );
-};
+}
 
-const EditButton = ({ id }: EditButton) => {
+function EditButton({ id }: EditButton) {
   const navigateToLink = () => (location.href = `/admin/pages/edit/${id}`);
   return (
     <InvisibleButton onClick={navigateToLink}>
       <Icon name={'pen-alt'} />
     </InvisibleButton>
   );
-};
+}
 
-const DeleteButton = ({
+function DeleteButton({
   page,
   setDeleteModalVisibility,
   setSelectedPage,
-}: DeleteButton) => {
+}: DeleteButton) {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);
     setSelectedPage(page);
@@ -182,7 +182,7 @@ const DeleteButton = ({
       <Icon name={'trash'} />
     </InvisibleButton>
   );
-};
+}
 
 PageAdmin.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };

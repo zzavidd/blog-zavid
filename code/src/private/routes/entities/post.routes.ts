@@ -9,7 +9,7 @@ import {
   PostStatic,
   PostStatus,
   PostType,
-} from '../../../../classes';
+} from '../../../classes';
 import { siteTitle } from '../../../settings';
 import { PostService } from '../../api/service';
 import { ERRORS, renderErrorPage } from '../../error';

@@ -11,8 +11,8 @@ import type {
   SubscriptionsMapping,
 } from 'classes';
 import type { GenericDAO } from 'classes/interfaces/super';
-import type { DateType } from 'src/components/form/datepicker';
-import { saveText } from 'src/lib/reducers';
+import type { DateType } from 'components/form/datepicker';
+import { saveText } from 'lib/reducers';
 
 const handlers = <T extends GenericDAO>(
   hook: ReactHook<T>,

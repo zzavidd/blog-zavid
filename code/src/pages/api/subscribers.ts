@@ -7,8 +7,8 @@ import {
   SubscriberQueryBuilder,
   SubscriberStatic,
 } from 'classes';
-import { knex } from 'src/private/db';
-import { debug } from 'src/private/error';
+import { knex } from 'private/db';
+import { debug } from 'private/error';
 
 export default async function handler(
   req: NextApiRequest,

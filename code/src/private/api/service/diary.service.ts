@@ -1,13 +1,9 @@
-import type {
-  DiaryDAO,
-  DiaryStatusFilters,
-  QuerySort,
-} from '../../../../classes';
+import type { DiaryDAO, DiaryStatusFilters, QuerySort } from '../../../classes';
 import {
   DiaryMutationBuilder,
   DiaryQueryBuilder,
   DiaryStatic,
-} from '../../../../classes';
+} from '../../../classes';
 import { ERRORS } from '../../error';
 import * as Emails from '../../notifications/emails';
 import * as Telegram from '../../notifications/telegram';
@@ -138,23 +134,23 @@ function getPermissions(isPublish: boolean) {
   return { shouldSendEmail, shouldSendTelegram };
 }
 
-export type GetDiaryOptions = {
+export interface GetDiaryOptions {
   sort: QuerySort;
   status: DiaryStatusFilters;
   onlyFavourites: boolean;
-};
+}
 
-export type GetOrDeleteDiaryEntryOptions = {
+export interface GetOrDeleteDiaryEntryOptions {
   id: number;
-};
+}
 
-export type CreateDiaryEntryOptions = {
+export interface CreateDiaryEntryOptions {
   diaryEntry: DiaryDAO;
   isPublish: boolean;
-};
+}
 
-export type UpdateDiaryEntryOptions = {
+export interface UpdateDiaryEntryOptions {
   id: number;
   diaryEntry: DiaryDAO;
   isPublish: boolean;
-};
+}

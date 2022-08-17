@@ -7,8 +7,8 @@ import {
   PostStatus,
   URLBuilder,
 } from 'classes';
-import { knex } from 'src/private/db';
-import { siteTitle } from 'src/settings';
+import { knex } from 'private/db';
+import { siteTitle } from 'settings';
 
 export async function getSearchResults(searchTerm: string, onlyDiary: boolean) {
   const results = await getResultEntities(searchTerm, {
@@ -128,12 +128,12 @@ async function compileDiaryEntries(
   return parsedDiary;
 }
 
-type FilterField = {
+interface FilterField {
   title: string;
   content: string;
   tags: string;
-};
+}
 
-type GetResultEntityOptions = {
+interface GetResultEntityOptions {
   includePosts?: boolean;
-};
+}

@@ -3,7 +3,7 @@ import { zDate, zNumber, zString } from 'zavid-modules';
 
 import { fetch } from '../..';
 import { DiaryEntryBuilder, DiaryStatus } from '../../../classes';
-import { CREATE_DIARY_QUERY } from '../../../src/private/api/queries/diary.queries';
+import { CREATE_DIARY_QUERY } from '../../../private/api/queries/diary.queries';
 import { COUNT } from '../constants';
 
 export async function ingestDiary() {

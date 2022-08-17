@@ -112,12 +112,12 @@ router.use('/admin', (req, res, next) => {
 
 export default router;
 
-type GoogleProfile = {
+interface GoogleProfile {
   id?: string;
-};
+}
 
-type AuthenticatedUser = {
+interface AuthenticatedUser {
   id: number;
-};
+}
 
 type CustomSession = Session & { returnTo: string };

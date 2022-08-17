@@ -4,7 +4,7 @@ import {
   SubscriberStatic,
   SubscriberQueryBuilder,
   Operation,
-} from '../../../../classes';
+} from '../../../classes';
 import { siteTitle } from '../../../settings';
 import { getKnex, getServer } from '../../singleton';
 

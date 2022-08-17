@@ -1,28 +1,28 @@
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import type { NextPageContext } from 'next';
+import {
+  GET_DIARY_QUERY,
+  DELETE_DIARY_QUERY,
+} from 'private/api/queries/diary.queries';
 import React, { useEffect, useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { DiaryDAO, ReactHook } from 'classes';
 import { EditButton, QueryOrder } from 'classes';
-import { alert, reportError } from 'src/components/alert';
-import { AdminButton, InvisibleButton } from 'src/components/button';
-import { Spacer, Toolbar } from 'src/components/layout';
-import { ConfirmModal } from 'src/components/modal';
-import { VanillaLink } from 'src/components/text';
+import { alert, reportError } from 'components/alert';
+import { AdminButton, InvisibleButton } from 'components/button';
+import { Spacer, Toolbar } from 'components/layout';
+import { ConfirmModal } from 'components/modal';
+import { VanillaLink } from 'components/text';
 import {
   Icon,
   Tabler,
   TablerColumnHeader,
   TablerFieldType,
   TablerItemCell,
-} from 'src/lib/library';
-import {
-  GET_DIARY_QUERY,
-  DELETE_DIARY_QUERY,
-} from 'src/private/api/queries/diary.queries';
+} from 'lib/library';
 
-const DiaryAdmin = () => {
+function DiaryAdmin() {
   const [diaryEntries, setDiaryEntries] = useState([]);
   const [selectedDiaryEntry, setSelectedDiaryEntry] = useState({} as DiaryDAO);
   const [isLoaded, setLoaded] = useState(false);
@@ -72,7 +72,7 @@ const DiaryAdmin = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Spacer>
         <Tabler<9>
           heading={'List of Diary Entries'}
@@ -160,36 +160,36 @@ const DiaryAdmin = () => {
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </>
+    </React.Fragment>
   );
-};
+}
 
 const navigateToCreateForm = () => {
   location.href = '/admin/diary/add';
 };
 
-const LinkButton = ({ diaryEntry }: LinkButton) => {
+function LinkButton({ diaryEntry }: LinkButton) {
   return (
     <VanillaLink href={`/diary/${diaryEntry.entryNumber}`}>
       <Icon name={'paper-plane'} />
     </VanillaLink>
   );
-};
+}
 
-const EditButton = ({ id }: EditButton) => {
+function EditButton({ id }: EditButton) {
   const navigateToLink = () => (location.href = `/admin/diary/edit/${id}`);
   return (
     <InvisibleButton onClick={navigateToLink}>
       <Icon name={'pen-alt'} />
     </InvisibleButton>
   );
-};
+}
 
-const DeleteButton = ({
+function DeleteButton({
   diaryEntry,
   setDeleteModalVisibility,
   setSelectedDiaryEntry,
-}: DeleteButton) => {
+}: DeleteButton) {
   const attemptDelete = () => {
     setDeleteModalVisibility(true);
     setSelectedDiaryEntry(diaryEntry);
@@ -200,7 +200,7 @@ const DeleteButton = ({
       <Icon name={'trash'} />
     </InvisibleButton>
   );
-};
+}
 
 DiaryAdmin.getInitialProps = async ({ query }: NextPageContext) => {
   return { ...query };

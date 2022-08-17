@@ -5,11 +5,11 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import type { OnClickType, OnInputChangeType, OnKeyPressType } from 'classes';
-import { InvisibleButton } from 'src/components/button';
-import { Icon } from 'src/lib/library';
-import css from 'src/styles/components/Form.module.scss';
+import { InvisibleButton } from 'components/button';
+import { Icon } from 'lib/library';
+import css from 'styles/components/Form.module.scss';
 
-export const TextInput = (props: TextInputProps) => {
+export function TextInput(props: TextInputProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const { onClick, leadingComponent = null, trailingComponent = null } = props;
 
@@ -28,18 +28,18 @@ export const TextInput = (props: TextInputProps) => {
       {trailingComponent}
     </div>
   );
-};
+}
 
-export const NumberInput = (props: InputProps) => {
+export function NumberInput(props: InputProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <div className={css[`text-input-field-${theme}`]}>
       <Input {...props} type={'number'} min={1} />
     </div>
   );
-};
+}
 
-export const SearchBar = (props: SearchBarProps) => {
+export function SearchBar(props: SearchBarProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`search-bar-${theme}`], props.className);
 
@@ -53,9 +53,9 @@ export const SearchBar = (props: SearchBarProps) => {
       trailingComponent={<SearchBarTrailingComponent {...props} />}
     />
   );
-};
+}
 
-const SearchBarTrailingComponent = (props: SearchBarProps) => {
+function SearchBarTrailingComponent(props: SearchBarProps) {
   const { onClearInput, value, withRightSpace = true } = props;
   if (!value) return null;
   return (
@@ -63,9 +63,9 @@ const SearchBarTrailingComponent = (props: SearchBarProps) => {
       <Icon name={'times'} withRightSpace={withRightSpace} />
     </InvisibleButton>
   );
-};
+}
 
-const Input = ({
+function Input({
   name,
   type,
   value,
@@ -73,7 +73,7 @@ const Input = ({
   placeholder,
   onClick,
   onKeyPress,
-}: InputProps) => {
+}: InputProps) {
   if (value === null) value = '';
   return (
     <input
@@ -88,7 +88,7 @@ const Input = ({
       readOnly={!!onClick}
     />
   );
-};
+}
 
 interface InputProps {
   value: unknown;

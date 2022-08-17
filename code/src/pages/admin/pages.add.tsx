@@ -1,21 +1,21 @@
 import { useMutation } from '@apollo/client';
 import type { NextPageContext } from 'next';
+import {
+  CREATE_PAGE_QUERY,
+  UPDATE_PAGE_QUERY,
+} from 'private/api/queries/page.queries';
 import React, { useEffect, useState } from 'react';
 
 import type { PageDAO } from 'classes';
 import { Operation } from 'classes';
 import { PageBuilder } from 'classes/builders/entity/page.builder';
-import { setAlert, reportError, AlertType } from 'src/components/alert';
-import hooks from 'src/lib/hooks';
-import PageForm from 'src/lib/pages/pages/form';
-import { DAOParse } from 'src/lib/parser';
-import { isValidPage } from 'src/lib/validations';
-import {
-  CREATE_PAGE_QUERY,
-  UPDATE_PAGE_QUERY,
-} from 'src/private/api/queries/page.queries';
+import { setAlert, reportError, AlertType } from 'components/alert';
+import hooks from 'lib/hooks';
+import PageForm from 'lib/pages/pages/form';
+import { DAOParse } from 'lib/parser';
+import { isValidPage } from 'lib/validations';
 
-const PageCrud = ({ page: serverPage, operation }: PageCrud) => {
+function PageCrud({ page: serverPage, operation }: PageCrud) {
   const [clientPage, setPage] = useState({
     id: 0,
     title: '',
@@ -95,7 +95,7 @@ const PageCrud = ({ page: serverPage, operation }: PageCrud) => {
       isRequestPending={isRequestPending}
     />
   );
-};
+}
 
 const buildPayload = (
   clientPage: PageDAO,

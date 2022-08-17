@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { SubscriberBuilder } from 'classes';
-import { alert, reportError } from 'src/components/alert';
-import { ConfirmButton } from 'src/components/button';
-import { Field, FieldRow, TextInput } from 'src/components/form';
-import { Title, VanillaLink } from 'src/components/text';
-import { UIError } from 'src/lib/errors';
-import { Icon } from 'src/lib/library';
-import { checkValidEmail } from 'src/lib/validations';
-import { accounts, copyright } from 'src/settings';
-import css from 'src/styles/Partials.module.scss';
+import { alert, reportError } from 'components/alert';
+import { ConfirmButton } from 'components/button';
+import { Field, FieldRow, TextInput } from 'components/form';
+import { Title, VanillaLink } from 'components/text';
+import { UIError } from 'lib/errors';
+import { Icon } from 'lib/library';
+import { checkValidEmail } from 'lib/validations';
+import { accounts, copyright } from 'settings';
+import css from 'styles/Partials.module.scss';
 
 const footerLinks = [
   { name: 'About Zavid', url: '/about' },

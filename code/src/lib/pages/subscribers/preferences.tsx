@@ -5,13 +5,13 @@ import type {
   ReactInputChangeEvent,
   SubscriptionsMapping,
 } from 'classes';
-import { Checkbox } from 'src/components/form/checkbox';
-import css from 'src/styles/pages/Subscribers.module.scss';
+import { Checkbox } from 'components/form/checkbox';
+import css from 'styles/pages/Subscribers.module.scss';
 
-export default ({
+export default function ({
   preferences = {},
   setPreferences,
-}: SubscriptionPreferenceProps) => {
+}: SubscriptionPreferenceProps) {
   const checkPreference = (e: ReactInputChangeEvent) => {
     const { name, checked } = e.target;
     setPreferences(
@@ -37,7 +37,7 @@ export default ({
       <div className={css['pref-checks-checkboxes']}>{checks}</div>
     </div>
   );
-};
+}
 
 interface SubscriptionPreferenceProps {
   preferences: SubscriptionsMapping;

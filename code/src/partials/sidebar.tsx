@@ -5,12 +5,12 @@ import { zDate } from 'zavid-modules';
 
 import type { PostDAO } from 'classes';
 import { PostStatic } from 'classes';
-import { alert } from 'src/components/alert';
-import CloudImage from 'src/components/image';
-import { Title, VanillaLink } from 'src/components/text';
-import css from 'src/styles/Partials.module.scss';
+import { alert } from 'components/alert';
+import CloudImage from 'components/image';
+import { Title, VanillaLink } from 'components/text';
+import css from 'styles/Partials.module.scss';
 
-export const RightSidebar = () => {
+export function RightSidebar() {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [recentPosts, setRecentPosts] = useState([]);
 
@@ -44,7 +44,7 @@ export const RightSidebar = () => {
       ))}
     </div>
   );
-};
+}
 
 const RecentPost = memo(({ post }: RecentPostProps) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
@@ -66,7 +66,7 @@ const RecentPost = memo(({ post }: RecentPostProps) => {
   );
 });
 
-const RecentPostImage = ({ post }: RecentPostProps) => {
+function RecentPostImage({ post }: RecentPostProps) {
   if (!post.image) return null;
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
@@ -76,7 +76,7 @@ const RecentPostImage = ({ post }: RecentPostProps) => {
       containerClassName={css[`recent-post-image-${theme}`]}
     />
   );
-};
+}
 
 interface RecentPostProps {
   post: PostDAO;

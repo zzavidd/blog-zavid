@@ -4,15 +4,11 @@ import { Modal as IModal } from 'react-bootstrap';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import {
-  ButtonSpacer,
-  CancelButton,
-  DeleteButton,
-} from 'src/components/button';
-import { Paragraph } from 'src/components/text';
-import css from 'src/styles/components/Modal.module.scss';
+import { ButtonSpacer, CancelButton, DeleteButton } from 'components/button';
+import { Paragraph } from 'components/text';
+import css from 'styles/components/Modal.module.scss';
 
-export const Modal = (props: ModalProps) => {
+export function Modal(props: ModalProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const {
     visible,
@@ -23,28 +19,28 @@ export const Modal = (props: ModalProps) => {
     dialogClassName,
   } = props;
 
-  const Header = () => {
+  function Header() {
     if (!modalHeader) return null;
     return <IModal.Header>{modalHeader}</IModal.Header>;
-  };
+  }
 
-  const Body = () => {
+  function Body() {
     return (
       <IModal.Body
         className={css[modalHeader ? 'modal-body' : 'modal-body-only']}>
         {modalBody}
       </IModal.Body>
     );
-  };
+  }
 
-  const Footer = () => {
+  function Footer() {
     if (!modalFooter) return null;
     return (
       <IModal.Footer className={css['modal-footer']}>
         {modalFooter}
       </IModal.Footer>
     );
-  };
+  }
 
   return (
     <IModal
@@ -57,7 +53,7 @@ export const Modal = (props: ModalProps) => {
       <Footer />
     </IModal>
   );
-};
+}
 
 /**
  * A modal for confirmation.
@@ -68,13 +64,13 @@ export const Modal = (props: ModalProps) => {
  * @param props.confirmText - The text for the confirmation button.
  * @param props.closeFunction - The function called on clicking the close button.
  */
-export const ConfirmModal = ({
+export function ConfirmModal({
   message,
   confirmFunction,
   confirmText,
   closeFunction,
   visible,
-}: ConfirmModalProps) => {
+}: ConfirmModalProps) {
   return (
     <Modal
       visible={visible}
@@ -88,7 +84,7 @@ export const ConfirmModal = ({
       }
     />
   );
-};
+}
 
 export interface ModalProps {
   visible: boolean;

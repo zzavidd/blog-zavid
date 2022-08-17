@@ -3,7 +3,7 @@ import { zDate, zString, zNumber } from 'zavid-modules';
 
 import { fetch } from '../..';
 import { PostBuilder, PostStatus, PostType } from '../../../classes';
-import { CREATE_POST_QUERY } from '../../../src/private/api/queries/post.queries';
+import { CREATE_POST_QUERY } from '../../../private/api/queries/post.queries';
 import { COUNT } from '../constants';
 
 export const ingestReveries = () => {

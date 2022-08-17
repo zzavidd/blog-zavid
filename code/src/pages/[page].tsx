@@ -3,14 +3,14 @@ import React from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { PageDAO } from 'classes';
-import { AdminButton } from 'src/components/button';
-import { Spacer, Toolbar } from 'src/components/layout';
-import { Paragraph, Title } from 'src/components/text';
-import type { PathDefinition } from 'src/constants/paths';
-import { isAuthenticated } from 'src/lib/cookies';
-import PageMetadata from 'src/partials/meta';
-import { redevelopmentDate, siteTitle, zavidBirthday } from 'src/settings';
-import css from 'src/styles/pages/Posts.module.scss';
+import { AdminButton } from 'components/button';
+import { Spacer, Toolbar } from 'components/layout';
+import { Paragraph, Title } from 'components/text';
+import type { PathDefinition } from 'constants/paths';
+import { isAuthenticated } from 'lib/cookies';
+import PageMetadata from 'partials/meta';
+import { redevelopmentDate, siteTitle, zavidBirthday } from 'settings';
+import css from 'styles/pages/Posts.module.scss';
 
 import { getPageBySlugSSR } from './api/pages';
 

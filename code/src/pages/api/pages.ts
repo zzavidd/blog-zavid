@@ -1,6 +1,6 @@
 import type { PageDAO } from 'classes';
 import { PageQueryBuilder } from 'classes';
-import { knex } from 'src/private/db';
+import { knex } from 'private/db';
 
 export async function getPageBySlugSSR(slug: string, isEmbed = false) {
   const page = await getPageBySlug(slug, isEmbed);

@@ -23,19 +23,19 @@ import {
   Select,
   ShortTextArea,
   TextInput,
-} from 'src/components/form';
-import type { DateType } from 'src/components/form/datepicker';
-import DatePicker from 'src/components/form/datepicker';
-import { FileSelector, FSAspectRatio } from 'src/components/form/fileselector';
-import { Foldable } from 'src/components/form/foldable';
-import { cloudinaryBaseUrl } from 'src/components/image';
-import type { Handlers } from 'src/lib/hooks';
-import { ScreenWidth } from 'src/lib/library';
-import css from 'src/styles/pages/Posts.module.scss';
+} from 'components/form';
+import type { DateType } from 'components/form/datepicker';
+import DatePicker from 'components/form/datepicker';
+import { FileSelector, FSAspectRatio } from 'components/form/fileselector';
+import { Foldable } from 'components/form/foldable';
+import { cloudinaryBaseUrl } from 'components/image';
+import type { Handlers } from 'lib/hooks';
+import { ScreenWidth } from 'lib/library';
+import css from 'styles/pages/Posts.module.scss';
 
 const MAX_NUM_CONTENT_IMAGES = 6;
 
-const PostForm = (props: PostFormProps) => {
+function PostForm(props: PostFormProps) {
   const { post, domains, handlers, isCreateOperation } = props;
   const {
     handleText,
@@ -228,13 +228,13 @@ const PostForm = (props: PostFormProps) => {
       </FieldRow>
     </Form>
   );
-};
+}
 
-const ContentImages = ({
+function ContentImages({
   post,
   isCreateOperation,
   handleContentImages,
-}: PostContentImageInputs) => {
+}: PostContentImageInputs) {
   const contentImages = [];
   for (let i = 0; i < MAX_NUM_CONTENT_IMAGES; i++) {
     const mapping = post.contentImages as PostContentImageMapping;
@@ -251,8 +251,8 @@ const ContentImages = ({
       />,
     );
   }
-  return <>{contentImages}</>;
-};
+  return <React.Fragment>{contentImages}</React.Fragment>;
+}
 
 export default PostForm;
 
@@ -266,8 +266,8 @@ interface PostFormProps extends GenericFormProps {
   isCreateOperation: boolean;
 }
 
-type PostContentImageInputs = {
+interface PostContentImageInputs {
   post: PostDAO;
   isCreateOperation: boolean;
   handleContentImages: (file: string, i: number) => void;
-};
+}

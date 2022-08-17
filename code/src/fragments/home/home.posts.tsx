@@ -3,11 +3,11 @@ import { zDate } from 'zavid-modules';
 
 import type { PostDAO } from 'classes';
 import { PostStatic } from 'classes';
-import CloudImage, { AspectRatio } from 'src/components/image';
-import { Title, VanillaLink } from 'src/components/text';
-import css from 'src/styles/pages/Home.module.scss';
+import CloudImage, { AspectRatio } from 'components/image';
+import { Title, VanillaLink } from 'components/text';
+import css from 'styles/pages/Home.module.scss';
 
-export default ({ posts }: RandomPostsGridProps) => {
+export default function ({ posts }: RandomPostsGridProps) {
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default ({ posts }: RandomPostsGridProps) => {
       </div>
     </div>
   );
-};
+}
 
 interface RandomPostsGridProps {
   posts: PostDAO[];

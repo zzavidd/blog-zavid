@@ -2,13 +2,13 @@ import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import type { PostDAO } from 'classes';
-import CloudImage, { AspectRatio } from 'src/components/image';
-import { Flexer } from 'src/components/layout';
-import { Paragraph, Title } from 'src/components/text';
-import { Icon, Responsive } from 'src/lib/library';
-import css from 'src/styles/pages/Home.module.scss';
+import CloudImage, { AspectRatio } from 'components/image';
+import { Flexer } from 'components/layout';
+import { Paragraph, Title } from 'components/text';
+import { Icon, Responsive } from 'lib/library';
+import css from 'styles/pages/Home.module.scss';
 
-export default ({ reverie }: LatestReverieProps) => {
+export default function ({ reverie }: LatestReverieProps) {
   return (
     <div className={css['latest-reverie']}>
       <Responsive
@@ -22,18 +22,18 @@ export default ({ reverie }: LatestReverieProps) => {
           </Flexer>
         }
         desktopView={
-          <>
+          <React.Fragment>
             <LatestReverieHeader reverie={reverie} />
             <LatestReverieImage image={reverie.image as string} />
             <LatestReverieParagraph reverie={reverie} />
-          </>
+          </React.Fragment>
         }
       />
     </div>
   );
-};
+}
 
-const LatestReverieHeader = ({ reverie }: LatestReverieProps) => {
+function LatestReverieHeader({ reverie }: LatestReverieProps) {
   const date = zDate.formatDate(reverie.datePublished!, { withWeekday: true });
   return (
     <Flexer>
@@ -45,9 +45,9 @@ const LatestReverieHeader = ({ reverie }: LatestReverieProps) => {
       </div>
     </Flexer>
   );
-};
+}
 
-const LatestReverieParagraph = ({ reverie }: LatestReverieProps) => {
+function LatestReverieParagraph({ reverie }: LatestReverieProps) {
   return (
     <Paragraph
       className={css['latest-reverie-content']}
@@ -58,13 +58,13 @@ const LatestReverieParagraph = ({ reverie }: LatestReverieProps) => {
       {reverie.content}
     </Paragraph>
   );
-};
+}
 
-const LatestReverieImage = ({ image }: LatestReverieImageProps) => {
+function LatestReverieImage({ image }: LatestReverieImageProps) {
   interface ReverieImage {
     aspectRatio: AspectRatio;
   }
-  const ReverieImage = ({ aspectRatio }: ReverieImage) => {
+  function ReverieImage({ aspectRatio }: ReverieImage) {
     return (
       <CloudImage
         src={image}
@@ -73,19 +73,19 @@ const LatestReverieImage = ({ image }: LatestReverieImageProps) => {
         imageClassName={css['latest-reverie-image']}
       />
     );
-  };
+  }
   return (
     <Responsive
       defaultView={<ReverieImage aspectRatio={AspectRatio.SQUARE} />}
       desktopView={<ReverieImage aspectRatio={AspectRatio.WIDE} />}
     />
   );
-};
+}
 
-type LatestReverieProps = {
+interface LatestReverieProps {
   reverie: PostDAO;
-};
+}
 
-type LatestReverieImageProps = {
+interface LatestReverieImageProps {
   image: string;
-};
+}

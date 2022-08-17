@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import type { ReactComponent } from 'classes';
 import { Theme } from 'classes';
-import { InvisibleButton } from 'src/components/button';
-import { Switch } from 'src/components/form/checkbox';
-import CloudImage from 'src/components/image';
-import { Icon, Responsive } from 'src/lib/library';
-import { setTheme } from 'src/lib/reducers';
-import css from 'src/styles/Partials.module.scss';
+import { InvisibleButton } from 'components/button';
+import { Switch } from 'components/form/checkbox';
+import CloudImage from 'components/image';
+import { Icon, Responsive } from 'lib/library';
+import { setTheme } from 'lib/reducers';
+import css from 'styles/Partials.module.scss';
 
-const Header = () => {
+function Header() {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   return (
@@ -25,26 +25,26 @@ const Header = () => {
         <BrandButton />
         <Responsive
           defaultView={
-            <>
+            <React.Fragment>
               <NavigationLinks />
               <ThemeSwitcher />
               <AdminButton />
-            </>
+            </React.Fragment>
           }
           tabletView={
-            <>
+            <React.Fragment>
               <ThemeSwitcher />
               <AdminButton />
               <NavigationLinks />
-            </>
+            </React.Fragment>
           }
         />
       </Container>
     </Navbar>
   );
-};
+}
 
-const BrandButton = () => {
+function BrandButton() {
   return (
     <Navbar.Brand href={'/'}>
       <CloudImage
@@ -54,11 +54,11 @@ const BrandButton = () => {
       />
     </Navbar.Brand>
   );
-};
+}
 
-const NavigationLinks = () => {
+function NavigationLinks() {
   return (
-    <>
+    <React.Fragment>
       <Navbar.Toggle className={css[`nav-toggler`]} />
       <Navbar.Collapse>
         <Nav className={'justify-content-center'}>
@@ -70,11 +70,11 @@ const NavigationLinks = () => {
           <Nav.Link href={'/about'}>About</Nav.Link>
         </Nav>
       </Navbar.Collapse>
-    </>
+    </React.Fragment>
   );
-};
+}
 
-const AdminButton = () => {
+function AdminButton() {
   const navigateToAdmin = () => (location.href = '/admin');
   return (
     <Nav.Item>
@@ -85,17 +85,17 @@ const AdminButton = () => {
       </InvisibleButton>
     </Nav.Item>
   );
-};
+}
 
-const DisabledNavLink = ({ children }: ReactComponent) => {
+function DisabledNavLink({ children }: ReactComponent) {
   return (
     <Nav.Link href={'#'} className={css['nav-link-disabled']} disabled>
       {children}
     </Nav.Link>
   );
-};
+}
 
-const ThemeSwitcher = () => {
+function ThemeSwitcher() {
   const dispatch = useDispatch();
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
@@ -115,6 +115,6 @@ const ThemeSwitcher = () => {
       />
     </Nav.Item>
   );
-};
+}
 
 export default Header;

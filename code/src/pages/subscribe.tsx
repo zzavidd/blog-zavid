@@ -3,16 +3,16 @@ import React, { useState } from 'react';
 
 import type { SubscriberDAO } from 'classes';
 import { SubscriberBuilder } from 'classes';
-import { alert, reportError } from 'src/components/alert';
-import { ConfirmButton } from 'src/components/button';
-import { Field, FieldRow, Label, TextInput } from 'src/components/form';
-import { Title } from 'src/components/text';
-import PathDefinitions from 'src/constants/paths';
-import { UIError } from 'src/lib/errors';
-import hooks from 'src/lib/hooks';
-import { checkValidSubscriber } from 'src/lib/validations';
-import PageMetadata from 'src/partials/meta';
-import css from 'src/styles/pages/Subscribers.module.scss';
+import { alert, reportError } from 'components/alert';
+import { ConfirmButton } from 'components/button';
+import { Field, FieldRow, Label, TextInput } from 'components/form';
+import { Title } from 'components/text';
+import PathDefinitions from 'constants/paths';
+import { UIError } from 'lib/errors';
+import hooks from 'lib/hooks';
+import { checkValidSubscriber } from 'lib/validations';
+import PageMetadata from 'partials/meta';
+import css from 'styles/pages/Subscribers.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscribeForm: NextPage = () => {

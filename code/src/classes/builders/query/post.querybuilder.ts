@@ -10,7 +10,7 @@ const columns = [
   `${TABLE_NAME}.*`,
   'domain.title AS domainTitle',
   'domain.slug AS domainSlug',
-  'domain.type AS domainType'
+  'domain.type AS domainType',
 ];
 
 /** Builds a post query with conditions. */
@@ -18,75 +18,75 @@ export class PostQueryBuilder extends QueryBuilder<PostDAO> {
   constructor(knex: Knex) {
     super(knex.column(columns) as any, TABLE_NAME);
     this.knex = knex;
-    (this.query.leftJoin as Knex.Join<Record<string, unknown>, unknown>)(
+    void (this.query.leftJoin as Knex.Join<Record<string, unknown>, unknown>)(
       `${TABLE_NAME} AS domain`,
       `${TABLE_NAME}.domainId`,
       '=',
-      'domain.id'
+      'domain.id',
     );
   }
 
   public whereType(filters: PostTypeFilters = {}): PostQueryBuilder {
     const { include, exclude } = filters;
     if (include && include.length)
-      this.query.whereIn(`${TABLE_NAME}.type`, include);
+      void this.query.whereIn(`${TABLE_NAME}.type`, include);
     if (exclude && exclude.length)
-      this.query.whereNotIn(`${TABLE_NAME}.type`, exclude);
+      void this.query.whereNotIn(`${TABLE_NAME}.type`, exclude);
     return this;
   }
 
   public whereStatus(filters: PostStatusFilters = {}): PostQueryBuilder {
     const { include, exclude } = filters;
     if (include && include.length)
-      this.query.whereIn(`${TABLE_NAME}.status`, include);
+      void this.query.whereIn(`${TABLE_NAME}.status`, include);
     if (exclude && exclude.length)
-      this.query.whereNotIn(`${TABLE_NAME}.status`, exclude);
+      void this.query.whereNotIn(`${TABLE_NAME}.status`, exclude);
     return this;
   }
 
   public whereSlug(slug: string): PostQueryBuilder {
     if (!slug) return this;
-    this.query.where(`${TABLE_NAME}.slug`, slug);
+    void this.query.where(`${TABLE_NAME}.slug`, slug);
     return this;
   }
 
   public whereDomainType(type: PostType): PostQueryBuilder {
     if (!type) return this;
-    this.query.where('domain.type', type);
+    void this.query.where('domain.type', type);
     return this;
   }
 
   public whereDomainSlug(slug: string): PostQueryBuilder {
     if (!slug) return this;
-    this.query.where(`domain.slug`, slug);
+    void this.query.where(`domain.slug`, slug);
     return this;
   }
 
   public getLatestPost(): PostQueryBuilder {
-    this.query.orderBy('typeId', QueryOrder.DESCENDING).limit(1);
+    void this.query.orderBy('typeId', QueryOrder.DESCENDING).limit(1);
     return this;
   }
 
   public getPreviousPost(typeId: number, type: PostType): PostQueryBuilder {
     const typeIdField = `${TABLE_NAME}.typeId`;
-    this.query.where({
+    void this.query.where({
       [typeIdField]: this.knex(TABLE_NAME)
         .max(typeIdField)
         .where(typeIdField, '<', typeId),
       [`${TABLE_NAME}.type`]: type,
-      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED
+      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED,
     });
     return this;
   }
 
   public getNextPost(typeId: number, type: PostType): PostQueryBuilder {
     const typeIdField = `${TABLE_NAME}.typeId`;
-    this.query.where({
+    void this.query.where({
       [typeIdField]: this.knex(TABLE_NAME)
         .min(typeIdField)
         .where(typeIdField, '>', typeId),
       [`${TABLE_NAME}.type`]: type,
-      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED
+      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED,
     });
     return this;
   }
@@ -98,12 +98,12 @@ export class PostMutationBuilder extends MutationBuilder<PostDAO> {
   }
 }
 
-export type PostTypeFilters = {
+export interface PostTypeFilters {
   include?: PostType[];
   exclude?: PostType[];
-};
+}
 
-export type PostStatusFilters = {
+export interface PostStatusFilters {
   include?: PostStatus[];
   exclude?: PostStatus[];
-};
+}

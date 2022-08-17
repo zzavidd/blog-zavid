@@ -12,8 +12,8 @@ export const ERRORS = {
   },
   NONEXISTENT_ID: (id: number, entity: string) => {
     const error: CustomError = new Error(
-      `There exists no ${entity} with ID '${id}'.`
+      `There exists no ${entity} with ID '${id}'.`,
     );
     return error;
-  }
+  },
 };

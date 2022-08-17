@@ -2,7 +2,8 @@ import faker from 'faker';
 import { zNumber } from 'zavid-modules';
 
 import { isString, randomEnumValue, randomElementFromList } from '../helper';
-import { PostDAO, PostImage, PostType, PostStatus } from '../interfaces';
+import type { PostDAO, PostImage} from '../interfaces';
+import { PostType, PostStatus } from '../interfaces';
 
 const PostDirectory: Record<PostType, string> = {
   [PostType.REVERIE]: 'reveries',

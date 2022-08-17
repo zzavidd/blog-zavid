@@ -4,9 +4,9 @@ import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import { Container } from 'src/components/layout';
-import { VanillaLink } from 'src/components/text';
-import css from 'src/styles/pages/Admin.module.scss';
+import { Container } from 'components/layout';
+import { VanillaLink } from 'components/text';
+import css from 'styles/pages/Admin.module.scss';
 
 const links = [
   { name: 'Posts', url: 'posts' },

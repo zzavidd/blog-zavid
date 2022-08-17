@@ -2,13 +2,13 @@ import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import { zText } from 'zavid-modules';
 
-import type { DiaryDAO } from '../../../../classes';
+import type { DiaryDAO } from '../../../classes';
 import {
   DiaryQueryBuilder,
   DiaryStatic,
   Operation,
   PageQueryBuilder,
-} from '../../../../classes';
+} from '../../../classes';
 import { siteTitle } from '../../../settings';
 import { ERRORS, renderErrorPage } from '../../error';
 import { getKnex, getServer } from '../../singleton';

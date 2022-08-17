@@ -1,8 +1,8 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { zDate } from 'zavid-modules';
 
-import type { DiaryDAO, PostDAO } from '../../../../classes';
-import { PostStatic } from '../../../../classes';
+import type { DiaryDAO, PostDAO } from '../../../classes';
+import { PostStatic } from '../../../classes';
 import { domain } from '../../../settings';
 
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!);

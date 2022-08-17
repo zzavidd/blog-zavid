@@ -2,14 +2,14 @@ import type { GetServerSideProps, NextPage } from 'next';
 import React, { useState } from 'react';
 
 import type { ResultEntityDAO } from 'classes';
-import { Checkbox, SearchBar } from 'src/components/form';
-import { Spacer } from 'src/components/layout';
-import { Title } from 'src/components/text';
-import { ResultsGrid } from 'src/fragments/search/results';
-import { DAOParse } from 'src/lib/parser';
-import PageMetadata from 'src/partials/meta';
-import { siteTitle } from 'src/settings';
-import css from 'src/styles/pages/Search.module.scss';
+import { Checkbox, SearchBar } from 'components/form';
+import { Spacer } from 'components/layout';
+import { Title } from 'components/text';
+import { ResultsGrid } from 'fragments/search/results';
+import { DAOParse } from 'lib/parser';
+import PageMetadata from 'partials/meta';
+import { siteTitle } from 'settings';
+import css from 'styles/pages/Search.module.scss';
 
 import { getSearchResults } from './api/search';
 

@@ -4,7 +4,7 @@ export class URLBuilder {
   /**
    * Append a value to the URL.
    */
-  append(value: string): URLBuilder {
+  public append(value: string): URLBuilder {
     this.url += value;
     return this;
   }
@@ -12,7 +12,7 @@ export class URLBuilder {
   /**
    * Append a new segment to the URL separated by a slash.
    */
-  appendSegment(segment: string): URLBuilder {
+  public appendSegment(segment: string): URLBuilder {
     this.url += `/${segment}`;
     return this;
   }
@@ -20,7 +20,7 @@ export class URLBuilder {
   /**
    * Return the built URL string.
    */
-  build(): string {
+  public build(): string {
     return this.url;
   }
 }

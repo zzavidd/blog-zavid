@@ -1,5 +1,9 @@
 import { useMutation } from '@apollo/client';
 import type { NextPageContext } from 'next';
+import {
+  CREATE_SUBSCRIBER_QUERY,
+  UPDATE_SUBSCRIBER_QUERY,
+} from 'private/api/queries/subscriber.queries';
 import React, { useEffect, useState } from 'react';
 
 import type {
@@ -8,20 +12,16 @@ import type {
   SubscriptionsMapping,
 } from 'classes';
 import { Operation, SubscriberBuilder, SubscriberStatic } from 'classes';
-import { setAlert, reportError, alert, AlertType } from 'src/components/alert';
-import hooks from 'src/lib/hooks';
-import SubscriberForm from 'src/lib/pages/subscribers/form';
-import { DAOParse } from 'src/lib/parser';
-import { checkValidSubscriber } from 'src/lib/validations';
-import {
-  CREATE_SUBSCRIBER_QUERY,
-  UPDATE_SUBSCRIBER_QUERY,
-} from 'src/private/api/queries/subscriber.queries';
+import { setAlert, reportError, alert, AlertType } from 'components/alert';
+import hooks from 'lib/hooks';
+import SubscriberForm from 'lib/pages/subscribers/form';
+import { DAOParse } from 'lib/parser';
+import { checkValidSubscriber } from 'lib/validations';
 
-const SubscriberCrud = ({
+function SubscriberCrud({
   subscriber: serverSubscriber,
   operation,
-}: SubscriberCrud) => {
+}: SubscriberCrud) {
   const [clientSubscriber, setSubscriber] = useState({
     id: 0,
     email: '',
@@ -108,7 +108,7 @@ const SubscriberCrud = ({
       isRequestPending={isRequestPending}
     />
   );
-};
+}
 
 const buildPayload = (
   clientSubscriber: SubscriberDAO,

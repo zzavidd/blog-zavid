@@ -2,7 +2,7 @@ import type { DocumentContext } from 'next/document';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
-import { cloudinaryBaseUrl } from 'src/components/image';
+import { cloudinaryBaseUrl } from 'components/image';
 
 export default class AppDocument extends Document {
   public static async getInitialProps(ctx: DocumentContext) {

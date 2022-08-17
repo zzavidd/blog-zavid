@@ -4,35 +4,35 @@ import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import css from 'src/styles/components/Layout.module.scss';
+import css from 'styles/components/Layout.module.scss';
 
 import { InvisibleButton } from './button';
 
-export const Container = ({ children, className }: Layout) => {
+export function Container({ children, className }: Layout) {
   const classes = classnames(css['container'], className);
   return <div className={classes}>{children}</div>;
-};
+}
 
-export const Flexer = ({ children, className }: Layout) => {
+export function Flexer({ children, className }: Layout) {
   const classes = classnames(css['flexer'], className);
   return <div className={classes}>{children}</div>;
-};
+}
 
-export const Partitioner = ({ children, className }: Layout) => {
+export function Partitioner({ children, className }: Layout) {
   const classes = classnames(css['partitioner'], className);
   return <div className={classes}>{children}</div>;
-};
+}
 
-export const Spacer = ({ children }: Layout) => {
+export function Spacer({ children }: Layout) {
   return <div className={css['spacer']}>{children}</div>;
-};
+}
 
-export const Toolbar = ({
+export function Toolbar({
   className,
   children,
   spaceItems,
   hasBackButton,
-}: Toolbar) => {
+}: Toolbar) {
   if (!children) return null;
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(
@@ -43,9 +43,9 @@ export const Toolbar = ({
   );
 
   return <div className={classes}>{children}</div>;
-};
+}
 
-export const ToolbarToggle = ({ children, toggle }: ToolbarToggle) => {
+export function ToolbarToggle({ children, toggle }: ToolbarToggle) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <InvisibleButton
@@ -54,7 +54,7 @@ export const ToolbarToggle = ({ children, toggle }: ToolbarToggle) => {
       {children}
     </InvisibleButton>
   );
-};
+}
 
 interface Layout {
   className?: string;

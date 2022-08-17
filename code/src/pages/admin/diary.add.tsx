@@ -1,33 +1,33 @@
 import { useMutation } from '@apollo/client';
 import type { NextPageContext } from 'next';
-import React, { useEffect, useState } from 'react';
-import { zDate, zString } from 'zavid-modules';
-
-import { AlertType, reportError, setAlert } from 'src/components/alert';
-import { ConfirmModal } from 'src/components/modal';
-import hooks from 'src/lib/hooks';
-import DiaryEntryForm from 'src/lib/pages/diary/form';
-import { DAOParse, NumberParse } from 'src/lib/parser';
-import { isValidDiaryEntry } from 'src/lib/validations';
 import {
   CREATE_DIARY_QUERY,
   UPDATE_DIARY_QUERY,
-} from 'src/private/api/queries/diary.queries';
-import { domain } from 'src/settings';
+} from 'private/api/queries/diary.queries';
+import React, { useEffect, useState } from 'react';
+import { zDate, zString } from 'zavid-modules';
 
-import type { DiaryDAO } from '../../../classes';
+import { AlertType, reportError, setAlert } from 'components/alert';
+import { ConfirmModal } from 'components/modal';
+import hooks from 'lib/hooks';
+import DiaryEntryForm from 'lib/pages/diary/form';
+import { DAOParse, NumberParse } from 'lib/parser';
+import { isValidDiaryEntry } from 'lib/validations';
+import { domain } from 'settings';
+
+import type { DiaryDAO } from '../../classes';
 import {
   DiaryEntryBuilder,
   DiaryStatic,
   DiaryStatus,
   Operation,
-} from '../../../classes';
+} from '../../classes';
 
-const DiaryCrud = ({
+function DiaryCrud({
   diaryEntry: serverDiaryEntry,
   operation,
   latestEntryNumber = 0,
-}: DiaryInitialProps) => {
+}: DiaryInitialProps) {
   const [clientDiaryEntry, setDiaryEntry] = useState({
     id: 0,
     title: '',
@@ -131,7 +131,7 @@ const DiaryCrud = ({
     : absoluteConfirm;
 
   return (
-    <>
+    <React.Fragment>
       <DiaryEntryForm
         diaryEntry={clientDiaryEntry}
         handlers={hooks(setDiaryEntry, clientDiaryEntry)}
@@ -149,9 +149,9 @@ const DiaryCrud = ({
         confirmText={'Confirm'}
         closeFunction={() => setPublishModalVisibility(false)}
       />
-    </>
+    </React.Fragment>
   );
-};
+}
 
 const buildPayload = (
   clientDiaryEntry: DiaryDAO,
@@ -213,14 +213,14 @@ DiaryCrud.getInitialProps = async ({ query }: NextPageContext) => {
 
 export default DiaryCrud;
 
-type DiaryInitialProps = {
+interface DiaryInitialProps {
   diaryEntry: DiaryDAO;
   latestEntryNumber?: number;
   operation: Operation;
-};
+}
 
-type DiaryRequest = {
+interface DiaryRequest {
   id?: number;
   diaryEntry: DiaryDAO;
   isPublish: boolean;
-};
+}

@@ -1,6 +1,6 @@
 import express from 'express';
 
-import type { DiaryDAO, PostDAO, ResultEntityDAO } from '../../../classes';
+import type { DiaryDAO, PostDAO, ResultEntityDAO } from '../../classes';
 import {
   DiaryQueryBuilder,
   DiaryStatus,
@@ -8,7 +8,7 @@ import {
   PostStatic,
   PostStatus,
   URLBuilder,
-} from '../../../classes';
+} from '../../classes';
 import { siteTitle } from '../../settings';
 import { getKnex, getServer } from '../singleton';
 
@@ -142,12 +142,12 @@ async function compileDiaryEntries(
 
 export default router;
 
-type FilterField = {
+interface FilterField {
   title: string;
   content: string;
   tags: string;
-};
+}
 
-type GetResultEntityOptions = {
+interface GetResultEntityOptions {
   includePosts?: boolean;
-};
+}
