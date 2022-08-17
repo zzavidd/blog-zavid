@@ -16,6 +16,11 @@ const pathDefinitions: Record<Path, PathDefinition> = {
     description: 'Be the first to know when a new post or diary entry drops.',
     url: '/subscribe',
   },
+  SubscriptionPreferences: {
+    title: `Subscription Preferences | ${siteTitle}`,
+    description: '',
+    url: '',
+  },
 };
 
 export default pathDefinitions;
@@ -27,4 +32,4 @@ export interface PathDefinition {
   cardImage?: string;
 }
 
-type Path = '404' | 'Home' | 'Subscribe';
+type Path = '404' | 'Home' | 'Subscribe' | 'SubscriptionPreferences';

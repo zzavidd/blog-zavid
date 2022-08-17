@@ -14,14 +14,27 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>,
 ): Promise<void> {
-  if (req.method === 'GET') {
-    const json = await getAllSubscribers();
-    res.json(json);
-  } else if (req.method === 'POST') {
-    const json = await createSubscriber(req.body);
-    res.json(json);
-  } else {
-    res.send(405);
+  switch (req.method) {
+    case 'GET': {
+      const json = await getAllSubscribers();
+      return res.json(json);
+    }
+    case 'POST': {
+      const json = await createSubscriber(req.body);
+      return res.json(json);
+    }
+    case 'PUT': {
+      const { id, subscriber } = req.body;
+      const json = await updateSubscriber(id, subscriber);
+      return res.json(json);
+    }
+    case 'DELETE': {
+      const json = await deleteSubscriber(req.body.id);
+      return res.json(json);
+    }
+    default: {
+      res.send(405);
+    }
   }
 }
 
@@ -44,6 +57,17 @@ export async function getAllSubscribers(
   }
 }
 
+export async function getSubscriberByTokenSSR(token: string) {
+  return JSON.stringify(await getSubscriberByToken(token));
+}
+
+export async function getSubscriberByToken(token: string) {
+  const [subscriber] = await new SubscriberQueryBuilder(knex)
+    .whereToken(token)
+    .build();
+  return SubscriberStatic.parse(subscriber);
+}
+
 export async function createSubscriber(subscriber: SubscriberDAO) {
   try {
     const [id] = await new SubscriberMutationBuilder(knex)
@@ -54,14 +78,27 @@ export async function createSubscriber(subscriber: SubscriberDAO) {
       })
       .build();
     return { id };
-  } catch (e) {
-    if (typeof e === 'string') {
-      throw new Error(e);
-    } else if (e instanceof Error) {
-      throw e;
-    } else {
-      throw new Error('An error occurred. Please try again later.');
-    }
+  } catch (e: any) {
+    throw new Error(e);
+  }
+}
+
+export async function updateSubscriber(id: number, subscriber: SubscriberDAO) {
+  try {
+    await new SubscriberMutationBuilder(knex)
+      .update(subscriber)
+      .whereId(id)
+      .build();
+  } catch (e: any) {
+    throw new Error(e);
+  }
+}
+
+export async function deleteSubscriber(id: number) {
+  try {
+    await new SubscriberMutationBuilder(knex).delete(id).build();
+  } catch (e: any) {
+    throw new Error(e);
   }
 }
 

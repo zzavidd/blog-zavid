@@ -1,72 +1,92 @@
-import { useMutation } from '@apollo/client';
-import type { NextPageContext } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import React, { useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import type { SubscriberDAO, SubscriptionsMapping } from 'classes';
-import { alert, setAlert, reportError, AlertType } from 'src/components/alert';
+import { SubscriberBuilder } from 'classes';
+import { alert, AlertType, reportError, setAlert } from 'src/components/alert';
 import { ConfirmButton, InvisibleButton } from 'src/components/button';
 import { Container } from 'src/components/layout';
 import { ConfirmModal } from 'src/components/modal';
 import { Title } from 'src/components/text';
+import PathDefinitions from 'src/constants/paths';
 import PreferenceChecks from 'src/lib/pages/subscribers/preferences';
-import { DAOParse } from 'src/lib/parser';
-import {
-  UPDATE_SUBSCRIBER_QUERY,
-  DELETE_SUBSCRIBER_QUERY,
-} from 'src/private/api/queries/subscriber.queries';
+import PageMetadata from 'src/partials/meta';
 import css from 'src/styles/pages/Subscribers.module.scss';
 
-const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
+import { getSubscriberByTokenSSR } from './api/subscribers';
+
+// eslint-disable-next-line react/function-component-definition
+const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
+  subscriber,
+}) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   const [preferences, setPreferences] = useState(
     subscriber.subscriptions as SubscriptionsMapping,
   );
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
-  const [updateSubscriberMutation] = useMutation(UPDATE_SUBSCRIBER_QUERY);
-  const [deleteSubscriberMutation] = useMutation(DELETE_SUBSCRIBER_QUERY);
 
-  const updateSubscriptionPreferences = () => {
-    const { id, firstname, lastname, email } = subscriber;
-    const variables = {
-      id,
-      subscriber: {
-        firstname,
-        lastname,
-        email,
-        subscriptions: preferences,
-      },
-    };
+  async function updateSubscriptionPreferences() {
+    try {
+      const { id, firstname, lastname, email } = subscriber;
+      const payload = {
+        id,
+        subscriber: new SubscriberBuilder()
+          .withEmail(email)
+          .withFirstName(firstname)
+          .withLastName(lastname)
+          .withSubscriptions(preferences)
+          .build(),
+      };
 
-    Promise.resolve()
-      .then(() => updateSubscriberMutation({ variables }))
-      .then(() => {
-        alert.success(
-          `You've successfully updated your subscription preferences.`,
-        );
-      })
-      .catch(reportError);
-  };
+      const res = await fetch('/api/subscribers', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
-  const unsubscribe = () => {
-    const { id } = subscriber;
-    Promise.resolve()
-      .then(() => deleteSubscriberMutation({ variables: { id } }))
-      .then(() => {
-        setAlert({
-          type: AlertType.SUCCESS,
-          message: `You've successfully unsubscribed from my blog.`,
-        });
-        setDeleteModalVisibility(false);
-        location.href = '/';
-      })
-      .catch(reportError);
-  };
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+      alert.success(
+        `You've successfully updated your subscription preferences.`,
+      );
+    } catch (e: any) {
+      reportError(e.message);
+    }
+  }
+
+  async function unsubscribe() {
+    try {
+      const res = await fetch('/api/subscribers', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: subscriber.id }),
+      });
+
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+      setAlert({
+        type: AlertType.SUCCESS,
+        message: `You've successfully unsubscribed from my blog.`,
+      });
+      setDeleteModalVisibility(false);
+      location.href = '/';
+    } catch (e: any) {
+      reportError(e.message);
+    }
+  }
 
   return (
-    <>
+    <React.Fragment>
+      <PageMetadata {...PathDefinitions.SubscriptionPreferences} />
       <Container>
         <Title className={css['pref-title']}>Subscription Preferences</Title>
         <div className={css['pref-email']}>{subscriber.email}</div>
@@ -95,15 +115,20 @@ const SubscriptionPreferences = ({ subscriber }: SubscriptionsProps) => {
         confirmText={'Yes, I want to unsubscribe'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </>
+    </React.Fragment>
   );
 };
 
-SubscriptionPreferences.getInitialProps = async ({
-  query,
-}: NextPageContext) => {
-  const subscriber = DAOParse<SubscriberDAO>(query.subscriber);
-  return { subscriber };
+export const getServerSideProps: GetServerSideProps<
+  SubscriptionsProps
+> = async ({ query }) => {
+  return {
+    props: {
+      subscriber: JSON.parse(
+        await getSubscriberByTokenSSR(query.token as string),
+      ),
+    },
+  };
 };
 
 export default SubscriptionPreferences;

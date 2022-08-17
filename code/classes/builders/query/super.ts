@@ -17,13 +17,13 @@ export class QueryBuilder<T> {
     this.knex = knex;
   }
 
-  public async whereId(id: number): Promise<QueryBuilder<T>> {
+  public whereId(id: number): QueryBuilder<T> {
     if (!id) throw new Error(`No specified ID.`);
     void this.query.where(`${this.table}.id`, id);
     return this;
   }
 
-  public async exceptId(id: number): Promise<QueryBuilder<T>> {
+  public exceptId(id: number): QueryBuilder<T> {
     if (!id) return this;
     void this.query.whereNot(`${this.table}.id`, id);
     return this;
