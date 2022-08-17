@@ -2,7 +2,7 @@ import faker from 'faker';
 import { zNumber } from 'zavid-modules';
 
 import { isString, randomEnumValue, randomElementFromList } from '../helper';
-import type { PostDAO, PostImage} from '../interfaces';
+import type { PostDAO, PostImage } from '../interfaces';
 import { PostType, PostStatus } from '../interfaces';
 
 const PostDirectory: Record<PostType, string> = {
@@ -19,12 +19,12 @@ enum ContentType {
 }
 
 export class PostStatic {
-  static TYPE = PostType;
-  static TYPES = Object.values(PostType);
-  static STATUS = PostStatus;
-  static STATUSES = Object.values(PostStatus);
+  public static TYPE = PostType;
+  public static TYPES = Object.values(PostType);
+  public static STATUS = PostStatus;
+  public static STATUSES = Object.values(PostStatus);
 
-  static randomType(options: RandomTypeOptions = {}): PostType {
+  public static randomType(options: RandomTypeOptions = {}): PostType {
     const { allowPageTypes = true } = options;
     const postTypes = this.TYPES.filter((type) => {
       if (!allowPageTypes && type === PostType.PAGE) return false;
@@ -33,7 +33,7 @@ export class PostStatic {
     return randomElementFromList(postTypes);
   }
 
-  static randomContent(
+  public static randomContent(
     contentType: ContentType = ContentType.PROSE,
     threshold = 3,
     limit = 6,
@@ -50,7 +50,7 @@ export class PostStatic {
     return content;
   }
 
-  static getContentType(type: PostType): ContentType {
+  public static getContentType(type: PostType): ContentType {
     const isProse =
       !type || type === PostType.REVERIE || type === PostType.PAGE;
     return isProse ? ContentType.PROSE : ContentType.POETRY;
@@ -59,7 +59,7 @@ export class PostStatic {
   /**
    * Ensure a post object is able to be operated on.
    */
-  static parse(post: PostDAO): PostDAO {
+  public static parse(post: PostDAO): PostDAO {
     const images = post.contentImages;
 
     if (!images || !images.length) {
@@ -82,7 +82,7 @@ export class PostStatic {
    * @param post The post object containing images.
    * @param options - Options for image collation.
    */
-  static collateImages(
+  public static collateImages(
     post: PostDAO,
     options: CollateImageOptions = {},
   ): (PostImage | string)[] {
@@ -102,7 +102,9 @@ export class PostStatic {
     return images as PostImage[] | string[];
   }
 
-  static isPostImageToUpload(image: PostImage | string): image is PostImage {
+  public static isPostImageToUpload(
+    image: PostImage | string,
+  ): image is PostImage {
     if (!image || image === null) return false;
     return !!(image as PostImage).source;
   }
@@ -111,7 +113,7 @@ export class PostStatic {
    * Retrieves the post directory name from its type.
    * @param type The post type.
    */
-  static getDirectory(type: PostType): string {
+  public static getDirectory(type: PostType): string {
     return PostDirectory[type];
   }
 
@@ -120,7 +122,7 @@ export class PostStatic {
    * @param {PostDAO} input - The post or its type value.
    * @returns {boolean} True if post is PAGE.
    */
-  static isPage(input: PostDAO): boolean {
+  public static isPage(input: PostDAO): boolean {
     return input?.type === PostType.PAGE;
   }
 
@@ -128,7 +130,7 @@ export class PostStatic {
    * Eagerly checks if post is of type reverie.
    * @param input - The post or its type value.
    */
-  static isReverie(input: PostDAO): boolean {
+  public static isReverie(input: PostDAO): boolean {
     return input?.type === PostType.REVERIE;
   }
 
@@ -136,33 +138,33 @@ export class PostStatic {
    * Eagerly checks if post is of type reverie.
    * @param input - The post or its type value.
    */
-  static isEpistle(input: PostDAO): boolean {
+  public static isEpistle(input: PostDAO): boolean {
     return input?.type === PostType.EPISTLE;
   }
 
-  static randomStatus(): PostStatus {
+  public static randomStatus(): PostStatus {
     return randomEnumValue(PostStatus);
   }
 
   /**
    * Checks if a post has the DRAFT status.
    */
-  static isDraft(input: PostDAO): boolean {
+  public static isDraft(input: PostDAO): boolean {
     return input?.status === PostStatus.DRAFT;
   }
 
   /**
    * Checks if a post has the PROTECTED status.
    */
-  static isProtected(input: PostDAO): boolean {
+  public static isProtected(input: PostDAO): boolean {
     return input?.status === PostStatus.PROTECTED;
   }
 
-  static isPrivate(input: PostDAO): boolean {
+  public static isPrivate(input: PostDAO): boolean {
     return input?.status === PostStatus.PRIVATE;
   }
 
-  static isPublish(input: PostDAO): boolean {
+  public static isPublish(input: PostDAO): boolean {
     return input?.status === PostStatus.PUBLISHED;
   }
 
@@ -171,7 +173,7 @@ export class PostStatic {
    * numbers.
    * @param post The post to retrieve its title.
    */
-  static getPostTitle(post: PostDAO): string {
+  public static getPostTitle(post: PostDAO): string {
     let title;
 
     if (this.isEpistle(post)) {

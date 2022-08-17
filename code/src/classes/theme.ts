@@ -20,39 +20,39 @@ export enum FilterShapeOption {
 }
 
 export class Theme {
-  static LIGHT = ThemeOption.LIGHT;
-  static DARK = ThemeOption.DARK;
+  public static LIGHT = ThemeOption.LIGHT;
+  public static DARK = ThemeOption.DARK;
 
-  static switchTheme(theme: ThemeOption) {
+  public static switchTheme(theme: ThemeOption) {
     const oppositeTheme = this.isLight(theme) ? Theme.DARK : ThemeOption.LIGHT;
     return oppositeTheme;
   }
 
-  static isLight(theme: ThemeOption) {
+  public static isLight(theme: ThemeOption) {
     return theme === Theme.LIGHT;
   }
 
-  static isValid(input: string) {
+  public static isValid(input: string) {
     return input !== ThemeOption.LIGHT && input !== ThemeOption.DARK;
   }
 }
 
 export class FilterTheme {
-  static OPTIONS = Object.values(FilterThemeOption);
+  public static OPTIONS = Object.values(FilterThemeOption);
 }
 
 export class FilterShape {
-  static OPTIONS = Object.values(FilterShapeOption);
+  public static OPTIONS = Object.values(FilterShapeOption);
 
-  static isSquare(shape: FilterShapeOption) {
+  public static isSquare(shape: FilterShapeOption) {
     return shape === FilterShapeOption.SQUARE;
   }
 
-  static isTall(shape: FilterShapeOption) {
+  public static isTall(shape: FilterShapeOption) {
     return shape === FilterShapeOption.TALL;
   }
 
-  static isWide(shape: FilterShapeOption) {
+  public static isWide(shape: FilterShapeOption) {
     return shape === FilterShapeOption.WIDE;
   }
 }

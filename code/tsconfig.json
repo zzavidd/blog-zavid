@@ -20,10 +20,10 @@
     "sourceMap": true,
     "strict": true,
     "target": "es6",
+    "tsBuildInfoFile": ".tsbuildinfo",
     "typeRoots": [
       "types"
     ],
-    "tsBuildInfoFile": ".tsbuildinfo"
   },
   "include": [
     "next-env.d.ts",
@@ -33,8 +33,6 @@
   "exclude": [
     "node_modules",
     "dist/",
-    "src/pages/admin/**",
-    "src/private/**/**",
     "test/**/*",
     "types/**/*"
   ]
