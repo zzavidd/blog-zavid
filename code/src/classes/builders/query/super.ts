@@ -1,8 +1,9 @@
 import type { Knex } from 'knex';
 
-import { QueryOrder } from '../../index';
+import type { GenericDAO } from 'classes';
+import { QueryOrder } from 'classes';
 
-export class QueryBuilder<T> {
+export class QueryBuilder<T extends GenericDAO> {
   protected query: Knex | Knex.QueryBuilder;
   protected table: string;
   protected knex: Knex;
@@ -68,7 +69,7 @@ export class QueryBuilder<T> {
     return this;
   }
 
-  public async build() {
+  public async build(): Promise<T[]> {
     return this.query;
   }
 }
@@ -106,7 +107,6 @@ export class MutationBuilder<T> extends QueryBuilder<T> {
     return this;
   }
 }
-
 export interface QuerySort {
   field?: string;
   order?: string;
