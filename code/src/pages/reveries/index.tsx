@@ -12,11 +12,11 @@ import CloudImage from 'components/image';
 import { Partitioner, Spacer, Toolbar } from 'components/layout';
 import { Divider, Paragraph, Title } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
+import { siteTitle } from 'constants/settings';
+import PageMetadata from 'fragments/partials/meta';
+import { RightSidebar } from 'fragments/partials/sidebar';
 import { isAuthenticated } from 'lib/cookies';
 import { LazyLoader, Responsive } from 'lib/library';
-import PageMetadata from 'partials/meta';
-import { RightSidebar } from 'partials/sidebar';
-import { siteTitle } from 'settings';
 import css from 'styles/pages/Reveries.module.scss';
 
 import { getPageBySlug } from '../api/pages';

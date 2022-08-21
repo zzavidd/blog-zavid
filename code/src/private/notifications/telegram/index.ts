@@ -3,7 +3,7 @@ import { zDate } from 'zavid-modules';
 
 import type { DiaryDAO, PostDAO } from '../../../classes';
 import { PostStatic } from '../../../classes';
-import { domain } from '../../../settings';
+import { domain } from '../../../constants/settings';
 
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!);
 const dev = process.env.NODE_ENV !== 'production';

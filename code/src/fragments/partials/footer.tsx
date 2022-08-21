@@ -6,10 +6,10 @@ import { alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { Field, FieldRow, TextInput } from 'components/form';
 import { Title, VanillaLink } from 'components/text';
+import { accounts, copyright } from 'constants/settings';
 import { UIError } from 'lib/errors';
 import { Icon } from 'lib/library';
 import { checkValidEmail } from 'lib/validations';
-import { accounts, copyright } from 'settings';
 import css from 'styles/Partials.module.scss';
 
 const footerLinks = [

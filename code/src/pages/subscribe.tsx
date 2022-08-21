@@ -8,10 +8,10 @@ import { ConfirmButton } from 'components/button';
 import { Field, FieldRow, Label, TextInput } from 'components/form';
 import { Title } from 'components/text';
 import PathDefinitions from 'constants/paths';
+import PageMetadata from 'fragments/partials/meta';
 import { UIError } from 'lib/errors';
 import hooks from 'lib/hooks';
 import { checkValidSubscriber } from 'lib/validations';
-import PageMetadata from 'partials/meta';
 import css from 'styles/pages/Subscribers.module.scss';
 
 // eslint-disable-next-line react/function-component-definition

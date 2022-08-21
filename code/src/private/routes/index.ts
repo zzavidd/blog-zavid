@@ -7,7 +7,7 @@ import {
   PostType,
   QueryOrder,
 } from '../../classes';
-import { siteTitle } from '../../settings';
+import { siteTitle } from '../../constants/settings';
 import * as SubscriberService from '../api/service/subscriber.service';
 import authRoutes from '../auth';
 import * as TelegramAPI from '../notifications/telegram';

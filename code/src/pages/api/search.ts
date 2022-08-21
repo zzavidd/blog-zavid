@@ -7,8 +7,8 @@ import {
   PostStatus,
   URLBuilder,
 } from 'classes';
-import { knex } from 'private/db';
-import { siteTitle } from 'settings';
+import { knex } from 'constants/knex';
+import { siteTitle } from 'constants/settings';
 
 export async function getSearchResults(searchTerm: string, onlyDiary: boolean) {
   const results = await getResultEntities(searchTerm, {

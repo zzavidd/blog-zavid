@@ -11,8 +11,8 @@ import { Container } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import { Title } from 'components/text';
 import PathDefinitions from 'constants/paths';
+import PageMetadata from 'fragments/partials/meta';
 import PreferenceChecks from 'lib/pages/subscribers/preferences';
-import PageMetadata from 'partials/meta';
 import css from 'styles/pages/Subscribers.module.scss';
 
 import { getSubscriberByTokenSSR } from './api/subscribers';

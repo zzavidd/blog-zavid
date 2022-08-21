@@ -1,4 +1,4 @@
-import { siteTitle } from 'settings';
+import { siteTitle } from 'constants/settings';
 
 const pathDefinitions: Record<Path, PathDefinition> = {
   404: {

@@ -6,7 +6,7 @@ export default function AdminGateway({
 }: React.HTMLAttributes<HTMLDivElement>) {
   const { status } = useSession({
     required: true,
-    onUnauthenticated() {
+    onUnauthenticated: () => {
       signIn('google');
     },
   });

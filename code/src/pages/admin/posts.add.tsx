@@ -22,11 +22,11 @@ import {
   URLBuilder,
 } from 'classes';
 import { alert, AlertType, reportError, setAlert } from 'components/alert';
+import { domain } from 'constants/settings';
 import hooks from 'lib/hooks';
 import PostForm from 'lib/pages/posts/form';
 import { DAOParse } from 'lib/parser';
 import { isValidPost } from 'lib/validations';
-import { domain } from 'settings';
 
 interface PostInitialProps {
   post: PostDAO;

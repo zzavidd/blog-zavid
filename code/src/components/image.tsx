@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { Theme } from 'classes';
 
-export { cloudinaryBaseUrl } from 'settings';
+export { cloudinaryBaseUrl } from 'constants/settings';
 
 interface CloudImageProps {
   src: string;

@@ -9,7 +9,7 @@ import {
   PostStatus,
   URLBuilder,
 } from '../../classes';
-import { siteTitle } from '../../settings';
+import { siteTitle } from '../../constants/settings';
 import { getKnex, getServer } from '../singleton';
 
 const router = express.Router();

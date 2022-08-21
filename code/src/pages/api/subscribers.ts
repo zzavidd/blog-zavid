@@ -7,7 +7,7 @@ import {
   SubscriberQueryBuilder,
   SubscriberStatic,
 } from 'classes';
-import { knex } from 'private/db';
+import { knex } from 'constants/knex';
 import { debug } from 'private/error';
 
 export default async function handler(

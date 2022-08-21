@@ -16,10 +16,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { Theme } from 'classes';
 import { alert, checkForSetAlerts } from 'components/alert';
+import Footer from 'fragments/partials/footer';
+import Header from 'fragments/partials/header';
 import { CookiePrompt } from 'lib/cookies';
 import configureStore, { setTheme, setUser, clearUser } from 'lib/reducers';
-import Footer from 'partials/footer';
-import Header from 'partials/header';
 import 'styles/App.scss';
 
 library.add(fab, far, fas);

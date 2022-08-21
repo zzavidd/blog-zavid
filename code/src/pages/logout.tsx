@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { signOut } from 'next-auth/react';
 
-import { domain } from 'settings';
+import { domain } from 'constants/settings';
 
 // eslint-disable-next-line react/function-component-definition
 const Logout: NextPage = () => {

@@ -4,7 +4,7 @@ import { zDate } from 'zavid-modules';
 import { Signature } from 'components/image';
 import { HomeRow, HomeField } from 'components/pages/home';
 import { Paragraph, Title } from 'components/text';
-import { redevelopmentDate } from 'settings';
+import { redevelopmentDate } from 'constants/settings';
 import css from 'styles/pages/Home.module.scss';
 
 export default function ({ content, emailSubCount }: IntroductionProps) {

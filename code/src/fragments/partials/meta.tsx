@@ -3,7 +3,7 @@ import React from 'react';
 
 import { cloudinaryBaseUrl } from 'components/image';
 import { CARD_IMAGE } from 'constants/defaults';
-import { domain } from 'settings';
+import { domain } from 'constants/settings';
 
 export default function PageMetadata({
   title,

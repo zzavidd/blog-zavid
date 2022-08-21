@@ -9,11 +9,11 @@ import { zDate, zString } from 'zavid-modules';
 
 import { AlertType, reportError, setAlert } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
+import { domain } from 'constants/settings';
 import hooks from 'lib/hooks';
 import DiaryEntryForm from 'lib/pages/diary/form';
 import { DAOParse, NumberParse } from 'lib/parser';
 import { isValidDiaryEntry } from 'lib/validations';
-import { domain } from 'settings';
 
 import type { DiaryDAO } from '../../classes';
 import {

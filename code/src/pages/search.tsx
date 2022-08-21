@@ -5,10 +5,10 @@ import type { ResultEntityDAO } from 'classes';
 import { Checkbox, SearchBar } from 'components/form';
 import { Spacer } from 'components/layout';
 import { Title } from 'components/text';
+import { siteTitle } from 'constants/settings';
+import PageMetadata from 'fragments/partials/meta';
 import { ResultsGrid } from 'fragments/search/results';
 import { DAOParse } from 'lib/parser';
-import PageMetadata from 'partials/meta';
-import { siteTitle } from 'settings';
 import css from 'styles/pages/Search.module.scss';
 
 import { getSearchResults } from './api/search';

@@ -7,9 +7,13 @@ import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { Paragraph, Title } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
+import {
+  redevelopmentDate,
+  siteTitle,
+  zavidBirthday,
+} from 'constants/settings';
+import PageMetadata from 'fragments/partials/meta';
 import { isAuthenticated } from 'lib/cookies';
-import PageMetadata from 'partials/meta';
-import { redevelopmentDate, siteTitle, zavidBirthday } from 'settings';
 import css from 'styles/pages/Posts.module.scss';
 
 import { getPageBySlugSSR } from './api/pages';

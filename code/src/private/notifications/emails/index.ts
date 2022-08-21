@@ -15,13 +15,13 @@ import type {
   SubscriberDAO,
 } from '../../../classes';
 import { SubscriberQueryBuilder, SubscriberStatic } from '../../../classes';
-import { debug } from '../../../private/error';
 import {
   accounts,
   cloudinaryBaseUrl,
   copyright,
   domain,
-} from '../../../settings';
+} from '../../../constants/settings';
+import { debug } from '../../../private/error';
 import { getKnex } from '../../singleton';
 
 const knex = getKnex();

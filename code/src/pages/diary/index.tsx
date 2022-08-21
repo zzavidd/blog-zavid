@@ -12,11 +12,11 @@ import { Checkbox, SearchBar } from 'components/form';
 import { Spacer, Toolbar } from 'components/layout';
 import { Paragraph, Title, VanillaLink } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
+import { siteTitle } from 'constants/settings';
+import PageMetadata from 'fragments/partials/meta';
 import { isAuthenticated } from 'lib/cookies';
 import { Icon } from 'lib/library';
 import TagBlock from 'lib/pages/diary/tags';
-import PageMetadata from 'partials/meta';
-import { siteTitle } from 'settings';
 import css from 'styles/pages/Diary.module.scss';
 
 import { getAllDiaryEntriesSSR } from '../api/diary';
