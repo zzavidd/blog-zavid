@@ -14,7 +14,7 @@ import { Spacer, Toolbar } from 'components/layout';
 import { Divider, Paragraph, Title, VanillaLink } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
-import PageMetadata from 'fragments/partials/meta';
+import PageMetadata from 'fragments/PageMetadata';
 import { isAuthenticated } from 'lib/cookies';
 import { LazyLoader, ScreenWidth } from 'lib/library';
 import css from 'styles/pages/Epistles.module.scss';

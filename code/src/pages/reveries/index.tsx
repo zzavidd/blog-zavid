@@ -13,7 +13,7 @@ import { Partitioner, Spacer, Toolbar } from 'components/layout';
 import { Divider, Paragraph, Title } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
-import PageMetadata from 'fragments/partials/meta';
+import PageMetadata from 'fragments/PageMetadata';
 import { RightSidebar } from 'fragments/partials/sidebar';
 import { isAuthenticated } from 'lib/cookies';
 import { LazyLoader, Responsive } from 'lib/library';

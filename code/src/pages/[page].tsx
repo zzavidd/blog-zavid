@@ -12,7 +12,7 @@ import {
   siteTitle,
   zavidBirthday,
 } from 'constants/settings';
-import PageMetadata from 'fragments/partials/meta';
+import PageMetadata from 'fragments/PageMetadata';
 import { isAuthenticated } from 'lib/cookies';
 import css from 'styles/pages/Posts.module.scss';
 

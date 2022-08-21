@@ -13,7 +13,7 @@ import { Divider, Paragraph, Title } from 'components/text';
 import Timeline, { TimelineType } from 'components/timeline';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
-import PageMetadata from 'fragments/partials/meta';
+import PageMetadata from 'fragments/PageMetadata';
 import { isAuthenticated } from 'lib/cookies';
 import { Icon } from 'lib/library';
 import TagBlock from 'lib/pages/diary/tags';
