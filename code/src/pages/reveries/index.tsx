@@ -14,7 +14,7 @@ import { Divider, Paragraph, Title } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
 import PageMetadata from 'fragments/PageMetadata';
-import { RightSidebar } from 'fragments/partials/sidebar';
+import { RightSidebar } from 'fragments/partials/RightSidebar';
 import { isAuthenticated } from 'lib/cookies';
 import { LazyLoader, Responsive } from 'lib/library';
 import css from 'styles/pages/Reveries.module.scss';
