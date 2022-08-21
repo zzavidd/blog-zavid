@@ -8,7 +8,7 @@ import { ConfirmButton } from 'components/button';
 import { Field, FieldRow, Label, TextInput } from 'components/form';
 import { Title } from 'components/text';
 import PathDefinitions from 'constants/paths';
-import PageMetadata from 'fragments/partials/meta';
+import PageMetadata from 'fragments/PageMetadata';
 import { UIError } from 'lib/errors';
 import hooks from 'lib/hooks';
 import { checkValidSubscriber } from 'lib/validations';

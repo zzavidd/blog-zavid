@@ -3,7 +3,7 @@ import React from 'react';
 
 import { PostStatus, PostType } from 'classes';
 import type { PathDefinition } from 'constants/paths';
-import PageMetadata from 'fragments/partials/meta';
+import PageMetadata from 'fragments/PageMetadata';
 import type { PostTemplatePageProps } from 'fragments/posts/template';
 import PostTemplatePage from 'fragments/posts/template';
 

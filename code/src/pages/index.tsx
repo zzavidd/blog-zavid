@@ -9,7 +9,7 @@ import Introduction from 'fragments/home/home.intro';
 import RandomPostsGrid from 'fragments/home/home.posts';
 import LatestReverie from 'fragments/home/home.reverie';
 import Search from 'fragments/home/home.search';
-import PageMetadata from 'fragments/partials/meta';
+import PageMetadata from 'fragments/PageMetadata';
 import css from 'styles/pages/Home.module.scss';
 
 import { getHomeProps } from './api/home';

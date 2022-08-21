@@ -11,7 +11,7 @@ import { Container } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import { Title } from 'components/text';
 import PathDefinitions from 'constants/paths';
-import PageMetadata from 'fragments/partials/meta';
+import PageMetadata from 'fragments/PageMetadata';
 import PreferenceChecks from 'lib/pages/subscribers/preferences';
 import css from 'styles/pages/Subscribers.module.scss';
 
