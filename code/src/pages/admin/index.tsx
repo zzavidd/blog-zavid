@@ -1,11 +1,11 @@
 import classnames from 'classnames';
 import type { NextPage } from 'next';
-import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { Container } from 'components/layout';
 import { VanillaLink } from 'components/text';
+import AdminGateway from 'fragments/AdminGateway';
 import css from 'styles/pages/Admin.module.scss';
 
 const links = [
@@ -19,22 +19,24 @@ const links = [
 const Admin: NextPage = () => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
-    <Container>
-      <div className={css['admin-page']}>
-        {links.map(({ name, url }, key) => {
-          const classes = classnames(
-            css['admin-block'],
-            css[`admin-block-${theme}`],
-            css[`admin-block-${url}`],
-          );
-          return (
-            <VanillaLink href={`/admin/${url}`} key={key} className={classes}>
-              {name}
-            </VanillaLink>
-          );
-        })}
-      </div>
-    </Container>
+    <AdminGateway>
+      <Container>
+        <div className={css['admin-page']}>
+          {links.map(({ name, url }, key) => {
+            const classes = classnames(
+              css['admin-block'],
+              css[`admin-block-${theme}`],
+              css[`admin-block-${url}`],
+            );
+            return (
+              <VanillaLink href={`/admin/${url}`} key={key} className={classes}>
+                {name}
+              </VanillaLink>
+            );
+          })}
+        </div>
+      </Container>
+    </AdminGateway>
   );
 };
 

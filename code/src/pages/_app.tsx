@@ -5,6 +5,7 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/scss/bootstrap.scss';
 import Cookies from 'js-cookie';
+import { SessionProvider } from 'next-auth/react';
 import type { AppContext, AppProps } from 'next/app';
 import App from 'next/app';
 import React, { useEffect, useState } from 'react';
@@ -37,7 +38,9 @@ export default function (props: AppProps) {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ApolloProvider client={client}>
-          <ZAVIDApp {...props} />
+          <SessionProvider session={props.pageProps.session}>
+            <ZAVIDApp {...props} />
+          </SessionProvider>
         </ApolloProvider>
       </PersistGate>
     </Provider>

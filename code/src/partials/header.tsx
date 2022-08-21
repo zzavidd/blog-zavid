@@ -12,7 +12,7 @@ import { Icon, Responsive } from 'lib/library';
 import { setTheme } from 'lib/reducers';
 import css from 'styles/Partials.module.scss';
 
-function Header() {
+export default function Header() {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   return (
@@ -116,5 +116,3 @@ function ThemeSwitcher() {
     </Nav.Item>
   );
 }
-
-export default Header;
