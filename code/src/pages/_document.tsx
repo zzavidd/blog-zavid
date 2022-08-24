@@ -2,8 +2,6 @@ import type { DocumentContext } from 'next/document';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
-import { cloudinaryBaseUrl } from 'components/image';
-
 export default class AppDocument extends Document {
   public static async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
@@ -30,10 +28,7 @@ export default class AppDocument extends Document {
             content={'qgOq7Q6kwa0UjcKwV6p7Z6GkM8W45hn655lE_op91Qw'}
           />
           <meta name={'twitter:card'} content={'summary_large_image'} />
-          <link
-            rel={'icon'}
-            href={`${cloudinaryBaseUrl}/static/logos/favicon.png`}
-          />
+          <link rel={'icon'} href={'/favicon.png'} />
         </Head>
         <body className={'body'}>
           <Main />
