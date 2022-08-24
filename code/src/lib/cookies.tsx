@@ -38,8 +38,3 @@ export function CookiePrompt() {
 export const checkCookiePolicyAccepted = (): boolean => {
   return Cookies.get('cookiesAccepted') === 'true';
 };
-
-export const isAuthenticated = (): boolean => {
-  const user = useSelector(({ user }: RootStateOrAny) => user);
-  return user.isAuthenticated;
-};

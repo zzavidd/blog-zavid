@@ -13,8 +13,8 @@ import { Spacer, Toolbar } from 'components/layout';
 import { Paragraph, Title, VanillaLink } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
+import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
-import { isAuthenticated } from 'lib/cookies';
 import { Icon } from 'lib/library';
 import TagBlock from 'lib/pages/diary/tags';
 import css from 'styles/pages/Diary.module.scss';
@@ -49,13 +49,13 @@ const DiaryIndex: NextPage<DiaryIndexProps> = ({
           <DiarySearch url={url} onlyFavs={onlyFavourites} />
           <DiaryGrid diaryEntries={diaryEntries} />
         </div>
-        <Toolbar spaceItems={true}>
-          {isAuthenticated() && (
+        <AdminLock>
+          <Toolbar spaceItems={true}>
             <AdminButton onClick={navigateToDiaryAdmin}>
               Diary Admin
             </AdminButton>
-          )}
-        </Toolbar>
+          </Toolbar>
+        </AdminLock>
       </Spacer>
     </React.Fragment>
   );

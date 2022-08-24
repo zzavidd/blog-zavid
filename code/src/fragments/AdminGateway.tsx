@@ -1,13 +1,11 @@
 import { signIn, useSession } from 'next-auth/react';
 import React from 'react';
 
-export default function AdminGateway({
-  children,
-}: React.HTMLAttributes<HTMLDivElement>) {
+export default function AdminGateway({ children }: Partial<React.ReactPortal>) {
   const { status } = useSession({
     required: true,
-    onUnauthenticated: () => {
-      signIn('google');
+    onUnauthenticated: async () => {
+      await signIn('google');
     },
   });
 

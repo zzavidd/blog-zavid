@@ -13,9 +13,9 @@ import { Partitioner, Spacer, Toolbar } from 'components/layout';
 import { Divider, Paragraph, Title } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
+import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
 import { RightSidebar } from 'fragments/partials/RightSidebar';
-import { isAuthenticated } from 'lib/cookies';
 import { LazyLoader, Responsive } from 'lib/library';
 import css from 'styles/pages/Reveries.module.scss';
 
@@ -47,11 +47,11 @@ const ReveriesIndex: NextPage<ReveriesIndexProps> = ({
             }
           />
         </Partitioner>
-        <Toolbar spaceItems={true}>
-          {isAuthenticated() && (
+        <AdminLock>
+          <Toolbar spaceItems={true}>
             <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
-          )}
-        </Toolbar>
+          </Toolbar>
+        </AdminLock>
       </Spacer>
     </React.Fragment>
   );
