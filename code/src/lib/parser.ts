@@ -1,7 +1,3 @@
-export const NumberParse = (value: unknown) => {
-  return parseInt(value as string);
-};
-
 export const DAOParse = <T>(value: unknown): T | undefined => {
   if (!value) return;
 

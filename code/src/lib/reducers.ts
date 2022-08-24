@@ -22,15 +22,6 @@ export const updatePostFilterSettings = (
   payload: settings,
 });
 
-export const setUser = (user: UserState): AnyAction => ({
-  type: 'SET_USER',
-  payload: user,
-});
-
-export const clearUser = (): AnyAction => ({
-  type: 'CLEAR_USER',
-});
-
 export const saveText = (text: string): AnyAction => ({
   type: 'SAVE_TEXT',
   payload: text,

@@ -35,6 +35,6 @@ export function CookiePrompt() {
   );
 }
 
-export const checkCookiePolicyAccepted = (): boolean => {
+const checkCookiePolicyAccepted = (): boolean => {
   return Cookies.get('cookiesAccepted') === 'true';
 };
