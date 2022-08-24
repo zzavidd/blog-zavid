@@ -12,8 +12,8 @@ import {
   siteTitle,
   zavidBirthday,
 } from 'constants/settings';
+import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
-import { isAuthenticated } from 'lib/cookies';
 import css from 'styles/pages/Posts.module.scss';
 
 import { getPageBySlugSSR } from './api/pages';
@@ -41,13 +41,13 @@ const PageSingleProps: NextPage<PageSingleProps> = ({
             {page.content}
           </Paragraph>
         </div>
-        <Toolbar spaceItems={true} hasBackButton={true}>
-          {isAuthenticated() && (
+        <AdminLock>
+          <Toolbar spaceItems={true} hasBackButton={true}>
             <AdminButton onClick={() => navigateToEdit(page.id!)}>
               Edit Page
             </AdminButton>
-          )}
-        </Toolbar>
+          </Toolbar>
+        </AdminLock>
       </Spacer>
     </React.Fragment>
   );

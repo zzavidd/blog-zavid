@@ -15,8 +15,8 @@ import { Divider, Paragraph, Title } from 'components/text';
 import Timeline, { TimelineType } from 'components/timeline';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
+import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
-import { isAuthenticated } from 'lib/cookies';
 import { Icon } from 'lib/library';
 import TagBlock from 'lib/pages/diary/tags';
 import { CuratePrompt } from 'lib/pages/posts/prompt';
@@ -92,11 +92,11 @@ const DiaryEntryPage: NextPage<DiaryEntryPageProps> = ({
         </div>
         <Toolbar spaceItems={true} hasBackButton={true}>
           <BackButton onClick={navigateToReveries}>Back to Diary</BackButton>
-          {isAuthenticated() && (
+          <AdminLock>
             <AdminButton onClick={() => navigateToEdit(diaryEntry.id!)}>
               Edit Diary Entry
             </AdminButton>
-          )}
+          </AdminLock>
         </Toolbar>
       </Spacer>
       <Curator
