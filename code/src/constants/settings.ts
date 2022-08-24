@@ -1,4 +1,4 @@
-/** The full URLs for each my social media accounts. */
+/** The full URLs for each of my social media accounts. */
 export const accounts = {
   // facebook: 'https://www.facebook.com/zzavidd',
   twitter: 'https://www.twitter.com/zzavidd',

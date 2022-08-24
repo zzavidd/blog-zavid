@@ -1,10 +1,5 @@
-import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
-import type { NextPageContext } from 'next';
-import {
-  GET_DIARY_QUERY,
-  DELETE_DIARY_QUERY,
-} from 'private/api/queries/diary.queries';
-import React, { useEffect, useState } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
+import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { DiaryDAO, ReactHook } from 'classes';
@@ -14,6 +9,9 @@ import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import { VanillaLink } from 'components/text';
+import type { PathDefinition } from 'constants/paths';
+import * as Util from 'constants/utils';
+import PageMetadata from 'fragments/PageMetadata';
 import {
   Icon,
   Tabler,
@@ -21,64 +19,43 @@ import {
   TablerFieldType,
   TablerItemCell,
 } from 'lib/library';
+import { getAllDiaryEntriesSSR } from 'pages/api/diary';
 
-function DiaryAdmin() {
-  const [diaryEntries, setDiaryEntries] = useState([]);
+// eslint-disable-next-line react/function-component-definition
+const DiaryAdmin: NextPage<DiaryAdminProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
+  const { diaryEntries } = pageProps;
   const [selectedDiaryEntry, setSelectedDiaryEntry] = useState({} as DiaryDAO);
-  const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
-  const {
-    data,
-    error: queryError,
-    loading: queryLoading,
-    refetch,
-    networkStatus,
-  } = useQuery(GET_DIARY_QUERY, {
-    variables: {
-      sort: {
-        field: 'date',
-        order: QueryOrder.DESCENDING,
-      },
-    },
-    errorPolicy: 'all',
-    notifyOnNetworkStatusChange: true,
-  });
-  const [deleteDiaryEntryMutation] = useMutation(DELETE_DIARY_QUERY);
-
-  useEffect(() => {
-    if (networkStatus === NetworkStatus.refetch) return;
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
-
-    setDiaryEntries(data ? data.diaryEntries : []);
-    setLoaded(true);
-  }, [queryLoading, networkStatus]);
-
-  const deleteDiaryEntry = () => {
+  async function deleteDiaryEntry() {
     const { id, date } = selectedDiaryEntry;
-    Promise.resolve()
-      .then(() => deleteDiaryEntryMutation({ variables: { id } }))
-      .then(() => {
-        alert.success(
-          `You've deleted the diary entry for ${zDate.formatDate(date!, {
-            withWeekday: true,
-          })}.`,
-        );
-        setDeleteModalVisibility(false);
-        refetch();
-      })
-      .catch(reportError);
-  };
+
+    try {
+      await Util.request('/api/diary', {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+      });
+      alert.success(
+        `You've deleted the diary entry for ${zDate.formatDate(date!, {
+          withWeekday: true,
+        })}.`,
+      );
+      setDeleteModalVisibility(false);
+    } catch (e: any) {
+      reportError(e.message);
+    }
+  }
 
   return (
     <React.Fragment>
+      <PageMetadata {...pathDefinition} />
       <Spacer>
         <Tabler<9>
           heading={'List of Diary Entries'}
-          itemsLoaded={
-            isLoaded && !queryLoading && networkStatus !== NetworkStatus.refetch
-          }
+          itemsLoaded={true}
           emptyMessage={'No diary entries found.'}
           columns={[
             new TablerColumnHeader('#', { centerAlign: true }),
@@ -162,11 +139,11 @@ function DiaryAdmin() {
       />
     </React.Fragment>
   );
-}
-
-const navigateToCreateForm = () => {
-  location.href = '/admin/diary/add';
 };
+
+function navigateToCreateForm() {
+  location.href = '/admin/diary/add';
+}
 
 function LinkButton({ diaryEntry }: LinkButton) {
   return (
@@ -202,11 +179,38 @@ function DeleteButton({
   );
 }
 
-DiaryAdmin.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+export const getServerSideProps: GetServerSideProps<
+  DiaryAdminProps
+> = async () => {
+  const diaryEntries = JSON.parse(
+    await getAllDiaryEntriesSSR({
+      sort: {
+        field: 'date',
+        order: QueryOrder.DESCENDING,
+      },
+    }),
+  );
+
+  return {
+    props: {
+      pathDefinition: {
+        title: `List of Diary Entries`,
+      },
+      pageProps: {
+        diaryEntries,
+      },
+    },
+  };
 };
 
 export default DiaryAdmin;
+
+interface DiaryAdminProps {
+  pathDefinition: PathDefinition;
+  pageProps: {
+    diaryEntries: DiaryDAO[];
+  };
+}
 
 interface LinkButton {
   diaryEntry: DiaryDAO;

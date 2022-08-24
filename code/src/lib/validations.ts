@@ -38,7 +38,7 @@ export function isValidPost(post: PostDAO): void {
   }
 }
 
-export function isValidDiaryEntry(entry: DiaryDAO): void {
+export function validateDiaryEntry(entry: DiaryDAO): void {
   checkIfExists(entry.content, 'Write out the content of this diary entry.');
   checkIfExists(entry.entryNumber, 'Set the entry number for the diary entry.');
 }

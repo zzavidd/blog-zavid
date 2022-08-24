@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
+import { zDate, zString } from 'zavid-modules';
 
 import type { DiaryDAO, ReactTextAreaChangeEvent } from 'classes';
-import { DiaryStatic } from 'classes';
+import { DiaryEntryBuilder, DiaryStatic } from 'classes';
 import type { GenericFormProps } from 'classes/interfaces/super';
 import {
   Checkbox,
@@ -25,7 +26,7 @@ import { ScreenWidth } from 'lib/library';
 import TagBlock from 'lib/pages/diary/tags';
 import css from 'styles/pages/Diary.module.scss';
 
-function DiaryEntryForm(props: DiaryFormProps) {
+export default function DiaryEntryForm(props: DiaryFormProps) {
   const { diaryEntry, handlers } = props;
   const {
     handleText,
@@ -171,9 +172,50 @@ function DiaryEntryForm(props: DiaryFormProps) {
   );
 }
 
-export default DiaryEntryForm;
+export function buildPayload(
+  clientDiaryEntry: DiaryDAO,
+  isPublish: boolean,
+  isCreateOperation: boolean,
+): DiaryRequest {
+  const {
+    id,
+    title,
+    content,
+    footnote,
+    status,
+    date,
+    entryNumber,
+    isFavourite,
+    tags,
+  } = clientDiaryEntry;
+
+  const diaryEntry = new DiaryEntryBuilder()
+    .withTitle(title)
+    .withContent(content)
+    .withFootnote(footnote)
+    .withDate(zDate.formatISODate(date!))
+    .withStatus(status)
+    .withEntryNumber(entryNumber)
+    .setIsFavourite(isFavourite)
+    .withTags(zString.convertCsvToArray(tags as string))
+    .build();
+
+  const payload: DiaryRequest = { diaryEntry, isPublish };
+
+  if (!isCreateOperation) {
+    payload.id = id;
+  }
+
+  return payload;
+}
 
 interface DiaryFormProps extends GenericFormProps {
   diaryEntry: DiaryDAO;
   handlers: Handlers;
+}
+
+interface DiaryRequest {
+  id?: number;
+  diaryEntry: DiaryDAO;
+  isPublish: boolean;
 }

@@ -20,7 +20,7 @@ import TagBlock from 'lib/pages/diary/tags';
 import { CuratePrompt } from 'lib/pages/posts/prompt';
 import css from 'styles/pages/Posts.module.scss';
 
-import { getDiaryEntrySSR } from '../api/diary';
+import { getDiaryEntryByNumberSSR } from '../api/diary';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryEntryPage: NextPage<DiaryEntryPageProps> = ({
@@ -137,7 +137,8 @@ export const getServerSideProps: GetServerSideProps<
   DiaryEntryPageProps
 > = async ({ query }) => {
   try {
-    const entries = JSON.parse(await getDiaryEntrySSR(query.number as string));
+    const number = parseInt(query.number as string);
+    const entries = JSON.parse(await getDiaryEntryByNumberSSR(number));
     return {
       props: {
         pathDefinition: {

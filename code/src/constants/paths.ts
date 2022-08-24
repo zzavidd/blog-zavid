@@ -3,8 +3,6 @@ import { siteTitle } from 'constants/settings';
 const pathDefinitions: Record<Path, PathDefinition> = {
   404: {
     title: `Page Not Found`,
-    description: '',
-    url: '',
   },
   Home: {
     title: `${siteTitle}: A Galaxy Mind in a Universe World`,
@@ -18,8 +16,6 @@ const pathDefinitions: Record<Path, PathDefinition> = {
   },
   SubscriptionPreferences: {
     title: `Subscription Preferences | ${siteTitle}`,
-    description: '',
-    url: '',
   },
 };
 
@@ -27,8 +23,8 @@ export default pathDefinitions;
 
 export interface PathDefinition {
   title: string;
-  description: string;
-  url: string;
+  description?: string;
+  url?: string;
   cardImage?: string;
 }
 
