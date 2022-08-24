@@ -14,6 +14,9 @@ export const cloudinaryBaseUrl =
 /** The copyright declaration. */
 export const copyright = `\u00A9 ${new Date().getFullYear()} ZAVID`;
 
+export const EMAILS_ON =
+  process.env.NODE_ENV === 'production' || process.env.EMAILS_ON === 'true';
+
 /** The date this blog was founded. Month is 0-indexed. */
 export const creationDate = new Date(2017, 8, 2);
 

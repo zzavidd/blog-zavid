@@ -8,10 +8,8 @@ import {
   DiaryStatus,
 } from 'classes';
 import { knex } from 'constants/knex';
-
-const isProduction = process.env.NODE_ENV === 'production';
-const emailsOn = isProduction || process.argv.includes('--emails');
-const telegramOn = isProduction || process.argv.includes('--telegram');
+import { EMAILS_ON } from 'constants/settings';
+import * as Emails from 'private/emails';
 
 export default async function handler(
   req: NextApiRequest,
@@ -67,13 +65,6 @@ export async function getDiaryEntryByIdSSR(id: number) {
 }
 
 export async function getDiaryEntryByNumber(number: number) {
-  // const isUnauthorized =
-  //   DiaryStatic.isProtected(diaryEntry) && !req.isAuthenticated();
-
-  // if (!diaryEntry || isUnauthorized) {
-  //   return next(ERRORS.NO_ENTITY('diary entry'));
-  // }
-
   const [[current], [previous], [next]] = await Promise.all([
     new DiaryQueryBuilder(knex).whereEntryNumber(number).build(),
     new DiaryQueryBuilder(knex).getPreviousEntry(number).build(),
@@ -95,33 +86,31 @@ export async function getDiaryEntryByNumber(number: number) {
 export async function createDiaryEntry({
   diaryEntry,
   isPublish,
-}: CreateDiaryEntryOptions): Promise<void> {
+}: CreateDiaryEntryPayload): Promise<void> {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
 
-  // const { shouldSendEmail, shouldSendTelegram } = getPermissions(isPublish);
-
   await new DiaryMutationBuilder(knex).insert(diaryEntry).build();
-  // shouldSendEmail ? Emails.notifyNewDiaryEntry(diaryEntry) : null,
-  // shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null,
+  if (isPublish && EMAILS_ON) {
+    await Emails.notifyNewDiaryEntry(diaryEntry);
+  }
 }
 
 export async function updateDiaryEntry({
   id,
   diaryEntry,
   isPublish,
-}: UpdateDiaryEntryOptions) {
+}: UpdateDiaryEntryPayload) {
   diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
 
-  // const { shouldSendEmail, shouldSendTelegram } = getPermissions(isPublish);
-
   await new DiaryMutationBuilder(knex).update(diaryEntry).whereId(id).build();
-  // shouldSendEmail ? Emails.notifyNewDiaryEntry(diaryEntry) : null,
-  // shouldSendTelegram ? Telegram.notifyNewDiaryEntry(diaryEntry) : null,
+  if (isPublish && EMAILS_ON) {
+    await Emails.notifyNewDiaryEntry(diaryEntry);
+  }
 }
 
-export async function deleteDiaryEntry(id: number) {
+export async function deleteDiaryEntry({ id }: DeleteDiaryEntryPayload) {
   await new DiaryMutationBuilder(knex).delete(id).build();
 }
 
@@ -133,29 +122,23 @@ export async function getLatestDiaryEntry(): Promise<DiaryDAO> {
   return latestDiaryEntry;
 }
 
-/**
- * Get permissions for notifications based on CLI arguments.
- * @param isPublish Indicates if diary entry was a publish.
- */
-function getPermissions(isPublish: boolean) {
-  const shouldSendEmail = isPublish && emailsOn;
-  const shouldSendTelegram = isPublish && telegramOn;
-  return { shouldSendEmail, shouldSendTelegram };
-}
-
 export interface GetAllDiaryOptions {
   sort?: QuerySort;
   status?: DiaryStatusFilters;
   onlyFavourites?: boolean;
 }
 
-export interface CreateDiaryEntryOptions {
+export interface CreateDiaryEntryPayload {
   diaryEntry: DiaryDAO;
   isPublish: boolean;
 }
 
-export interface UpdateDiaryEntryOptions {
+export interface UpdateDiaryEntryPayload {
   id: number;
   diaryEntry: DiaryDAO;
   isPublish: boolean;
+}
+
+export interface DeleteDiaryEntryPayload {
+  id: number;
 }

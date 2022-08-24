@@ -1,8 +1,10 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import { getSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes';
+import { DiaryStatic } from 'classes';
 import { AdminButton, BackButton } from 'components/button';
 import { Curator } from 'components/curator';
 import { Label } from 'components/form';
@@ -138,15 +140,21 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query }) => {
   try {
     const number = parseInt(query.number as string);
-    const entries = JSON.parse(await getDiaryEntryByNumberSSR(number));
+    const diaryTrio = JSON.parse(await getDiaryEntryByNumberSSR(number));
+
+    const session = await getSession();
+    if (!session && DiaryStatic.isProtected(diaryTrio.current)) {
+      throw new Error('No diary entry found');
+    }
+
     return {
       props: {
         pathDefinition: {
-          title: `Diary Entry #${entries.current.entryNumber}: ${entries.current.title} | ${siteTitle}`,
-          description: zText.extractExcerpt(entries.current.content!),
-          url: `/diary/${entries.current.slug}`,
+          title: `Diary Entry #${diaryTrio.current.entryNumber}: ${diaryTrio.current.title} | ${siteTitle}`,
+          description: zText.extractExcerpt(diaryTrio.current.content!),
+          url: `/diary/${diaryTrio.current.slug}`,
         },
-        pageProps: entries,
+        pageProps: diaryTrio,
       },
     };
   } catch (e) {
