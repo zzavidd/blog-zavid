@@ -8,7 +8,6 @@ import { Title } from 'components/text';
 import { siteTitle } from 'constants/settings';
 import PageMetadata from 'fragments/PageMetadata';
 import { ResultsGrid } from 'fragments/search/results';
-import { DAOParse } from 'lib/parser';
 import css from 'styles/pages/Search.module.scss';
 
 import { getSearchResults } from './api/search';
@@ -79,7 +78,7 @@ export const getServerSideProps: GetServerSideProps<
     };
   }
 
-  const { results, searchTerm, title } = DAOParse(
+  const { results, searchTerm, title } = JSON.parse(
     await getSearchResults(term as string, onlyDiary === 'true'),
   )!;
   return { props: { searchTerm, results, title } };

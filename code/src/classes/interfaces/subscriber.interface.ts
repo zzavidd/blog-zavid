@@ -6,6 +6,7 @@ export interface SubscriberDAO extends GenericDAO {
   lastname?: string;
   subscriptions?: SubscriptionsMapping | string;
   token?: string;
+  createTime?: Date;
 }
 
 export interface SubscriptionsMapping {

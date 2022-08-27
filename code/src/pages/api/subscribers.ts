@@ -37,6 +37,10 @@ export default async function handler(
   }
 }
 
+export async function getAllSubscribersSSR(options: GetAllSubscriberOptions) {
+  return JSON.stringify(await getAllSubscribers(options));
+}
+
 /**
  * Retrieves all subscriber from database.
  * @param args.sort The sort options.

@@ -1,112 +1,109 @@
-import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
-import type { NextPageContext } from 'next';
-import {
-  GET_SUBSCRIBERS_QUERY,
-  DELETE_SUBSCRIBER_QUERY,
-} from 'private/api/queries/subscriber.queries';
-import React, { useEffect, useState } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
 import type { ReactHook, SubscriberDAO, SubscriptionsMapping } from 'classes';
-import { EditButton, QueryOrder } from 'classes';
+import { QueryOrder } from 'classes';
 import { alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
+import type { PathDefinition } from 'constants/paths';
+import * as Utils from 'constants/utils';
+import PageMetadata from 'fragments/PageMetadata';
 import {
   Icon,
   Tabler,
-  TablerColumnHeader,
+  TablerColumnHeader as TCH,
   TablerFieldType,
-  TablerItemCell,
+  TablerItemCell as TIC,
 } from 'lib/library';
+import { getAllSubscribersSSR } from 'pages/api/subscribers';
 
-function SubscriberAdmin() {
-  const [subscribers, setSubscribers] = useState([]);
-  const [selectedSubscriber, setSelectedSubscriber] = useState(
-    {} as SubscriberDAO,
+// eslint-disable-next-line react/function-component-definition
+const SubscribersAdmin: NextPage<SubscribersAdminProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
+  const { subscribers } = pageProps;
+  const router = useRouter();
+
+  const [selectedSubscriber, setSelectedSubscriber] = useState<SubscriberDAO>(
+    {},
   );
-  const [isLoaded, setLoaded] = useState(false);
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
-  const {
-    data,
-    error: queryError,
-    loading: queryLoading,
-    refetch,
-    networkStatus,
-  } = useQuery(GET_SUBSCRIBERS_QUERY, {
-    variables: {
-      sort: {
-        field: 'createTime',
-        order: QueryOrder.DESCENDING,
-      },
-    },
-    errorPolicy: 'all',
-    notifyOnNetworkStatusChange: true,
-  });
-  const [deleteSubscriberMutation] = useMutation(DELETE_SUBSCRIBER_QUERY);
+  async function deleteSubscriber() {
+    const { id, email } = selectedSubscriber;
 
-  useEffect(() => {
-    if (networkStatus === NetworkStatus.refetch) return;
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
+    try {
+      await Utils.request('/api/subscribers', {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+      });
+      alert.success(`You've deleted the subscriber with email: ${email}.`);
+      router.reload();
+      setDeleteModalVisibility(false);
+    } catch (e: any) {
+      reportError(e.message);
+    }
+  }
 
-    setSubscribers(data ? data.subscribers : []);
-    setLoaded(true);
-  }, [queryLoading, networkStatus]);
+  function navigateToCreateForm() {
+    void router.push('/admin/subscribers/add');
+  }
 
-  const deleteSubscriber = () => {
-    const { id, email }: SubscriberDAO = selectedSubscriber;
-    Promise.resolve()
-      .then(() => deleteSubscriberMutation({ variables: { id } }))
-      .then(() => {
-        alert.success(`You've deleted the subscriber with email: ${email}.`);
-        setDeleteModalVisibility(false);
-        refetch();
-      })
-      .catch(reportError);
-  };
+  function navigateToEditForm(id: number) {
+    void router.push(`/admin/subscribers/edit/${id}`);
+  }
 
   return (
     <React.Fragment>
+      <PageMetadata {...pathDefinition} />
       <Spacer>
         <Tabler<7>
           heading={'List of Subscribers'}
-          itemsLoaded={
-            isLoaded && !queryLoading && networkStatus !== NetworkStatus.refetch
-          }
+          itemsLoaded={true}
           emptyMessage={'No subscribers found.'}
           columns={[
-            new TablerColumnHeader('#', { centerAlign: true }),
-            new TablerColumnHeader('Email'),
-            new TablerColumnHeader('First Name'),
-            new TablerColumnHeader('Last Name'),
-            new TablerColumnHeader('Subscriptions'),
+            new TCH('#', { centerAlign: true }),
+            new TCH('Email'),
+            new TCH('First Name'),
+            new TCH('Last Name'),
+            new TCH('Subscriptions'),
           ]}
           items={subscribers.map((subscriber: SubscriberDAO, key: number) => {
             return [
-              new TablerItemCell(subscribers.length - key, {
+              new TIC(subscribers.length - key, {
                 type: TablerFieldType.INDEX,
               }),
-              new TablerItemCell(subscriber.email, { icon: 'at' }),
-              new TablerItemCell(subscriber.firstname, {
+              new TIC(subscriber.email, { icon: 'at' }),
+              new TIC(subscriber.firstname, {
                 icon: 'user',
                 hideIfEmpty: true,
               }),
-              new TablerItemCell(subscriber.lastname, {
+              new TIC(subscriber.lastname, {
                 icon: 'user',
                 hideIfEmpty: true,
               }),
-              new TablerItemCell(
+              new TIC(
                 showSubscriptionPreferences(
                   subscriber.subscriptions as SubscriptionsMapping,
                 ),
                 { icon: 'check-square', hideIfEmpty: true },
               ),
-              new TablerItemCell(<EditButton id={subscriber.id!} key={key} />, {
-                type: TablerFieldType.BUTTON,
-              }),
-              new TablerItemCell(
+              new TIC(
+                (
+                  <InvisibleButton
+                    onClick={() => navigateToEditForm(subscriber.id!)}>
+                    <Icon name={'pen-alt'} />
+                  </InvisibleButton>
+                ),
+                {
+                  type: TablerFieldType.BUTTON,
+                },
+              ),
+              new TIC(
                 (
                   <DeleteButton
                     subscriber={subscriber}
@@ -136,9 +133,9 @@ function SubscriberAdmin() {
       />
     </React.Fragment>
   );
-}
+};
 
-const showSubscriptionPreferences = (subscriptions: SubscriptionsMapping) => {
+function showSubscriptionPreferences(subscriptions: SubscriptionsMapping) {
   return (
     <React.Fragment>
       {Object.entries(subscriptions)
@@ -154,20 +151,6 @@ const showSubscriptionPreferences = (subscriptions: SubscriptionsMapping) => {
           }
         })}
     </React.Fragment>
-  );
-};
-
-const navigateToCreateForm = (): void => {
-  location.href = '/admin/subscribers/add';
-};
-
-function EditButton({ id }: EditButton) {
-  const navigateToLink = () =>
-    (location.href = `/admin/subscribers/edit/${id}`);
-  return (
-    <InvisibleButton onClick={navigateToLink}>
-      <Icon name={'pen-alt'} />
-    </InvisibleButton>
   );
 }
 
@@ -188,11 +171,37 @@ function DeleteButton({
   );
 }
 
-SubscriberAdmin.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+export const getServerSideProps: GetServerSideProps<
+  SubscribersAdminProps
+> = async () => {
+  const subscribers = JSON.parse(
+    await getAllSubscribersSSR({
+      sort: {
+        field: 'createTime',
+        order: QueryOrder.DESCENDING,
+      },
+    }),
+  );
+  return {
+    props: {
+      pathDefinition: {
+        title: `List of Subscribers`,
+      },
+      pageProps: {
+        subscribers,
+      },
+    },
+  };
 };
 
-export default SubscriberAdmin;
+export default SubscribersAdmin;
+
+interface SubscribersAdminProps {
+  pathDefinition: PathDefinition;
+  pageProps: {
+    subscribers: SubscriberDAO[];
+  };
+}
 
 interface DeleteButton {
   subscriber: SubscriberDAO;
