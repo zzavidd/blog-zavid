@@ -2,18 +2,18 @@ import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import type { PostDAO, PostType, ReactSelectChangeEvent } from 'classes';
+import type { PostDAO } from 'classes';
 import { PostStatic, PostStatus } from 'classes';
 import { AlertType, reportError, setAlert } from 'components/alert';
 import type { SelectItem } from 'components/form';
 import type { PathDefinition } from 'constants/paths';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
+import PostForm, { buildPayload } from 'fragments/posts/PostForm';
 import { UIError } from 'lib/errors';
 import hooks from 'lib/hooks';
-import PostForm, { buildPayload } from 'lib/pages/posts/form';
 import { validatePost } from 'lib/validations';
-import { getAllPosts } from 'pages/api/posts';
+import { getDomains } from 'pages/api/posts';
 
 // eslint-disable-next-line react/function-component-definition
 const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
@@ -39,36 +39,6 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
 
   // Determine if post is being published.
   const isPublish = PostStatic.isPublish(post);
-
-  function onTypeChange(e: ReactSelectChangeEvent) {
-    const selectedType = e.target.value as PostType;
-    const postsOfType = domains.filter(({ type, status }) => {
-      return selectedType === type && status != PostStatus.DRAFT;
-    });
-    const newTypeId = postsOfType.length + 1;
-    const typeId = PostStatic.isDraft(post) ? undefined : newTypeId;
-
-    setPost({
-      ...post,
-      type: selectedType,
-      typeId,
-    });
-  }
-
-  function onStatusChange(e: ReactSelectChangeEvent) {
-    const selectedStatus = e.target.value as PostStatus;
-    const postsOfType = domains.filter(({ type, status }) => {
-      return post.type === type && status != PostStatus.DRAFT;
-    });
-    const newTypeId = postsOfType.length + 1;
-    const typeId = selectedStatus === PostStatus.DRAFT ? undefined : newTypeId;
-
-    setPost({
-      ...post,
-      status: selectedStatus,
-      typeId,
-    });
-  }
 
   /** Create new post on server. */
   async function submitPost() {
@@ -104,7 +74,7 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
         post={post}
         domains={domains}
         isCreateOperation={true}
-        handlers={{ ...hooks(setPost, post), onTypeChange, onStatusChange }}
+        handlers={hooks(setPost, post)}
         confirmFunction={submitPost}
         confirmButtonText={'Submit'}
         cancelFunction={returnToPostAdmin}
@@ -117,26 +87,11 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
 export const getServerSideProps: GetServerSideProps<
   PostAddProps
 > = async () => {
-  const domains = (
-    await getAllPosts({
-      sort: {
-        field: 'type',
-        order: 'DESC',
-      },
-    })
-  ).map(({ id, title, type, status }: PostDAO) => {
-    return {
-      value: id!.toString(),
-      label: `${type}: ${title}`,
-      type,
-      status,
-    };
-  });
-
+  const domains = await getDomains();
   return {
     props: {
       pathDefinition: {
-        title: `Add New Diary Entry`,
+        title: `Add New Post`,
       },
       pageProps: {
         domains,

@@ -2,9 +2,9 @@ import Cloudinary from 'cloudinary';
 import { debug } from 'console';
 import { zString } from 'zavid-modules';
 
-import { PostQueryBuilder, PostStatic } from 'classes';
 import type { PostDAO, PostImage } from 'classes';
-import { knex } from 'constants/knex';
+import { PostStatic } from 'classes';
+import { getPostById } from 'pages/api/posts';
 
 const cloudinary = Cloudinary.v2;
 cloudinary.config({
@@ -14,6 +14,7 @@ cloudinary.config({
 });
 
 const CONTENT_IMAGE_REGEX = new RegExp(/.*\-[0-9]{2}\.[a-z]+/);
+const isDev = process.env.NODE_ENV !== 'production';
 
 /**
  * Upload post image cloudinary.
@@ -40,12 +41,11 @@ export async function uploadImages(post: PostDAO): Promise<PostDAO> {
       return source;
     }
 
-    const uri =
-      process.env.NODE_ENV !== 'production'
-        ? `test/${filename}`
-        : isCover
-        ? `dynamic/${directory}/${filename}`
-        : `dynamic/${directory}/content/${filename}`;
+    const uri = isDev
+      ? `test/${filename}`
+      : isCover
+      ? `dynamic/${directory}/${filename}`
+      : `dynamic/${directory}/content/${filename}`;
 
     const contentImageKey = key.toString().padStart(2, '0');
     const publicId = isCover ? uri : `${uri}-${contentImageKey}`;
@@ -109,38 +109,26 @@ export async function destroyImage(image: string | PostImage) {
  * Replaces image on the cloud.
  * @param id The ID of the post.
  * @param post The post object.
- * @param options Upload options.
  */
-// export const replaceImages = async (
-//   id: number,
-//   post: PostDAO,
-//   options: PostImageUploadOptions,
-// ) => {
-//   const { isTest = false } = options;
+export async function replaceImages(id: number, post: PostDAO) {
+  const postInDatabase = await getPostById(id);
+  const imagesFromClient = PostStatic.collateImages(post, {
+    includeNulls: true,
+  }) as PostImage[];
+  const imagesInDatabase = PostStatic.collateImages(postInDatabase);
 
-//   const postInDatabase = await PostService.getSinglePost({
-//     id,
-//   });
-//   const imagesFromClient = PostStatic.collateImages(post, {
-//     includeNulls: true,
-//   }) as PostImage[];
-//   const imagesInDatabase = PostStatic.collateImages(postInDatabase);
-
-//   const promises: Promise<void>[] = [];
-
-//   // Delete images which have changed.
-//   imagesFromClient.forEach((image: PostImage, key: number) => {
-//     const shouldDeleteImage =
-//       image && image.hasChanged && key <= imagesInDatabase.length - 1;
-//     if (shouldDeleteImage) {
-//       const imageToDelete = imagesInDatabase[key] as string;
-//       promises.push(destroyImage(imageToDelete));
-//     }
-//   });
-//   await Promise.all(promises);
-
-//   return uploadImages(post, { isTest });
-// };
+  // Delete images which have changed.
+  const promises = imagesFromClient.map((image, key) => {
+    const shouldDeleteImage =
+      image && image.hasChanged && key <= imagesInDatabase.length - 1;
+    if (shouldDeleteImage) {
+      const imageToDelete = imagesInDatabase[key];
+      return destroyImage(imageToDelete);
+    }
+  });
+  await Promise.all(promises);
+  return uploadImages(post);
+}
 
 /**
  * Construct slug and filenames.
@@ -175,9 +163,7 @@ async function generateFilename(post: PostDAO, slug: string) {
 
   if (PostStatic.isPage(post)) {
     try {
-      const [postDomain] = await new PostQueryBuilder(knex)
-        .whereId(post.domainId!)
-        .build();
+      const postDomain = await getPostById(post.domainId!);
       filename = zString.constructCleanSlug(
         `${postDomain.title!} ${post.title}`,
       );

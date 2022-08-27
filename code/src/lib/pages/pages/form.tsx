@@ -12,7 +12,7 @@ import {
   TextInput,
   Checkbox,
 } from 'components/form';
-import type { Handlers } from 'lib/hooks';
+import type Handlers from 'lib/hooks';
 
 export default function (props: PageFormProps) {
   const { page, handlers } = props;
@@ -78,7 +78,7 @@ export default function (props: PageFormProps) {
 
 export interface PageFormProps extends GenericFormProps {
   page: PageDAO;
-  handlers: Handlers;
+  handlers: ReturnType<typeof Handlers<PageDAO>>;
   confirmFunction?: () => void;
   confirmButtonText: string;
   cancelFunction?: () => void;

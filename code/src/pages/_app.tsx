@@ -23,9 +23,6 @@ library.add(fab, far, fas);
 
 const { store, persistor } = configureStore();
 
-const AUTH_COOKIE = 'justAuthenticated';
-const DEAUTH_COOKIE = 'justDeauthenticated';
-
 export default function (props: AppProps) {
   return (
     <Provider store={store}>
@@ -77,8 +74,3 @@ function ZAVIDApp({ Component, pageProps }: AppProps) {
     </React.Fragment>
   );
 }
-
-// ZAVIDApp.getInitialProps = async (context: AppContext) => {
-//   const pageProps = await App.getInitialProps(context);
-//   return { ...pageProps };
-// };

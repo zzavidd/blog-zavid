@@ -8,16 +8,15 @@ import type {
   ReactInputChangeEvent,
   ReactSelectChangeEvent,
   ReactTextAreaChangeEvent,
-  SubscriptionsMapping,
 } from 'classes';
 import type { GenericDAO } from 'classes/interfaces/super';
 import type { DateType } from 'components/form/datepicker';
 import { saveText } from 'lib/reducers';
 
-const handlers = <T extends GenericDAO>(
+export default function Handlers<T extends GenericDAO>(
   hook: ReactHook<T>,
   state: T,
-): Handlers => {
+) {
   const handleText = (
     event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
   ): void => {
@@ -88,22 +87,6 @@ const handlers = <T extends GenericDAO>(
     handleCheck,
     handleFile,
     handleContentImages,
+    setState: hook,
   };
-};
-
-export default handlers;
-
-export interface Handlers {
-  handleText: (event: ReactInputChangeEvent | ReactTextAreaChangeEvent) => void;
-  handleNumber: (event: ReactInputChangeEvent) => void;
-  handleTextSave: (
-    event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
-    dispatch: Dispatch,
-  ) => void;
-  handleSelection: (event: ReactSelectChangeEvent) => void;
-  handleDate: (date: DateType, name: string) => void;
-  handleCheck: (event: ReactInputChangeEvent) => void;
-  handleFile: (file: string | null, name?: string) => void;
-  handleContentImages: (file: string, i: number) => void;
-  setPreferences?: ReactHook<SubscriptionsMapping>;
 }

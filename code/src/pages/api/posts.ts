@@ -29,10 +29,10 @@ export default async function handler(
         await createPost(req.body);
         return res.send(201);
       }
-      // case 'PUT': {
-      //   await updateDiaryEntry(req.body);
-      //   return res.send(200);
-      // }
+      case 'PUT': {
+        await updatePost(req.body);
+        return res.send(200);
+      }
       case 'DELETE': {
         await deletePost(req.body);
         return res.send(204);
@@ -83,6 +83,35 @@ export async function getPostSSR(
     },
     pageProps: posts,
   });
+}
+
+export async function getPostByIdSSR(id: number) {
+  return JSON.stringify(await getPostById(id));
+}
+
+export async function getPostById(id: number) {
+  const [post] = await new PostQueryBuilder(knex).whereId(id).build();
+  return post;
+}
+
+export async function getDomains() {
+  const posts = await getAllPosts({
+    sort: {
+      field: 'type',
+      order: 'DESC',
+    },
+  });
+
+  const domains = posts.map(({ id, title, type, status }: PostDAO) => {
+    return {
+      value: id!.toString(),
+      label: `${type}: ${title}`,
+      type,
+      status,
+    };
+  });
+
+  return domains;
 }
 
 export async function getPost(
@@ -153,7 +182,18 @@ async function createPost({
   }
 }
 
-async function updatePost() {}
+async function updatePost({
+  id,
+  post: postToUpload,
+  isPublish,
+}: UpdatePostPayload) {
+  const post = await Filer.replaceImages(id, postToUpload);
+  await new PostMutationBuilder(knex).update(post).whereId(id).build();
+
+  if (isPublish && EMAILS_ON) {
+    await Emails.notifyNewPost(post);
+  }
+}
 
 async function deletePost({ id }: DeletePostPayload) {
   const [post] = await new PostQueryBuilder(knex).whereId(id).build();
@@ -179,6 +219,12 @@ export interface GetPostOptions {
 }
 
 interface CreatePostPayload {
+  post: PostDAO;
+  isPublish: boolean;
+}
+
+export interface UpdatePostPayload {
+  id: number;
   post: PostDAO;
   isPublish: boolean;
 }

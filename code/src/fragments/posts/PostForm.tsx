@@ -7,11 +7,12 @@ import type {
   PostContentImageMapping,
   PostDAO,
   PostImage,
+  PostType,
   ReactSelectChangeEvent,
   ReactTextAreaChangeEvent,
   Substitutions,
 } from 'classes';
-import { PostBuilder, PostStatic } from 'classes';
+import { PostStatus, PostBuilder, PostStatic } from 'classes';
 import type { GenericFormProps } from 'classes/interfaces/super';
 import {
   DynamicField,
@@ -30,7 +31,7 @@ import DatePicker from 'components/form/datepicker';
 import { FileSelector, FSAspectRatio } from 'components/form/fileselector';
 import { Foldable } from 'components/form/foldable';
 import { cloudinaryBaseUrl } from 'components/image';
-import type { Handlers } from 'lib/hooks';
+import type Handlers from 'lib/hooks';
 import { ScreenWidth } from 'lib/library';
 import css from 'styles/pages/Posts.module.scss';
 
@@ -46,8 +47,7 @@ export default function PostForm(props: PostFormProps) {
     handleDate,
     handleFile,
     handleContentImages,
-    onTypeChange,
-    onStatusChange,
+    setState: setPost,
   } = handlers;
 
   const substitutions: Substitutions = {};
@@ -64,6 +64,36 @@ export default function PostForm(props: PostFormProps) {
   const [isContentImagesVisible, setContentImagesVisible] = useState(false);
   const [isPreviewVisible, setPreviewVisible] = useState(false);
   const dispatch = useDispatch();
+
+  function onTypeChange(e: ReactSelectChangeEvent) {
+    const selectedType = e.target.value as PostType;
+    const postsOfType = domains.filter(({ type, status }) => {
+      return selectedType === type && status != PostStatus.DRAFT;
+    });
+    const newTypeId = postsOfType.length + 1;
+    const typeId = PostStatic.isDraft(post) ? undefined : newTypeId;
+
+    setPost({
+      ...post,
+      type: selectedType,
+      typeId,
+    });
+  }
+
+  function onStatusChange(e: ReactSelectChangeEvent) {
+    const selectedStatus = e.target.value as PostStatus;
+    const postsOfType = domains.filter(({ type, status }) => {
+      return post.type === type && status != PostStatus.DRAFT;
+    });
+    const newTypeId = postsOfType.length + 1;
+    const typeId = selectedStatus === PostStatus.DRAFT ? undefined : newTypeId;
+
+    setPost({
+      ...post,
+      status: selectedStatus,
+      typeId,
+    });
+  }
 
   const toggleImage = () => {
     setImageVisible(!isImageVisible);
@@ -306,10 +336,7 @@ export function buildPayload(
 interface PostFormProps extends GenericFormProps {
   post: PostDAO;
   domains: PostDAO[];
-  handlers: Handlers & {
-    onTypeChange: (e: ReactSelectChangeEvent) => void;
-    onStatusChange: (e: ReactSelectChangeEvent) => void;
-  };
+  handlers: ReturnType<typeof Handlers<PostDAO>>;
   isCreateOperation: boolean;
 }
 

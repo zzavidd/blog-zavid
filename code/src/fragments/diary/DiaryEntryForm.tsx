@@ -21,7 +21,7 @@ import {
 import type { DateType } from 'components/form/datepicker';
 import DatePicker from 'components/form/datepicker';
 import { Foldable } from 'components/form/foldable';
-import type { Handlers } from 'lib/hooks';
+import type Handlers from 'lib/hooks';
 import { ScreenWidth } from 'lib/library';
 import TagBlock from 'lib/pages/diary/tags';
 import css from 'styles/pages/Diary.module.scss';
@@ -211,7 +211,7 @@ export function buildPayload(
 
 interface DiaryFormProps extends GenericFormProps {
   diaryEntry: DiaryDAO;
-  handlers: Handlers;
+  handlers: ReturnType<typeof Handlers<DiaryDAO>>;
 }
 
 interface DiaryRequest {

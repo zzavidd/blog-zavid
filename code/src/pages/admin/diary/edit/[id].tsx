@@ -12,7 +12,7 @@ import * as Utils from 'constants/utils';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import PageMetadata from 'fragments/PageMetadata';
 import { UIError } from 'lib/errors';
-import hooks from 'lib/hooks';
+import Handlers from 'lib/hooks';
 import { validateDiaryEntry } from 'lib/validations';
 import { getDiaryEntryByIdSSR } from 'pages/api/diary';
 
@@ -22,7 +22,7 @@ const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
   pageProps,
 }) => {
   const { serverDiaryEntry } = pageProps;
-  const [clientDiaryEntry, setDiaryEntry] = useState({
+  const [clientDiaryEntry, setDiaryEntry] = useState<DiaryDAO>({
     ...serverDiaryEntry,
     tags: zString.convertArrayToCsv(
       JSON.parse(serverDiaryEntry.tags as string) || [],
@@ -71,7 +71,7 @@ const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
       <PageMetadata {...pathDefinition} />
       <DiaryEntryForm
         diaryEntry={clientDiaryEntry}
-        handlers={hooks(setDiaryEntry, clientDiaryEntry)}
+        handlers={Handlers(setDiaryEntry, clientDiaryEntry)}
         confirmFunction={confirmFunction}
         confirmButtonText={confirmText}
         cancelFunction={returnToDiaryAdmin}
