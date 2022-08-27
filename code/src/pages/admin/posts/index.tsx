@@ -213,7 +213,13 @@ export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async (
   ctx,
 ) => {
   const filterOptions = ctx.query as Record<string, string>;
-  const { limit, field = 'createTime', order, type, status } = filterOptions;
+  const {
+    limit,
+    field = 'createTime',
+    order = 'DESC',
+    type,
+    status,
+  } = filterOptions;
   const posts: PostDAO[] = JSON.parse(
     await getAllPostsSSR({
       limit: parseInt(limit),

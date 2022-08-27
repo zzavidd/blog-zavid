@@ -66,7 +66,7 @@ export interface SelectProps {
   isRound?: boolean;
 }
 
-interface SelectItem {
+export interface SelectItem {
   label: string | number;
   value: string | number;
 }

@@ -11,7 +11,7 @@ import { PostStatic } from 'classes';
 
 import { UIError } from './errors';
 
-export function isValidPost(post: PostDAO): void {
+export function validatePost(post: PostDAO): void {
   checkIfExists(post.title, 'Enter the post title.');
   checkIfExists(post.type, "Select the post's type.");
 

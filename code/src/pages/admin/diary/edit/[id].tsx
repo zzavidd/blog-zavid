@@ -1,4 +1,4 @@
-import type { GetServerSideProps } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import React, { useState } from 'react';
 import { zDate, zString } from 'zavid-modules';
 
@@ -16,7 +16,11 @@ import hooks from 'lib/hooks';
 import { validateDiaryEntry } from 'lib/validations';
 import { getDiaryEntryByIdSSR } from 'pages/api/diary';
 
-function DiaryEntryAdd({ pathDefinition, pageProps }: DiaryEntryEditProps) {
+// eslint-disable-next-line react/function-component-definition
+const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { serverDiaryEntry } = pageProps;
   const [clientDiaryEntry, setDiaryEntry] = useState({
     ...serverDiaryEntry,
@@ -84,7 +88,7 @@ function DiaryEntryAdd({ pathDefinition, pageProps }: DiaryEntryEditProps) {
       />
     </React.Fragment>
   );
-}
+};
 
 function returnToDiaryAdmin() {
   location.href = '/admin/diary';
@@ -116,7 +120,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-export default DiaryEntryAdd;
+export default DiaryEntryEdit;
 
 interface DiaryEntryEditProps {
   pathDefinition: PathDefinition;

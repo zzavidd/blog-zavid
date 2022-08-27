@@ -1,4 +1,5 @@
-import type { GetServerSideProps } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import type { DiaryDAO } from 'classes';
@@ -14,11 +15,15 @@ import hooks from 'lib/hooks';
 import { validateDiaryEntry } from 'lib/validations';
 import { getLatestDiaryEntry } from 'pages/api/diary';
 
-function DiaryEntryAdd({ pathDefinition, pageProps }: DiaryEntryAddProps) {
+// eslint-disable-next-line react/function-component-definition
+const DiaryEntryAdd: NextPage<DiaryEntryAddProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { latestEntryNumber } = pageProps;
+  const router = useRouter();
 
-  const [clientDiaryEntry, setDiaryEntry] = useState({
-    id: 0,
+  const [diaryEntry, setDiaryEntry] = useState({
     title: '',
     content: '',
     footnote: '',
@@ -32,15 +37,15 @@ function DiaryEntryAdd({ pathDefinition, pageProps }: DiaryEntryAddProps) {
   const [isPublishModalVisible, setPublishModalVisibility] = useState(false);
 
   // Determine if diary entry is being published.
-  const isPublish = DiaryStatic.isPublish(clientDiaryEntry);
+  const isPublish = DiaryStatic.isPublish(diaryEntry);
 
   /** Create new diary entry on server. */
   async function submitDiaryEntry() {
     try {
       setRequestPending(true);
-      validateDiaryEntry(clientDiaryEntry);
+      validateDiaryEntry(diaryEntry);
 
-      const payload = buildPayload(clientDiaryEntry, isPublish, true);
+      const payload = buildPayload(diaryEntry, isPublish, true);
       await Utils.request('/api/diary', {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -57,6 +62,10 @@ function DiaryEntryAdd({ pathDefinition, pageProps }: DiaryEntryAddProps) {
     }
   }
 
+  function returnToDiaryAdmin() {
+    void router.push('/admin/diary');
+  }
+
   const confirmText = `Submit${isPublish ? ' & Publish' : ''}`;
   const confirmFunction = isPublish
     ? () => setPublishModalVisibility(true)
@@ -66,8 +75,8 @@ function DiaryEntryAdd({ pathDefinition, pageProps }: DiaryEntryAddProps) {
     <React.Fragment>
       <PageMetadata {...pathDefinition} />
       <DiaryEntryForm
-        diaryEntry={clientDiaryEntry}
-        handlers={hooks(setDiaryEntry, clientDiaryEntry)}
+        diaryEntry={diaryEntry}
+        handlers={hooks(setDiaryEntry, diaryEntry)}
         confirmFunction={confirmFunction}
         confirmButtonText={confirmText}
         cancelFunction={returnToDiaryAdmin}
@@ -84,11 +93,6 @@ function DiaryEntryAdd({ pathDefinition, pageProps }: DiaryEntryAddProps) {
       />
     </React.Fragment>
   );
-}
-
-/** Return to the admin page. */
-const returnToDiaryAdmin = () => {
-  location.href = '/admin/diary';
 };
 
 export const getServerSideProps: GetServerSideProps<

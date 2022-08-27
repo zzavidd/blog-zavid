@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
+import { zDate } from 'zavid-modules';
 
 import type {
   PostContentImageMapping,
@@ -10,7 +11,7 @@ import type {
   ReactTextAreaChangeEvent,
   Substitutions,
 } from 'classes';
-import { PostStatic } from 'classes';
+import { PostBuilder, PostStatic } from 'classes';
 import type { GenericFormProps } from 'classes/interfaces/super';
 import {
   DynamicField,
@@ -35,7 +36,7 @@ import css from 'styles/pages/Posts.module.scss';
 
 const MAX_NUM_CONTENT_IMAGES = 6;
 
-function PostForm(props: PostFormProps) {
+export default function PostForm(props: PostFormProps) {
   const { post, domains, handlers, isCreateOperation } = props;
   const {
     handleText,
@@ -254,7 +255,53 @@ function ContentImages({
   return <React.Fragment>{contentImages}</React.Fragment>;
 }
 
-export default PostForm;
+export function buildPayload(
+  clientPost: PostDAO,
+  isPublish: boolean,
+  isCreateOperation: boolean,
+): PostRequest {
+  const {
+    id,
+    title,
+    content,
+    type,
+    typeId,
+    excerpt,
+    image,
+    contentImages,
+    status,
+    datePublished,
+    domainId,
+  } = clientPost;
+
+  const post = new PostBuilder()
+    .withTitle(title)
+    .withType(type)
+    .withTypeId(typeId)
+    .withContent(content)
+    .withStatus(status)
+    .withImage(image)
+    .withExcerpt(excerpt);
+
+  if (contentImages?.length) {
+    post.withContentImages(Object.values(contentImages));
+  }
+
+  if (PostStatic.isPublish(clientPost)) {
+    post.withDatePublished(zDate.formatISODate(datePublished!));
+  }
+
+  if (PostStatic.isPage(clientPost)) {
+    post.withDomain(domainId);
+  }
+
+  const payload: PostRequest = { post: post.build(), isPublish, isTest: true };
+  if (!isCreateOperation) {
+    payload.id = id;
+  }
+
+  return payload;
+}
 
 interface PostFormProps extends GenericFormProps {
   post: PostDAO;
@@ -270,4 +317,11 @@ interface PostContentImageInputs {
   post: PostDAO;
   isCreateOperation: boolean;
   handleContentImages: (file: string, i: number) => void;
+}
+
+interface PostRequest {
+  id?: number;
+  post: PostDAO;
+  isPublish: boolean;
+  isTest: boolean;
 }

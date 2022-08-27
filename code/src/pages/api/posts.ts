@@ -15,7 +15,8 @@ import {
   PostType,
 } from 'classes';
 import { knex } from 'constants/knex';
-import { siteTitle } from 'constants/settings';
+import { EMAILS_ON, siteTitle } from 'constants/settings';
+import * as Emails from 'private/emails';
 import * as Filer from 'private/filer';
 
 export default async function handler(
@@ -24,10 +25,10 @@ export default async function handler(
 ): Promise<void> {
   try {
     switch (req.method) {
-      // case 'POST': {
-      //   await createDiaryEntry(req.body);
-      //   return res.send(201);
-      // }
+      case 'POST': {
+        await createPost(req.body);
+        return res.send(201);
+      }
       // case 'PUT': {
       //   await updateDiaryEntry(req.body);
       //   return res.send(200);
@@ -140,7 +141,21 @@ export async function getRandomPosts({
   return randomPosts;
 }
 
-export async function deletePost({ id }: DeletePostOptions) {
+async function createPost({
+  post: postToUpload,
+  isPublish,
+}: CreatePostPayload) {
+  const post = await Filer.uploadImages(postToUpload);
+  await new PostMutationBuilder(knex).insert(post).build();
+
+  if (isPublish && EMAILS_ON) {
+    await Emails.notifyNewPost(post);
+  }
+}
+
+async function updatePost() {}
+
+async function deletePost({ id }: DeletePostPayload) {
   const [post] = await new PostQueryBuilder(knex).whereId(id).build();
   const promises = PostStatic.collateImages(post).map(Filer.destroyImage);
   await Promise.all(promises);
@@ -152,9 +167,9 @@ interface RandomPostOptions {
 }
 
 export interface GetAllPostOptions {
-  sort: QuerySort<PostDAO>;
-  status: PostStatusFilters;
-  type: PostTypeFilters;
+  sort?: QuerySort<PostDAO>;
+  status?: PostStatusFilters;
+  type?: PostTypeFilters;
   limit?: number;
 }
 
@@ -163,6 +178,11 @@ export interface GetPostOptions {
   type: PostType;
 }
 
-interface DeletePostOptions {
+interface CreatePostPayload {
+  post: PostDAO;
+  isPublish: boolean;
+}
+
+interface DeletePostPayload {
   id: number;
 }

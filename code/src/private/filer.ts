@@ -1,97 +1,83 @@
 import Cloudinary from 'cloudinary';
+import { debug } from 'console';
+import { zString } from 'zavid-modules';
 
-import type { PostImage } from '../classes';
+import { PostQueryBuilder, PostStatic } from 'classes';
+import type { PostDAO, PostImage } from 'classes';
+import { knex } from 'constants/knex';
 
 const cloudinary = Cloudinary.v2;
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const CONTENT_IMAGE_REGEX = new RegExp(/.*\-[0-9]{2}\.[a-z]+/);
+
 /**
  * Upload post image cloudinary.
  * @param post - The post object.
- * @param options - The post image upload options.
  */
-// export const uploadImages = async (
-//   post: PostDAO,
-//   options: PostImageUploadOptions = {},
-// ): Promise<PostDAO> => {
-//   const { isTest = false } = options;
-//   const { directory, filename, slug } = await generateSlugAndFilename(post);
+export async function uploadImages(post: PostDAO): Promise<PostDAO> {
+  const { directory, filename, slug } = await generateSlugAndFilename(post);
 
-//   if (!PostStatic.isDraft(post)) {
-//     post.slug = slug;
-//   }
+  if (!PostStatic.isDraft(post)) {
+    post.slug = slug;
+  }
 
-//   const images = PostStatic.collateImages(post);
+  // Discontinue if no images.
+  const images = PostStatic.collateImages(post);
+  if (!images.length) {
+    delete post.image;
+    delete post.contentImages;
+    return post;
+  }
 
-//   // Discontinue if no images.
-//   if (!images.length) {
-//     delete post.image;
-//     delete post.contentImages;
-//     return post;
-//   }
+  const promises = images.map(async (image, key) => {
+    const { hasChanged, source, isCover } = image as PostImage;
+    if (!hasChanged) {
+      return source;
+    }
 
-//   return new Promise((resolve, reject) => {
-//     async.transform<PostImage | string, string, Error>(
-//       images,
-//       function (acc, image, key, callback) {
-//         const { hasChanged, source, isCover } = image as PostImage;
-//         if (!hasChanged) {
-//           acc.push(source);
-//           return callback();
-//         }
+    const uri =
+      process.env.NODE_ENV !== 'production'
+        ? `test/${filename}`
+        : isCover
+        ? `dynamic/${directory}/${filename}`
+        : `dynamic/${directory}/content/${filename}`;
 
-//         const uri = isTest
-//           ? `test/${filename}`
-//           : isCover
-//           ? `dynamic/${directory}/${filename}`
-//           : `dynamic/${directory}/content/${filename}`;
+    const contentImageKey = key.toString().padStart(2, '0');
+    const publicId = isCover ? uri : `${uri}-${contentImageKey}`;
 
-//         const contentImageKey = key.toString().padStart(2, '0');
-//         const publicId = isCover ? uri : `${uri}-${contentImageKey}`;
+    const { version, public_id, format } = await cloudinary.uploader.upload(
+      source,
+      {
+        public_id: publicId,
+        unique_filename: false,
+      },
+    );
+    return `v${version}/${public_id}.${format}`;
+  });
 
-//         cloudinary.uploader.upload(
-//           source,
-//           {
-//             public_id: publicId,
-//             unique_filename: false,
-//           },
-//           (err, result) => {
-//             if (err) return callback(err);
-//             const { version, public_id, format } = result!;
-//             acc.push(`v${version}/${public_id}.${format}`);
-//             callback();
-//           },
-//         );
-//       },
-//       function (err, results) {
-//         if (err) return reject(err);
+  const results = await Promise.all(promises);
+  const contentImages: string[] = [];
 
-//         const contentImageRegex = new RegExp(/.*\-[0-9]{2}\.[a-z]+/);
-//         const contentImages: string[] = [];
+  // Store return image information in post object.
+  results.forEach((result: string) => {
+    if (CONTENT_IMAGE_REGEX.test(result)) {
+      contentImages.push(result);
+    } else {
+      post.image = result;
+    }
+  });
 
-//         // Store return image information in post object.
-//         (results as string[]).forEach((result: string) => {
-//           if (contentImageRegex.test(result)) {
-//             contentImages.push(result);
-//           } else {
-//             post.image = result;
-//           }
-//         });
+  if (contentImages.length) {
+    post.contentImages = JSON.stringify(contentImages);
+  }
 
-//         if (contentImages.length) {
-//           post.contentImages = JSON.stringify(contentImages);
-//         }
-
-//         resolve(post);
-//       },
-//     );
-//   });
-// };
+  return post;
+}
 
 /**
  * Delete post image from cloudinary.
@@ -160,54 +146,50 @@ export async function destroyImage(image: string | PostImage) {
  * Construct slug and filenames.
  * @param post The post details.
  */
-// async function generateSlugAndFilename(
-//   post: PostDAO,
-// ): Promise<GenerateSlugResponse> {
-//   const slug = generateSlug(post);
-//   const directory = PostStatic.getDirectory(post.type!);
-//   const filename = await generateFilename(post, slug);
-//   return { directory, filename, slug };
-// }
+async function generateSlugAndFilename(
+  post: PostDAO,
+): Promise<GenerateSlugResponse> {
+  const slug = generateSlug(post);
+  const directory = PostStatic.getDirectory(post.type!);
+  const filename = await generateFilename(post, slug);
+  return { directory, filename, slug };
+}
 
 /**
  * Generate the slug using the post.
  * @param post The post to generate the slug for.
  */
-// function generateSlug(post: PostDAO): string {
-//   const title = PostStatic.getPostTitle(post);
-//   const slug = zString.constructCleanSlug(title);
-//   return slug;
-// }
+function generateSlug(post: PostDAO): string {
+  const title = PostStatic.getPostTitle(post);
+  const slug = zString.constructCleanSlug(title);
+  return slug;
+}
 
 /**
  * Generate the filename using the post.
  * @param post The post to generate the filename for.
  * @param slug The post slug.
  */
-// async function generateFilename(post: PostDAO, slug: string) {
-//   let filename = 'untitled';
+async function generateFilename(post: PostDAO, slug: string) {
+  let filename = 'untitled';
 
-//   if (PostStatic.isPage(post)) {
-//     try {
-//       const postDomain = await PostService.getSinglePost({
-//         id: post.domainId!,
-//       });
-//       filename = zString.constructCleanSlug(
-//         `${postDomain.title!} ${post.title}`,
-//       );
-//     } catch (err) {
-//       debug(err as Error);
-//     }
-//   } else {
-//     const number = post.typeId?.toString().padStart(3, '0');
-//     filename = `${number}-${slug}`;
-//   }
+  if (PostStatic.isPage(post)) {
+    try {
+      const [postDomain] = await new PostQueryBuilder(knex)
+        .whereId(post.domainId!)
+        .build();
+      filename = zString.constructCleanSlug(
+        `${postDomain.title!} ${post.title}`,
+      );
+    } catch (err) {
+      debug(err as Error);
+    }
+  } else {
+    const number = post.typeId?.toString().padStart(3, '0');
+    filename = `${number}-${slug}`;
+  }
 
-//   return filename;
-// }
-
-interface PostImageUploadOptions {
-  isTest?: boolean;
+  return filename;
 }
 
 interface GenerateSlugResponse {

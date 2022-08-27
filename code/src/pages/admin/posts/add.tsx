@@ -1,48 +1,26 @@
-import { useMutation, useQuery } from '@apollo/client';
-import type { NextPageContext } from 'next';
-import {
-  CREATE_POST_QUERY,
-  GET_POSTS_QUERY,
-  UPDATE_POST_QUERY,
-} from 'private/api/queries/post.queries';
-import React, { useEffect, useState } from 'react';
-import { zDate } from 'zavid-modules';
+import type { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
-import type {
-  PostContentImageMapping,
-  PostDAO,
-  PostImage,
-  ReactSelectChangeEvent,
-} from 'classes';
-import {
-  Operation,
-  PostBuilder,
-  PostStatic,
-  PostStatus,
-  URLBuilder,
-} from 'classes';
-import { alert, AlertType, reportError, setAlert } from 'components/alert';
-import { domain } from 'constants/settings';
+import type { PostDAO, PostType, ReactSelectChangeEvent } from 'classes';
+import { PostStatic, PostStatus } from 'classes';
+import { AlertType, reportError, setAlert } from 'components/alert';
+import type { SelectItem } from 'components/form';
+import type { PathDefinition } from 'constants/paths';
+import * as Utils from 'constants/utils';
+import PageMetadata from 'fragments/PageMetadata';
+import { UIError } from 'lib/errors';
 import hooks from 'lib/hooks';
-import PostForm from 'lib/pages/posts/form';
-import { DAOParse } from 'lib/parser';
-import { isValidPost } from 'lib/validations';
+import PostForm, { buildPayload } from 'lib/pages/posts/form';
+import { validatePost } from 'lib/validations';
+import { getAllPosts } from 'pages/api/posts';
 
-interface PostInitialProps {
-  post: PostDAO;
-  operation: Operation;
-}
+// eslint-disable-next-line react/function-component-definition
+const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
+  const { domains } = pageProps;
+  const router = useRouter();
 
-interface PostRequest {
-  id?: number;
-  post: PostDAO;
-  isPublish: boolean;
-  isTest: boolean;
-}
-
-function PostCrud({ post: serverPost, operation }: PostInitialProps) {
-  const [clientPost, setPost] = useState({
-    id: 0,
+  const [post, setPost] = useState<PostDAO>({
     title: '',
     content: '',
     type: undefined,
@@ -56,269 +34,122 @@ function PostCrud({ post: serverPost, operation }: PostInitialProps) {
     status: PostStatus.DRAFT,
     datePublished: undefined,
     domainId: undefined,
-  } as PostDAO);
-  const [isLoaded, setLoaded] = useState(true);
-  const [isRequestPending, setRequestPending] = useState(false);
-  const [domains, setDomains] = useState<PostDAO[]>([]);
-
-  // Initialise query variables.
-  const {
-    data,
-    error: queryError,
-    loading: queryLoading,
-  } = useQuery(GET_POSTS_QUERY, {
-    variables: {
-      sort: {
-        field: 'type',
-        order: 'DESC',
-      },
-    },
   });
-
-  // Initialise mutation functions.
-  const [createPostMutation, { loading: createLoading }] =
-    useMutation(CREATE_POST_QUERY);
-  const [updatePostMutation, { loading: updateLoading }] =
-    useMutation(UPDATE_POST_QUERY);
-
-  // Determine operation type.
-  const isCreateOperation = operation === Operation.CREATE;
+  const [isRequestPending, setRequestPending] = useState(false);
 
   // Determine if post is being published.
-  let isPublish = false;
-  if (isCreateOperation) {
-    isPublish = PostStatic.isPublish(clientPost);
-  } else {
-    isPublish =
-      !PostStatic.isPublish(serverPost) && PostStatic.isPublish(clientPost);
-  }
+  const isPublish = PostStatic.isPublish(post);
 
-  /** Populate the form with post details. */
-  const populateForm = (): void => {
-    if (isCreateOperation) return;
-
-    const image: PostImage = {
-      source: serverPost.image as string,
-      hasChanged: false,
-    };
-
-    // Transform array of images into map values.
-    let contentImages: PostContentImageMapping = {};
-    try {
-      const medium = serverPost.contentImages as string[];
-      medium.forEach((value: string, i: number) => {
-        contentImages[`image${i}`] = {
-          source: value,
-          hasChanged: false,
-        } as PostImage;
-      });
-    } catch {
-      contentImages = {};
-    }
-
-    const postWithImages = Object.assign({}, serverPost, {
-      image,
-      contentImages,
-    });
-    setPost(postWithImages);
-  };
-
-  /** Populate the form with post details. */
-  const loadDomains = (): void => {
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
-
-    const domainList = data.getAllPosts.map(
-      ({ id, title, type, status, datePublished }: PostDAO) => {
-        return {
-          value: id,
-          label: `${type}: ${title}`,
-          type,
-          status,
-          datePublished: new Date(parseInt(datePublished as string)),
-        };
-      },
-    );
-
-    setDomains(domainList);
-  };
-
-  const onTypeChange = (e: ReactSelectChangeEvent): void => {
-    const selectedType = e.target.value;
+  function onTypeChange(e: ReactSelectChangeEvent) {
+    const selectedType = e.target.value as PostType;
     const postsOfType = domains.filter(({ type, status }) => {
       return selectedType === type && status != PostStatus.DRAFT;
     });
     const newTypeId = postsOfType.length + 1;
-    const typeId = !PostStatic.isDraft(clientPost) ? newTypeId : null;
+    const typeId = PostStatic.isDraft(post) ? undefined : newTypeId;
 
-    setPost(
-      Object.assign({}, clientPost, {
-        type: selectedType,
-        typeId,
-      }),
-    );
-  };
+    setPost({
+      ...post,
+      type: selectedType,
+      typeId,
+    });
+  }
 
-  const onStatusChange = (e: ReactSelectChangeEvent): void => {
-    const selectedStatus = e.target.value;
+  function onStatusChange(e: ReactSelectChangeEvent) {
+    const selectedStatus = e.target.value as PostStatus;
     const postsOfType = domains.filter(({ type, status }) => {
-      return clientPost.type === type && status != PostStatus.DRAFT;
+      return post.type === type && status != PostStatus.DRAFT;
     });
     const newTypeId = postsOfType.length + 1;
-    const typeId = selectedStatus !== PostStatus.DRAFT ? newTypeId : null;
+    const typeId = selectedStatus === PostStatus.DRAFT ? undefined : newTypeId;
 
-    setPost(
-      Object.assign({}, clientPost, {
-        status: selectedStatus,
-        typeId,
-      }),
-    );
-  };
-
-  useEffect(() => {
-    populateForm();
-    setLoaded(true);
-  }, [isLoaded]);
-
-  useEffect(() => {
-    loadDomains();
-  }, [queryLoading]);
-
-  useEffect(() => {
-    setRequestPending(createLoading || updateLoading);
-  }, [createLoading, updateLoading]);
+    setPost({
+      ...post,
+      status: selectedStatus,
+      typeId,
+    });
+  }
 
   /** Create new post on server. */
-  const submitPost = async (): Promise<void> => {
-    if (!isValidPost(clientPost)) return;
-
-    const variables = buildPayload(clientPost, isPublish, true);
-
+  async function submitPost() {
     try {
-      await createPostMutation({ variables });
+      setRequestPending(true);
+      validatePost(post);
+
+      const payload = buildPayload(post, isPublish, true);
+      await Utils.request('/api/posts', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
       setAlert({
         type: AlertType.SUCCESS,
-        message: `You've successfully added the new post titled "${clientPost.title}".`,
+        message: `You've successfully added the new post titled "${post.title}".`,
       });
       returnToPostAdmin();
-    } catch (err) {
-      reportError(err as Error);
+    } catch (e: any) {
+      reportError(e.message, e instanceof UIError);
+    } finally {
+      setRequestPending(false);
     }
-  };
+  }
 
-  /** Update post on server. */
-  const updatePost = async (): Promise<void> => {
-    if (!isValidPost(clientPost)) return;
-
-    const variables = buildPayload(clientPost, isPublish, false);
-
-    try {
-      await updatePostMutation({ variables });
-      setAlert({
-        type: AlertType.SUCCESS,
-        message: `You've successfully updated "${clientPost.title}".`,
-      });
-      returnAfterUpdate(clientPost);
-    } catch (err) {
-      reportError(err as Error);
-    }
-  };
+  function returnToPostAdmin() {
+    void router.push('/admin/posts');
+  }
 
   return (
-    <PostForm
-      post={clientPost}
-      domains={domains}
-      isCreateOperation={isCreateOperation}
-      handlers={{ ...hooks(setPost, clientPost), onTypeChange, onStatusChange }}
-      confirmFunction={isCreateOperation ? submitPost : updatePost}
-      confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
-      cancelFunction={returnToPostAdmin}
-      isRequestPending={isRequestPending}
-    />
+    <React.Fragment>
+      <PageMetadata {...pathDefinition} />
+      <PostForm
+        post={post}
+        domains={domains}
+        isCreateOperation={true}
+        handlers={{ ...hooks(setPost, post), onTypeChange, onStatusChange }}
+        confirmFunction={submitPost}
+        confirmButtonText={'Submit'}
+        cancelFunction={returnToPostAdmin}
+        isRequestPending={isRequestPending}
+      />
+    </React.Fragment>
   );
+};
+
+export const getServerSideProps: GetServerSideProps<
+  PostAddProps
+> = async () => {
+  const domains = (
+    await getAllPosts({
+      sort: {
+        field: 'type',
+        order: 'DESC',
+      },
+    })
+  ).map(({ id, title, type, status }: PostDAO) => {
+    return {
+      value: id!.toString(),
+      label: `${type}: ${title}`,
+      type,
+      status,
+    };
+  });
+
+  return {
+    props: {
+      pathDefinition: {
+        title: `Add New Diary Entry`,
+      },
+      pageProps: {
+        domains,
+      },
+    },
+  };
+};
+
+export default PostAdd;
+
+interface PostAddProps {
+  pathDefinition: PathDefinition;
+  pageProps: {
+    domains: (PostDAO & SelectItem)[];
+  };
 }
-
-const buildPayload = (
-  clientPost: PostDAO,
-  isPublish: boolean,
-  isCreateOperation: boolean,
-): PostRequest => {
-  const {
-    id,
-    title,
-    content,
-    type,
-    typeId,
-    excerpt,
-    image,
-    contentImages,
-    status,
-    datePublished,
-    domainId,
-  } = clientPost;
-
-  const post = new PostBuilder()
-    .withTitle(title)
-    .withType(type)
-    .withTypeId(typeId)
-    .withContent(content)
-    .withStatus(status)
-    .withImage(image)
-    .withExcerpt(excerpt);
-
-  if (contentImages?.length) {
-    post.withContentImages(Object.values(contentImages));
-  }
-
-  if (PostStatic.isPublish(clientPost)) {
-    post.withDatePublished(zDate.formatISODate(datePublished!));
-  }
-
-  if (PostStatic.isPage(clientPost)) {
-    post.withDomain(domainId);
-  }
-
-  const payload: PostRequest = { post: post.build(), isPublish, isTest: true };
-  if (!isCreateOperation) {
-    payload.id = id;
-  }
-
-  return payload;
-};
-
-/** Return to the admin page. */
-const returnToPostAdmin = (): void => {
-  location.href = '/admin/posts';
-};
-
-const returnAfterUpdate = (post: PostDAO) => {
-  const url = new URLBuilder();
-  url.append(domain);
-
-  if (PostStatic.isPage(post)) {
-    const base = PostStatic.getDirectory(post.domainType!);
-    url.appendSegment(base);
-    url.appendSegment(post.domainSlug!);
-    url.appendSegment(post.slug!);
-  } else {
-    const base = PostStatic.getDirectory(post.type!);
-    url.appendSegment(base);
-    url.appendSegment(post.slug!);
-  }
-
-  const postUrl = url.build();
-
-  if (document.referrer === postUrl) {
-    location.href = postUrl;
-  } else {
-    returnToPostAdmin();
-  }
-};
-
-PostCrud.getInitialProps = async ({ query }: NextPageContext) => {
-  const post = DAOParse<PostDAO>(query.post);
-  const operation = query.operation as Operation;
-  return { post, operation };
-};
-
-export default PostCrud;

@@ -78,12 +78,20 @@ export async function getDiaryEntryByNumber(number: number) {
   };
 }
 
+export async function getLatestDiaryEntry(): Promise<DiaryDAO> {
+  const [latestDiaryEntry] = await new DiaryQueryBuilder(knex)
+    .whereStatus({ include: [DiaryStatus.PUBLISHED] })
+    .getLatestEntry()
+    .build();
+  return latestDiaryEntry;
+}
+
 /**
  * Inserts a new diary entry into the database.
  * @param option.diaryEntry - The diary entry object to be inserted.
  * @param option.isPublish - Indicates if a publish operation.
  */
-export async function createDiaryEntry({
+async function createDiaryEntry({
   diaryEntry,
   isPublish,
 }: CreateDiaryEntryPayload): Promise<void> {
@@ -96,7 +104,7 @@ export async function createDiaryEntry({
   }
 }
 
-export async function updateDiaryEntry({
+async function updateDiaryEntry({
   id,
   diaryEntry,
   isPublish,
@@ -110,16 +118,8 @@ export async function updateDiaryEntry({
   }
 }
 
-export async function deleteDiaryEntry({ id }: DeleteDiaryEntryPayload) {
+async function deleteDiaryEntry({ id }: DeleteDiaryEntryPayload) {
   await new DiaryMutationBuilder(knex).delete(id).build();
-}
-
-export async function getLatestDiaryEntry(): Promise<DiaryDAO> {
-  const [latestDiaryEntry] = await new DiaryQueryBuilder(knex)
-    .whereStatus({ include: [DiaryStatus.PUBLISHED] })
-    .getLatestEntry()
-    .build();
-  return latestDiaryEntry;
 }
 
 export interface GetAllDiaryOptions {
