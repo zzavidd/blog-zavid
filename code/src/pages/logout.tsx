@@ -5,7 +5,7 @@ import { domain } from 'constants/settings';
 
 // eslint-disable-next-line react/function-component-definition
 const Logout: NextPage = () => {
-  signOut({ callbackUrl: domain });
+  void signOut({ callbackUrl: domain });
   return null;
 };
 
