@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 
 import type { FilterThemeOption, ThemeOption } from 'classes';
 import { FilterShape, FilterShapeOption, Theme } from 'classes';
+import { domain } from 'constants/settings';
 
 const constants = {
   [FilterShapeOption.SQUARE]: {
@@ -89,7 +90,7 @@ export function createCanvasFromContent(
 
   if (ctx !== null) {
     const bgImage = new Image();
-    bgImage.src = `/images/filters/${shape}/${colour}`;
+    bgImage.src = `${domain}/images/filters/${shape}-${colour}.jpg`;
     bgImage.onload = () => {
       const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
 

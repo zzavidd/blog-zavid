@@ -73,12 +73,12 @@ const DiaryEntryPage: NextPage<DiaryEntryPageProps> = ({
           <Timeline
             type={TimelineType.DIARY}
             previous={{
-              slug: previousDiaryEntry.entryNumber?.toString(),
-              label: `Diary Entry #${previousDiaryEntry.entryNumber}: ${previousDiaryEntry.title}`,
+              slug: previousDiaryEntry?.entryNumber?.toString(),
+              label: `Diary Entry #${previousDiaryEntry?.entryNumber}: ${previousDiaryEntry?.title}`,
             }}
             next={{
-              slug: nextDiaryEntry.entryNumber?.toString(),
-              label: `Diary Entry #${nextDiaryEntry.entryNumber}: ${nextDiaryEntry.title}`,
+              slug: nextDiaryEntry?.entryNumber?.toString(),
+              label: `Diary Entry #${nextDiaryEntry?.entryNumber}: ${nextDiaryEntry?.title}`,
             }}
           />
           <Divider />
