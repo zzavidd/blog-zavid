@@ -10,7 +10,7 @@ import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import { VanillaLink } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
-import * as Util from 'constants/utils';
+import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import {
   Icon,
@@ -34,7 +34,7 @@ const DiaryAdmin: NextPage<DiaryAdminProps> = ({
     const { id, date } = selectedDiaryEntry;
 
     try {
-      await Util.request('/api/diary', {
+      await Utils.request('/api/diary', {
         method: 'DELETE',
         body: JSON.stringify({ id }),
       });

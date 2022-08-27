@@ -28,7 +28,7 @@ function Tabler<L extends number>({
     <zComponents.Tabler<L>
       heading={heading}
       itemsLoaded={itemsLoaded}
-      emptyMessage={'No diary entries found.'}
+      emptyMessage={'No entries found.'}
       columns={columns}
       items={items}
       distribution={distribution}

@@ -10,7 +10,7 @@ import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Divider, Paragraph, Title } from 'components/text';
 import Timeline, { TimelineType } from 'components/timeline';
-import { isAuthenticated } from 'lib/cookies';
+import AdminLock from 'fragments/AdminLock';
 import { CuratePrompt } from 'lib/pages/posts/prompt';
 import css from 'styles/pages/Posts.module.scss';
 
@@ -78,11 +78,11 @@ export default function PostTemplatePage({
         </div>
         <Toolbar spaceItems={true} hasBackButton={true}>
           <BackButton post={post} />
-          {isAuthenticated() && (
+          <AdminLock>
             <AdminButton onClick={() => navigateToEdit(post.id!)}>
               Edit {post.type}
             </AdminButton>
-          )}
+          </AdminLock>
         </Toolbar>
       </Spacer>
       <Curator

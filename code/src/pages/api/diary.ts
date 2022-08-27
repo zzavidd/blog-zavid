@@ -123,7 +123,7 @@ export async function getLatestDiaryEntry(): Promise<DiaryDAO> {
 }
 
 export interface GetAllDiaryOptions {
-  sort?: QuerySort;
+  sort?: QuerySort<DiaryDAO>;
   status?: DiaryStatusFilters;
   onlyFavourites?: boolean;
 }

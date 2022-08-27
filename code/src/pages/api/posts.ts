@@ -7,6 +7,7 @@ import type {
   QuerySort,
 } from 'classes';
 import {
+  PostMutationBuilder,
   QueryOrder,
   PostStatus,
   PostQueryBuilder,
@@ -15,17 +16,32 @@ import {
 } from 'classes';
 import { knex } from 'constants/knex';
 import { siteTitle } from 'constants/settings';
+import * as Filer from 'private/filer';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>,
 ): Promise<void> {
-  if (req.method === 'GET') {
-    const params = JSON.parse(req.query.params as string);
-    const json = await getAllPosts(params);
-    res.json(json);
-  } else {
-    res.send(405);
+  try {
+    switch (req.method) {
+      // case 'POST': {
+      //   await createDiaryEntry(req.body);
+      //   return res.send(201);
+      // }
+      // case 'PUT': {
+      //   await updateDiaryEntry(req.body);
+      //   return res.send(200);
+      // }
+      case 'DELETE': {
+        await deletePost(req.body);
+        return res.send(204);
+      }
+      default: {
+        res.send(405);
+      }
+    }
+  } catch {
+    res.send(400);
   }
 }
 
@@ -79,13 +95,6 @@ export async function getPost(
     .whereStatus(statusFilters)
     .build();
 
-  // const isUnauthorized =
-  //   PostStatic.isProtected(reverie) && !req.isAuthenticated();
-
-  // if (!reverie || isUnauthorized) {
-  //   return next(ERRORS.NO_ENTITY('reverie'));
-  // }
-
   const [[previousPost], [nextPost]] = await Promise.all([
     new PostQueryBuilder(knex)
       .getPreviousPost(currentPost.typeId!, currentPost.type!)
@@ -131,12 +140,19 @@ export async function getRandomPosts({
   return randomPosts;
 }
 
+export async function deletePost({ id }: DeletePostOptions) {
+  const [post] = await new PostQueryBuilder(knex).whereId(id).build();
+  const promises = PostStatic.collateImages(post).map(Filer.destroyImage);
+  await Promise.all(promises);
+  await new PostMutationBuilder(knex).delete(id).build();
+}
+
 interface RandomPostOptions {
   exceptId?: number;
 }
 
 export interface GetAllPostOptions {
-  sort: QuerySort;
+  sort: QuerySort<PostDAO>;
   status: PostStatusFilters;
   type: PostTypeFilters;
   limit?: number;
@@ -145,4 +161,8 @@ export interface GetAllPostOptions {
 export interface GetPostOptions {
   status: PostStatusFilters;
   type: PostType;
+}
+
+interface DeletePostOptions {
+  id: number;
 }

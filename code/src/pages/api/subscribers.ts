@@ -8,7 +8,6 @@ import {
   SubscriberStatic,
 } from 'classes';
 import { knex } from 'constants/knex';
-import { debug } from 'private/error';
 
 export default async function handler(
   req: NextApiRequest,
@@ -52,8 +51,8 @@ export async function getAllSubscribers(
       .withOrder(sort)
       .build();
     return subscribers.map(SubscriberStatic.parse);
-  } catch (e) {
-    debug(e);
+  } catch (e: any) {
+    throw new Error(e.message);
   }
 }
 
@@ -103,5 +102,5 @@ export async function deleteSubscriber(id: number) {
 }
 
 export interface GetAllSubscriberOptions {
-  sort?: QuerySort;
+  sort?: QuerySort<SubscriberDAO>;
 }

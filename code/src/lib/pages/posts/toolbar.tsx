@@ -8,7 +8,7 @@ import type { SelectProps } from 'components/form';
 import { Field, FieldRow, Select } from 'components/form';
 import { Toolbar, ToolbarToggle } from 'components/layout';
 import { Icon, Responsive } from 'lib/library';
-import type { PostFiltersState } from 'lib/reducers';
+import type { PostFiltersOptions } from 'lib/reducers';
 import css from 'styles/pages/Posts.module.scss';
 
 const sortOptions = [
@@ -80,12 +80,13 @@ export default function ({ options, handleOptionSelection }: Toolbar) {
 }
 
 const toolbarWidgets = (
-  options: PostFiltersState,
+  options: PostFiltersOptions,
   handleOptionSelection: (event: ReactSelectChangeEvent) => void,
 ) => {
   const navigateToCreateForm = () => {
     location.href = '/admin/posts/add';
   };
+
   return {
     ADD_BUTTON: (
       <AdminButton onClick={navigateToCreateForm}>Add New Post</AdminButton>
@@ -146,6 +147,6 @@ function FilterDropdown(props: SelectProps) {
 }
 
 interface Toolbar {
-  options: PostFiltersState;
+  options: PostFiltersOptions;
   handleOptionSelection: (event: ReactSelectChangeEvent) => void;
 }

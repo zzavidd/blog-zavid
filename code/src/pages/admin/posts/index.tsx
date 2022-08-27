@@ -1,15 +1,9 @@
-import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
-import type { NextPageContext } from 'next';
-import {
-  DELETE_POST_QUERY,
-  GET_POSTS_QUERY,
-} from 'private/api/queries/post.queries';
-import React, { useEffect, useState } from 'react';
-import type { RootStateOrAny } from 'react-redux';
-import { useDispatch, useSelector } from 'react-redux';
+import type { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import { zText } from 'zavid-modules';
 
-import type { PostDAO, ReactHook, ReactSelectChangeEvent } from 'classes';
+import type { PostDAO, PostStatus, PostType, ReactHook } from 'classes';
 import { EditButton, PostStatic, URLBuilder } from 'classes';
 import { alert, reportError } from 'components/alert';
 import { InvisibleButton } from 'components/button';
@@ -17,6 +11,10 @@ import CloudImage from 'components/image';
 import { Spacer } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import { VanillaLink } from 'components/text';
+import type { PathDefinition } from 'constants/paths';
+import { domain } from 'constants/settings';
+import * as Utils from 'constants/utils';
+import PageMetadata from 'fragments/PageMetadata';
 import {
   Icon,
   Tabler,
@@ -25,80 +23,57 @@ import {
   TablerItemCell,
 } from 'lib/library';
 import BottomToolbar from 'lib/pages/posts/toolbar';
-import { updatePostFilterSettings } from 'lib/reducers';
+import { getAllPostsSSR } from 'pages/api/posts';
 import css from 'styles/pages/Posts.module.scss';
 
-function PostAdmin() {
-  const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState({} as PostDAO);
-  const [isLoaded, setLoaded] = useState(false);
+// eslint-disable-next-line react/function-component-definition
+const PostsAdmin: NextPage<PostsAdminProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
+  const { posts, filterOptions } = pageProps;
+  const router = useRouter();
+
+  const [selectedPost, setSelectedPost] = useState<PostDAO>({});
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
-  const dispatch = useDispatch();
-  const options = useSelector(
-    ({ postFilterOptions }: RootStateOrAny) => postFilterOptions,
-  );
-
-  const handleOptionSelection = (event: ReactSelectChangeEvent) => {
-    const { name, value } = event.target;
-    dispatch(updatePostFilterSettings({ [name]: value }));
-  };
-
-  const {
-    data,
-    error: queryError,
-    loading: queryLoading,
-    refetch,
-    networkStatus,
-  } = useQuery(GET_POSTS_QUERY, {
-    variables: {
-      limit: parseInt(options.limit),
-      sort: {
-        field: options.field || null,
-        order: options.order,
-      },
-      type: {
-        include: options.type ? [options.type] : [],
-      },
-      status: {
-        include: options.status ? [options.status] : [],
-      },
-    },
-    errorPolicy: 'all',
-    notifyOnNetworkStatusChange: true,
-  });
-  const [deletePostMutation] = useMutation(DELETE_POST_QUERY);
-
-  useEffect(() => {
-    if (networkStatus === NetworkStatus.refetch) return;
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
-
-    const { getAllPosts: postList = [] } = data;
-    setPosts(postList);
-    setLoaded(true);
-  }, [queryLoading, options, networkStatus]);
-
-  const deletePost = () => {
+  /**
+   * Deletes a post.
+   */
+  async function deletePost() {
     const { id, title }: PostDAO = selectedPost;
-    Promise.resolve()
-      .then(() => deletePostMutation({ variables: { id } }))
-      .then(() => {
-        alert.success(`You've deleted ${title}.`);
-        setDeleteModalVisibility(false);
-        refetch();
-      })
-      .catch(reportError);
-  };
+
+    try {
+      await Utils.request('/api/posts', {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+      });
+      alert.success(`You've deleted ${title}.`);
+      router.reload();
+      setDeleteModalVisibility(false);
+    } catch (e: any) {
+      reportError(e.message);
+    }
+  }
+
+  function onFilterOptionChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const { name, value } = event.target;
+    const url = new URL(router.asPath, domain);
+    if (value) {
+      url.searchParams.set(name, value);
+    } else {
+      url.searchParams.delete(name);
+    }
+    void router.push(url.href);
+  }
 
   return (
     <React.Fragment>
+      <PageMetadata {...pathDefinition} />
       <Spacer>
         <Tabler<9>
           heading={'List of Posts'}
-          itemsLoaded={
-            isLoaded && !queryLoading && networkStatus !== NetworkStatus.refetch
-          }
+          itemsLoaded={true}
           emptyMessage={'No posts found.'}
           columns={[
             new TablerColumnHeader('#', { centerAlign: true }),
@@ -164,8 +139,8 @@ function PostAdmin() {
           ]}
         />
         <BottomToolbar
-          options={options}
-          handleOptionSelection={handleOptionSelection}
+          options={filterOptions}
+          handleOptionSelection={onFilterOptionChange}
         />
       </Spacer>
       <ConfirmModal
@@ -177,7 +152,7 @@ function PostAdmin() {
       />
     </React.Fragment>
   );
-}
+};
 
 function LinkButton({ post }: LinkButton) {
   if (!post.slug) return null;
@@ -234,11 +209,49 @@ function DeleteButton({
   );
 }
 
-PostAdmin.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async (
+  ctx,
+) => {
+  const filterOptions = ctx.query as Record<string, string>;
+  const { limit, field = 'createTime', order, type, status } = filterOptions;
+  const posts: PostDAO[] = JSON.parse(
+    await getAllPostsSSR({
+      limit: parseInt(limit),
+      sort: {
+        field: field as keyof PostDAO,
+        order,
+      },
+      type: {
+        include: type ? [type as PostType] : [],
+      },
+      status: {
+        include: status ? [status as PostStatus] : [],
+      },
+    }),
+  );
+
+  return {
+    props: {
+      pathDefinition: {
+        title: `List of Posts`,
+      },
+      pageProps: {
+        posts,
+        filterOptions,
+      },
+    },
+  };
 };
 
-export default PostAdmin;
+export default PostsAdmin;
+
+interface PostsAdminProps {
+  pathDefinition: PathDefinition;
+  pageProps: {
+    posts: PostDAO[];
+    filterOptions: Record<string, string>;
+  };
+}
 
 interface LinkButton {
   post: PostDAO;

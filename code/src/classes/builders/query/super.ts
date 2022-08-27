@@ -34,7 +34,7 @@ export class QueryBuilder<T extends GenericDAO> {
    * Enables sorting or randomising of the results.
    */
   public withOrder(
-    sort: QuerySort = {},
+    sort: QuerySort<T> = {},
     options: QuerySortOptions = {},
   ): QueryBuilder<T> {
     let { order } = sort;
@@ -48,14 +48,18 @@ export class QueryBuilder<T extends GenericDAO> {
     } else if (field) {
       if (forStringsWithNumbers) {
         const cases = [
-          `CAST((REGEXP_REPLACE(${this.table}.${field}, "[^0-9]+", '')) AS SIGNED) ${order}`,
-          `REGEXP_REPLACE(${this.table}.${field}, "[^a-z0-9]+", '') ${order}`,
+          `CAST((REGEXP_REPLACE(${
+            this.table
+          }.${field.toString()}, "[^0-9]+", '')) AS SIGNED) ${order}`,
+          `REGEXP_REPLACE(${
+            this.table
+          }.${field.toString()}, "[^a-z0-9]+", '') ${order}`,
         ];
         this.query = (this.query.orderByRaw as Knex.RawQueryBuilder)(
           cases.join(', '),
         );
       } else {
-        void this.query.orderBy(`${this.table}.${field}`, order);
+        void this.query.orderBy(`${this.table}.${field.toString()}`, order);
       }
     }
     return this;
@@ -107,8 +111,8 @@ export class MutationBuilder<T> extends QueryBuilder<T> {
     return this;
   }
 }
-export interface QuerySort {
-  field?: string;
+export interface QuerySort<T extends GenericDAO> {
+  field?: keyof T;
   order?: string;
 }
 
