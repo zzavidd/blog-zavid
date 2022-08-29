@@ -3,7 +3,7 @@
 sessions/
 **/dist/
 
-**/.env*
+**/*.env*
 **/.eslintcache
 **/.tsbuildinfo
 

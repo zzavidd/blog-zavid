@@ -2,14 +2,12 @@
 
 set -e
 
-source ../.env
+source ../credentials.env
 source ./utils.sh
 
 CODE_DIR="../../code"
 
-for domain in zavid dev.zavid; do
-  scp \
-    "$CODE_DIR/.env" \
-    "$CODE_DIR/.env.local" \
-    "$SSH_USER"@"$SSH_ADDRESS":"/var/www/$domain/code"
-done
+scp "$CODE_DIR/.env" "$SSH_USER"@"$SSH_ADDRESS":"/var/www/dev.zavid/code"
+scp "$CODE_DIR/.env" "$SSH_USER"@"$SSH_ADDRESS":"/var/www/zavid/code"
+echo "NEXTAUTH_URL=https://dev.zavidegbue.com" | ssh "$SSH_USER"@"$SSH_ADDRESS" 'cat > /var/www/dev.zavid/code/.env.local'
+echo "NEXTAUTH_URL=https://zavidegbue.com" | ssh "$SSH_USER"@"$SSH_ADDRESS" 'cat > /var/www/zavid/code/.env.local'
