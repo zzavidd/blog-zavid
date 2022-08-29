@@ -87,20 +87,19 @@ jobs:
       - transfer_scripts:
           mode: production
 
-
-omit_production: &omit_production
-  filters:
-    branches:
-      ignore:
-        - production
-
 workflows:
   inspect_test_deploy:
     jobs:
-      - inspect: 
-          <<: *omit_production
+      - inspect:
+          filters:
+            branches:
+              ignore:
+                - production
       - build:
-          <<: *omit_production
+          filters:
+            branches:
+              ignore:
+                - production
       - deploy_staging:
           requires:
             - inspect
@@ -110,4 +109,7 @@ workflows:
               only:
                 - main
       - deploy_prod:
-          <<: *omit_production
+          filters:
+            branches:
+              only:
+                - production
