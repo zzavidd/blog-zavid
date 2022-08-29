@@ -8,14 +8,14 @@ import type {
 } from 'classes';
 import {
   PostMutationBuilder,
-  QueryOrder,
-  PostStatus,
   PostQueryBuilder,
   PostStatic,
+  PostStatus,
   PostType,
+  QueryOrder,
 } from 'classes';
 import { knex } from 'constants/knex';
-import { EMAILS_ON, siteTitle } from 'constants/settings';
+import { EMAILS_ON } from 'constants/settings';
 import * as Emails from 'private/emails';
 import * as Filer from 'private/filer';
 
@@ -68,21 +68,9 @@ export async function getAllPosts({
   return posts.map((post: PostDAO) => PostStatic.parse(post));
 }
 
-export async function getPostSSR(
-  slug: string,
-  type: PostType,
-  statusFilters: PostStatusFilters,
-) {
-  const posts = await getPost(slug, type, statusFilters);
-  return JSON.stringify({
-    pathDefinition: {
-      title: `${posts.current.title} | ${siteTitle}`,
-      description: JSON.stringify(posts.current.excerpt),
-      url: `/reveries/${slug}`,
-      cardImage: JSON.stringify(posts.current.image),
-    },
-    pageProps: posts,
-  });
+export async function getPostSSR(payload: GetPostPayload) {
+  const posts = await getPost(payload);
+  return JSON.stringify(posts);
 }
 
 export async function getPostByIdSSR(id: number) {
@@ -114,11 +102,7 @@ export async function getDomains() {
   return domains;
 }
 
-export async function getPost(
-  slug: string,
-  type: PostType,
-  statusFilters: PostStatusFilters,
-) {
+export async function getPost({ slug, type, statusFilters }: GetPostPayload) {
   const [currentPost] = await new PostQueryBuilder(knex)
     .whereSlug(slug)
     .whereType({ include: [type] })
@@ -213,9 +197,10 @@ export interface GetAllPostOptions {
   limit?: number;
 }
 
-export interface GetPostOptions {
-  status: PostStatusFilters;
+export interface GetPostPayload {
+  slug: string;
   type: PostType;
+  statusFilters: PostStatusFilters;
 }
 
 interface CreatePostPayload {

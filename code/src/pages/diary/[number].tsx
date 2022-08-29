@@ -1,5 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import { getSession } from 'next-auth/react';
+import { unstable_getServerSession } from 'next-auth';
 import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
@@ -20,6 +20,7 @@ import PageMetadata from 'fragments/PageMetadata';
 import { Icon } from 'lib/library';
 import TagBlock from 'lib/pages/diary/tags';
 import { CuratePrompt } from 'lib/pages/posts/prompt';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import css from 'styles/pages/Posts.module.scss';
 
 import { getDiaryEntryByNumberSSR } from '../api/diary';
@@ -137,12 +138,12 @@ const navigateToEdit = (id: number): void => {
 
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryPageProps
-> = async ({ query }) => {
+> = async ({ query, req, res }) => {
   try {
     const number = parseInt(query.number as string);
     const diaryTrio = JSON.parse(await getDiaryEntryByNumberSSR(number));
 
-    const session = await getSession();
+    const session = await unstable_getServerSession(req, res, nextAuthOptions);
     if (!session && DiaryStatic.isProtected(diaryTrio.current)) {
       throw new Error('No diary entry found');
     }
