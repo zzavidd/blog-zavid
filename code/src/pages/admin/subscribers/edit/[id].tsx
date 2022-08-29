@@ -1,135 +1,89 @@
-import { DAOParse } from 'lib/parser';
-import type { NextPageContext } from 'next';
-import React, { useEffect, useState } from 'react';
+import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
-import type {
-  SubscriberDAO,
-  SubscriberPayload,
-  SubscriptionsMapping,
-} from 'classes';
-import { Operation, SubscriberBuilder, SubscriberStatic } from 'classes';
-import { setAlert, reportError, alert, AlertType } from 'components/alert';
+import type { SubscriberDAO } from 'classes';
+import { AlertType, reportError, setAlert } from 'components/alert';
+import type { PathDefinition } from 'constants/paths';
+import * as Utils from 'constants/utils';
+import PageMetadata from 'fragments/PageMetadata';
+import SubscriberForm, {
+  buildPayload,
+} from 'fragments/subscribers/SubscriberForm';
+import { UIError } from 'lib/errors';
 import hooks from 'lib/hooks';
-import SubscriberForm from 'lib/pages/subscribers/form';
 import { checkValidSubscriber } from 'lib/validations';
+import { getSubscriberByIdSSR } from 'pages/api/subscribers';
 
-function SubscriberCrud({
-  subscriber: serverSubscriber,
-  operation,
-}: SubscriberCrud) {
-  const [clientSubscriber, setSubscriber] = useState({
-    id: 0,
-    email: '',
-    firstname: '',
-    lastname: '',
-  } as SubscriberDAO);
-  const [preferences, setPreferences] = useState(
-    SubscriberStatic.defaultSubscriptions(),
-  );
+function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {
+  const { subscriber: serverSubscriber } = pageProps;
+  const [clientSubscriber, setSubscriber] =
+    useState<SubscriberDAO>(serverSubscriber);
   const [isRequestPending, setRequestPending] = useState(false);
 
-  // Determine operation type.
-  const isCreateOperation = operation === Operation.CREATE;
-
-  /** Populate the form with subscriber details. */
-  const populateForm = () => {
-    if (isCreateOperation) return;
-    setSubscriber(serverSubscriber);
-    setPreferences(serverSubscriber.subscriptions as SubscriptionsMapping);
-  };
-
-  useEffect(() => {
-    populateForm();
-    setLoaded(true);
-  }, [isLoaded]);
-
-  useEffect(() => {
-    setRequestPending(createLoading || updateLoading);
-  }, [createLoading, updateLoading]);
-
-  /** Create new subscriber on server. */
-  const submitSubscriber = () => {
-    if (!checkValidSubscriber(clientSubscriber, true)) return false;
-
-    const variables = buildPayload(clientSubscriber, preferences, true);
-    Promise.resolve()
-      .then(() => createSubscriberMutation({ variables }))
-      .then(() => {
-        alert.success(`You've successfully added a new subscriber.`);
-        clearSubscriberForm();
-      })
-      .catch(reportError);
-  };
+  const router = useRouter();
 
   /** Update subscriber on server. */
-  const updateSubscriber = () => {
-    if (!checkValidSubscriber(clientSubscriber)) return false;
+  async function updateSubscriber() {
+    try {
+      checkValidSubscriber(clientSubscriber, true);
+      setRequestPending(true);
 
-    const variables = buildPayload(clientSubscriber, preferences, false);
-    Promise.resolve()
-      .then(() => updateSubscriberMutation({ variables }))
-      .then(() => {
-        setAlert({
-          type: AlertType.SUCCESS,
-          message: `You've successfully updated the subscriber with email: ${clientSubscriber.email}.`,
-        });
-        returnToSubscriberAdmin();
-      })
-      .catch(reportError);
-  };
+      const payload = buildPayload(clientSubscriber, false);
+      await Utils.request('/api/subscribers', {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      });
+      setAlert({
+        type: AlertType.SUCCESS,
+        message: `You've successfully updated the subscriber with email: ${clientSubscriber.email}.`,
+      });
+      returnToAdmin();
+    } catch (e: any) {
+      reportError(e.message, e instanceof UIError);
+    } finally {
+      setRequestPending(false);
+    }
+  }
 
-  const clearSubscriberForm = () => {
-    setSubscriber({ email: '', firstname: '', lastname: '' });
-    setPreferences(SubscriberStatic.defaultSubscriptions());
-  };
+  function returnToAdmin() {
+    void router.push('/admin/subscribers');
+  }
 
   return (
-    <SubscriberForm
-      subscriber={clientSubscriber}
-      preferences={preferences}
-      handlers={{ ...hooks(setSubscriber, clientSubscriber), setPreferences }}
-      confirmFunction={isCreateOperation ? submitSubscriber : updateSubscriber}
-      confirmButtonText={isCreateOperation ? 'Submit' : 'Update'}
-      cancelFunction={returnToSubscriberAdmin}
-      isRequestPending={isRequestPending}
-    />
+    <React.Fragment>
+      <PageMetadata {...pathDefinition} />
+      <SubscriberForm
+        subscriber={clientSubscriber}
+        handlers={hooks(setSubscriber, clientSubscriber)}
+        confirmFunction={updateSubscriber}
+        confirmButtonText={'Update'}
+        cancelFunction={returnToAdmin}
+        isRequestPending={isRequestPending}
+      />
+    </React.Fragment>
   );
 }
 
-const buildPayload = (
-  clientSubscriber: SubscriberDAO,
-  subscriptions: SubscriptionsMapping,
-  isCreateOperation: boolean,
-): SubscriberPayload => {
-  const { id, email, firstname, lastname } = clientSubscriber;
-
-  const subscriber = new SubscriberBuilder()
-    .withEmail(email)
-    .withFirstName(firstname)
-    .withLastName(lastname)
-    .withSubscriptions(subscriptions)
-    .build();
-
-  const payload: SubscriberPayload = { subscriber };
-  if (!isCreateOperation) {
-    payload.id = id;
-  }
-
-  return payload;
+export const getServerSideProps: GetServerSideProps<
+  SubscriberEditProps
+> = async ({ query }) => {
+  const subscriber = JSON.parse(
+    await getSubscriberByIdSSR(parseInt(query.id as string)),
+  );
+  return {
+    props: {
+      pathDefinition: {
+        title: `Edit Subscriber`,
+      },
+      pageProps: {
+        subscriber,
+      },
+    },
+  };
 };
 
-/** Return to the admin page. */
-const returnToSubscriberAdmin = (): void => {
-  location.href = '/admin/subscribers';
-};
-
-SubscriberCrud.getInitialProps = async ({ query }: NextPageContext) => {
-  const subscriber = DAOParse<SubscriberDAO>(query.subscriber);
-  const operation = query.operation as Operation;
-  return { subscriber, operation };
-};
-
-export default SubscriberCrud;
+export default SubscriberEdit;
 
 interface SubscriberEditProps {
   pathDefinition: PathDefinition;

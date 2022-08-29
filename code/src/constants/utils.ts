@@ -8,5 +8,9 @@ export async function request(url: string, options: RequestInit) {
   if (!res.ok) {
     throw new Error(await res.text());
   }
+  if (res.status.toString().startsWith('4')) {
+    const { message } = await res.json();
+    throw new Error(message);
+  }
   return res;
 }

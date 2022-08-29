@@ -1,23 +1,22 @@
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-import type {
-  SubscriberDAO,
-  SubscriberPayload,
-  SubscriptionsMapping,
-} from 'classes';
-import { SubscriberBuilder, SubscriberStatic } from 'classes';
+import type { SubscriberDAO } from 'classes';
+import { SubscriberStatic } from 'classes';
 import { alert, reportError } from 'components/alert';
 import type { PathDefinition } from 'constants/paths';
 import * as Utils from 'constants/utils';
+import PageMetadata from 'fragments/PageMetadata';
+import SubscriberForm, {
+  buildPayload,
+} from 'fragments/subscribers/SubscriberForm';
 import { UIError } from 'lib/errors';
 import hooks from 'lib/hooks';
-import SubscriberForm from 'lib/pages/subscribers/form';
 import { checkValidSubscriber } from 'lib/validations';
 
 // eslint-disable-next-line react/function-component-definition
-const SubscriberAdd: NextPage<SubscriberAddProps> = () => {
+const SubscriberAdd: NextPage<SubscriberAddProps> = ({ pathDefinition }) => {
   const [clientSubscriber, setSubscriber] = useState<SubscriberDAO>({
     email: '',
     firstname: '',
@@ -32,6 +31,7 @@ const SubscriberAdd: NextPage<SubscriberAddProps> = () => {
   async function submitSubscriber() {
     try {
       checkValidSubscriber(clientSubscriber, true);
+      setRequestPending(true);
 
       const payload = buildPayload(clientSubscriber, true);
       await Utils.request('/api/subscribers', {
@@ -61,43 +61,34 @@ const SubscriberAdd: NextPage<SubscriberAddProps> = () => {
   }
 
   return (
-    <SubscriberForm
-      subscriber={clientSubscriber}
-      handlers={hooks(setSubscriber, clientSubscriber)}
-      confirmFunction={submitSubscriber}
-      confirmButtonText={'Submit'}
-      cancelFunction={returnToAdmin}
-      isRequestPending={isRequestPending}
-    />
+    <React.Fragment>
+      <PageMetadata {...pathDefinition} />
+      <SubscriberForm
+        subscriber={clientSubscriber}
+        handlers={hooks(setSubscriber, clientSubscriber)}
+        confirmFunction={submitSubscriber}
+        confirmButtonText={'Submit'}
+        cancelFunction={returnToAdmin}
+        isRequestPending={isRequestPending}
+      />
+    </React.Fragment>
   );
 };
 
-function buildPayload(
-  clientSubscriber: SubscriberDAO,
-  isCreateOperation: boolean,
-): SubscriberPayload {
-  const { id, email, firstname, lastname, subscriptions } = clientSubscriber;
-
-  const subscriber = new SubscriberBuilder()
-    .withEmail(email)
-    .withFirstName(firstname)
-    .withLastName(lastname)
-    .withSubscriptions(subscriptions as SubscriptionsMapping)
-    .build();
-
-  const payload: SubscriberPayload = { subscriber };
-  if (!isCreateOperation) {
-    payload.id = id;
-  }
-
-  return payload;
-}
+export const getServerSideProps: GetServerSideProps<
+  SubscriberAddProps
+> = async () => {
+  return {
+    props: {
+      pathDefinition: {
+        title: `Add New Subscriber`,
+      },
+    },
+  };
+};
 
 export default SubscriberAdd;
 
 interface SubscriberAddProps {
   pathDefinition: PathDefinition;
-  pageProps: {
-    subscriber: SubscriberDAO;
-  };
 }

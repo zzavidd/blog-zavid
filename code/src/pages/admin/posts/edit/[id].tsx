@@ -30,8 +30,8 @@ const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
   /** Update post on server. */
   const updatePost = async (): Promise<void> => {
     try {
-      setRequestPending(true);
       validatePost(clientPost);
+      setRequestPending(true);
 
       const payload = buildPayload(clientPost, isPublish, false);
       await Utils.request('/api/posts', {

@@ -13,26 +13,30 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>,
 ): Promise<void> {
-  switch (req.method) {
-    case 'GET': {
-      const json = await getAllSubscribers();
-      return res.json(json);
+  try {
+    switch (req.method) {
+      case 'GET': {
+        await getAllSubscribers();
+        return res.send(200);
+      }
+      case 'POST': {
+        await createSubscriber(req.body);
+        return res.send(201);
+      }
+      case 'PUT': {
+        await updateSubscriber(req.body);
+        return res.send(200);
+      }
+      case 'DELETE': {
+        await deleteSubscriber(req.body);
+        return res.send(204);
+      }
+      default: {
+        res.send(405);
+      }
     }
-    case 'POST': {
-      const json = await createSubscriber(req.body);
-      return res.json(json);
-    }
-    case 'PUT': {
-      const json = await updateSubscriber(req.body);
-      return res.json(json);
-    }
-    case 'DELETE': {
-      const json = await deleteSubscriber(req.body);
-      return res.json(json);
-    }
-    default: {
-      res.send(405);
-    }
+  } catch (e: any) {
+    res.status(400).json({ message: e.message });
   }
 }
 
@@ -70,18 +74,24 @@ export async function getSubscriberByToken(token: string) {
   return SubscriberStatic.parse(subscriber);
 }
 
+export async function getSubscriberByIdSSR(id: number) {
+  const [subscriber] = await new SubscriberQueryBuilder(knex)
+    .whereId(id)
+    .build();
+  return JSON.stringify(SubscriberStatic.parse(subscriber));
+}
+
 export async function createSubscriber({
   subscriber,
 }: CreateSubscriberPayload) {
   try {
-    const [id] = await new SubscriberMutationBuilder(knex)
+    await new SubscriberMutationBuilder(knex)
       .insert({
         ...subscriber,
         subscriptions: JSON.stringify(subscriber.subscriptions),
         token: uuidv4(),
       })
       .build();
-    return { id };
   } catch (e: any) {
     throw new Error(e.message);
   }
@@ -93,7 +103,10 @@ export async function updateSubscriber({
 }: UpdateSubscriberPayload) {
   try {
     await new SubscriberMutationBuilder(knex)
-      .update(subscriber)
+      .update({
+        ...subscriber,
+        subscriptions: JSON.stringify(subscriber.subscriptions),
+      })
       .whereId(id)
       .build();
   } catch (e: any) {

@@ -1,11 +1,16 @@
 import React from 'react';
 
-import type { SubscriberDAO, SubscriptionsMapping } from 'classes';
+import type {
+  SubscriberDAO,
+  SubscriberPayload,
+  SubscriptionsMapping,
+} from 'classes';
+import { SubscriberBuilder } from 'classes';
 import type { GenericFormProps } from 'classes/interfaces/super';
 import { Form, FieldRow, Field, Label, TextInput } from 'components/form';
 import type Handlers from 'lib/hooks';
 
-import SubscriptionPreferences from './preferences';
+import SubscriptionPreferences from '../../lib/pages/subscribers/preferences';
 
 export default function (props: SubscribeFormProps) {
   const { subscriber, handlers } = props;
@@ -62,6 +67,27 @@ export default function (props: SubscribeFormProps) {
       </FieldRow>
     </Form>
   );
+}
+
+export function buildPayload(
+  clientSubscriber: SubscriberDAO,
+  isCreateOperation: boolean,
+): SubscriberPayload {
+  const { id, email, firstname, lastname, subscriptions } = clientSubscriber;
+
+  const subscriber = new SubscriberBuilder()
+    .withEmail(email)
+    .withFirstName(firstname)
+    .withLastName(lastname)
+    .withSubscriptions(subscriptions as SubscriptionsMapping)
+    .build();
+
+  const payload: SubscriberPayload = { subscriber };
+  if (!isCreateOperation) {
+    payload.id = id;
+  }
+
+  return payload;
 }
 
 interface SubscribeFormProps extends GenericFormProps {
