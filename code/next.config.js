@@ -1,9 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  reactStrictMode: true,
   serverRuntimeConfig: {
     templatesDir: `${__dirname}/src/private/emails/templates`,
   },
-  reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = nextConfig;
