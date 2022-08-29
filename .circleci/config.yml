@@ -19,7 +19,7 @@ commands:
             - yarn-packages-{{ .Environment.CACHE_VERSION }}-{{ checksum "./code/yarn.lock" }}
       - run:
           name: Install dependencies
-          command: yarn install --immutable
+          command: yarn install
           working_directory: ./code
       - save_cache:
           name: Save yarn cache
@@ -87,19 +87,20 @@ jobs:
       - transfer_scripts:
           mode: production
 
+
+omit_production: &omit_production
+  filters:
+    branches:
+      ignore:
+        - production
+
 workflows:
   inspect_test_deploy:
     jobs:
-      - inspect:
-          filters:
-            branches:
-              ignore:
-                - production
+      - inspect: 
+          <<: *omit_production
       - build:
-          filters:
-            branches:
-              ignore:
-                - production
+          <<: *omit_production
       - deploy_staging:
           requires:
             - inspect
@@ -109,7 +110,4 @@ workflows:
               only:
                 - main
       - deploy_prod:
-          filters:
-            branches:
-              only:
-                - production
+          <<: *omit_production
