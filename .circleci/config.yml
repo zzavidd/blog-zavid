@@ -104,6 +104,11 @@ workflows:
             branches:
               ignore:
                 - production
+      - build:
+          filters:
+            branches:
+              ignore:
+                - production
       - test:
           filters:
             branches:
