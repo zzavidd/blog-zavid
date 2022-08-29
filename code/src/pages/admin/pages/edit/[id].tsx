@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -11,34 +11,29 @@ import PageForm, { buildPayload } from 'fragments/pages/PageForm';
 import { UIError } from 'lib/errors';
 import hooks from 'lib/hooks';
 import { validatePage } from 'lib/validations';
+import { getPageByIdSSR } from 'pages/api/pages';
 
-// eslint-disable-next-line react/function-component-definition
-const PageAdd: NextPage<PageAddProps> = ({ pathDefinition }) => {
-  const [clientPage, setPage] = useState<PageDAO>({
-    title: '',
-    content: '',
-    slug: '',
-    excerpt: '',
-    isEmbed: false,
-  });
+function PageEdit({ pathDefinition, pageProps }: PageEditProps) {
+  const { page: serverPage } = pageProps;
+  const [clientPage, setPage] = useState<PageDAO>(serverPage);
   const [isRequestPending, setRequestPending] = useState(false);
 
   const router = useRouter();
 
-  /** Create new page on server. */
-  async function submitPage() {
+  /** Update page on server. */
+  async function updatePage() {
     try {
       validatePage(clientPage);
       setRequestPending(true);
 
-      const payload = buildPayload(clientPage, true);
+      const payload = buildPayload(clientPage, false);
       await Utils.request('/api/pages', {
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(payload),
       });
       setAlert({
         type: AlertType.SUCCESS,
-        message: `You've successfully added a new page.`,
+        message: `You've successfully updated the ${clientPage.title} page.`,
       });
       returnToPageAdmin();
     } catch (e: any) {
@@ -58,29 +53,36 @@ const PageAdd: NextPage<PageAddProps> = ({ pathDefinition }) => {
       <PageForm
         page={clientPage}
         handlers={hooks(setPage, clientPage)}
-        confirmFunction={submitPage}
-        confirmButtonText={'Submit'}
+        confirmFunction={updatePage}
+        confirmButtonText={'Update'}
         cancelFunction={returnToPageAdmin}
         isRequestPending={isRequestPending}
       />
     </React.Fragment>
   );
-};
+}
 
-export const getServerSideProps: GetServerSideProps<
-  PageAddProps
-> = async () => {
+export const getServerSideProps: GetServerSideProps<PageEditProps> = async ({
+  query,
+}) => {
+  const page = JSON.parse(await getPageByIdSSR(parseInt(query.id as string)));
   return {
     props: {
       pathDefinition: {
         title: 'List of Pages',
       },
+      pageProps: {
+        page,
+      },
     },
   };
 };
 
-interface PageAddProps {
-  pathDefinition: PathDefinition;
-}
+export default PageEdit;
 
-export default PageAdd;
+interface PageEditProps {
+  pathDefinition: PathDefinition;
+  pageProps: {
+    page: PageDAO;
+  };
+}

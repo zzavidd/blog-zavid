@@ -7,6 +7,11 @@ export async function getAllPagesSSR() {
   return JSON.stringify(pages);
 }
 
+export async function getPageByIdSSR(id: number) {
+  const [page] = await new PageQueryBuilder(knex).whereId(id).build();
+  return JSON.stringify(page);
+}
+
 export async function getPageBySlugSSR(slug: string, isEmbed = false) {
   const page = await getPageBySlug(slug, isEmbed);
   return JSON.stringify(page);

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type { PageDAO } from 'classes';
+import { PageBuilder } from 'classes';
 import type { GenericFormProps } from 'classes/interfaces/super';
 import {
   Form,
@@ -14,7 +15,7 @@ import {
 } from 'components/form';
 import type Handlers from 'lib/hooks';
 
-export default function (props: PageFormProps) {
+export default function PageForm(props: PageFormProps) {
   const { page, handlers } = props;
   const { handleText, handleCheck } = handlers;
 
@@ -76,11 +77,38 @@ export default function (props: PageFormProps) {
   );
 }
 
-export interface PageFormProps extends GenericFormProps {
+export function buildPayload(
+  clientPage: PageDAO,
+  isCreateOperation: boolean,
+): PageRequestPayload {
+  const { id, title, content, slug, excerpt, isEmbed } = clientPage;
+
+  const page = new PageBuilder()
+    .withTitle(title)
+    .withContent(content)
+    .withExcerpt(excerpt)
+    .withSlug(slug)
+    .setIsEmbed(isEmbed)
+    .build();
+
+  const payload: PageRequestPayload = { page };
+  if (!isCreateOperation) {
+    payload.id = id;
+  }
+
+  return payload;
+}
+
+interface PageFormProps extends GenericFormProps {
   page: PageDAO;
   handlers: ReturnType<typeof Handlers<PageDAO>>;
   confirmFunction?: () => void;
   confirmButtonText: string;
   cancelFunction?: () => void;
   isRequestPending: boolean;
+}
+
+interface PageRequestPayload {
+  id?: number;
+  page: PageDAO;
 }
