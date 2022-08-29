@@ -100,11 +100,6 @@ workflows:
             branches:
               ignore:
                 - production
-      - test:
-          filters:
-            branches:
-              ignore:
-                - production
       - deploy_staging:
           requires:
             - inspect
