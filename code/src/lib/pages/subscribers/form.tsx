@@ -5,11 +5,18 @@ import type { GenericFormProps } from 'classes/interfaces/super';
 import { Form, FieldRow, Field, Label, TextInput } from 'components/form';
 import type Handlers from 'lib/hooks';
 
-import PreferenceChecks from './preferences';
+import SubscriptionPreferences from './preferences';
 
 export default function (props: SubscribeFormProps) {
-  const { subscriber, preferences, handlers } = props;
-  const { handleText, setPreferences } = handlers;
+  const { subscriber, handlers } = props;
+  const { handleText, setState } = handlers;
+
+  function setPreferences(prefs: SubscriptionsMapping) {
+    setState((current) => ({
+      ...current,
+      subscriptions: prefs,
+    }));
+  }
 
   return (
     <Form {...props}>
@@ -47,9 +54,9 @@ export default function (props: SubscribeFormProps) {
       <FieldRow>
         <Field>
           <Label>Preferences:</Label>
-          <PreferenceChecks
-            preferences={preferences}
-            setPreferences={setPreferences!}
+          <SubscriptionPreferences
+            preferences={subscriber.subscriptions as SubscriptionsMapping}
+            setPreferences={setPreferences}
           />
         </Field>
       </FieldRow>
@@ -59,6 +66,5 @@ export default function (props: SubscribeFormProps) {
 
 interface SubscribeFormProps extends GenericFormProps {
   subscriber: SubscriberDAO;
-  preferences: SubscriptionsMapping;
   handlers: ReturnType<typeof Handlers<SubscriberDAO>>;
 }

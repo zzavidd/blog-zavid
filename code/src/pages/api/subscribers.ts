@@ -23,12 +23,11 @@ export default async function handler(
       return res.json(json);
     }
     case 'PUT': {
-      const { id, subscriber } = req.body;
-      const json = await updateSubscriber(id, subscriber);
+      const json = await updateSubscriber(req.body);
       return res.json(json);
     }
     case 'DELETE': {
-      const json = await deleteSubscriber(req.body.id);
+      const json = await deleteSubscriber(req.body);
       return res.json(json);
     }
     default: {
@@ -71,7 +70,9 @@ export async function getSubscriberByToken(token: string) {
   return SubscriberStatic.parse(subscriber);
 }
 
-export async function createSubscriber(subscriber: SubscriberDAO) {
+export async function createSubscriber({
+  subscriber,
+}: CreateSubscriberPayload) {
   try {
     const [id] = await new SubscriberMutationBuilder(knex)
       .insert({
@@ -82,11 +83,14 @@ export async function createSubscriber(subscriber: SubscriberDAO) {
       .build();
     return { id };
   } catch (e: any) {
-    throw new Error(e);
+    throw new Error(e.message);
   }
 }
 
-export async function updateSubscriber(id: number, subscriber: SubscriberDAO) {
+export async function updateSubscriber({
+  id,
+  subscriber,
+}: UpdateSubscriberPayload) {
   try {
     await new SubscriberMutationBuilder(knex)
       .update(subscriber)
@@ -97,7 +101,7 @@ export async function updateSubscriber(id: number, subscriber: SubscriberDAO) {
   }
 }
 
-export async function deleteSubscriber(id: number) {
+export async function deleteSubscriber({ id }: DeleteSubscriberPayload) {
   try {
     await new SubscriberMutationBuilder(knex).delete(id).build();
   } catch (e: any) {
@@ -107,4 +111,17 @@ export async function deleteSubscriber(id: number) {
 
 export interface GetAllSubscriberOptions {
   sort?: QuerySort<SubscriberDAO>;
+}
+
+export interface CreateSubscriberPayload {
+  subscriber: SubscriberDAO;
+}
+
+export interface UpdateSubscriberPayload {
+  id: number;
+  subscriber: SubscriberDAO;
+}
+
+export interface DeleteSubscriberPayload {
+  id: number;
 }
