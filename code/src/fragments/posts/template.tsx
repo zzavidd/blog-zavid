@@ -147,8 +147,8 @@ function navigateToEdit(id: number): void {
 
 export interface PostTemplatePageProps {
   current: PostDAO;
-  next: PostDAO;
-  previous: PostDAO;
+  next?: PostDAO;
+  previous?: PostDAO;
 }
 
 interface PostDate {

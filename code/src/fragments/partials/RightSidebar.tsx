@@ -5,17 +5,18 @@ import { zDate } from 'zavid-modules';
 
 import type { PostDAO } from 'classes';
 import { PostStatic } from 'classes';
-import { alert } from 'components/alert';
 import CloudImage from 'components/image';
 import { Title, VanillaLink } from 'components/text';
+import * as Utils from 'constants/utils';
 import css from 'styles/Partials.module.scss';
 
 export function RightSidebar() {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+
   const [recentPosts, setRecentPosts] = useState([]);
 
   useEffect(() => {
-    async function getRecentPosts() {
+    (async () => {
       const query = new URLSearchParams({
         params: JSON.stringify({
           limit: 4,
@@ -27,13 +28,14 @@ export function RightSidebar() {
           status: { include: [PostStatic.STATUS.PUBLISHED] },
         }),
       });
-      const res = await fetch(`/api/posts?${query.toString()}`);
-      if (!res.ok) return alert.error(res.statusText);
-      const data = await res.json();
-      setRecentPosts(data);
-    }
 
-    getRecentPosts();
+      try {
+        const data = await Utils.request(`/api/posts?${query.toString()}`);
+        setRecentPosts(data);
+      } catch (e: any) {
+        reportError(e.message);
+      }
+    })();
   }, []);
 
   return (
@@ -65,7 +67,6 @@ const RecentPost = memo(({ post }: RecentPostProps) => {
     </VanillaLink>
   );
 });
-
 function RecentPostImage({ post }: RecentPostProps) {
   if (!post.image) return null;
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);

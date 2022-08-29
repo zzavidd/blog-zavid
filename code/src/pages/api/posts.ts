@@ -25,6 +25,11 @@ export default async function handler(
 ): Promise<void> {
   try {
     switch (req.method) {
+      case 'GET': {
+        const params = JSON.parse((req.query?.params as string) || '{}');
+        const posts = await getAllPosts(params);
+        return res.status(200).json(posts);
+      }
       case 'POST': {
         await createPost(req.body);
         return res.send(201);
@@ -41,8 +46,8 @@ export default async function handler(
         res.send(405);
       }
     }
-  } catch {
-    res.send(400);
+  } catch (e: any) {
+    res.status(400).json({ message: e.message });
   }
 }
 
@@ -102,26 +107,42 @@ export async function getDomains() {
   return domains;
 }
 
-export async function getPost({ slug, type, statusFilters }: GetPostPayload) {
-  const [currentPost] = await new PostQueryBuilder(knex)
+export async function getPost({
+  slug,
+  type,
+  statusFilters,
+  domainSlug,
+  domainType,
+}: GetPostPayload) {
+  const builder = new PostQueryBuilder(knex)
     .whereSlug(slug)
     .whereType({ include: [type] })
-    .whereStatus(statusFilters)
-    .build();
+    .whereStatus(statusFilters);
 
-  const [[previousPost], [nextPost]] = await Promise.all([
-    new PostQueryBuilder(knex)
-      .getPreviousPost(currentPost.typeId!, currentPost.type!)
-      .build(),
-    new PostQueryBuilder(knex)
-      .getNextPost(currentPost.typeId!, currentPost.type!)
-      .build(),
-  ]);
+  if (domainSlug) builder.whereDomainSlug(domainSlug);
+  if (domainType) builder.whereDomainType(domainType);
+
+  const [current] = await builder.build();
+
+  let previous;
+  let next;
+  if (type === PostType.PAGE) {
+    const [[previousPost], [nextPost]] = await Promise.all([
+      new PostQueryBuilder(knex)
+        .getPreviousPost(current.typeId!, current.type!)
+        .build(),
+      new PostQueryBuilder(knex)
+        .getNextPost(current.typeId!, current.type!)
+        .build(),
+    ]);
+    previous = previousPost;
+    next = nextPost;
+  }
 
   return {
-    current: currentPost,
-    previous: previousPost,
-    next: nextPost,
+    current,
+    previous,
+    next,
   };
 }
 
@@ -200,7 +221,9 @@ export interface GetAllPostOptions {
 export interface GetPostPayload {
   slug: string;
   type: PostType;
-  statusFilters: PostStatusFilters;
+  statusFilters?: PostStatusFilters;
+  domainSlug?: string;
+  domainType?: PostType;
 }
 
 interface CreatePostPayload {

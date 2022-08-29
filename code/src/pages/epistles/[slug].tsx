@@ -43,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
     if (!session && PostStatic.isProtected(epistleTrio.current)) {
-      throw new Error('No epistle found');
+      throw new Error('No epistle found.');
     }
 
     return {

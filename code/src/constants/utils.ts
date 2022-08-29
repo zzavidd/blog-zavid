@@ -1,4 +1,4 @@
-export async function request(url: string, options: RequestInit) {
+export async function request(url: string, options: RequestInit = {}) {
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
@@ -12,5 +12,5 @@ export async function request(url: string, options: RequestInit) {
     const { message } = await res.json();
     throw new Error(message);
   }
-  return res;
+  return res.json();
 }
