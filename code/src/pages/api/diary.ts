@@ -78,6 +78,10 @@ export async function getDiaryEntryByNumber(number: number) {
   };
 }
 
+export async function getLatestDiaryEntrySSR() {
+  return JSON.stringify(await getLatestDiaryEntry());
+}
+
 export async function getLatestDiaryEntry(): Promise<DiaryDAO> {
   const [latestDiaryEntry] = await new DiaryQueryBuilder(knex)
     .whereStatus({ include: [DiaryStatus.PUBLISHED] })
