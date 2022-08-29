@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
   res,
 }) => {
   try {
-    const postTrio = JSON.parse(
+    const reverieTrio = JSON.parse(
       await getPostSSR({
         slug: query.slug as string,
         type: PostType.REVERIE,
@@ -42,19 +42,19 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
     ) as PostTemplatePageProps;
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
-    if (!session && PostStatic.isProtected(postTrio.current)) {
-      throw new Error('No post found');
+    if (!session && PostStatic.isProtected(reverieTrio.current)) {
+      throw new Error('No reverie found');
     }
 
     return {
       props: {
         pathDefinition: {
-          title: `${postTrio.current.title} | ${siteTitle}`,
-          description: JSON.stringify(postTrio.current.excerpt),
-          url: `/reveries/${postTrio.current.slug}`,
-          cardImage: JSON.stringify(postTrio.current.image),
+          title: `${reverieTrio.current.title} | ${siteTitle}`,
+          description: JSON.stringify(reverieTrio.current.excerpt),
+          url: `/reveries/${reverieTrio.current.slug}`,
+          cardImage: JSON.stringify(reverieTrio.current.image),
         },
-        pageProps: postTrio,
+        pageProps: reverieTrio,
       },
     };
   } catch (e) {
