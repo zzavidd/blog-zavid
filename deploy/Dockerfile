@@ -16,8 +16,7 @@ RUN yarn install
 COPY ./code ./
 
 RUN yarn run build
-RUN yarn run compile
 
 EXPOSE $PORT
 
-CMD NODE_ENV=$NODE_ENV node src/server.js
+CMD yarn run start
