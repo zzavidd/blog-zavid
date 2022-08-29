@@ -1,8 +1,8 @@
 import Knex from 'knex';
 
-if (!process.env.PORT) {
-  throw new Error(`No environment variables loaded.`);
-}
+// if (!process.env.PORT) {
+//   throw new Error(`No environment variables loaded.`);
+// }
 
 let database = process.env.MYSQL_NAME!;
 if (process.env.NODE_ENV !== 'production' && !process.env.CI) {
