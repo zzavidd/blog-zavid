@@ -1,8 +1,6 @@
 import classnames from 'classnames';
 import Cookies from 'js-cookie';
-import React, { useState } from 'react';
-import type { RootStateOrAny } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 import { InvisibleButton } from 'components/button';
 import { Icon } from 'lib/library';

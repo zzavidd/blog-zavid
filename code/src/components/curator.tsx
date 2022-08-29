@@ -90,12 +90,12 @@ export function Curator({
   };
 
   /** Download the canvas as an image. */
-  const downloadCanvasAsImage = () => {
+  async function downloadCanvasAsImage() {
     const image = imageRef.current;
     if (image !== null) {
-      downloadImage(image.src);
+      await downloadImage(image.src);
     }
-  };
+  }
 
   return (
     <Modal

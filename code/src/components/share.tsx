@@ -66,10 +66,10 @@ function ShareLinkedin({ message, url }: Share) {
 }
 
 function ShareLink({ url }: Share) {
-  const copyLink = () => {
-    navigator.clipboard.writeText(url);
+  async function copyLink() {
+    await navigator.clipboard.writeText(url);
     alert.success("Copied this post's link to clipboard!");
-  };
+  }
   return (
     <InvisibleButton className={css['copy-link-button']} onClick={copyLink}>
       <div>
