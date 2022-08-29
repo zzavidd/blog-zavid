@@ -2,6 +2,11 @@ import type { PageDAO } from 'classes';
 import { PageQueryBuilder } from 'classes';
 import { knex } from 'constants/knex';
 
+export async function getAllPagesSSR() {
+  const pages = await new PageQueryBuilder(knex).build();
+  return JSON.stringify(pages);
+}
+
 export async function getPageBySlugSSR(slug: string, isEmbed = false) {
   const page = await getPageBySlug(slug, isEmbed);
   return JSON.stringify(page);

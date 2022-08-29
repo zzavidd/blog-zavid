@@ -1,10 +1,6 @@
-import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
-import type { NextPageContext } from 'next';
-import {
-  GET_PAGES_QUERY,
-  DELETE_PAGE_QUERY,
-} from 'private/api/queries/page.queries';
-import React, { useEffect, useState } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { PageDAO, ReactHook } from 'classes';
@@ -13,6 +9,9 @@ import { alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
+import type { PathDefinition } from 'constants/paths';
+import * as Utils from 'constants/utils';
+import PageMetadata from 'fragments/PageMetadata';
 import {
   Icon,
   Tabler,
@@ -20,54 +19,42 @@ import {
   TablerFieldType,
   TablerItemCell,
 } from 'lib/library';
+import { getAllPagesSSR } from 'pages/api/pages';
 
-function PageAdmin() {
-  const [pages, setPages] = useState([]);
-  const [selectedPage, setSelectedPage] = useState({} as PageDAO);
-  const [isLoaded, setLoaded] = useState(false);
+// eslint-disable-next-line react/function-component-definition
+const PageAdmin: NextPage<PageAdminProps> = ({ pathDefinition, pageProps }) => {
+  const { pages } = pageProps;
+  const [selectedPage, setSelectedPage] = useState<PageDAO>({});
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
-  const {
-    data,
-    error: queryError,
-    loading: queryLoading,
-    refetch,
-    networkStatus,
-  } = useQuery(GET_PAGES_QUERY, {
-    errorPolicy: 'all',
-    notifyOnNetworkStatusChange: true,
-  });
-  const [deletePageMutation] = useMutation(DELETE_PAGE_QUERY);
+  const router = useRouter();
 
-  useEffect(() => {
-    if (networkStatus === NetworkStatus.refetch) return;
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
+  async function deletePage() {
+    const { id, title } = selectedPage;
+    try {
+      await Utils.request('/api/pages', {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+      });
+      alert.success(`You've deleted the ${title} page.`);
+      router.reload();
+      setDeleteModalVisibility(false);
+    } catch (e: any) {
+      reportError(e.message);
+    }
+  }
 
-    setPages(data ? data.pages : []);
-    setLoaded(true);
-  }, [queryLoading, networkStatus]);
-
-  const deletePage = () => {
-    const { id, title }: PageDAO = selectedPage;
-    Promise.resolve()
-      .then(() => deletePageMutation({ variables: { id } }))
-      .then(() => {
-        alert.success(`You've deleted the ${title} page.`);
-        setDeleteModalVisibility(false);
-        refetch();
-      })
-      .catch(reportError);
-  };
+  function navigateToCreateForm() {
+    void router.push('/admin/pages/add');
+  }
 
   return (
     <React.Fragment>
+      <PageMetadata {...pathDefinition} />
       <Spacer>
         <Tabler<9>
           heading={'List of Pages'}
-          itemsLoaded={
-            isLoaded && !queryLoading && networkStatus !== NetworkStatus.refetch
-          }
+          itemsLoaded={true}
           emptyMessage={'No pages found.'}
           columns={[
             new TablerColumnHeader('#', { centerAlign: true }),
@@ -140,10 +127,6 @@ function PageAdmin() {
       />
     </React.Fragment>
   );
-}
-
-const navigateToCreateForm = () => {
-  location.href = '/admin/pages/add';
 };
 
 function LinkButton({ page }: LinkButton) {
@@ -184,11 +167,30 @@ function DeleteButton({
   );
 }
 
-PageAdmin.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+export const getServerSideProps: GetServerSideProps<
+  PageAdminProps
+> = async () => {
+  const pages = JSON.parse(await getAllPagesSSR());
+  return {
+    props: {
+      pathDefinition: {
+        title: 'List of Pages',
+      },
+      pageProps: {
+        pages,
+      },
+    },
+  };
 };
 
 export default PageAdmin;
+
+interface PageAdminProps {
+  pathDefinition: PathDefinition;
+  pageProps: {
+    pages: PageDAO[];
+  };
+}
 
 interface LinkButton {
   page: PageDAO;
