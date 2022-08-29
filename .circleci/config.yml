@@ -96,7 +96,7 @@ workflows:
       - deploy_staging:
           requires:
             - inspect
-            - test
+            # - test
           filters:
             branches:
               only:
