@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 
 import { Theme } from 'classes';
-import { InvisibleButton } from 'src/components/button';
-import { Icon, ScreenWidth } from 'src/lib/library';
+import { InvisibleButton } from 'components/button';
+import { Icon, ScreenWidth } from 'lib/library';
 
 const OVERLAY_CONSTANTS = {
   [Theme.LIGHT]: {
@@ -19,18 +19,18 @@ const OVERLAY_CONSTANTS = {
   },
 };
 
-export const CuratePrompt = ({
+export function CuratePrompt({
   target,
   visible,
   onHide,
   onClick,
-}: CuratePromptProps) => {
+}: CuratePromptProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const isMedium = useMediaQuery({ query: ScreenWidth.MEDIUM });
 
   const { backgroundColor, boxShadowColor } = OVERLAY_CONSTANTS[theme];
   return (
-    <>
+    <React.Fragment>
       <Overlay
         target={target!}
         show={visible}
@@ -54,13 +54,13 @@ export const CuratePrompt = ({
           );
         }}
       </Overlay>
-    </>
+    </React.Fragment>
   );
-};
+}
 
-type CuratePromptProps = {
+interface CuratePromptProps {
   target: HTMLElement;
   visible: boolean;
   onHide: () => void;
   onClick: () => void;
-};
+}

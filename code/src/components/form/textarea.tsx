@@ -4,23 +4,23 @@ import { useSelector } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
 
 import type { OnTextAreaChangeType } from 'classes';
-import css from 'src/styles/components/Form.module.scss';
+import css from 'styles/components/Form.module.scss';
 
-export const ShortTextArea = (props: TextAreaProps) => {
+export function ShortTextArea(props: TextAreaProps) {
   return <TextArea {...props} minRows={1} />;
-};
+}
 
-export const LongTextArea = (props: TextAreaProps) => {
+export function LongTextArea(props: TextAreaProps) {
   return <TextArea {...props} minRows={2} />;
-};
+}
 
-const TextArea = ({
+function TextArea({
   name,
   value,
   onChange: onSuperChange,
   placeholder,
   minRows = 1,
-}: TextAreaProps) => {
+}: TextAreaProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [keysPressed, setKeysPressed] = useState<Record<string, boolean>>({});
   const [shouldSetCursor, setShouldSetCursor] = useState(false);
@@ -224,19 +224,19 @@ const TextArea = ({
       ref={(element) => setTextAreaElement(element)}
     />
   );
-};
+}
 
-type TextAreaProps = {
+interface TextAreaProps {
   name: string;
   value: string;
   onChange: OnTextAreaChangeType;
   placeholder?: string;
   minRows?: number;
-};
+}
 
-type RichTextMarkupOptions = {
+interface RichTextMarkupOptions {
   fullReplacement?: string;
   quantity?: number;
   stopIfNoTextSelected?: boolean;
   symphasis?: string;
-};
+}

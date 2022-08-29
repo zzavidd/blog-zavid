@@ -1,0 +1,177 @@
+import type { GetServerSideProps, NextPage } from 'next';
+import { unstable_getServerSession } from 'next-auth';
+import React, { useState } from 'react';
+import { zDate, zText } from 'zavid-modules';
+
+import type { DiaryDAO } from 'classes';
+import { DiaryStatic } from 'classes';
+import { AdminButton, BackButton } from 'components/button';
+import { Curator } from 'components/curator';
+import { Label } from 'components/form';
+import { Signature } from 'components/image';
+import { Spacer, Toolbar } from 'components/layout';
+import ShareBlock from 'components/share';
+import { Divider, Paragraph, Title } from 'components/text';
+import Timeline, { TimelineType } from 'components/timeline';
+import type { PathDefinition } from 'constants/paths';
+import { siteTitle } from 'constants/settings';
+import AdminLock from 'fragments/AdminLock';
+import PageMetadata from 'fragments/PageMetadata';
+import { Icon } from 'lib/library';
+import TagBlock from 'lib/pages/diary/tags';
+import { CuratePrompt } from 'lib/pages/posts/prompt';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
+import css from 'styles/pages/Posts.module.scss';
+
+import { getDiaryEntryByNumberSSR } from '../api/diary';
+
+// eslint-disable-next-line react/function-component-definition
+const DiaryEntryPage: NextPage<DiaryEntryPageProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
+  const {
+    current: diaryEntry,
+    previous: previousDiaryEntry,
+    next: nextDiaryEntry,
+  } = pageProps;
+
+  const [isImageModalVisible, setImageModalVisibility] = useState(false);
+  const [isCuratePromptVisible, setCuratePromptVisible] = useState(false);
+  const [curatePromptRef, setCuratePromptRef] = useState<HTMLElement>();
+  const [imageContent, setImageContent] = useState('');
+
+  const date = zDate.formatDate(diaryEntry.date!, { withWeekday: true });
+  const shareMessage = `"Diary: ${date}" on ZAVID`;
+
+  const onTextLongPress = (target: HTMLElement) => {
+    setImageContent(target.innerText);
+    setCuratePromptRef(target);
+    setCuratePromptVisible(true);
+  };
+
+  return (
+    <React.Fragment>
+      <PageMetadata {...pathDefinition} />
+      <Spacer>
+        <div className={css['post-single']}>
+          <Title className={css['diary-single-title']}>
+            Diary Entry #{diaryEntry.entryNumber}: {diaryEntry.title}
+          </Title>
+          <div className={css['diary-single-date']}>{date}</div>
+          <FavouriteNotice diaryEntry={diaryEntry} />
+          <Paragraph
+            className={css['post-single-content']}
+            onLongPress={onTextLongPress}>
+            {diaryEntry.content}
+          </Paragraph>
+          <Signature />
+          <Paragraph
+            className={css['post-single-footnote']}
+            onLongPress={onTextLongPress}>
+            {diaryEntry.footnote}
+          </Paragraph>
+          <Timeline
+            type={TimelineType.DIARY}
+            previous={{
+              slug: previousDiaryEntry?.entryNumber?.toString(),
+              label: `Diary Entry #${previousDiaryEntry?.entryNumber}: ${previousDiaryEntry?.title}`,
+            }}
+            next={{
+              slug: nextDiaryEntry?.entryNumber?.toString(),
+              label: `Diary Entry #${nextDiaryEntry?.entryNumber}: ${nextDiaryEntry?.title}`,
+            }}
+          />
+          <Divider />
+          <Label>Tags:</Label>
+          <TagBlock tags={diaryEntry.tags!} />
+          <ShareBlock
+            headline={'Share This Diary Entry'}
+            message={shareMessage}
+            url={location.href}
+          />
+        </div>
+        <Toolbar spaceItems={true} hasBackButton={true}>
+          <BackButton onClick={navigateToReveries}>Back to Diary</BackButton>
+          <AdminLock>
+            <AdminButton onClick={() => navigateToEdit(diaryEntry.id!)}>
+              Edit Diary Entry
+            </AdminButton>
+          </AdminLock>
+        </Toolbar>
+      </Spacer>
+      <Curator
+        visible={isImageModalVisible}
+        closeFunction={() => setImageModalVisibility(false)}
+        sourceTitle={`Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`}
+        content={imageContent}
+      />
+      <CuratePrompt
+        target={curatePromptRef!}
+        visible={isCuratePromptVisible}
+        onHide={() => setCuratePromptVisible(false)}
+        onClick={() => {
+          setImageModalVisibility(true);
+          setCuratePromptVisible(false);
+        }}
+      />
+    </React.Fragment>
+  );
+};
+
+function FavouriteNotice({ diaryEntry }: { diaryEntry: DiaryDAO }) {
+  if (!diaryEntry.isFavourite) return null;
+  return (
+    <div className={css['diary-single-favourite']}>
+      <Icon name={'star'} />
+      <span>{'This diary entry is a personal Zavid favourite.'}</span>
+    </div>
+  );
+}
+
+const navigateToReveries = (): void => {
+  location.href = '/diary';
+};
+const navigateToEdit = (id: number): void => {
+  location.href = `/admin/diary/edit/${id}`;
+};
+
+export const getServerSideProps: GetServerSideProps<
+  DiaryEntryPageProps
+> = async ({ query, req, res }) => {
+  try {
+    const number = parseInt(query.number as string);
+    const diaryTrio = JSON.parse(await getDiaryEntryByNumberSSR(number));
+
+    const session = await unstable_getServerSession(req, res, nextAuthOptions);
+    if (!session && DiaryStatic.isProtected(diaryTrio.current)) {
+      throw new Error('No diary entry found');
+    }
+
+    return {
+      props: {
+        pathDefinition: {
+          title: `Diary Entry #${diaryTrio.current.entryNumber}: ${diaryTrio.current.title} | ${siteTitle}`,
+          description: zText.extractExcerpt(diaryTrio.current.content!),
+          url: `/diary/${diaryTrio.current.slug}`,
+        },
+        pageProps: diaryTrio,
+      },
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export default DiaryEntryPage;
+
+interface DiaryEntryPageProps {
+  pathDefinition: PathDefinition;
+  pageProps: {
+    current: DiaryDAO;
+    previous: DiaryDAO;
+    next: DiaryDAO;
+  };
+}

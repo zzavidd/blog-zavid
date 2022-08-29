@@ -16,19 +16,10 @@ export const setTheme = (theme: ThemeOption): AnyAction => ({
 });
 
 export const updatePostFilterSettings = (
-  settings: PostFiltersState,
+  settings: PostFiltersOptions,
 ): AnyAction => ({
   type: 'UPDATE_POST_FILTER_SETTINGS',
   payload: settings,
-});
-
-export const setUser = (user: UserState): AnyAction => ({
-  type: 'SET_USER',
-  payload: user,
-});
-
-export const clearUser = (): AnyAction => ({
-  type: 'CLEAR_USER',
 });
 
 export const saveText = (text: string): AnyAction => ({
@@ -47,23 +38,6 @@ const themeReducer = (
   switch (type) {
     case 'SET_THEME':
       return payload || state;
-    default:
-      return state;
-  }
-};
-
-const postReducer = (
-  state: PostFiltersState = {
-    limit: 20,
-    field: 'id',
-    order: 'DESC',
-    type: null,
-  },
-  { type, payload }: AnyAction,
-): PostFiltersState => {
-  switch (type) {
-    case 'UPDATE_POST_FILTER_SETTINGS':
-      return Object.assign({}, state, payload);
     default:
       return state;
   }
@@ -104,7 +78,6 @@ const persistedReducer = persistReducer(
   config,
   combineReducers({
     theme: themeReducer,
-    postFilterOptions: postReducer,
     user: userReducer,
     savedText: textReducer,
   }),
@@ -116,7 +89,7 @@ export default () => {
   return { store, persistor };
 };
 
-export interface PostFiltersState {
+export interface PostFiltersOptions {
   limit?: number;
   field?: string;
   order?: string;

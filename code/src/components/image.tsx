@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { Theme } from 'classes';
 
-export { cloudinaryBaseUrl } from 'src/settings';
+export { cloudinaryBaseUrl } from 'constants/settings';
 
 interface CloudImageProps {
   src: string;
@@ -36,7 +36,7 @@ export const validateCloudinaryImage = (image: string) => {
   return image.startsWith(match[0]);
 };
 
-const CloudImage = ({
+function CloudImage({
   alt,
   aspectRatio,
   containerClassName,
@@ -45,7 +45,7 @@ const CloudImage = ({
   style,
   title,
   version,
-}: CloudImageProps) => {
+}: CloudImageProps) {
   if (!src) return null;
 
   const publicId = version ? `v${version}/${src}` : src;
@@ -64,9 +64,9 @@ const CloudImage = ({
       </Image>
     </CloudinaryContext>
   );
-};
+}
 
-export const Signature = ({ className }: Signature) => {
+export function Signature({ className }: Signature) {
   let theme = useSelector(({ theme }: RootStateOrAny) => theme);
   theme = Theme.switchTheme(theme);
 
@@ -77,7 +77,7 @@ export const Signature = ({ className }: Signature) => {
       containerClassName={classes}
     />
   );
-};
+}
 
 interface Signature {
   className?: string;

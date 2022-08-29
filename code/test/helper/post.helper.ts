@@ -14,7 +14,7 @@ import {
   GET_POSTS_QUERY,
   GET_SINGLE_POST_QUERY,
   UPDATE_POST_QUERY,
-} from '../../src/private/api/queries/post.queries';
+} from '../../private/api/queries/post.queries';
 
 const ENTITY_NAME = 'post';
 

@@ -1,6 +1,5 @@
-import { useQuery } from '@apollo/client';
 import classnames from 'classnames';
-import type { NextPageContext } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import React, { memo, useEffect, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -8,78 +7,62 @@ import { zDate } from 'zavid-modules';
 
 import type { DiaryDAO, ReactInputChangeEvent } from 'classes';
 import { DiaryStatus, QueryOrder } from 'classes';
-import { alert } from 'src/components/alert';
-import { AdminButton, ConfirmButton } from 'src/components/button';
-import { Checkbox, SearchBar } from 'src/components/form';
-import { Spacer, Toolbar } from 'src/components/layout';
-import { Paragraph, Title, VanillaLink } from 'src/components/text';
-import { isAuthenticated } from 'src/lib/cookies';
-import { Icon } from 'src/lib/library';
-import TagBlock from 'src/lib/pages/diary/tags';
-import { GET_DIARY_QUERY } from 'src/private/api/queries/diary.queries';
-import css from 'src/styles/pages/Diary.module.scss';
+import { AdminButton, ConfirmButton } from 'components/button';
+import { Checkbox, SearchBar } from 'components/form';
+import { Spacer, Toolbar } from 'components/layout';
+import { Paragraph, Title, VanillaLink } from 'components/text';
+import type { PathDefinition } from 'constants/paths';
+import { siteTitle } from 'constants/settings';
+import AdminLock from 'fragments/AdminLock';
+import PageMetadata from 'fragments/PageMetadata';
+import { Icon } from 'lib/library';
+import TagBlock from 'lib/pages/diary/tags';
+import css from 'styles/pages/Diary.module.scss';
+
+import { getAllDiaryEntriesSSR } from '../api/diary';
+import { getPageBySlug } from '../api/pages';
 
 const DIARY_HEADING = `Zavid's Diary`;
 const PARAM_ONLY_FAVOURITES = 'onlyFavourites';
 
-const DiaryIndex = ({ diaryIntro }: DiaryIndex) => {
+// eslint-disable-next-line react/function-component-definition
+const DiaryIndex: NextPage<DiaryIndexProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
+  const { diaryEntries, onlyFavourites, pageIntro } = pageProps;
   const url = new URL(location.href);
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
-  const [diaryEntries, setDiaryEntries] = useState<DiaryDAO[]>([]);
-  const [isLoaded, setLoaded] = useState(false);
-
-  const onlyFavs = url.searchParams.get(PARAM_ONLY_FAVOURITES) === 'true';
-
-  const {
-    data,
-    error: queryError,
-    loading: queryLoading,
-  } = useQuery(GET_DIARY_QUERY, {
-    variables: {
-      sort: {
-        field: 'date',
-        order: QueryOrder.DESCENDING,
-      },
-      status: { include: [DiaryStatus.PUBLISHED] },
-      onlyFavourites: onlyFavs,
-    },
-  });
-
-  useEffect(() => {
-    if (queryLoading) return;
-    if (queryError) alert.error(queryError);
-
-    const entries = data?.diaryEntries;
-    setDiaryEntries(entries);
-    setLoaded(true);
-  }, [isLoaded, queryLoading]);
-
   return (
-    <Spacer>
-      <div className={css['diary-page']}>
-        <Title className={css['page-heading']}>{DIARY_HEADING}</Title>
-        <div className={css[`page-intro-${theme}`]}>
-          <Paragraph cssOverrides={{ paragraph: css[`page-intro-paragraph`] }}>
-            {diaryIntro}
-          </Paragraph>
+    <React.Fragment>
+      <PageMetadata {...pathDefinition} />
+      <Spacer>
+        <div className={css['diary-page']}>
+          <Title className={css['page-heading']}>{DIARY_HEADING}</Title>
+          <div className={css[`page-intro-${theme}`]}>
+            <Paragraph
+              cssOverrides={{ paragraph: css[`page-intro-paragraph`] }}>
+              {pageIntro}
+            </Paragraph>
+          </div>
+          <DiarySearch url={url} onlyFavs={onlyFavourites} />
+          <DiaryGrid diaryEntries={diaryEntries} />
         </div>
-        <DiarySearch url={url} onlyFavs={onlyFavs} />
-        <DiaryGrid diaryEntries={diaryEntries} isLoading={!isLoaded} />
-      </div>
-      <Toolbar spaceItems={true}>
-        {isAuthenticated() && (
-          <AdminButton onClick={navigateToDiaryAdmin}>Diary Admin</AdminButton>
-        )}
-      </Toolbar>
-    </Spacer>
+        <AdminLock>
+          <Toolbar spaceItems={true}>
+            <AdminButton onClick={navigateToDiaryAdmin}>
+              Diary Admin
+            </AdminButton>
+          </Toolbar>
+        </AdminLock>
+      </Spacer>
+    </React.Fragment>
   );
 };
 
-const DiaryGrid = ({ diaryEntries, isLoading }: DiaryGridProps) => {
-  const message = isLoading
-    ? 'Loading diary entries...'
-    : 'No diary entries found.';
+function DiaryGrid({ diaryEntries }: DiaryGridProps) {
+  const message = 'No diary entries found.';
 
   if (!diaryEntries.length) {
     return <div className={css['diary-index-error']}>{message}</div>;
@@ -91,7 +74,7 @@ const DiaryGrid = ({ diaryEntries, isLoading }: DiaryGridProps) => {
       ))}
     </div>
   );
-};
+}
 
 const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
@@ -139,7 +122,7 @@ const DiaryEntry = memo(({ diaryEntry, idx }: DiaryEntry) => {
   );
 });
 
-const FavouriteStar = ({ diaryEntry }: DiaryCommonProps) => {
+function FavouriteStar({ diaryEntry }: FavouriteStarProps) {
   if (!diaryEntry.isFavourite) return null;
   return (
     <Icon
@@ -148,9 +131,9 @@ const FavouriteStar = ({ diaryEntry }: DiaryCommonProps) => {
       className={css['diary-entry-star']}
     />
   );
-};
+}
 
-const DiarySearch = ({ url, onlyFavs }: DiarySearchProps) => {
+function DiarySearch({ url, onlyFavs }: DiarySearchProps) {
   const [searchTerm, setSearchTerm] = useState('');
 
   /**
@@ -169,7 +152,7 @@ const DiarySearch = ({ url, onlyFavs }: DiarySearchProps) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <div className={css['diary-search']}>
         <SearchBar
           value={searchTerm}
@@ -206,9 +189,9 @@ const DiarySearch = ({ url, onlyFavs }: DiarySearchProps) => {
           }}
         />
       </div>
-    </>
+    </React.Fragment>
   );
-};
+}
 
 const launchSearch = (searchTerm: string) => {
   location.href = `/search?term=${searchTerm}&onlyDiary=true`;
@@ -216,29 +199,63 @@ const launchSearch = (searchTerm: string) => {
 
 const navigateToDiaryAdmin = () => (location.href = '/admin/diary');
 
-DiaryIndex.getInitialProps = async ({ query }: NextPageContext) => {
-  return { ...query };
+export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
+  query,
+}) => {
+  const page = await getPageBySlug('diary');
+  const onlyFavourites = query.onlyFavourites === 'true';
+  const diaryEntries = JSON.parse(
+    await getAllDiaryEntriesSSR({
+      sort: {
+        field: 'date',
+        order: QueryOrder.DESCENDING,
+      },
+      status: { include: [DiaryStatus.PUBLISHED] },
+      onlyFavourites,
+    }),
+  );
+
+  return {
+    props: {
+      pathDefinition: {
+        title: `Diary | ${siteTitle}`,
+        description: page.excerpt!,
+        url: '/diary',
+      },
+      pageProps: {
+        diaryEntries,
+        pageIntro: page.content!,
+        onlyFavourites,
+      },
+    },
+  };
 };
 
 export default DiaryIndex;
 
-type DiaryIndex = {
-  diaryIntro: string;
-};
+interface DiaryIndexProps {
+  pathDefinition: PathDefinition;
+  pageProps: {
+    diaryEntries: DiaryDAO[];
+    pageIntro: string;
+    onlyFavourites: boolean;
+  };
+}
 
-type DiarySearchProps = {
+interface DiarySearchProps {
   url: URL;
   onlyFavs: boolean;
-};
+}
 
-type DiaryGridProps = {
+interface DiaryGridProps {
   diaryEntries: DiaryDAO[];
-  isLoading: boolean;
-};
+}
 
-type DiaryEntry = {
+interface DiaryEntry {
   diaryEntry: DiaryDAO;
   idx: number;
-};
+}
 
-type DiaryCommonProps = { diaryEntry: DiaryDAO };
+interface FavouriteStarProps {
+  diaryEntry: DiaryDAO;
+}

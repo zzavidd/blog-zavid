@@ -5,19 +5,19 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import type { OnClickType, OnInputChangeType } from 'classes';
-import { Icon } from 'src/lib/library';
-import css from 'src/styles/components/Form.module.scss';
+import { Icon } from 'lib/library';
+import css from 'styles/components/Form.module.scss';
 
 import { InvisibleButton } from '../button';
 
-export const Checkbox = ({
+export function Checkbox({
   name,
   label,
   checked,
   onChange,
   className,
   boxClassName,
-}: Checkbox): JSX.Element => {
+}: Checkbox): JSX.Element {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css['checkbox-group'], className);
   const boxClasses = classnames(
@@ -38,14 +38,14 @@ export const Checkbox = ({
       <span className={boxClasses} />
     </label>
   );
-};
+}
 
-export const Switch = ({
+export function Switch({
   onChange,
   checked,
   checkedIcon,
   uncheckedIcon,
-}: Switch) => {
+}: Switch) {
   return (
     <InvisibleButton onClick={onChange}>
       <div
@@ -58,7 +58,7 @@ export const Switch = ({
       </div>
     </InvisibleButton>
   );
-};
+}
 
 interface Checkbox {
   label: string;

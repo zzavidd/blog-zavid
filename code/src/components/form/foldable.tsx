@@ -2,24 +2,24 @@ import classnames from 'classnames';
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { Icon } from 'src/lib/library';
-import css from 'src/styles/components/Form.module.scss';
+import { Icon } from 'lib/library';
+import css from 'styles/components/Form.module.scss';
 
 import { InvisibleButton } from '../button';
 
-export const Foldable = ({
+export function Foldable({
   label,
   switcher,
   visible,
   children,
-}: FoldableProps) => {
+}: FoldableProps) {
   const state = visible ? 'visible' : 'hidden';
   const contentClasses = classnames(
     css['foldable-content'],
     css[`foldable-content--${state}`],
   );
   return (
-    <>
+    <React.Fragment>
       <InvisibleButton onClick={switcher} className={css['foldable-toggle']}>
         <Icon
           name={visible ? 'chevron-up' : 'chevron-down'}
@@ -28,13 +28,13 @@ export const Foldable = ({
         {label}
       </InvisibleButton>
       <div className={contentClasses}>{children}</div>
-    </>
+    </React.Fragment>
   );
-};
+}
 
-type FoldableProps = {
+interface FoldableProps {
   label: string;
   switcher: () => void;
   visible: boolean;
   children: ReactNode;
-};
+}

@@ -5,6 +5,7 @@ sessions/
 
 **/.env*
 **/.eslintcache
+**/.tsbuildinfo
 
 **/.yarn/*
 !**/.yarn/plugins

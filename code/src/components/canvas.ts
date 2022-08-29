@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 
 import type { FilterThemeOption, ThemeOption } from 'classes';
 import { FilterShape, FilterShapeOption, Theme } from 'classes';
+import { domain } from 'constants/settings';
 
 const constants = {
   [FilterShapeOption.SQUARE]: {
@@ -89,7 +90,7 @@ export function createCanvasFromContent(
 
   if (ctx !== null) {
     const bgImage = new Image();
-    bgImage.src = `/images/filters/${shape}/${colour}`;
+    bgImage.src = `${domain}/images/filters/${shape}-${colour}.jpg`;
     bgImage.onload = () => {
       const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
 
@@ -236,22 +237,22 @@ function insertText(
  * Downloads the image on the canvas.
  * @param imageUrl The URL of the image.
  */
-export function downloadImage(imageUrl: string) {
-  fetch(imageUrl, {
-    method: 'GET',
-    headers: {},
-  })
-    .then((response) => {
-      response.arrayBuffer().then(function (buffer) {
-        const url = window.URL.createObjectURL(new Blob([buffer]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'zavid-excerpt.jpg');
-        document.body.appendChild(link);
-        link.click();
-      });
-    })
-    .catch(console.error);
+export async function downloadImage(imageUrl: string) {
+  try {
+    const res = await fetch(imageUrl, {
+      method: 'GET',
+      headers: {},
+    });
+    const buffer = await res.arrayBuffer();
+    const url = window.URL.createObjectURL(new Blob([buffer]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'zavid-excerpt.jpg');
+    document.body.appendChild(link);
+    link.click();
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 /**
@@ -269,7 +270,7 @@ function getFontStyle(
   return [`${fontSize}px ${fontfamily}`, lineHeight];
 }
 
-type FontStyleOptions = {
+interface FontStyleOptions {
   isTitleOnly?: boolean;
   constantLineHeight?: number;
-};
+}

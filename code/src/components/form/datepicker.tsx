@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import type { ReactSelectChangeEvent, ReactHook } from 'classes';
-import { Icon } from 'src/lib/library';
-import { creationDate } from 'src/settings';
-import css from 'src/styles/components/Form.module.scss';
+import { creationDate } from 'constants/settings';
+import { Icon } from 'lib/library';
+import css from 'styles/components/Form.module.scss';
 
 import { alert } from '../alert';
 import { ConfirmButton, CancelButton, InvisibleButton } from '../button';
@@ -12,7 +12,12 @@ import { Modal, ConfirmModal } from '../modal';
 
 import { Field, FieldRow, Select, TextInput } from '.';
 
-export default ({ name, date, onConfirm, placeholderText }: DatePicker) => {
+export default function ({
+  name,
+  date,
+  onConfirm,
+  placeholderText,
+}: DatePicker) {
   return (
     <DatePicker
       name={name}
@@ -24,9 +29,9 @@ export default ({ name, date, onConfirm, placeholderText }: DatePicker) => {
       withDayOfWeek
     />
   );
-};
+}
 
-const DatePicker = (props: BaseDatePicker) => {
+function DatePicker(props: BaseDatePicker) {
   const { date, name, onConfirm, placeholderText, withDayOfWeek } = props;
 
   const [selectedDay, setDay] = useState(1);
@@ -55,7 +60,7 @@ const DatePicker = (props: BaseDatePicker) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <div className={css['datepicker-field']}>
         <TextInput
           value={
@@ -112,11 +117,11 @@ const DatePicker = (props: BaseDatePicker) => {
         confirmText={'Clear'}
         closeFunction={() => setClearDateModalVisibility(false)}
       />
-    </>
+    </React.Fragment>
   );
-};
+}
 
-const DatePickerBody = ({
+function DatePickerBody({
   minDate,
   maxDate,
   selectedDay,
@@ -125,7 +130,7 @@ const DatePickerBody = ({
   setDay,
   setMonth,
   setYear,
-}: DatePickerBody) => {
+}: DatePickerBody) {
   const startYear = minDate && minDate.getFullYear();
   const endYear = maxDate && maxDate.getFullYear();
 
@@ -184,16 +189,16 @@ const DatePickerBody = ({
       </Field>
     </FieldRow>
   );
-};
+}
 
-const DatePickerFooter = ({
+function DatePickerFooter({
   name,
   day,
   month,
   year,
   onConfirm,
   setDatePickerVisibility,
-}: DatePickerFooter) => {
+}: DatePickerFooter) {
   /** Close the datepicker. */
   const closeDatePicker = (): void => setDatePickerVisibility(false);
 
@@ -209,24 +214,24 @@ const DatePickerFooter = ({
   };
 
   return (
-    <>
+    <React.Fragment>
       <ConfirmButton onClick={confirmDateSelection}>Confirm</ConfirmButton>
       <CancelButton onClick={closeDatePicker}>Close</CancelButton>
-    </>
+    </React.Fragment>
   );
-};
+}
 
-const ClearDateButton = ({
+function ClearDateButton({
   date,
   setClearDateModalVisibility,
-}: ClearDateButton) => {
+}: ClearDateButton) {
   if (date === null) return null;
   return (
     <InvisibleButton onClick={() => setClearDateModalVisibility(true)}>
       <Icon name={'times'} />
     </InvisibleButton>
   );
-};
+}
 
 const extractDates = (date: DateType): ExtractedDate => {
   let day = 1;

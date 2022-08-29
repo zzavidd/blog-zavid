@@ -14,7 +14,7 @@ import {
   GET_DIARY_QUERY,
   GET_SINGLE_DIARY_QUERY,
   UPDATE_DIARY_QUERY,
-} from '../../src/private/api/queries/diary.queries';
+} from '../../private/api/queries/diary.queries';
 
 const ENTITY_NAME = 'diaryEntry';
 

@@ -1,5 +1,0 @@
-{
-  "ext": ".ts,.js",
-  "exec": "ts-node --project tsconfig.override.json src/server.ts",
-  "watch": false
-}

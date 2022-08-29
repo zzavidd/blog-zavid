@@ -10,7 +10,7 @@ dotenv.config({ path: './.env' });
 // Start the server when in staging environment.
 if (process.env.CI) {
   (async () => {
-    const server = await import('../src/server');
+    const server = await import('../server');
     before(function (done) {
       console.info('Starting server to run tests.');
       server.startStagingServer(done);

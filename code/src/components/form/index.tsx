@@ -12,10 +12,10 @@ import {
   ButtonSpacer,
   CancelButton,
   ConfirmButton,
-} from 'src/components/button';
-import { Spacer, Toolbar } from 'src/components/layout';
-import { Paragraph, Title } from 'src/components/text';
-import css from 'src/styles/components/Form.module.scss';
+} from 'components/button';
+import { Spacer, Toolbar } from 'components/layout';
+import { Paragraph, Title } from 'components/text';
+import css from 'styles/components/Form.module.scss';
 
 import { Signature } from '../image';
 
@@ -27,7 +27,7 @@ export * from './textarea';
 
 // TODO: Use single previewInfo object for title, text and footnote
 // TODO: Rename previewText to previewContent
-export const Form = ({
+export function Form({
   confirmButtonText = 'Submit',
   confirmFunction,
   cancelFunction,
@@ -41,7 +41,7 @@ export const Form = ({
   editorClassName,
   previewClassName,
   onPreviewToggle,
-}: FormProps) => {
+}: FormProps) {
   const [isPreviewVisible, setPreviewVisibility] = useState(false);
   const [isInitialState, setIsInitialState] = useState(true);
   const [isConfirmed, setConfirmed] = useState(false);
@@ -121,16 +121,16 @@ export const Form = ({
       </Toolbar>
     </Spacer>
   );
-};
+}
 
-const FormPreview = ({
+function FormPreview({
   className,
   isPreviewVisible,
   previewTitle,
   previewText,
   previewFootnotes,
   substitutions = {},
-}: FormPreview) => {
+}: FormPreview) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [isInitialState, setIsInitialState] = useState(true);
 
@@ -165,14 +165,14 @@ const FormPreview = ({
       </Paragraph>
     </div>
   );
-};
+}
 
-const FormPreviewToggle = ({
+function FormPreviewToggle({
   previewText,
   setPreviewVisibility,
   isPreviewVisible,
   onPreviewToggle,
-}: FormPreviewToggle) => {
+}: FormPreviewToggle) {
   // TODO: Make previewText just string type
   if (typeof previewText !== 'string') return null;
 
@@ -186,27 +186,27 @@ const FormPreviewToggle = ({
       {isPreviewVisible ? 'Hide Preview' : 'Show Preview'}
     </AdminButton>
   );
-};
+}
 
-export const FieldRow = (props: ReactComponent) => {
+export function FieldRow(props: ReactComponent) {
   const classes = classnames(css['form-field-row'], props.className);
   return (
     <Row {...props} className={classes}>
       {props.children}
     </Row>
   );
-};
+}
 
-export const Field = (props: ColProps): JSX.Element => {
+export function Field(props: ColProps): JSX.Element {
   const classes = classnames(css['form-field'], props.className);
   return (
     <Col {...props} className={classes}>
       {props.children}
     </Col>
   );
-};
+}
 
-export const DynamicField = (props: DynamicField) => {
+export function DynamicField(props: DynamicField) {
   const { precondition, dependency, xs, sm, md, lg, xl } = props;
   const [isVisible, setVisibility] = useState(true);
 
@@ -224,18 +224,18 @@ export const DynamicField = (props: DynamicField) => {
       {props.children}
     </Col>
   );
-};
+}
 
-export const Label = ({ children }: Label) => {
+export function Label({ children }: Label) {
   return <label className={css['label']}>{children}</label>;
-};
+}
 
 interface DynamicField extends ColProps {
   precondition: boolean;
   dependency: unknown;
 }
 
-type FormProps = {
+interface FormProps {
   children: ReactNode;
   isRequestPending?: boolean;
   previewTitle?: string;
@@ -249,27 +249,27 @@ type FormProps = {
   confirmFunction?: () => void;
   cancelFunction?: () => void;
   onPreviewToggle?: (isVisible: boolean) => void;
-};
+}
 
-type FormPreview = {
+interface FormPreview {
   isPreviewVisible: boolean;
   previewTitle?: string;
   previewText?: string | boolean;
   previewFootnotes?: string;
   substitutions?: Substitutions;
   className?: FormCSSOptions;
-};
+}
 
-type FormPreviewToggle = {
+interface FormPreviewToggle {
   isPreviewVisible: boolean;
   previewText: string | boolean;
   setPreviewVisibility: ReactHook<boolean>;
   onPreviewToggle?: (isVisible: boolean) => void;
-};
+}
 
-type Label = {
+interface Label {
   children: ReactNode;
-};
+}
 
 type FormCSSOptions = {
   [key in PreviewOption]?: string;

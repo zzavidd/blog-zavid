@@ -16,7 +16,7 @@ import {
   GET_SINGLE_SUBSCRIBER_QUERY,
   GET_SUBSCRIBERS_QUERY,
   UPDATE_SUBSCRIBER_QUERY,
-} from '../../src/private/api/queries/subscriber.queries';
+} from '../../private/api/queries/subscriber.queries';
 
 const ENTITY_NAME = 'subscriber';
 

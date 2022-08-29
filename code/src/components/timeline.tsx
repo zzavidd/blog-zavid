@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Icon } from 'src/lib/library';
-import css from 'src/styles/components/Form.module.scss';
+import { Icon } from 'lib/library';
+import css from 'styles/components/Form.module.scss';
 
 import CloudImage, { AspectRatio } from './image';
 import { Title, VanillaLink } from './text';
@@ -12,7 +12,7 @@ export const TimelineType: TimelineTypes = {
   DIARY: { label: 'Entry', segment: 'diary' },
 };
 
-export default ({ type, previous, next }: Timeline) => {
+export default function ({ type, previous, next }: Timeline) {
   if (!previous?.slug && !next?.slug) return null;
   return (
     <div className={css['timeline']}>
@@ -20,13 +20,13 @@ export default ({ type, previous, next }: Timeline) => {
       <PrevNextEntity type={type} entity={next} />
     </div>
   );
-};
+}
 
-const PrevNextEntity = ({
+function PrevNextEntity({
   entity = {},
   isPrevious,
   type,
-}: PrevNextEntityProps) => {
+}: PrevNextEntityProps) {
   const prefix = isPrevious ? 'Previous' : 'Next';
   const { label, segment } = type!;
   return (
@@ -38,9 +38,9 @@ const PrevNextEntity = ({
         <Icon name={isPrevious ? 'chevron-left' : 'chevron-right'} />
         <div className={css['timeline-text']}>
           <Title className={css['timeline-text-heading']}>
-            <>
+            <React.Fragment>
               {prefix} {label}
-            </>
+            </React.Fragment>
           </Title>
           <div>{entity.label}</div>
         </div>
@@ -48,9 +48,9 @@ const PrevNextEntity = ({
       <EntityImage image={entity.image} />
     </VanillaLink>
   );
-};
+}
 
-const EntityImage = ({ image }: EntityImage) => {
+function EntityImage({ image }: EntityImage) {
   if (!image) return null;
   return (
     <CloudImage
@@ -60,7 +60,7 @@ const EntityImage = ({ image }: EntityImage) => {
       aspectRatio={AspectRatio.WIDE}
     />
   );
-};
+}
 
 interface Timeline {
   type: TimelineType;

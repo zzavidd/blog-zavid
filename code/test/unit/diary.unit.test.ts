@@ -1,6 +1,6 @@
 import { assert } from '..';
 import { DiaryEntryBuilder, DiaryStatic, DiaryStatus } from '../../classes';
-import { zavidBirthday } from '../../src/settings';
+import { zavidBirthday } from '../../settings';
 
 describe('Unit Tests: Diary', function () {
   describe('Object methods', function () {

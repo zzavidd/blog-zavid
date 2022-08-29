@@ -2,9 +2,9 @@ import Cloudinary from 'cloudinary';
 import * as dotenv from 'dotenv';
 
 import { fetch } from '..';
-import { CLEAR_DIARY_QUERY } from '../../src/private/api/queries/diary.queries';
-import { CLEAR_POSTS_QUERY } from '../../src/private/api/queries/post.queries';
-import { CLEAR_SUBSCRIBERS_QUERY } from '../../src/private/api/queries/subscriber.queries';
+import { CLEAR_DIARY_QUERY } from '../../private/api/queries/diary.queries';
+import { CLEAR_POSTS_QUERY } from '../../private/api/queries/post.queries';
+import { CLEAR_SUBSCRIBERS_QUERY } from '../../private/api/queries/subscriber.queries';
 
 const cloudinary = Cloudinary.v2;
 

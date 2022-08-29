@@ -1,8 +1,6 @@
-import React from 'react';
+import css from 'styles/Partials.module.scss';
 
-import css from 'src/styles/Partials.module.scss';
-
-export default () => {
+export default function Custom404Page() {
   return (
     <div className={css['error-page']}>
       <div className={css['error-message-container']}>
@@ -18,4 +16,4 @@ export default () => {
       </div>
     </div>
   );
-};
+}

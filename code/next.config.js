@@ -1,34 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require('path');
-
-module.exports = {
-  webpack: function (config) {
-    config.module.rules.push(
-      {
-        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 100000,
-            name: '[name].[ext]',
-          },
-        },
-      },
-      {
-        test: /\.tsx?$/,
-        use: [{ loader: 'ts-loader', options: { transpileOnly: true } }],
-      },
-    );
-
-    config.resolve.extensions.push('.ts', '.tsx');
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      react: path.resolve('./node_modules/react'),
-    };
-
-    return config;
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  reactStrictMode: true,
+  serverRuntimeConfig: {
+    templatesDir: `${__dirname}/src/private/emails/templates`,
   },
   typescript: {
     ignoreBuildErrors: true,
   },
 };
+
+module.exports = nextConfig;

@@ -1,6 +1,6 @@
 import { fetch } from '../..';
 import { SubscriberBuilder } from '../../../classes';
-import { CREATE_SUBSCRIBER_QUERY } from '../../../src/private/api/queries/subscriber.queries';
+import { CREATE_SUBSCRIBER_QUERY } from '../../../private/api/queries/subscriber.queries';
 import { COUNT } from '../constants';
 
 const quantity = COUNT.SUBSCRIBERS;

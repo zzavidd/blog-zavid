@@ -4,18 +4,18 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zString } from 'zavid-modules';
 
-import { VanillaLink } from 'src/components/text';
-import css from 'src/styles/pages/Posts.module.scss';
+import { VanillaLink } from 'components/text';
+import css from 'styles/pages/Posts.module.scss';
 
 // TODO: Use better tags; convertCSVToArray should be createTags, producing
 // tag labels and values
-export default ({
+export default function ({
   tags,
   limit,
   className,
   tagClassName,
   asCSV,
-}: DiaryTagProps) => {
+}: DiaryTagProps) {
   if (!tags) return null;
 
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
@@ -51,12 +51,12 @@ export default ({
       })}
     </div>
   );
-};
+}
 
-type DiaryTagProps = {
+interface DiaryTagProps {
   tags: string | string[];
   limit?: number;
   className?: string;
   tagClassName?: string;
   asCSV?: boolean;
-};
+}
