@@ -76,15 +76,6 @@ jobs:
           key: next-build-{{ .Environment.CACHE_VERSION }}-{{ checksum "./code/yarn.lock" }}
           paths:
             - code/.next/cache
-  test:
-    executor: node
-    steps:
-      - install_dependencies
-      - run:
-          name: Run tests
-          command: yarn run test
-          working_directory: ./code/test
-          no_output_timeout: 2m
   deploy_staging:
     executor: ssh
     steps:
@@ -118,7 +109,6 @@ workflows:
           requires:
             - inspect
             - build
-            # - test
           filters:
             branches:
               only:
