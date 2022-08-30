@@ -9,13 +9,13 @@
     "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start",
-    "check": "tsc --noEmit",
-    "manual": "ts-node --project test/tsconfig.test.json test/manual",
-    "ingestion": "ts-node --project test/tsconfig.test.json test/ingestion",
+    "tsc": "tsc --noEmit",
     "eslint": "eslint --ext .ts,.tsx src/ --cache",
     "prettier:check": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
     "prettier:write": "yarn run prettier:check --write",
-    "prune": "ts-prune -p ./tsconfig.json -s **/*.ts"
+    "prune": "ts-prune -p ./tsconfig.json -s **/*.ts",
+    "manual": "ts-node --project test/tsconfig.test.json test/manual",
+    "ingestion": "ts-node --project test/tsconfig.test.json test/ingestion",
   },
   "dependencies": {
     "@aarnila/react-instagram-embed": "^2.0.2",

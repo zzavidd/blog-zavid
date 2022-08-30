@@ -50,7 +50,7 @@ jobs:
       - install_dependencies
       - run:
           name: Run TypeScript checks
-          command: yarn run check
+          command: yarn run tsc
           working_directory: ./code
       - run:
           name: Run ESLint
