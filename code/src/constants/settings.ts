@@ -1,5 +1,5 @@
 /** The full URLs for each of my social media accounts. */
-export const accounts = {
+export const ACCOUNTS = {
   // facebook: 'https://www.facebook.com/zzavidd',
   twitter: 'https://www.twitter.com/zzavidd',
   instagram: 'https://www.instagram.com/zavidd',
@@ -7,24 +7,24 @@ export const accounts = {
   snapchat: 'https://www.snapchat.com/add/zzavidd',
 };
 
+/** The date this blog was founded. Month is 0-indexed. */
+export const BLOG_CREATION_DATE = new Date(2017, 8, 2);
+
+/** The date this blog was redeveloped. Month is 0-indexed. */
+export const BLOG_REDEVELOPMENT_DATE = new Date(2020, 8, 21);
+
 /** The base URL for Cloudinary media. */
-export const cloudinaryBaseUrl =
+export const CLOUDINARY_BASE_URL =
   'https://res.cloudinary.com/zavid/image/upload';
 
 /** The copyright declaration. */
-export const copyright = `\u00A9 ${new Date().getFullYear()} ZAVID`;
-
-/** The date this blog was founded. Month is 0-indexed. */
-export const creationDate = new Date(2017, 8, 2);
+export const COPYRIGHT = `\u00A9 ${new Date().getFullYear()} ZAVID`;
 
 export const EMAILS_ON =
   process.env.NODE_ENV === 'production' || process.env.EMAILS_ON === 'true';
 
-/** The date this blog was redeveloped. Month is 0-indexed. */
-export const redevelopmentDate = new Date(2020, 8, 21);
-
 /** Domain to use dependent on environment. */
-export const domain =
+export const DOMAIN =
   process.env.NODE_ENV === 'production'
     ? 'https://zavidegbue.com'
     : process.env.NODE_ENV === ('staging' as 'test')
@@ -38,7 +38,7 @@ export const RESOURCE_MAP: Record<string, string> = {
 };
 
 /** The website title. */
-export const siteTitle = 'ZAVID';
+export const SITE_TITLE = 'ZAVID';
 
 /** /the date of Zavid's birthday. Month is 0-indexed. */
-export const zavidBirthday = new Date(1996, 11, 2);
+export const ZAVID_BIRTHDAY = new Date(1996, 11, 2);

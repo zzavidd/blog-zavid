@@ -3,7 +3,7 @@ import { zDate } from 'zavid-modules';
 
 import type { ReactSelectChangeEvent, ReactHook } from 'classes';
 import { Icon } from 'components/library';
-import { creationDate } from 'constants/settings';
+import { BLOG_CREATION_DATE } from 'constants/settings';
 import css from 'styles/components/Form.module.scss';
 
 import { alert } from '../alert';
@@ -24,7 +24,7 @@ export default function DatePicker({
       date={date}
       onConfirm={onConfirm}
       placeholderText={placeholderText}
-      minDate={creationDate}
+      minDate={BLOG_CREATION_DATE}
       maxDate={new Date()}
       withDayOfWeek
     />

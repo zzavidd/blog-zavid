@@ -14,7 +14,7 @@ import { Icon } from 'components/library';
 import ShareBlock from 'components/share';
 import { Divider, Paragraph, Title } from 'components/text';
 import Timeline, { TimelineType } from 'components/timeline';
-import { siteTitle } from 'constants/settings';
+import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import TagBlock from 'fragments/diary/DiaryTags';
@@ -151,7 +151,7 @@ export const getServerSideProps: GetServerSideProps<
     return {
       props: {
         pathDefinition: {
-          title: `Diary Entry #${diaryTrio.current.entryNumber}: ${diaryTrio.current.title} | ${siteTitle}`,
+          title: `Diary Entry #${diaryTrio.current.entryNumber}: ${diaryTrio.current.title} | ${SITE_TITLE}`,
           description: zText.extractExcerpt(diaryTrio.current.content!),
           url: `/diary/${diaryTrio.current.slug}`,
         },

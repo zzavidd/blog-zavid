@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { DiaryDAO, PostDAO } from 'classes';
 import { HomeField, HomeRow } from 'components/pages/home';
-import { siteTitle } from 'constants/settings';
+import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
 import LatestDiaryEntry from 'fragments/home/home.diary';
 import Introduction from 'fragments/home/home.intro';
@@ -63,7 +63,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       pathDefinition: {
-        title: `${siteTitle}: A Galaxy Mind in a Universe World`,
+        title: `${SITE_TITLE}: A Galaxy Mind in a Universe World`,
         description: 'Explore the metaphysical manifestation of my mind.',
         url: '/',
       },

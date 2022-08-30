@@ -8,7 +8,7 @@ import { Field, FieldRow, TextInput } from 'components/form';
 import { Icon } from 'components/library';
 import { Title, VanillaLink } from 'components/text';
 import { UIError } from 'constants/errors';
-import { accounts, copyright } from 'constants/settings';
+import { ACCOUNTS, COPYRIGHT } from 'constants/settings';
 import { checkValidEmail } from 'constants/validations';
 import css from 'styles/Partials.module.scss';
 
@@ -35,7 +35,7 @@ export default function Footer() {
         </FieldRow>
         <FieldRow>
           <Field>
-            <div className={css['footer-copyright']}>{copyright}</div>
+            <div className={css['footer-copyright']}>{COPYRIGHT}</div>
           </Field>
         </FieldRow>
       </Container>
@@ -65,18 +65,18 @@ function SocialPlugs() {
         Follow me on socials
       </Title>
       <div>
-        <VanillaLink href={accounts.twitter} className={css['footer-socials']}>
+        <VanillaLink href={ACCOUNTS.twitter} className={css['footer-socials']}>
           <Icon name={'twitter'} prefix={'fab'} withRightSpace={false} />
         </VanillaLink>
         <VanillaLink
-          href={accounts.instagram}
+          href={ACCOUNTS.instagram}
           className={css['footer-socials']}>
           <Icon name={'instagram'} prefix={'fab'} withRightSpace={false} />
         </VanillaLink>
-        <VanillaLink href={accounts.linkedin} className={css['footer-socials']}>
+        <VanillaLink href={ACCOUNTS.linkedin} className={css['footer-socials']}>
           <Icon name={'linkedin'} prefix={'fab'} withRightSpace={false} />
         </VanillaLink>
-        <VanillaLink href={accounts.snapchat} className={css['footer-socials']}>
+        <VanillaLink href={ACCOUNTS.snapchat} className={css['footer-socials']}>
           <Icon name={'snapchat-ghost'} prefix={'fab'} withRightSpace={false} />
         </VanillaLink>
       </div>

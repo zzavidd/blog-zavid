@@ -3,7 +3,7 @@ import { unstable_getServerSession } from 'next-auth';
 import React from 'react';
 
 import { PostType, PostStatus, PostStatic } from 'classes';
-import { siteTitle } from 'constants/settings';
+import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import PageMetadata from 'fragments/PageMetadata';
 import type { PostTemplatePageProps } from 'fragments/posts/PostTemplatePage';
@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
     return {
       props: {
         pathDefinition: {
-          title: `${epistleTrio.current.title} | ${siteTitle}`,
+          title: `${epistleTrio.current.title} | ${SITE_TITLE}`,
           description: JSON.stringify(epistleTrio.current.excerpt),
           url: `/epistles/${epistleTrio.current.slug}`,
           cardImage: JSON.stringify(epistleTrio.current.image),

@@ -8,7 +8,7 @@ import { AlertType, reportError, setAlert } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
 import { UIError } from 'constants/errors';
 import Handlers from 'constants/handlers';
-import { domain } from 'constants/settings';
+import { DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import { validateDiaryEntry } from 'constants/validations';
@@ -95,7 +95,7 @@ function returnToDiaryAdmin() {
 }
 
 function returnAfterUpdate(entryNumber: number) {
-  const pageUrl = `${domain}/diary/${entryNumber}`;
+  const pageUrl = `${DOMAIN}/diary/${entryNumber}`;
   if (document.referrer === pageUrl) {
     location.href = pageUrl;
   } else {

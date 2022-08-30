@@ -5,7 +5,7 @@ import type { ResultEntityDAO } from 'classes';
 import { Checkbox, SearchBar } from 'components/form';
 import { Spacer } from 'components/layout';
 import { Title } from 'components/text';
-import { siteTitle } from 'constants/settings';
+import { SITE_TITLE } from 'constants/settings';
 import PageMetadata from 'fragments/PageMetadata';
 import { ResultsGrid } from 'fragments/search/SearchResultsGrid';
 import css from 'styles/pages/Search.module.scss';
@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps<
   if (!term) {
     return {
       props: {
-        title: `Search | ${siteTitle}`,
+        title: `Search | ${SITE_TITLE}`,
         results: [],
         searchTerm: '',
       },

@@ -12,7 +12,7 @@ import { Checkbox, SearchBar } from 'components/form';
 import { Spacer, Toolbar } from 'components/layout';
 import { Icon } from 'components/library';
 import { Paragraph, Title, VanillaLink } from 'components/text';
-import { siteTitle } from 'constants/settings';
+import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import TagBlock from 'fragments/diary/DiaryTags';
@@ -218,7 +218,7 @@ export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
   return {
     props: {
       pathDefinition: {
-        title: `Diary | ${siteTitle}`,
+        title: `Diary | ${SITE_TITLE}`,
         description: page.excerpt!,
         url: '/diary',
       },

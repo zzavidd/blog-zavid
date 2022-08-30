@@ -12,7 +12,7 @@ import CloudImage from 'components/image';
 import { Partitioner, Spacer, Toolbar } from 'components/layout';
 import { LazyLoader, Responsive } from 'components/library';
 import { Divider, Paragraph, Title } from 'components/text';
-import { siteTitle } from 'constants/settings';
+import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
@@ -148,7 +148,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       pathDefinition: {
-        title: `Reveries | ${siteTitle}`,
+        title: `Reveries | ${SITE_TITLE}`,
         description: page.excerpt!,
         url: `/reveries`,
       },

@@ -18,20 +18,20 @@ import type {
 import { SubscriberQueryBuilder, SubscriberStatic } from 'classes';
 import { knex } from 'constants/knex';
 import {
-  accounts,
-  cloudinaryBaseUrl,
-  copyright,
-  domain,
+  ACCOUNTS,
+  CLOUDINARY_BASE_URL,
+  COPYRIGHT,
+  DOMAIN,
 } from 'constants/settings';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 /** A map of variables used in all EJS emails */
 const ejsLocals = {
-  accounts,
-  cloudinaryBaseUrl,
-  copyright,
-  domain,
+  accounts: ACCOUNTS,
+  cloudinaryBaseUrl: CLOUDINARY_BASE_URL,
+  copyright: COPYRIGHT,
+  domain: DOMAIN,
 };
 
 /** The common HTML-to-text options for all emails. */
@@ -76,9 +76,9 @@ export async function notifyNewPost(post: PostDAO): Promise<void> {
     post: {
       ...post,
       content: zText.truncateText(content!),
-      slug: `${domain}/reveries/${slug}`,
+      slug: `${DOMAIN}/reveries/${slug}`,
       datePublished: zDate.formatDate(datePublished!, { withWeekday: true }),
-      image: `${cloudinaryBaseUrl}/w_768,c_lfill/${image}`,
+      image: `${CLOUDINARY_BASE_URL}/w_768,c_lfill/${image}`,
     },
   };
 
@@ -111,7 +111,7 @@ export function notifyNewDiaryEntry(diaryEntry: DiaryDAO): Promise<void> {
     diaryEntry: Object.assign({}, diaryEntry, {
       content: format(content!),
       footnote: format(footnote!),
-      slug: `${domain}/diary/${slug}`,
+      slug: `${DOMAIN}/diary/${slug}`,
       date: zDate.formatDate(date!, { withWeekday: true }),
     }),
   };

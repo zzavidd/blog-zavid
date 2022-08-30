@@ -10,7 +10,7 @@ import { ConfirmButton, InvisibleButton } from 'components/button';
 import { Container } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import { Title } from 'components/text';
-import { siteTitle } from 'constants/settings';
+import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
 import PageMetadata from 'fragments/PageMetadata';
 import PreferenceChecks from 'fragments/subscribers/SubscriptionPreferences';
@@ -128,7 +128,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       pathDefinition: {
-        title: `Subscription Preferences | ${siteTitle}`,
+        title: `Subscription Preferences | ${SITE_TITLE}`,
       },
       pageProps: {
         subscriber: JSON.parse(

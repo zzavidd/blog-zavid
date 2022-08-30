@@ -9,7 +9,7 @@ import { Field, FieldRow, Label, TextInput } from 'components/form';
 import { Title } from 'components/text';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
-import { siteTitle } from 'constants/settings';
+import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
 import { checkValidSubscriber } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
@@ -126,7 +126,7 @@ export const getStaticProps: GetStaticProps<AppPageProps> = () => {
   return {
     props: {
       pathDefinition: {
-        title: `Subscribe | ${siteTitle}`,
+        title: `Subscribe | ${SITE_TITLE}`,
         description:
           'Be the first to know when a new post or diary entry drops.',
         url: '/subscribe',

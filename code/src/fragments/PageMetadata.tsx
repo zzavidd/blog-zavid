@@ -3,7 +3,7 @@ import React from 'react';
 
 import { cloudinaryBaseUrl } from 'components/image';
 import { CARD_IMAGE } from 'constants/defaults';
-import { domain } from 'constants/settings';
+import { DOMAIN } from 'constants/settings';
 
 export default function PageMetadata({
   title,
@@ -21,7 +21,7 @@ export default function PageMetadata({
       />
       <meta property={'og:title'} content={title} />
       <meta property={'og:description'} content={description} />
-      <meta property={'og:url'} content={`${domain}${url}`} />
+      <meta property={'og:url'} content={`${DOMAIN}${url}`} />
       <meta
         property={'og:image'}
         content={`${cloudinaryBaseUrl}/${cardImage}`}

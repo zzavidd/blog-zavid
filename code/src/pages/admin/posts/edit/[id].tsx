@@ -8,7 +8,7 @@ import { AlertType, reportError, setAlert } from 'components/alert';
 import type { SelectItem } from 'components/form';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
-import { domain } from 'constants/settings';
+import { DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import { validatePost } from 'constants/validations';
@@ -57,7 +57,7 @@ const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
 
   const returnAfterUpdate = () => {
     const url = new URLBuilder();
-    url.append(domain);
+    url.append(DOMAIN);
 
     if (PostStatic.isPage(clientPost)) {
       const base = PostStatic.getDirectory(clientPost.domainType!);

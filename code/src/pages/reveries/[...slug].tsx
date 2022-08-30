@@ -5,7 +5,7 @@ import { zText } from 'zavid-modules';
 
 import type { PostDAO } from 'classes';
 import { PostStatic, PostStatus, PostType } from 'classes';
-import { siteTitle } from 'constants/settings';
+import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import PageMetadata from 'fragments/PageMetadata';
 import type { PostTemplatePageProps } from 'fragments/posts/PostTemplatePage';
@@ -59,7 +59,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
       validateAuthorisation(post);
 
       const pathDefinition: PathDefinition = {
-        title: `${post.title} | ${siteTitle}`,
+        title: `${post.title} | ${SITE_TITLE}`,
         description: post.excerpt || zText.extractExcerpt(post.content!),
         url: `/reveries/${domainSlug}/${slug}`,
       };
@@ -90,7 +90,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
       validateAuthorisation(reverieTrio.current);
 
       const pathDefinition: PathDefinition = {
-        title: `${reverieTrio.current.title} | ${siteTitle}`,
+        title: `${reverieTrio.current.title} | ${SITE_TITLE}`,
         description: JSON.stringify(reverieTrio.current.excerpt),
         url: `/reveries/${reverieTrio.current.slug}`,
       };
@@ -101,7 +101,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
       return {
         props: {
           pathDefinition: {
-            title: `${reverieTrio.current.title} | ${siteTitle}`,
+            title: `${reverieTrio.current.title} | ${SITE_TITLE}`,
             description: JSON.stringify(reverieTrio.current.excerpt),
             url: `/reveries/${reverieTrio.current.slug}`,
             cardImage: reverieTrio.current.image as string,

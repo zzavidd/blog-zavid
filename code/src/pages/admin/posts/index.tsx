@@ -18,7 +18,7 @@ import {
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
 import { VanillaLink } from 'components/text';
-import { domain } from 'constants/settings';
+import { DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
@@ -58,7 +58,7 @@ const PostsAdmin: NextPage<PostsAdminProps> = ({
 
   function onFilterOptionChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const { name, value } = event.target;
-    const url = new URL(router.asPath, domain);
+    const url = new URL(router.asPath, DOMAIN);
     if (value) {
       url.searchParams.set(name, value);
     } else {

@@ -9,7 +9,7 @@ import {
   PageQueryBuilder,
 } from 'classes';
 import { knex } from 'constants/knex';
-import { domain, RESOURCE_MAP } from 'constants/settings';
+import { DOMAIN, RESOURCE_MAP } from 'constants/settings';
 
 // eslint-disable-next-line react/function-component-definition
 const Sitemap: NextPage = () => {
@@ -56,7 +56,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     routes.push(`/resources/${slug}`),
   );
 
-  const sitemap = new SitemapStream({ hostname: domain });
+  const sitemap = new SitemapStream({ hostname: DOMAIN });
   routes.forEach((route) => {
     sitemap.write({ url: route, changefreq: 'weekly' });
   });

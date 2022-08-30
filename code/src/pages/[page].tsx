@@ -7,9 +7,9 @@ import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { Paragraph, Title } from 'components/text';
 import {
-  redevelopmentDate,
-  siteTitle,
-  zavidBirthday,
+  BLOG_REDEVELOPMENT_DATE,
+  SITE_TITLE,
+  ZAVID_BIRTHDAY,
 } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
@@ -25,8 +25,8 @@ const PageSingleProps: NextPage<PageSingleProps> = ({
 }) => {
   const substitutions = {
     lastModified: `**${zDate.formatDate(page.lastModified!)}**`,
-    myAge: zDate.calculateAge(zavidBirthday),
-    redevelopmentDate: zDate.formatDate(redevelopmentDate),
+    myAge: zDate.calculateAge(ZAVID_BIRTHDAY),
+    redevelopmentDate: zDate.formatDate(BLOG_REDEVELOPMENT_DATE),
   };
 
   return (
@@ -65,7 +65,7 @@ export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
     return {
       props: {
         pathDefinition: {
-          title: `${page.title} | ${siteTitle}`,
+          title: `${page.title} | ${SITE_TITLE}`,
           description: zText.extractExcerpt(page.content!),
           url: `/${query.page}`,
         },
