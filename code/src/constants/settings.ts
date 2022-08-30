@@ -21,13 +21,14 @@ export const CLOUDINARY_BASE_URL =
 export const COPYRIGHT = `\u00A9 ${new Date().getFullYear()} ZAVID`;
 
 export const EMAILS_ON =
-  process.env.NODE_ENV === 'production' || process.env.EMAILS_ON === 'true';
+  process.env.NEXT_PUBLIC_APP_ENV === 'production' ||
+  process.env.EMAILS_ON === 'true';
 
 /** Domain to use dependent on environment. */
 export const DOMAIN =
-  process.env.NODE_ENV === 'production'
+  process.env.NEXT_PUBLIC_APP_ENV === 'production'
     ? 'https://zavidegbue.com'
-    : process.env.NODE_ENV === ('staging' as 'test')
+    : process.env.NEXT_PUBLIC_APP_ENV === 'staging'
     ? 'https://dev.zavidegbue.com'
     : 'http://localhost:4000';
 

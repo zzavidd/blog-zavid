@@ -49,7 +49,7 @@ export const setAlert = ({ type, message }: Alert): void => {
 };
 
 export function reportError(message: string, asIs?: boolean): void {
-  if (process.env.NODE_ENV === 'production' && !asIs) {
+  if (process.env.NEXT_PUBLIC_APP_ENV === 'production' && !asIs) {
     alert.error('There was a problem. Please try again later.');
     console.error(message);
   } else {

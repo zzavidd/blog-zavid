@@ -11,21 +11,18 @@ if [ "$1" == "dev" ]; then
   CONTAINER_NAME='zavid_blog_staging'
   PORT='3333'
   WORKDIR='dev.zavid'
-  NODE_ENV='staging'
 else
   warn 'Building for production.'
   IMAGE_NAME='zavid'
   CONTAINER_NAME='zavid_blog'
   PORT='4000'
   WORKDIR='zavid'
-  NODE_ENV='production'
 fi
 
 info "Building '$IMAGE_NAME' image..."
 if
   docker build -f "$CWD/../Dockerfile" \
     -t $IMAGE_NAME \
-    --build-arg NODE_ENV="$NODE_ENV" \
     --build-arg PORT="$PORT" \
     --build-arg WORKDIR="$WORKDIR" \
     .

@@ -14,7 +14,7 @@ cloudinary.config({
 });
 
 const CONTENT_IMAGE_REGEX = new RegExp(/.*\-[0-9]{2}\.[a-z]+/);
-const isDev = process.env.NODE_ENV !== 'production';
+const isDev = process.env.NEXT_PUBLIC_APP_ENV !== 'production';
 
 /**
  * Upload post image cloudinary.

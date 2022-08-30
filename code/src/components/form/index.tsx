@@ -62,7 +62,7 @@ export function Form({
    * @param e The event context.
    */
   const restrictNavigation = (e: Event) => {
-    if (!isConfirmed && process.env.NODE_ENV !== 'development') {
+    if (!isConfirmed && process.env.NEXT_PUBLIC_APP_ENV !== 'development') {
       e.returnValue = true;
     }
   };

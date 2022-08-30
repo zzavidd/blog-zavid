@@ -2,8 +2,6 @@ FROM node:16.13.1-alpine
 
 ARG PORT
 ARG WORKDIR
-ARG NODE_ENV
-ENV NODE_ENV $NODE_ENV
 
 WORKDIR /var/www/$WORKDIR/code
 COPY ./code/.yarn ./.yarn/

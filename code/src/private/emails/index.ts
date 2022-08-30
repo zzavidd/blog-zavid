@@ -24,7 +24,7 @@ import {
   DOMAIN,
 } from 'constants/settings';
 
-const isDev = process.env.NODE_ENV !== 'production';
+const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
 /** A map of variables used in all EJS emails */
 const ejsLocals = {
@@ -52,11 +52,13 @@ const testRecipient: TestRecipient = {
 
 /** Initialise the mail transporter */
 const transporter = nodemailer.createTransport({
-  host: process.env[isDev ? 'ETHEREAL_HOST' : 'EMAIL_HOST'],
-  port: parseInt(process.env[isDev ? 'ETHEREAL_PORT' : 'EMAIL_PORT'] as string),
+  host: process.env[isProd ? 'EMAIL_HOST' : 'ETHEREAL_HOST'],
+  port: parseInt(
+    process.env[isProd ? 'EMAIL_PORT' : 'ETHEREAL_PORT'] as string,
+  ),
   auth: {
-    user: process.env[isDev ? 'ETHEREAL_EMAIL' : 'EMAIL_USER'],
-    pass: process.env[isDev ? 'ETHEREAL_PWD' : 'EMAIL_PWD'],
+    user: process.env[isProd ? 'EMAIL_USER' : 'ETHEREAL_EMAIL'],
+    pass: process.env[isProd ? 'EMAIL_PWD' : 'ETHEREAL_PWD'],
   },
 });
 
@@ -143,7 +145,7 @@ async function prepareEmail<T extends GenericDAO>(
     const subscribers = await new SubscriberQueryBuilder(knex).build();
 
     // Retrieve list of subscribers to corresponding type
-    mailList = isDev
+    mailList = isProd
       ? [testRecipient]
       : subscribers.filter((subscriber) => {
           const subscriptions = JSON.parse(subscriber.subscriptions as string);

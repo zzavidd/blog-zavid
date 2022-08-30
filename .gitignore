@@ -4,6 +4,7 @@ sessions/
 **/dist/
 
 **/*.env*
+**/credentials
 **/.eslintcache
 **/.tsbuildinfo
 
