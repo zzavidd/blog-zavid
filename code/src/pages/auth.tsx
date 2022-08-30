@@ -1,11 +1,12 @@
-import type { GetStaticProps, NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 
 // eslint-disable-next-line react/function-component-definition
 const AuthFallback: NextPage = () => {
   return null;
 };
 
-export const getStaticProps: GetStaticProps = () => {
+// eslint-disable-next-line require-await
+export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
       destination: '/',
