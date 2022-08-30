@@ -15,7 +15,7 @@
     "prettier:write": "yarn run prettier:check --write",
     "prune": "ts-prune -p ./tsconfig.json -s **/*.ts",
     "manual": "ts-node --project test/tsconfig.test.json test/manual",
-    "ingestion": "ts-node --project test/tsconfig.test.json test/ingestion",
+    "ingestion": "ts-node --project test/tsconfig.test.json test/ingestion"
   },
   "dependencies": {
     "@aarnila/react-instagram-embed": "^2.0.2",
