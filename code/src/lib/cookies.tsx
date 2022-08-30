@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import Cookies from 'js-cookie';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { InvisibleButton } from 'components/button';
 import { Icon } from 'lib/library';

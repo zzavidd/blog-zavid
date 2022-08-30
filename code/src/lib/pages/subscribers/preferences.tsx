@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { ReactInputChangeEvent, SubscriptionsMapping } from 'classes';
 import { Checkbox } from 'components/form/checkbox';
 import css from 'styles/pages/Subscribers.module.scss';

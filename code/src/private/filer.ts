@@ -83,7 +83,7 @@ export async function uploadImages(post: PostDAO): Promise<PostDAO> {
  * Delete post image from cloudinary.
  * @param image The post image source.
  */
-export async function destroyImage(image: string | PostImage) {
+export async function destroyImage(image: string | PostImage): Promise<void> {
   const path = image as string;
   try {
     if (!path) return;
@@ -110,7 +110,10 @@ export async function destroyImage(image: string | PostImage) {
  * @param id The ID of the post.
  * @param post The post object.
  */
-export async function replaceImages(id: number, post: PostDAO) {
+export async function replaceImages(
+  id: number,
+  post: PostDAO,
+): Promise<PostDAO> {
   const postInDatabase = await getPostById(id);
   const imagesFromClient = PostStatic.collateImages(post, {
     includeNulls: true,
@@ -158,7 +161,7 @@ function generateSlug(post: PostDAO): string {
  * @param post The post to generate the filename for.
  * @param slug The post slug.
  */
-async function generateFilename(post: PostDAO, slug: string) {
+async function generateFilename(post: PostDAO, slug: string): Promise<string> {
   let filename = 'untitled';
 
   if (PostStatic.isPage(post)) {

@@ -23,7 +23,7 @@ library.add(fab, far, fas);
 
 const { store, persistor } = configureStore();
 
-export default function (props: AppProps) {
+export default function App(props: AppProps) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

@@ -8,7 +8,7 @@ import { Paragraph, Title } from 'components/text';
 import { Icon, Responsive } from 'lib/library';
 import css from 'styles/pages/Home.module.scss';
 
-export default function ({ reverie }: LatestReverieProps) {
+export default function HomeReverie({ reverie }: LatestReverieProps) {
   return (
     <div className={css['latest-reverie']}>
       <Responsive

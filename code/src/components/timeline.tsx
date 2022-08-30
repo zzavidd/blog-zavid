@@ -12,7 +12,7 @@ export const TimelineType: TimelineTypes = {
   DIARY: { label: 'Entry', segment: 'diary' },
 };
 
-export default function ({ type, previous, next }: Timeline) {
+export default function Timeline({ type, previous, next }: TimelineProps) {
   if (!previous?.slug && !next?.slug) return null;
   return (
     <div className={css['timeline']}>
@@ -62,7 +62,7 @@ function EntityImage({ image }: EntityImage) {
   );
 }
 
-interface Timeline {
+interface TimelineProps {
   type: TimelineType;
   previous?: TimelineEntity;
   next?: TimelineEntity;

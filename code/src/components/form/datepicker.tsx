@@ -12,14 +12,14 @@ import { Modal, ConfirmModal } from '../modal';
 
 import { Field, FieldRow, Select, TextInput } from '.';
 
-export default function ({
+export default function DatePicker({
   name,
   date,
   onConfirm,
   placeholderText,
-}: DatePicker) {
+}: DatePickerProps) {
   return (
-    <DatePicker
+    <BaseDatePicker
       name={name}
       date={date}
       onConfirm={onConfirm}
@@ -31,7 +31,7 @@ export default function ({
   );
 }
 
-function DatePicker(props: BaseDatePicker) {
+function BaseDatePicker(props: BaseDatePickerProps) {
   const { date, name, onConfirm, placeholderText, withDayOfWeek } = props;
 
   const [selectedDay, setDay] = useState(1);
@@ -255,14 +255,14 @@ interface ExtractedDate {
   year: number;
 }
 
-interface DatePicker {
+interface DatePickerProps {
   name: string;
   date: DateType;
   onConfirm: (date: DateType, name?: string) => void;
   placeholderText: string;
 }
 
-interface BaseDatePicker extends DatePicker {
+interface BaseDatePickerProps extends DatePickerProps {
   withDayOfWeek?: boolean;
   minDate: Date;
   maxDate: Date;

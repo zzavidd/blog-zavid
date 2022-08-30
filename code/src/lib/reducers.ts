@@ -83,11 +83,11 @@ const persistedReducer = persistReducer(
   }),
 );
 
-export default () => {
+export default function configureStore() {
   const store = createStore(persistedReducer);
   const persistor = persistStore(store);
   return { store, persistor };
-};
+}
 
 export interface PostFiltersOptions {
   limit?: number;

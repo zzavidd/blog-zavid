@@ -74,7 +74,7 @@ export class QueryBuilder<T extends GenericDAO> {
   }
 
   public async build(): Promise<T[]> {
-    return this.query;
+    return await this.query;
   }
 }
 

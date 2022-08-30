@@ -7,7 +7,7 @@ import { Paragraph, Title } from 'components/text';
 import { Icon } from 'lib/library';
 import css from 'styles/pages/Home.module.scss';
 
-export default function ({ entry }: LatestDiaryEntryProps) {
+export default function HomeDiary({ entry }: LatestDiaryEntryProps) {
   if (!entry) return null;
 
   const date = zDate.formatDate(entry.date!, { withWeekday: true });

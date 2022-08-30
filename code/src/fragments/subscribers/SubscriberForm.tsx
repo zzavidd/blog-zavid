@@ -12,7 +12,7 @@ import type Handlers from 'lib/hooks';
 
 import SubscriptionPreferences from '../../lib/pages/subscribers/preferences';
 
-export default function (props: SubscribeFormProps) {
+export default function SubscriberForm(props: SubscribeFormProps) {
   const { subscriber, handlers } = props;
   const { handleText, setState } = handlers;
 

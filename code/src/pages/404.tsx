@@ -1,3 +1,5 @@
+import React from 'react';
+
 import css from 'styles/Partials.module.scss';
 
 export default function Custom404Page() {

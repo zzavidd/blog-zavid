@@ -1,3 +1,4 @@
+import React from 'react';
 import { zText } from 'zavid-modules';
 
 import type { ResultEntityDAO } from 'classes';

@@ -6,7 +6,7 @@ import { PostStatic } from 'classes';
 import { AdminButton } from 'components/button';
 import type { SelectProps } from 'components/form';
 import { Field, FieldRow, Select } from 'components/form';
-import { Toolbar, ToolbarToggle } from 'components/layout';
+import { Toolbar as LayoutToolbar, ToolbarToggle } from 'components/layout';
 import { Icon, Responsive } from 'lib/library';
 import type { PostFiltersOptions } from 'lib/reducers';
 import css from 'styles/pages/Posts.module.scss';
@@ -18,7 +18,10 @@ const sortOptions = [
   { value: 'status', label: 'Sort by Status' },
 ];
 
-export default function ({ options, handleOptionSelection }: Toolbar) {
+export default function Toolbar({
+  options,
+  handleOptionSelection,
+}: ToolbarProps) {
   const [isFiltersVisible, setFilterVisibility] = useState(false);
   const [isInitialState, setIsInitialState] = useState(true);
 
@@ -41,7 +44,7 @@ export default function ({ options, handleOptionSelection }: Toolbar) {
   return (
     <Responsive
       defaultView={
-        <Toolbar>
+        <LayoutToolbar>
           <FieldRow>
             <Field md={4}>{TOOLBAR.ADD_BUTTON}</Field>
             <Field md={2}>{TOOLBAR.FILTERS.FIELD}</Field>
@@ -50,10 +53,10 @@ export default function ({ options, handleOptionSelection }: Toolbar) {
             <Field md={2}>{TOOLBAR.FILTERS.STATUS}</Field>
             <Field md={1}>{TOOLBAR.FILTERS.LIMIT}</Field>
           </FieldRow>
-        </Toolbar>
+        </LayoutToolbar>
       }
       mobileView={
-        <Toolbar className={css['post-toolbar-mobile']}>
+        <LayoutToolbar className={css['post-toolbar-mobile']}>
           <div className={css['post-toolbar-firstrow']}>
             {TOOLBAR.ADD_BUTTON}
             <ToolbarToggle toggle={toggleFilterVisibility}>
@@ -73,7 +76,7 @@ export default function ({ options, handleOptionSelection }: Toolbar) {
               <Field xs={6}>{TOOLBAR.FILTERS.LIMIT}</Field>
             </FieldRow>
           </div>
-        </Toolbar>
+        </LayoutToolbar>
       }
     />
   );
@@ -146,7 +149,7 @@ function FilterDropdown(props: SelectProps) {
   return <Select {...props} className={css['post-filter']} isRound={true} />;
 }
 
-interface Toolbar {
+interface ToolbarProps {
   options: PostFiltersOptions;
   handleOptionSelection: (event: ReactSelectChangeEvent) => void;
 }

@@ -7,7 +7,7 @@ import CloudImage, { AspectRatio } from 'components/image';
 import { Title, VanillaLink } from 'components/text';
 import css from 'styles/pages/Home.module.scss';
 
-export default function ({ posts }: RandomPostsGridProps) {
+export default function HomePosts({ posts }: RandomPostsGridProps) {
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {

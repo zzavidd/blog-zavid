@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { ConfirmButton } from 'components/button';
 import { SearchBar } from 'components/form';
 import { HomeRow } from 'components/pages/home';
 import css from 'styles/pages/Home.module.scss';
 
-export default function () {
+export default function HomeSearch() {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (

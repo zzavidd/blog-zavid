@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import React from 'react';
 
 import { cloudinaryBaseUrl, RESOURCE_MAP } from 'constants/settings';
 
@@ -15,6 +16,7 @@ const Resource: NextPage<ResourceProps> = ({ href }) => {
 
 export const getServerSideProps: GetServerSideProps<ResourceProps> = async ({
   query,
+  // eslint-disable-next-line require-await
 }) => {
   const url = RESOURCE_MAP[query.slug as string];
   return {

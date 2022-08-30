@@ -68,7 +68,7 @@ const typeToSubscription: SubscriptionType = {
  * Send an email to all subscribers of new post.
  * @param post The subject post for the email.
  */
-export function notifyNewPost(post: PostDAO) {
+export async function notifyNewPost(post: PostDAO): Promise<void> {
   const { title, type, typeId, content, datePublished, image, slug } = post;
   const subject = `New ${type} (#${typeId}) "${title}"`;
 
@@ -82,7 +82,7 @@ export function notifyNewPost(post: PostDAO) {
     },
   };
 
-  return prepareEmail(entity, typeToSubscription[type!]!, 'post', subject);
+  await prepareEmail(entity, typeToSubscription[type!]!, 'post', subject);
 }
 
 /**
@@ -102,8 +102,10 @@ export function notifyNewDiaryEntry(diaryEntry: DiaryDAO): Promise<void> {
     },
   };
 
-  const format = (text: string) =>
-    ReactDOMServer.renderToStaticMarkup(zText.formatText(text, options));
+  function format(text: string): string {
+    const formattedText = zText.formatText(text, options);
+    return ReactDOMServer.renderToStaticMarkup(formattedText);
+  }
 
   const entity = {
     diaryEntry: Object.assign({}, diaryEntry, {

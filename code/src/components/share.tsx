@@ -16,7 +16,7 @@ import css from 'styles/components/Share.module.scss';
 import { alert } from './alert';
 import { InvisibleButton } from './button';
 
-export default function (props: Share) {
+export default function Share(props: ShareProps) {
   const { headline = 'Share This Post' } = props;
   return (
     <div className={css['share-block']}>
@@ -32,7 +32,7 @@ export default function (props: Share) {
   );
 }
 
-function ShareFacebook({ message, url }: Share) {
+function ShareFacebook({ message, url }: ShareProps) {
   return (
     <FacebookShareButton quote={message} url={url}>
       <FacebookIcon size={50} round={true} />
@@ -40,7 +40,7 @@ function ShareFacebook({ message, url }: Share) {
   );
 }
 
-function ShareTwitter({ message, url }: Share) {
+function ShareTwitter({ message, url }: ShareProps) {
   const handle = 'zzavidd';
   return (
     <TwitterShareButton title={message} url={url} via={handle}>
@@ -49,7 +49,7 @@ function ShareTwitter({ message, url }: Share) {
   );
 }
 
-function ShareWhatsapp({ message, url }: Share) {
+function ShareWhatsapp({ message, url }: ShareProps) {
   return (
     <WhatsappShareButton title={message} separator={'\n'} url={url}>
       <WhatsappIcon size={50} round={true} />
@@ -57,7 +57,7 @@ function ShareWhatsapp({ message, url }: Share) {
   );
 }
 
-function ShareLinkedin({ message, url }: Share) {
+function ShareLinkedin({ message, url }: ShareProps) {
   return (
     <LinkedinShareButton title={message} url={url}>
       <LinkedinIcon size={50} round={true} />
@@ -65,7 +65,7 @@ function ShareLinkedin({ message, url }: Share) {
   );
 }
 
-function ShareLink({ url }: Share) {
+function ShareLink({ url }: ShareProps) {
   async function copyLink() {
     await navigator.clipboard.writeText(url);
     alert.success("Copied this post's link to clipboard!");
@@ -79,7 +79,7 @@ function ShareLink({ url }: Share) {
   );
 }
 
-interface Share {
+interface ShareProps {
   headline?: string;
   message: string;
   url: string;

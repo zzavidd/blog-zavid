@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -67,9 +67,7 @@ const PageAdd: NextPage<PageAddProps> = ({ pathDefinition }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  PageAddProps
-> = async () => {
+export const getStaticProps: GetStaticProps<PageAddProps> = () => {
   return {
     props: {
       pathDefinition: {

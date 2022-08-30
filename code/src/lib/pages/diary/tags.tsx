@@ -9,16 +9,15 @@ import css from 'styles/pages/Posts.module.scss';
 
 // TODO: Use better tags; convertCSVToArray should be createTags, producing
 // tag labels and values
-export default function ({
+export default function DiaryTags({
   tags,
   limit,
   className,
   tagClassName,
   asCSV,
 }: DiaryTagProps) {
-  if (!tags) return null;
-
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+  if (!tags) return null;
 
   let tagsList: Array<string> = [];
 

@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import type { NextPage } from 'next';
+import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 

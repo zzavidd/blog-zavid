@@ -7,7 +7,10 @@ import { Paragraph, Title } from 'components/text';
 import { redevelopmentDate } from 'constants/settings';
 import css from 'styles/pages/Home.module.scss';
 
-export default function ({ content, emailSubCount }: IntroductionProps) {
+export default function HomeIntroduction({
+  content,
+  emailSubCount,
+}: IntroductionProps) {
   return (
     <HomeRow className={css['introduction-wrapper']}>
       <HomeField xl={7}>

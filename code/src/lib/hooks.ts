@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import type { Dispatch } from 'redux';
 
 import type {
@@ -17,52 +18,51 @@ export default function Handlers<T extends GenericDAO>(
   hook: ReactHook<T>,
   state: T,
 ) {
-  const handleText = (
+  function handleText(
     event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
-  ): void => {
+  ): void {
     const { name, value } = event.target;
-    hook(Object.assign({}, state, { [name]: value }));
-  };
+    hook({ ...state, [name]: value });
+  }
 
-  const handleNumber = (event: ReactInputChangeEvent) => {
+  function handleNumber(event: ReactInputChangeEvent): void {
     const { name, valueAsNumber } = event.target;
-    hook(Object.assign({}, state, { [name]: valueAsNumber }));
-  };
+    hook({ ...state, [name]: valueAsNumber });
+  }
 
-  const handleSelection = (event: ReactSelectChangeEvent): void => {
+  function handleSelection(event: ReactSelectChangeEvent): void {
     const { name, value } = event.target;
-    hook(Object.assign({}, state, { [name]: value }));
-  };
+    hook({ ...state, [name]: value });
+  }
 
-  const handleTextSave = (
+  function handleTextSave(
     event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
     dispatch: Dispatch,
-  ): void => {
+  ): void {
     handleText(event);
     dispatch(saveText(event.target.value));
-  };
+  }
 
-  const handleDate = (date: DateType, name = 'date'): void => {
-    hook(Object.assign({}, state, { [name]: date }));
-  };
+  function handleDate(date: DateType, name = 'date'): void {
+    hook({ ...state, [name]: date });
+  }
 
-  const handleCheck = (event: ReactInputChangeEvent): void => {
+  function handleCheck(event: ReactInputChangeEvent): void {
     const { name, checked } = event.target;
-    hook(Object.assign({}, state, { [name]: checked }));
-  };
+    hook({ ...state, [name]: checked });
+  }
 
-  const handleFile = (file: string | null, name = 'image'): void => {
-    hook(
-      Object.assign({}, state, {
-        [name]: {
-          source: file,
-          hasChanged: true,
-        },
-      }),
-    );
-  };
+  function handleFile(file: string | null, name = 'image'): void {
+    hook({
+      ...state,
+      [name]: {
+        source: file,
+        hasChanged: true,
+      },
+    });
+  }
 
-  const handleContentImages = (file: string, i: number): void => {
+  function handleContentImages(file: string, i: number): void {
     const contentImages = (state as PostDAO)
       .contentImages as PostContentImageMapping;
 
@@ -71,12 +71,11 @@ export default function Handlers<T extends GenericDAO>(
       hasChanged: true,
     } as PostImage;
 
-    hook(
-      Object.assign({}, state, {
-        contentImages,
-      }),
-    );
-  };
+    hook({
+      ...state,
+      contentImages,
+    });
+  }
 
   return {
     handleText,
