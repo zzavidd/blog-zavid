@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import React, { useState } from 'react';
 
 import type { SubscriberDAO } from 'classes';
@@ -9,13 +9,14 @@ import { Field, FieldRow, Label, TextInput } from 'components/form';
 import { Title } from 'components/text';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
-import PathDefinitions from 'constants/paths';
+import { siteTitle } from 'constants/settings';
+import type { AppPageProps } from 'constants/types';
 import { checkValidSubscriber } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import css from 'styles/pages/Subscribers.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
-const SubscribeForm: NextPage = () => {
+const SubscribePage: NextPage<AppPageProps> = ({ pathDefinition }) => {
   const [subscriber, setSubscriber] = useState({
     email: '',
     firstname: '',
@@ -69,7 +70,7 @@ const SubscribeForm: NextPage = () => {
 
   return (
     <React.Fragment>
-      <PageMetadata {...PathDefinitions.Subscribe} />
+      <PageMetadata {...pathDefinition} />
       <div className={css['user-subscribe-form']}>
         <Title className={css['user-subscribe-title']}>
           Subscribe to the ZAVID Blog
@@ -121,4 +122,17 @@ const SubscribeForm: NextPage = () => {
   );
 };
 
-export default SubscribeForm;
+export const getStaticProps: GetStaticProps<AppPageProps> = () => {
+  return {
+    props: {
+      pathDefinition: {
+        title: `Subscribe | ${siteTitle}`,
+        description:
+          'Be the first to know when a new post or diary entry drops.',
+        url: '/subscribe',
+      },
+    },
+  };
+};
+
+export default SubscribePage;

@@ -3,8 +3,8 @@ import { unstable_getServerSession } from 'next-auth';
 import React from 'react';
 
 import { PostType, PostStatus, PostStatic } from 'classes';
-import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
+import type { PathDefinition } from 'constants/types';
 import PageMetadata from 'fragments/PageMetadata';
 import type { PostTemplatePageProps } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';

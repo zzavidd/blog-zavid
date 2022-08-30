@@ -6,7 +6,7 @@ import type { PageDAO } from 'classes';
 import { AlertType, reportError, setAlert } from 'components/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
-import type { PathDefinition } from 'constants/paths';
+import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import { validatePage } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';

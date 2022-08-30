@@ -16,7 +16,7 @@ import {
   TablerItemCell,
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
-import type { PathDefinition } from 'constants/paths';
+import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import { getAllPagesSSR } from 'pages/api/pages';

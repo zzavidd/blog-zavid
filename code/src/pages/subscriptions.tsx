@@ -10,7 +10,8 @@ import { ConfirmButton, InvisibleButton } from 'components/button';
 import { Container } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import { Title } from 'components/text';
-import PathDefinitions from 'constants/paths';
+import { siteTitle } from 'constants/settings';
+import type { AppPageProps } from 'constants/types';
 import PageMetadata from 'fragments/PageMetadata';
 import PreferenceChecks from 'fragments/subscribers/SubscriptionPreferences';
 import css from 'styles/pages/Subscribers.module.scss';
@@ -19,8 +20,10 @@ import { getSubscriberByTokenSSR } from './api/subscribers';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
-  subscriber,
+  pathDefinition,
+  pageProps,
 }) => {
+  const { subscriber } = pageProps;
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
   const [preferences, setPreferences] = useState(
@@ -86,7 +89,7 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
 
   return (
     <React.Fragment>
-      <PageMetadata {...PathDefinitions.SubscriptionPreferences} />
+      <PageMetadata {...pathDefinition} />
       <Container>
         <Title className={css['pref-title']}>Subscription Preferences</Title>
         <div className={css['pref-email']}>{subscriber.email}</div>
@@ -124,15 +127,22 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query }) => {
   return {
     props: {
-      subscriber: JSON.parse(
-        await getSubscriberByTokenSSR(query.token as string),
-      ),
+      pathDefinition: {
+        title: `Subscription Preferences | ${siteTitle}`,
+      },
+      pageProps: {
+        subscriber: JSON.parse(
+          await getSubscriberByTokenSSR(query.token as string),
+        ),
+      },
     },
   };
 };
 
 export default SubscriptionPreferences;
 
-interface SubscriptionsProps {
-  subscriber: SubscriberDAO;
+interface SubscriptionsProps extends AppPageProps {
+  pageProps: {
+    subscriber: SubscriberDAO;
+  };
 }

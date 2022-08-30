@@ -6,12 +6,12 @@ import type { PageDAO } from 'classes';
 import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { Paragraph, Title } from 'components/text';
-import type { PathDefinition } from 'constants/paths';
 import {
   redevelopmentDate,
   siteTitle,
   zavidBirthday,
 } from 'constants/settings';
+import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
 import css from 'styles/pages/Posts.module.scss';

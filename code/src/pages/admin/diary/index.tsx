@@ -16,7 +16,7 @@ import {
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
 import { VanillaLink } from 'components/text';
-import type { PathDefinition } from 'constants/paths';
+import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import { getAllDiaryEntriesSSR } from 'pages/api/diary';
