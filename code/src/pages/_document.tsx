@@ -29,6 +29,19 @@ export default class AppDocument extends Document {
           />
           <meta name={'twitter:card'} content={'summary_large_image'} />
           <link rel={'icon'} href={'/favicon.png'} />
+
+          <link rel={'preconnect'} href={'https://fonts.googleapis.com'} />
+          <link
+            rel={'preconnect'}
+            href={'https://fonts.gstatic.com'}
+            crossOrigin={'anonymous'}
+          />
+          <link
+            href={
+              'https://fonts.googleapis.com/css2?family=Calistoga&family=Mulish:wght@400;700&family=Passion+One:wght@400;700&display=swap'
+            }
+            rel={'stylesheet'}
+          />
         </Head>
         <body className={'body'}>
           <Main />
