@@ -6,14 +6,14 @@ import type { DiaryDAO } from 'classes';
 import { DiaryStatic } from 'classes';
 import { AlertType, reportError, setAlert } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
+import { UIError } from 'constants/errors';
+import Handlers from 'constants/handlers';
 import type { PathDefinition } from 'constants/paths';
 import { domain } from 'constants/settings';
 import * as Utils from 'constants/utils';
+import { validateDiaryEntry } from 'constants/validations';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import PageMetadata from 'fragments/PageMetadata';
-import { UIError } from 'lib/errors';
-import Handlers from 'lib/hooks';
-import { validateDiaryEntry } from 'lib/validations';
 import { getDiaryEntryByIdSSR } from 'pages/api/diary';
 
 // eslint-disable-next-line react/function-component-definition

@@ -8,7 +8,7 @@ import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { zText } from 'zavid-modules';
 import type { FormatCSS } from 'zavid-modules/_dist/constants/text';
 
-import { Icon } from 'lib/library';
+import { Icon } from 'components/library';
 import css from 'styles/components/Text.module.scss';
 
 export function Title({ children, className }: Text) {

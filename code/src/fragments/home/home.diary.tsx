@@ -3,8 +3,8 @@ import { zDate } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes';
 import { Flexer } from 'components/layout';
+import { Icon } from 'components/library';
 import { Paragraph, Title } from 'components/text';
-import { Icon } from 'lib/library';
 import css from 'styles/pages/Home.module.scss';
 
 export default function HomeDiary({ entry }: LatestDiaryEntryProps) {

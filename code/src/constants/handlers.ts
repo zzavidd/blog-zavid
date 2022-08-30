@@ -12,7 +12,7 @@ import type {
 } from 'classes';
 import type { GenericDAO } from 'classes/interfaces/super';
 import type { DateType } from 'components/form/datepicker';
-import { saveText } from 'lib/reducers';
+import { saveText } from 'constants/reducers';
 
 export default function Handlers<T extends GenericDAO>(
   hook: ReactHook<T>,

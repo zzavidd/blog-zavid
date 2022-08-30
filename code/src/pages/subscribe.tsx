@@ -7,11 +7,11 @@ import { alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { Field, FieldRow, Label, TextInput } from 'components/form';
 import { Title } from 'components/text';
+import { UIError } from 'constants/errors';
+import hooks from 'constants/handlers';
 import PathDefinitions from 'constants/paths';
+import { checkValidSubscriber } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
-import { UIError } from 'lib/errors';
-import hooks from 'lib/hooks';
-import { checkValidSubscriber } from 'lib/validations';
 import css from 'styles/pages/Subscribers.module.scss';
 
 // eslint-disable-next-line react/function-component-definition

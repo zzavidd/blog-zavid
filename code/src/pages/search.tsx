@@ -7,7 +7,7 @@ import { Spacer } from 'components/layout';
 import { Title } from 'components/text';
 import { siteTitle } from 'constants/settings';
 import PageMetadata from 'fragments/PageMetadata';
-import { ResultsGrid } from 'fragments/search/results';
+import { ResultsGrid } from 'fragments/search/SearchResultsGrid';
 import css from 'styles/pages/Search.module.scss';
 
 import { getSearchResults } from './api/search';

@@ -13,7 +13,7 @@ import {
   TextInput,
   Checkbox,
 } from 'components/form';
-import type Handlers from 'lib/hooks';
+import type Handlers from 'constants/handlers';
 
 export default function PageForm(props: PageFormProps) {
   const { page, handlers } = props;

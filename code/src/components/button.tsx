@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import { Icon, Responsive } from 'lib/library';
+import { Icon, Responsive } from 'components/library';
 import css from 'styles/components/Button.module.scss';
 
 function Button(props: Button) {

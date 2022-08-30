@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { zDate } from 'zavid-modules';
 
 import type { ReactSelectChangeEvent, ReactHook } from 'classes';
+import { Icon } from 'components/library';
 import { creationDate } from 'constants/settings';
-import { Icon } from 'lib/library';
 import css from 'styles/components/Form.module.scss';
 
 import { alert } from '../alert';

@@ -5,11 +5,11 @@ import { SubscriberBuilder } from 'classes';
 import { alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { Field, FieldRow, TextInput } from 'components/form';
+import { Icon } from 'components/library';
 import { Title, VanillaLink } from 'components/text';
+import { UIError } from 'constants/errors';
 import { accounts, copyright } from 'constants/settings';
-import { UIError } from 'lib/errors';
-import { Icon } from 'lib/library';
-import { checkValidEmail } from 'lib/validations';
+import { checkValidEmail } from 'constants/validations';
 import css from 'styles/Partials.module.scss';
 
 const footerLinks = [

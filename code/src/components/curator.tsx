@@ -10,8 +10,8 @@ import {
   ThemeOption,
 } from 'classes';
 import { ButtonSpacer, CancelButton, DeleteButton } from 'components/button';
+import { Responsive } from 'components/library';
 import { Paragraph } from 'components/text';
-import { Responsive } from 'lib/library';
 import css from 'styles/components/Modal.module.scss';
 
 import { createCanvasFromContent, downloadImage } from './canvas';

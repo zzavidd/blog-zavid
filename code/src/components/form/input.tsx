@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import type { OnClickType, OnInputChangeType, OnKeyPressType } from 'classes';
 import { InvisibleButton } from 'components/button';
-import { Icon } from 'lib/library';
+import { Icon } from 'components/library';
 import css from 'styles/components/Form.module.scss';
 
 export function TextInput(props: TextInputProps) {

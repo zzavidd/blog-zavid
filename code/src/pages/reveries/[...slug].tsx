@@ -8,8 +8,8 @@ import { PostStatic, PostStatus, PostType } from 'classes';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
 import PageMetadata from 'fragments/PageMetadata';
-import type { PostTemplatePageProps } from 'fragments/posts/template';
-import PostTemplatePage from 'fragments/posts/template';
+import type { PostTemplatePageProps } from 'fragments/posts/PostTemplatePage';
+import PostTemplatePage from 'fragments/posts/PostTemplatePage';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 
 import { getPostSSR } from '../api/posts';

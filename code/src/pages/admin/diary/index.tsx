@@ -7,18 +7,18 @@ import { EditButton, QueryOrder } from 'classes';
 import { alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
-import { ConfirmModal } from 'components/modal';
-import { VanillaLink } from 'components/text';
-import type { PathDefinition } from 'constants/paths';
-import * as Utils from 'constants/utils';
-import PageMetadata from 'fragments/PageMetadata';
 import {
   Icon,
   Tabler,
   TablerColumnHeader,
   TablerFieldType,
   TablerItemCell,
-} from 'lib/library';
+} from 'components/library';
+import { ConfirmModal } from 'components/modal';
+import { VanillaLink } from 'components/text';
+import type { PathDefinition } from 'constants/paths';
+import * as Utils from 'constants/utils';
+import PageMetadata from 'fragments/PageMetadata';
 import { getAllDiaryEntriesSSR } from 'pages/api/diary';
 
 // eslint-disable-next-line react/function-component-definition

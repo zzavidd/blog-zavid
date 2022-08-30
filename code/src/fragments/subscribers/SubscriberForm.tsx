@@ -8,9 +8,9 @@ import type {
 import { SubscriberBuilder } from 'classes';
 import type { GenericFormProps } from 'classes/interfaces/super';
 import { Form, FieldRow, Field, Label, TextInput } from 'components/form';
-import type Handlers from 'lib/hooks';
+import type Handlers from 'constants/handlers';
 
-import SubscriptionPreferences from '../../lib/pages/subscribers/preferences';
+import SubscriptionPreferences from './SubscriptionPreferences';
 
 export default function SubscriberForm(props: SubscribeFormProps) {
   const { subscriber, handlers } = props;

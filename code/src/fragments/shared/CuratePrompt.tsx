@@ -6,7 +6,7 @@ import { useMediaQuery } from 'react-responsive';
 
 import { Theme } from 'classes';
 import { InvisibleButton } from 'components/button';
-import { Icon, ScreenWidth } from 'lib/library';
+import { Icon, ScreenWidth } from 'components/library';
 
 const OVERLAY_CONSTANTS = {
   [Theme.LIGHT]: {

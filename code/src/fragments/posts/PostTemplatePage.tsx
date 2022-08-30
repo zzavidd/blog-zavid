@@ -11,7 +11,7 @@ import ShareBlock from 'components/share';
 import { Divider, Paragraph, Title } from 'components/text';
 import Timeline, { TimelineType } from 'components/timeline';
 import AdminLock from 'fragments/AdminLock';
-import { CuratePrompt } from 'lib/pages/posts/prompt';
+import { CuratePrompt } from 'fragments/shared/CuratePrompt';
 import css from 'styles/pages/Posts.module.scss';
 
 export default function PostTemplatePage({

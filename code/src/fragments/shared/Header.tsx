@@ -8,8 +8,8 @@ import { Theme } from 'classes';
 import { InvisibleButton } from 'components/button';
 import { Switch } from 'components/form/checkbox';
 import CloudImage from 'components/image';
-import { Icon, Responsive } from 'lib/library';
-import { setTheme } from 'lib/reducers';
+import { Icon, Responsive } from 'components/library';
+import { setTheme } from 'constants/reducers';
 import css from 'styles/Partials.module.scss';
 
 export default function Header() {

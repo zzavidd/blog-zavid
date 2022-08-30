@@ -9,7 +9,7 @@ import CloudImage, { AspectRatio } from 'components/image';
 import { Title, VanillaLink } from 'components/text';
 import css from 'styles/pages/Search.module.scss';
 
-import { MatchedContent } from './matched';
+import { MatchedContent } from './MatchedContent';
 
 export function ResultsGrid({ results, searchTerm }: ResultsGridProps) {
   if (!results.length) {

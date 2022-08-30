@@ -31,8 +31,8 @@ import DatePicker from 'components/form/datepicker';
 import { FileSelector, FSAspectRatio } from 'components/form/fileselector';
 import { Foldable } from 'components/form/foldable';
 import { cloudinaryBaseUrl } from 'components/image';
-import type Handlers from 'lib/hooks';
-import { ScreenWidth } from 'lib/library';
+import { ScreenWidth } from 'components/library';
+import type Handlers from 'constants/handlers';
 import css from 'styles/pages/Posts.module.scss';
 
 const MAX_NUM_CONTENT_IMAGES = 6;

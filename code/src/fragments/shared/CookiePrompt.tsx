@@ -3,9 +3,9 @@ import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 
 import { InvisibleButton } from 'components/button';
-import { Icon } from 'lib/library';
+import { Icon } from 'components/library';
 
-export function CookiePrompt() {
+export default function CookiePrompt() {
   const initialState = checkCookiePolicyAccepted();
   const [wasAccepted] = useState(initialState);
   const [isAccepted, setAcceptance] = useState(initialState);
@@ -33,6 +33,6 @@ export function CookiePrompt() {
   );
 }
 
-const checkCookiePolicyAccepted = (): boolean => {
+function checkCookiePolicyAccepted(): boolean {
   return Cookies.get('cookiesAccepted') === 'true';
-};
+}

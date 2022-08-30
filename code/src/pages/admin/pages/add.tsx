@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 
 import type { PageDAO } from 'classes';
 import { AlertType, reportError, setAlert } from 'components/alert';
+import { UIError } from 'constants/errors';
+import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/paths';
 import * as Utils from 'constants/utils';
+import { validatePage } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PageForm, { buildPayload } from 'fragments/pages/PageForm';
-import { UIError } from 'lib/errors';
-import hooks from 'lib/hooks';
-import { validatePage } from 'lib/validations';
 
 // eslint-disable-next-line react/function-component-definition
 const PageAdd: NextPage<PageAddProps> = ({ pathDefinition }) => {

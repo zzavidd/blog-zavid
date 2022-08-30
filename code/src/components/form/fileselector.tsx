@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { InvisibleButton } from 'components/button';
 import { cloudinaryBaseUrl, validateCloudinaryImage } from 'components/image';
-import { Icon } from 'lib/library';
+import { Icon } from 'components/library';
 import css from 'styles/components/Form.module.scss';
 
 export function FileSelector(props: FileSelector) {

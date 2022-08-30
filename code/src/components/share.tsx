@@ -10,7 +10,7 @@ import {
   WhatsappIcon,
 } from 'react-share';
 
-import { Icon } from 'lib/library';
+import { Icon } from 'components/library';
 import css from 'styles/components/Share.module.scss';
 
 import { alert } from './alert';

@@ -10,13 +10,13 @@ import { PostStatus, PostType, QueryOrder } from 'classes';
 import { AdminButton } from 'components/button';
 import CloudImage from 'components/image';
 import { Partitioner, Spacer, Toolbar } from 'components/layout';
+import { LazyLoader, Responsive } from 'components/library';
 import { Divider, Paragraph, Title } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
 import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
-import { RightSidebar } from 'fragments/partials/RightSidebar';
-import { LazyLoader, Responsive } from 'lib/library';
+import { RightSidebar } from 'fragments/shared/RightSidebar';
 import css from 'styles/pages/Reveries.module.scss';
 
 import { getPageBySlug } from '../api/pages';

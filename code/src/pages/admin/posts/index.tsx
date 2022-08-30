@@ -9,20 +9,20 @@ import { alert, reportError } from 'components/alert';
 import { InvisibleButton } from 'components/button';
 import CloudImage from 'components/image';
 import { Spacer } from 'components/layout';
-import { ConfirmModal } from 'components/modal';
-import { VanillaLink } from 'components/text';
-import type { PathDefinition } from 'constants/paths';
-import { domain } from 'constants/settings';
-import * as Utils from 'constants/utils';
-import PageMetadata from 'fragments/PageMetadata';
 import {
   Icon,
   Tabler,
   TablerColumnHeader,
   TablerFieldType,
   TablerItemCell,
-} from 'lib/library';
-import BottomToolbar from 'lib/pages/posts/toolbar';
+} from 'components/library';
+import { ConfirmModal } from 'components/modal';
+import { VanillaLink } from 'components/text';
+import type { PathDefinition } from 'constants/paths';
+import { domain } from 'constants/settings';
+import * as Utils from 'constants/utils';
+import PageMetadata from 'fragments/PageMetadata';
+import BottomToolbar from 'fragments/shared/BottomToolbar';
 import { getAllPostsSSR } from 'pages/api/posts';
 import css from 'styles/pages/Posts.module.scss';
 

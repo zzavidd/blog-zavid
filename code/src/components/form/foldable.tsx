@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { Icon } from 'lib/library';
+import { Icon } from 'components/library';
 import css from 'styles/components/Form.module.scss';
 
 import { InvisibleButton } from '../button';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon } from 'lib/library';
+import { Icon } from 'components/library';
 import css from 'styles/components/Form.module.scss';
 
 import CloudImage, { AspectRatio } from './image';

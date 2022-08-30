@@ -4,8 +4,8 @@ import { zDate } from 'zavid-modules';
 import type { PostDAO } from 'classes';
 import CloudImage, { AspectRatio } from 'components/image';
 import { Flexer } from 'components/layout';
+import { Icon, Responsive } from 'components/library';
 import { Paragraph, Title } from 'components/text';
-import { Icon, Responsive } from 'lib/library';
 import css from 'styles/pages/Home.module.scss';
 
 export default function HomeReverie({ reverie }: LatestReverieProps) {

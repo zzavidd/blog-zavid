@@ -10,13 +10,13 @@ import { DiaryStatus, QueryOrder } from 'classes';
 import { AdminButton, ConfirmButton } from 'components/button';
 import { Checkbox, SearchBar } from 'components/form';
 import { Spacer, Toolbar } from 'components/layout';
+import { Icon } from 'components/library';
 import { Paragraph, Title, VanillaLink } from 'components/text';
 import type { PathDefinition } from 'constants/paths';
 import { siteTitle } from 'constants/settings';
 import AdminLock from 'fragments/AdminLock';
+import TagBlock from 'fragments/diary/DiaryTags';
 import PageMetadata from 'fragments/PageMetadata';
-import { Icon } from 'lib/library';
-import TagBlock from 'lib/pages/diary/tags';
 import css from 'styles/pages/Diary.module.scss';
 
 import { getAllDiaryEntriesSSR } from '../api/diary';

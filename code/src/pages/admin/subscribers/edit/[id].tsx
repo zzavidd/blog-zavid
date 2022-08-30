@@ -4,15 +4,15 @@ import React, { useState } from 'react';
 
 import type { SubscriberDAO } from 'classes';
 import { AlertType, reportError, setAlert } from 'components/alert';
+import { UIError } from 'constants/errors';
+import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/paths';
 import * as Utils from 'constants/utils';
+import { checkValidSubscriber } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import SubscriberForm, {
   buildPayload,
 } from 'fragments/subscribers/SubscriberForm';
-import { UIError } from 'lib/errors';
-import hooks from 'lib/hooks';
-import { checkValidSubscriber } from 'lib/validations';
 import { getSubscriberByIdSSR } from 'pages/api/subscribers';
 
 function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {

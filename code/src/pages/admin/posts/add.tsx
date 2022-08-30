@@ -6,13 +6,13 @@ import type { PostDAO } from 'classes';
 import { PostStatic, PostStatus } from 'classes';
 import { AlertType, reportError, setAlert } from 'components/alert';
 import type { SelectItem } from 'components/form';
+import { UIError } from 'constants/errors';
+import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/paths';
 import * as Utils from 'constants/utils';
+import { validatePost } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
-import { UIError } from 'lib/errors';
-import hooks from 'lib/hooks';
-import { validatePost } from 'lib/validations';
 import { getDomains } from 'pages/api/posts';
 
 // eslint-disable-next-line react/function-component-definition

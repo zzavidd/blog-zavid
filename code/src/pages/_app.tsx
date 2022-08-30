@@ -13,10 +13,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { Theme } from 'classes';
 import { checkForSetAlerts } from 'components/alert';
-import Footer from 'fragments/partials/Footer';
-import Header from 'fragments/partials/Header';
-import { CookiePrompt } from 'lib/cookies';
-import configureStore, { setTheme } from 'lib/reducers';
+import configureStore, { setTheme } from 'constants/reducers';
+import CookiePrompt from 'fragments/shared/CookiePrompt';
+import Footer from 'fragments/shared/Footer';
+import Header from 'fragments/shared/Header';
 import 'styles/App.scss';
 
 library.add(fab, far, fas);

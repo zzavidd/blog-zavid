@@ -21,9 +21,9 @@ import {
 import type { DateType } from 'components/form/datepicker';
 import DatePicker from 'components/form/datepicker';
 import { Foldable } from 'components/form/foldable';
-import type Handlers from 'lib/hooks';
-import { ScreenWidth } from 'lib/library';
-import TagBlock from 'lib/pages/diary/tags';
+import { ScreenWidth } from 'components/library';
+import type Handlers from 'constants/handlers';
+import TagBlock from 'fragments/diary/DiaryTags';
 import css from 'styles/pages/Diary.module.scss';
 
 export default function DiaryEntryForm(props: DiaryFormProps) {

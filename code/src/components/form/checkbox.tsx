@@ -5,7 +5,7 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import type { OnClickType, OnInputChangeType } from 'classes';
-import { Icon } from 'lib/library';
+import { Icon } from 'components/library';
 import css from 'styles/components/Form.module.scss';
 
 import { InvisibleButton } from '../button';

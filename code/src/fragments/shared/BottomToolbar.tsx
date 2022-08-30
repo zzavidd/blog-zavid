@@ -7,8 +7,8 @@ import { AdminButton } from 'components/button';
 import type { SelectProps } from 'components/form';
 import { Field, FieldRow, Select } from 'components/form';
 import { Toolbar as LayoutToolbar, ToolbarToggle } from 'components/layout';
-import { Icon, Responsive } from 'lib/library';
-import type { PostFiltersOptions } from 'lib/reducers';
+import { Icon, Responsive } from 'components/library';
+import type { PostFiltersOptions } from 'constants/reducers';
 import css from 'styles/pages/Posts.module.scss';
 
 const sortOptions = [
@@ -18,7 +18,7 @@ const sortOptions = [
   { value: 'status', label: 'Sort by Status' },
 ];
 
-export default function Toolbar({
+export default function BottomToolbar({
   options,
   handleOptionSelection,
 }: ToolbarProps) {
