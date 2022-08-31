@@ -1,3 +1,9 @@
+const fs = require('fs');
+
+const dkmPrivateKey = fs.readFileSync(`${__dirname}/dkim-private.key`, {
+  encoding: 'utf8',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -5,6 +11,7 @@ const nextConfig = {
   },
   reactStrictMode: true,
   serverRuntimeConfig: {
+    dkmPrivateKey,
     templatesDir: `${__dirname}/src/private/emails/templates`,
   },
   typescript: {

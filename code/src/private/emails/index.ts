@@ -64,6 +64,11 @@ const transporter = nodemailer.createTransport({
   pool: true,
   maxConnections: 20,
   maxMessages: Infinity,
+  dkim: {
+    domainName: isProd ? 'zavidegbue.com' : 'dev.zavidegbue.com',
+    keySelector: 'default',
+    privateKey: serverRuntimeConfig.dkmPrivateKey,
+  },
 });
 
 const typeToSubscription: SubscriptionType = {
@@ -206,4 +211,5 @@ interface TestRecipient {
   email: string;
   token: string;
 }
+
 type SubscriptionType = { [key in PostType]?: string };
