@@ -5,11 +5,11 @@ import type { DiaryDAO, PostDAO } from 'classes';
 import { HomeField, HomeRow } from 'components/pages/home';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
-import LatestDiaryEntry from 'fragments/home/home.diary';
-import Introduction from 'fragments/home/home.intro';
-import RandomPostsGrid from 'fragments/home/home.posts';
-import LatestReverie from 'fragments/home/home.reverie';
-import Search from 'fragments/home/home.search';
+import LatestDiaryEntry from 'fragments/home/HomeDiary';
+import Introduction from 'fragments/home/HomeIntroduction';
+import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
+import LatestReverie from 'fragments/home/HomeReverie';
+import Search from 'fragments/home/HomeSearch';
 import PageMetadata from 'fragments/PageMetadata';
 import css from 'styles/pages/Home.module.scss';
 
