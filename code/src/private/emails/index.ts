@@ -146,12 +146,12 @@ async function prepareEmail<T extends GenericDAO>(
 
     // Retrieve list of subscribers to corresponding type
     mailList = isProd
-      ? [testRecipient]
-      : subscribers.filter((subscriber) => {
+      ? subscribers.filter((subscriber) => {
           const subscriptions = JSON.parse(subscriber.subscriptions as string);
           const isSubscribed = subscriptions[type];
           return isSubscribed;
-        });
+        })
+      : [testRecipient];
 
     const promises = mailList.map(async (recipient) => {
       const message = await ejs.renderFile(
