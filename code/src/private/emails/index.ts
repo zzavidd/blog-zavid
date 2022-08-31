@@ -1,6 +1,7 @@
 import ejs from 'ejs';
 import htmlToText from 'html-to-text';
 import getConfig from 'next/config';
+import type { SentMessageInfo } from 'nodemailer';
 import nodemailer from 'nodemailer';
 import ReactDOMServer from 'react-dom/server';
 import { v4 as uuidv4 } from 'uuid';
@@ -60,6 +61,9 @@ const transporter = nodemailer.createTransport({
     user: process.env[isProd ? 'EMAIL_USER' : 'ETHEREAL_EMAIL'],
     pass: process.env[isProd ? 'EMAIL_PWD' : 'ETHEREAL_PWD'],
   },
+  pool: true,
+  maxConnections: 20,
+  maxMessages: Infinity,
 });
 
 const typeToSubscription: SubscriptionType = {
@@ -110,12 +114,13 @@ export function notifyNewDiaryEntry(diaryEntry: DiaryDAO): Promise<void> {
   }
 
   const entity = {
-    diaryEntry: Object.assign({}, diaryEntry, {
+    diaryEntry: {
+      ...diaryEntry,
       content: format(content!),
       footnote: format(footnote!),
       slug: `${DOMAIN}/diary/${slug}`,
       date: zDate.formatDate(date!, { withWeekday: true }),
-    }),
+    },
   };
 
   return prepareEmail<DiaryDAO>(
@@ -192,7 +197,9 @@ async function sendMailToSubscriber(
     html: message,
     text: htmlToText.fromString(message, htmlToTextOptions),
   });
-  console.info(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`);
+  console.info(
+    `Preview URL: ${nodemailer.getTestMessageUrl(info as SentMessageInfo)}`,
+  );
 }
 
 interface TestRecipient {
