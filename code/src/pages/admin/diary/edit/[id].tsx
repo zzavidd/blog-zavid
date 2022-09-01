@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import { unstable_getServerSession } from 'next-auth/next';
 import React, { useState } from 'react';
 import { zDate, zString } from 'zavid-modules';
 
@@ -14,6 +15,7 @@ import * as Utils from 'constants/utils';
 import { validateDiaryEntry } from 'constants/validations';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import PageMetadata from 'fragments/PageMetadata';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import { getDiaryEntryByIdSSR } from 'pages/api/diary';
 
 // eslint-disable-next-line react/function-component-definition
@@ -105,7 +107,17 @@ function returnAfterUpdate(entryNumber: number) {
 
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryEditProps
-> = async ({ query }) => {
+> = async ({ query, req, res }) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin',
+        permanent: false,
+      },
+    };
+  }
+
   const id = parseInt(query.id as string);
   const diaryEntry = await getDiaryEntryByIdSSR(id);
   return {

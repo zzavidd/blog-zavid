@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import { unstable_getServerSession } from 'next-auth/next';
 import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
@@ -19,6 +20,7 @@ import { VanillaLink } from 'components/text';
 import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import { getAllDiaryEntriesSSR } from 'pages/api/diary';
 
 // eslint-disable-next-line react/function-component-definition
@@ -179,9 +181,20 @@ function DeleteButton({
   );
 }
 
-export const getServerSideProps: GetServerSideProps<
-  DiaryAdminProps
-> = async () => {
+export const getServerSideProps: GetServerSideProps<DiaryAdminProps> = async ({
+  req,
+  res,
+}) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin',
+        permanent: false,
+      },
+    };
+  }
+
   const diaryEntries = JSON.parse(
     await getAllDiaryEntriesSSR({
       sort: {

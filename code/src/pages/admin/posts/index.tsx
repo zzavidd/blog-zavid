@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import { unstable_getServerSession } from 'next-auth';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { zText } from 'zavid-modules';
@@ -23,6 +24,7 @@ import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import BottomToolbar from 'fragments/shared/BottomToolbar';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import { getAllPostsSSR } from 'pages/api/posts';
 import css from 'styles/pages/Posts.module.scss';
 
@@ -209,10 +211,22 @@ function DeleteButton({
   );
 }
 
-export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async (
-  ctx,
-) => {
-  const filterOptions = ctx.query as Record<string, string>;
+export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async ({
+  query,
+  req,
+  res,
+}) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin',
+        permanent: false,
+      },
+    };
+  }
+
+  const filterOptions = query as Record<string, string>;
   const {
     limit,
     field = 'createTime',

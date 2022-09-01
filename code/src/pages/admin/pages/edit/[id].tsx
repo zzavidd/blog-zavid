@@ -1,4 +1,5 @@
 import type { GetServerSideProps } from 'next';
+import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -11,6 +12,7 @@ import * as Utils from 'constants/utils';
 import { validatePage } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PageForm, { buildPayload } from 'fragments/pages/PageForm';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import { getPageByIdSSR } from 'pages/api/pages';
 
 function PageEdit({ pathDefinition, pageProps }: PageEditProps) {
@@ -64,7 +66,19 @@ function PageEdit({ pathDefinition, pageProps }: PageEditProps) {
 
 export const getServerSideProps: GetServerSideProps<PageEditProps> = async ({
   query,
+  req,
+  res,
 }) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin',
+        permanent: false,
+      },
+    };
+  }
+
   const page = JSON.parse(await getPageByIdSSR(parseInt(query.id as string)));
   return {
     props: {

@@ -1,4 +1,5 @@
 import type { GetServerSideProps } from 'next';
+import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -13,6 +14,7 @@ import PageMetadata from 'fragments/PageMetadata';
 import SubscriberForm, {
   buildPayload,
 } from 'fragments/subscribers/SubscriberForm';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import { getSubscriberByIdSSR } from 'pages/api/subscribers';
 
 function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {
@@ -67,7 +69,17 @@ function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {
 
 export const getServerSideProps: GetServerSideProps<
   SubscriberEditProps
-> = async ({ query }) => {
+> = async ({ query, req, res }) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin',
+        permanent: false,
+      },
+    };
+  }
+
   const subscriber = JSON.parse(
     await getSubscriberByIdSSR(parseInt(query.id as string)),
   );

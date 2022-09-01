@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -13,6 +14,7 @@ import * as Utils from 'constants/utils';
 import { validatePost } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import { getDomains } from 'pages/api/posts';
 
 // eslint-disable-next-line react/function-component-definition
@@ -84,9 +86,20 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  PostAddProps
-> = async () => {
+export const getServerSideProps: GetServerSideProps<PostAddProps> = async ({
+  req,
+  res,
+}) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin',
+        permanent: false,
+      },
+    };
+  }
+
   const domains = await getDomains();
   return {
     props: {

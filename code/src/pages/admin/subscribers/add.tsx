@@ -1,4 +1,5 @@
-import type { GetStaticProps, NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
+import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -14,6 +15,7 @@ import PageMetadata from 'fragments/PageMetadata';
 import SubscriberForm, {
   buildPayload,
 } from 'fragments/subscribers/SubscriberForm';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscriberAdd: NextPage<SubscriberAddProps> = ({ pathDefinition }) => {
@@ -75,7 +77,19 @@ const SubscriberAdd: NextPage<SubscriberAddProps> = ({ pathDefinition }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<SubscriberAddProps> = () => {
+export const getServerSideProps: GetServerSideProps<
+  SubscriberAddProps
+> = async ({ req, res }) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin',
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       pathDefinition: {

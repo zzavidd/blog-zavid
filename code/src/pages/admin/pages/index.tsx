@@ -1,4 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
@@ -19,6 +20,7 @@ import { ConfirmModal } from 'components/modal';
 import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import { getAllPagesSSR } from 'pages/api/pages';
 
 // eslint-disable-next-line react/function-component-definition
@@ -167,9 +169,20 @@ function DeleteButton({
   );
 }
 
-export const getServerSideProps: GetServerSideProps<
-  PageAdminProps
-> = async () => {
+export const getServerSideProps: GetServerSideProps<PageAdminProps> = async ({
+  req,
+  res,
+}) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin',
+        permanent: false,
+      },
+    };
+  }
+
   const pages = JSON.parse(await getAllPagesSSR());
   return {
     props: {
