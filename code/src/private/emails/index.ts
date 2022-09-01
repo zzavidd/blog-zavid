@@ -67,7 +67,7 @@ const transporter = nodemailer.createTransport({
   dkim: {
     domainName: isProd ? 'zavidegbue.com' : 'dev.zavidegbue.com',
     keySelector: 'default',
-    privateKey: serverRuntimeConfig.dkmPrivateKey,
+    privateKey: serverRuntimeConfig.dkimPrivateKey,
   },
 });
 

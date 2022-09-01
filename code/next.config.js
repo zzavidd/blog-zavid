@@ -1,8 +1,11 @@
 const fs = require('fs');
 
-const dkmPrivateKey = fs.readFileSync(`${__dirname}/dkim-private.key`, {
-  encoding: 'utf8',
-});
+const dkimPath = `${__dirname}/dkim.key`;
+let dkimPrivateKey = null;
+
+if (fs.existsSync(dkimPath)) {
+  dkimPrivateKey = fs.readFileSync(dkimPath, { encoding: 'utf8' });
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -11,7 +14,7 @@ const nextConfig = {
   },
   reactStrictMode: true,
   serverRuntimeConfig: {
-    dkmPrivateKey,
+    dkimPrivateKey,
     templatesDir: `${__dirname}/src/private/emails/templates`,
   },
   typescript: {
