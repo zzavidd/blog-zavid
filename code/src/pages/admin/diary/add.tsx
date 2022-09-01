@@ -39,7 +39,7 @@ const DiaryEntryAdd: NextPage<DiaryEntryAddProps> = ({
   const [isPublishModalVisible, setPublishModalVisibility] = useState(false);
 
   // Determine if diary entry is being published.
-  const isPublish = DiaryStatic.isPublish(diaryEntry);
+  const isPublish = DiaryStatic.isPublished(diaryEntry);
 
   /** Create new diary entry on server. */
   async function submitDiaryEntry() {

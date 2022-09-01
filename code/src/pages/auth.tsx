@@ -6,7 +6,8 @@ const AuthFallback: NextPage = () => {
 };
 
 // eslint-disable-next-line require-await
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+  res.setHeader('X-Robots-Tag', 'noindex');
   return {
     redirect: {
       destination: '/',

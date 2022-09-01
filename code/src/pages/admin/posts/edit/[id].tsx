@@ -27,7 +27,7 @@ const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
   const [isRequestPending, setRequestPending] = useState(false);
 
   // Determine if post is being published.
-  const isPublish = PostStatic.isPublish(clientPost);
+  const isPublish = PostStatic.isPublished(clientPost);
 
   /** Update post on server. */
   const updatePost = async (): Promise<void> => {

@@ -142,18 +142,23 @@ export const getServerSideProps: GetServerSideProps<
   try {
     const number = parseInt(query.number as string);
     const diaryTrio = JSON.parse(await getDiaryEntryByNumberSSR(number));
+    const diaryEntry = diaryTrio.current;
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
-    if (!session && DiaryStatic.isProtected(diaryTrio.current)) {
+    if (!session && DiaryStatic.isProtected(diaryEntry)) {
       throw new Error('No diary entry found');
+    }
+
+    if (!DiaryStatic.isPublished(diaryEntry)) {
+      res.setHeader('X-Robots-Tag', 'noindex');
     }
 
     return {
       props: {
         pathDefinition: {
-          title: `Diary Entry #${diaryTrio.current.entryNumber}: ${diaryTrio.current.title} | ${SITE_TITLE}`,
-          description: zText.extractExcerpt(diaryTrio.current.content!),
-          url: `/diary/${diaryTrio.current.slug}`,
+          title: `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title} | ${SITE_TITLE}`,
+          description: zText.extractExcerpt(diaryEntry.content!),
+          url: `/diary/${diaryEntry.slug}`,
         },
         pageProps: diaryTrio,
       },

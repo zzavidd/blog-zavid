@@ -40,7 +40,7 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
   const [isRequestPending, setRequestPending] = useState(false);
 
   // Determine if post is being published.
-  const isPublish = PostStatic.isPublish(post);
+  const isPublish = PostStatic.isPublished(post);
 
   /** Create new post on server. */
   async function submitPost() {

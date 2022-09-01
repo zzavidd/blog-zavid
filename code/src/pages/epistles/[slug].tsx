@@ -40,19 +40,24 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
         },
       }),
     ) as PostTemplatePageProps;
+    const epistle = epistleTrio.current;
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
     if (!session && PostStatic.isProtected(epistleTrio.current)) {
       throw new Error('No epistle found.');
     }
 
+    if (!PostStatic.isPublished(epistle)) {
+      res.setHeader('X-Robots-Tag', 'noindex');
+    }
+
     return {
       props: {
         pathDefinition: {
-          title: `${epistleTrio.current.title} | ${SITE_TITLE}`,
-          description: JSON.stringify(epistleTrio.current.excerpt),
-          url: `/epistles/${epistleTrio.current.slug}`,
-          cardImage: JSON.stringify(epistleTrio.current.image),
+          title: `${epistle.title} | ${SITE_TITLE}`,
+          description: JSON.stringify(epistle.excerpt),
+          url: `/epistles/${epistle.slug}`,
+          cardImage: JSON.stringify(epistle.image),
         },
         pageProps: epistleTrio,
       },

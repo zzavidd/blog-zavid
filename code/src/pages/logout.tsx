@@ -13,6 +13,7 @@ const Logout: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  res.setHeader('X-Robots-Tag', 'noindex');
   const session = await unstable_getServerSession(req, res, nextAuthOptions);
   if (session) {
     return { props: {} };

@@ -37,6 +37,9 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
     if (!session && PostStatic.isProtected(post)) {
       throw new Error('No reverie found.');
     }
+    if (!PostStatic.isPublished(post)) {
+      res.setHeader('X-Robots-Tag', 'noindex');
+    }
   };
 
   try {

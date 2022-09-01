@@ -164,7 +164,7 @@ export class PostStatic {
     return input?.status === PostStatus.PRIVATE;
   }
 
-  public static isPublish(input: PostDAO): boolean {
+  public static isPublished(input: PostDAO): boolean {
     return input?.status === PostStatus.PUBLISHED;
   }
 

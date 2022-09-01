@@ -198,7 +198,7 @@ export default function PostForm(props: PostFormProps) {
             </Field>
             <DynamicField
               md={7}
-              precondition={PostStatic.isPublish(post)}
+              precondition={PostStatic.isPublished(post)}
               dependency={post.status}>
               <Label>Date Published:</Label>
               <DatePicker
@@ -317,7 +317,7 @@ export function buildPayload(
     post.withContentImages(Object.values(contentImages));
   }
 
-  if (PostStatic.isPublish(clientPost)) {
+  if (PostStatic.isPublished(clientPost)) {
     post.withDatePublished(zDate.formatISODate(datePublished!));
   }
 

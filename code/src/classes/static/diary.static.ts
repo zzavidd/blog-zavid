@@ -48,7 +48,7 @@ export class DiaryStatic {
     return input?.status === DiaryStatus.PRIVATE;
   }
 
-  public static isPublish(input: DiaryDAO): boolean {
+  public static isPublished(input: DiaryDAO): boolean {
     return input?.status === DiaryStatus.PUBLISHED;
   }
 }

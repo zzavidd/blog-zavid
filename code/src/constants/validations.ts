@@ -26,7 +26,7 @@ export function validatePost(post: PostDAO): void {
   }
 
   // Ensure post image, content and excerpt is PUBLISHED.
-  if (PostStatic.isPublish(post)) {
+  if (PostStatic.isPublished(post)) {
     isValidImage((post.image as PostImage).source, 'post', {
       mustExist: PostStatic.isReverie(post),
     });

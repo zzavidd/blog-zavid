@@ -35,8 +35,8 @@ const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
 
   // Determine if diary entry is being published.
   const isPublish =
-    !DiaryStatic.isPublish(serverDiaryEntry) &&
-    DiaryStatic.isPublish(clientDiaryEntry);
+    !DiaryStatic.isPublished(serverDiaryEntry) &&
+    DiaryStatic.isPublished(clientDiaryEntry);
 
   /** Update diary entry on server. */
   async function updateDiaryEntry() {

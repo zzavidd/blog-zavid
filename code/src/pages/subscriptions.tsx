@@ -124,7 +124,8 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
 
 export const getServerSideProps: GetServerSideProps<
   SubscriptionsProps
-> = async ({ query }) => {
+> = async ({ query, res }) => {
+  res.setHeader('X-Robots-Tag', 'noindex');
   return {
     props: {
       pathDefinition: {
