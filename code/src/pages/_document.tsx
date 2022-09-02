@@ -10,7 +10,7 @@ export default class AppDocument extends Document {
 
   public render() {
     return (
-      <Html>
+      <Html lang={'en'}>
         <Head>
           {/* Page information */}
           <meta charSet={'UTF-8'} name={'author'} content={'Zavid Egbue'} />
