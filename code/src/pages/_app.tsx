@@ -5,8 +5,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/scss/bootstrap.scss';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
-import React, { useEffect, useState } from 'react';
-import * as ReactGA from 'react-ga';
+import React, { useEffect } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -43,7 +42,6 @@ export default function App(props: AppProps) {
  * @returns The full page including the header and footer.
  */
 function ZAVIDApp({ Component, pageProps }: AppProps) {
-  const [isLoaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
 
   const theme = useSelector(({ theme }: RootStateOrAny) => {
@@ -55,15 +53,9 @@ function ZAVIDApp({ Component, pageProps }: AppProps) {
   });
 
   useEffect(() => {
-    // Initialise Google Analytics
-    ReactGA.initialize('UA-126408615-2');
-    ReactGA.pageview(window.location.pathname + window.location.search);
-
     document.body.classList.add(`body-${theme}`);
-
     checkForSetAlerts();
-    setLoaded(true);
-  }, [isLoaded]);
+  }, []);
 
   return (
     <React.Fragment>
