@@ -30,6 +30,7 @@ export default function HomeRandomPosts({ posts }: RandomPostsGridProps) {
                   containerClassName={css['random-post-image-wrapper']}
                   imageClassName={css['random-post-image']}
                   aspectRatio={AspectRatio.WIDE}
+                  alt={post.title}
                 />
                 <Title className={css['random-post-title']}>
                   {PostStatic.getPostTitle(post)}

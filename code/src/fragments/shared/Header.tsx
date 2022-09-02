@@ -51,6 +51,7 @@ function BrandButton() {
         containerClassName={css['nav-brand']}
         src={`/static/logos/zavid-head-logo.png`}
         version={1598802245}
+        alt={'Zavid Logo'}
       />
     </Navbar.Brand>
   );

@@ -48,6 +48,7 @@ export default function PostTemplatePage({
             src={post.image as string}
             containerClassName={css['post-single-image-container']}
             imageClassName={css['post-single-image']}
+            alt={post.title}
           />
           <Paragraph
             className={css['post-single-content']}

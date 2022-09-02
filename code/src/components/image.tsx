@@ -75,6 +75,7 @@ export function Signature({ className }: Signature) {
     <CloudImage
       src={`static/logos/signature-${theme}`}
       containerClassName={classes}
+      alt={'Z-Signature'}
     />
   );
 }

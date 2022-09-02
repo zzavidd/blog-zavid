@@ -18,13 +18,13 @@ export default function HomeReverie({ reverie }: LatestReverieProps) {
               <LatestReverieHeader reverie={reverie} />
               <LatestReverieParagraph reverie={reverie} />
             </div>
-            <LatestReverieImage image={reverie.image as string} />
+            <LatestReverieImage reverie={reverie} />
           </Flexer>
         }
         desktopView={
           <React.Fragment>
             <LatestReverieHeader reverie={reverie} />
-            <LatestReverieImage image={reverie.image as string} />
+            <LatestReverieImage reverie={reverie} />
             <LatestReverieParagraph reverie={reverie} />
           </React.Fragment>
         }
@@ -60,17 +60,18 @@ function LatestReverieParagraph({ reverie }: LatestReverieProps) {
   );
 }
 
-function LatestReverieImage({ image }: LatestReverieImageProps) {
+function LatestReverieImage({ reverie }: LatestReverieProps) {
   interface ReverieImage {
     aspectRatio: AspectRatio;
   }
   function ReverieImage({ aspectRatio }: ReverieImage) {
     return (
       <CloudImage
-        src={image}
+        src={reverie.image as string}
         aspectRatio={aspectRatio}
         containerClassName={css['latest-reverie-image-container']}
         imageClassName={css['latest-reverie-image']}
+        alt={reverie.title}
       />
     );
   }
@@ -84,8 +85,4 @@ function LatestReverieImage({ image }: LatestReverieImageProps) {
 
 interface LatestReverieProps {
   reverie: PostDAO;
-}
-
-interface LatestReverieImageProps {
-  image: string;
 }

@@ -105,6 +105,7 @@ const PostsAdmin: NextPage<PostsAdminProps> = ({
                   <CloudImage
                     src={post.image as string}
                     containerClassName={css['post-admin-image']}
+                    alt={post.title}
                   />
                 ),
                 { type: TablerFieldType.IMAGE },
