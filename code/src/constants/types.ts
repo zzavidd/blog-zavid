@@ -18,10 +18,6 @@ export enum QueryOrder {
 
 export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
 
-export type OnInputChangeType = (
-  event: React.ChangeEvent<HTMLInputElement>,
-) => void;
-
 export interface Substitutions {
   [key: string]: string | number;
 }

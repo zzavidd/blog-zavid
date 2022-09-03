@@ -5,7 +5,6 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zString } from 'zavid-modules';
 
-import type { OnInputChangeType } from 'constants/types';
 import css from 'styles/components/Form.module.scss';
 
 export function RadioGroup({
@@ -26,10 +25,10 @@ export function RadioGroup({
         const isChecked = value === option;
         return (
           <RadioButton
-            name={name}
+            name={name!}
             value={option}
             checked={isChecked}
-            onChange={onChange}
+            onChange={onChange!}
             key={key}
           />
         );
@@ -69,19 +68,12 @@ function RadioButton({
   );
 }
 
-interface RadioGroupProps {
-  name: string;
-  value: string;
-  onChange: OnInputChangeType;
+interface RadioGroupProps extends React.InputHTMLAttributes<HTMLInputElement> {
   options: string[];
   grid?: boolean;
-  className?: string;
 }
 
-interface RadioButtonProps {
-  name: string;
+interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string;
-  checked?: boolean;
-  onChange: OnInputChangeType;
   checkClassName?: CSSProperties;
 }
