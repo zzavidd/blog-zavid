@@ -16,8 +16,8 @@ import {
 } from 'classes';
 import { knex } from 'constants/knex';
 import { EMAILS_ON } from 'constants/settings';
-import * as Emails from 'private/emails';
-import * as Filer from 'private/filer';
+import Emails from 'private/emails';
+import Filer from 'private/filer';
 
 export default async function handler(
   req: NextApiRequest,

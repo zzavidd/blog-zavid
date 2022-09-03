@@ -9,7 +9,7 @@ import {
 } from 'classes';
 import { knex } from 'constants/knex';
 import { EMAILS_ON } from 'constants/settings';
-import * as Emails from 'private/emails';
+import Emails from 'private/emails';
 
 export default async function handler(
   req: NextApiRequest,

@@ -75,66 +75,70 @@ const typeToSubscription: SubscriptionType = {
   Reverie: 'Reveries',
 };
 
-/**
- * Send an email to all subscribers of new post.
- * @param post The subject post for the email.
- */
-export async function notifyNewPost(post: PostDAO): Promise<void> {
-  const { title, type, typeId, content, datePublished, image, slug } = post;
-  const subject = `New ${type} (#${typeId}) "${title}"`;
+namespace Emailer {
+  /**
+   * Send an email to all subscribers of new post.
+   * @param post The subject post for the email.
+   */
+  export async function notifyNewPost(post: PostDAO): Promise<void> {
+    const { title, type, typeId, content, datePublished, image, slug } = post;
+    const subject = `New ${type} (#${typeId}) "${title}"`;
 
-  const entity = {
-    post: {
-      ...post,
-      content: zText.truncateText(content!),
-      slug: `${DOMAIN}/reveries/${slug}`,
-      datePublished: zDate.formatDate(datePublished!, { withWeekday: true }),
-      image: `${CLOUDINARY_BASE_URL}/w_768,c_lfill/${image}`,
-    },
-  };
+    const entity = {
+      post: {
+        ...post,
+        content: zText.truncateText(content!),
+        slug: `${DOMAIN}/reveries/${slug}`,
+        datePublished: zDate.formatDate(datePublished!, { withWeekday: true }),
+        image: `${CLOUDINARY_BASE_URL}/w_768,c_lfill/${image}`,
+      },
+    };
 
-  await prepareEmail(entity, typeToSubscription[type!]!, 'post', subject);
-}
-
-/**
- * Send an email to all subscribers of new diary entry.
- * @param diaryEntry The subject diary entry for the email.
- */
-export function notifyNewDiaryEntry(diaryEntry: DiaryDAO): Promise<void> {
-  const { title, date, content, footnote, slug, entryNumber } = diaryEntry;
-  const subject = `Diary Entry #${entryNumber}: ${title}`;
-
-  const options = {
-    css: {
-      hyperlink: 'hyperlink-content',
-      blockquote: 'blockquote',
-      ['twitter-button']: 'button',
-      ['instagram-button']: 'button',
-    },
-  };
-
-  function format(text: string): string {
-    const formattedText = zText.formatText(text, options);
-    return ReactDOMServer.renderToStaticMarkup(formattedText);
+    await prepareEmail(entity, typeToSubscription[type!]!, 'post', subject);
   }
 
-  const entity = {
-    diaryEntry: {
-      ...diaryEntry,
-      content: format(content!),
-      footnote: format(footnote!),
-      slug: `${DOMAIN}/diary/${slug}`,
-      date: zDate.formatDate(date!, { withWeekday: true }),
-    },
-  };
+  /**
+   * Send an email to all subscribers of new diary entry.
+   * @param diaryEntry The subject diary entry for the email.
+   */
+  export function notifyNewDiaryEntry(diaryEntry: DiaryDAO): Promise<void> {
+    const { title, date, content, footnote, slug, entryNumber } = diaryEntry;
+    const subject = `Diary Entry #${entryNumber}: ${title}`;
 
-  return prepareEmail<DiaryDAO>(
-    entity,
-    SubscriberStatic.SUBSCRIPTIONS.Diary,
-    'diary',
-    subject,
-  );
+    const options = {
+      css: {
+        hyperlink: 'hyperlink-content',
+        blockquote: 'blockquote',
+        ['twitter-button']: 'button',
+        ['instagram-button']: 'button',
+      },
+    };
+
+    function format(text: string): string {
+      const formattedText = zText.formatText(text, options);
+      return ReactDOMServer.renderToStaticMarkup(formattedText);
+    }
+
+    const entity = {
+      diaryEntry: {
+        ...diaryEntry,
+        content: format(content!),
+        footnote: format(footnote!),
+        slug: `${DOMAIN}/diary/${slug}`,
+        date: zDate.formatDate(date!, { withWeekday: true }),
+      },
+    };
+
+    return prepareEmail<DiaryDAO>(
+      entity,
+      SubscriberStatic.SUBSCRIPTIONS.Diary,
+      'diary',
+      subject,
+    );
+  }
 }
+
+export default Emailer;
 
 /**
  * Prepare and process email content.
