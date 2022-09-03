@@ -14,7 +14,6 @@ import {
 import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
-import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
 import css from 'styles/pages/Posts.module.scss';
 
