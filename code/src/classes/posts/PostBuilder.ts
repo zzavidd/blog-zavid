@@ -3,12 +3,12 @@ import { zDate, zString } from 'zavid-modules';
 
 import type {
   PostDAO,
-  RandomPostOptions,
   PostType,
   PostStatus,
   PostImage,
-} from 'classes';
-import { PostStatic } from 'classes';
+  RandomPostOptions,
+} from './PostDAO';
+import { PostStatic } from './PostStatic';
 
 /** The class for Post objects and methods. */
 export class PostBuilder {

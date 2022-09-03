@@ -1,13 +1,12 @@
 import classnames from 'classnames';
-import type { MouseEventHandler, ReactNode } from 'react';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { Icon, Responsive } from 'components/library';
 import css from 'styles/components/Button.module.scss';
 
-function Button(props: Button) {
+function Button(props: ButtonProps) {
   const { children, className, onClick, isRequestPending } = props;
   const [buttonText, setButtonText] = useState(children);
 
@@ -22,13 +21,13 @@ function Button(props: Button) {
   );
 }
 
-export function ButtonSpacer(props: Button) {
+export function ButtonSpacer(props: ButtonProps) {
   const { children, className } = props;
   const classes = classnames(css[`button-spacer`], className);
   return <div className={classes}>{children}</div>;
 }
 
-export function ConfirmButton(props: Button) {
+export function ConfirmButton(props: ButtonProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`button-confirm-${theme}`], props.className);
   return (
@@ -38,7 +37,7 @@ export function ConfirmButton(props: Button) {
   );
 }
 
-export function CancelButton(props: Button) {
+export function CancelButton(props: ButtonProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <Button
@@ -49,7 +48,7 @@ export function CancelButton(props: Button) {
   );
 }
 
-export function DeleteButton(props: Button) {
+export function DeleteButton(props: ButtonProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <Button {...props} className={css[`button-delete-${theme}`]}>
@@ -58,7 +57,7 @@ export function DeleteButton(props: Button) {
   );
 }
 
-export function AdminButton(props: AdminButton) {
+export function AdminButton(props: AdminButtonProps) {
   const { mobileText, children } = props;
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`button-admin-${theme}`], props.className);
@@ -79,7 +78,7 @@ export function AdminButton(props: AdminButton) {
   );
 }
 
-export function BackButton(props: Button) {
+export function BackButton(props: ButtonProps) {
   return (
     <InvisibleButton
       {...props}
@@ -92,7 +91,7 @@ export function BackButton(props: Button) {
   );
 }
 
-export function InvisibleButton(props: Button): JSX.Element {
+export function InvisibleButton(props: ButtonProps): JSX.Element {
   return (
     <button
       {...props}
@@ -102,13 +101,10 @@ export function InvisibleButton(props: Button): JSX.Element {
   );
 }
 
-interface Button {
-  children: ReactNode;
-  className?: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isRequestPending?: boolean;
 }
 
-interface AdminButton extends Button {
+interface AdminButtonProps extends ButtonProps {
   mobileText?: string;
 }

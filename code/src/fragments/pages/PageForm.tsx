@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { PageDAO } from 'classes';
-import { PageBuilder } from 'classes';
-import type { GenericFormProps } from 'classes/interfaces/super';
+import type { EntityFormProps } from 'classes/entity';
+import { PageBuilder } from 'classes/pages/PageBuilder';
+import type { PageDAO } from 'classes/pages/PageDAO';
 import {
   Form,
   FieldRow,
@@ -99,7 +99,7 @@ export function buildPayload(
   return payload;
 }
 
-interface PageFormProps extends GenericFormProps {
+interface PageFormProps extends EntityFormProps {
   page: PageDAO;
   handlers: ReturnType<typeof Handlers<PageDAO>>;
   confirmFunction?: () => void;

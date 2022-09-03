@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { zDate } from 'zavid-modules';
 
-import type { PostDAO } from 'classes';
-import { PostStatus, PostType, QueryOrder } from 'classes';
+import type { PostDAO } from 'classes/posts/PostDAO';
+import { PostType, PostStatus } from 'classes/posts/PostDAO';
 import { AdminButton } from 'components/button';
 import CloudImage from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
@@ -15,6 +15,7 @@ import { LazyLoader, ScreenWidth } from 'components/library';
 import { Divider, Paragraph, Title, VanillaLink } from 'components/text';
 import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
+import { QueryOrder } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
 import PageAPI from 'private/api/pages';

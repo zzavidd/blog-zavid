@@ -3,9 +3,11 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import type { ReactHook, SubscriberDAO, SubscriptionsMapping } from 'classes';
-import { QueryOrder } from 'classes';
-import { alert, reportError } from 'components/alert';
+import type {
+  SubscriberDAO,
+  SubscriptionsMapping,
+} from 'classes/subscribers/SubscriberDAO';
+import { Alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import {
@@ -16,7 +18,8 @@ import {
   TablerItemCell as TIC,
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
-import type { PathDefinition } from 'constants/types';
+import type { PathDefinition, ReactHook } from 'constants/types';
+import { QueryOrder } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -43,7 +46,7 @@ const SubscribersAdmin: NextPage<SubscribersAdminProps> = ({
         method: 'DELETE',
         body: JSON.stringify({ id }),
       });
-      alert.success(`You've deleted the subscriber with email: ${email}.`);
+      Alert.success(`You've deleted the subscriber with email: ${email}.`);
       router.reload();
       setDeleteModalVisibility(false);
     } catch (e: any) {

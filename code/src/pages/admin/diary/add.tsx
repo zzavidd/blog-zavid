@@ -3,8 +3,9 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import type { DiaryDAO } from 'classes';
-import { DiaryStatic, DiaryStatus } from 'classes';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import { DiaryStatus } from 'classes/diary/DiaryDAO';
+import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { AlertType, reportError, setAlert } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
 import { UIError } from 'constants/errors';
@@ -25,7 +26,7 @@ const DiaryEntryAdd: NextPage<DiaryEntryAddProps> = ({
   const { latestEntryNumber } = pageProps;
   const router = useRouter();
 
-  const [diaryEntry, setDiaryEntry] = useState({
+  const [diaryEntry, setDiaryEntry] = useState<DiaryDAO>({
     title: '',
     content: '',
     footnote: '',
@@ -34,7 +35,7 @@ const DiaryEntryAdd: NextPage<DiaryEntryAddProps> = ({
     entryNumber: latestEntryNumber + 1,
     isFavourite: false,
     tags: '',
-  } as DiaryDAO);
+  });
   const [isRequestPending, setRequestPending] = useState(false);
   const [isPublishModalVisible, setPublishModalVisibility] = useState(false);
 

@@ -13,7 +13,7 @@ import {
 import { Icon } from 'components/library';
 import css from 'styles/components/Share.module.scss';
 
-import { alert } from './alert';
+import { Alert } from './alert';
 import { InvisibleButton } from './button';
 
 export default function Share(props: ShareProps) {
@@ -68,7 +68,7 @@ function ShareLinkedin({ message, url }: ShareProps) {
 function ShareLink({ url }: ShareProps) {
   async function copyLink() {
     await navigator.clipboard.writeText(url);
-    alert.success("Copied this post's link to clipboard!");
+    Alert.success("Copied this post's link to clipboard!");
   }
   return (
     <InvisibleButton className={css['copy-link-button']} onClick={copyLink}>

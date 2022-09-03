@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { QuerySort, SubscriberDAO } from 'classes';
-import { SubscriberMutationBuilder } from 'classes';
+import type { QuerySort } from 'classes/_/QueryBuilder';
+import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
+import { SubscriberMutationBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
 import { knex } from 'constants/knex';
 import SubscriberAPI from 'private/api/subscribers';
 

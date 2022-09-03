@@ -1,6 +1,6 @@
-import type { GenericDAO } from './super';
+import type { EntityDAO } from '../entity';
 
-export interface DiaryDAO extends GenericDAO {
+export interface DiaryDAO extends EntityDAO {
   title?: string;
   content?: string;
   footnote?: string;

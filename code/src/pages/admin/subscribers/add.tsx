@@ -3,9 +3,9 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import type { SubscriberDAO } from 'classes';
-import { SubscriberStatic } from 'classes';
-import { alert, reportError } from 'components/alert';
+import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
+import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
+import { Alert, reportError } from 'components/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
@@ -40,7 +40,7 @@ const SubscriberAdd: NextPage<SubscriberAddProps> = ({ pathDefinition }) => {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      alert.success(`You've successfully added a new subscriber.`);
+      Alert.success(`You've successfully added a new subscriber.`);
       clearSubscriberForm();
     } catch (e: any) {
       reportError(e.message, e instanceof UIError);

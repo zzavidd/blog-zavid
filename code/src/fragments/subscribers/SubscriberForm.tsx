@@ -1,12 +1,12 @@
 import React from 'react';
 
+import type { EntityFormProps } from 'classes/entity';
+import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import type {
+  SubscriptionsMapping,
   SubscriberDAO,
   SubscriberPayload,
-  SubscriptionsMapping,
-} from 'classes';
-import { SubscriberBuilder } from 'classes';
-import type { GenericFormProps } from 'classes/interfaces/super';
+} from 'classes/subscribers/SubscriberDAO';
 import { Form, FieldRow, Field, Label, TextInput } from 'components/form';
 import type Handlers from 'constants/handlers';
 
@@ -90,7 +90,7 @@ export function buildPayload(
   return payload;
 }
 
-interface SubscribeFormProps extends GenericFormProps {
+interface SubscribeFormProps extends EntityFormProps {
   subscriber: SubscriberDAO;
   handlers: ReturnType<typeof Handlers<SubscriberDAO>>;
 }

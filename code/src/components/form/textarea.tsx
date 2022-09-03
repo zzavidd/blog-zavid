@@ -3,7 +3,6 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
 
-import type { OnTextAreaChangeType } from 'classes';
 import css from 'styles/components/Form.module.scss';
 
 export function ShortTextArea(props: TextAreaProps) {
@@ -53,7 +52,7 @@ function TextArea({
         value: content,
       },
     } as React.ChangeEvent<HTMLTextAreaElement>;
-    onSuperChange(changeEvent);
+    onSuperChange!(changeEvent);
   };
 
   /**
@@ -207,7 +206,7 @@ function TextArea({
         addToTextHistory(value);
       }
     }
-    onSuperChange(e);
+    onSuperChange!(e);
   };
 
   return (
@@ -226,12 +225,10 @@ function TextArea({
   );
 }
 
-interface TextAreaProps {
-  name: string;
-  value: string;
-  onChange: OnTextAreaChangeType;
-  placeholder?: string;
+interface TextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   minRows?: number;
+  value: string;
 }
 
 interface RichTextMarkupOptions {

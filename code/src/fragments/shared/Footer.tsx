@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 
-import { SubscriberBuilder } from 'classes';
-import { alert, reportError } from 'components/alert';
+import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
+import { Alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { Field, FieldRow, TextInput } from 'components/form';
 import { Icon } from 'components/library';
@@ -109,14 +109,14 @@ function SubscribeForm() {
       if (!res.ok) {
         throw new Error(await res.text());
       }
-      alert.success(
+      Alert.success(
         `Thank you for subscribing!\nI've added ${email} to my mailing list.`,
       );
     } catch (e: any) {
       if (e instanceof UIError) {
         reportError(e.message, true);
       } else if (e.message.includes('ER_DUP_ENTRY')) {
-        alert.error('The email address you submitted already exists.');
+        Alert.error('The email address you submitted already exists.');
       } else {
         reportError(e.message);
       }

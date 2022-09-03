@@ -30,7 +30,7 @@ export enum AlertType {
 
 const classes = ['alert', css['toast-message']];
 
-export const alert = {
+export const Alert = {
   success: (message: string): void => {
     toast(message, { className: classnames('alert-success', classes) });
   },
@@ -50,10 +50,10 @@ export const setAlert = ({ type, message }: Alert): void => {
 
 export function reportError(message: string, asIs?: boolean): void {
   if (process.env.NEXT_PUBLIC_APP_ENV === 'production' && !asIs) {
-    alert.error('There was a problem. Please try again later.');
+    Alert.error('There was a problem. Please try again later.');
     console.error(message);
   } else {
-    alert.error(message);
+    Alert.error(message);
   }
 }
 
@@ -63,7 +63,7 @@ export const checkForSetAlerts = (): void => {
   );
   if (notification) {
     const { type, message } = notification;
-    if (type && message) alert[type](message);
+    if (type && message) Alert[type](message);
     sessionStorage.clear();
   }
 };

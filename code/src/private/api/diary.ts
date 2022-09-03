@@ -1,5 +1,7 @@
-import type { DiaryDAO } from 'classes';
-import { DiaryQueryBuilder, DiaryStatic, DiaryStatus } from 'classes';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import { DiaryStatus } from 'classes/diary/DiaryDAO';
+import { DiaryQueryBuilder } from 'classes/diary/DiaryQueryBuilder';
+import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { knex } from 'constants/knex';
 import type { GetAllDiaryOptions } from 'pages/api/diary';
 

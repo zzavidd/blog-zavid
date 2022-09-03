@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { Modal } from 'react-bootstrap';
 import { zDate } from 'zavid-modules';
 
-import type { ReactSelectChangeEvent, ReactHook } from 'classes';
+import { Alert } from 'components/alert';
+import {
+  CancelButton,
+  ConfirmButton,
+  InvisibleButton,
+} from 'components/button';
 import { Icon } from 'components/library';
+import { ConfirmModal } from 'components/modal';
 import { BLOG_CREATION_DATE } from 'constants/settings';
+import type { ReactHook } from 'constants/types';
 import css from 'styles/components/Form.module.scss';
-
-import { alert } from '../alert';
-import { ConfirmButton, CancelButton, InvisibleButton } from '../button';
-import { Modal, ConfirmModal } from '../modal';
 
 import { Field, FieldRow, Select, TextInput } from '.';
 
@@ -64,7 +68,9 @@ function BaseDatePicker(props: BaseDatePickerProps) {
       <div className={css['datepicker-field']}>
         <TextInput
           value={
-            date ? zDate.formatDate(date, { withWeekday: withDayOfWeek }) : null
+            date
+              ? zDate.formatDate(date, { withWeekday: withDayOfWeek })
+              : undefined
           }
           placeholder={placeholderText}
           onClick={() => setDatePickerVisibility(true)}
@@ -151,7 +157,7 @@ function DatePickerBody({
   });
 
   const changeDatePart = (
-    event: ReactSelectChangeEvent,
+    event: React.ChangeEvent<HTMLSelectElement>,
     hook: ReactHook<number>,
   ): void => {
     const { value } = event.target;
@@ -204,9 +210,9 @@ function DatePickerFooter({
 
   /** Update component dates on confirmation */
   const confirmDateSelection = () => {
-    if (!day) return alert.error('Please set the day of the month.');
-    if (!month) return alert.error('Please set the month of the year.');
-    if (!year) return alert.error('Please set the year.');
+    if (!day) return Alert.error('Please set the day of the month.');
+    if (!month) return Alert.error('Please set the month of the year.');
+    if (!year) return Alert.error('Please set the year.');
 
     const date = new Date(year, month - 1, day);
     onConfirm(date, name);

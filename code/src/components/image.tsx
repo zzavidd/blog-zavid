@@ -5,7 +5,7 @@ import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import { Theme } from 'classes';
+import { Theme } from 'classes/theme';
 
 export { CLOUDINARY_BASE_URL as cloudinaryBaseUrl } from 'constants/settings';
 
@@ -67,8 +67,9 @@ function CloudImage({
 }
 
 export function Signature({ className }: Signature) {
-  let theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  theme = Theme.switchTheme(theme);
+  const theme = useSelector(({ theme }: RootStateOrAny) =>
+    Theme.switchTheme(theme),
+  );
 
   const classes = classnames('signature', className);
   return (

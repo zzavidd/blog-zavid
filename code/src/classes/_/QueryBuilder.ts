@@ -1,9 +1,9 @@
 import type { Knex } from 'knex';
 
-import type { GenericDAO } from 'classes';
-import { QueryOrder } from 'classes';
+import type { EntityDAO } from 'classes/entity';
+import { QueryOrder } from 'constants/types';
 
-export class QueryBuilder<T extends GenericDAO> {
+export class QueryBuilder<T extends EntityDAO> {
   protected query: Knex | Knex.QueryBuilder;
   protected table: string;
   protected knex: Knex;
@@ -111,7 +111,7 @@ export class MutationBuilder<T> extends QueryBuilder<T> {
     return this;
   }
 }
-export interface QuerySort<T extends GenericDAO> {
+export interface QuerySort<T extends EntityDAO> {
   field?: keyof T;
   order?: string;
 }

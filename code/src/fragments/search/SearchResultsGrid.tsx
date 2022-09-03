@@ -4,7 +4,7 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import type { ResultEntityDAO } from 'classes';
+import type { SearchResultEntityDAO } from 'classes/entity';
 import CloudImage, { AspectRatio } from 'components/image';
 import { Title, VanillaLink } from 'components/text';
 import css from 'styles/pages/Search.module.scss';
@@ -80,16 +80,16 @@ export function ResultEntityImage({ entity }: ResultEntityImageProps) {
 }
 
 interface ResultsGridProps {
-  results: ResultEntityDAO[];
+  results: SearchResultEntityDAO[];
   searchTerm: string;
 }
 
 interface ResultEntityProps {
-  entity: ResultEntityDAO;
+  entity: SearchResultEntityDAO;
   searchTerm: string;
   idx: number;
 }
 
 interface ResultEntityImageProps {
-  entity: ResultEntityDAO;
+  entity: SearchResultEntityDAO;
 }

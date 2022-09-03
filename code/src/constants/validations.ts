@@ -1,13 +1,10 @@
 import { validate as validateEmail } from 'email-validator';
 
-import type {
-  DiaryDAO,
-  PageDAO,
-  PostDAO,
-  PostImage,
-  SubscriberDAO,
-} from 'classes';
-import { PostStatic } from 'classes';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import type { PageDAO } from 'classes/pages/PageDAO';
+import type { PostDAO, PostImage } from 'classes/posts/PostDAO';
+import { PostStatic } from 'classes/posts/PostStatic';
+import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 
 import { UIError } from './errors';
 

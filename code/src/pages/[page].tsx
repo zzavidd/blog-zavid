@@ -2,7 +2,7 @@ import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 import { zDate, zText } from 'zavid-modules';
 
-import type { PageDAO } from 'classes';
+import type { PageDAO } from 'classes/pages/PageDAO';
 import { AdminButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { Paragraph, Title } from 'components/text';
@@ -20,8 +20,9 @@ import css from 'styles/pages/Posts.module.scss';
 // eslint-disable-next-line react/function-component-definition
 const PageSingleProps: NextPage<PageSingleProps> = ({
   pathDefinition,
-  page,
+  pageProps,
 }) => {
+  const { page } = pageProps;
   const substitutions = {
     lastModified: `**${zDate.formatDate(page.lastModified!)}**`,
     myAge: zDate.calculateAge(ZAVID_BIRTHDAY),
@@ -68,7 +69,9 @@ export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
           description: zText.extractExcerpt(page.content!),
           url: `/${query.page}`,
         },
-        page,
+        pageProps: {
+          page,
+        },
       },
     };
   } catch (e) {
@@ -82,5 +85,7 @@ export default PageSingleProps;
 
 interface PageSingleProps {
   pathDefinition: PathDefinition;
-  page: PageDAO;
+  pageProps: {
+    page: PageDAO;
+  };
 }

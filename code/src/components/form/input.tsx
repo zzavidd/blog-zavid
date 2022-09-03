@@ -1,17 +1,15 @@
 import classnames from 'classnames';
-import type { CSSProperties } from 'react';
 import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import type { OnClickType, OnInputChangeType, OnKeyPressType } from 'classes';
 import { InvisibleButton } from 'components/button';
 import { Icon } from 'components/library';
 import css from 'styles/components/Form.module.scss';
 
-export function TextInput(props: TextInputProps) {
+export function TextInput({ onClick, ...props }: TextInputProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const { onClick, leadingComponent = null, trailingComponent = null } = props;
+  const { leadingComponent = null, trailingComponent = null } = props;
 
   const classes = classnames(css[`text-input-field-${theme}`], props.className);
 
@@ -90,22 +88,8 @@ function Input({
   );
 }
 
-interface InputProps {
-  value: unknown;
-  placeholder: string;
-  name?: string;
-  type?: string;
-  onChange?: OnInputChangeType;
-  onClick?: OnClickType;
-  onKeyPress?: OnKeyPressType;
-  className?: string;
-  style?: CSSProperties;
-  readOnly?: boolean;
-  min?: number;
-  ref?: React.RefObject<HTMLInputElement>;
-}
-
-interface TextInputProps extends InputProps {
+interface TextInputProps extends Omit<InputProps, 'onClick'> {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   leadingComponent?: JSX.Element;
   trailingComponent?: JSX.Element;
 }
@@ -114,3 +98,5 @@ interface SearchBarProps extends TextInputProps {
   onClearInput: () => void;
   withRightSpace?: boolean;
 }
+
+type InputProps = React.InputHTMLAttributes<HTMLInputElement>;

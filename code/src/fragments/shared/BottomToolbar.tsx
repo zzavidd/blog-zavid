@@ -1,8 +1,7 @@
 import classnames from 'classnames';
 import React, { useState, useEffect } from 'react';
 
-import type { ReactSelectChangeEvent } from 'classes';
-import { PostStatic } from 'classes';
+import { PostStatic } from 'classes/posts/PostStatic';
 import { AdminButton } from 'components/button';
 import type { SelectProps } from 'components/form';
 import { Field, FieldRow, Select } from 'components/form';
@@ -83,8 +82,8 @@ export default function BottomToolbar({
 }
 
 const toolbarWidgets = (
-  options: PostFiltersOptions,
-  handleOptionSelection: (event: ReactSelectChangeEvent) => void,
+  options: ToolbarProps['options'],
+  handleOptionSelection: ToolbarProps['handleOptionSelection'],
 ) => {
   const navigateToCreateForm = () => {
     location.href = '/admin/posts/add';
@@ -115,7 +114,7 @@ const toolbarWidgets = (
         <FilterDropdown
           name={'type'}
           items={PostStatic.TYPES}
-          value={options.type}
+          value={options.type!}
           onChange={handleOptionSelection}
           placeholder={'Filter by type...'}
           isPlaceholderSelectable={true}
@@ -151,5 +150,5 @@ function FilterDropdown(props: SelectProps) {
 
 interface ToolbarProps {
   options: PostFiltersOptions;
-  handleOptionSelection: (event: ReactSelectChangeEvent) => void;
+  handleOptionSelection: React.ChangeEventHandler<HTMLSelectElement>;
 }

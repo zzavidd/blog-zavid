@@ -5,8 +5,8 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import type { DiaryDAO, ReactInputChangeEvent } from 'classes';
-import { DiaryStatus, QueryOrder } from 'classes';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import { DiaryStatus } from 'classes/diary/DiaryDAO';
 import { AdminButton, ConfirmButton } from 'components/button';
 import { Checkbox, SearchBar } from 'components/form';
 import { Spacer, Toolbar } from 'components/layout';
@@ -14,6 +14,7 @@ import { Icon } from 'components/library';
 import { Paragraph, Title, VanillaLink } from 'components/text';
 import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
+import { QueryOrder } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import TagBlock from 'fragments/diary/DiaryTags';
 import PageMetadata from 'fragments/PageMetadata';
@@ -139,7 +140,9 @@ function DiarySearch({ url, onlyFavs }: DiarySearchProps) {
    * Searches diary entries using entered search term.
    * @param e The input DOM element.
    */
-  const searchDiaryEntries = (e?: ReactInputChangeEvent): void => {
+  const searchDiaryEntries = (
+    e?: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     const term = e?.target.value || '';
     setSearchTerm(term);
   };

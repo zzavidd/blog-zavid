@@ -3,17 +3,16 @@ import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { zDate } from 'zavid-modules';
 
+import type { EntityFormProps } from 'classes/entity';
+import { PostBuilder } from 'classes/posts/PostBuilder';
 import type {
   PostContentImageMapping,
   PostDAO,
   PostImage,
   PostType,
-  ReactSelectChangeEvent,
-  ReactTextAreaChangeEvent,
-  Substitutions,
-} from 'classes';
-import { PostStatus, PostBuilder, PostStatic } from 'classes';
-import type { GenericFormProps } from 'classes/interfaces/super';
+} from 'classes/posts/PostDAO';
+import { PostStatus } from 'classes/posts/PostDAO';
+import { PostStatic } from 'classes/posts/PostStatic';
 import {
   DynamicField,
   Field,
@@ -33,6 +32,7 @@ import { Foldable } from 'components/form/foldable';
 import { cloudinaryBaseUrl } from 'components/image';
 import { ScreenWidth } from 'components/library';
 import type Handlers from 'constants/handlers';
+import type { Substitutions } from 'constants/types';
 import css from 'styles/pages/Posts.module.scss';
 
 const MAX_NUM_CONTENT_IMAGES = 6;
@@ -65,7 +65,7 @@ export default function PostForm(props: PostFormProps) {
   const [isPreviewVisible, setPreviewVisible] = useState(false);
   const dispatch = useDispatch();
 
-  function onTypeChange(e: ReactSelectChangeEvent) {
+  function onTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const selectedType = e.target.value as PostType;
     const postsOfType = domains.filter(({ type, status }) => {
       return selectedType === type && status != PostStatus.DRAFT;
@@ -80,7 +80,7 @@ export default function PostForm(props: PostFormProps) {
     });
   }
 
-  function onStatusChange(e: ReactSelectChangeEvent) {
+  function onStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const selectedStatus = e.target.value as PostStatus;
     const postsOfType = domains.filter(({ type, status }) => {
       return post.type === type && status != PostStatus.DRAFT;
@@ -128,9 +128,7 @@ export default function PostForm(props: PostFormProps) {
               <LongTextArea
                 name={'content'}
                 value={post.content!}
-                onChange={(e: ReactTextAreaChangeEvent) =>
-                  handleTextSave(e, dispatch)
-                }
+                onChange={(e) => handleTextSave(e, dispatch)}
                 placeholder={"Write out the post's content..."}
               />
             </Field>
@@ -333,7 +331,7 @@ export function buildPayload(
   return payload;
 }
 
-interface PostFormProps extends GenericFormProps {
+interface PostFormProps extends EntityFormProps {
   post: PostDAO;
   domains: PostDAO[];
   handlers: ReturnType<typeof Handlers<PostDAO>>;

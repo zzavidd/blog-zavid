@@ -3,8 +3,9 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import type { PostDAO } from 'classes';
-import { PostStatic, PostStatus } from 'classes';
+import type { PostDAO } from 'classes/posts/PostDAO';
+import { PostStatus } from 'classes/posts/PostDAO';
+import { PostStatic } from 'classes/posts/PostStatic';
 import { AlertType, reportError, setAlert } from 'components/alert';
 import type { SelectItem } from 'components/form';
 import { UIError } from 'constants/errors';

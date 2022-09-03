@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const { serverRuntimeConfig } = getConfig();
 
-import type { PostType } from 'classes';
+import type { PostType } from 'classes/posts/PostDAO';
 import {
   ACCOUNTS,
   CLOUDINARY_BASE_URL,

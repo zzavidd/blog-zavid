@@ -8,8 +8,12 @@ import { zDate, zText } from 'zavid-modules';
 
 const { serverRuntimeConfig } = getConfig();
 
-import type { DiaryDAO, GenericDAO, PostDAO, SubscriberDAO } from 'classes';
-import { SubscriberQueryBuilder, SubscriberStatic } from 'classes';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import type { EntityDAO } from 'classes/entity';
+import type { PostDAO } from 'classes/posts/PostDAO';
+import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
+import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
+import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
 import { knex } from 'constants/knex';
 import { CLOUDINARY_BASE_URL, DOMAIN } from 'constants/settings';
 
@@ -94,7 +98,7 @@ export default Emailer;
  * @param template The name of the template EJS file.
  * @param subject The subject of the email.
  */
-async function prepareEmail<T extends GenericDAO>(
+async function prepareEmail<T extends EntityDAO>(
   entity: Record<string, T>,
   type: string,
   template: string,

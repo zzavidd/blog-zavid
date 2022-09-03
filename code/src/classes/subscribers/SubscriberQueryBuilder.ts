@@ -1,8 +1,8 @@
 import type { Knex } from 'knex';
 
-import type { SubscriberDAO } from '../../interfaces';
+import { QueryBuilder, MutationBuilder } from 'classes/_/QueryBuilder';
 
-import { QueryBuilder, MutationBuilder } from './super';
+import type { SubscriberDAO } from './SubscriberDAO';
 
 /** Builds a post query with conditions. */
 export class SubscriberQueryBuilder extends QueryBuilder<SubscriberDAO> {

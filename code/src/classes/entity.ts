@@ -1,11 +1,10 @@
-import type { PostType } from './post.interface';
+import type { PostType } from './posts/PostDAO';
 
-// TODO: Rename to EntityDAO
-export interface GenericDAO {
+export interface EntityDAO {
   id?: number;
 }
 
-export interface ResultEntityDAO {
+export interface SearchResultEntityDAO {
   index?: number;
   title: string;
   type: PostType | 'Diary Entry';
@@ -15,7 +14,7 @@ export interface ResultEntityDAO {
   image?: string;
 }
 
-export interface GenericFormProps {
+export interface EntityFormProps {
   confirmFunction?: () => void;
   confirmButtonText: string;
   cancelFunction?: () => void;

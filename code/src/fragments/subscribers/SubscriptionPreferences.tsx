@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ReactInputChangeEvent, SubscriptionsMapping } from 'classes';
+import type { SubscriptionsMapping } from 'classes/subscribers/SubscriberDAO';
 import { Checkbox } from 'components/form/checkbox';
 import css from 'styles/pages/Subscribers.module.scss';
 
@@ -8,7 +8,7 @@ export default function SubscriptionPreferences({
   preferences = {},
   setPreferences,
 }: SubscriptionPreferenceProps) {
-  function checkPreference(e: ReactInputChangeEvent) {
+  function checkPreference(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, checked } = e.target;
     setPreferences({
       ...preferences,

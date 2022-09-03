@@ -3,8 +3,8 @@ import { unstable_getServerSession } from 'next-auth/next';
 import React, { useState } from 'react';
 import { zDate, zString } from 'zavid-modules';
 
-import type { DiaryDAO } from 'classes';
-import { DiaryStatic } from 'classes';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { AlertType, reportError, setAlert } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
 import { UIError } from 'constants/errors';

@@ -3,9 +3,8 @@ import { unstable_getServerSession } from 'next-auth/next';
 import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
-import type { DiaryDAO, ReactHook } from 'classes';
-import { EditButton, QueryOrder } from 'classes';
-import { alert, reportError } from 'components/alert';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import { Alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import {
@@ -17,7 +16,12 @@ import {
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
 import { VanillaLink } from 'components/text';
-import type { PathDefinition } from 'constants/types';
+import type {
+  EditButtonProps,
+  PathDefinition,
+  ReactHook,
+} from 'constants/types';
+import { QueryOrder } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -40,7 +44,7 @@ const DiaryAdmin: NextPage<DiaryAdminProps> = ({
         method: 'DELETE',
         body: JSON.stringify({ id }),
       });
-      alert.success(
+      Alert.success(
         `You've deleted the diary entry for ${zDate.formatDate(date!, {
           withWeekday: true,
         })}.`,
@@ -155,7 +159,7 @@ function LinkButton({ diaryEntry }: LinkButton) {
   );
 }
 
-function EditButton({ id }: EditButton) {
+function EditButton({ id }: EditButtonProps) {
   const navigateToLink = () => (location.href = `/admin/diary/edit/${id}`);
   return (
     <InvisibleButton onClick={navigateToLink}>

@@ -1,5 +1,5 @@
-import type { SubscriptionsMapping, SubscriberDAO } from '../interfaces';
-import { SubscriptionType } from '../interfaces';
+import type { SubscriberDAO, SubscriptionsMapping } from './SubscriberDAO';
+import { SubscriptionType } from './SubscriberDAO';
 
 export class SubscriberStatic {
   public static SUBSCRIPTIONS = SubscriptionType;

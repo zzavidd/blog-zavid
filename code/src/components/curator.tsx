@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { zString } from 'zavid-modules';
 
 import {
-  FilterShape,
-  FilterShapeOption,
-  FilterTheme,
-  FilterThemeOption,
-  Theme,
   ThemeOption,
-} from 'classes';
+  FilterThemeOption,
+  FilterShapeOption,
+  Theme,
+  FilterTheme,
+  FilterShape,
+} from 'classes/theme';
 import { ButtonSpacer, CancelButton, DeleteButton } from 'components/button';
 import { Responsive } from 'components/library';
 import { Paragraph } from 'components/text';

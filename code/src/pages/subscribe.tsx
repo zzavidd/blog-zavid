@@ -1,9 +1,9 @@
 import type { GetStaticProps, NextPage } from 'next';
 import React, { useState } from 'react';
 
-import type { SubscriberDAO } from 'classes';
-import { SubscriberBuilder } from 'classes';
-import { alert, reportError } from 'components/alert';
+import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
+import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
+import { Alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { Field, FieldRow, Label, TextInput } from 'components/form';
 import { Title } from 'components/text';
@@ -49,7 +49,7 @@ const SubscribePage: NextPage<AppPageProps> = ({ pathDefinition }) => {
       if (!res.ok) {
         throw new Error(await res.text());
       }
-      alert.success(
+      Alert.success(
         `Thank you for subscribing!\nI've added ${subscriber.email} to my mailing list.`,
       );
       setTimeout(() => (location.href = '/'), 2000);
@@ -57,7 +57,7 @@ const SubscribePage: NextPage<AppPageProps> = ({ pathDefinition }) => {
       if (e instanceof UIError) {
         reportError(e.message, true);
       } else if (e.message.includes('ER_DUP_ENTRY')) {
-        alert.error('The email address you submitted already exists.');
+        Alert.error('The email address you submitted already exists.');
       } else {
         reportError(e.message);
       }

@@ -4,9 +4,8 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
-import type { PageDAO, ReactHook } from 'classes';
-import { EditButton } from 'classes';
-import { alert, reportError } from 'components/alert';
+import type { PageDAO } from 'classes/pages/PageDAO';
+import { Alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import {
@@ -17,7 +16,11 @@ import {
   TablerItemCell,
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
-import type { PathDefinition } from 'constants/types';
+import type {
+  EditButtonProps,
+  PathDefinition,
+  ReactHook,
+} from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -38,7 +41,7 @@ const PageAdmin: NextPage<PageAdminProps> = ({ pathDefinition, pageProps }) => {
         method: 'DELETE',
         body: JSON.stringify({ id }),
       });
-      alert.success(`You've deleted the ${title} page.`);
+      Alert.success(`You've deleted the ${title} page.`);
       router.reload();
       setDeleteModalVisibility(false);
     } catch (e: any) {
@@ -143,7 +146,7 @@ function LinkButton({ page }: LinkButton) {
   );
 }
 
-function EditButton({ id }: EditButton) {
+function EditButton({ id }: EditButtonProps) {
   const navigateToLink = () => (location.href = `/admin/pages/edit/${id}`);
   return (
     <InvisibleButton onClick={navigateToLink}>

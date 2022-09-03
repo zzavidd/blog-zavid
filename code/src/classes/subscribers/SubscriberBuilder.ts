@@ -1,7 +1,8 @@
 import * as faker from 'faker';
 
-import type { SubscriberDAO, SubscriptionsMapping } from '../../index';
-import { SubscriberStatic, SubscriptionType } from '../../index';
+import type { SubscriberDAO, SubscriptionsMapping } from './SubscriberDAO';
+import { SubscriptionType } from './SubscriberDAO';
+import { SubscriberStatic } from './SubscriberStatic';
 
 /** The class for building Subscriber objects. */
 export class SubscriberBuilder {

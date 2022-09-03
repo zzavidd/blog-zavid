@@ -1,12 +1,11 @@
 import classnames from 'classnames';
 import React from 'react';
-import type { ColProps } from 'react-bootstrap';
+import type { ColProps, RowProps } from 'react-bootstrap';
 
-import type { ReactComponent } from 'classes';
 import { Field, FieldRow } from 'components/form';
 import css from 'styles/pages/Home.module.scss';
 
-export function HomeRow(props: ReactComponent) {
+export function HomeRow(props: RowProps) {
   const classes = classnames(css['home-row'], props.className);
   return (
     <FieldRow {...props} className={classes}>

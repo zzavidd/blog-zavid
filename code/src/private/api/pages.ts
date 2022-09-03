@@ -1,5 +1,5 @@
-import type { PageDAO } from 'classes';
-import { PageQueryBuilder } from 'classes';
+import type { PageDAO } from 'classes/pages/PageDAO';
+import { PageQueryBuilder } from 'classes/pages/PageQueryBuilder';
 import { knex } from 'constants/knex';
 
 namespace PageAPI {

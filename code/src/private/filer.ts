@@ -2,8 +2,8 @@ import Cloudinary from 'cloudinary';
 import { debug } from 'console';
 import { zString } from 'zavid-modules';
 
-import type { PostDAO, PostImage } from 'classes';
-import { PostStatic } from 'classes';
+import type { PostDAO, PostImage } from 'classes/posts/PostDAO';
+import { PostStatic } from 'classes/posts/PostStatic';
 
 import PostAPI from './api/posts';
 

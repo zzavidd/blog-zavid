@@ -1,10 +1,10 @@
 import React from 'react';
+import type { NavLinkProps } from 'react-bootstrap';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import type { RootStateOrAny } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 
-import type { ReactComponent } from 'classes';
-import { Theme } from 'classes';
+import { Theme } from 'classes/theme';
 import { InvisibleButton } from 'components/button';
 import { Switch } from 'components/form/checkbox';
 import CloudImage from 'components/image';
@@ -88,7 +88,7 @@ function AdminButton() {
   );
 }
 
-function DisabledNavLink({ children }: ReactComponent) {
+function DisabledNavLink({ children }: NavLinkProps) {
   return (
     <Nav.Link href={'#'} className={css['nav-link-disabled']} disabled>
       {children}

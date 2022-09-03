@@ -3,9 +3,12 @@ import React, { useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import type { SubscriberDAO, SubscriptionsMapping } from 'classes';
-import { SubscriberBuilder } from 'classes';
-import { alert, AlertType, reportError, setAlert } from 'components/alert';
+import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
+import type {
+  SubscriptionsMapping,
+  SubscriberDAO,
+} from 'classes/subscribers/SubscriberDAO';
+import { Alert, AlertType, reportError, setAlert } from 'components/alert';
 import { ConfirmButton, InvisibleButton } from 'components/button';
 import { Container } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
@@ -54,7 +57,7 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
       if (!res.ok) {
         throw new Error(await res.text());
       }
-      alert.success(
+      Alert.success(
         `You've successfully updated your subscription preferences.`,
       );
     } catch (e: any) {

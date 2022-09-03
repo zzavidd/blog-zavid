@@ -4,7 +4,7 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 
-import { Theme } from 'classes';
+import { Theme } from 'classes/theme';
 import { InvisibleButton } from 'components/button';
 import { Icon, ScreenWidth } from 'components/library';
 

@@ -1,12 +1,9 @@
-import type { PostDAO } from 'classes';
-import {
-  PostQueryBuilder,
-  PostStatic,
-  PostType,
-  PostStatus,
-  QueryOrder,
-} from 'classes';
+import type { PostDAO } from 'classes/posts/PostDAO';
+import { PostType, PostStatus } from 'classes/posts/PostDAO';
+import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
+import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
+import { QueryOrder } from 'constants/types';
 import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
 
 namespace PostAPI {

@@ -1,13 +1,11 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
-import {
-  PostQueryBuilder,
-  PostStatic,
-  DiaryQueryBuilder,
-  DiaryStatus,
-  PageQueryBuilder,
-} from 'classes';
+import { DiaryStatus } from 'classes/diary/DiaryDAO';
+import { DiaryQueryBuilder } from 'classes/diary/DiaryQueryBuilder';
+import { PageQueryBuilder } from 'classes/pages/PageQueryBuilder';
+import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
+import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
 import { DOMAIN, RESOURCE_MAP } from 'constants/settings';
 

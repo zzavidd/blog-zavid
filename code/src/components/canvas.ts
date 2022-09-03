@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 
-import type { FilterThemeOption, ThemeOption } from 'classes';
-import { FilterShape, FilterShapeOption, Theme } from 'classes';
+import type { ThemeOption, FilterThemeOption } from 'classes/theme';
+import { FilterShapeOption, FilterShape, Theme } from 'classes/theme';
 import { DOMAIN } from 'constants/settings';
 
 const constants = {

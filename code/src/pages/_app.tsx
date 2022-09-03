@@ -11,7 +11,7 @@ import type { RootStateOrAny } from 'react-redux';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { Theme } from 'classes';
+import { Theme } from 'classes/theme';
 import { checkForSetAlerts } from 'components/alert';
 import configureStore, { setTheme } from 'constants/reducers';
 import CookiePrompt from 'fragments/shared/CookiePrompt';

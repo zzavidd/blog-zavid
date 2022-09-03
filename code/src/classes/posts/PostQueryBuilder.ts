@@ -1,9 +1,10 @@
 import type { Knex } from 'knex';
 
-import type { PostDAO, PostStatus, PostType } from 'classes';
-import { PostStatic, QueryOrder } from 'classes';
+import { QueryBuilder, MutationBuilder } from 'classes/_/QueryBuilder';
+import { QueryOrder } from 'constants/types';
 
-import { MutationBuilder, QueryBuilder } from './super';
+import type { PostDAO, PostType, PostStatus } from './PostDAO';
+import { PostStatic } from './PostStatic';
 
 const TABLE_NAME = 'posts';
 const columns = [

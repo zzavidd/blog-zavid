@@ -3,8 +3,9 @@ import { unstable_getServerSession } from 'next-auth/next';
 import React from 'react';
 import { zText } from 'zavid-modules';
 
-import type { PostDAO } from 'classes';
-import { PostStatic, PostStatus, PostType } from 'classes';
+import type { PostDAO } from 'classes/posts/PostDAO';
+import { PostType, PostStatus } from 'classes/posts/PostDAO';
+import { PostStatic } from 'classes/posts/PostStatic';
 import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import PageMetadata from 'fragments/PageMetadata';

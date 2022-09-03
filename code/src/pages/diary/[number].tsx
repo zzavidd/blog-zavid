@@ -3,8 +3,8 @@ import { unstable_getServerSession } from 'next-auth';
 import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
-import type { DiaryDAO } from 'classes';
-import { DiaryStatic } from 'classes';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { AdminButton, BackButton } from 'components/button';
 import { Curator } from 'components/curator';
 import { Label } from 'components/form';

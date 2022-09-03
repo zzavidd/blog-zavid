@@ -5,7 +5,7 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zString } from 'zavid-modules';
 
-import type { OnInputChangeType } from 'classes';
+import type { OnInputChangeType } from 'constants/types';
 import css from 'styles/components/Form.module.scss';
 
 export function RadioGroup({

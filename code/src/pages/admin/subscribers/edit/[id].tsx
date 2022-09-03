@@ -3,7 +3,7 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import type { SubscriberDAO } from 'classes';
+import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import { AlertType, reportError, setAlert } from 'components/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';

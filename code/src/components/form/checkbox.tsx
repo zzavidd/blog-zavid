@@ -4,7 +4,6 @@ import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import type { OnClickType, OnInputChangeType } from 'classes';
 import { Icon } from 'components/library';
 import css from 'styles/components/Form.module.scss';
 
@@ -17,7 +16,7 @@ export function Checkbox({
   onChange,
   className,
   boxClassName,
-}: Checkbox): JSX.Element {
+}: CheckboxProps): JSX.Element {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css['checkbox-group'], className);
   const boxClasses = classnames(
@@ -45,7 +44,7 @@ export function Switch({
   checked,
   checkedIcon,
   uncheckedIcon,
-}: Switch) {
+}: SwitchProps) {
   return (
     <InvisibleButton onClick={onChange}>
       <div
@@ -60,18 +59,14 @@ export function Switch({
   );
 }
 
-interface Checkbox {
+interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  checked: boolean;
-  onChange: OnInputChangeType;
-  name?: string;
-  className?: string;
   boxClassName?: string;
 }
 
-interface Switch {
+interface SwitchProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   checkedIcon: IconName;
   uncheckedIcon: IconName;
-  checked: boolean;
-  onChange: OnClickType;
+  onChange?: React.MouseEventHandler<HTMLButtonElement>;
 }

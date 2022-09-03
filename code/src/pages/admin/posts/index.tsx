@@ -4,9 +4,10 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { zText } from 'zavid-modules';
 
-import type { PostDAO, PostStatus, PostType, ReactHook } from 'classes';
-import { EditButton, PostStatic, URLBuilder } from 'classes';
-import { alert, reportError } from 'components/alert';
+import { URLBuilder } from 'classes/_/URLBuilder';
+import type { PostDAO, PostType, PostStatus } from 'classes/posts/PostDAO';
+import { PostStatic } from 'classes/posts/PostStatic';
+import { Alert, reportError } from 'components/alert';
 import { InvisibleButton } from 'components/button';
 import CloudImage from 'components/image';
 import { Spacer } from 'components/layout';
@@ -20,7 +21,11 @@ import {
 import { ConfirmModal } from 'components/modal';
 import { VanillaLink } from 'components/text';
 import { DOMAIN } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type {
+  EditButtonProps,
+  PathDefinition,
+  ReactHook,
+} from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import BottomToolbar from 'fragments/shared/BottomToolbar';
@@ -50,7 +55,7 @@ const PostsAdmin: NextPage<PostsAdminProps> = ({
         method: 'DELETE',
         body: JSON.stringify({ id }),
       });
-      alert.success(`You've deleted ${title}.`);
+      Alert.success(`You've deleted ${title}.`);
       router.reload();
       setDeleteModalVisibility(false);
     } catch (e: any) {
@@ -182,7 +187,7 @@ function LinkButton({ post }: LinkButton) {
   );
 }
 
-function EditButton({ id }: EditButton) {
+function EditButton({ id }: EditButtonProps) {
   const navigateToLink = () => (location.href = `/admin/posts/edit/${id}`);
   return (
     <InvisibleButton onClick={navigateToLink}>

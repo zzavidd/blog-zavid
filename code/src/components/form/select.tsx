@@ -3,7 +3,6 @@ import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import type { OnSelectChangeType } from 'classes';
 import css from 'styles/components/Form.module.scss';
 
 export function Select(props: SelectProps) {
@@ -55,13 +54,9 @@ export function Select(props: SelectProps) {
   );
 }
 
-export interface SelectProps {
-  name?: string;
+export interface SelectProps
+  extends React.SelectHTMLAttributes<HTMLSelectElement> {
   items: SelectItemType;
-  value?: unknown;
-  onChange: OnSelectChangeType;
-  className?: string;
-  placeholder?: string;
   isPlaceholderSelectable?: boolean;
   isRound?: boolean;
 }

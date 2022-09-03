@@ -3,8 +3,8 @@ import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
-import type { PostDAO } from 'classes';
-import { PostStatic } from 'classes';
+import type { PostDAO } from 'classes/posts/PostDAO';
+import { PostStatic } from 'classes/posts/PostStatic';
 import CloudImage from 'components/image';
 import { Title, VanillaLink } from 'components/text';
 import * as Utils from 'constants/utils';

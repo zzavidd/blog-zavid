@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import React, { useState } from 'react';
 
-import type { ResultEntityDAO } from 'classes';
+import type { SearchResultEntityDAO } from 'classes/entity';
 import { Checkbox, SearchBar } from 'components/form';
 import { Spacer } from 'components/layout';
 import { Title } from 'components/text';
@@ -101,7 +101,7 @@ export default SearchResults;
 interface SearchResultsProps {
   pathDefinition: PathDefinition;
   pageProps: {
-    results: ResultEntityDAO[];
+    results: SearchResultEntityDAO[];
     searchTerm: string;
   };
 }

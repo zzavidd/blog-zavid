@@ -1,6 +1,6 @@
-import type { GenericDAO } from './super';
+import type { EntityDAO } from '../entity';
 
-export interface SubscriberDAO extends GenericDAO {
+export interface SubscriberDAO extends EntityDAO {
   email?: string;
   firstname?: string;
   lastname?: string;

@@ -1,13 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import type { QuerySort } from 'classes/_/QueryBuilder';
+import type { PostDAO, PostType } from 'classes/posts/PostDAO';
 import type {
-  PostDAO,
   PostStatusFilters,
-  PostType,
   PostTypeFilters,
-  QuerySort,
-} from 'classes';
-import { PostMutationBuilder, PostQueryBuilder, PostStatic } from 'classes';
+} from 'classes/posts/PostQueryBuilder';
+import {
+  PostMutationBuilder,
+  PostQueryBuilder,
+} from 'classes/posts/PostQueryBuilder';
+import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
 import { EMAILS_ON } from 'constants/settings';
 import PostAPI from 'private/api/posts';

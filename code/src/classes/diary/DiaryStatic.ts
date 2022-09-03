@@ -2,8 +2,9 @@ import faker from 'faker';
 import { zDate, zNumber } from 'zavid-modules';
 
 import { randomEnumValue } from '../helper';
-import type { DiaryDAO } from '../interfaces';
-import { DiaryStatus } from '../interfaces';
+
+import type { DiaryDAO } from './DiaryDAO';
+import { DiaryStatus } from './DiaryDAO';
 
 export class DiaryStatic {
   public static STATUS = DiaryStatus;

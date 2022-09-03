@@ -1,10 +1,9 @@
 import type { NextPageContext } from 'next';
 import React from 'react';
 
-import type { CustomError } from 'classes';
 import css from 'styles/Partials.module.scss';
 
-export default function ErrorPage({ message }: CustomError) {
+export default function ErrorPage({ message }: ErrorPageProps) {
   return (
     <div className={css['error-page']}>
       <div className={css['error-message-container']}>
@@ -47,3 +46,7 @@ ErrorPage.getInitialProps = ({ res, err, query }: NextPageContext) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : null;
   return { statusCode, ...query };
 };
+
+interface ErrorPageProps {
+  message?: string;
+}

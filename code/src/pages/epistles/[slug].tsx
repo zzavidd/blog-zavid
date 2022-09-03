@@ -2,7 +2,8 @@ import type { GetServerSideProps, NextPage } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import React from 'react';
 
-import { PostType, PostStatus, PostStatic } from 'classes';
+import { PostType, PostStatus } from 'classes/posts/PostDAO';
+import { PostStatic } from 'classes/posts/PostStatic';
 import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import PageMetadata from 'fragments/PageMetadata';

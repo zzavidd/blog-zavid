@@ -1,8 +1,8 @@
 import * as faker from 'faker';
 import { zDate, zNumber, zString } from 'zavid-modules';
 
-import type { DiaryDAO, DiaryStatus } from '../../index';
-import { DiaryStatic } from '../../index';
+import type { DiaryDAO, DiaryStatus } from './DiaryDAO';
+import { DiaryStatic } from './DiaryStatic';
 
 /** The class for Diary objects and methods. */
 export class DiaryEntryBuilder {

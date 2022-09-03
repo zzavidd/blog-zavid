@@ -1,5 +1,6 @@
-import type { SubscriberDAO } from 'classes';
-import { SubscriberQueryBuilder, SubscriberStatic } from 'classes';
+import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
+import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
+import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
 import { knex } from 'constants/knex';
 import type { GetAllSubscriberOptions } from 'pages/api/subscribers';
 

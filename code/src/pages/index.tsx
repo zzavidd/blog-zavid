@@ -1,7 +1,8 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
-import type { DiaryDAO, PostDAO } from 'classes';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import type { PostDAO } from 'classes/posts/PostDAO';
 import { HomeField, HomeRow } from 'components/pages/home';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';

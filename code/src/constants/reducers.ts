@@ -3,8 +3,8 @@ import { combineReducers, createStore } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import type { PostStatus, PostType } from 'classes';
-import { ThemeOption } from 'classes';
+import type { PostType, PostStatus } from 'classes/posts/PostDAO';
+import { ThemeOption } from 'classes/theme';
 
 /**
  * ACTIONS.

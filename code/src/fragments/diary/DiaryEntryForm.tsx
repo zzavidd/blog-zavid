@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { zDate, zString } from 'zavid-modules';
 
-import type { DiaryDAO, ReactTextAreaChangeEvent } from 'classes';
-import { DiaryEntryBuilder, DiaryStatic } from 'classes';
-import type { GenericFormProps } from 'classes/interfaces/super';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import { DiaryEntryBuilder } from 'classes/diary/DiaryEntryBuilder';
+import { DiaryStatic } from 'classes/diary/DiaryStatic';
+import type { EntityFormProps } from 'classes/entity';
 import {
   Checkbox,
   Field,
@@ -70,9 +71,7 @@ export default function DiaryEntryForm(props: DiaryFormProps) {
               <LongTextArea
                 name={'content'}
                 value={diaryEntry.content!}
-                onChange={(e: ReactTextAreaChangeEvent) =>
-                  handleTextSave(e, dispatch)
-                }
+                onChange={(e) => handleTextSave(e, dispatch)}
                 placeholder={'Scribe your thoughts and feelings...'}
               />
             </Field>
@@ -209,7 +208,7 @@ export function buildPayload(
   return payload;
 }
 
-interface DiaryFormProps extends GenericFormProps {
+interface DiaryFormProps extends EntityFormProps {
   diaryEntry: DiaryDAO;
   handlers: ReturnType<typeof Handlers<DiaryDAO>>;
 }

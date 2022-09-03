@@ -1,12 +1,12 @@
-import type { DiaryDAO, PostDAO, ResultEntityDAO } from 'classes';
-import {
-  DiaryQueryBuilder,
-  DiaryStatus,
-  PostQueryBuilder,
-  PostStatic,
-  PostStatus,
-  URLBuilder,
-} from 'classes';
+import { URLBuilder } from 'classes/_/URLBuilder';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import { DiaryStatus } from 'classes/diary/DiaryDAO';
+import { DiaryQueryBuilder } from 'classes/diary/DiaryQueryBuilder';
+import type { SearchResultEntityDAO } from 'classes/entity';
+import type { PostDAO } from 'classes/posts/PostDAO';
+import { PostStatus } from 'classes/posts/PostDAO';
+import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
+import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
 
 namespace SearchAPI {
@@ -22,8 +22,8 @@ export default SearchAPI;
 async function getResultEntities(
   searchTerm: string,
   options: GetResultEntityOptions = {},
-): Promise<ResultEntityDAO[]> {
-  let entities: ResultEntityDAO[] = [];
+): Promise<SearchResultEntityDAO[]> {
+  let entities: SearchResultEntityDAO[] = [];
   if (!searchTerm) return entities;
 
   const { includePosts = true } = options;
@@ -64,7 +64,7 @@ async function getResultEntities(
  */
 async function compilePosts(
   filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean,
-): Promise<ResultEntityDAO[]> {
+): Promise<SearchResultEntityDAO[]> {
   const posts = await new PostQueryBuilder(knex)
     .whereStatus({ include: [PostStatus.PRIVATE, PostStatus.PUBLISHED] })
     .build();
@@ -95,7 +95,7 @@ async function compilePosts(
       image,
       date: datePublished,
     };
-  }) as ResultEntityDAO[];
+  }) as SearchResultEntityDAO[];
 
   return parsedPosts;
 }
@@ -106,12 +106,12 @@ async function compilePosts(
  */
 async function compileDiaryEntries(
   filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean,
-): Promise<ResultEntityDAO[]> {
+): Promise<SearchResultEntityDAO[]> {
   const diary = await new DiaryQueryBuilder(knex)
     .whereStatus({ include: [DiaryStatus.PRIVATE, DiaryStatus.PUBLISHED] })
     .build();
 
-  const parsedDiary: ResultEntityDAO[] = diary
+  const parsedDiary: SearchResultEntityDAO[] = diary
     .filter(filterBySearchTerm)
     .map(({ title, date, content, entryNumber }) => {
       return {
@@ -121,7 +121,7 @@ async function compileDiaryEntries(
         content,
         slug: `/diary/${entryNumber}`,
       };
-    }) as ResultEntityDAO[];
+    }) as SearchResultEntityDAO[];
 
   return parsedDiary;
 }

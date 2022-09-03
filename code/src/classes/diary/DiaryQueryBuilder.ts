@@ -1,9 +1,10 @@
 import type { Knex } from 'knex';
 
-import type { DiaryDAO } from '../../index';
-import { DiaryStatus, QueryOrder } from '../../index';
+import { QueryBuilder, MutationBuilder } from 'classes/_/QueryBuilder';
+import { QueryOrder } from 'constants/types';
 
-import { MutationBuilder, QueryBuilder } from './super';
+import type { DiaryDAO } from './DiaryDAO';
+import { DiaryStatus } from './DiaryDAO';
 
 const TABLE_NAME = 'diary';
 

@@ -1,12 +1,11 @@
 import classnames from 'classnames';
 import type { ReactNode } from 'react';
 import React, { useEffect, useState } from 'react';
-import type { ColProps } from 'react-bootstrap';
+import type { ColProps, RowProps } from 'react-bootstrap';
 import { Col, Row } from 'react-bootstrap';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import type { ReactComponent, ReactHook, Substitutions } from 'classes';
 import {
   AdminButton,
   ButtonSpacer,
@@ -15,6 +14,7 @@ import {
 } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import { Paragraph, Title } from 'components/text';
+import type { Substitutions, ReactHook } from 'constants/types';
 import css from 'styles/components/Form.module.scss';
 
 import { Signature } from '../image';
@@ -188,7 +188,7 @@ function FormPreviewToggle({
   );
 }
 
-export function FieldRow(props: ReactComponent) {
+export function FieldRow(props: RowProps) {
   const classes = classnames(css['form-field-row'], props.className);
   return (
     <Row {...props} className={classes}>

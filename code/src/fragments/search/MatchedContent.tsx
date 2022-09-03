@@ -1,7 +1,7 @@
 import React from 'react';
 import { zText } from 'zavid-modules';
 
-import type { ResultEntityDAO } from 'classes';
+import type { SearchResultEntityDAO } from 'classes/entity';
 import { Paragraph } from 'components/text';
 import css from 'styles/pages/Search.module.scss';
 
@@ -71,6 +71,6 @@ String.prototype.standardize = function (): string {
 };
 
 interface MatchedContentProps {
-  entity: ResultEntityDAO;
+  entity: SearchResultEntityDAO;
   searchTerm: string;
 }

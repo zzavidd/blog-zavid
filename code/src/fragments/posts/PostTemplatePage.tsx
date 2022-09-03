@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { zDate } from 'zavid-modules';
 
-import type { PostDAO, PostType, Substitutions } from 'classes';
-import { PostStatic } from 'classes';
+import type { PostType, PostDAO } from 'classes/posts/PostDAO';
+import { PostStatic } from 'classes/posts/PostStatic';
 import { AdminButton, BackButton as IBackButton } from 'components/button';
 import { Curator } from 'components/curator';
 import CloudImage, { cloudinaryBaseUrl, Signature } from 'components/image';
@@ -10,6 +10,7 @@ import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Divider, Paragraph, Title } from 'components/text';
 import Timeline, { TimelineType } from 'components/timeline';
+import type { Substitutions } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import { CuratePrompt } from 'fragments/shared/CuratePrompt';
 import css from 'styles/pages/Posts.module.scss';

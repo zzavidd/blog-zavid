@@ -1,42 +1,45 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+import type React from 'react';
 import type { Dispatch } from 'redux';
 
+import type { EntityDAO } from 'classes/entity';
 import type {
-  PostContentImageMapping,
   PostDAO,
+  PostContentImageMapping,
   PostImage,
-  ReactHook,
-  ReactInputChangeEvent,
-  ReactSelectChangeEvent,
-  ReactTextAreaChangeEvent,
-} from 'classes';
-import type { GenericDAO } from 'classes/interfaces/super';
+} from 'classes/posts/PostDAO';
 import type { DateType } from 'components/form/datepicker';
 import { saveText } from 'constants/reducers';
 
-export default function Handlers<T extends GenericDAO>(
+import type { ReactHook } from './types';
+
+export default function Handlers<T extends EntityDAO>(
   hook: ReactHook<T>,
   state: T,
 ) {
   function handleText(
-    event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
   ): void {
     const { name, value } = event.target;
     hook({ ...state, [name]: value });
   }
 
-  function handleNumber(event: ReactInputChangeEvent): void {
+  function handleNumber(event: React.ChangeEvent<HTMLInputElement>): void {
     const { name, valueAsNumber } = event.target;
     hook({ ...state, [name]: valueAsNumber });
   }
 
-  function handleSelection(event: ReactSelectChangeEvent): void {
+  function handleSelection(event: React.ChangeEvent<HTMLSelectElement>): void {
     const { name, value } = event.target;
     hook({ ...state, [name]: value });
   }
 
   function handleTextSave(
-    event: ReactInputChangeEvent | ReactTextAreaChangeEvent,
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
     dispatch: Dispatch,
   ): void {
     handleText(event);
@@ -47,7 +50,7 @@ export default function Handlers<T extends GenericDAO>(
     hook({ ...state, [name]: date });
   }
 
-  function handleCheck(event: ReactInputChangeEvent): void {
+  function handleCheck(event: React.ChangeEvent<HTMLInputElement>): void {
     const { name, checked } = event.target;
     hook({ ...state, [name]: checked });
   }

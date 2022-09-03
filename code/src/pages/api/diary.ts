@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import type { DiaryDAO, DiaryStatusFilters, QuerySort } from 'classes';
-import { DiaryMutationBuilder, DiaryStatic } from 'classes';
+import type { QuerySort } from 'classes/_/QueryBuilder';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import type { DiaryStatusFilters } from 'classes/diary/DiaryQueryBuilder';
+import { DiaryMutationBuilder } from 'classes/diary/DiaryQueryBuilder';
+import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { knex } from 'constants/knex';
 import { EMAILS_ON } from 'constants/settings';
 import Emails from 'private/emails';
