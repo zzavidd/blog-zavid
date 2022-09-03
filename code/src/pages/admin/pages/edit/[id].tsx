@@ -13,7 +13,7 @@ import { validatePage } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PageForm, { buildPayload } from 'fragments/pages/PageForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getPageByIdSSR } from 'pages/api/pages';
+import SSR from 'private/ssr';
 
 function PageEdit({ pathDefinition, pageProps }: PageEditProps) {
   const { page: serverPage } = pageProps;
@@ -79,7 +79,9 @@ export const getServerSideProps: GetServerSideProps<PageEditProps> = async ({
     };
   }
 
-  const page = JSON.parse(await getPageByIdSSR(parseInt(query.id as string)));
+  const page = JSON.parse(
+    await SSR.Pages.getById(parseInt(query.id as string)),
+  );
   return {
     props: {
       pathDefinition: {

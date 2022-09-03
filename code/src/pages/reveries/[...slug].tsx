@@ -11,8 +11,7 @@ import PageMetadata from 'fragments/PageMetadata';
 import type { PostTemplatePageProps } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-
-import { getPostSSR } from '../api/posts';
+import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
 const ReveriePage: NextPage<ReveriePageProps> = ({
@@ -50,7 +49,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
     if (query.slug.length > 1) {
       const [domainSlug, slug] = query.slug;
       const { current: post } = JSON.parse(
-        await getPostSSR({
+        await SSR.Posts.getSingle({
           slug,
           type: PostType.PAGE,
           domainSlug,
@@ -81,7 +80,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
     } else {
       const [slug] = query.slug;
       const reverieTrio = JSON.parse(
-        await getPostSSR({
+        await SSR.Posts.getSingle({
           slug,
           type: PostType.REVERIE,
           statusFilters: {

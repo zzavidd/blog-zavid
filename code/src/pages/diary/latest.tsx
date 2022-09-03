@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from 'next';
 
 import type { DiaryDAO } from 'classes';
-import { getLatestDiaryEntrySSR } from 'pages/api/diary';
+import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
 const LatestDiaryEntryPage: NextPage = () => {
@@ -9,9 +9,7 @@ const LatestDiaryEntryPage: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const latestDiaryEntry = JSON.parse(
-    await getLatestDiaryEntrySSR(),
-  ) as DiaryDAO;
+  const latestDiaryEntry = JSON.parse(await SSR.Diary.getLatest()) as DiaryDAO;
   return {
     redirect: {
       destination: `/diary/${latestDiaryEntry.entryNumber}`,

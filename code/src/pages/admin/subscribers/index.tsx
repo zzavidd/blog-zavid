@@ -20,7 +20,7 @@ import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getAllSubscribersSSR } from 'pages/api/subscribers';
+import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscribersAdmin: NextPage<SubscribersAdminProps> = ({
@@ -187,7 +187,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   const subscribers = JSON.parse(
-    await getAllSubscribersSSR({
+    await SSR.Subscribers.getAll({
       sort: {
         field: 'createTime',
         order: QueryOrder.DESCENDING,

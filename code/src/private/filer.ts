@@ -4,7 +4,8 @@ import { zString } from 'zavid-modules';
 
 import type { PostDAO, PostImage } from 'classes';
 import { PostStatic } from 'classes';
-import { getPostById } from 'pages/api/posts';
+
+import PostAPI from './api/posts';
 
 const cloudinary = Cloudinary.v2;
 cloudinary.config({
@@ -115,7 +116,7 @@ namespace Filer {
     id: number,
     post: PostDAO,
   ): Promise<PostDAO> {
-    const postInDatabase = await getPostById(id);
+    const postInDatabase = await PostAPI.getById(id);
     const imagesFromClient = PostStatic.collateImages(post, {
       includeNulls: true,
     }) as PostImage[];
@@ -168,7 +169,7 @@ async function generateFilename(post: PostDAO, slug: string): Promise<string> {
 
   if (PostStatic.isPage(post)) {
     try {
-      const postDomain = await getPostById(post.domainId!);
+      const postDomain = await PostAPI.getById(post.domainId!);
       filename = zString.constructCleanSlug(
         `${postDomain.title!} ${post.title}`,
       );

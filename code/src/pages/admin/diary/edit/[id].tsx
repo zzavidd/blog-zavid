@@ -16,7 +16,7 @@ import { validateDiaryEntry } from 'constants/validations';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getDiaryEntryByIdSSR } from 'pages/api/diary';
+import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
@@ -119,7 +119,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   const id = parseInt(query.id as string);
-  const diaryEntry = await getDiaryEntryByIdSSR(id);
+  const diaryEntry = await SSR.Diary.getById(id);
   return {
     props: {
       pathDefinition: {

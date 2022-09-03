@@ -21,7 +21,7 @@ import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getAllPagesSSR } from 'pages/api/pages';
+import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
 const PageAdmin: NextPage<PageAdminProps> = ({ pathDefinition, pageProps }) => {
@@ -183,7 +183,7 @@ export const getServerSideProps: GetServerSideProps<PageAdminProps> = async ({
     };
   }
 
-  const pages = JSON.parse(await getAllPagesSSR());
+  const pages = JSON.parse(await SSR.Pages.getAll());
   return {
     props: {
       pathDefinition: {

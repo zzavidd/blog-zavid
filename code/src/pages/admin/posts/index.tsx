@@ -25,7 +25,7 @@ import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import BottomToolbar from 'fragments/shared/BottomToolbar';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getAllPostsSSR } from 'pages/api/posts';
+import SSR from 'private/ssr';
 import css from 'styles/pages/Posts.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
@@ -236,7 +236,7 @@ export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async ({
     status,
   } = filterOptions;
   const posts: PostDAO[] = JSON.parse(
-    await getAllPostsSSR({
+    await SSR.Posts.getAll({
       limit: parseInt(limit),
       sort: {
         field: field as keyof PostDAO,

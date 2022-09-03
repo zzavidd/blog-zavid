@@ -15,7 +15,7 @@ import { validateDiaryEntry } from 'constants/validations';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getLatestDiaryEntry } from 'pages/api/diary';
+import DiaryAPI from 'private/api/diary';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryEntryAdd: NextPage<DiaryEntryAddProps> = ({
@@ -110,7 +110,7 @@ export const getServerSideProps: GetServerSideProps<
     };
   }
 
-  const latestDiaryEntry = await getLatestDiaryEntry();
+  const latestDiaryEntry = await DiaryAPI.getLatest();
   return {
     props: {
       pathDefinition: {

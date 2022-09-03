@@ -11,9 +11,8 @@ import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
 import LatestReverie from 'fragments/home/HomeReverie';
 import Search from 'fragments/home/HomeSearch';
 import PageMetadata from 'fragments/PageMetadata';
+import SSR from 'private/ssr';
 import css from 'styles/pages/Home.module.scss';
-
-import { getHomeProps } from './api/home';
 
 // eslint-disable-next-line react/function-component-definition
 const Home: NextPage<HomeProps> = ({
@@ -59,7 +58,7 @@ export const getServerSideProps: GetServerSideProps<
     latestReverie,
     randomPosts,
     emailSubCount,
-  } = JSON.parse(await getHomeProps());
+  } = JSON.parse(await SSR.Home.getPreloadedProps());
   return {
     props: {
       pathDefinition: {

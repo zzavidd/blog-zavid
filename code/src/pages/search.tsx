@@ -6,17 +6,20 @@ import { Checkbox, SearchBar } from 'components/form';
 import { Spacer } from 'components/layout';
 import { Title } from 'components/text';
 import { SITE_TITLE } from 'constants/settings';
+import type { PathDefinition } from 'constants/types';
 import PageMetadata from 'fragments/PageMetadata';
 import { ResultsGrid } from 'fragments/search/SearchResultsGrid';
+import SSR from 'private/ssr';
 import css from 'styles/pages/Search.module.scss';
-
-import { getSearchResults } from './api/search';
 
 const PARAM_ONLY_DIARY = 'onlyDiary';
 
 // eslint-disable-next-line react/function-component-definition
-const SearchResults: NextPage<SearchResultsProps> = (props) => {
-  const { searchTerm, results } = props;
+const SearchResults: NextPage<SearchResultsProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
+  const { searchTerm, results } = pageProps;
   const url = new URL(location.href);
 
   const [term, setSearchTerm] = useState(searchTerm);
@@ -28,7 +31,7 @@ const SearchResults: NextPage<SearchResultsProps> = (props) => {
 
   return (
     <React.Fragment>
-      <PageMetadata title={props.title} />
+      <PageMetadata {...pathDefinition} />
       <Spacer>
         <div className={css['search-results-page']}>
           <Title className={css['search-heading']}>{heading}</Title>
@@ -67,27 +70,38 @@ const SearchResults: NextPage<SearchResultsProps> = (props) => {
 export const getServerSideProps: GetServerSideProps<
   SearchResultsProps
 > = async ({ query }) => {
-  const { term, onlyDiary } = query;
-  if (!term) {
+  const { term: searchTerm, onlyDiary } = query;
+  if (!searchTerm || Array.isArray(searchTerm)) {
     return {
       props: {
-        title: `Search | ${SITE_TITLE}`,
-        results: [],
-        searchTerm: '',
+        pathDefinition: {
+          title: `Search | ${SITE_TITLE}`,
+        },
+        pageProps: {
+          results: [],
+          searchTerm: '',
+        },
       },
     };
   }
 
-  const { results, searchTerm, title } = JSON.parse(
-    await getSearchResults(term as string, onlyDiary === 'true'),
-  )!;
-  return { props: { searchTerm, results, title } };
+  const results = JSON.parse(
+    await SSR.Search.getResults(searchTerm as string, onlyDiary === 'true'),
+  );
+  return {
+    props: {
+      pathDefinition: { title: `Results for '${searchTerm}' | ${SITE_TITLE}` },
+      pageProps: { results, searchTerm },
+    },
+  };
 };
 
 export default SearchResults;
 
 interface SearchResultsProps {
-  results: ResultEntityDAO[];
-  searchTerm: string;
-  title: string;
+  pathDefinition: PathDefinition;
+  pageProps: {
+    results: ResultEntityDAO[];
+    searchTerm: string;
+  };
 }

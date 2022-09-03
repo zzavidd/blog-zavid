@@ -8,18 +8,16 @@ import {
   URLBuilder,
 } from 'classes';
 import { knex } from 'constants/knex';
-import { SITE_TITLE } from 'constants/settings';
 
-export async function getSearchResults(searchTerm: string, onlyDiary: boolean) {
-  const results = await getResultEntities(searchTerm, {
-    includePosts: !onlyDiary,
-  });
-  return JSON.stringify({
-    title: `Results for '${searchTerm}' | ${SITE_TITLE}`,
-    searchTerm,
-    results,
-  });
+namespace SearchAPI {
+  export function getResults(searchTerm: string, onlyDiary: boolean) {
+    return getResultEntities(searchTerm, {
+      includePosts: !onlyDiary,
+    });
+  }
 }
+
+export default SearchAPI;
 
 async function getResultEntities(
   searchTerm: string,

@@ -15,7 +15,7 @@ import SubscriberForm, {
   buildPayload,
 } from 'fragments/subscribers/SubscriberForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getSubscriberByIdSSR } from 'pages/api/subscribers';
+import SSR from 'private/ssr';
 
 function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {
   const { subscriber: serverSubscriber } = pageProps;
@@ -81,7 +81,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   const subscriber = JSON.parse(
-    await getSubscriberByIdSSR(parseInt(query.id as string)),
+    await SSR.Subscribers.getById(parseInt(query.id as string)),
   );
   return {
     props: {

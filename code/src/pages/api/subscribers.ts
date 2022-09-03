@@ -2,12 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { QuerySort, SubscriberDAO } from 'classes';
-import {
-  SubscriberMutationBuilder,
-  SubscriberQueryBuilder,
-  SubscriberStatic,
-} from 'classes';
+import { SubscriberMutationBuilder } from 'classes';
 import { knex } from 'constants/knex';
+import SubscriberAPI from 'private/api/subscribers';
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,7 +13,7 @@ export default async function handler(
   try {
     switch (req.method) {
       case 'GET': {
-        await getAllSubscribers();
+        await SubscriberAPI.getAll();
         return res.send(200);
       }
       case 'POST': {
@@ -38,47 +35,6 @@ export default async function handler(
   } catch (e: any) {
     res.status(400).json({ message: e.message });
   }
-}
-
-export async function getAllSubscribersSSR(options: GetAllSubscriberOptions) {
-  return JSON.stringify(await getAllSubscribers(options));
-}
-
-/**
- * Retrieves all subscriber from database.
- * @param args.sort The sort options.
- */
-export async function getAllSubscribers(
-  options: GetAllSubscriberOptions = {},
-): Promise<SubscriberDAO[] | undefined> {
-  const { sort = {} } = options;
-
-  try {
-    const subscribers = await new SubscriberQueryBuilder(knex)
-      .withOrder(sort)
-      .build();
-    return subscribers.map(SubscriberStatic.parse);
-  } catch (e: any) {
-    throw new Error(e.message);
-  }
-}
-
-export async function getSubscriberByTokenSSR(token: string) {
-  return JSON.stringify(await getSubscriberByToken(token));
-}
-
-export async function getSubscriberByToken(token: string) {
-  const [subscriber] = await new SubscriberQueryBuilder(knex)
-    .whereToken(token)
-    .build();
-  return SubscriberStatic.parse(subscriber);
-}
-
-export async function getSubscriberByIdSSR(id: number) {
-  const [subscriber] = await new SubscriberQueryBuilder(knex)
-    .whereId(id)
-    .build();
-  return JSON.stringify(SubscriberStatic.parse(subscriber));
 }
 
 export async function createSubscriber({

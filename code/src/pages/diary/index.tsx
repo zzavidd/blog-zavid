@@ -17,10 +17,9 @@ import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import TagBlock from 'fragments/diary/DiaryTags';
 import PageMetadata from 'fragments/PageMetadata';
+import PageAPI from 'private/api/pages';
+import SSR from 'private/ssr';
 import css from 'styles/pages/Diary.module.scss';
-
-import { getAllDiaryEntriesSSR } from '../api/diary';
-import { getPageBySlug } from '../api/pages';
 
 const DIARY_HEADING = `Zavid's Diary`;
 const PARAM_ONLY_FAVOURITES = 'onlyFavourites';
@@ -202,10 +201,10 @@ const navigateToDiaryAdmin = () => (location.href = '/admin/diary');
 export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
   query,
 }) => {
-  const page = await getPageBySlug('diary');
+  const page = await PageAPI.getBySlug('diary');
   const onlyFavourites = query.onlyFavourites === 'true';
   const diaryEntries = JSON.parse(
-    await getAllDiaryEntriesSSR({
+    await SSR.Diary.getAll({
       sort: {
         field: 'date',
         order: QueryOrder.DESCENDING,

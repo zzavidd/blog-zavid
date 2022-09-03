@@ -17,10 +17,9 @@ import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
 import { RightSidebar } from 'fragments/shared/RightSidebar';
+import PageAPI from 'private/api/pages';
+import SSR from 'private/ssr';
 import css from 'styles/pages/Reveries.module.scss';
-
-import { getPageBySlug } from '../api/pages';
-import { getAllPostsSSR } from '../api/posts';
 
 const REVERIES_HEADING = 'Reveries';
 
@@ -133,9 +132,9 @@ function navigateToPostAdmin() {
 export const getServerSideProps: GetServerSideProps<
   ReveriesIndexProps
 > = async () => {
-  const page = await getPageBySlug('reveries');
+  const page = await PageAPI.getBySlug('reveries');
   const reveries = JSON.parse(
-    await getAllPostsSSR({
+    await SSR.Posts.getAll({
       sort: {
         field: 'datePublished',
         order: QueryOrder.DESCENDING,

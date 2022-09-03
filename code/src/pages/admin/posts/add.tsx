@@ -15,7 +15,7 @@ import { validatePost } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getDomains } from 'pages/api/posts';
+import PostAPI from 'private/api/posts';
 
 // eslint-disable-next-line react/function-component-definition
 const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
@@ -100,7 +100,7 @@ export const getServerSideProps: GetServerSideProps<PostAddProps> = async ({
     };
   }
 
-  const domains = await getDomains();
+  const domains = await PostAPI.getDomains();
   return {
     props: {
       pathDefinition: {

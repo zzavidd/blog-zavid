@@ -21,9 +21,8 @@ import TagBlock from 'fragments/diary/DiaryTags';
 import PageMetadata from 'fragments/PageMetadata';
 import { CuratePrompt } from 'fragments/shared/CuratePrompt';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
+import SSR from 'private/ssr';
 import css from 'styles/pages/Posts.module.scss';
-
-import { getDiaryEntryByNumberSSR } from '../api/diary';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryEntryPage: NextPage<DiaryEntryPageProps> = ({
@@ -141,7 +140,7 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query, req, res }) => {
   try {
     const number = parseInt(query.number as string);
-    const diaryTrio = JSON.parse(await getDiaryEntryByNumberSSR(number));
+    const diaryTrio = JSON.parse(await SSR.Diary.getByNumber(number));
     const diaryEntry = diaryTrio.current;
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);

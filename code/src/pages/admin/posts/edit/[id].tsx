@@ -16,7 +16,8 @@ import { validatePost } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getDomains, getPostByIdSSR } from 'pages/api/posts';
+import PostAPI from 'private/api/posts';
+import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
 const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
@@ -113,9 +114,9 @@ export const getServerSideProps: GetServerSideProps<PostEditProps> = async ({
     };
   }
 
-  const domains = await getDomains();
+  const domains = await PostAPI.getDomains();
   const id = parseInt(query.id as string);
-  const post = JSON.parse(await getPostByIdSSR(id));
+  const post = JSON.parse(await SSR.Posts.getById(id));
 
   const image: PostImage = {
     source: post.image as string,

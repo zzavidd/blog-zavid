@@ -14,9 +14,8 @@ import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
 import PageMetadata from 'fragments/PageMetadata';
 import PreferenceChecks from 'fragments/subscribers/SubscriptionPreferences';
+import SSR from 'private/ssr';
 import css from 'styles/pages/Subscribers.module.scss';
-
-import { getSubscriberByTokenSSR } from './api/subscribers';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
@@ -133,7 +132,7 @@ export const getServerSideProps: GetServerSideProps<
       },
       pageProps: {
         subscriber: JSON.parse(
-          await getSubscriberByTokenSSR(query.token as string),
+          await SSR.Subscribers.getByToken(query.token as string),
         ),
       },
     },

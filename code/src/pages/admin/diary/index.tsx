@@ -21,7 +21,7 @@ import type { PathDefinition } from 'constants/types';
 import * as Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { getAllDiaryEntriesSSR } from 'pages/api/diary';
+import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryAdmin: NextPage<DiaryAdminProps> = ({
@@ -196,7 +196,7 @@ export const getServerSideProps: GetServerSideProps<DiaryAdminProps> = async ({
   }
 
   const diaryEntries = JSON.parse(
-    await getAllDiaryEntriesSSR({
+    await SSR.Diary.getAll({
       sort: {
         field: 'date',
         order: QueryOrder.DESCENDING,

@@ -17,10 +17,9 @@ import { SITE_TITLE } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
+import PageAPI from 'private/api/pages';
+import SSR from 'private/ssr';
 import css from 'styles/pages/Epistles.module.scss';
-
-import { getPageBySlug } from '../api/pages';
-import { getAllPostsSSR } from '../api/posts';
 
 const EPISTLES_HEADING = 'Epistles';
 
@@ -150,9 +149,9 @@ function EpistleImage({ epistle }: EpistleEntryProps) {
 export const getServerSideProps: GetServerSideProps<
   EpistlesIndexProps
 > = async () => {
-  const page = await getPageBySlug('epistles');
+  const page = await PageAPI.getBySlug('epistles');
   const epistles = JSON.parse(
-    await getAllPostsSSR({
+    await SSR.Posts.getAll({
       sort: {
         field: 'datePublished',
         order: QueryOrder.DESCENDING,

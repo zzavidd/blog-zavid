@@ -14,9 +14,9 @@ import {
 import type { PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
+import PageAPI from 'private/api/pages';
+import SSR from 'private/ssr';
 import css from 'styles/pages/Posts.module.scss';
-
-import { getPageBySlugSSR } from './api/pages';
 
 // eslint-disable-next-line react/function-component-definition
 const PageSingleProps: NextPage<PageSingleProps> = ({
@@ -61,7 +61,7 @@ export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
   query,
 }) => {
   try {
-    const page = JSON.parse(await getPageBySlugSSR(query.page as string));
+    const page = JSON.parse(await SSR.Pages.getBySlug(query.page as string));
     return {
       props: {
         pathDefinition: {
