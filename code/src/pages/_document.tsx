@@ -1,6 +1,5 @@
 import type { DocumentContext } from 'next/document';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
-import Script from 'next/script';
 import React from 'react';
 
 export default class AppDocument extends Document {
@@ -44,7 +43,6 @@ export default class AppDocument extends Document {
             rel={'stylesheet'}
           />
         </Head>
-        <Scripts />
         <body className={'body'}>
           <Main />
           <NextScript />
@@ -52,23 +50,4 @@ export default class AppDocument extends Document {
       </Html>
     );
   }
-}
-
-function Scripts() {
-  if (process.env.NEXT_PUBLIC_APP_ENV !== 'production') return null;
-  return (
-    <React.Fragment>
-      <Script
-        async={true}
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_TRACKING_ID}`}
-      />
-      <Script
-        id={'google-tag-manager'}
-        strategy={'afterInteractive'}
-        dangerouslySetInnerHTML={{
-          __html: `{window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${process.env.GA_TRACKING_ID}');}`,
-        }}
-      />
-    </React.Fragment>
-  );
 }
