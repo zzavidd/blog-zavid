@@ -102,7 +102,7 @@ namespace Emailer {
    * @param diaryEntry The subject diary entry for the email.
    */
   export function notifyNewDiaryEntry(diaryEntry: DiaryDAO): Promise<void> {
-    const { title, date, content, footnote, slug, entryNumber } = diaryEntry;
+    const { title, date, content, footnote, entryNumber } = diaryEntry;
     const subject = `Diary Entry #${entryNumber}: ${title}`;
 
     const options = {
@@ -124,7 +124,7 @@ namespace Emailer {
         ...diaryEntry,
         content: format(content!),
         footnote: format(footnote!),
-        slug: `${DOMAIN}/diary/${slug}`,
+        slug: `${DOMAIN}/diary/${entryNumber}`,
         date: zDate.formatDate(date!, { withWeekday: true }),
       },
     };
