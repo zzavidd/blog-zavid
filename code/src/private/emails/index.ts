@@ -4,76 +4,23 @@ import getConfig from 'next/config';
 import type { SentMessageInfo } from 'nodemailer';
 import nodemailer from 'nodemailer';
 import ReactDOMServer from 'react-dom/server';
-import { v4 as uuidv4 } from 'uuid';
 import { zDate, zText } from 'zavid-modules';
 
 const { serverRuntimeConfig } = getConfig();
 
-import type {
-  DiaryDAO,
-  GenericDAO,
-  PostDAO,
-  PostType,
-  SubscriberDAO,
-} from 'classes';
+import type { DiaryDAO, GenericDAO, PostDAO, SubscriberDAO } from 'classes';
 import { SubscriberQueryBuilder, SubscriberStatic } from 'classes';
 import { knex } from 'constants/knex';
+import { CLOUDINARY_BASE_URL, DOMAIN } from 'constants/settings';
+
 import {
-  ACCOUNTS,
-  CLOUDINARY_BASE_URL,
-  COPYRIGHT,
-  DOMAIN,
-} from 'constants/settings';
-
-const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
-
-/** A map of variables used in all EJS emails */
-const ejsLocals = {
-  accounts: ACCOUNTS,
-  cloudinaryBaseUrl: CLOUDINARY_BASE_URL,
-  copyright: COPYRIGHT,
-  domain: DOMAIN,
-};
-
-/** The common HTML-to-text options for all emails. */
-const htmlToTextOptions = {
-  hideLinkHrefIfSameAsText: true,
-  ignoreImage: true,
-  noLinkBrackets: true,
-  preserveNewlines: true,
-  uppercaseHeadings: false,
-  wordwrap: 80,
-};
-
-/** The email address of the recipient in development. */
-const testRecipient: TestRecipient = {
-  email: process.env.ETHEREAL_EMAIL!,
-  token: uuidv4(),
-};
-
-/** Initialise the mail transporter */
-const transporter = nodemailer.createTransport({
-  host: process.env[isProd ? 'EMAIL_HOST' : 'ETHEREAL_HOST'],
-  port: parseInt(
-    process.env[isProd ? 'EMAIL_PORT' : 'ETHEREAL_PORT'] as string,
-  ),
-  auth: {
-    user: process.env[isProd ? 'EMAIL_USER' : 'ETHEREAL_EMAIL'],
-    pass: process.env[isProd ? 'EMAIL_PWD' : 'ETHEREAL_PWD'],
-  },
-  pool: true,
-  maxConnections: 20,
-  maxMessages: Infinity,
-  dkim: {
-    domainName: isProd ? 'zavidegbue.com' : 'dev.zavidegbue.com',
-    keySelector: 'default',
-    privateKey: serverRuntimeConfig.dkimPrivateKey,
-  },
-});
-
-const typeToSubscription: SubscriptionType = {
-  Reverie: 'Reveries',
-};
+  ejsLocals,
+  htmlToTextOptions,
+  isProd,
+  testRecipient,
+  transporter,
+  typeToSubscription,
+} from './constants';
 
 namespace Emailer {
   /**
@@ -210,10 +157,3 @@ async function sendMailToSubscriber(
     `Preview URL: ${nodemailer.getTestMessageUrl(info as SentMessageInfo)}`,
   );
 }
-
-interface TestRecipient {
-  email: string;
-  token: string;
-}
-
-type SubscriptionType = { [key in PostType]?: string };
