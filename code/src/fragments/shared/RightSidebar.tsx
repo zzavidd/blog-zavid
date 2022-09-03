@@ -40,7 +40,7 @@ export function RightSidebar() {
 
   return (
     <div className={css[`sidebar-${theme}`]}>
-      <Title className={css[`sidebar-title`]}>Recent Posts</Title>
+      <Title className={css['sidebar-title']}>Recent Posts</Title>
       {recentPosts.map((post, key) => (
         <RecentPost post={post} key={key} />
       ))}

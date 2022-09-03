@@ -17,7 +17,7 @@ export function TextInput({ onClick, ...props }: TextInputProps) {
     <div className={classes}>
       {leadingComponent}
       {onClick ? (
-        <InvisibleButton onClick={onClick} className={css[`text-click-input`]}>
+        <InvisibleButton onClick={onClick} className={css['text-click-input']}>
           <Input {...props} type={'text'} />
         </InvisibleButton>
       ) : (
@@ -46,7 +46,7 @@ export function SearchBar(props: SearchBarProps) {
       {...props}
       className={classes}
       leadingComponent={
-        <Icon name={'search'} className={css[`search-bar-icon`]} />
+        <Icon name={'search'} className={css['search-bar-icon']} />
       }
       trailingComponent={<SearchBarTrailingComponent {...props} />}
     />
@@ -80,7 +80,7 @@ function Input({
       value={value as string}
       onChange={onChange}
       onKeyPress={onKeyPress}
-      className={css[`text-input`]}
+      className={css['text-input']}
       autoComplete={'off'}
       placeholder={placeholder}
       readOnly={!!onClick}

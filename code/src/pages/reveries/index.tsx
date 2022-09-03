@@ -62,10 +62,10 @@ function ReverieList({ reveries, pageIntro }: ReverieList) {
     <div className={css['reveries-list']}>
       <div>
         <Title className={css['reveries-heading']}>{REVERIES_HEADING}</Title>
-        <div className={css[`reveries-introduction`]}>
+        <div className={css['reveries-introduction']}>
           <Paragraph
             cssOverrides={{
-              paragraph: css[`reveries-introduction-paragraph`],
+              paragraph: css['reveries-introduction-paragraph'],
             }}>
             {pageIntro}
           </Paragraph>
@@ -89,7 +89,7 @@ const Reverie = memo(({ reverie }: ReverieProps) => {
   const link = `/reveries/${reverie.slug}`;
 
   const classes = classnames(css[`reveries-unit-${theme}`], {
-    [css[`reveries-unit--visible`]]: isInView,
+    [css['reveries-unit--visible']]: isInView,
   });
   return (
     <LazyLoader setInView={setInView}>
@@ -150,7 +150,7 @@ export const getServerSideProps: GetServerSideProps<
       pathDefinition: {
         title: `Reveries | ${SITE_TITLE}`,
         description: page.excerpt!,
-        url: `/reveries`,
+        url: '/reveries',
       },
       pageProps: {
         reveries,

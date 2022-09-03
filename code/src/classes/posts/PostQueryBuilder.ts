@@ -59,7 +59,7 @@ export class PostQueryBuilder extends QueryBuilder<PostDAO> {
 
   public whereDomainSlug(slug?: string): PostQueryBuilder {
     if (!slug) return this;
-    void this.query.where(`domain.slug`, slug);
+    void this.query.where('domain.slug', slug);
     return this;
   }
 

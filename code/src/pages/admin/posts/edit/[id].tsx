@@ -144,7 +144,7 @@ export const getServerSideProps: GetServerSideProps<PostEditProps> = async ({
   return {
     props: {
       pathDefinition: {
-        title: `Edit Post`,
+        title: 'Edit Post',
       },
       pageProps: {
         post: postWithImages,

@@ -11,7 +11,7 @@ export class PageQueryBuilder extends QueryBuilder<PageDAO> {
   }
 
   public whereSlug(slug: string): PageQueryBuilder {
-    if (!slug) throw new Error(`No specified slug.`);
+    if (!slug) throw new Error('No specified slug.');
     void this.query.where('slug', slug);
     return this;
   }

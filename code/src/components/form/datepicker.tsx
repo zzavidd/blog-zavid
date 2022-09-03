@@ -118,7 +118,7 @@ function BaseDatePicker(props: BaseDatePickerProps) {
 
       <ConfirmModal
         visible={clearDateModalVisible}
-        message={`Clear this date?`}
+        message={'Clear this date?'}
         confirmFunction={clearDate}
         confirmText={'Clear'}
         closeFunction={() => setClearDateModalVisibility(false)}

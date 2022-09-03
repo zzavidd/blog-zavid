@@ -49,7 +49,7 @@ function BrandButton() {
     <Navbar.Brand href={'/'}>
       <CloudImage
         containerClassName={css['nav-brand']}
-        src={`/static/logos/zavid-head-logo.png`}
+        src={'/static/logos/zavid-head-logo.png'}
         version={1598802245}
         alt={'Zavid Logo'}
       />
@@ -60,7 +60,7 @@ function BrandButton() {
 function NavigationLinks() {
   return (
     <React.Fragment>
-      <Navbar.Toggle className={css[`nav-toggler`]} />
+      <Navbar.Toggle className={css['nav-toggler']} />
       <Navbar.Collapse>
         <Nav className={'justify-content-center'}>
           <Nav.Link href={'/reveries'}>Reveries</Nav.Link>
@@ -81,7 +81,7 @@ function AdminButton() {
     <Nav.Item>
       <InvisibleButton
         onClick={navigateToAdmin}
-        className={css[`nav-admin-button`]}>
+        className={css['nav-admin-button']}>
         <Icon name={'lock'} withRightSpace={false} />
       </InvisibleButton>
     </Nav.Item>

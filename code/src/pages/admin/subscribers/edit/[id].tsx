@@ -86,7 +86,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       pathDefinition: {
-        title: `Edit Subscriber`,
+        title: 'Edit Subscriber',
       },
       pageProps: {
         subscriber,

@@ -24,7 +24,7 @@ export function Select(props: SelectProps) {
   const color = !selectedValue && placeholder ? '#8E8E8E' : 'inherit';
 
   const classes = classnames(
-    css[isRound ? `select-round` : `select`],
+    css[isRound ? 'select-round' : 'select'],
     css[isRound ? `select-round-${theme}` : `select-${theme}`],
     className,
   );

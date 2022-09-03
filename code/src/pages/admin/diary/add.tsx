@@ -55,7 +55,7 @@ const DiaryEntryAdd: NextPage<DiaryEntryAddProps> = ({
       });
       setAlert({
         type: AlertType.SUCCESS,
-        message: `You've successfully added a new diary entry.`,
+        message: 'You\'ve successfully added a new diary entry.',
       });
       returnToDiaryAdmin();
     } catch (e: any) {
@@ -115,7 +115,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       pathDefinition: {
-        title: `Add New Diary Entry`,
+        title: 'Add New Diary Entry',
       },
       pageProps: {
         latestEntryNumber: latestDiaryEntry.entryNumber ?? 0,

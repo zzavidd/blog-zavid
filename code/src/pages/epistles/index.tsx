@@ -48,10 +48,10 @@ function EpistleGrid({ epistles, pageIntro }: EpistlesProps) {
     <div className={css['epistles-index-page']}>
       <div>
         <Title className={css['epistles-heading']}>{EPISTLES_HEADING}</Title>
-        <div className={css[`epistles-introduction`]}>
+        <div className={css['epistles-introduction']}>
           <Paragraph
             cssOverrides={{
-              paragraph: css[`epistles-introduction-paragraph`],
+              paragraph: css['epistles-introduction-paragraph'],
             }}>
             {pageIntro}
           </Paragraph>
@@ -100,7 +100,7 @@ const EpistleEntry = memo(({ epistle }: EpistleEntryProps) => {
   const title = `#${epistle.typeId}: ${epistle.title}`;
 
   const classes = classnames(css[`epistles-unit-${theme}`], {
-    [css[`epistles-unit--visible`]]: isInView,
+    [css['epistles-unit--visible']]: isInView,
   });
   return (
     <LazyLoader setInView={setInView}>
@@ -167,7 +167,7 @@ export const getServerSideProps: GetServerSideProps<
       pathDefinition: {
         title: `Epistles | ${SITE_TITLE}`,
         description: page.excerpt!,
-        url: `/epistles`,
+        url: '/epistles',
       },
       pageProps: {
         epistles,

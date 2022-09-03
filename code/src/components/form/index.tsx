@@ -75,12 +75,12 @@ export function Form({
   const previewState = isPreviewVisible ? 'previewOn' : 'previewOff';
 
   const formClasses = classnames(
-    css[`form`],
+    css['form'],
     css[`form--${state}`],
     formClassName?.[previewState],
   );
   const formEditorClasses = classnames(
-    css[`form-editor`],
+    css['form-editor'],
     css[`form-editor--${state}`],
     editorClassName?.[previewState],
   );

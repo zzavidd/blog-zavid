@@ -35,7 +35,7 @@ export default function BottomToolbar({
   };
 
   const state = isFiltersVisible ? 'visible' : 'hidden';
-  const filterClasses = classnames(css[`post-toolbar__filters`], {
+  const filterClasses = classnames(css['post-toolbar__filters'], {
     [css[`post-toolbar__filters--${state}`]]: !isInitialState,
   });
 

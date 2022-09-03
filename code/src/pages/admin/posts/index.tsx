@@ -259,7 +259,7 @@ export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async ({
   return {
     props: {
       pathDefinition: {
-        title: `List of Posts`,
+        title: 'List of Posts',
       },
       pageProps: {
         posts,

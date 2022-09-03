@@ -211,7 +211,7 @@ export const getServerSideProps: GetServerSideProps<DiaryAdminProps> = async ({
   return {
     props: {
       pathDefinition: {
-        title: `List of Diary Entries`,
+        title: 'List of Diary Entries',
       },
       pageProps: {
         diaryEntries,

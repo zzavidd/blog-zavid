@@ -58,7 +58,7 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
         throw new Error(await res.text());
       }
       Alert.success(
-        `You've successfully updated your subscription preferences.`,
+        'You\'ve successfully updated your subscription preferences.',
       );
     } catch (e: any) {
       reportError(e.message);
@@ -80,7 +80,7 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
       }
       setAlert({
         type: AlertType.SUCCESS,
-        message: `You've successfully unsubscribed from my blog.`,
+        message: 'You\'ve successfully unsubscribed from my blog.',
       });
       setDeleteModalVisibility(false);
       location.href = '/';
@@ -115,7 +115,7 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
       </Container>
       <ConfirmModal
         visible={deleteModalVisible}
-        message={`Are you sure you want to unsubscribe?`}
+        message={'Are you sure you want to unsubscribe?'}
         confirmFunction={unsubscribe}
         confirmText={'Yes, I want to unsubscribe'}
         closeFunction={() => setDeleteModalVisibility(false)}

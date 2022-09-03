@@ -23,7 +23,7 @@ function Button(props: ButtonProps) {
 
 export function ButtonSpacer(props: ButtonProps) {
   const { children, className } = props;
-  const classes = classnames(css[`button-spacer`], className);
+  const classes = classnames(css['button-spacer'], className);
   return <div className={classes}>{children}</div>;
 }
 

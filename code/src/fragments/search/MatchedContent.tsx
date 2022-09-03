@@ -46,7 +46,7 @@ export function MatchedContent({ entity, searchTerm }: MatchedContentProps) {
       cssOverrides={{
         paragraph: css['search-results-content'],
         hyperlink: css['search-results-readmore'],
-        custom: css[`search-results-highlight`],
+        custom: css['search-results-highlight'],
       }}
       truncate={40}
       keepRichFormatOnTruncate={true}

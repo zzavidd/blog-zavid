@@ -105,7 +105,7 @@ export const getServerSideProps: GetServerSideProps<PostAddProps> = async ({
   return {
     props: {
       pathDefinition: {
-        title: `Add New Post`,
+        title: 'Add New Post',
       },
       pageProps: {
         domains,

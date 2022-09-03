@@ -12,6 +12,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     'spaced-comment': 0,
+    'quotes': ['warn', 'single', { avoidEscape: true }],
   },
   overrides: [
     {

@@ -123,7 +123,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       pathDefinition: {
-        title: `Edit Diary Entry`,
+        title: 'Edit Diary Entry',
       },
       pageProps: {
         serverDiaryEntry: JSON.parse(diaryEntry),

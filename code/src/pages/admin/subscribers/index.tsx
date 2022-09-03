@@ -200,7 +200,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       pathDefinition: {
-        title: `List of Subscribers`,
+        title: 'List of Subscribers',
       },
       pageProps: {
         subscribers,

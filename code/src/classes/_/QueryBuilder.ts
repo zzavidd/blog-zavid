@@ -19,7 +19,7 @@ export class QueryBuilder<T extends EntityDAO> {
   }
 
   public whereId(id: number): QueryBuilder<T> {
-    if (!id) throw new Error(`No specified ID.`);
+    if (!id) throw new Error('No specified ID.');
     void this.query.where(`${this.table}.id`, id);
     return this;
   }

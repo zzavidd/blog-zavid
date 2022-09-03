@@ -47,7 +47,7 @@ export const ResultEntity = memo(
     });
 
     const classes = classnames(
-      css[`search-results-entity`],
+      css['search-results-entity'],
       css[`search-results-entity--${theme}`],
     );
 
@@ -74,7 +74,7 @@ export function ResultEntityImage({ entity }: ResultEntityImageProps) {
       src={entity.image as string}
       alt={entity.title}
       aspectRatio={AspectRatio.WIDE}
-      containerClassName={css[`search-results-image`]}
+      containerClassName={css['search-results-image']}
     />
   );
 }
