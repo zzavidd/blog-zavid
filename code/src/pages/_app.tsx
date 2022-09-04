@@ -83,7 +83,10 @@ function GoogleAnalyticsScripts() {
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', '${process.env.NEXT_PUBLIC_GA_TRACKING_ID}');
+          gtag('config', '${process.env.NEXT_PUBLIC_GA_TRACKING_ID}', {
+            page_title: '${document.title}',
+            page_url: '${location.pathname} + ${location.search}',
+          });
         `}
       </Script>
     </React.Fragment>
