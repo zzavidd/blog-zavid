@@ -65,6 +65,10 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
         title: `${post.title} | ${SITE_TITLE}`,
         description: post.excerpt || zText.extractExcerpt(post.content!),
         url: `/reveries/${domainSlug}/${slug}`,
+        article: {
+          publishedTime: post.datePublished as string,
+          tags: JSON.parse(post.tags as string),
+        },
       };
       if (post.image) {
         pathDefinition.cardImage = post.image as string;
@@ -97,6 +101,10 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
         title: `${reverie.title} | ${SITE_TITLE}`,
         description: JSON.stringify(reverie.excerpt),
         url: `/reveries/${reverie.slug}`,
+        article: {
+          publishedTime: reverie.datePublished as string,
+          tags: (reverie.tags as string[]) || [],
+        },
       };
       if (reverie.image) {
         pathDefinition.cardImage = reverie.image as string;

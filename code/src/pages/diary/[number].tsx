@@ -158,6 +158,10 @@ export const getServerSideProps: GetServerSideProps<
           title: `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title} | ${SITE_TITLE}`,
           description: zText.extractExcerpt(diaryEntry.content!),
           url: `/diary/${diaryEntry.slug}`,
+          article: {
+            publishedTime: diaryEntry.date as string,
+            tags: JSON.parse(diaryEntry.tags as string),
+          },
         },
         pageProps: diaryTrio,
       },

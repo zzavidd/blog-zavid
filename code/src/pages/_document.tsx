@@ -12,17 +12,7 @@ export default class AppDocument extends Document {
     return (
       <Html lang={'en'}>
         <Head>
-          {/* Page information */}
           <meta charSet={'UTF-8'} name={'author'} content={'Zavid Egbue'} />
-
-          {/* OpenGraph meta tags for search engine optimisation */}
-          <meta property={'og:type'} content={'website'} />
-          <meta property={'og:image:height'} content={'800'} />
-          <meta property={'og:image:width'} content={'800'} />
-          <meta property={'og:image:type'} content={'image/jpeg'} />
-          <meta property={'og:site_name'} content={'ZAVID'} />
-          <meta name={'twitter:card'} content={'summary_large_image'} />
-
           <meta
             name={'google-site-verification'}
             content={'pTyeDJ3sNXD05yIxUQgX8k0Iw0_IjjRGgc_Xs49WgGI'}

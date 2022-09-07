@@ -58,6 +58,10 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
           description: JSON.stringify(epistle.excerpt),
           url: `/epistles/${epistle.slug}`,
           cardImage: epistle.image as string,
+          article: {
+            publishedTime: epistle.datePublished as string,
+            tags: JSON.parse(epistle.tags as string),
+          },
         },
         pageProps: epistleTrio,
       },

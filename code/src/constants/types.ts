@@ -8,6 +8,10 @@ export interface PathDefinition {
   description?: string;
   url?: string;
   cardImage?: string;
+  article?: {
+    publishedTime: string;
+    tags: string[];
+  };
 }
 
 export enum QueryOrder {
