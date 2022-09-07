@@ -22,7 +22,7 @@ import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
 import css from 'styles/pages/Diary.module.scss';
 
-const DIARY_HEADING = 'Zavid\'s Diary';
+const DIARY_HEADING = "Zavid's Diary";
 const PARAM_ONLY_FAVOURITES = 'onlyFavourites';
 
 // eslint-disable-next-line react/function-component-definition

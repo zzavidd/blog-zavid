@@ -67,8 +67,8 @@ export function checkValidSubscriber(
 }
 
 export function validatePage(page: PageDAO): void {
-  checkIfExists(page.title, 'Enter the page\'s title.');
-  checkIfExists(page.slug, 'Enter the page\'s title.');
+  checkIfExists(page.title, "Enter the page's title.");
+  checkIfExists(page.slug, "Enter the page's title.");
 }
 
 export function checkValidEmail(

@@ -40,7 +40,7 @@ const SubscriberAdd: NextPage<SubscriberAddProps> = ({ pathDefinition }) => {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      Alert.success('You\'ve successfully added a new subscriber.');
+      Alert.success("You've successfully added a new subscriber.");
       clearSubscriberForm();
     } catch (e: any) {
       reportError(e.message, e instanceof UIError);

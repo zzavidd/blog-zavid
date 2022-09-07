@@ -40,7 +40,7 @@ const PageAdd: NextPage<PageAddProps> = ({ pathDefinition }) => {
       });
       setAlert({
         type: AlertType.SUCCESS,
-        message: 'You\'ve successfully added a new page.',
+        message: "You've successfully added a new page.",
       });
       returnToPageAdmin();
     } catch (e: any) {

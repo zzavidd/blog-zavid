@@ -55,7 +55,7 @@ const DiaryEntryAdd: NextPage<DiaryEntryAddProps> = ({
       });
       setAlert({
         type: AlertType.SUCCESS,
-        message: 'You\'ve successfully added a new diary entry.',
+        message: "You've successfully added a new diary entry.",
       });
       returnToDiaryAdmin();
     } catch (e: any) {
