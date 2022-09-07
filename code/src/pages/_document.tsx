@@ -17,17 +17,16 @@ export default class AppDocument extends Document {
 
           {/* OpenGraph meta tags for search engine optimisation */}
           <meta property={'og:type'} content={'website'} />
-
           <meta property={'og:image:height'} content={'800'} />
           <meta property={'og:image:width'} content={'800'} />
           <meta property={'og:image:type'} content={'image/jpeg'} />
           <meta property={'og:site_name'} content={'ZAVID'} />
+          <meta name={'twitter:card'} content={'summary_large_image'} />
 
           <meta
             name={'google-site-verification'}
-            content={'qgOq7Q6kwa0UjcKwV6p7Z6GkM8W45hn655lE_op91Qw'}
+            content={'pTyeDJ3sNXD05yIxUQgX8k0Iw0_IjjRGgc_Xs49WgGI'}
           />
-          <meta name={'twitter:card'} content={'summary_large_image'} />
           <link rel={'icon'} href={'/favicon.png'} />
 
           <link rel={'preconnect'} href={'https://fonts.googleapis.com'} />

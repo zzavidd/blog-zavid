@@ -89,26 +89,22 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
           },
         }),
       ) as PostTemplatePageProps;
+      const reverie = reverieTrio.current;
 
-      validateAuthorisation(reverieTrio.current);
+      validateAuthorisation(reverie);
 
       const pathDefinition: PathDefinition = {
-        title: `${reverieTrio.current.title} | ${SITE_TITLE}`,
-        description: JSON.stringify(reverieTrio.current.excerpt),
-        url: `/reveries/${reverieTrio.current.slug}`,
+        title: `${reverie.title} | ${SITE_TITLE}`,
+        description: JSON.stringify(reverie.excerpt),
+        url: `/reveries/${reverie.slug}`,
       };
-      if (reverieTrio.current.image) {
-        pathDefinition.cardImage = reverieTrio.current.image as string;
+      if (reverie.image) {
+        pathDefinition.cardImage = reverie.image as string;
       }
 
       return {
         props: {
-          pathDefinition: {
-            title: `${reverieTrio.current.title} | ${SITE_TITLE}`,
-            description: JSON.stringify(reverieTrio.current.excerpt),
-            url: `/reveries/${reverieTrio.current.slug}`,
-            cardImage: reverieTrio.current.image as string,
-          },
+          pathDefinition,
           pageProps: reverieTrio,
         },
       };

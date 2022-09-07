@@ -57,7 +57,7 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
           title: `${epistle.title} | ${SITE_TITLE}`,
           description: JSON.stringify(epistle.excerpt),
           url: `/epistles/${epistle.slug}`,
-          cardImage: JSON.stringify(epistle.image),
+          cardImage: epistle.image as string,
         },
         pageProps: epistleTrio,
       },
