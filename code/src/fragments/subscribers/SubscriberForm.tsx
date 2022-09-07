@@ -12,7 +12,7 @@ import type Handlers from 'constants/handlers';
 
 import SubscriptionPreferences from './SubscriptionPreferences';
 
-export default function SubscriberForm(props: SubscribeFormProps) {
+export default function SubscriberForm(props: SubscriberFormProps) {
   const { subscriber, handlers } = props;
   const { handleText, setState } = handlers;
 
@@ -90,7 +90,7 @@ export function buildPayload(
   return payload;
 }
 
-interface SubscribeFormProps extends EntityFormProps {
+interface SubscriberFormProps extends EntityFormProps {
   subscriber: SubscriberDAO;
   handlers: ReturnType<typeof Handlers<SubscriberDAO>>;
 }

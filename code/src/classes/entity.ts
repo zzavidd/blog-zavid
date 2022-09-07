@@ -16,7 +16,7 @@ export interface SearchResultEntityDAO {
 
 export interface EntityFormProps {
   confirmFunction?: () => void;
-  confirmButtonText: string;
   cancelFunction?: () => void;
+  confirmButtonText: string;
   isRequestPending: boolean;
 }

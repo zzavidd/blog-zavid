@@ -168,6 +168,7 @@ export default function PostForm(props: PostFormProps) {
                 value={post.typeId!}
                 onChange={handleNumber}
                 placeholder={'Type ID'}
+                min={1}
               />
             </DynamicField>
             <DynamicField

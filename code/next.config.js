@@ -8,7 +8,7 @@ if (fs.existsSync(dkimPath)) {
 }
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -21,5 +21,3 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 };
-
-module.exports = nextConfig;

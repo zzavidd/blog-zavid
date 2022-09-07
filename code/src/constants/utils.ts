@@ -1,5 +1,16 @@
+import type { ReactHook } from './types';
+
 namespace Utils {
-  export async function request(url: string, options: RequestInit = {}) {
+  export function createDispatch<T>(setState: ReactHook<T>) {
+    return (state: Partial<T>) => {
+      setState((current) => ({ ...current, ...state }));
+    };
+  }
+
+  export async function request<T>(
+    url: string,
+    options: RequestInit = {},
+  ): Promise<T> {
     const res = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

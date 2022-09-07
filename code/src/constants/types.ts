@@ -20,8 +20,6 @@ export enum QueryOrder {
   RANDOM = 'RANDOM',
 }
 
-export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
-
 export interface Substitutions {
   [key: string]: string | number;
 }
@@ -29,3 +27,6 @@ export interface Substitutions {
 export interface EditButtonProps {
   id: number;
 }
+
+export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
+export type StateDispatch<T> = (state: Partial<T>) => void;

@@ -14,6 +14,7 @@ export default async function handler(
   try {
     switch (req.method) {
       case 'GET': {
+        // TODO: This is redundant
         await SubscriberAPI.getAll();
         return res.send(200);
       }
