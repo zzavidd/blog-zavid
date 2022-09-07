@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node:
     docker:
-      - image: circleci/node:16.3
+      - image: cimg/node:16.3.0
   ssh:
     docker:
       - image: arvindr226/alpine-ssh
