@@ -14,6 +14,8 @@ export default function PageMetadata({
   cardImage = CARD_IMAGE,
   article,
 }: PathDefinition) {
+  const ogUrl = `${DOMAIN}${url}`;
+  const ogImage = `${cloudinaryBaseUrl}/${cardImage}`;
   return (
     <Head>
       <title>{title}</title>
@@ -32,17 +34,17 @@ export default function PageMetadata({
       {/* OpenGraph meta tags for search engine optimisation */}
       <meta property={'og:title'} content={title} />
       <meta property={'og:description'} content={description} />
-      <meta property={'og:url'} content={`${DOMAIN}${url}`} />
-      <meta
-        property={'og:image'}
-        content={`${cloudinaryBaseUrl}/${cardImage}`}
-      />
+      <meta property={'og:url'} content={ogUrl} />
+      <meta property={'og:image'} content={ogImage} />
       <meta property={'og:image:height'} content={'800'} />
       <meta property={'og:image:width'} content={'800'} />
       <meta property={'og:image:type'} content={'image/jpeg'} />
       <meta property={'og:image:alt'} content={title} />
       <meta property={'og:site_name'} content={'ZAVID'} />
-      <meta name={'twitter:card'} content={'summary_large_image'} />
+      <meta property={'twitter:card'} content={'summary_large_image'} />
+      <meta property={'twitter:url'} content={ogUrl} />
+      <meta property={'twitter:description'} content={description} />
+      <meta property={'twitter:image'} content={ogImage} />
 
       <meta property={'og:type'} content={article ? 'article' : 'website'} />
 
