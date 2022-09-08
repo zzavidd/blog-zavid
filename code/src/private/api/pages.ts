@@ -3,8 +3,8 @@ import { PageQueryBuilder } from 'classes/pages/PageQueryBuilder';
 import { knex } from 'constants/knex';
 
 namespace PageAPI {
-  export function getAll() {
-    return new PageQueryBuilder(knex).build();
+  export function getAll({ isEmbed = true }: GetAllPageParams) {
+    return new PageQueryBuilder(knex).whereIsEmbed(isEmbed).build();
   }
 
   export async function getById(id: number) {
@@ -26,3 +26,7 @@ namespace PageAPI {
 }
 
 export default PageAPI;
+
+interface GetAllPageParams {
+  isEmbed: boolean;
+}

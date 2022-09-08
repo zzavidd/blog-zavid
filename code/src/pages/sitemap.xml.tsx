@@ -2,12 +2,11 @@ import type { GetServerSideProps, NextPage } from 'next';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
 import { DiaryStatus } from 'classes/diary/DiaryDAO';
-import { DiaryQueryBuilder } from 'classes/diary/DiaryQueryBuilder';
-import { PageQueryBuilder } from 'classes/pages/PageQueryBuilder';
-import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { knex } from 'constants/knex';
 import { DOMAIN, RESOURCE_MAP } from 'constants/settings';
+import DiaryAPI from 'private/api/diary';
+import PageAPI from 'private/api/pages';
+import PostAPI from 'private/api/posts';
 
 // eslint-disable-next-line react/function-component-definition
 const Sitemap: NextPage = () => {
@@ -24,15 +23,16 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     '/subscribe',
   ];
 
-  const getPosts = new PostQueryBuilder(knex)
-    .whereType({ include: [PostStatic.TYPE.REVERIE, PostStatic.TYPE.EPISTLE] })
-    .whereStatus({ include: [PostStatic.STATUS.PUBLISHED] })
-    .build();
-  const getDiaryEntries = await new DiaryQueryBuilder(knex)
-    .whereStatus({ include: [DiaryStatus.PUBLISHED] })
-    .build();
-  const getPages = await new PageQueryBuilder(knex).whereIsEmbed(false).build();
-
+  const getPosts = PostAPI.getAll({
+    type: { include: [PostStatic.TYPE.REVERIE, PostStatic.TYPE.EPISTLE] },
+    status: {
+      include: [PostStatic.STATUS.PUBLISHED],
+    },
+  });
+  const getDiaryEntries = DiaryAPI.getAll({
+    status: { include: [DiaryStatus.PUBLISHED] },
+  });
+  const getPages = PageAPI.getAll({ isEmbed: false });
   const [posts, diaryEntries, pages] = await Promise.all([
     getPosts,
     getDiaryEntries,
