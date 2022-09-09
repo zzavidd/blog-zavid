@@ -11,7 +11,7 @@ import { UIError } from 'constants/errors';
 import Handlers from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
-import * as Utils from 'constants/utils';
+import Utils from 'constants/utils';
 import { validateDiaryEntry } from 'constants/validations';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import PageMetadata from 'fragments/PageMetadata';

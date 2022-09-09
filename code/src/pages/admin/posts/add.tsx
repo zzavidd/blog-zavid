@@ -11,7 +11,7 @@ import type { SelectItem } from 'components/form';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
-import * as Utils from 'constants/utils';
+import Utils from 'constants/utils';
 import { validatePost } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';

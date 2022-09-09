@@ -27,6 +27,6 @@ namespace PageAPI {
 
 export default PageAPI;
 
-interface GetAllPageParams {
+export interface GetAllPageParams {
   isEmbed: boolean;
 }

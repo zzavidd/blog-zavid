@@ -15,6 +15,7 @@ import { ConfirmModal } from 'components/modal';
 import { Title } from 'components/text';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
+import Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import PreferenceChecks from 'fragments/subscribers/SubscriptionPreferences';
 import SSR from 'private/ssr';
@@ -46,11 +47,8 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
           .build(),
       };
 
-      const res = await fetch('/api/subscribers', {
+      const res = await Utils.request('/api/subscribers', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(payload),
       });
 
@@ -67,11 +65,8 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
 
   async function unsubscribe() {
     try {
-      const res = await fetch('/api/subscribers', {
+      const res = await Utils.request('/api/subscribers', {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ id: subscriber.id }),
       });
 

@@ -11,6 +11,7 @@ import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
+import Utils from 'constants/utils';
 import { checkValidSubscriber } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import css from 'styles/pages/Subscribers.module.scss';
@@ -38,11 +39,8 @@ const SubscribePage: NextPage<AppPageProps> = ({ pathDefinition }) => {
         .withDefaultSubscriptions()
         .build();
 
-      const res = await fetch('/api/subscribers', {
+      const res = await Utils.request('/api/subscribers', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(payload),
       });
 

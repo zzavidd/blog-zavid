@@ -3,6 +3,7 @@ import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
 import type { GetAllSubscriberOptions } from 'pages/api/subscribers';
 
 import DiaryAPI from './api/diary';
+import type { GetAllPageParams } from './api/pages';
 import PageAPI from './api/pages';
 import PostAPI from './api/posts';
 import SearchAPI from './api/search';
@@ -50,8 +51,8 @@ namespace SSR {
   }
 
   export namespace Pages {
-    export async function getAll() {
-      return JSON.stringify(await PageAPI.getAll());
+    export async function getAll(params: GetAllPageParams) {
+      return JSON.stringify(await PageAPI.getAll(params));
     }
 
     export async function getById(id: number) {

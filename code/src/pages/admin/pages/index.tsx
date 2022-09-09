@@ -21,7 +21,7 @@ import type {
   PathDefinition,
   ReactHook,
 } from 'constants/types';
-import * as Utils from 'constants/utils';
+import Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
@@ -186,7 +186,7 @@ export const getServerSideProps: GetServerSideProps<PageAdminProps> = async ({
     };
   }
 
-  const pages = JSON.parse(await SSR.Pages.getAll());
+  const pages = JSON.parse(await SSR.Pages.getAll({ isEmbed: false }));
   return {
     props: {
       pathDefinition: {

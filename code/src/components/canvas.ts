@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { ThemeOption, FilterThemeOption } from 'classes/theme';
 import { FilterShapeOption, FilterShape, Theme } from 'classes/theme';
 import { DOMAIN } from 'constants/settings';
+import Utils from 'constants/utils';
 
 const constants = {
   [FilterShapeOption.SQUARE]: {
@@ -239,9 +240,11 @@ function insertText(
  */
 export async function downloadImage(imageUrl: string) {
   try {
-    const res = await fetch(imageUrl, {
+    const res = await Utils.request(imageUrl, {
       method: 'GET',
-      headers: {},
+      headers: {
+        'Content-Type': 'image/jpeg',
+      },
     });
     const buffer = await res.arrayBuffer();
     const url = window.URL.createObjectURL(new Blob([buffer]));

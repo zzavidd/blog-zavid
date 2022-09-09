@@ -9,7 +9,7 @@ import { Alert, reportError } from 'components/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
-import * as Utils from 'constants/utils';
+import Utils from 'constants/utils';
 import { checkValidSubscriber } from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import SubscriberForm, {

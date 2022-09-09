@@ -7,7 +7,7 @@ import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import CloudImage from 'components/image';
 import { Title, VanillaLink } from 'components/text';
-import * as Utils from 'constants/utils';
+import Utils from 'constants/utils';
 import css from 'styles/Partials.module.scss';
 
 export function RightSidebar() {

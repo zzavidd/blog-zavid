@@ -26,7 +26,7 @@ import type {
   PathDefinition,
   ReactHook,
 } from 'constants/types';
-import * as Utils from 'constants/utils';
+import Utils from 'constants/utils';
 import PageMetadata from 'fragments/PageMetadata';
 import BottomToolbar from 'fragments/shared/BottomToolbar';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';

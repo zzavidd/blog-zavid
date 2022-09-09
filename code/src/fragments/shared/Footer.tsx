@@ -9,6 +9,7 @@ import { Icon } from 'components/library';
 import { Title, VanillaLink } from 'components/text';
 import { UIError } from 'constants/errors';
 import { ACCOUNTS, COPYRIGHT } from 'constants/settings';
+import Utils from 'constants/utils';
 import { checkValidEmail } from 'constants/validations';
 import css from 'styles/Partials.module.scss';
 
@@ -98,11 +99,8 @@ function SubscribeForm() {
         .withDefaultSubscriptions()
         .build();
 
-      const res = await fetch('/api/subscribers', {
+      const res = await Utils.request('/api/subscribers', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(payload),
       });
 
