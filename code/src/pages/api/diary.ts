@@ -23,7 +23,7 @@ export default async function handler(
       return res.send(200);
     }
     case 'DELETE': {
-      await deleteDiaryEntry(req.body.id);
+      await deleteDiaryEntry(req.body);
       return res.send(204);
     }
     default: {
