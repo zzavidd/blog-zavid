@@ -9,7 +9,7 @@ import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
-import { validatePage } from 'constants/validations';
+import Validate from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PageForm, { buildPayload } from 'fragments/pages/PageForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -30,7 +30,7 @@ const PageAdd: NextPage<PageAddProps> = ({ pathDefinition }) => {
   /** Create new page on server. */
   async function submitPage() {
     try {
-      validatePage(clientPage);
+      Validate.page(clientPage);
       setRequestPending(true);
 
       const payload = buildPayload(clientPage, true);

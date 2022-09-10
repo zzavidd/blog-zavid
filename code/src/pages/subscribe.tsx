@@ -12,7 +12,7 @@ import hooks from 'constants/handlers';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
 import Utils from 'constants/utils';
-import { checkValidSubscriber } from 'constants/validations';
+import Validate from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import css from 'styles/pages/Subscribers.module.scss';
 
@@ -30,7 +30,7 @@ const SubscribePage: NextPage<AppPageProps> = ({ pathDefinition }) => {
     setRequestPending(true);
 
     try {
-      checkValidSubscriber(subscriber);
+      Validate.subscriber(subscriber);
 
       const payload = new SubscriberBuilder()
         .withEmail(subscriber.email)

@@ -17,7 +17,7 @@ import hooks from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
-import { validatePost } from 'constants/validations';
+import Validate from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -38,7 +38,7 @@ const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
   /** Update post on server. */
   const updatePost = async (): Promise<void> => {
     try {
-      validatePost(clientPost);
+      Validate.post(clientPost);
       setRequestPending(true);
 
       const payload = buildPayload(clientPost, isPublish, false);

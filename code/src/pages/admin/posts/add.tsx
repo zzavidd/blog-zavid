@@ -12,7 +12,7 @@ import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
-import { validatePost } from 'constants/validations';
+import Validate from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -47,7 +47,7 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
   async function submitPost() {
     try {
       setRequestPending(true);
-      validatePost(post);
+      Validate.post(post);
 
       const payload = buildPayload(post, isPublish, true);
       await Utils.request('/api/posts', {

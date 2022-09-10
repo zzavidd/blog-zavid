@@ -12,7 +12,7 @@ import Handlers from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
-import { validateDiaryEntry } from 'constants/validations';
+import Validate from 'constants/validations';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -42,7 +42,7 @@ const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
   async function updateDiaryEntry() {
     try {
       setRequestPending(true);
-      validateDiaryEntry(clientDiaryEntry);
+      Validate.diaryEntry(clientDiaryEntry);
 
       const payload = buildPayload(clientDiaryEntry, isPublish, false);
       await Utils.request('/api/diary', {

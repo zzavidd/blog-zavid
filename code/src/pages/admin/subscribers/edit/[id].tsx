@@ -9,7 +9,7 @@ import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
-import { checkValidSubscriber } from 'constants/validations';
+import Validate from 'constants/validations';
 import PageMetadata from 'fragments/PageMetadata';
 import SubscriberForm, {
   buildPayload,
@@ -28,7 +28,7 @@ function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {
   /** Update subscriber on server. */
   async function updateSubscriber() {
     try {
-      checkValidSubscriber(clientSubscriber, true);
+      Validate.subscriber(clientSubscriber, true);
       setRequestPending(true);
 
       const payload = buildPayload(clientSubscriber, false);

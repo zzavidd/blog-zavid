@@ -10,7 +10,7 @@ import { Title, VanillaLink } from 'components/text';
 import { UIError } from 'constants/errors';
 import { ACCOUNTS, COPYRIGHT } from 'constants/settings';
 import Utils from 'constants/utils';
-import { checkValidEmail } from 'constants/validations';
+import Validate from 'constants/validations';
 import css from 'styles/Partials.module.scss';
 
 const footerLinks = [
@@ -92,7 +92,7 @@ function SubscribeForm() {
   async function subscribeEmail() {
     setRequestPending(true);
     try {
-      checkValidEmail(email);
+      Validate.email(email);
 
       const payload = new SubscriberBuilder()
         .withEmail(email)
