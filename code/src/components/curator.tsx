@@ -12,9 +12,9 @@ import {
 import { ButtonSpacer, CancelButton, DeleteButton } from 'components/button';
 import { Responsive } from 'components/library';
 import { Paragraph } from 'components/text';
+import Canvas from 'constants/canvas';
 import css from 'styles/components/Modal.module.scss';
 
-import { createCanvasFromContent, downloadImage } from './canvas';
 import { Checkbox, Field, FieldRow, Select, Switch } from './form';
 import { RadioGroup } from './form/radio';
 import type { ModalProps } from './modal';
@@ -76,7 +76,7 @@ export function Curator({
     const canvas = canvasRef.current;
     const content = textRef.current;
     if (canvas !== null && content !== null) {
-      createCanvasFromContent(
+      Canvas.createFromContent(
         canvas,
         content,
         sourceTitle,
@@ -93,7 +93,7 @@ export function Curator({
   async function downloadCanvasAsImage() {
     const image = imageRef.current;
     if (image !== null) {
-      await downloadImage(image.src);
+      await Canvas.downloadImage(image.src);
     }
   }
 

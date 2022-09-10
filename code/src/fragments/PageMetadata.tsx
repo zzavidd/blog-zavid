@@ -3,8 +3,7 @@ import React from 'react';
 import { zString } from 'zavid-modules';
 
 import { cloudinaryBaseUrl } from 'components/image';
-import { CARD_IMAGE } from 'constants/defaults';
-import { DOMAIN } from 'constants/settings';
+import { CARD_IMAGE, DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 
 export default function PageMetadata({

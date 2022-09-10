@@ -13,6 +13,9 @@ export const BLOG_CREATION_DATE = new Date(2017, 8, 2);
 /** The date this blog was redeveloped. Month is 0-indexed. */
 export const BLOG_REDEVELOPMENT_DATE = new Date(2020, 8, 21);
 
+/** The default card image to use for SEO. */
+export const CARD_IMAGE = 'v1600638270/static/bg/card-home.jpg';
+
 /** The base URL for Cloudinary media. */
 export const CLOUDINARY_BASE_URL =
   'https://res.cloudinary.com/zavid/image/upload';
