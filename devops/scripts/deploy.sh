@@ -5,7 +5,7 @@ source "$(dirname -- "$0")"/utils.sh
 
 BRANCH=$1
 WORKDIR=$2
-NGINX_CONF_SRC="/var/www/${WORKDIR}/deploy/$3"
+NGINX_CONF_SRC="/var/www/${WORKDIR}/devops/$3"
 NGINX_CONF_DEST="/etc/nginx/sites-available/${WORKDIR}egbue.com"
 
 ## Update the project
