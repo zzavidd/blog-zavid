@@ -5,14 +5,13 @@ import React, { useState } from 'react';
 
 import { URLBuilder } from 'classes/_/URLBuilder';
 import type {
+  PostContentImageMapping,
   PostDAO,
   PostImage,
-  PostContentImageMapping,
 } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import type { SelectItem } from 'components/form';
 import Alert, { AlertType } from 'constants/alert';
-import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
@@ -52,7 +51,7 @@ const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
       });
       returnAfterUpdate();
     } catch (e: any) {
-      Alert.report(e.message, e instanceof UIError);
+      Alert.error(e.message);
     } finally {
       setRequestPending(false);
     }

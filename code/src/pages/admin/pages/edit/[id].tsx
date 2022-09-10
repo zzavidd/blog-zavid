@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 
 import type { PageDAO } from 'classes/pages/PageDAO';
 import Alert, { AlertType } from 'constants/alert';
-import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
@@ -39,7 +38,7 @@ function PageEdit({ pathDefinition, pageProps }: PageEditProps) {
       });
       returnToPageAdmin();
     } catch (e: any) {
-      Alert.report(e.message, e instanceof UIError);
+      Alert.error(e.message);
     } finally {
       setRequestPending(false);
     }

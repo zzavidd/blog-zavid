@@ -8,7 +8,6 @@ import { PostStatus } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import type { SelectItem } from 'components/form';
 import Alert, { AlertType } from 'constants/alert';
-import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
@@ -60,7 +59,7 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
       });
       returnToPostAdmin();
     } catch (e: any) {
-      Alert.report(e.message, e instanceof UIError);
+      Alert.error(e.message);
     } finally {
       setRequestPending(false);
     }

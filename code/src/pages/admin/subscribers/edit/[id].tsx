@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import Alert, { AlertType } from 'constants/alert';
-import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
@@ -42,7 +41,7 @@ function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {
       });
       returnToAdmin();
     } catch (e: any) {
-      Alert.report(e.message, e instanceof UIError);
+      Alert.error(e.message);
     } finally {
       setRequestPending(false);
     }

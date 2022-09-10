@@ -51,7 +51,7 @@ const DiaryAdmin: NextPage<DiaryAdminProps> = ({
       );
       setDeleteModalVisibility(false);
     } catch (e: any) {
-      reportError(e.message);
+      Alert.error(e.message);
     }
   }
 

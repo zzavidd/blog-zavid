@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
 import Alert from 'constants/alert';
-import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
@@ -43,7 +42,7 @@ const SubscriberAdd: NextPage<SubscriberAddProps> = ({ pathDefinition }) => {
       Alert.success("You've successfully added a new subscriber.");
       clearSubscriberForm();
     } catch (e: any) {
-      Alert.report(e.message, e instanceof UIError);
+      Alert.error(e.message);
     } finally {
       setRequestPending(false);
     }

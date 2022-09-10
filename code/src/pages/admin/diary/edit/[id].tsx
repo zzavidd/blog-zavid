@@ -7,7 +7,6 @@ import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { ConfirmModal } from 'components/modal';
 import Alert, { AlertType } from 'constants/alert';
-import { UIError } from 'constants/errors';
 import Handlers from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
@@ -57,7 +56,7 @@ const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
       });
       returnAfterUpdate(clientDiaryEntry.entryNumber!);
     } catch (e: any) {
-      Alert.report(e.message, e instanceof UIError);
+      Alert.error(e.message);
     } finally {
       setRequestPending(false);
     }
