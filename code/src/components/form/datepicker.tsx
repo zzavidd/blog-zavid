@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { zDate } from 'zavid-modules';
 
-import { Alert } from 'components/alert';
 import {
   CancelButton,
   ConfirmButton,
@@ -10,6 +9,7 @@ import {
 } from 'components/button';
 import { Icon } from 'components/library';
 import { ConfirmModal } from 'components/modal';
+import Alert from 'constants/alert';
 import { BLOG_CREATION_DATE } from 'constants/settings';
 import type { ReactHook } from 'constants/types';
 import css from 'styles/components/Form.module.scss';

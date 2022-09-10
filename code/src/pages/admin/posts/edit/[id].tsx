@@ -10,8 +10,8 @@ import type {
   PostContentImageMapping,
 } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { AlertType, reportError, setAlert } from 'components/alert';
 import type { SelectItem } from 'components/form';
+import Alert, { AlertType } from 'constants/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
@@ -46,13 +46,13 @@ const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
         method: 'PUT',
         body: JSON.stringify(payload),
       });
-      setAlert({
+      Alert.set({
         type: AlertType.SUCCESS,
         message: `You've successfully updated "${clientPost.title}".`,
       });
       returnAfterUpdate();
     } catch (e: any) {
-      reportError(e.message, e instanceof UIError);
+      Alert.report(e.message, e instanceof UIError);
     } finally {
       setRequestPending(false);
     }

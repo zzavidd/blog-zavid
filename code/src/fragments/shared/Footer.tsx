@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
-import { Alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { Field, FieldRow, TextInput } from 'components/form';
 import { Icon } from 'components/library';
 import { Title, VanillaLink } from 'components/text';
+import Alert from 'constants/alert';
 import { UIError } from 'constants/errors';
 import { ACCOUNTS, COPYRIGHT } from 'constants/settings';
 import Utils from 'constants/utils';
@@ -112,11 +112,11 @@ function SubscribeForm() {
       );
     } catch (e: any) {
       if (e instanceof UIError) {
-        reportError(e.message, true);
+        Alert.report(e.message, true);
       } else if (e.message.includes('ER_DUP_ENTRY')) {
         Alert.error('The email address you submitted already exists.');
       } else {
-        reportError(e.message);
+        Alert.report(e.message);
       }
     } finally {
       setRequestPending(false);

@@ -6,8 +6,8 @@ import React, { useState } from 'react';
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatus } from 'classes/diary/DiaryDAO';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
-import { AlertType, reportError, setAlert } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
+import Alert, { AlertType } from 'constants/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
@@ -53,13 +53,13 @@ const DiaryEntryAdd: NextPage<DiaryEntryAddProps> = ({
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      setAlert({
+      Alert.set({
         type: AlertType.SUCCESS,
         message: "You've successfully added a new diary entry.",
       });
       returnToDiaryAdmin();
     } catch (e: any) {
-      reportError(e.message, e instanceof UIError);
+      Alert.report(e.message, e instanceof UIError);
     } finally {
       setRequestPending(false);
     }

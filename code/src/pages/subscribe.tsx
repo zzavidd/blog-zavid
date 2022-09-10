@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
-import { Alert, reportError } from 'components/alert';
 import { ConfirmButton } from 'components/button';
 import { Field, FieldRow, Label, TextInput } from 'components/form';
 import { Title } from 'components/text';
+import Alert from 'constants/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import { SITE_TITLE } from 'constants/settings';
@@ -53,7 +53,7 @@ const SubscribePage: NextPage<AppPageProps> = ({ pathDefinition }) => {
       setTimeout(() => (location.href = '/'), 2000);
     } catch (e: any) {
       if (e instanceof UIError) {
-        reportError(e.message, true);
+        Alert.report(e.message, true);
       } else if (e.message.includes('ER_DUP_ENTRY')) {
         Alert.error('The email address you submitted already exists.');
       } else {

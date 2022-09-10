@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
-import { AlertType, reportError, setAlert } from 'components/alert';
+import Alert, { AlertType } from 'constants/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
@@ -36,13 +36,13 @@ function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {
         method: 'PUT',
         body: JSON.stringify(payload),
       });
-      setAlert({
+      Alert.set({
         type: AlertType.SUCCESS,
         message: `You've successfully updated the subscriber with email: ${clientSubscriber.email}.`,
       });
       returnToAdmin();
     } catch (e: any) {
-      reportError(e.message, e instanceof UIError);
+      Alert.report(e.message, e instanceof UIError);
     } finally {
       setRequestPending(false);
     }

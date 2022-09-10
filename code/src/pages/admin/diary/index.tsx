@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
-import { Alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import {
@@ -16,6 +15,7 @@ import {
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
 import { VanillaLink } from 'components/text';
+import Alert from 'constants/alert';
 import type {
   EditButtonProps,
   PathDefinition,

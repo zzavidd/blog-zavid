@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { PageDAO } from 'classes/pages/PageDAO';
-import { Alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import {
@@ -16,6 +15,7 @@ import {
   TablerItemCell,
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
+import Alert from 'constants/alert';
 import type {
   EditButtonProps,
   PathDefinition,

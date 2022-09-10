@@ -11,9 +11,9 @@ import {
 } from 'react-share';
 
 import { Icon } from 'components/library';
+import Alert from 'constants/alert';
 import css from 'styles/components/Share.module.scss';
 
-import { Alert } from './alert';
 import { InvisibleButton } from './button';
 
 export default function Share(props: ShareProps) {

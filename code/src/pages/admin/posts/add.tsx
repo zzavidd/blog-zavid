@@ -6,8 +6,8 @@ import React, { useState } from 'react';
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatus } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { AlertType, reportError, setAlert } from 'components/alert';
 import type { SelectItem } from 'components/form';
+import Alert, { AlertType } from 'constants/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
@@ -54,13 +54,13 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      setAlert({
+      Alert.set({
         type: AlertType.SUCCESS,
         message: `You've successfully added the new post titled "${post.title}".`,
       });
       returnToPostAdmin();
     } catch (e: any) {
-      reportError(e.message, e instanceof UIError);
+      Alert.report(e.message, e instanceof UIError);
     } finally {
       setRequestPending(false);
     }

@@ -12,7 +12,7 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { Theme } from 'classes/theme';
-import { checkForSetAlerts } from 'components/alert';
+import Alert from 'constants/alert';
 import configureStore, { setTheme } from 'constants/reducers';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
 import Footer from 'fragments/shared/Footer';
@@ -55,7 +55,7 @@ function ZAVIDApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     document.body.classList.add(`body-${theme}`);
-    checkForSetAlerts();
+    Alert.check();
   }, []);
 
   return (

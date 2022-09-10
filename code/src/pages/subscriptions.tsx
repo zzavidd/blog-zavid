@@ -8,11 +8,11 @@ import type {
   SubscriptionsMapping,
   SubscriberDAO,
 } from 'classes/subscribers/SubscriberDAO';
-import { Alert, AlertType, reportError, setAlert } from 'components/alert';
 import { ConfirmButton, InvisibleButton } from 'components/button';
 import { Container } from 'components/layout';
 import { ConfirmModal } from 'components/modal';
 import { Title } from 'components/text';
+import Alert, { AlertType } from 'constants/alert';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
 import Utils from 'constants/utils';
@@ -73,7 +73,7 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
       if (!res.ok) {
         throw new Error(await res.text());
       }
-      setAlert({
+      Alert.set({
         type: AlertType.SUCCESS,
         message: "You've successfully unsubscribed from my blog.",
       });

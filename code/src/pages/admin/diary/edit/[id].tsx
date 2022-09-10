@@ -5,8 +5,8 @@ import { zDate, zString } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
-import { AlertType, reportError, setAlert } from 'components/alert';
 import { ConfirmModal } from 'components/modal';
+import Alert, { AlertType } from 'constants/alert';
 import { UIError } from 'constants/errors';
 import Handlers from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
@@ -49,7 +49,7 @@ const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
         method: 'PUT',
         body: JSON.stringify(payload),
       });
-      setAlert({
+      Alert.set({
         type: AlertType.SUCCESS,
         message: `You've successfully updated the diary entry for ${zDate.formatDate(
           clientDiaryEntry.date!,
@@ -57,7 +57,7 @@ const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
       });
       returnAfterUpdate(clientDiaryEntry.entryNumber!);
     } catch (e: any) {
-      reportError(e.message, e instanceof UIError);
+      Alert.report(e.message, e instanceof UIError);
     } finally {
       setRequestPending(false);
     }

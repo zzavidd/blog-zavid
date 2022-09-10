@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import type { PageDAO } from 'classes/pages/PageDAO';
-import { AlertType, reportError, setAlert } from 'components/alert';
+import Alert, { AlertType } from 'constants/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import type { PathDefinition } from 'constants/types';
@@ -38,13 +38,13 @@ const PageAdd: NextPage<PageAddProps> = ({ pathDefinition }) => {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      setAlert({
+      Alert.set({
         type: AlertType.SUCCESS,
         message: "You've successfully added a new page.",
       });
       returnToPageAdmin();
     } catch (e: any) {
-      reportError(e.message, e instanceof UIError);
+      Alert.report(e.message, e instanceof UIError);
     } finally {
       setRequestPending(false);
     }

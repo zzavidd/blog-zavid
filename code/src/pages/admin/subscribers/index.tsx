@@ -7,7 +7,6 @@ import type {
   SubscriberDAO,
   SubscriptionsMapping,
 } from 'classes/subscribers/SubscriberDAO';
-import { Alert, reportError } from 'components/alert';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
 import {
@@ -18,6 +17,7 @@ import {
   TablerItemCell as TIC,
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
+import Alert from 'constants/alert';
 import type { PathDefinition, ReactHook } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Utils from 'constants/utils';

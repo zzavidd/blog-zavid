@@ -7,7 +7,6 @@ import { zText } from 'zavid-modules';
 import { URLBuilder } from 'classes/_/URLBuilder';
 import type { PostDAO, PostType, PostStatus } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { Alert, reportError } from 'components/alert';
 import { InvisibleButton } from 'components/button';
 import CloudImage from 'components/image';
 import { Spacer } from 'components/layout';
@@ -20,6 +19,7 @@ import {
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
 import { VanillaLink } from 'components/text';
+import Alert from 'constants/alert';
 import { DOMAIN } from 'constants/settings';
 import type {
   EditButtonProps,
