@@ -666,6 +666,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mysql@npm:^2.15.21":
+  version: 2.15.21
+  resolution: "@types/mysql@npm:2.15.21"
+  dependencies:
+    "@types/node": "*"
+  checksum: 6f526e0183c2d03628ca3bdeec839900403863641d61397de3aa0431b8e92457f1580de16b54ee3cd81ccb3968f949a5fa9be939a2101f2148ed5ff3c775c0a7
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 18.6.0
   resolution: "@types/node@npm:18.6.0"
@@ -9347,6 +9356,7 @@ __metadata:
     "@types/html-to-text": ^5.1.2
     "@types/js-cookie": ^2.2.6
     "@types/mocha": ^8.0.4
+    "@types/mysql": ^2.15.21
     "@types/node": ^14.14.22
     "@types/nodemailer": ^6.4.5
     "@types/react-dom": ^16.9.9

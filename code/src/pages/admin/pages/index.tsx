@@ -186,7 +186,7 @@ export const getServerSideProps: GetServerSideProps<PageAdminProps> = async ({
     };
   }
 
-  const pages = JSON.parse(await SSR.Pages.getAll({ isEmbed: false }));
+  const pages = JSON.parse(await SSR.Pages.getAll());
   return {
     props: {
       pathDefinition: {

@@ -51,7 +51,7 @@ namespace SSR {
   }
 
   export namespace Pages {
-    export async function getAll(params: GetAllPageParams) {
+    export async function getAll(params?: GetAllPageParams) {
       return JSON.stringify(await PageAPI.getAll(params));
     }
 

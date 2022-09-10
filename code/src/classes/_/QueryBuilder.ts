@@ -78,7 +78,7 @@ export class QueryBuilder<T extends EntityDAO> {
   }
 }
 
-export class MutationBuilder<T> extends QueryBuilder<T> {
+export class MutationBuilder<T extends EntityDAO> extends QueryBuilder<T> {
   private entity: string;
 
   constructor(knex: Knex, table: string, entity: string) {
