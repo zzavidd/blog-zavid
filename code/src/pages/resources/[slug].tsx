@@ -7,7 +7,7 @@ import { CLOUDINARY_BASE_URL, RESOURCE_MAP } from 'constants/settings';
 const Resource: NextPage<ResourceProps> = ({ href }) => {
   return (
     <iframe
-      src={href}
+      src={`${href}#view=fitH`}
       style={{ height: '100vh', width: '100%' }}
       allow={'fullscreen'}
     />
