@@ -17,6 +17,14 @@ export default async function handler(
         await WishlistAPI.create(req.body);
         return res.send(201);
       }
+      case 'PUT': {
+        await WishlistAPI.update(req.body);
+        return res.send(200);
+      }
+      case 'DELETE': {
+        await WishlistAPI.del(req.body);
+        return res.send(204);
+      }
       default: {
         res.send(405);
       }

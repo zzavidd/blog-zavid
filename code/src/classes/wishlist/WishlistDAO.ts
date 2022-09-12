@@ -11,8 +11,8 @@ namespace WishlistDAO {
   }
 
   export interface Response extends Request {
-    id: number;
-    createTime: Date;
+    readonly id: number;
+    readonly createTime: Date;
   }
 }
 

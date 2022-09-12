@@ -41,12 +41,19 @@ namespace WishlistAPI {
     wishlistItem,
   }: UpdateWishlistItemPayload): Promise<void> {
     await new WishlistMutationBuilder(knex)
-      .update({
-        ...wishlistItem,
-        reservees: JSON.stringify(wishlistItem.reservees),
-      })
+      .update(
+        {
+          ...wishlistItem,
+          reservees: JSON.stringify(wishlistItem.reservees),
+        },
+        ['createTime'],
+      )
       .whereId(id)
       .build();
+  }
+
+  export async function del({ id }: UpdateWishlistItemPayload): Promise<void> {
+    await new WishlistMutationBuilder(knex).delete(id).build();
   }
 }
 
@@ -62,5 +69,5 @@ interface CreateWishlistItemPayload {
 
 interface UpdateWishlistItemPayload {
   id: number;
-  wishlistItem: WishlistDAO.Request;
+  wishlistItem: WishlistDAO.Response;
 }

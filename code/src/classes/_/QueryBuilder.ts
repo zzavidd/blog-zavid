@@ -78,7 +78,10 @@ export class QueryBuilder<T extends EntityDAO> {
   }
 }
 
-export class MutationBuilder<T extends EntityDAO> extends QueryBuilder<T> {
+export class MutationBuilder<
+  Request extends EntityDAO,
+  Response = Request,
+> extends QueryBuilder<Request> {
   private entity: string;
 
   constructor(knex: Knex, table: string, entity: string) {
@@ -88,25 +91,31 @@ export class MutationBuilder<T extends EntityDAO> extends QueryBuilder<T> {
     this.table = table;
   }
 
-  public insert(input: T): MutationBuilder<T> {
+  public insert(input: Request): MutationBuilder<Request, Response> {
     if (!input) throw new Error(`No specified ${this.entity} to insert.`);
     void this.query.insert(input);
     return this;
   }
 
-  public update(input: T): MutationBuilder<T> {
+  public update(
+    input: Response,
+    removeProperties: (keyof Response)[] = [],
+  ): MutationBuilder<Request, Response> {
     if (!input) throw new Error(`No specified ${this.entity} to update.`);
+    removeProperties.forEach((property) => {
+      delete input[property];
+    });
     void this.query.update(input);
     return this;
   }
 
-  public delete(id: number): MutationBuilder<T> {
+  public delete(id: number): MutationBuilder<Request, Response> {
     if (!id) throw new Error(`No specified ${this.entity} to delete.`);
     void this.query.where(`${this.table}.id`, id).del();
     return this;
   }
 
-  public truncate(): MutationBuilder<T> {
+  public truncate(): MutationBuilder<Request, Response> {
     void this.query.truncate();
     return this;
   }

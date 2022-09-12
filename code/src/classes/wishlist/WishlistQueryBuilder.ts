@@ -11,7 +11,10 @@ export class WishlistQueryBuilder extends QueryBuilder<WishlistDAO.Response> {
   }
 }
 
-export class WishlistMutationBuilder extends MutationBuilder<WishlistDAO.Request> {
+export class WishlistMutationBuilder extends MutationBuilder<
+  WishlistDAO.Request,
+  WishlistDAO.Response
+> {
   constructor(knex: Knex) {
     super(knex, 'wishlist', 'wishlist item');
   }

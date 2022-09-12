@@ -6,13 +6,11 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 
-import type { EntityFormProps } from 'classes/entity';
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import { InvisibleButton } from 'components/button';
 import {
   Field,
   FieldRow,
-  Form,
   Label,
   NumberInput,
   ShortTextArea,
@@ -22,7 +20,6 @@ import Alert from 'constants/alert';
 import type HandlersV2 from 'constants/handlersv2';
 import { DOMAIN } from 'constants/settings';
 import Utils from 'constants/utils';
-import type { WishlistAddState } from 'pages/admin/wishlist/add';
 
 export default function WishlistForm(props: WishlistFormProps) {
   const [state, setState] = useState<WishlistFormState>({
@@ -62,9 +59,9 @@ export default function WishlistForm(props: WishlistFormProps) {
   }
 
   return (
-    <Form {...props}>
+    <React.Fragment>
       <FieldRow>
-        <Field md={9}>
+        <Field sm={8}>
           <Label>Name:</Label>
           <TextInput
             name={'name'}
@@ -74,7 +71,7 @@ export default function WishlistForm(props: WishlistFormProps) {
             datatype={''}
           />
         </Field>
-        <Field md={3}>
+        <Field sm={4}>
           <Label>Price:</Label>
           <NumberInput
             name={'price'}
@@ -136,7 +133,7 @@ export default function WishlistForm(props: WishlistFormProps) {
           <ScrapedImageGrid imageUrls={state.imageUrls} handlers={Handlers} />
         </Field>
       </FieldRow>
-    </Form>
+    </React.Fragment>
   );
 }
 
@@ -174,7 +171,7 @@ function ScrapedImageGrid({
   );
 }
 
-interface WishlistFormProps extends EntityFormProps {
+interface WishlistFormProps {
   wishlistItem: WishlistDAO.Request;
   handlers: ReturnType<typeof HandlersV2<WishlistAddState>>;
 }

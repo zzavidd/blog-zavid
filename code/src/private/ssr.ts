@@ -104,6 +104,9 @@ namespace SSR {
     export async function getAll(options: GetWishlistParams) {
       return JSON.stringify(await WishlistAPI.getAll(options));
     }
+    export async function getById(id: number) {
+      return JSON.stringify(await WishlistAPI.getById(id));
+    }
   }
 }
 
