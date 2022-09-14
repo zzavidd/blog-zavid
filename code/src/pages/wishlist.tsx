@@ -1,11 +1,11 @@
 import { faPenNib, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { GetServerSideProps, NextPage } from 'next';
-import Link from 'next/link';
+import type { GetStaticProps, NextPage } from 'next';
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import useSWR, { mutate } from 'swr';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
+import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import Alert from 'constants/alert';
 import HandlersV2 from 'constants/handlersv2';
 import { SITE_TITLE } from 'constants/settings';
@@ -15,32 +15,27 @@ import Validate from 'constants/validations';
 import AdminLock from 'fragments/AdminLock';
 import PageMetadata from 'fragments/PageMetadata';
 import WishlistForm from 'fragments/wishlist/WishlistForm';
-import SSR from 'private/ssr';
-
-const initialWishlistItem: WishlistDAO.Request = {
-  name: '',
-  price: 0,
-  comments: '',
-  quantity: 1,
-  image: '',
-  reservees: [],
-};
+import CPX from 'stylesv2/Components.styles';
+import WL from 'stylesv2/Wishlist.styles';
 
 // eslint-disable-next-line react/function-component-definition
-const WishlistPage: NextPage<WishlistPageProps> = ({
-  pathDefinition,
-  pageProps,
-}) => {
-  const { wishlist } = pageProps;
-
+const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
   const [state, setState] = useState<WishlistPageState>({
-    wishlistItemId: null,
-    wishlistItem: initialWishlistItem,
+    selectedWishlistItemId: null,
+    wishlistItem: WishlistStatic.initial(),
     isDeletePromptVisible: false,
     isFormDrawOpen: false,
     isRequestPending: false,
   });
   const dispatch = Utils.createDispatch(setState);
+
+  const { data: wishlist, error } = useSWR<WishlistDAO.Response[]>(
+    '/api/wishlist',
+    Utils.request,
+    {
+      revalidateOnFocus: false,
+    },
+  );
 
   async function submitWishlistItem() {
     try {
@@ -51,7 +46,9 @@ const WishlistPage: NextPage<WishlistPageProps> = ({
         method: 'POST',
         body: JSON.stringify({ wishlistItem: state.wishlistItem }),
       });
+      await mutate('/api/wishlist');
       Alert.success("You've successfully added a new wishlist item.");
+      dispatch({ isFormDrawOpen: false });
     } catch (e: any) {
       Alert.error(e.message);
     } finally {
@@ -71,7 +68,9 @@ const WishlistPage: NextPage<WishlistPageProps> = ({
           wishlistItem: state.wishlistItem,
         }),
       });
+      await mutate('/api/wishlist');
       Alert.success(`You've successfully edited '${state.wishlistItem.name}'.`);
+      dispatch({ isFormDrawOpen: false });
     } catch (e: any) {
       Alert.error(e.message);
     } finally {
@@ -85,194 +84,115 @@ const WishlistPage: NextPage<WishlistPageProps> = ({
         method: 'DELETE',
         body: JSON.stringify({ id }),
       });
+      await mutate('/api/wishlist');
+      Alert.success(
+        `You've successfully deleted '${state.wishlistItem.name}'.`,
+      );
     } catch (e: any) {
       Alert.error(e.message);
     }
   }
 
-  function confirmDelete() {
-    dispatch({ isDeletePromptVisible: true });
-  }
-
   return (
     <React.Fragment>
       <PageMetadata {...pathDefinition} />
-      <WL.Main>
+      <WL.Container>
         <AdminLock>
-          <WL.Division>
-            <WL.Form open={state.isFormDrawOpen}>
+          <WL.Tray open={state.isFormDrawOpen}>
+            <WL.Form>
               <WishlistForm
                 wishlistItem={state.wishlistItem}
                 handlers={HandlersV2(setState, 'wishlistItem')}
               />
-              <WL.FormFooter>
-                {state.wishlistItemId === null ? (
-                  <C.SubmitButton onClick={submitWishlistItem}>
-                    Submit
-                  </C.SubmitButton>
-                ) : (
-                  <C.SubmitButton
-                    onClick={updateWishlistItem}
-                    disabled={!state.wishlistItemId}>
-                    Update
-                  </C.SubmitButton>
-                )}
-                <C.CancelButton
-                  onClick={() => dispatch({ isFormDrawOpen: false })}>
-                  Close
-                </C.CancelButton>
-              </WL.FormFooter>
             </WL.Form>
-          </WL.Division>
+            <WL.FormFooter>
+              {state.selectedWishlistItemId === null ? (
+                <CPX.SubmitButton onClick={submitWishlistItem}>
+                  Submit
+                </CPX.SubmitButton>
+              ) : (
+                <CPX.SubmitButton
+                  onClick={updateWishlistItem}
+                  disabled={!state.selectedWishlistItemId}>
+                  Update
+                </CPX.SubmitButton>
+              )}
+              <CPX.CancelButton
+                onClick={() => dispatch({ isFormDrawOpen: false })}>
+                Close
+              </CPX.CancelButton>
+            </WL.FormFooter>
+          </WL.Tray>
         </AdminLock>
-        <WL.Division>
+        <WL.Main>
           <WL.Grid>
-            {wishlist.map((wishlistItem) => {
-              const { id } = wishlistItem;
-              const onEditButtonClick = () =>
-                dispatch({
-                  isFormDrawOpen: true,
-                  wishlistItemId: id,
-                  wishlistItem,
-                });
-              return (
-                <Link href={'#'} key={id}>
-                  <WL.Cell>
+            {wishlist &&
+              !error &&
+              wishlist.map((wishlistItem) => {
+                const { id } = wishlistItem;
+                const onEditButtonClick = () =>
+                  dispatch({
+                    isFormDrawOpen: true,
+                    selectedWishlistItemId: id,
+                    wishlistItem,
+                  });
+                const onDeleteButtonClick = async () => {
+                  dispatch({
+                    // isDeletePromptVisible: true,
+                    selectedWishlistItemId: id,
+                  });
+                  await deleteWishlistItem(id);
+                };
+                return (
+                  <WL.Cell key={id}>
                     <h3>{wishlistItem.name}</h3>
-                    <WL.Price>£{wishlistItem.price.toFixed(2)}</WL.Price>
-                    <p>Quantity Desired: {wishlistItem.quantity}</p>
                     <WL.Image
                       src={wishlistItem.image}
                       alt={wishlistItem.name}
                     />
+                    <WL.Price>£{wishlistItem.price.toFixed(2)}</WL.Price>
+                    <p>Quantity Desired: {wishlistItem.quantity}</p>
+                    <CPX.Hyperlink href={wishlistItem.href}>
+                      Visit link
+                    </CPX.Hyperlink>
                     <button onClick={() => {}}>Claim</button>
                     <AdminLock>
-                      <C.IButton onClick={onEditButtonClick}>
+                      <CPX.Clickable onClick={onEditButtonClick}>
                         <FontAwesomeIcon icon={faPenNib} />
-                      </C.IButton>
-                      <C.IButton onClick={confirmDelete}>
+                      </CPX.Clickable>
+                      <CPX.Clickable onClick={onDeleteButtonClick}>
                         <FontAwesomeIcon icon={faTrashAlt} />
-                      </C.IButton>
+                      </CPX.Clickable>
                     </AdminLock>
                   </WL.Cell>
-                </Link>
-              );
-            })}
+                );
+              })}
           </WL.Grid>
           <AdminLock>
-            <C.IButton
+            <CPX.Clickable
               onClick={() =>
                 dispatch({
                   isFormDrawOpen: true,
-                  wishlistItemId: null,
-                  wishlistItem: initialWishlistItem,
+                  selectedWishlistItemId: null,
+                  wishlistItem: WishlistStatic.initial(),
                 })
               }>
               Add Wishlist Item
-            </C.IButton>
+            </CPX.Clickable>
           </AdminLock>
-        </WL.Division>
-      </WL.Main>
+        </WL.Main>
+      </WL.Container>
     </React.Fragment>
   );
 };
 
-namespace C {
-  export const IButton = styled.button`
-    background: none;
-    border-style: none;
-  `;
-
-  export const Button = styled.button.attrs({ type: 'button' })`
-    border: 1px solid #fff;
-    font-family: 'Mulish', sans-serif;
-    transition-duration: 0.3s;
-    user-select: none;
-  `;
-
-  export const FormButton = styled(Button)`
-    border-radius: 15px;
-    color: #fff;
-    min-width: 125px;
-    padding: 1em;
-  `;
-
-  export const SubmitButton = styled(FormButton)`
-    background-color: #391144;
-  `;
-  export const CancelButton = styled(FormButton)`
-    background-color: #8e74ab;
-  `;
-}
-
-namespace WL {
-  export const Main = styled.main`
-    display: flex;
-    height: 100%;
-  `;
-
-  export const Division = styled.aside``;
-
-  export const Form = styled.form<{ open: boolean }>`
-    max-width: 30vw;
-    transition: all 0.3s ease;
-
-    ${({ open }) =>
-      open
-        ? css`
-            opacity: 1;
-            width: 100%;
-          `
-        : css`
-            opacity: 0;
-            width: 0;
-          `};
-  `;
-
-  export const FormFooter = styled.footer``;
-
-  export const Grid = styled.div`
-    display: flex;
-    gap: 1em;
-    padding: 1em;
-  `;
-
-  export const Cell = styled.div`
-    background-color: rgba(0, 0, 108, 0.8);
-    border-radius: 15px;
-    cursor: pointer;
-    padding: 1em;
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: scale(1.03);
-    }
-  `;
-
-  export const Price = styled.p`
-    font-weight: bold;
-  `;
-
-  export const Image = styled.img`
-    border-radius: 10px;
-    max-height: 175px;
-    max-width: 175px;
-  `;
-}
-
-export const getServerSideProps: GetServerSideProps<
-  WishlistPageProps
-> = async ({ query }) => {
-  const wishlist = JSON.parse(await SSR.Wishlist.getAll(query));
+export const getStaticProps: GetStaticProps<WishlistPageProps> = () => {
   return {
     props: {
       pathDefinition: {
         title: `Wishlist | ${SITE_TITLE}`,
         description: 'Gifts from this list would as nectar to my soul...',
         url: '/wishlist',
-      },
-      pageProps: {
-        wishlist,
       },
     },
   };
@@ -282,14 +202,11 @@ export default WishlistPage;
 
 interface WishlistPageProps {
   pathDefinition: PathDefinition;
-  pageProps: {
-    wishlist: WishlistDAO.Response[];
-  };
 }
 
-interface WishlistPageState {
+export interface WishlistPageState {
   wishlistItem: WishlistDAO.Request;
-  wishlistItemId: number | null;
+  selectedWishlistItemId: number | null;
   isDeletePromptVisible: boolean;
   isFormDrawOpen: boolean;
   isRequestPending: boolean;

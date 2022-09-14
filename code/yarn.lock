@@ -3414,7 +3414,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-better-styled-components@npm:>=1.1.2":
+"eslint-plugin-better-styled-components@npm:>=1.1.2, eslint-plugin-better-styled-components@npm:^1.1.2":
   version: 1.1.2
   resolution: "eslint-plugin-better-styled-components@npm:1.1.2"
   dependencies:
@@ -3459,7 +3459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-hooks@npm:>=4.0.0":
+"eslint-plugin-react-hooks@npm:>=4.0.0, eslint-plugin-react-hooks@npm:^4.6.0":
   version: 4.6.0
   resolution: "eslint-plugin-react-hooks@npm:4.6.0"
   peerDependencies:
@@ -9839,9 +9839,11 @@ __metadata:
     ejs: ^3.1.5
     email-validator: ^2.0.4
     eslint: ^8.20.0
+    eslint-plugin-better-styled-components: ^1.1.2
     eslint-plugin-import: ^2.26.0
     eslint-plugin-mocha: ^10.1.0
     eslint-plugin-react: ^7.30.1
+    eslint-plugin-react-hooks: ^4.6.0
     faker: ^5.1.0
     html-to-text: ^5.1.1
     js-cookie: ^2.2.1

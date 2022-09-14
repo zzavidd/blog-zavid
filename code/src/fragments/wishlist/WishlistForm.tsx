@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
-import { InvisibleButton } from 'components/button';
 import {
   Field,
   FieldRow,
@@ -20,10 +19,11 @@ import Alert from 'constants/alert';
 import type HandlersV2 from 'constants/handlersv2';
 import { DOMAIN } from 'constants/settings';
 import Utils from 'constants/utils';
+import type { WishlistPageState } from 'pages/wishlist';
+import CPX from 'stylesv2/Components.styles';
 
 export default function WishlistForm(props: WishlistFormProps) {
   const [state, setState] = useState<WishlistFormState>({
-    url: '',
     imageUrls: [],
     areImagesLoading: false,
   });
@@ -37,7 +37,7 @@ export default function WishlistForm(props: WishlistFormProps) {
   async function runImageScrape() {
     dispatch({ areImagesLoading: true });
     const url = new URL('/api/wishlist/images', DOMAIN);
-    url.searchParams.append('url', state.url);
+    url.searchParams.append('url', wishlistItem.href);
     try {
       const { images } = await Utils.request<{ images: string[] }>(url.href);
       dispatch({ imageUrls: images });
@@ -54,14 +54,10 @@ export default function WishlistForm(props: WishlistFormProps) {
     }
   }
 
-  function onURLInput(e: React.ChangeEvent<HTMLInputElement>) {
-    dispatch({ url: e.target.value });
-  }
-
   return (
     <React.Fragment>
       <FieldRow>
-        <Field sm={8}>
+        <Field>
           <Label>Name:</Label>
           <TextInput
             name={'name'}
@@ -71,6 +67,8 @@ export default function WishlistForm(props: WishlistFormProps) {
             datatype={''}
           />
         </Field>
+      </FieldRow>
+      <FieldRow>
         <Field sm={4}>
           <Label>Price:</Label>
           <NumberInput
@@ -83,6 +81,36 @@ export default function WishlistForm(props: WishlistFormProps) {
             leadingComponent={<FontAwesomeIcon icon={faPoundSign} />}
           />
         </Field>
+        <Field sm={3}>
+          <Label>Quantity:</Label>
+          <NumberInput
+            name={'quantity'}
+            value={wishlistItem.quantity}
+            onChange={Handlers.number}
+            placeholder={'Qty.'}
+            min={1}
+          />
+        </Field>
+      </FieldRow>
+      <FieldRow>
+        <Field>
+          <Label>Reference Link:</Label>
+          <TextInput
+            type={'url'}
+            name={'href'}
+            value={wishlistItem.href}
+            onChange={Handlers.text}
+            onKeyDown={onEnterKeyPress}
+            leadingComponent={<FontAwesomeIcon icon={faLink} />}
+            trailingComponent={
+              <CPX.Clickable onClick={runImageScrape}>
+                <FontAwesomeIcon icon={faSearch} />
+              </CPX.Clickable>
+            }
+            placeholder={'https://reference.com'}
+            pattern={'https://.*'}
+          />
+        </Field>
       </FieldRow>
       <FieldRow>
         <Field>
@@ -93,26 +121,7 @@ export default function WishlistForm(props: WishlistFormProps) {
             value={wishlistItem.image}
             onChange={Handlers.text}
             leadingComponent={<FontAwesomeIcon icon={faLink} />}
-            placeholder={'https://example.com'}
-            pattern={'https://.*'}
-          />
-        </Field>
-      </FieldRow>
-      <FieldRow>
-        <Field>
-          <Label>Find images by URL:</Label>
-          <TextInput
-            type={'url'}
-            value={state.url}
-            onChange={onURLInput}
-            onKeyDown={onEnterKeyPress}
-            leadingComponent={<FontAwesomeIcon icon={faLink} />}
-            trailingComponent={
-              <InvisibleButton onClick={runImageScrape}>
-                <FontAwesomeIcon icon={faSearch} />
-              </InvisibleButton>
-            }
-            placeholder={'https://example.com'}
+            placeholder={'https://image.com'}
             pattern={'https://.*'}
           />
         </Field>
@@ -153,7 +162,7 @@ function ScrapedImageGrid({
       }}>
       {imageUrls.map((url, key) => {
         return (
-          <InvisibleButton
+          <CPX.Clickable
             onClick={() => Handlers.imageURL('image', url)}
             key={key}>
             <img
@@ -164,7 +173,7 @@ function ScrapedImageGrid({
                 maxWidth: '100%',
               }}
             />
-          </InvisibleButton>
+          </CPX.Clickable>
         );
       })}
     </div>
@@ -173,16 +182,15 @@ function ScrapedImageGrid({
 
 interface WishlistFormProps {
   wishlistItem: WishlistDAO.Request;
-  handlers: ReturnType<typeof HandlersV2<WishlistAddState>>;
+  handlers: ReturnType<typeof HandlersV2<WishlistPageState>>;
 }
 
 interface WishlistFormState {
-  url: string;
   imageUrls: string[];
   areImagesLoading: boolean;
 }
 
 interface ScrapedImageGridProps {
   imageUrls: string[];
-  handlers: ReturnType<typeof HandlersV2<WishlistAddState>>;
+  handlers: ReturnType<typeof HandlersV2<WishlistPageState>>;
 }

@@ -4,6 +4,7 @@ import {
   WishlistMutationBuilder,
   WishlistQueryBuilder,
 } from 'classes/wishlist/WishlistQueryBuilder';
+import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import { knex } from 'constants/knex';
 
 namespace WishlistAPI {
@@ -11,18 +12,21 @@ namespace WishlistAPI {
    * Retrieves all wishlist items from database.
    * @param options The get options.
    */
-  export function getAll(
+  export async function getAll(
     options: GetWishlistParams,
   ): Promise<WishlistDAO.Response[]> {
     const { sort = {} } = options;
-    return new WishlistQueryBuilder(knex).withOrder(sort).build();
+    const wishlist = await new WishlistQueryBuilder(knex)
+      .withOrder(sort)
+      .build();
+    return wishlist.map(WishlistStatic.parse);
   }
 
   export async function getById(id: number): Promise<WishlistDAO.Response> {
     const [wishlistItem] = await new WishlistQueryBuilder(knex)
       .whereId(id)
       .build();
-    return wishlistItem;
+    return WishlistStatic.parse(wishlistItem);
   }
 
   export async function create({

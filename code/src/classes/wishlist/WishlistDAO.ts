@@ -7,6 +7,7 @@ namespace WishlistDAO {
     price: number;
     comments: string;
     image: string;
+    href: string;
     reservees: string | string[];
   }
 
