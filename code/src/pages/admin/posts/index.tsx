@@ -1,11 +1,11 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { zText } from 'zavid-modules';
 
 import { URLBuilder } from 'classes/_/URLBuilder';
-import type { PostDAO, PostType, PostStatus } from 'classes/posts/PostDAO';
+import type { PostDAO, PostStatus, PostType } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { InvisibleButton } from 'components/button';
 import CloudImage from 'components/image';
@@ -23,10 +23,12 @@ import Alert from 'constants/alert';
 import { DOMAIN } from 'constants/settings';
 import type {
   EditButtonProps,
+  NextPageWithLayout,
   PathDefinition,
   ReactHook,
 } from 'constants/types';
 import Utils from 'constants/utils';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import BottomToolbar from 'fragments/shared/BottomToolbar';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -34,7 +36,7 @@ import SSR from 'private/ssr';
 import css from 'styles/pages/Posts.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
-const PostsAdmin: NextPage<PostsAdminProps> = ({
+const PostsAdmin: NextPageWithLayout<PostsAdminProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -269,6 +271,7 @@ export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async ({
   };
 };
 
+PostsAdmin.getLayout = Layout.addHeaderOnly;
 export default PostsAdmin;
 
 interface PostsAdminProps {

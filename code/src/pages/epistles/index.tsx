@@ -14,9 +14,10 @@ import { Spacer, Toolbar } from 'components/layout';
 import { LazyLoader, ScreenWidth } from 'components/library';
 import { Divider, Paragraph, Title, VanillaLink } from 'components/text';
 import { SITE_TITLE } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
@@ -24,7 +25,11 @@ import css from 'styles/pages/Epistles.module.scss';
 
 const EPISTLES_HEADING = 'Epistles';
 
-function EpistlesIndex({ pathDefinition, pageProps }: EpistlesIndexProps) {
+// eslint-disable-next-line react/function-component-definition
+const EpistlesIndex: NextPageWithLayout<EpistlesIndexProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { epistles, pageIntro } = pageProps;
   return (
     <React.Fragment>
@@ -41,7 +46,7 @@ function EpistlesIndex({ pathDefinition, pageProps }: EpistlesIndexProps) {
       </Spacer>
     </React.Fragment>
   );
-}
+};
 
 function EpistleGrid({ epistles, pageIntro }: EpistlesProps) {
   return (
@@ -177,6 +182,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+EpistlesIndex.getLayout = Layout.addPartials;
 export default EpistlesIndex;
 
 interface EpistlesIndexProps {

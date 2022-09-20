@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import React, { useState } from 'react';
 
 import type { SearchResultEntityDAO } from 'classes/entity';
@@ -6,7 +6,8 @@ import { Checkbox, SearchBar } from 'components/form';
 import { Spacer } from 'components/layout';
 import { Title } from 'components/text';
 import { SITE_TITLE } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import { ResultsGrid } from 'fragments/search/SearchResultsGrid';
 import SSR from 'private/ssr';
@@ -15,7 +16,7 @@ import css from 'styles/pages/Search.module.scss';
 const PARAM_ONLY_DIARY = 'onlyDiary';
 
 // eslint-disable-next-line react/function-component-definition
-const SearchResults: NextPage<SearchResultsProps> = ({
+const SearchResults: NextPageWithLayout<SearchResultsProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -96,6 +97,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+SearchResults.getLayout = Layout.addPartials;
 export default SearchResults;
 
 interface SearchResultsProps {

@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -9,16 +9,17 @@ import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { ConfirmModal } from 'components/modal';
 import Alert, { AlertType } from 'constants/alert';
 import hooks from 'constants/handlers';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import DiaryAPI from 'private/api/diary';
 
 // eslint-disable-next-line react/function-component-definition
-const DiaryEntryAdd: NextPage<DiaryEntryAddProps> = ({
+const DiaryEntryAdd: NextPageWithLayout<DiaryEntryAddProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -123,6 +124,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+DiaryEntryAdd.getLayout = Layout.addHeaderOnly;
 export default DiaryEntryAdd;
 
 interface DiaryEntryAddProps {

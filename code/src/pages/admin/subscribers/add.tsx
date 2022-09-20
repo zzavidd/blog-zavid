@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -7,9 +7,10 @@ import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
 import Alert from 'constants/alert';
 import hooks from 'constants/handlers';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import SubscriberForm, {
   buildPayload,
@@ -17,7 +18,9 @@ import SubscriberForm, {
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 
 // eslint-disable-next-line react/function-component-definition
-const SubscriberAdd: NextPage<SubscriberAddProps> = ({ pathDefinition }) => {
+const SubscriberAdd: NextPageWithLayout<SubscriberAddProps> = ({
+  pathDefinition,
+}) => {
   const [clientSubscriber, setSubscriber] = useState<SubscriberDAO>({
     email: '',
     firstname: '',
@@ -98,6 +101,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+SubscriberAdd.getLayout = Layout.addHeaderOnly;
 export default SubscriberAdd;
 
 interface SubscriberAddProps {

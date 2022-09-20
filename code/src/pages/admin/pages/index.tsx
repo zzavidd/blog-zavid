@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -18,16 +18,21 @@ import { ConfirmModal } from 'components/modal';
 import Alert from 'constants/alert';
 import type {
   EditButtonProps,
+  NextPageWithLayout,
   PathDefinition,
   ReactHook,
 } from 'constants/types';
 import Utils from 'constants/utils';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
-const PageAdmin: NextPage<PageAdminProps> = ({ pathDefinition, pageProps }) => {
+const PageAdmin: NextPageWithLayout<PageAdminProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { pages } = pageProps;
   const [selectedPage, setSelectedPage] = useState<PageDAO>({});
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
@@ -199,6 +204,7 @@ export const getServerSideProps: GetServerSideProps<PageAdminProps> = async ({
   };
 };
 
+PageAdmin.getLayout = Layout.addHeaderOnly;
 export default PageAdmin;
 
 interface PageAdminProps {

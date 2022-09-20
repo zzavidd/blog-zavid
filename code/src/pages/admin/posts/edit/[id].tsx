@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -14,9 +14,10 @@ import type { SelectItem } from 'components/form';
 import Alert, { AlertType } from 'constants/alert';
 import hooks from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -24,7 +25,10 @@ import PostAPI from 'private/api/posts';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
-const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
+const PostEdit: NextPageWithLayout<PostEditProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { post: serverPost, domains } = pageProps;
   const router = useRouter();
 
@@ -153,6 +157,7 @@ export const getServerSideProps: GetServerSideProps<PostEditProps> = async ({
   };
 };
 
+PostEdit.getLayout = Layout.addHeaderOnly;
 export default PostEdit;
 
 interface PostEditProps {

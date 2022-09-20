@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
 import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
@@ -18,17 +18,19 @@ import { VanillaLink } from 'components/text';
 import Alert from 'constants/alert';
 import type {
   EditButtonProps,
+  NextPageWithLayout,
   PathDefinition,
   ReactHook,
 } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Utils from 'constants/utils';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
-const DiaryAdmin: NextPage<DiaryAdminProps> = ({
+const DiaryAdmin: NextPageWithLayout<DiaryAdminProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -220,6 +222,7 @@ export const getServerSideProps: GetServerSideProps<DiaryAdminProps> = async ({
   };
 };
 
+DiaryAdmin.getLayout = Layout.addHeaderOnly;
 export default DiaryAdmin;
 
 interface DiaryAdminProps {

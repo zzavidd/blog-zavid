@@ -10,6 +10,7 @@ module.exports = {
   rules: {
     'react-hooks/exhaustive-deps': 0,
     'react-hooks/rules-of-hooks': 0,
+    'react/react-in-jsx-scope': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     'spaced-comment': 0,
     'quotes': ['warn', 'single', { avoidEscape: true }],
@@ -21,17 +22,5 @@ module.exports = {
         '@typescript-eslint/no-floating-promises': 'warn',
       },
     },
-    // {
-    //   files: ['*.ts'],
-    //   rules: {
-    //     'func-style': [
-    //       'warn',
-    //       'declaration',
-    //       {
-    //         allowArrowFunctions: false,
-    //       },
-    //     ],
-    //   },
-    // },
   ],
 };

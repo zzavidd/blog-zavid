@@ -6,15 +6,20 @@ import React, { useState } from 'react';
 import type { PageDAO } from 'classes/pages/PageDAO';
 import Alert, { AlertType } from 'constants/alert';
 import hooks from 'constants/handlers';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PageForm, { buildPayload } from 'fragments/pages/PageForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
-function PageEdit({ pathDefinition, pageProps }: PageEditProps) {
+// eslint-disable-next-line react/function-component-definition
+const PageEdit: NextPageWithLayout<PageEditProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { page: serverPage } = pageProps;
   const [clientPage, setPage] = useState<PageDAO>(serverPage);
   const [isRequestPending, setRequestPending] = useState(false);
@@ -61,7 +66,7 @@ function PageEdit({ pathDefinition, pageProps }: PageEditProps) {
       />
     </React.Fragment>
   );
-}
+};
 
 export const getServerSideProps: GetServerSideProps<PageEditProps> = async ({
   query,
@@ -93,6 +98,7 @@ export const getServerSideProps: GetServerSideProps<PageEditProps> = async ({
   };
 };
 
+PageEdit.getLayout = Layout.addHeaderOnly;
 export default PageEdit;
 
 interface PageEditProps {

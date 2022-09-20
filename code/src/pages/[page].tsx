@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import React from 'react';
 import { zDate, zText } from 'zavid-modules';
 
@@ -11,14 +11,15 @@ import {
   SITE_TITLE,
   ZAVID_BIRTHDAY,
 } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import SSR from 'private/ssr';
 import css from 'styles/pages/Posts.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
-const PageSingleProps: NextPage<PageSingleProps> = ({
+const PageSingle: NextPageWithLayout<PageSingleProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -81,7 +82,8 @@ export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
   }
 };
 
-export default PageSingleProps;
+PageSingle.getLayout = Layout.addPartials;
+export default PageSingle;
 
 interface PageSingleProps {
   pathDefinition: PathDefinition;

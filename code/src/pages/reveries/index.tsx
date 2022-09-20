@@ -1,21 +1,22 @@
 import classnames from 'classnames';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import React, { memo, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { zDate } from 'zavid-modules';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
-import { PostType, PostStatus } from 'classes/posts/PostDAO';
+import { PostStatus, PostType } from 'classes/posts/PostDAO';
 import { AdminButton } from 'components/button';
 import CloudImage from 'components/image';
 import { Partitioner, Spacer, Toolbar } from 'components/layout';
 import { LazyLoader, Responsive } from 'components/library';
 import { Divider, Paragraph, Title } from 'components/text';
 import { SITE_TITLE } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import { RightSidebar } from 'fragments/shared/RightSidebar';
 import PageAPI from 'private/api/pages';
@@ -25,7 +26,7 @@ import css from 'styles/pages/Reveries.module.scss';
 const REVERIES_HEADING = 'Reveries';
 
 // eslint-disable-next-line react/function-component-definition
-const ReveriesIndex: NextPage<ReveriesIndexProps> = ({
+const ReveriesIndex: NextPageWithLayout<ReveriesIndexProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -160,6 +161,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+ReveriesIndex.getLayout = Layout.addPartials;
 export default ReveriesIndex;
 
 interface ReverieProps {

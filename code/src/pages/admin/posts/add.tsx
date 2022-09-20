@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -9,16 +9,20 @@ import { PostStatic } from 'classes/posts/PostStatic';
 import type { SelectItem } from 'components/form';
 import Alert, { AlertType } from 'constants/alert';
 import hooks from 'constants/handlers';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import PostAPI from 'private/api/posts';
 
 // eslint-disable-next-line react/function-component-definition
-const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
+const PostAdd: NextPageWithLayout<PostAddProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { domains } = pageProps;
   const router = useRouter();
 
@@ -113,6 +117,7 @@ export const getServerSideProps: GetServerSideProps<PostAddProps> = async ({
   };
 };
 
+PostAdd.getLayout = Layout.addHeaderOnly;
 export default PostAdd;
 
 interface PostAddProps {

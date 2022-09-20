@@ -1,26 +1,23 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import React from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { SITE_TITLE } from 'constants/settings';
-import type { AppPageProps } from 'constants/types';
+import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import { HomeField, HomeRow } from 'fragments/home/Home.styles';
 import LatestDiaryEntry from 'fragments/home/HomeDiary';
 import Introduction from 'fragments/home/HomeIntroduction';
 import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
 import LatestReverie from 'fragments/home/HomeReverie';
 import Search from 'fragments/home/HomeSearch';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import SSR from 'private/ssr';
 import css from 'styles/pages/Home.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
-const Home: NextPage<HomeProps> = ({
-  pageProps,
-
-  pathDefinition,
-}) => {
+const Home: NextPageWithLayout<HomeProps> = ({ pageProps, pathDefinition }) => {
   const {
     homeText,
     latestDiaryEntry,
@@ -49,6 +46,8 @@ const Home: NextPage<HomeProps> = ({
     </React.Fragment>
   );
 };
+
+Home.getLayout = Layout.addPartials;
 
 export const getServerSideProps: GetServerSideProps<
   Partial<HomeProps>

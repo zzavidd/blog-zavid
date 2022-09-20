@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { BREAKPOINTS, FONTS } from 'constants/styling';
+import { FONTS } from 'constants/styling';
 
 namespace WL {
   export const Container = styled.div`

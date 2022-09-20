@@ -14,9 +14,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Theme } from 'classes/theme';
 import Alert from 'constants/alert';
 import configureStore, { setTheme } from 'constants/reducers';
+import type { AppPropsWithLayout } from 'constants/types';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
-import Footer from 'fragments/shared/Footer';
-import Header from 'fragments/shared/Header';
 import 'styles/App.scss';
 
 library.add(fab, far, fas);
@@ -42,7 +41,7 @@ export default function App(props: AppProps) {
  * @param props.pageProps The properties for each page.
  * @returns The full page including the header and footer.
  */
-function ZAVIDApp({ Component, pageProps }: AppProps) {
+function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const dispatch = useDispatch();
 
   const theme = useSelector(({ theme }: RootStateOrAny) => {
@@ -58,12 +57,13 @@ function ZAVIDApp({ Component, pageProps }: AppProps) {
     Alert.check();
   }, []);
 
+  const getLayout = Component.getLayout ?? ((page) => page);
+  const ComponentWithLayout = getLayout(<Component {...pageProps} />);
+
   return (
     <React.Fragment>
       <GoogleAnalyticsScripts />
-      <Header />
-      <Component {...pageProps} />
-      <Footer />
+      {ComponentWithLayout}
       <CookiePrompt />
     </React.Fragment>
   );

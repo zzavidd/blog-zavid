@@ -6,9 +6,10 @@ import React, { useState } from 'react';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import Alert, { AlertType } from 'constants/alert';
 import hooks from 'constants/handlers';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import SubscriberForm, {
   buildPayload,
@@ -16,7 +17,11 @@ import SubscriberForm, {
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
-function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {
+// eslint-disable-next-line react/function-component-definition
+const SubscriberEdit: NextPageWithLayout<SubscriberEditProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { subscriber: serverSubscriber } = pageProps;
   const [clientSubscriber, setSubscriber] =
     useState<SubscriberDAO>(serverSubscriber);
@@ -64,7 +69,7 @@ function SubscriberEdit({ pathDefinition, pageProps }: SubscriberEditProps) {
       />
     </React.Fragment>
   );
-}
+};
 
 export const getServerSideProps: GetServerSideProps<
   SubscriberEditProps
@@ -94,6 +99,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+SubscriberEdit.getLayout = Layout.addHeaderOnly;
 export default SubscriberEdit;
 
 interface SubscriberEditProps {

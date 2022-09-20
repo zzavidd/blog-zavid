@@ -1,8 +1,11 @@
 import React from 'react';
 
+import type { NextPageWithLayout } from 'constants/types';
+import Layout from 'fragments/Layout';
 import css from 'styles/Partials.module.scss';
 
-export default function Custom404Page() {
+// eslint-disable-next-line react/function-component-definition
+const Custom404Page: NextPageWithLayout = () => {
   return (
     <div className={css['error-page']}>
       <div className={css['error-message-container']}>
@@ -18,4 +21,7 @@ export default function Custom404Page() {
       </div>
     </div>
   );
-}
+};
+
+Custom404Page.getLayout = Layout.addPartials;
+export default Custom404Page;

@@ -1,12 +1,12 @@
 import classnames from 'classnames';
-import type { NextPage } from 'next';
-import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { Container } from 'components/layout';
 import { VanillaLink } from 'components/text';
+import type { NextPageWithLayout } from 'constants/types';
 import AdminGateway from 'fragments/AdminGateway';
+import Layout from 'fragments/Layout';
 import css from 'styles/pages/Admin.module.scss';
 
 const links = [
@@ -17,7 +17,7 @@ const links = [
 ];
 
 // eslint-disable-next-line react/function-component-definition
-const Admin: NextPage = () => {
+const Admin: NextPageWithLayout = () => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <AdminGateway>
@@ -41,4 +41,5 @@ const Admin: NextPage = () => {
   );
 };
 
+Admin.getLayout = Layout.addHeaderOnly;
 export default Admin;

@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -18,15 +18,20 @@ import {
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
 import Alert from 'constants/alert';
-import type { PathDefinition, ReactHook } from 'constants/types';
+import type {
+  NextPageWithLayout,
+  PathDefinition,
+  ReactHook,
+} from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Utils from 'constants/utils';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
-const SubscribersAdmin: NextPage<SubscribersAdminProps> = ({
+const SubscribersAdmin: NextPageWithLayout<SubscribersAdminProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -209,6 +214,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+SubscribersAdmin.getLayout = Layout.addHeaderOnly;
 export default SubscribersAdmin;
 
 interface SubscribersAdminProps {
