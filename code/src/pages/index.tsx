@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import type { PostDAO } from 'classes/posts/PostDAO';
-import { HomeField, HomeRow } from 'components/pages/home';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps } from 'constants/types';
+import { HomeField, HomeRow } from 'fragments/home/Home.styles';
 import LatestDiaryEntry from 'fragments/home/HomeDiary';
 import Introduction from 'fragments/home/HomeIntroduction';
 import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
