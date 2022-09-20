@@ -6,3 +6,8 @@ export const BREAKPOINTS = {
   XXLARGE: '1440px',
   XXXLARGE: '1600px',
 };
+
+export const FONTS = {
+  TITLE: "'Calistoga', 'cursive'",
+  BODY: "'Mulish', sans-serif",
+};

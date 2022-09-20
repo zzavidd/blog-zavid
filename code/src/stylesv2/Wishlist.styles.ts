@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { BREAKPOINTS } from './Variables.styles';
+import { BREAKPOINTS, FONTS } from 'constants/styling';
 
 namespace WL {
   export const Container = styled.div`
@@ -11,34 +11,40 @@ namespace WL {
 
   export const Tray = styled.aside<{ open: boolean }>`
     border-right: 1px solid #fff;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    max-height: 80vh;
-    max-width: 450px;
-    overflow: auto;
+    display: flex;
+    flex: 1 0 ${({ open }) => (open ? '500px' : 0)};
+    flex-direction: column;
+    overflow: hidden;
     transition: all 0.3s ease;
 
     ${(props) =>
       props.open
         ? css`
+            height: 100%;
             opacity: 1;
             width: 100%;
           `
         : css`
+            height: 0;
             opacity: 0;
             width: 0;
           `};
   `;
 
   export const Form = styled.form`
+    flex: 1 1 auto;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    padding: 1em;
   `;
 
-  export const FormFooter = styled.footer``;
+  export const FormFooter = styled.footer`
+    flex: 1 1 auto;
+  `;
 
   export const Main = styled.main`
-    overflow-y: auto;
+    flex: 1 1 auto;
+    overflow: hidden;
     width: 100%;
   `;
 
@@ -46,21 +52,13 @@ namespace WL {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 1em;
-    overflow: auto;
+    overflow-y: auto;
     padding: 1em;
     width: 100%;
-
-    /* @media (max-width: ${BREAKPOINTS.LARGE}) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media (max-width: ${BREAKPOINTS.MEDIUM}) {
-      grid-template-columns: repeat(2, 1fr);
-    } */
   `;
 
   export const Cell = styled.div`
-    background-color: rgba(0, 0, 108, 0.8);
+    background-color: rgba(61, 61, 93, 0.8);
     border-radius: 15px;
     flex: 1 1 25%;
     padding: 1em;
@@ -69,6 +67,10 @@ namespace WL {
     &:hover {
       transform: scale(1.03);
     }
+  `;
+
+  export const ItemName = styled.h3`
+    font-family: ${FONTS.TITLE};
   `;
 
   export const Price = styled.p`

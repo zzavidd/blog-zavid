@@ -145,7 +145,7 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
                 };
                 return (
                   <WL.Cell key={id}>
-                    <h3>{wishlistItem.name}</h3>
+                    <WL.ItemName>{wishlistItem.name}</WL.ItemName>
                     <WL.Image
                       src={wishlistItem.image}
                       alt={wishlistItem.name}
@@ -169,7 +169,7 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
               })}
           </WL.Grid>
           <AdminLock>
-            <CPX.Clickable
+            <CPX.SubmitButton
               onClick={() =>
                 dispatch({
                   isFormDrawOpen: true,
@@ -178,7 +178,7 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
                 })
               }>
               Add Wishlist Item
-            </CPX.Clickable>
+            </CPX.SubmitButton>
           </AdminLock>
         </WL.Main>
       </WL.Container>
