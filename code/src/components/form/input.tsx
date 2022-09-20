@@ -34,7 +34,7 @@ export function NumberInput(props: InputProps) {
   );
 }
 
-export function SearchBar(props: SearchBarProps) {
+export function SearchBar({ onClearInput, ...props }: SearchBarProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`search-bar-${theme}`], props.className);
 
@@ -45,7 +45,9 @@ export function SearchBar(props: SearchBarProps) {
       leadingComponent={
         <Icon name={'search'} className={css['search-bar-icon']} />
       }
-      trailingComponent={<SearchBarTrailingComponent {...props} />}
+      trailingComponent={
+        <SearchBarTrailingComponent {...props} onClearInput={onClearInput} />
+      }
     />
   );
 }
