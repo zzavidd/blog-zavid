@@ -7,6 +7,11 @@ export const BREAKPOINTS = {
   XXXLARGE: '1600px',
 };
 
+export const COLOR = {
+  WHITE: '#ffffff',
+  BLACK: '#000000',
+};
+
 export const FONTS = {
   TITLE: "'Calistoga', 'cursive'",
   BODY: "'Mulish', sans-serif",

@@ -3,24 +3,17 @@ import {
   faPoundSign,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
-import {
-  Field,
-  FieldRow,
-  Label,
-  NumberInput,
-  ShortTextArea,
-  TextInput,
-} from 'components/form';
+import Input from 'componentsv2/Input';
 import Alert from 'constants/alert';
 import type HandlersV2 from 'constants/handlersv2';
 import { DOMAIN } from 'constants/settings';
 import Utils from 'constants/utils';
 import type { WishlistPageState } from 'pages/wishlist';
 import CPX from 'stylesv2/Components.styles';
+import FORM from 'stylesv2/Form.styles';
 
 export default function WishlistForm(props: WishlistFormProps) {
   const [state, setState] = useState<WishlistFormState>({
@@ -55,94 +48,82 @@ export default function WishlistForm(props: WishlistFormProps) {
   }
 
   return (
-    <React.Fragment>
-      <FieldRow>
-        <Field>
-          <Label>Name:</Label>
-          <TextInput
+    <FORM.Container>
+      <FORM.FieldRow>
+        <FORM.Field>
+          <FORM.Label>Name:</FORM.Label>
+          <Input.Text
             name={'name'}
             value={wishlistItem.name}
             onChange={Handlers.text}
             placeholder={'Enter the name'}
-            datatype={''}
           />
-        </Field>
-      </FieldRow>
-      <FieldRow>
-        <Field sm={4}>
-          <Label>Price:</Label>
-          <NumberInput
+        </FORM.Field>
+      </FORM.FieldRow>
+      <FORM.FieldRow>
+        <FORM.Field>
+          <FORM.Label>Price:</FORM.Label>
+          <Input.Number
             name={'price'}
             value={wishlistItem.price}
             onChange={Handlers.number}
-            placeholder={'0.00'}
-            min={0}
             step={0.01}
-            leadingComponent={<FontAwesomeIcon icon={faPoundSign} />}
+            leadingIcon={faPoundSign}
           />
-        </Field>
-        <Field sm={3}>
-          <Label>Quantity:</Label>
-          <NumberInput
+        </FORM.Field>
+        <FORM.Field>
+          <FORM.Label>Quantity:</FORM.Label>
+          <Input.Number
             name={'quantity'}
             value={wishlistItem.quantity}
             onChange={Handlers.number}
-            placeholder={'Qty.'}
             min={1}
           />
-        </Field>
-      </FieldRow>
-      <FieldRow>
-        <Field>
-          <Label>Reference Link:</Label>
-          <TextInput
-            type={'url'}
+        </FORM.Field>
+      </FORM.FieldRow>
+      <FORM.FieldRow>
+        <FORM.Field>
+          <FORM.Label>Reference Link:</FORM.Label>
+          <Input.Url
             name={'href'}
             value={wishlistItem.href}
             onChange={Handlers.text}
             onKeyDown={onEnterKeyPress}
-            leadingComponent={<FontAwesomeIcon icon={faLink} />}
-            trailingComponent={
-              <CPX.Clickable onClick={runImageScrape}>
-                <FontAwesomeIcon icon={faSearch} />
-              </CPX.Clickable>
-            }
-            placeholder={'https://reference.com'}
-            pattern={'https://.*'}
+            leadingIcon={faLink}
+            trailingIcon={faSearch}
+            trailingIconAction={runImageScrape}
           />
-        </Field>
-      </FieldRow>
-      <FieldRow>
-        <Field>
-          <Label>Image URL:</Label>
-          <TextInput
-            type={'url'}
+        </FORM.Field>
+      </FORM.FieldRow>
+      <FORM.FieldRow>
+        <FORM.Field>
+          <FORM.Label>Image URL:</FORM.Label>
+          <Input.Url
             name={'image'}
             value={wishlistItem.image}
             onChange={Handlers.text}
-            leadingComponent={<FontAwesomeIcon icon={faLink} />}
-            placeholder={'https://image.com'}
-            pattern={'https://.*'}
+            leadingIcon={faLink}
           />
-        </Field>
-      </FieldRow>
-      <FieldRow>
-        <Field>
-          <Label>Comments:</Label>
-          <ShortTextArea
+        </FORM.Field>
+      </FORM.FieldRow>
+      <FORM.FieldRow>
+        <FORM.Field>
+          <FORM.Label>Comments:</FORM.Label>
+          <FORM.Input.Paragraph
             name={'comments'}
             value={wishlistItem.comments}
             onChange={Handlers.text}
             placeholder={'Add comments about this wishlist item...'}
+            rows={2}
           />
-        </Field>
-      </FieldRow>
-      <FieldRow>
-        <Field>
+        </FORM.Field>
+      </FORM.FieldRow>
+      <FORM.FieldRow>
+        <FORM.Field>
           <ScrapedImageGrid imageUrls={state.imageUrls} handlers={Handlers} />
-        </Field>
-      </FieldRow>
-    </React.Fragment>
+        </FORM.Field>
+      </FORM.FieldRow>
+    </FORM.Container>
   );
 }
 

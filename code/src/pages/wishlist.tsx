@@ -1,4 +1,8 @@
-import { faPenNib, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPenNib,
+  faPlus,
+  faTrashAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { GetStaticProps, NextPage } from 'next';
 import React, { useState } from 'react';
@@ -6,6 +10,7 @@ import useSWR, { mutate } from 'swr';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
+import Clickable from 'componentsv2/Clickable';
 import Alert from 'constants/alert';
 import HandlersV2 from 'constants/handlersv2';
 import { SITE_TITLE } from 'constants/settings';
@@ -99,33 +104,31 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
       <WL.Container>
         <AdminLock>
           <WL.Tray open={state.isFormDrawOpen}>
-            <WL.Form>
-              <WishlistForm
-                wishlistItem={state.wishlistItem}
-                handlers={HandlersV2(setState, 'wishlistItem')}
-              />
-            </WL.Form>
+            <WishlistForm
+              wishlistItem={state.wishlistItem}
+              handlers={HandlersV2(setState, 'wishlistItem')}
+            />
             <WL.FormFooter>
               {state.selectedWishlistItemId === null ? (
-                <CPX.SubmitButton onClick={submitWishlistItem}>
+                <WL.FormSubmitButton onClick={submitWishlistItem}>
                   Submit
-                </CPX.SubmitButton>
+                </WL.FormSubmitButton>
               ) : (
-                <CPX.SubmitButton
+                <WL.FormSubmitButton
                   onClick={updateWishlistItem}
                   disabled={!state.selectedWishlistItemId}>
                   Update
-                </CPX.SubmitButton>
+                </WL.FormSubmitButton>
               )}
-              <CPX.CancelButton
+              <WL.FormCancelButton
                 onClick={() => dispatch({ isFormDrawOpen: false })}>
                 Close
-              </CPX.CancelButton>
+              </WL.FormCancelButton>
             </WL.FormFooter>
           </WL.Tray>
         </AdminLock>
         <WL.Main>
-          <WL.Grid>
+          <WL.ItemGrid>
             {wishlist &&
               !error &&
               wishlist.map((wishlistItem) => {
@@ -144,41 +147,57 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
                   await deleteWishlistItem(id);
                 };
                 return (
-                  <WL.Cell key={id}>
-                    <WL.ItemName>{wishlistItem.name}</WL.ItemName>
-                    <WL.Image
-                      src={wishlistItem.image}
-                      alt={wishlistItem.name}
-                    />
-                    <WL.Price>£{wishlistItem.price.toFixed(2)}</WL.Price>
-                    <p>Quantity Desired: {wishlistItem.quantity}</p>
-                    <CPX.Hyperlink href={wishlistItem.href}>
-                      Visit link
-                    </CPX.Hyperlink>
-                    <button onClick={() => {}}>Claim</button>
+                  <WL.ItemCell image={wishlistItem.image} key={id}>
                     <AdminLock>
-                      <CPX.Clickable onClick={onEditButtonClick}>
-                        <FontAwesomeIcon icon={faPenNib} />
-                      </CPX.Clickable>
-                      <CPX.Clickable onClick={onDeleteButtonClick}>
-                        <FontAwesomeIcon icon={faTrashAlt} />
-                      </CPX.Clickable>
+                      <WL.CrudControls>
+                        <Clickable.Icon
+                          icon={faPenNib}
+                          onClick={onEditButtonClick}
+                        />
+                        <Clickable.Icon
+                          icon={faTrashAlt}
+                          onClick={onDeleteButtonClick}
+                        />
+                      </WL.CrudControls>
                     </AdminLock>
-                  </WL.Cell>
+                    <WL.ItemCellContent>
+                      <WL.ItemName>{wishlistItem.name}</WL.ItemName>
+                      <WL.ItemPrice>
+                        £{wishlistItem.price.toFixed(2)}
+                      </WL.ItemPrice>
+                      <p>Quantity Desired: {wishlistItem.quantity}</p>
+                      <WL.ItemCellFooter>
+                        <WL.ItemCellFooterButton
+                          onClick={() =>
+                            window.open(
+                              wishlistItem.href,
+                              '_blank',
+                              'noopener,noreferrer',
+                            )
+                          }>
+                          Visit link
+                        </WL.ItemCellFooterButton>
+                        <WL.ItemCellFooterButton onClick={() => {}}>
+                          Claim
+                        </WL.ItemCellFooterButton>
+                      </WL.ItemCellFooter>
+                    </WL.ItemCellContent>
+                  </WL.ItemCell>
                 );
               })}
-          </WL.Grid>
+          </WL.ItemGrid>
           <AdminLock>
-            <CPX.SubmitButton
+            <WL.FloatingActionButton
               onClick={() =>
                 dispatch({
                   isFormDrawOpen: true,
                   selectedWishlistItemId: null,
                   wishlistItem: WishlistStatic.initial(),
                 })
-              }>
-              Add Wishlist Item
-            </CPX.SubmitButton>
+              }
+              visible={!state.isFormDrawOpen}>
+              <WL.FabIcon icon={faPlus} />
+            </WL.FloatingActionButton>
           </AdminLock>
         </WL.Main>
       </WL.Container>
