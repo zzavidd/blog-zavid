@@ -1,10 +1,5 @@
-import {
-  faPenNib,
-  faPlus,
-  faTrashAlt,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { GetStaticProps, NextPage } from 'next';
+import { faPen, faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import type { GetStaticProps } from 'next';
 import React, { useState } from 'react';
 import useSWR, { mutate } from 'swr';
 
@@ -14,7 +9,7 @@ import Clickable from 'componentsv2/Clickable';
 import Alert from 'constants/alert';
 import HandlersV2 from 'constants/handlersv2';
 import { SITE_TITLE } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import AdminLock from 'fragments/AdminLock';
@@ -24,7 +19,9 @@ import CPX from 'stylesv2/Components.styles';
 import WL from 'stylesv2/Wishlist.styles';
 
 // eslint-disable-next-line react/function-component-definition
-const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
+const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
+  pathDefinition,
+}) => {
   const [state, setState] = useState<WishlistPageState>({
     selectedWishlistItemId: null,
     wishlistItem: WishlistStatic.initial(),
@@ -42,6 +39,9 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
     },
   );
 
+  /**
+   * Submits the wishlist item.
+   */
   async function submitWishlistItem() {
     try {
       dispatch({ isRequestPending: true });
@@ -61,6 +61,9 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
     }
   }
 
+  /**
+   * Updates the selected wishlist item.
+   */
   async function updateWishlistItem() {
     try {
       dispatch({ isRequestPending: true });
@@ -83,6 +86,10 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
     }
   }
 
+  /**
+   * Deletes the selected wishlist item.
+   * @param id The wishlist ID of the item to delete.
+   */
   async function deleteWishlistItem(id: number) {
     try {
       await Utils.request('/api/wishlist', {
@@ -146,12 +153,19 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
                   });
                   await deleteWishlistItem(id);
                 };
+                const visitLink = () => {
+                  window.open(
+                    wishlistItem.href,
+                    '_blank',
+                    'noopener,noreferrer',
+                  );
+                };
                 return (
                   <WL.ItemCell image={wishlistItem.image} key={id}>
                     <AdminLock>
                       <WL.CrudControls>
                         <Clickable.Icon
-                          icon={faPenNib}
+                          icon={faPen}
                           onClick={onEditButtonClick}
                         />
                         <Clickable.Icon
@@ -160,21 +174,24 @@ const WishlistPage: NextPage<WishlistPageProps> = ({ pathDefinition }) => {
                         />
                       </WL.CrudControls>
                     </AdminLock>
+                    <CPX.Clickable onClick={visitLink}>
+                      <WL.ItemCellImageContainer>
+                        <WL.ItemCellImage
+                          src={wishlistItem.image}
+                          alt={wishlistItem.name}
+                        />
+                      </WL.ItemCellImageContainer>
+                    </CPX.Clickable>
                     <WL.ItemCellContent>
                       <WL.ItemName>{wishlistItem.name}</WL.ItemName>
                       <WL.ItemPrice>
                         £{wishlistItem.price.toFixed(2)}
                       </WL.ItemPrice>
-                      <p>Quantity Desired: {wishlistItem.quantity}</p>
+                      <WL.ItemQuantity>
+                        Quantity Desired: {wishlistItem.quantity}
+                      </WL.ItemQuantity>
                       <WL.ItemCellFooter>
-                        <WL.ItemCellFooterButton
-                          onClick={() =>
-                            window.open(
-                              wishlistItem.href,
-                              '_blank',
-                              'noopener,noreferrer',
-                            )
-                          }>
+                        <WL.ItemCellFooterButton onClick={visitLink}>
                           Visit link
                         </WL.ItemCellFooterButton>
                         <WL.ItemCellFooterButton onClick={() => {}}>
@@ -210,7 +227,7 @@ export const getStaticProps: GetStaticProps<WishlistPageProps> = () => {
     props: {
       pathDefinition: {
         title: `Wishlist | ${SITE_TITLE}`,
-        description: 'Gifts from this list would as nectar to my soul...',
+        description: 'Gifts from this list would taste as nectar to my soul...',
         url: '/wishlist',
       },
     },

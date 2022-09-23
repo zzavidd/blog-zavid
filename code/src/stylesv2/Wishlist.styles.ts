@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { darken, lighten } from 'polished';
 import styled, { css } from 'styled-components';
 
-import { COLOR, FONTS as FONT } from 'constants/styling';
+import { BREAKPOINTS, COLOR, FONTS as FONT } from 'constants/styling';
 
 import CPX from './Components.styles';
 import Mixins from './Mixins.styles';
@@ -66,6 +65,7 @@ namespace WL {
   `;
 
   export const ItemGrid = styled.div`
+    align-items: flex-start;
     display: flex;
     flex-wrap: wrap;
     grid-gap: 1em;
@@ -78,25 +78,49 @@ namespace WL {
   `;
 
   export const ItemCell = styled.div<{ image: string }>`
-    background-image: ${({ image }) => css`url(${image})`};
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    align-items: flex-end;
     border-radius: 15px;
-    flex: 1 1 0;
+    box-shadow: 0 0 10px 1px ${COLOR.BLACK};
+    display: flex;
+    flex: 1 1 250px;
+    flex-direction: column;
+    height: 100%;
+    max-height: 400px;
     max-width: 300px;
-    min-width: 250px;
     overflow: hidden;
     position: relative;
     transition: all 0.3s ease;
+
+    @media (max-width: ${BREAKPOINTS.SMALL}) {
+      flex: 1 1 150px;
+    }
+  `;
+
+  export const ItemCellImageContainer = styled.div`
+    background-color: ${COLOR.WHITE};
+    flex: 0 1 auto;
+    max-height: 200px;
+    overflow: hidden;
+    width: 100%;
+  `;
+
+  export const ItemCellImage = styled.img`
+    object-fit: cover;
+    transition: all 0.8s;
+    width: 100%;
+
+    &:hover {
+      transform: scale(1.06);
+    }
   `;
 
   export const ItemCellContent = styled.div`
-    background-color: rgba(68, 68, 68, 0.6);
+    background-color: rgba(52, 43, 59, 0.8);
     display: flex;
+    flex: 1 0 auto;
     flex-direction: column;
-    height: 100%;
     padding: 1em;
+    width: 100%;
   `;
 
   export const CrudControls = styled.div`
@@ -108,6 +132,7 @@ namespace WL {
     position: absolute;
     right: 3%;
     top: 2%;
+    z-index: 2;
 
     svg {
       transition: all 0.3s;
@@ -120,16 +145,26 @@ namespace WL {
   export const ItemName = styled.h3`
     color: ${COLOR.WHITE};
     font-family: ${FONT.TITLE};
+    font-size: 1.3em;
   `;
 
   export const ItemPrice = styled.p`
     font-weight: bold;
+    margin: 0;
+  `;
+
+  export const ItemQuantity = styled.p`
+    font-size: 0.8em;
+    margin-block: 0.5em;
   `;
 
   export const ItemCellFooter = styled.footer`
+    align-items: flex-end;
     border-radius: 10px;
     display: flex;
+    flex: 1 1 auto;
     justify-self: flex-end;
+    margin-top: 1em;
     overflow: hidden;
   `;
 
@@ -138,7 +173,8 @@ namespace WL {
       hover: 0.05,
       active: 0.07,
     })}
-    flex: 1 1 0;
+    flex: 1 0 auto;
+    font-size: 0.8em;
     outline: 1px solid #3d3d3d;
     padding: 0.75em;
   `;
@@ -150,7 +186,7 @@ namespace WL {
     ${({ visible }) => Mixins.Visible(visible)}
     border-style: none;
     border-radius: 50%;
-    box-shadow: 0 0 5px 3px #242024;
+    box-shadow: 0 0 5px 3px #7c687b;
     position: absolute;
     padding: 0.85em;
     font-size: 2.5em;
