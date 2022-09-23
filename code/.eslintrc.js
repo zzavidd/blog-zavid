@@ -22,5 +22,12 @@ module.exports = {
         '@typescript-eslint/no-floating-promises': 'warn',
       },
     },
+    {
+      files: ['**/wishlist*'],
+      rules: {
+        'react-hooks/exhaustive-deps': 1,
+        'react-hooks/rules-of-hooks': 1,
+      },
+    },
   ],
 };

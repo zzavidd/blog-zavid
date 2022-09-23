@@ -1,14 +1,17 @@
 import { faPen, faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import type { GetStaticProps } from 'next';
-import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import useSWR, { mutate } from 'swr';
 
+import { AppTheme } from 'classes/theme';
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import Clickable from 'componentsv2/Clickable';
 import Alert from 'constants/alert';
 import HandlersV2 from 'constants/handlersv2';
-import { SITE_TITLE } from 'constants/settings';
+import type { AppDispatch } from 'constants/reducers';
+import { AppActions } from 'constants/reducers';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
@@ -29,8 +32,11 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
     isFormDrawOpen: false,
     isRequestPending: false,
   });
-  const dispatch = Utils.createDispatch(setState);
 
+  const localDispatch = Utils.createDispatch(setState);
+  const appDispatch = useDispatch<AppDispatch>();
+
+  const { data: session, status } = useSession();
   const { data: wishlist, error } = useSWR<WishlistDAO.Response[]>(
     '/api/wishlist',
     Utils.request,
@@ -39,12 +45,24 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
     },
   );
 
+  useEffect(() => {
+    appDispatch(AppActions.setAppTheme(AppTheme.DARK));
+  }, [appDispatch]);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      appDispatch(
+        AppActions.setSnackMessage(`Signed in as ${session?.user?.email}.`),
+      );
+    }
+  }, [appDispatch, session?.user?.email, status]);
+
   /**
    * Submits the wishlist item.
    */
   async function submitWishlistItem() {
     try {
-      dispatch({ isRequestPending: true });
+      localDispatch({ isRequestPending: true });
       Validate.wishlistItem(state.wishlistItem);
 
       await Utils.request('/api/wishlist', {
@@ -53,11 +71,11 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
       });
       await mutate('/api/wishlist');
       Alert.success("You've successfully added a new wishlist item.");
-      dispatch({ isFormDrawOpen: false });
+      localDispatch({ isFormDrawOpen: false });
     } catch (e: any) {
       Alert.error(e.message);
     } finally {
-      dispatch({ isRequestPending: false });
+      localDispatch({ isRequestPending: false });
     }
   }
 
@@ -66,7 +84,7 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
    */
   async function updateWishlistItem() {
     try {
-      dispatch({ isRequestPending: true });
+      localDispatch({ isRequestPending: true });
       Validate.wishlistItem(state.wishlistItem);
 
       await Utils.request('/api/wishlist', {
@@ -78,11 +96,11 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
       });
       await mutate('/api/wishlist');
       Alert.success(`You've successfully edited '${state.wishlistItem.name}'.`);
-      dispatch({ isFormDrawOpen: false });
+      localDispatch({ isFormDrawOpen: false });
     } catch (e: any) {
       Alert.error(e.message);
     } finally {
-      dispatch({ isRequestPending: false });
+      localDispatch({ isRequestPending: false });
     }
   }
 
@@ -128,7 +146,7 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
                 </WL.FormSubmitButton>
               )}
               <WL.FormCancelButton
-                onClick={() => dispatch({ isFormDrawOpen: false })}>
+                onClick={() => localDispatch({ isFormDrawOpen: false })}>
                 Close
               </WL.FormCancelButton>
             </WL.FormFooter>
@@ -141,13 +159,13 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
               wishlist.map((wishlistItem) => {
                 const { id } = wishlistItem;
                 const onEditButtonClick = () =>
-                  dispatch({
+                  localDispatch({
                     isFormDrawOpen: true,
                     selectedWishlistItemId: id,
                     wishlistItem,
                   });
                 const onDeleteButtonClick = async () => {
-                  dispatch({
+                  localDispatch({
                     // isDeletePromptVisible: true,
                     selectedWishlistItemId: id,
                   });
@@ -206,7 +224,7 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
           <AdminLock>
             <WL.FloatingActionButton
               onClick={() =>
-                dispatch({
+                localDispatch({
                   isFormDrawOpen: true,
                   selectedWishlistItemId: null,
                   wishlistItem: WishlistStatic.initial(),
@@ -220,18 +238,6 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
       </WL.Container>
     </React.Fragment>
   );
-};
-
-export const getStaticProps: GetStaticProps<WishlistPageProps> = () => {
-  return {
-    props: {
-      pathDefinition: {
-        title: `Wishlist | ${SITE_TITLE}`,
-        description: 'Gifts from this list would taste as nectar to my soul...',
-        url: '/wishlist',
-      },
-    },
-  };
 };
 
 export default WishlistPage;

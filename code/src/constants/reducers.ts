@@ -17,11 +17,13 @@ import { AppTheme } from 'classes/theme';
 export interface AppState {
   appTheme: AppTheme;
   savedText: string;
+  snackMessages: string[];
 }
 
 const initialState: AppState = {
   appTheme: AppTheme.LIGHT,
   savedText: '',
+  snackMessages: [],
 };
 
 const slice = createSlice({
@@ -33,6 +35,12 @@ const slice = createSlice({
     },
     setAppTheme: (state, action: PayloadAction<AppTheme>) => {
       state.appTheme = action.payload;
+    },
+    setSnackMessage: (state, action: PayloadAction<string>) => {
+      state.snackMessages.push(action.payload);
+    },
+    clearSnackMessage: (state) => {
+      state.snackMessages.shift();
     },
   },
 });
@@ -56,7 +64,12 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 export namespace AppActions {
-  export const { saveInputText, setAppTheme } = slice.actions;
+  export const {
+    clearSnackMessage,
+    saveInputText,
+    setAppTheme,
+    setSnackMessage,
+  } = slice.actions;
 }
 
 export type AppDispatch = typeof store.dispatch;

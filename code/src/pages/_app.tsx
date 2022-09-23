@@ -7,12 +7,13 @@ import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import Script from 'next/script';
 import React, { useEffect } from 'react';
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import Snackbar from 'componentsv2/Snackbar';
 import Alert from 'constants/alert';
 import type { AppState } from 'constants/reducers';
-import { persistor, store } from 'constants/reducers';
+import { AppActions, persistor, store } from 'constants/reducers';
 import type { AppPropsWithLayout } from 'constants/types';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
 import 'styles/App.scss';
@@ -39,12 +40,22 @@ export default function App(props: AppProps) {
  * @returns The full page including the header and footer.
  */
 function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
-  const { appTheme } = useSelector((state: AppState) => state);
+  const { appTheme, snackMessages } = useSelector((state: AppState) => state);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.body.classList.add(`body-${appTheme}`);
     Alert.check();
   }, []);
+
+  useEffect(() => {
+    if (!snackMessages.length) return;
+
+    const timeout = setTimeout(() => {
+      dispatch(AppActions.clearSnackMessage());
+      clearTimeout(timeout);
+    }, 6000);
+  }, [snackMessages.length]);
 
   // Configure layouts for all child components;
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -55,6 +66,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
       <GoogleAnalyticsScripts />
       {ComponentWithLayout}
       <CookiePrompt />
+      <Snackbar />
     </React.Fragment>
   );
 }
