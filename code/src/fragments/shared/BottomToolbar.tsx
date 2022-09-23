@@ -7,7 +7,7 @@ import type { SelectProps } from 'components/form';
 import { Field, FieldRow, Select } from 'components/form';
 import { Toolbar as LayoutToolbar, ToolbarToggle } from 'components/layout';
 import { Icon, Responsive } from 'components/library';
-import type { PostFiltersOptions } from 'constants/reducers';
+import type * as ZBT from 'constants/types';
 import css from 'styles/pages/Posts.module.scss';
 
 const sortOptions = [
@@ -149,6 +149,6 @@ function FilterDropdown(props: SelectProps) {
 }
 
 interface ToolbarProps {
-  options: PostFiltersOptions;
+  options: ZBT.PostFiltersOptions;
   handleOptionSelection: React.ChangeEventHandler<HTMLSelectElement>;
 }

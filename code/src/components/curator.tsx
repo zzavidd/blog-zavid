@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { zString } from 'zavid-modules';
 
 import {
-  ThemeOption,
+  AppTheme,
   FilterThemeOption,
   FilterShapeOption,
   Theme,
@@ -26,7 +26,7 @@ export function Curator({
   closeFunction,
   visible,
 }: CuratorProps) {
-  const [contentTheme, setContentTheme] = useState(ThemeOption.DARK);
+  const [contentTheme, setContentTheme] = useState(AppTheme.DARK);
   const [filterTheme, setFilterTheme] = useState(FilterThemeOption.PURPLE);
   const [filterShape, setFilterShape] = useState(FilterShapeOption.SQUARE);
   const [imageSource, setImageSource] = useState('');

@@ -3,7 +3,7 @@ import type React from 'react';
 import type { Dispatch } from 'redux';
 
 import type { DateType } from 'components/form/datepicker';
-import { saveText } from 'constants/reducers';
+import { AppActions } from 'constants/reducers';
 
 import type { ReactHook } from './types';
 
@@ -43,7 +43,7 @@ export default function HandlersV2<T>(
 
   function textSave(event: TextChangeEvent, dispatch: Dispatch): void {
     text(event);
-    dispatch(saveText(event.target.value));
+    dispatch(AppActions.saveInputText(event.target.value));
   }
 
   function date(date: DateType, name = 'date'): void {

@@ -1,102 +1,62 @@
-import type { AnyAction } from 'redux';
-import { combineReducers, createStore } from 'redux';
-import { persistReducer, persistStore } from 'redux-persist';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import type { PostType, PostStatus } from 'classes/posts/PostDAO';
-import { ThemeOption } from 'classes/theme';
+import { AppTheme } from 'classes/theme';
 
-/**
- * ACTIONS.
- */
-
-export const setTheme = (theme: ThemeOption): AnyAction => ({
-  type: 'SET_THEME',
-  payload: theme,
-});
-
-export const updatePostFilterSettings = (
-  settings: PostFiltersOptions,
-): AnyAction => ({
-  type: 'UPDATE_POST_FILTER_SETTINGS',
-  payload: settings,
-});
-
-export const saveText = (text: string): AnyAction => ({
-  type: 'SAVE_TEXT',
-  payload: text,
-});
-
-/**
- * REDUCERS.
- */
-
-const themeReducer = (
-  state = ThemeOption.DARK,
-  { type, payload }: AnyAction,
-): string => {
-  switch (type) {
-    case 'SET_THEME':
-      return payload || state;
-    default:
-      return state;
-  }
-};
-
-const userReducer = (
-  state = { isAuthenticated: false },
-  { type, payload }: AnyAction,
-): UserState => {
-  switch (type) {
-    case 'SET_USER':
-      return payload || state;
-    case 'CLEAR_USER':
-    default:
-      return state;
-  }
-};
-
-const textReducer = (state = '', { type, payload }: AnyAction): string => {
-  switch (type) {
-    case 'SAVE_TEXT':
-      return payload || state;
-    default:
-      return state;
-  }
-};
-
-/**
- * STORE.
- */
-
-const config = {
-  key: 'root',
-  storage: storage,
-};
-
-const persistedReducer = persistReducer(
-  config,
-  combineReducers({
-    theme: themeReducer,
-    user: userReducer,
-    savedText: textReducer,
-  }),
-);
-
-export default function configureStore() {
-  const store = createStore(persistedReducer);
-  const persistor = persistStore(store);
-  return { store, persistor };
+export interface AppState {
+  appTheme: AppTheme;
+  savedText: string;
 }
 
-export interface PostFiltersOptions {
-  limit?: number;
-  field?: string;
-  order?: string;
-  type?: PostType | null;
-  status?: PostStatus;
+const initialState: AppState = {
+  appTheme: AppTheme.LIGHT,
+  savedText: '',
+};
+
+const slice = createSlice({
+  name: 'app',
+  initialState,
+  reducers: {
+    saveInputText: (state, action: PayloadAction<string>) => {
+      state.savedText = action.payload;
+    },
+    setAppTheme: (state, action: PayloadAction<AppTheme>) => {
+      state.appTheme = action.payload;
+    },
+  },
+});
+
+export const store = configureStore({
+  reducer: persistReducer(
+    {
+      key: 'root',
+      version: 1,
+      storage,
+    },
+    slice.reducer,
+  ),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+export const persistor = persistStore(store);
+
+export namespace AppActions {
+  export const { saveInputText, setAppTheme } = slice.actions;
 }
 
-interface UserState {
-  isAuthenticated: boolean;
-}
+export type AppDispatch = typeof store.dispatch;

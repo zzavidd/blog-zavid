@@ -2,6 +2,8 @@ import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import type { ReactElement, ReactNode } from 'react';
 
+import type { PostType, PostStatus } from 'classes/posts/PostDAO';
+
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
   IP
@@ -16,6 +18,16 @@ export type AppPropsWithLayout = AppProps & {
 export interface AppPageProps {
   pathDefinition: PathDefinition;
   pageProps?: Record<string, unknown>;
+}
+
+export type AppTheme = 'light' | 'dark';
+
+export interface PostFiltersOptions {
+  limit?: number;
+  field?: string;
+  order?: string;
+  type?: PostType | null;
+  status?: PostStatus;
 }
 
 export interface PathDefinition {
@@ -44,4 +56,3 @@ export interface EditButtonProps {
 }
 
 export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
-export type StateDispatch<T> = (state: Partial<T>) => void;

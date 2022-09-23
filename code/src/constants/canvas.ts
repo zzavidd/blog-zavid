@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 
-import type { FilterThemeOption, ThemeOption } from 'classes/theme';
+import type { FilterThemeOption, AppTheme } from 'classes/theme';
 import { FilterShape, FilterShapeOption, Theme } from 'classes/theme';
 import { DOMAIN } from 'constants/settings';
 
@@ -66,7 +66,7 @@ namespace Canvas {
     canvas: HTMLCanvasElement,
     content: HTMLDivElement,
     sourceTitle: string,
-    theme: ThemeOption,
+    theme: AppTheme,
     colour: FilterThemeOption,
     shape: FilterShapeOption,
     setImageSource: Dispatch<SetStateAction<string>>,

@@ -7,20 +7,17 @@ import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import Script from 'next/script';
 import React, { useEffect } from 'react';
-import type { RootStateOrAny } from 'react-redux';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { Theme } from 'classes/theme';
 import Alert from 'constants/alert';
-import configureStore, { setTheme } from 'constants/reducers';
+import type { AppState } from 'constants/reducers';
+import { persistor, store } from 'constants/reducers';
 import type { AppPropsWithLayout } from 'constants/types';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
 import 'styles/App.scss';
 
 library.add(fab, far, fas);
-
-const { store, persistor } = configureStore();
 
 export default function App(props: AppProps) {
   return (
@@ -42,21 +39,14 @@ export default function App(props: AppProps) {
  * @returns The full page including the header and footer.
  */
 function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
-  const dispatch = useDispatch();
-
-  const theme = useSelector(({ theme }: RootStateOrAny) => {
-    if (Theme.isValid(theme)) {
-      dispatch(setTheme(Theme.DARK));
-      return Theme.DARK;
-    }
-    return theme;
-  });
+  const { appTheme } = useSelector((state: AppState) => state);
 
   useEffect(() => {
-    document.body.classList.add(`body-${theme}`);
+    document.body.classList.add(`body-${appTheme}`);
     Alert.check();
   }, []);
 
+  // Configure layouts for all child components;
   const getLayout = Component.getLayout ?? ((page) => page);
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
 
