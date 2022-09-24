@@ -14,10 +14,12 @@ import storage from 'redux-persist/lib/storage';
 
 import { AppTheme } from 'classes/theme';
 
+import type * as ZBT from './types';
+
 export interface AppState {
   appTheme: AppTheme;
   savedText: string;
-  snackMessages: string[];
+  snackMessages: ZBT.SnackMessage[];
 }
 
 const initialState: AppState = {
@@ -36,11 +38,19 @@ const slice = createSlice({
     setAppTheme: (state, action: PayloadAction<AppTheme>) => {
       state.appTheme = action.payload;
     },
-    setSnackMessage: (state, action: PayloadAction<string>) => {
-      state.snackMessages.push(action.payload);
+    setSnackMessage: (state, action: PayloadAction<ZBT.SnackMessage>) => {
+      const { message, duration = 6000 } = action.payload;
+      state.snackMessages.push({
+        message,
+        duration,
+      });
     },
-    clearSnackMessage: (state) => {
-      state.snackMessages.shift();
+    clearSnackMessage: (state, action: PayloadAction<number>) => {
+      const index = action?.payload;
+      state.snackMessages.splice(index, 1);
+    },
+    clearAllSnackMessages: (state) => {
+      state.snackMessages = [];
     },
   },
 });
@@ -66,6 +76,7 @@ export const persistor = persistStore(store);
 export namespace AppActions {
   export const {
     clearSnackMessage,
+    clearAllSnackMessages,
     saveInputText,
     setAppTheme,
     setSnackMessage,

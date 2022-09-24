@@ -59,6 +59,20 @@ namespace WishlistAPI {
   export async function del({ id }: UpdateWishlistItemPayload): Promise<void> {
     await new WishlistMutationBuilder(knex).delete(id).build();
   }
+
+  export async function claim({
+    id,
+    reservee,
+  }: ClaimWishlistItemPayload): Promise<void> {
+    const wishlistItem = await getById(id);
+    await update({
+      id,
+      wishlistItem: {
+        ...wishlistItem,
+        reservees: [...wishlistItem.reservees, reservee],
+      },
+    });
+  }
 }
 
 export default WishlistAPI;
@@ -74,4 +88,9 @@ interface CreateWishlistItemPayload {
 interface UpdateWishlistItemPayload {
   id: number;
   wishlistItem: WishlistDAO.Response;
+}
+
+interface ClaimWishlistItemPayload {
+  id: number;
+  reservee: string;
 }

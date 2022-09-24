@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from 'next';
 
 // eslint-disable-next-line react/function-component-definition
-const AuthFallback: NextPage = () => {
+const Auth: NextPage = () => {
   return null;
 };
 
@@ -16,4 +16,4 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   };
 };
 
-export default AuthFallback;
+export default Auth;

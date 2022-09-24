@@ -49,12 +49,18 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   }, []);
 
   useEffect(() => {
-    if (!snackMessages.length) return;
+    const index = snackMessages.findIndex(
+      ({ duration }) => typeof duration === 'number',
+    );
+    if (index === -1) return;
 
-    const timeout = setTimeout(() => {
-      dispatch(AppActions.clearSnackMessage());
-      clearTimeout(timeout);
-    }, 6000);
+    const duration = snackMessages[index].duration;
+    if (typeof duration === 'number') {
+      const timeout = setTimeout(() => {
+        dispatch(AppActions.clearSnackMessage(index));
+        clearTimeout(timeout);
+      }, duration);
+    }
   }, [snackMessages.length]);
 
   // Configure layouts for all child components;

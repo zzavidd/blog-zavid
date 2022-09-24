@@ -1,5 +1,5 @@
 import { faPen, faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR, { mutate } from 'swr';
@@ -52,7 +52,9 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
   useEffect(() => {
     if (status === 'authenticated') {
       appDispatch(
-        AppActions.setSnackMessage(`Signed in as ${session?.user?.email}.`),
+        AppActions.setSnackMessage({
+          message: `Signed in as ${session?.user?.email}.`,
+        }),
       );
     }
   }, [appDispatch, session?.user?.email, status]);
@@ -118,6 +120,29 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
       Alert.success(
         `You've successfully deleted '${state.wishlistItem.name}'.`,
       );
+    } catch (e: any) {
+      Alert.error(e.message);
+    }
+  }
+
+  /**
+   * Claims an item by assigning a reservee to it.
+   * @param id The ID of the item to claim.
+   */
+  async function claimItem(id: number) {
+    try {
+      if (status !== 'authenticated' || !session) {
+        return signIn('google');
+      }
+
+      await Utils.request<WishlistDAO.Request>('/api/wishlist/claim', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id,
+          reservee: session.user?.email,
+        }),
+      });
+      await mutate('/api/wishlist');
     } catch (e: any) {
       Alert.error(e.message);
     }
@@ -208,11 +233,12 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
                       <WL.ItemQuantity>
                         Quantity Desired: {wishlistItem.quantity}
                       </WL.ItemQuantity>
+                      <p>Claimed by {wishlistItem.reservees[0]}</p>
                       <WL.ItemCellFooter>
                         <WL.ItemCellFooterButton onClick={visitLink}>
                           Visit link
                         </WL.ItemCellFooterButton>
-                        <WL.ItemCellFooterButton onClick={() => {}}>
+                        <WL.ItemCellFooterButton onClick={() => claimItem(id)}>
                           Claim
                         </WL.ItemCellFooterButton>
                       </WL.ItemCellFooter>
