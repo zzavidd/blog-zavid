@@ -1,6 +1,6 @@
 import { faPen, faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { signIn, useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR, { mutate } from 'swr';
 
@@ -9,6 +9,7 @@ import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import Clickable from 'componentsv2/Clickable';
 import Alert from 'constants/alert';
+import Contexts from 'constants/contexts';
 import HandlersV2 from 'constants/handlersv2';
 import type { AppDispatch } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
@@ -36,6 +37,8 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
   const localDispatch = Utils.createDispatch(setState);
   const appDispatch = useDispatch<AppDispatch>();
 
+  const Snacks = useContext(Contexts.Snacks);
+
   const { data: session, status } = useSession();
   const { data: wishlist, error } = useSWR<WishlistDAO.Response[]>(
     '/api/wishlist',
@@ -51,13 +54,12 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
 
   useEffect(() => {
     if (status === 'authenticated') {
-      appDispatch(
-        AppActions.setSnackMessage({
-          message: `Signed in as ${session?.user?.email}.`,
-        }),
-      );
+      Snacks.add({
+        message: `Signed in as ${session?.user?.email}.`,
+      });
     }
-  }, [appDispatch, session?.user?.email, status]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.user?.email, status]);
 
   /**
    * Submits the wishlist item.
@@ -152,6 +154,12 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
     <React.Fragment>
       <PageMetadata {...pathDefinition} />
       <WL.Container>
+        <button
+          onClick={() => {
+            void signOut();
+          }}>
+          Log out
+        </button>
         <AdminLock>
           <WL.Tray open={state.isFormDrawOpen}>
             <WishlistForm

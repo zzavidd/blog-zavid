@@ -1,18 +1,17 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useContext } from 'react';
 
-import type { AppState } from 'constants/reducers';
-import { AppActions } from 'constants/reducers';
+import Contexts from 'constants/contexts';
 import type * as ZBT from 'constants/types';
 import AppStyles from 'stylesv2/App.styles';
 
 import Clickable from './Clickable';
 
 export default function Snackbar() {
-  const { snackMessages } = useSelector((state: AppState) => state);
+  const { snacks } = useContext(Contexts.Snacks);
   return (
     <AppStyles.Snackbar>
-      {snackMessages.map((props, key) => {
+      {snacks.map((props, key) => {
         return <Snack {...props} index={key} key={props.message} />;
       })}
     </AppStyles.Snackbar>
@@ -20,10 +19,10 @@ export default function Snackbar() {
 }
 
 function Snack({ message, duration = 6000, index }: SnackProps) {
-  const dispatch = useDispatch();
+  const Snacks = useContext(Contexts.Snacks);
 
   function closeSnack() {
-    dispatch(AppActions.clearSnackMessage(index));
+    Snacks.remove(index);
   }
 
   return (
@@ -34,6 +33,6 @@ function Snack({ message, duration = 6000, index }: SnackProps) {
   );
 }
 
-interface SnackProps extends ZBT.SnackMessage {
+interface SnackProps extends ZBT.Snack {
   index: number;
 }

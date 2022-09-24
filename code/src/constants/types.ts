@@ -47,7 +47,7 @@ export enum QueryOrder {
   RANDOM = 'RANDOM',
 }
 
-export interface SnackMessage {
+export interface Snack {
   message: string;
   duration?: number | 'indefinite';
 }

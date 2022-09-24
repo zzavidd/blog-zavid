@@ -10,8 +10,8 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth',
-    signOut: '/auth',
-    error: '/auth',
+    // signOut: '/auth',
+    // error: '/auth',
   },
   providers: [
     GoogleProvider({
