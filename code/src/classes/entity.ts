@@ -1,6 +1,6 @@
 import type { PostType } from './posts/PostDAO';
 
-export interface EntityDAO {
+export interface EntityDAO extends Record<string, unknown> {
   id?: number;
 }
 

@@ -4,13 +4,6 @@ import type { ReactElement, ReactNode } from 'react';
 
 import type { PostType, PostStatus } from 'classes/posts/PostDAO';
 
-export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
-  P,
-  IP
-> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
-
 export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
@@ -60,4 +53,10 @@ export interface EditButtonProps {
   id: number;
 }
 
+export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
 export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;

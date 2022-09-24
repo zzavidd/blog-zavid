@@ -10,9 +10,11 @@ export class WishlistStatic {
     wishlistItem: WishlistDAO.Response,
   ): WishlistDAO.Response {
     try {
-      wishlistItem.reservees = JSON.parse(wishlistItem.reservees as string);
+      wishlistItem.reservees = JSON.parse(
+        wishlistItem.reservees as unknown as string,
+      );
     } catch {
-      wishlistItem.reservees = [];
+      wishlistItem.reservees = {};
     }
     return wishlistItem;
   }
@@ -29,7 +31,7 @@ export class WishlistStatic {
       quantity: 1,
       image: '',
       href: '',
-      reservees: [],
+      reservees: {},
     };
   }
 }

@@ -2,10 +2,12 @@ import {
   faLink,
   faPoundSign,
   faSearch,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
+import Clickable from 'componentsv2/Clickable';
 import Input from 'componentsv2/Input';
 import Alert from 'constants/alert';
 import type HandlersV2 from 'constants/handlersv2';
@@ -116,6 +118,29 @@ export default function WishlistForm(props: WishlistFormProps) {
             placeholder={'Add comments about this wishlist item...'}
             rows={2}
           />
+        </FORM.Field>
+      </FORM.FieldRow>
+      <FORM.FieldRow>
+        <FORM.Field>
+          <FORM.Label>Reservees:</FORM.Label>
+          {Object.keys(wishlistItem.reservees).length ? (
+            <ul>
+              {Object.entries(wishlistItem.reservees).map(
+                ([email, { anonymous }], key) => {
+                  return (
+                    <li key={key}>
+                      <span>{anonymous ? '[Anonymous]' : email}</span>
+                      <Clickable.Icon
+                        icon={faTimes}
+                        onClick={() => {}}></Clickable.Icon>
+                    </li>
+                  );
+                },
+              )}
+            </ul>
+          ) : (
+            <p>No reservees.</p>
+          )}
         </FORM.Field>
       </FORM.FieldRow>
       <FORM.FieldRow>

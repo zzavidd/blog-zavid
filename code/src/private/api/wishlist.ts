@@ -32,12 +32,7 @@ namespace WishlistAPI {
   export async function create({
     wishlistItem,
   }: CreateWishlistItemPayload): Promise<void> {
-    await new WishlistMutationBuilder(knex)
-      .insert({
-        ...wishlistItem,
-        reservees: JSON.stringify(wishlistItem.reservees),
-      })
-      .build();
+    await new WishlistMutationBuilder(knex).insert(wishlistItem).build();
   }
 
   export async function update({
@@ -45,13 +40,7 @@ namespace WishlistAPI {
     wishlistItem,
   }: UpdateWishlistItemPayload): Promise<void> {
     await new WishlistMutationBuilder(knex)
-      .update(
-        {
-          ...wishlistItem,
-          reservees: JSON.stringify(wishlistItem.reservees),
-        },
-        ['createTime'],
-      )
+      .update(wishlistItem, ['createTime'])
       .whereId(id)
       .build();
   }
@@ -65,11 +54,18 @@ namespace WishlistAPI {
     reservee,
   }: ClaimWishlistItemPayload): Promise<void> {
     const wishlistItem = await getById(id);
+    const { email, quantity, anonymous } = reservee;
     await update({
       id,
       wishlistItem: {
         ...wishlistItem,
-        reservees: [...wishlistItem.reservees, reservee],
+        reservees: {
+          ...wishlistItem.reservees,
+          [email]: {
+            quantity,
+            anonymous,
+          },
+        },
       },
     });
   }
@@ -92,5 +88,9 @@ interface UpdateWishlistItemPayload {
 
 interface ClaimWishlistItemPayload {
   id: number;
-  reservee: string;
+  reservee: {
+    email: string;
+    quantity: number;
+    anonymous: boolean;
+  };
 }

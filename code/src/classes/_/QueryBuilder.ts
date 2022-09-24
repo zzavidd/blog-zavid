@@ -93,6 +93,8 @@ export class MutationBuilder<
 
   public insert(input: Request): MutationBuilder<Request, Response> {
     if (!input) throw new Error(`No specified ${this.entity} to insert.`);
+    // TODO: Stop manual serialisation on other APIs
+    serializeInput(input);
     void this.query.insert(input);
     return this;
   }
@@ -102,6 +104,7 @@ export class MutationBuilder<
     removeProperties: (keyof Response)[] = [],
   ): MutationBuilder<Request, Response> {
     if (!input) throw new Error(`No specified ${this.entity} to update.`);
+    serializeInput(input);
     removeProperties.forEach((property) => {
       delete input[property];
     });
@@ -120,6 +123,15 @@ export class MutationBuilder<
     return this;
   }
 }
+
+function serializeInput(input: Record<string, unknown>) {
+  Object.entries(input).forEach(([prop, value]) => {
+    if (value && typeof value === 'object' && !(value instanceof Date)) {
+      input[prop] = JSON.stringify(value);
+    }
+  });
+}
+
 export interface QuerySort<T extends EntityDAO> {
   field?: keyof T;
   order?: string;

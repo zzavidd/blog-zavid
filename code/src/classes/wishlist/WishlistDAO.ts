@@ -8,7 +8,7 @@ namespace WishlistDAO {
     comments: string;
     image: string;
     href: string;
-    reservees: string | string[];
+    reservees: Reservees;
   }
 
   export interface Response extends Request {
@@ -16,5 +16,13 @@ namespace WishlistDAO {
     readonly createTime: Date;
   }
 }
+
+export type Reservees = Record<
+  string,
+  {
+    quantity: number;
+    anonymous: boolean;
+  }
+>;
 
 export default WishlistDAO;

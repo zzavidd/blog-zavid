@@ -241,7 +241,7 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
                       <WL.ItemQuantity>
                         Quantity Desired: {wishlistItem.quantity}
                       </WL.ItemQuantity>
-                      <p>Claimed by {wishlistItem.reservees[0]}</p>
+                      <p>Claimed by {Object.keys(wishlistItem.reservees)[0]}</p>
                       <WL.ItemCellFooter>
                         <WL.ItemCellFooterButton onClick={visitLink}>
                           Visit link
