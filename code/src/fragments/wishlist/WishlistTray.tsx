@@ -70,26 +70,26 @@ export default function WishlistTray() {
 
   return (
     <AdminLock>
-      <WL.Tray open={context.isFormDrawOpen}>
+      <WL.Tray.Container open={context.isFormDrawOpen}>
         <WishlistForm />
-        <WL.FormFooter>
+        <WL.Tray.FormFooter>
           {context.selectedWishlistItemId === null ? (
-            <WL.FormSubmitButton onClick={submitWishlistItem}>
+            <WL.Tray.FormSubmitButton onClick={submitWishlistItem}>
               {displayButtonText('Submit')}
-            </WL.FormSubmitButton>
+            </WL.Tray.FormSubmitButton>
           ) : (
-            <WL.FormSubmitButton
+            <WL.Tray.FormSubmitButton
               onClick={updateWishlistItem}
               disabled={!context.selectedWishlistItemId}>
               {displayButtonText('Update')}
-            </WL.FormSubmitButton>
+            </WL.Tray.FormSubmitButton>
           )}
-          <WL.FormCancelButton
+          <WL.Tray.FormCancelButton
             onClick={() => consign({ isFormDrawOpen: false })}>
             Close
-          </WL.FormCancelButton>
-        </WL.FormFooter>
-      </WL.Tray>
+          </WL.Tray.FormCancelButton>
+        </WL.Tray.FormFooter>
+      </WL.Tray.Container>
     </AdminLock>
   );
 }

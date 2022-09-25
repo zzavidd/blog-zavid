@@ -37,6 +37,14 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user?.email, status]);
 
+  function onAddButtonClick() {
+    dispatch({
+      isFormDrawOpen: true,
+      selectedWishlistItemId: null,
+      wishlistItem: WishlistStatic.initial(),
+    });
+  }
+
   return (
     <WishlistPageContext.Provider value={[state, setState]}>
       <PageMetadata {...pathDefinition} />
@@ -45,13 +53,7 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
         <WishlistGrid />
         <AdminLock>
           <WL.FloatingActionButton
-            onClick={() => {
-              dispatch({
-                isFormDrawOpen: true,
-                selectedWishlistItemId: null,
-                wishlistItem: WishlistStatic.initial(),
-              });
-            }}
+            onClick={onAddButtonClick}
             visible={!state.isFormDrawOpen}>
             <WL.FabIcon icon={faPlus} />
           </WL.FloatingActionButton>
