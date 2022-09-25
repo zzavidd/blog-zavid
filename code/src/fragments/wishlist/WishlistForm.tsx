@@ -4,26 +4,28 @@ import {
   faSearch,
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import Clickable from 'componentsv2/Clickable';
 import Input from 'componentsv2/Input';
 import Alert from 'constants/alert';
-import type HandlersV2 from 'constants/handlersv2';
+import HandlersV2 from 'constants/handlersv2';
 import { DOMAIN } from 'constants/settings';
 import Utils from 'constants/utils';
-import type { WishlistPageState } from 'pages/wishlist';
 import CPX from 'stylesv2/Components.styles';
 import FORM from 'stylesv2/Form.styles';
 
-export default function WishlistForm(props: WishlistFormProps) {
+import type { WishlistPageState } from './WishlistContext';
+import { WishlistPageContext } from './WishlistContext';
+
+export default function WishlistForm() {
   const [state, setState] = useState<WishlistFormState>({
     imageUrls: [],
     areImagesLoading: false,
   });
-  const { wishlistItem, handlers: Handlers } = props;
+  const [context, setContext] = useContext(WishlistPageContext);
 
+  const Handlers = HandlersV2(setContext, 'wishlistItem');
   const dispatch = Utils.createDispatch(setState);
 
   /**
@@ -32,7 +34,7 @@ export default function WishlistForm(props: WishlistFormProps) {
   async function runImageScrape() {
     dispatch({ areImagesLoading: true });
     const url = new URL('/api/wishlist/images', DOMAIN);
-    url.searchParams.append('url', wishlistItem.href);
+    url.searchParams.append('url', context.wishlistItem.href);
     try {
       const { images } = await Utils.request<{ images: string[] }>(url.href);
       dispatch({ imageUrls: images });
@@ -56,7 +58,7 @@ export default function WishlistForm(props: WishlistFormProps) {
           <FORM.Label>Name:</FORM.Label>
           <Input.Text
             name={'name'}
-            value={wishlistItem.name}
+            value={context.wishlistItem.name}
             onChange={Handlers.text}
             placeholder={'Enter the name'}
           />
@@ -67,7 +69,7 @@ export default function WishlistForm(props: WishlistFormProps) {
           <FORM.Label>Price:</FORM.Label>
           <Input.Number
             name={'price'}
-            value={wishlistItem.price}
+            value={context.wishlistItem.price}
             onChange={Handlers.number}
             step={0.01}
             leadingIcon={faPoundSign}
@@ -77,7 +79,7 @@ export default function WishlistForm(props: WishlistFormProps) {
           <FORM.Label>Quantity:</FORM.Label>
           <Input.Number
             name={'quantity'}
-            value={wishlistItem.quantity}
+            value={context.wishlistItem.quantity}
             onChange={Handlers.number}
             min={1}
           />
@@ -88,7 +90,7 @@ export default function WishlistForm(props: WishlistFormProps) {
           <FORM.Label>Reference Link:</FORM.Label>
           <Input.Url
             name={'href'}
-            value={wishlistItem.href}
+            value={context.wishlistItem.href}
             onChange={Handlers.text}
             onKeyDown={onEnterKeyPress}
             leadingIcon={faLink}
@@ -102,7 +104,7 @@ export default function WishlistForm(props: WishlistFormProps) {
           <FORM.Label>Image URL:</FORM.Label>
           <Input.Url
             name={'image'}
-            value={wishlistItem.image}
+            value={context.wishlistItem.image}
             onChange={Handlers.text}
             leadingIcon={faLink}
           />
@@ -113,7 +115,7 @@ export default function WishlistForm(props: WishlistFormProps) {
           <FORM.Label>Comments:</FORM.Label>
           <FORM.Input.Paragraph
             name={'comments'}
-            value={wishlistItem.comments}
+            value={context.wishlistItem.comments}
             onChange={Handlers.text}
             placeholder={'Add comments about this wishlist item...'}
             rows={2}
@@ -123,9 +125,9 @@ export default function WishlistForm(props: WishlistFormProps) {
       <FORM.FieldRow>
         <FORM.Field>
           <FORM.Label>Reservees:</FORM.Label>
-          {Object.keys(wishlistItem.reservees).length ? (
+          {Object.keys(context.wishlistItem.reservees).length ? (
             <ul>
-              {Object.entries(wishlistItem.reservees).map(
+              {Object.entries(context.wishlistItem.reservees).map(
                 ([email, { anonymous }], key) => {
                   return (
                     <li key={key}>
@@ -184,11 +186,6 @@ function ScrapedImageGrid({
       })}
     </div>
   );
-}
-
-interface WishlistFormProps {
-  wishlistItem: WishlistDAO.Request;
-  handlers: ReturnType<typeof HandlersV2<WishlistPageState>>;
 }
 
 interface WishlistFormState {

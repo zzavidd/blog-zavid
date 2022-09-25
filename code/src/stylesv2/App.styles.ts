@@ -21,6 +21,7 @@ namespace AppStyles {
     flex-direction: column;
     gap: 0.2em;
     left: 2%;
+    pointer-events: none;
     position: fixed;
     z-index: 2;
   `;
@@ -42,6 +43,7 @@ namespace AppStyles {
     font-size: 0.9em;
     gap: 0.4em;
     padding: 1em;
+    pointer-events: auto;
     transition: all 0.3s;
   `;
 }

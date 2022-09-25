@@ -12,7 +12,7 @@ export default function Snackbar() {
   return (
     <AppStyles.Snackbar>
       {snacks.map((props, key) => {
-        return <Snack {...props} index={key} key={props.message} />;
+        return <Snack {...props} index={key} key={key} />;
       })}
     </AppStyles.Snackbar>
   );

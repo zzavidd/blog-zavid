@@ -60,3 +60,4 @@ export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   getLayout?: (page: ReactElement) => ReactNode;
 };
 export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
+export type LocalDispatch<T> = (state: Partial<T>) => void;
