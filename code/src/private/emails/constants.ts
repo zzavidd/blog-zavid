@@ -1,6 +1,5 @@
 import getConfig from 'next/config';
 import nodemailer from 'nodemailer';
-import { v4 as uuidv4 } from 'uuid';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -32,12 +31,6 @@ export const htmlToTextOptions = {
   wordwrap: 80,
 };
 
-/** The email address of the recipient in development. */
-export const testRecipient: TestRecipient = {
-  email: process.env.ETHEREAL_EMAIL!,
-  token: uuidv4(),
-};
-
 /** Initialise the mail transporter */
 export const transporter = nodemailer.createTransport({
   host: process.env[isProd ? 'EMAIL_HOST' : 'ETHEREAL_HOST'],
@@ -61,10 +54,5 @@ export const transporter = nodemailer.createTransport({
 export const typeToSubscription: SubscriptionType = {
   Reverie: 'Reveries',
 };
-
-interface TestRecipient {
-  email: string;
-  token: string;
-}
 
 type SubscriptionType = { [key in PostType]?: string };
