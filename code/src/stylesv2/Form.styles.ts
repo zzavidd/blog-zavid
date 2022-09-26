@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FlattenSimpleInterpolation } from 'styled-components';
 import styled, { createGlobalStyle, css } from 'styled-components';
 
@@ -46,6 +47,17 @@ namespace FORM {
   `;
 
   export namespace Date {
+    export const Container = styled.div`
+      align-items: center;
+      border-bottom: 1px solid ${COLOR.WHITE};
+      display: flex;
+      padding-block: 0.5em;
+    `;
+
+    export const LeadingIcon = styled(FontAwesomeIcon)`
+      margin-right: 0.5em;
+    `;
+
     export const ReactDatepickerGlobalStyle = createGlobalStyle`
       .react-datepicker,
       .react-datepicker__header,
@@ -60,6 +72,10 @@ namespace FORM {
       .react-datepicker__day--disabled,
       .react-datepicker__day--outside-month {
         color: #808080;
+      }
+
+      .react-dateinput {
+        ${DefaultStyle}
       }
     `;
   }

@@ -1,6 +1,5 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
-import { format } from 'date-fns';
 import React, { useMemo } from 'react';
 import type { ReactDatePickerProps } from 'react-datepicker';
 import ReactDatePicker from 'react-datepicker';
@@ -75,39 +74,23 @@ namespace Input {
    * @param props The date input props.
    * @returns T
    */
-  export function DatePicker({
-    name,
-    selected,
-    onChange,
-    ...props
-  }: DatePickerProps) {
-    const value = useMemo(() => {
-      if (!selected) return '';
-      return format(selected, 'dd-mm-yyyy');
-    }, [selected]);
-
+  export function DatePicker({ name, onChange, ...props }: DatePickerProps) {
     return (
-      <React.Fragment>
+      <FORM.Date.Container>
         <FORM.Date.ReactDatepickerGlobalStyle />
+        <FORM.Date.LeadingIcon icon={faCalendar} />
         <ReactDatePicker
-          selected={selected}
-          dateFormat={props.dateFormat || 'dd-MM-yyyy'}
+          {...props}
           onChange={(date) => onChange(date as Date, name)}
+          dateFormat={props.dateFormat || 'dd-MM-yyyy'}
           fixedHeight={true}
           placeholderText={'Select a date...'}
-          popperClassName={'react-datepicker'}
           showPopperArrow={false}
           todayButton={'Today'}
-          customInput={
-            <Input.Text
-              value={value}
-              leadingIcon={faCalendar}
-              readOnly={true}
-            />
-          }
-          {...props}
+          className={'react-dateinput'}
+          popperClassName={'react-datepicker'}
         />
-      </React.Fragment>
+      </FORM.Date.Container>
     );
   }
 }
