@@ -1,4 +1,4 @@
-import type WishlistDAO from './WishlistDAO';
+import WishlistDAO from './WishlistDAO';
 
 export class WishlistStatic {
   /**
@@ -27,11 +27,13 @@ export class WishlistStatic {
     return {
       name: '',
       price: 0,
-      comments: '',
       quantity: 1,
+      visibility: WishlistDAO.Visibility.PRIVATE,
+      comments: '',
       image: '',
       href: '',
       reservees: {},
+      purchaseDate: null,
     };
   }
 }

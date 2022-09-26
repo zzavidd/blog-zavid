@@ -3,15 +3,13 @@ import styled, { keyframes, css } from 'styled-components';
 import { COLOR } from 'constants/styling';
 
 const fadeInOut = keyframes`
-  0% {opacity: 0}
-  16% {opacity: 0}
-  25% {opacity: 1}
-  91% {opacity: 1}
-  100% {opacity: 0}
+  0%, 16% {opacity: 0; pointer-events: auto;}
+  25%, 91% {opacity: 1; pointer-events: auto;}
+  100% {opacity: 0; pointer-events: none;}
 `;
 const fadeIn = keyframes`
-  0% {opacity: 0}
-  100% {opacity: 1}
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 `;
 
 namespace AppStyles {

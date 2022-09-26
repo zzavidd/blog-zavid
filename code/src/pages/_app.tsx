@@ -7,6 +7,7 @@ import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import Script from 'next/script';
 import React, { useEffect, useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 

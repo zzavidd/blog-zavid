@@ -3,21 +3,28 @@ import type { EntityDAO } from 'classes/entity';
 namespace WishlistDAO {
   export interface Request extends EntityDAO {
     name: string;
-    quantity: number;
     price: number;
-    comments: string;
+    quantity: number;
+    visibility: Visibility;
     image: string;
     href: string;
+    comments: string;
     reservees: Reservees;
+    purchaseDate: Date | string | null;
   }
 
   export interface Response extends Request {
     readonly id: number;
     readonly createTime: Date;
   }
+
+  export enum Visibility {
+    PRIVATE = 'PRIVATE',
+    PUBLIC = 'PUBLIC',
+  }
 }
 
-export type Reservees = Record<
+type Reservees = Record<
   string,
   {
     quantity: number;

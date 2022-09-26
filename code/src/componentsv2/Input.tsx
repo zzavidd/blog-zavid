@@ -1,16 +1,30 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { format } from 'date-fns';
 import React, { useMemo } from 'react';
+import type { ReactDatePickerProps } from 'react-datepicker';
+import ReactDatePicker from 'react-datepicker';
 
 import FORM from 'stylesv2/Form.styles';
 
 import Clickable from './Clickable';
 
 namespace Input {
-  export function Text(props: IInputProps) {
+  /**
+   * For text input.
+   * @param props The input props.
+   * @returns The component.
+   */
+  export function Text(props: InputProps) {
     return <IInput {...props} type={'text'} />;
   }
 
-  export function Number(props: IInputProps) {
+  /**
+   * For numerical input.
+   * @param props The input props.
+   * @returns The component.
+   */
+  export function Number(props: InputProps) {
     const value = useMemo(() => {
       return parseFloat((props.value as string) || '0').toString();
     }, [props.value]);
@@ -19,7 +33,12 @@ namespace Input {
     );
   }
 
-  export function Url(props: IInputProps) {
+  /**
+   * For URL inputs.
+   * @param props The input props.
+   * @returns The component.
+   */
+  export function Url(props: InputProps) {
     return (
       <IInput
         {...props}
@@ -29,9 +48,71 @@ namespace Input {
       />
     );
   }
+
+  /**
+   * Implementation of selection input.
+   * @param props The select props.
+   * @returns The component.
+   */
+  export function Select({ options, ...props }: SelectProps) {
+    return (
+      <FORM.Select {...props}>
+        {options.map((option) => {
+          const label = typeof option === 'object' ? option.label : option;
+          const value = typeof option === 'object' ? option.value : option;
+          return (
+            <option value={value} key={value}>
+              {label}
+            </option>
+          );
+        })}
+      </FORM.Select>
+    );
+  }
+
+  /**
+   * Implementation for date input.
+   * @param props The date input props.
+   * @returns T
+   */
+  export function DatePicker({
+    name,
+    selected,
+    onChange,
+    ...props
+  }: DatePickerProps) {
+    const value = useMemo(() => {
+      if (!selected) return '';
+      return format(selected, 'dd-mm-yyyy');
+    }, [selected]);
+
+    return (
+      <React.Fragment>
+        <FORM.Date.ReactDatepickerGlobalStyle />
+        <ReactDatePicker
+          selected={selected}
+          dateFormat={props.dateFormat || 'dd-MM-yyyy'}
+          onChange={(date) => onChange(date as Date, name)}
+          fixedHeight={true}
+          placeholderText={'Select a date...'}
+          popperClassName={'react-datepicker'}
+          showPopperArrow={false}
+          todayButton={'Today'}
+          customInput={
+            <Input.Text
+              value={value}
+              leadingIcon={faCalendar}
+              readOnly={true}
+            />
+          }
+          {...props}
+        />
+      </React.Fragment>
+    );
+  }
 }
 
-function IInput(props: IInputProps) {
+function IInput(props: InputProps) {
   return (
     <FORM.Input.Container>
       {props.leadingIcon && (
@@ -57,9 +138,18 @@ function IInput(props: IInputProps) {
 
 export default Input;
 
-interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   leadingIcon?: IconDefinition;
   leadingIconAction?: () => void;
   trailingIcon?: IconDefinition;
   trailingIconAction?: () => void;
+}
+
+interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  options: string[] | { label: string; value: string }[];
+}
+
+interface DatePickerProps extends Omit<ReactDatePickerProps, 'onChange'> {
+  name: string;
+  onChange: (date: Date | null, name?: string) => void;
 }

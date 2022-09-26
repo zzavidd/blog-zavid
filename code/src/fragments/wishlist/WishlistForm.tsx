@@ -1,4 +1,5 @@
 import {
+  faHashtag,
   faLink,
   faPoundSign,
   faSearch,
@@ -6,6 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import React, { useContext, useState } from 'react';
 
+import WishlistDAO from 'classes/wishlist/WishlistDAO';
 import Clickable from 'componentsv2/Clickable';
 import Input from 'componentsv2/Input';
 import Alert from 'constants/alert';
@@ -24,6 +26,7 @@ export default function WishlistForm() {
     areImagesLoading: false,
   });
   const [context, setContext] = useContext(WishlistPageContext);
+  const consign = Utils.createDispatch(setContext);
 
   const Handlers = HandlersV2(setContext, 'wishlistItem');
   const dispatch = Utils.createDispatch(setState);
@@ -65,7 +68,7 @@ export default function WishlistForm() {
         </FORM.Field>
       </FORM.FieldRow>
       <FORM.FieldRow>
-        <FORM.Field>
+        <FORM.Field flex={3}>
           <FORM.Label>Price:</FORM.Label>
           <Input.Number
             name={'price'}
@@ -75,13 +78,23 @@ export default function WishlistForm() {
             leadingIcon={faPoundSign}
           />
         </FORM.Field>
-        <FORM.Field>
+        <FORM.Field flex={4}>
           <FORM.Label>Quantity:</FORM.Label>
           <Input.Number
             name={'quantity'}
             value={context.wishlistItem.quantity}
             onChange={Handlers.number}
-            min={1}
+            min={0}
+            leadingIcon={faHashtag}
+          />
+        </FORM.Field>
+        <FORM.Field flex={5}>
+          <FORM.Label>Visibility:</FORM.Label>
+          <Input.Select
+            name={'visibility'}
+            options={Object.values(WishlistDAO.Visibility)}
+            value={context.wishlistItem.visibility}
+            onChange={Handlers.select}
           />
         </FORM.Field>
       </FORM.FieldRow>
@@ -134,7 +147,19 @@ export default function WishlistForm() {
                       <span>{anonymous ? '[Anonymous]' : email}</span>
                       <Clickable.Icon
                         icon={faTimes}
-                        onClick={() => {}}></Clickable.Icon>
+                        onClick={() => {
+                          const reservees = {
+                            ...context.wishlistItem.reservees,
+                          };
+                          delete reservees[email];
+                          consign({
+                            wishlistItem: {
+                              ...context.wishlistItem,
+                              reservees,
+                            },
+                          });
+                        }}
+                      />
                     </li>
                   );
                 },
@@ -143,6 +168,19 @@ export default function WishlistForm() {
           ) : (
             <p>No reservees.</p>
           )}
+        </FORM.Field>
+        <FORM.Field>
+          <FORM.Label>Purchase Date:</FORM.Label>
+          <Input.DatePicker
+            name={'purchaseDate'}
+            selected={
+              context.wishlistItem.purchaseDate
+                ? new Date(context.wishlistItem.purchaseDate)
+                : null
+            }
+            onChange={Handlers.date}
+            maxDate={new Date()}
+          />
         </FORM.Field>
       </FORM.FieldRow>
       <FORM.FieldRow>

@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import type { QuerySort } from 'classes/_/QueryBuilder';
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import {
@@ -32,7 +34,14 @@ namespace WishlistAPI {
   export async function create({
     wishlistItem,
   }: CreateWishlistItemPayload): Promise<void> {
-    await new WishlistMutationBuilder(knex).insert(wishlistItem).build();
+    await new WishlistMutationBuilder(knex)
+      .insert({
+        ...wishlistItem,
+        purchaseDate: wishlistItem.purchaseDate
+          ? format(new Date(wishlistItem.purchaseDate), 'yyyy-MM-dd')
+          : null,
+      })
+      .build();
   }
 
   export async function update({
@@ -40,7 +49,15 @@ namespace WishlistAPI {
     wishlistItem,
   }: UpdateWishlistItemPayload): Promise<void> {
     await new WishlistMutationBuilder(knex)
-      .update(wishlistItem, ['createTime'])
+      .update(
+        {
+          ...wishlistItem,
+          purchaseDate: wishlistItem.purchaseDate
+            ? format(new Date(wishlistItem.purchaseDate), 'yyyy-MM-dd')
+            : null,
+        },
+        ['createTime'],
+      )
       .whereId(id)
       .build();
   }
