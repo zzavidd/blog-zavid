@@ -1,7 +1,6 @@
-import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
+import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
@@ -10,12 +9,12 @@ import hooks from 'constants/handlers';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import SubscriberForm, {
   buildPayload,
 } from 'fragments/subscribers/SubscriberForm';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscriberAdd: NextPageWithLayout<SubscriberAddProps> = ({
@@ -65,7 +64,7 @@ const SubscriberAdd: NextPageWithLayout<SubscriberAddProps> = ({
   }
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <SubscriberForm
         subscriber={clientSubscriber}
@@ -75,23 +74,11 @@ const SubscriberAdd: NextPageWithLayout<SubscriberAddProps> = ({
         cancelFunction={returnToAdmin}
         isRequestPending={isRequestPending}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  SubscriberAddProps
-> = async ({ req, res }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
+export const getStaticProps: GetStaticProps<SubscriberAddProps> = () => {
   return {
     props: {
       pathDefinition: {

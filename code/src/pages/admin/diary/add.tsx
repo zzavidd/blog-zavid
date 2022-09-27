@@ -1,7 +1,6 @@
 import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatus } from 'classes/diary/DiaryDAO';
@@ -12,10 +11,10 @@ import hooks from 'constants/handlers';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import AdminGateway from 'fragments/AdminGateway';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import DiaryAPI from 'private/api/diary';
 
 // eslint-disable-next-line react/function-component-definition
@@ -75,7 +74,7 @@ const DiaryEntryAdd: NextPageWithLayout<DiaryEntryAddProps> = ({
     : submitDiaryEntry;
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <DiaryEntryForm
         diaryEntry={diaryEntry}
@@ -94,23 +93,13 @@ const DiaryEntryAdd: NextPageWithLayout<DiaryEntryAddProps> = ({
         confirmText={'Confirm'}
         closeFunction={() => setPublishModalVisibility(false)}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryAddProps
-> = async ({ req, res }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
+> = async () => {
   const latestDiaryEntry = await DiaryAPI.getLatest();
   return {
     props: {

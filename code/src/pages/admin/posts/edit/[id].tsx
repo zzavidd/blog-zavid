@@ -1,7 +1,6 @@
 import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { URLBuilder } from 'classes/_/URLBuilder';
 import type {
@@ -17,10 +16,10 @@ import { DOMAIN } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import PostAPI from 'private/api/posts';
 import SSR from 'private/ssr';
 
@@ -91,7 +90,7 @@ const PostEdit: NextPageWithLayout<PostEditProps> = ({
   };
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <PostForm
         post={clientPost}
@@ -103,25 +102,13 @@ const PostEdit: NextPageWithLayout<PostEditProps> = ({
         cancelFunction={returnToPostAdmin}
         isRequestPending={isRequestPending}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<PostEditProps> = async ({
   query,
-  req,
-  res,
 }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
   const domains = await PostAPI.getDomains();
   const id = parseInt(query.id as string);
   const post = JSON.parse(await SSR.Posts.getById(id));

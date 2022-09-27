@@ -1,7 +1,6 @@
 import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import type { PageDAO } from 'classes/pages/PageDAO';
 import Alert, { AlertType } from 'constants/alert';
@@ -9,10 +8,10 @@ import hooks from 'constants/handlers';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PageForm, { buildPayload } from 'fragments/pages/PageForm';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
@@ -54,7 +53,7 @@ const PageEdit: NextPageWithLayout<PageEditProps> = ({
   }
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <PageForm
         page={clientPage}
@@ -64,25 +63,13 @@ const PageEdit: NextPageWithLayout<PageEditProps> = ({
         cancelFunction={returnToPageAdmin}
         isRequestPending={isRequestPending}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<PageEditProps> = async ({
   query,
-  req,
-  res,
 }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
   const page = JSON.parse(
     await SSR.Pages.getById(parseInt(query.id as string)),
   );

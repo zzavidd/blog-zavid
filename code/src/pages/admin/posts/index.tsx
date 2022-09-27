@@ -1,5 +1,4 @@
 import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { zText } from 'zavid-modules';
@@ -28,10 +27,10 @@ import type {
   ReactHook,
 } from 'constants/types';
 import Utils from 'constants/utils';
+import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import BottomToolbar from 'fragments/shared/BottomToolbar';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 import css from 'styles/pages/Posts.module.scss';
 
@@ -77,7 +76,7 @@ const PostsAdmin: NextPageWithLayout<PostsAdminProps> = ({
   }
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <Spacer>
         <Tabler<9>
@@ -160,7 +159,7 @@ const PostsAdmin: NextPageWithLayout<PostsAdminProps> = ({
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
@@ -221,19 +220,7 @@ function DeleteButton({
 
 export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async ({
   query,
-  req,
-  res,
 }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
   const filterOptions = query as Record<string, string>;
   const {
     limit,

@@ -1,6 +1,5 @@
 import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { zDate, zString } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
@@ -12,10 +11,10 @@ import { DOMAIN } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import AdminGateway from 'fragments/AdminGateway';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
@@ -69,7 +68,7 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
     : updateDiaryEntry;
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <DiaryEntryForm
         diaryEntry={clientDiaryEntry}
@@ -88,7 +87,7 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
         confirmText={'Confirm'}
         closeFunction={() => setPublishModalVisibility(false)}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
@@ -107,17 +106,7 @@ function returnAfterUpdate(entryNumber: number) {
 
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryEditProps
-> = async ({ query, req, res }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
+> = async ({ query }) => {
   const id = parseInt(query.id as string);
   const diaryEntry = await SSR.Diary.getById(id);
   return {

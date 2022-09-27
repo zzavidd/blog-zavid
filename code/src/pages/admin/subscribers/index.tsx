@@ -1,5 +1,4 @@
 import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -25,9 +24,9 @@ import type {
 } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Utils from 'constants/utils';
+import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
@@ -68,7 +67,7 @@ const SubscribersAdmin: NextPageWithLayout<SubscribersAdminProps> = ({
   }
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <Spacer>
         <Tabler<7>
@@ -141,7 +140,7 @@ const SubscribersAdmin: NextPageWithLayout<SubscribersAdminProps> = ({
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
@@ -183,17 +182,7 @@ function DeleteButton({
 
 export const getServerSideProps: GetServerSideProps<
   SubscribersAdminProps
-> = async ({ req, res }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
+> = async () => {
   const subscribers = JSON.parse(
     await SSR.Subscribers.getAll({
       sort: {
