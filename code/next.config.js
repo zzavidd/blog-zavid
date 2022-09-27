@@ -1,10 +1,6 @@
-const NextBunderAnalyzer = require('@next/bundle-analyzer');
 const fs = require('fs');
 
 const dkimPath = `${__dirname}/dkim.key`;
-const withBundleAnalyzer = NextBunderAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
 
 let dkimPrivateKey = null;
 if (fs.existsSync(dkimPath)) {
@@ -12,13 +8,14 @@ if (fs.existsSync(dkimPath)) {
 }
 
 /** @type {import('next').NextConfig} */
-module.exports = withBundleAnalyzer({
+module.exports = {
   compiler: {
     styledComponents: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
+  poweredByHeader: false,
   reactStrictMode: true,
   serverRuntimeConfig: {
     dkimPrivateKey,
@@ -27,4 +24,4 @@ module.exports = withBundleAnalyzer({
   typescript: {
     ignoreBuildErrors: true,
   },
-});
+};
