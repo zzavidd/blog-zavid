@@ -1,6 +1,6 @@
 import {
   faHashtag,
-  faImage,
+  faImages,
   faLink,
   faPoundSign,
   faTimes,
@@ -73,7 +73,7 @@ export default function WishlistForm() {
             name={'href'}
             value={context.wishlistItem.href}
             onChange={Handlers.text}
-            leadingIcon={faImage}
+            leadingIcon={faLink}
           />
         </FORM.Field>
       </FORM.FieldRow>
@@ -84,7 +84,7 @@ export default function WishlistForm() {
             name={'image'}
             value={context.wishlistItem.image}
             onChange={Handlers.text}
-            leadingIcon={faLink}
+            leadingIcon={faImages}
           />
         </FORM.Field>
       </FORM.FieldRow>

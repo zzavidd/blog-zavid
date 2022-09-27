@@ -93,8 +93,7 @@ export class MutationBuilder<
 
   public insert(input: Request): MutationBuilder<Request, Response> {
     if (!input) throw new Error(`No specified ${this.entity} to insert.`);
-    // TODO: Stop manual serialisation on other APIs
-    serializeInput(input);
+    serializeInput(input as Record<string, unknown>);
     void this.query.insert(input);
     return this;
   }
