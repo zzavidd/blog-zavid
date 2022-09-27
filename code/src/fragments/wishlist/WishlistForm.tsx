@@ -137,6 +137,35 @@ export default function WishlistForm() {
       </FORM.FieldRow>
       <FORM.FieldRow>
         <FORM.Field>
+          <FORM.Label>Priority:</FORM.Label>
+          <Input.Select
+            name={'priority'}
+            options={Object.entries(WishlistDAO.Priority)
+              .filter(([key]) => isNaN(Number(key)))
+              .map(([key, value]) => ({
+                label: key,
+                value: String(value),
+              }))}
+            value={context.wishlistItem.priority}
+            onChange={Handlers.select}
+          />
+        </FORM.Field>
+        <FORM.Field>
+          <FORM.Label>Purchase Date:</FORM.Label>
+          <Input.DatePicker
+            name={'purchaseDate'}
+            selected={
+              context.wishlistItem.purchaseDate
+                ? new Date(context.wishlistItem.purchaseDate)
+                : null
+            }
+            onChange={Handlers.date}
+            maxDate={new Date()}
+          />
+        </FORM.Field>
+      </FORM.FieldRow>
+      <FORM.FieldRow>
+        <FORM.Field>
           <FORM.Label>Reservees:</FORM.Label>
           {Object.keys(context.wishlistItem.reservees).length ? (
             <ul>
@@ -168,19 +197,6 @@ export default function WishlistForm() {
           ) : (
             <p>No reservees.</p>
           )}
-        </FORM.Field>
-        <FORM.Field>
-          <FORM.Label>Purchase Date:</FORM.Label>
-          <Input.DatePicker
-            name={'purchaseDate'}
-            selected={
-              context.wishlistItem.purchaseDate
-                ? new Date(context.wishlistItem.purchaseDate)
-                : null
-            }
-            onChange={Handlers.date}
-            maxDate={new Date()}
-          />
         </FORM.Field>
       </FORM.FieldRow>
       <FORM.FieldRow>

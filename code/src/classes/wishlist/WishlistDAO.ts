@@ -6,6 +6,7 @@ namespace WishlistDAO {
     price: number;
     quantity: number;
     visibility: Visibility;
+    priority: Priority;
     image: string;
     href: string;
     comments: string;
@@ -21,6 +22,12 @@ namespace WishlistDAO {
   export enum Visibility {
     PRIVATE = 'PRIVATE',
     PUBLIC = 'PUBLIC',
+  }
+
+  export enum Priority {
+    LOW = 1,
+    MEDIUM = 2,
+    HIGH = 3,
   }
 }
 

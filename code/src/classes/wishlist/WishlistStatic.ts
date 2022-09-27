@@ -29,6 +29,7 @@ export class WishlistStatic {
       price: 0,
       quantity: 1,
       visibility: WishlistDAO.Visibility.PRIVATE,
+      priority: WishlistDAO.Priority.LOW,
       comments: '',
       image: '',
       href: '',
