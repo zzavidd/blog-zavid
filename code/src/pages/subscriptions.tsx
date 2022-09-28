@@ -47,14 +47,11 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
           .build(),
       };
 
-      const res = await Utils.request('/api/subscribers', {
+      await Utils.request('/api/subscribers', {
         method: 'PUT',
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        throw new Error(await res.text());
-      }
       Alert.success(
         "You've successfully updated your subscription preferences.",
       );
@@ -65,14 +62,11 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
 
   async function unsubscribe() {
     try {
-      const res = await Utils.request('/api/subscribers', {
+      await Utils.request('/api/subscribers', {
         method: 'DELETE',
         body: JSON.stringify({ id: subscriber.id }),
       });
 
-      if (!res.ok) {
-        throw new Error(await res.text());
-      }
       Alert.set({
         type: AlertType.SUCCESS,
         message: "You've successfully unsubscribed from my blog.",
