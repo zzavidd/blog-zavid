@@ -39,9 +39,7 @@ export default async function handler(
   }
 }
 
-export async function createSubscriber({
-  subscriber,
-}: CreateSubscriberPayload) {
+export async function createSubscriber(subscriber: SubscriberDAO) {
   try {
     await new SubscriberMutationBuilder(knex)
       .insert({
