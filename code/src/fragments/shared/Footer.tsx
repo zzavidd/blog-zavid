@@ -99,14 +99,11 @@ function SubscribeForm() {
         .withDefaultSubscriptions()
         .build();
 
-      const res = await Utils.request('/api/subscribers', {
+      await Utils.request('/api/subscribers', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        throw new Error(await res.text());
-      }
       Alert.success(
         `Thank you for subscribing!\nI've added ${email} to my mailing list.`,
       );
