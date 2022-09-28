@@ -13,7 +13,9 @@ export default function AdminGateway({ children }: Partial<React.ReactPortal>) {
 
   if (status === 'loading') {
     return null;
-  } else if (
+  }
+
+  if (
     status === 'authenticated' &&
     session.user?.email !== process.env.NEXT_PUBLIC_GOOGLE_EMAIL
   ) {
