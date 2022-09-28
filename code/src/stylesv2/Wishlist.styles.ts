@@ -60,8 +60,8 @@ namespace WL {
     `;
   }
 
-  export namespace List {
-    export const Main = styled.main`
+  export namespace Main {
+    export const Container = styled.main`
       flex: 1 1 auto;
       height: 100vh;
       overflow-y: auto;
@@ -83,7 +83,7 @@ namespace WL {
     export const Cell = styled.div<{ image: string }>`
       align-items: flex-end;
       border-radius: 15px;
-      box-shadow: 0 0 10px 1px ${COLOR.BLACK};
+      box-shadow: 0 0 10px 1px #323232;
       display: flex;
       flex: 1 1 250px;
       flex-direction: column;
@@ -98,7 +98,7 @@ namespace WL {
       }
     `;
 
-    export const ItemCellImageContainer = styled(CPX.Clickable)`
+    export const CellImageContainer = styled(CPX.Clickable)`
       background-color: ${COLOR.WHITE};
       flex: 0 0 auto;
       height: 200px;
@@ -118,7 +118,7 @@ namespace WL {
       }
     `;
 
-    export const ItemCellContent = styled.div`
+    export const CellContent = styled.div`
       background-color: rgba(52, 43, 59, 0.8);
       display: flex;
       flex: 1 0 auto;
@@ -154,12 +154,16 @@ namespace WL {
 
     export const ItemPrice = styled.p`
       font-weight: bold;
-      margin: 0;
+      margin-bottom: 0.5em;
     `;
 
-    export const ItemQuantity = styled.p`
+    export const ItemQuantity = styled.span`
       font-size: 0.8em;
-      margin-block: 0.5em;
+    `;
+
+    export const ItemReservees = styled.p<{ complete: boolean }>`
+      color: ${({ complete }) => (complete ? '#00ff00' : 'yellow')};
+      font-size: 0.8em;
     `;
 
     export const ItemCellFooter = styled.footer`
@@ -172,12 +176,15 @@ namespace WL {
       overflow: hidden;
     `;
 
-    export const ItemCellFooterButton = styled(CPX.Button)`
-      ${Mixins.ClickBehavior('#3d3743', {
-        hover: 0.05,
-        active: 0.07,
-      })}
-      flex: 1 0 auto;
+    export const ItemCellFooterButton = styled(CPX.Button)<{
+      color: string;
+    }>`
+      ${({ color }) =>
+        Mixins.ClickBehavior(color, {
+          hover: 0.1,
+          active: 0.15,
+        })}
+      flex: 1;
       font-size: 0.8em;
       outline: 1px solid #3d3d3d;
       padding: 0.75em;

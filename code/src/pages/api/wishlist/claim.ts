@@ -6,12 +6,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>,
 ): Promise<void> {
-  if (req.method !== 'PUT') return res.send(405);
-
-  try {
-    await WishlistAPI.claim(req.body);
-    res.send(200);
-  } catch (e) {
-    res.status(400).json(e);
+  switch (req.method) {
+    case 'PUT': {
+      await WishlistAPI.claim(req.body);
+      return res.send(200);
+    }
+    case 'DELETE': {
+      await WishlistAPI.unclaim(req.body);
+      return res.send(200);
+    }
+    default: {
+      res.send(405);
+    }
   }
 }

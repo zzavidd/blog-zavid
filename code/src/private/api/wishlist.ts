@@ -68,10 +68,11 @@ namespace WishlistAPI {
 
   export async function claim({
     id,
-    reservee,
+    email,
+    quantity,
+    anonymous,
   }: ClaimWishlistItemPayload): Promise<void> {
     const wishlistItem = await getById(id);
-    const { email, quantity, anonymous } = reservee;
     await update({
       id,
       wishlistItem: {
@@ -85,6 +86,15 @@ namespace WishlistAPI {
         },
       },
     });
+  }
+
+  export async function unclaim({
+    id,
+    email,
+  }: UnclaimWishlistItemPayload): Promise<void> {
+    const wishlistItem = await getById(id);
+    delete wishlistItem.reservees[email];
+    await update({ id, wishlistItem });
   }
 }
 
@@ -103,11 +113,14 @@ interface UpdateWishlistItemPayload {
   wishlistItem: WishlistDAO.Response;
 }
 
-interface ClaimWishlistItemPayload {
+export interface ClaimWishlistItemPayload {
   id: number;
-  reservee: {
-    email: string;
-    quantity: number;
-    anonymous: boolean;
-  };
+  email: string;
+  quantity: number;
+  anonymous: boolean;
+}
+
+export interface UnclaimWishlistItemPayload {
+  id: number;
+  email: string;
 }
