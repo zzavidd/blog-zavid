@@ -13,7 +13,7 @@ import WL from 'stylesv2/Wishlist.styles';
 import { WishlistPageContext } from './WishlistContext';
 
 export default function WishlistGrid() {
-  const [context, setContext] = useContext(WishlistPageContext);
+  const [, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
 
   const { data: session, status } = useSession();
@@ -24,25 +24,6 @@ export default function WishlistGrid() {
       revalidateOnFocus: false,
     },
   );
-
-  /**
-   * Deletes the selected wishlist item.
-   * @param id The wishlist ID of the item to delete.
-   */
-  async function deleteWishlistItem(id: number) {
-    try {
-      await Utils.request('/api/wishlist', {
-        method: 'DELETE',
-        body: JSON.stringify({ id }),
-      });
-      await mutate('/api/wishlist');
-      Alert.success(
-        `You've successfully deleted '${context.wishlistItem.name}'.`,
-      );
-    } catch (e: any) {
-      Alert.error(e.message);
-    }
-  }
 
   /**
    * Claims an item by assigning a reservee to it.
@@ -67,22 +48,33 @@ export default function WishlistGrid() {
     }
   }
 
-  function onEditIconClick(wishlistItem: WishlistDAO.Request) {
+  /**
+   * Opens the form and populates fields with the information of the item clicked.
+   * @param wishlistItem The item to edit.
+   */
+  function onEditIconClick(wishlistItem: WishlistDAO.Response) {
     consign({
-      isFormDrawOpen: true,
-      selectedWishlistItemId: wishlistItem.id,
+      isFormTrayOpen: true,
+      selectedWishlistItem: wishlistItem,
       wishlistItem,
     });
   }
 
-  async function onDeleteIconClick(id: number) {
+  /**
+   * Prompts to delete the focused wishlist item.
+   * @param wishlistItem The wishlist item to delete.
+   */
+  function onDeleteIconClick(wishlistItem: WishlistDAO.Response) {
     consign({
-      // isDeletePromptVisible: true,
-      selectedWishlistItemId: id,
+      isDeletePromptVisible: true,
+      selectedWishlistItem: wishlistItem,
     });
-    await deleteWishlistItem(id);
   }
 
+  /**
+   * Opens the link in a new tab for the focused wishlist item.
+   * @param url The URL to open.
+   */
   function onVisitLinkClick(url: string) {
     window.open(url, '_blank', 'noopener,noreferrer');
   }
@@ -103,7 +95,7 @@ export default function WishlistGrid() {
                     />
                     <Clickable.Icon
                       icon={faTrashAlt}
-                      onClick={() => onDeleteIconClick(wishlistItem.id)}
+                      onClick={() => onDeleteIconClick(wishlistItem)}
                     />
                   </WL.List.CrudControls>
                 </AdminLock>

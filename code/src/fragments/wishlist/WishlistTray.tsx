@@ -29,7 +29,7 @@ export default function WishlistTray() {
       });
       await mutate('/api/wishlist');
       Alert.success("You've successfully added a new wishlist item.");
-      consign({ isFormDrawOpen: false });
+      consign({ isFormTrayOpen: false });
     } catch (e: any) {
       Alert.error(e.message);
     } finally {
@@ -56,7 +56,7 @@ export default function WishlistTray() {
       Alert.success(
         `You've successfully edited '${context.wishlistItem.name}'.`,
       );
-      consign({ isFormDrawOpen: false });
+      consign({ isFormTrayOpen: false });
     } catch (e: any) {
       Alert.error(e.message);
     } finally {
@@ -70,22 +70,22 @@ export default function WishlistTray() {
 
   return (
     <AdminLock>
-      <WL.Tray.Container open={context.isFormDrawOpen}>
+      <WL.Tray.Container open={context.isFormTrayOpen}>
         <WishlistForm />
         <WL.Tray.FormFooter>
-          {context.selectedWishlistItemId === null ? (
+          {context.selectedWishlistItem === null ? (
             <WL.Tray.FormSubmitButton onClick={submitWishlistItem}>
               {displayButtonText('Submit')}
             </WL.Tray.FormSubmitButton>
           ) : (
             <WL.Tray.FormSubmitButton
               onClick={updateWishlistItem}
-              disabled={!context.selectedWishlistItemId}>
+              disabled={!context.selectedWishlistItem}>
               {displayButtonText('Update')}
             </WL.Tray.FormSubmitButton>
           )}
           <WL.Tray.FormCancelButton
-            onClick={() => consign({ isFormDrawOpen: false })}>
+            onClick={() => consign({ isFormTrayOpen: false })}>
             Close
           </WL.Tray.FormCancelButton>
         </WL.Tray.FormFooter>

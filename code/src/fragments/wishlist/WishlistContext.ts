@@ -6,16 +6,16 @@ import type { ReactHook } from 'constants/types';
 
 export interface WishlistPageState {
   wishlistItem: WishlistDAO.Request;
-  selectedWishlistItemId: number | null;
+  selectedWishlistItem: WishlistDAO.Response | null;
   isDeletePromptVisible: boolean;
-  isFormDrawOpen: boolean;
+  isFormTrayOpen: boolean;
 }
 
 export const initialState: WishlistPageState = {
   wishlistItem: WishlistStatic.initial(),
-  selectedWishlistItemId: null,
+  selectedWishlistItem: null,
   isDeletePromptVisible: false,
-  isFormDrawOpen: false,
+  isFormTrayOpen: false,
 };
 
 export const WishlistPageContext = React.createContext<
