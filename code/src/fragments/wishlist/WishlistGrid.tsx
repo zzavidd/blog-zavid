@@ -9,10 +9,7 @@ import Alert from 'constants/alert';
 import { COLOR } from 'constants/styling';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
-import type {
-  ClaimWishlistItemPayload,
-  UnclaimWishlistItemPayload,
-} from 'private/api/wishlist';
+import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';
 import WL from 'stylesv2/Wishlist.styles';
 
 import { WishlistPageContext } from './WishlistContext';
@@ -148,12 +145,17 @@ const WishlistGridItem = React.memo(
           <WL.Main.ItemCellImage
             src={wishlistItem.image}
             alt={wishlistItem.name}
+            loading={'lazy'}
           />
         </WL.Main.CellImageContainer>
         <WL.Main.CellContent>
           <WL.Main.ItemName>{wishlistItem.name}</WL.Main.ItemName>
           <WL.Main.ItemPrice>
-            £{wishlistItem.price.toFixed(2)}&nbsp;
+            {wishlistItem.price.toLocaleString('en-GB', {
+              style: 'currency',
+              currency: 'GBP',
+            })}
+            &nbsp;
           </WL.Main.ItemPrice>
           <WL.Main.ItemQuantity>
             {wishlistItem.quantity}&nbsp;wanted
