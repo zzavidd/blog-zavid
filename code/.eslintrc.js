@@ -8,11 +8,12 @@ module.exports = {
     project: ['**/tsconfig.json'],
   },
   rules: {
+    '@typescript-eslint/explicit-function-return-type': 0,
     'react-hooks/exhaustive-deps': 0,
     'react-hooks/rules-of-hooks': 0,
     'react/react-in-jsx-scope': 0,
-    '@typescript-eslint/explicit-function-return-type': 0,
     'spaced-comment': 0,
+    'semi': 0,
     'quotes': ['warn', 'single', { avoidEscape: true }],
   },
   overrides: [

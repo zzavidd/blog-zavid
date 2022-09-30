@@ -88,7 +88,7 @@ namespace Validate {
    * Validate a wishlist item submission.
    * @param wishlistItem The wishlist item to validate.
    */
-  export function wishlistItem(wishlistItem: WishlistDAO.Request): void {
+  export function wishlistItem(wishlistItem: WishlistDAO): void {
     checkIfExists(wishlistItem.name, 'Enter the name of the wishlist item.');
     checkIfExists(wishlistItem.price, 'Enter the price of the wishlist item.');
     checkIfExists(

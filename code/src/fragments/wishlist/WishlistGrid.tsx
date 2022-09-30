@@ -15,7 +15,7 @@ import WL from 'stylesv2/Wishlist.styles';
 import { WishlistPageContext } from './WishlistContext';
 
 export default function WishlistGrid() {
-  const { data: wishlist, error } = useSWR<WishlistDAO.Response[]>(
+  const { data: wishlist, error } = useSWR<Required<WishlistDAO>[]>(
     '/api/wishlist',
     Utils.request,
     {
@@ -191,5 +191,5 @@ const WishlistGridItem = React.memo(
 );
 
 interface WishlistGridItemProps {
-  wishlistItem: WishlistDAO.Response;
+  wishlistItem: Required<WishlistDAO>;
 }

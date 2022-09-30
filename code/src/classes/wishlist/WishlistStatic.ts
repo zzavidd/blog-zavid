@@ -1,4 +1,5 @@
-import WishlistDAO from './WishlistDAO';
+import type WishlistDAO from './WishlistDAO';
+import { WishlistItemPriority, WishlistItemVisibility } from './WishlistDAO';
 
 export class WishlistStatic {
   /**
@@ -6,9 +7,7 @@ export class WishlistStatic {
    * @param wishlistItem The wishlist item.
    * @returns The parsed wishlist item.
    */
-  public static parse(
-    wishlistItem: WishlistDAO.Response,
-  ): WishlistDAO.Response {
+  public static parse(wishlistItem: WishlistDAO): WishlistDAO {
     try {
       wishlistItem.reservees = JSON.parse(
         wishlistItem.reservees as unknown as string,
@@ -23,13 +22,13 @@ export class WishlistStatic {
    * Generate a bare wishlist request.
    * @returns The subscription mapping.
    */
-  public static initial(): WishlistDAO.Request {
+  public static initial(): WishlistDAO {
     return {
       name: '',
       price: 0,
       quantity: 1,
-      visibility: WishlistDAO.Visibility.PRIVATE,
-      priority: WishlistDAO.Priority.LOW,
+      visibility: WishlistItemVisibility.PRIVATE,
+      priority: WishlistItemPriority.LOW,
       comments: '',
       image: '',
       href: '',

@@ -79,9 +79,8 @@ export class QueryBuilder<T extends EntityDAO> {
 }
 
 export class MutationBuilder<
-  Request extends EntityDAO,
-  Response = Request,
-> extends QueryBuilder<Request> {
+  Entity extends EntityDAO,
+> extends QueryBuilder<Entity> {
   private entity: string;
 
   constructor(knex: Knex, table: string, entity: string) {
@@ -91,7 +90,7 @@ export class MutationBuilder<
     this.table = table;
   }
 
-  public insert(input: Request): MutationBuilder<Request, Response> {
+  public insert(input: Entity): MutationBuilder<Entity> {
     if (!input) throw new Error(`No specified ${this.entity} to insert.`);
     serializeInput(input as Record<string, unknown>);
     void this.query.insert(input);
@@ -99,11 +98,11 @@ export class MutationBuilder<
   }
 
   public update(
-    input: Response,
-    removeProperties: (keyof Response)[] = [],
-  ): MutationBuilder<Request, Response> {
+    input: Entity,
+    removeProperties: (keyof Entity)[] = [],
+  ): MutationBuilder<Entity> {
     if (!input) throw new Error(`No specified ${this.entity} to update.`);
-    serializeInput(input);
+    serializeInput(input as Record<string, unknown>);
     removeProperties.forEach((property) => {
       delete input[property];
     });
@@ -111,13 +110,13 @@ export class MutationBuilder<
     return this;
   }
 
-  public delete(id: number): MutationBuilder<Request, Response> {
+  public delete(id: number): MutationBuilder<Entity> {
     if (!id) throw new Error(`No specified ${this.entity} to delete.`);
     void this.query.where(`${this.table}.id`, id).del();
     return this;
   }
 
-  public truncate(): MutationBuilder<Request, Response> {
+  public truncate(): MutationBuilder<Entity> {
     void this.query.truncate();
     return this;
   }

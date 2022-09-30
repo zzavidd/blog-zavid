@@ -5,9 +5,9 @@ import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import type { ReactHook } from 'constants/types';
 
 export interface WishlistPageState {
-  wishlistItem: WishlistDAO.Request;
+  wishlistItem: WishlistDAO;
   claim: WishlistClaim;
-  selectedWishlistItem: WishlistDAO.Response | null;
+  selectedWishlistItem: Required<WishlistDAO> | null;
   isDeletePromptVisible: boolean;
   isClaimPromptVisible: boolean;
   isFormTrayOpen: boolean;

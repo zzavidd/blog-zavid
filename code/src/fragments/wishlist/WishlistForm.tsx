@@ -7,7 +7,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from 'react';
 
-import WishlistDAO from 'classes/wishlist/WishlistDAO';
+import {
+  WishlistItemPriority,
+  WishlistItemVisibility,
+} from 'classes/wishlist/WishlistDAO';
 import Clickable from 'componentsv2/Clickable';
 import Input from 'componentsv2/Input';
 import HandlersV2 from 'constants/handlersv2';
@@ -60,7 +63,7 @@ export default function WishlistForm() {
           <FORM.Label>Visibility:</FORM.Label>
           <Input.Select
             name={'visibility'}
-            options={Object.values(WishlistDAO.Visibility)}
+            options={Object.values(WishlistItemVisibility)}
             value={context.wishlistItem.visibility}
             onChange={Handlers.select}
           />
@@ -105,7 +108,7 @@ export default function WishlistForm() {
           <FORM.Label>Priority:</FORM.Label>
           <Input.Select
             name={'priority'}
-            options={Object.entries(WishlistDAO.Priority)
+            options={Object.entries(WishlistItemPriority)
               .filter(([key]) => isNaN(Number(key)))
               .map(([key, value]) => ({
                 label: key,

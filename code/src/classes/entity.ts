@@ -1,7 +1,7 @@
 import type { PostType } from './posts/PostDAO';
 
 export interface EntityDAO extends Record<string, unknown> {
-  id?: number;
+  readonly id?: number;
 }
 
 export interface SearchResultEntityDAO {

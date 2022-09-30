@@ -16,7 +16,7 @@ namespace WishlistAPI {
    */
   export async function getAll(
     options: GetWishlistParams,
-  ): Promise<WishlistDAO.Response[]> {
+  ): Promise<WishlistDAO[]> {
     const { sort = {} } = options;
     const wishlist = await new WishlistQueryBuilder(knex)
       .withOrder(sort)
@@ -24,7 +24,7 @@ namespace WishlistAPI {
     return wishlist.map(WishlistStatic.parse);
   }
 
-  export async function getById(id: number): Promise<WishlistDAO.Response> {
+  export async function getById(id: number): Promise<WishlistDAO> {
     const [wishlistItem] = await new WishlistQueryBuilder(knex)
       .whereId(id)
       .build();
@@ -101,16 +101,16 @@ namespace WishlistAPI {
 export default WishlistAPI;
 
 export interface GetWishlistParams {
-  sort?: QuerySort<WishlistDAO.Response>;
+  sort?: QuerySort<WishlistDAO>;
 }
 
 interface CreateWishlistItemPayload {
-  wishlistItem: WishlistDAO.Request;
+  wishlistItem: WishlistDAO;
 }
 
 interface UpdateWishlistItemPayload {
   id: number;
-  wishlistItem: WishlistDAO.Response;
+  wishlistItem: WishlistDAO;
 }
 
 export interface ClaimWishlistItemPayload {

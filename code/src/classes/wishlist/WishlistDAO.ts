@@ -1,34 +1,28 @@
 import type { EntityDAO } from 'classes/entity';
 
-namespace WishlistDAO {
-  export interface Request extends EntityDAO {
-    name: string;
-    price: number;
-    quantity: number;
-    visibility: Visibility;
-    priority: Priority;
-    image: string;
-    href: string;
-    comments: string;
-    reservees: Reservees;
-    purchaseDate: Date | string | null;
-  }
+export default interface WishlistDAO extends EntityDAO {
+  name: string;
+  price: number;
+  quantity: number;
+  visibility: WishlistItemVisibility;
+  priority: WishlistItemPriority;
+  image: string;
+  href: string;
+  comments: string;
+  reservees: Reservees;
+  purchaseDate: Date | string | null;
+  readonly createTime?: Date;
+}
 
-  export interface Response extends Request {
-    readonly id: number;
-    readonly createTime: Date;
-  }
+export enum WishlistItemVisibility {
+  PRIVATE = 'PRIVATE',
+  PUBLIC = 'PUBLIC',
+}
 
-  export enum Visibility {
-    PRIVATE = 'PRIVATE',
-    PUBLIC = 'PUBLIC',
-  }
-
-  export enum Priority {
-    LOW = 1,
-    MEDIUM = 2,
-    HIGH = 3,
-  }
+export enum WishlistItemPriority {
+  LOW = 1,
+  MEDIUM = 2,
+  HIGH = 3,
 }
 
 type Reservees = Record<
@@ -38,5 +32,3 @@ type Reservees = Record<
     anonymous: boolean;
   }
 >;
-
-export default WishlistDAO;
