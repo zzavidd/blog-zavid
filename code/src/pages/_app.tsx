@@ -20,6 +20,7 @@ import type {
   AppPropsWithLayout,
   Snack as SnackDefinition,
 } from 'constants/types';
+import AdminGateway from 'fragments/AdminGateway';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
 import 'styles/App.scss';
 
@@ -100,13 +101,15 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
 
   return (
-    <Contexts.Snacks.Provider
-      value={{ snacks: state.snacks, add: addSnack, remove: removeSnack }}>
-      <GoogleAnalyticsScripts />
-      {ComponentWithLayout}
-      <CookiePrompt />
-      <Snackbar />
-    </Contexts.Snacks.Provider>
+    <AdminGateway onlyBlockInStaging={true}>
+      <Contexts.Snacks.Provider
+        value={{ snacks: state.snacks, add: addSnack, remove: removeSnack }}>
+        <GoogleAnalyticsScripts />
+        {ComponentWithLayout}
+        <CookiePrompt />
+        <Snackbar />
+      </Contexts.Snacks.Provider>
+    </AdminGateway>
   );
 }
 
