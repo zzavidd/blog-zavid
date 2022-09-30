@@ -23,7 +23,7 @@ module.exports = {
       },
     },
     {
-      files: ['**/wishlist*'],
+      files: ['**/wishlist/**'],
       rules: {
         'react-hooks/exhaustive-deps': 1,
         'react-hooks/rules-of-hooks': 1,

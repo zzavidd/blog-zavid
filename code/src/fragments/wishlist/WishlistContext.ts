@@ -6,18 +6,30 @@ import type { ReactHook } from 'constants/types';
 
 export interface WishlistPageState {
   wishlistItem: WishlistDAO.Request;
+  claim: WishlistClaim;
   selectedWishlistItem: WishlistDAO.Response | null;
   isDeletePromptVisible: boolean;
+  isClaimPromptVisible: boolean;
   isFormTrayOpen: boolean;
 }
 
 export const initialState: WishlistPageState = {
   wishlistItem: WishlistStatic.initial(),
+  claim: {
+    quantity: 1,
+    isAnonymous: false,
+  },
   selectedWishlistItem: null,
   isDeletePromptVisible: false,
+  isClaimPromptVisible: false,
   isFormTrayOpen: false,
 };
 
 export const WishlistPageContext = React.createContext<
   [WishlistPageState, ReactHook<WishlistPageState>]
 >([initialState, () => {}]);
+
+interface WishlistClaim {
+  quantity: number;
+  isAnonymous: boolean;
+}

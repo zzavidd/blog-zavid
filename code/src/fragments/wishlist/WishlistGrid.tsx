@@ -53,14 +53,13 @@ const WishlistGridItem = React.memo(
     const consign = Utils.createDispatch(setContext);
 
     const { data: session, status } = useSession();
+    const email = session?.user?.email;
 
     /** Memoise variables relating to reservees. */
     const { isClaimedByUser, numberOfItemsClaimed } = useMemo(() => {
       let isClaimedByUser = false;
-      if (session && session.user && session.user.email) {
-        isClaimedByUser = Object.keys(wishlistItem.reservees).includes(
-          session.user.email,
-        );
+      if (email) {
+        isClaimedByUser = Object.keys(wishlistItem.reservees).includes(email);
       }
 
       const numberOfItemsClaimed = Object.values(wishlistItem.reservees).reduce(
@@ -71,7 +70,7 @@ const WishlistGridItem = React.memo(
       );
 
       return { isClaimedByUser, numberOfItemsClaimed };
-    }, [wishlistItem.reservees]);
+    }, [email, wishlistItem.reservees]);
 
     /**
      * Opens the form and populates fields with the information of the item clicked.
@@ -104,25 +103,15 @@ const WishlistGridItem = React.memo(
     /**
      * Claims an item by assigning a reservee to it.
      */
-    async function claimItem() {
-      try {
-        if (status !== 'authenticated' || !session) {
-          return signIn('google');
-        }
-
-        await Utils.request<ClaimWishlistItemPayload>('/api/wishlist/claim', {
-          method: 'PUT',
-          body: {
-            id: wishlistItem.id,
-            email: session.user!.email!,
-            quantity: wishlistItem.quantity,
-            anonymous: false,
-          },
-        });
-        await mutate('/api/wishlist');
-      } catch (e: any) {
-        Alert.error(e.message);
+    function onClaimButtonClick() {
+      if (status !== 'authenticated' || !email) {
+        return signIn('google');
       }
+
+      consign({
+        isClaimPromptVisible: true,
+        selectedWishlistItem: wishlistItem,
+      });
     }
 
     /**
@@ -130,7 +119,7 @@ const WishlistGridItem = React.memo(
      */
     async function unclaimItem() {
       try {
-        if (!session || !session.user || !session.user.email) {
+        if (!email) {
           throw new Error('You are not logged in.');
         }
 
@@ -138,7 +127,7 @@ const WishlistGridItem = React.memo(
           method: 'DELETE',
           body: {
             id: wishlistItem.id,
-            email: session.user.email,
+            email,
           },
         });
         await mutate('/api/wishlist');
@@ -187,7 +176,7 @@ const WishlistGridItem = React.memo(
               </WL.Main.ItemCellFooterButton>
             ) : (
               <WL.Main.ItemCellFooterButton
-                onClick={claimItem}
+                onClick={onClaimButtonClick}
                 color={COLOR.BUTTON.cancel}>
                 Claim
               </WL.Main.ItemCellFooterButton>

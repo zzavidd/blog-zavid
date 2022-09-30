@@ -27,6 +27,35 @@ namespace CPX {
     cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
   `;
 
+  export const Checkbox = styled.label<{ checked: boolean }>`
+    align-items: center;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    font-size: 0.9em;
+    max-width: fit-content;
+    min-width: 70px;
+    transition: all 0.3s;
+
+    span {
+      font-weight: bold;
+      margin-left: 0.4em;
+    }
+
+    polyline {
+      transition: all 0.2s;
+      ${({ checked }) =>
+        checked
+          ? css`
+              opacity: 1;
+            `
+          : css`
+              opacity: 0;
+            `}
+    }
+  `;
+
   export const Hyperlink = styled.a.attrs({
     target: '_blank',
     rel: 'noopener noreferrer',

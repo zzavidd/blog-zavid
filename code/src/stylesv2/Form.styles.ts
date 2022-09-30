@@ -90,6 +90,11 @@ namespace FORM {
 
     export const Standard = styled.input`
       ${DefaultStyle}
+      ${({ disabled }) =>
+        disabled &&
+        css`
+          color: #808080;
+        `}
     `;
 
     export const Paragraph = styled.textarea`

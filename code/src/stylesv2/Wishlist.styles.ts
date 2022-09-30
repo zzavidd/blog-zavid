@@ -162,8 +162,9 @@ namespace WL {
     `;
 
     export const ItemReservees = styled.p<{ complete: boolean }>`
-      color: ${({ complete }) => (complete ? '#00ff00' : 'yellow')};
+      color: ${({ complete }) => (complete ? '#00ff00' : '#ffff8d')};
       font-size: 0.8em;
+      transition: all 0.3s;
     `;
 
     export const ItemCellFooter = styled.footer`
@@ -188,6 +189,43 @@ namespace WL {
       font-size: 0.8em;
       outline: 1px solid #3d3d3d;
       padding: 0.75em;
+    `;
+  }
+
+  export namespace Claim {
+    export const Container = styled.div`
+      column-gap: 2em;
+      display: grid;
+      grid-template-columns: 0.5fr 0.5fr;
+      padding: 0.5em;
+    `;
+
+    export const Partition = styled.section`
+      display: flex;
+      flex: 1 1;
+      flex-direction: column;
+      font-size: 90%;
+      gap: 2em;
+      justify-content: center;
+    `;
+
+    export const ImageContainer = styled.div`
+      border-radius: 15px;
+      justify-self: flex-end;
+      max-height: 300px;
+      overflow: hidden;
+      width: 100%;
+    `;
+
+    export const Image = styled.img`
+      height: 100%;
+      object-fit: contain;
+      width: 100%;
+    `;
+
+    export const Text = styled.p`
+      font-size: 1.2em;
+      margin: 0;
     `;
   }
 
