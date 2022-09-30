@@ -1,7 +1,14 @@
 **/.next
+**/.DS_Store
 **/.git
 **/node_modules
 **/devops/scripts
 **/.yarn/cache
 **/ops
 **/test
+
+**/.circleci
+**/.husky
+
+/package.json
+/yarn.lock
