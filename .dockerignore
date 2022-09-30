@@ -3,4 +3,5 @@
 **/node_modules
 **/devops/scripts
 **/.yarn/cache
+**/ops
 **/test
