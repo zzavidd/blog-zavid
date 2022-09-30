@@ -3,18 +3,18 @@ import { useContext } from 'react';
 
 import Contexts from 'constants/contexts';
 import type * as ZBT from 'constants/types';
-import AppStyles from 'stylesv2/App.styles';
+import * as Styles from 'stylesv2/Components/Snack.styles';
 
 import Clickable from './Clickable';
 
 export default function Snackbar() {
   const { snacks } = useContext(Contexts.Snacks);
   return (
-    <AppStyles.Snackbar>
+    <Styles.Snackbar>
       {snacks.map((props, key) => {
         return <Snack {...props} index={key} key={key} />;
       })}
-    </AppStyles.Snackbar>
+    </Styles.Snackbar>
   );
 }
 
@@ -26,10 +26,10 @@ function Snack({ message, duration = 6000, index }: SnackProps) {
   }
 
   return (
-    <AppStyles.Snack duration={duration}>
+    <Styles.Snack duration={duration}>
       {message}
       <Clickable.Icon icon={faTimes} onClick={closeSnack} />
-    </AppStyles.Snack>
+    </Styles.Snack>
   );
 }
 
