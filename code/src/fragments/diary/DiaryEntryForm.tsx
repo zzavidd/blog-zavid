@@ -95,6 +95,7 @@ export default function DiaryEntryForm(props: DiaryFormProps) {
                 value={diaryEntry.entryNumber!}
                 onChange={handleNumber}
                 placeholder={'No.'}
+                min={1}
               />
             </Field>
           </FieldRow>

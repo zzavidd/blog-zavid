@@ -1,7 +1,6 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { URLBuilder } from 'classes/_/URLBuilder';
 import type {
@@ -14,17 +13,21 @@ import type { SelectItem } from 'components/form';
 import Alert, { AlertType } from 'constants/alert';
 import hooks from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import AdminGateway from 'fragments/AdminGateway';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import PostAPI from 'private/api/posts';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
-const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
+const PostEdit: NextPageWithLayout<PostEditProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { post: serverPost, domains } = pageProps;
   const router = useRouter();
 
@@ -87,7 +90,7 @@ const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
   };
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <PostForm
         post={clientPost}
@@ -99,25 +102,13 @@ const PostEdit: NextPage<PostEditProps> = ({ pathDefinition, pageProps }) => {
         cancelFunction={returnToPostAdmin}
         isRequestPending={isRequestPending}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<PostEditProps> = async ({
   query,
-  req,
-  res,
 }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
   const domains = await PostAPI.getDomains();
   const id = parseInt(query.id as string);
   const post = JSON.parse(await SSR.Posts.getById(id));
@@ -153,6 +144,7 @@ export const getServerSideProps: GetServerSideProps<PostEditProps> = async ({
   };
 };
 
+PostEdit.getLayout = Layout.addHeaderOnly;
 export default PostEdit;
 
 interface PostEditProps {

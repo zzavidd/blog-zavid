@@ -1,6 +1,26 @@
+import type { NextPage } from 'next';
+import type { AppProps } from 'next/app';
+import type { ReactElement, ReactNode } from 'react';
+
+import type { PostType, PostStatus } from 'classes/posts/PostDAO';
+
+export type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
 export interface AppPageProps {
   pathDefinition: PathDefinition;
   pageProps?: Record<string, unknown>;
+}
+
+export type AppTheme = 'light' | 'dark';
+
+export interface PostFiltersOptions {
+  limit?: number;
+  field?: string;
+  order?: string;
+  type?: PostType | null;
+  status?: PostStatus;
 }
 
 export interface PathDefinition {
@@ -20,7 +40,10 @@ export enum QueryOrder {
   RANDOM = 'RANDOM',
 }
 
-export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
+export interface Snack {
+  message: string;
+  duration?: number | 'indefinite';
+}
 
 export interface Substitutions {
   [key: string]: string | number;
@@ -29,3 +52,12 @@ export interface Substitutions {
 export interface EditButtonProps {
   id: number;
 }
+
+export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+export type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
+export type LocalDispatch<T> = (state: Partial<T>) => void;

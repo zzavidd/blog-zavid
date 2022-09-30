@@ -9,21 +9,18 @@ import css from 'styles/components/Form.module.scss';
 
 export function TextInput({ onClick, ...props }: TextInputProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const { leadingComponent = null, trailingComponent = null } = props;
 
   const classes = classnames(css[`text-input-field-${theme}`], props.className);
 
   return (
     <div className={classes}>
-      {leadingComponent}
       {onClick ? (
         <InvisibleButton onClick={onClick} className={css['text-click-input']}>
-          <Input {...props} type={'text'} />
+          <Input type={'text'} {...props} />
         </InvisibleButton>
       ) : (
-        <Input {...props} type={'text'} />
+        <Input type={'text'} {...props} />
       )}
-      {trailingComponent}
     </div>
   );
 }
@@ -32,12 +29,12 @@ export function NumberInput(props: InputProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <div className={css[`text-input-field-${theme}`]}>
-      <Input {...props} type={'number'} min={1} />
+      <Input {...props} type={'number'} />
     </div>
   );
 }
 
-export function SearchBar(props: SearchBarProps) {
+export function SearchBar({ onClearInput, ...props }: SearchBarProps) {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const classes = classnames(css[`search-bar-${theme}`], props.className);
 
@@ -48,7 +45,9 @@ export function SearchBar(props: SearchBarProps) {
       leadingComponent={
         <Icon name={'search'} className={css['search-bar-icon']} />
       }
-      trailingComponent={<SearchBarTrailingComponent {...props} />}
+      trailingComponent={
+        <SearchBarTrailingComponent {...props} onClearInput={onClearInput} />
+      }
     />
   );
 }
@@ -63,35 +62,32 @@ function SearchBarTrailingComponent(props: SearchBarProps) {
   );
 }
 
+// TODO: Use onKeyDown
 function Input({
-  name,
-  type,
-  value,
-  onChange,
-  placeholder,
   onClick,
-  onKeyPress,
+  leadingComponent,
+  trailingComponent,
+  value,
+  ...props
 }: InputProps) {
   if (value === null) value = '';
   return (
-    <input
-      name={name}
-      type={type}
-      value={value as string}
-      onChange={onChange}
-      onKeyPress={onKeyPress}
-      className={css['text-input']}
-      autoComplete={'off'}
-      placeholder={placeholder}
-      readOnly={!!onClick}
-    />
+    <React.Fragment>
+      {leadingComponent}
+      <input
+        {...props}
+        value={value}
+        className={css['text-input']}
+        autoComplete={'off'}
+        readOnly={!!onClick}
+      />
+      {trailingComponent}
+    </React.Fragment>
   );
 }
 
 interface TextInputProps extends Omit<InputProps, 'onClick'> {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  leadingComponent?: JSX.Element;
-  trailingComponent?: JSX.Element;
 }
 
 interface SearchBarProps extends TextInputProps {
@@ -99,4 +95,7 @@ interface SearchBarProps extends TextInputProps {
   withRightSpace?: boolean;
 }
 
-type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  leadingComponent?: JSX.Element;
+  trailingComponent?: JSX.Element;
+}

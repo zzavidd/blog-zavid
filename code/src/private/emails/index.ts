@@ -4,6 +4,7 @@ import getConfig from 'next/config';
 import type { SentMessageInfo } from 'nodemailer';
 import nodemailer from 'nodemailer';
 import ReactDOMServer from 'react-dom/server';
+import * as UUID from 'uuid';
 import { zDate, zText } from 'zavid-modules';
 
 const { serverRuntimeConfig } = getConfig();
@@ -21,10 +22,15 @@ import {
   ejsLocals,
   htmlToTextOptions,
   isProd,
-  testRecipient,
   transporter,
   typeToSubscription,
 } from './constants';
+
+/** The email address of the recipient in development. */
+const testRecipient: TestRecipient = {
+  email: process.env.ETHEREAL_EMAIL!,
+  token: UUID.v4(),
+};
 
 namespace Emailer {
   /**
@@ -104,7 +110,7 @@ async function prepareEmail<T extends EntityDAO>(
   template: string,
   subject: string,
 ): Promise<void> {
-  let mailList: SubscriberDAO[];
+  let mailList: SubscriberDAO[] | [TestRecipient];
 
   try {
     const subscribers = await new SubscriberQueryBuilder(knex).build();
@@ -160,4 +166,9 @@ async function sendMailToSubscriber(
   console.info(
     `Preview URL: ${nodemailer.getTestMessageUrl(info as SentMessageInfo)}`,
   );
+}
+
+interface TestRecipient {
+  email: string;
+  token: string;
 }

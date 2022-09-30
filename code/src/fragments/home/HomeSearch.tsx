@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { ConfirmButton } from 'components/button';
 import { SearchBar } from 'components/form';
-import { HomeRow } from 'components/pages/home';
+import { HomeRow } from 'fragments/home/Home.styles';
 import css from 'styles/pages/Home.module.scss';
 
 export default function HomeSearch() {

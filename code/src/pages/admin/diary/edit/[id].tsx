@@ -1,6 +1,5 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
-import React, { useState } from 'react';
+import type { GetServerSideProps } from 'next';
+import { useState } from 'react';
 import { zDate, zString } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
@@ -9,16 +8,17 @@ import { ConfirmModal } from 'components/modal';
 import Alert, { AlertType } from 'constants/alert';
 import Handlers from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import AdminGateway from 'fragments/AdminGateway';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
-const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
+const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -68,7 +68,7 @@ const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
     : updateDiaryEntry;
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <DiaryEntryForm
         diaryEntry={clientDiaryEntry}
@@ -87,7 +87,7 @@ const DiaryEntryEdit: NextPage<DiaryEntryEditProps> = ({
         confirmText={'Confirm'}
         closeFunction={() => setPublishModalVisibility(false)}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
@@ -106,17 +106,7 @@ function returnAfterUpdate(entryNumber: number) {
 
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryEditProps
-> = async ({ query, req, res }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
+> = async ({ query }) => {
   const id = parseInt(query.id as string);
   const diaryEntry = await SSR.Diary.getById(id);
   return {
@@ -131,6 +121,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+DiaryEntryEdit.getLayout = Layout.addHeaderOnly;
 export default DiaryEntryEdit;
 
 interface DiaryEntryEditProps {

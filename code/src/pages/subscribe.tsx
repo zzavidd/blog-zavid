@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from 'next';
+import type { GetStaticProps } from 'next';
 import React, { useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
@@ -10,19 +10,22 @@ import Alert from 'constants/alert';
 import { UIError } from 'constants/errors';
 import hooks from 'constants/handlers';
 import { SITE_TITLE } from 'constants/settings';
-import type { AppPageProps } from 'constants/types';
+import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import css from 'styles/pages/Subscribers.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
-const SubscribePage: NextPage<AppPageProps> = ({ pathDefinition }) => {
-  const [subscriber, setSubscriber] = useState({
+const SubscribePage: NextPageWithLayout<AppPageProps> = ({
+  pathDefinition,
+}) => {
+  const [subscriber, setSubscriber] = useState<SubscriberDAO>({
     email: '',
     firstname: '',
     lastname: '',
-  } as SubscriberDAO);
+  });
   const [isRequestPending, setRequestPending] = useState(false);
 
   /** Create new subscriber on server. */
@@ -129,4 +132,5 @@ export const getStaticProps: GetStaticProps<AppPageProps> = () => {
   };
 };
 
+SubscribePage.getLayout = Layout.addPartials;
 export default SubscribePage;

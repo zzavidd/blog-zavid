@@ -1,12 +1,15 @@
 import classnames from 'classnames';
-import type { NextPage } from 'next';
-import React from 'react';
+import type { GetStaticProps } from 'next';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { Container } from 'components/layout';
 import { VanillaLink } from 'components/text';
+import { SITE_TITLE } from 'constants/settings';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import AdminGateway from 'fragments/AdminGateway';
+import Layout from 'fragments/Layout';
+import PageMetadata from 'fragments/PageMetadata';
 import css from 'styles/pages/Admin.module.scss';
 
 const links = [
@@ -17,10 +20,13 @@ const links = [
 ];
 
 // eslint-disable-next-line react/function-component-definition
-const Admin: NextPage = () => {
+const AdminConsole: NextPageWithLayout<AdminConsoleProps> = ({
+  pathDefinition,
+}) => {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   return (
     <AdminGateway>
+      <PageMetadata {...pathDefinition} />
       <Container>
         <div className={css['admin-page']}>
           {links.map(({ name, url }, key) => {
@@ -41,4 +47,19 @@ const Admin: NextPage = () => {
   );
 };
 
-export default Admin;
+export const getStaticProps: GetStaticProps<AdminConsoleProps> = () => {
+  return {
+    props: {
+      pathDefinition: {
+        title: `Admin Console | ${SITE_TITLE}`,
+      },
+    },
+  };
+};
+
+AdminConsole.getLayout = Layout.addHeaderOnly;
+export default AdminConsole;
+
+interface AdminConsoleProps {
+  pathDefinition: PathDefinition;
+}

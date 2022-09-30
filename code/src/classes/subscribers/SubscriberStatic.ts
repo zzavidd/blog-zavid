@@ -20,7 +20,7 @@ export class SubscriberStatic {
 
   /**
    * Generate a default mapping of subscriptions.
-   * @returns {SubscriptionsMapping} The subscription mapping.
+   * @returns The subscription mapping.
    */
   public static defaultSubscriptions(): SubscriptionsMapping {
     const subscriptions: SubscriptionsMapping = {};

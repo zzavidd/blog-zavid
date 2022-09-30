@@ -1,6 +1,5 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
-import React, { useState } from 'react';
+import type { GetServerSideProps } from 'next';
+import { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
@@ -18,17 +17,19 @@ import { VanillaLink } from 'components/text';
 import Alert from 'constants/alert';
 import type {
   EditButtonProps,
+  NextPageWithLayout,
   PathDefinition,
   ReactHook,
 } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Utils from 'constants/utils';
+import AdminGateway from 'fragments/AdminGateway';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
-const DiaryAdmin: NextPage<DiaryAdminProps> = ({
+const DiaryAdmin: NextPageWithLayout<DiaryAdminProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -56,7 +57,7 @@ const DiaryAdmin: NextPage<DiaryAdminProps> = ({
   }
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <Spacer>
         <Tabler<9>
@@ -143,7 +144,7 @@ const DiaryAdmin: NextPage<DiaryAdminProps> = ({
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
@@ -185,20 +186,9 @@ function DeleteButton({
   );
 }
 
-export const getServerSideProps: GetServerSideProps<DiaryAdminProps> = async ({
-  req,
-  res,
-}) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
+export const getServerSideProps: GetServerSideProps<
+  DiaryAdminProps
+> = async () => {
   const diaryEntries = JSON.parse(
     await SSR.Diary.getAll({
       sort: {
@@ -220,6 +210,7 @@ export const getServerSideProps: GetServerSideProps<DiaryAdminProps> = async ({
   };
 };
 
+DiaryAdmin.getLayout = Layout.addHeaderOnly;
 export default DiaryAdmin;
 
 interface DiaryAdminProps {

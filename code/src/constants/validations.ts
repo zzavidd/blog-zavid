@@ -5,6 +5,7 @@ import type { PageDAO } from 'classes/pages/PageDAO';
 import type { PostDAO, PostImage } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
+import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 
 import { UIError } from './errors';
 
@@ -40,10 +41,6 @@ namespace Validate {
     }
   }
 
-  /**
-   * Validate diary entry submission.
-   * @param entry The diary entry to validate.
-   */
   export function diaryEntry(entry: DiaryDAO): void {
     checkIfExists(entry.content, 'Write out the content of this diary entry.');
     checkIfExists(
@@ -79,12 +76,25 @@ namespace Validate {
   }
 
   /**
-   * Validate page submission,
+   * Valdidate a page submission.
    * @param page The page to validate.
    */
   export function page(page: PageDAO): void {
     checkIfExists(page.title, "Enter the page's title.");
     checkIfExists(page.slug, "Enter the page's title.");
+  }
+
+  /**
+   * Validate a wishlist item submission.
+   * @param wishlistItem The wishlist item to validate.
+   */
+  export function wishlistItem(wishlistItem: WishlistDAO): void {
+    checkIfExists(wishlistItem.name, 'Enter the name of the wishlist item.');
+    checkIfExists(wishlistItem.price, 'Enter the price of the wishlist item.');
+    checkIfExists(
+      wishlistItem.quantity,
+      'Enter the quantity desired for the wishlist item.',
+    );
   }
 
   /**

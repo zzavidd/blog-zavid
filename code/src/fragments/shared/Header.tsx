@@ -1,7 +1,6 @@
 import React from 'react';
 import type { NavLinkProps } from 'react-bootstrap';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import type { RootStateOrAny } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Theme } from 'classes/theme';
@@ -9,18 +8,19 @@ import { InvisibleButton } from 'components/button';
 import { Switch } from 'components/form/checkbox';
 import CloudImage from 'components/image';
 import { Icon, Responsive } from 'components/library';
-import { setTheme } from 'constants/reducers';
+import type { AppState } from 'constants/reducers';
+import { AppActions } from 'constants/reducers';
 import css from 'styles/Partials.module.scss';
 
 export default function Header() {
-  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+  const { appTheme } = useSelector((state: AppState) => state);
 
   return (
     <Navbar
-      className={css[`nav-${theme}`]}
+      className={css[`nav-${appTheme}`]}
       expand={'md'}
       sticky={'top'}
-      variant={theme}>
+      variant={appTheme}>
       <Container fluid={'lg'}>
         <BrandButton />
         <Responsive
@@ -98,19 +98,19 @@ function DisabledNavLink({ children }: NavLinkProps) {
 
 function ThemeSwitcher() {
   const dispatch = useDispatch();
-  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
+  const { appTheme } = useSelector((state: AppState) => state);
 
   const switchTheme = () => {
-    const oppTheme = Theme.switchTheme(theme);
-    dispatch(setTheme(oppTheme));
+    const oppTheme = Theme.switchTheme(appTheme);
+    dispatch(AppActions.setAppTheme(oppTheme));
     document.body.classList.add(`body-${oppTheme}`);
-    document.body.classList.remove(`body-${theme}`);
+    document.body.classList.remove(`body-${appTheme}`);
   };
   return (
     <Nav.Item>
       <Switch
         onChange={switchTheme}
-        checked={!Theme.isLight(theme)}
+        checked={!Theme.isLight(appTheme)}
         checkedIcon={'moon'}
         uncheckedIcon={'sun'}
       />

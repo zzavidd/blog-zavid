@@ -1,9 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
 
-import type { ThemeOption, FilterThemeOption } from 'classes/theme';
-import { FilterShapeOption, FilterShape, Theme } from 'classes/theme';
+import type { FilterThemeOption, AppTheme } from 'classes/theme';
+import { FilterShape, FilterShapeOption, Theme } from 'classes/theme';
 import { DOMAIN } from 'constants/settings';
-import Utils from 'constants/utils';
 
 const constants = {
   [FilterShapeOption.SQUARE]: {
@@ -67,7 +66,7 @@ namespace Canvas {
     canvas: HTMLCanvasElement,
     content: HTMLDivElement,
     sourceTitle: string,
-    theme: ThemeOption,
+    theme: AppTheme,
     colour: FilterThemeOption,
     shape: FilterShapeOption,
     setImageSource: Dispatch<SetStateAction<string>>,
@@ -178,7 +177,7 @@ namespace Canvas {
    */
   export async function downloadImage(imageUrl: string) {
     try {
-      const res = await Utils.request(imageUrl, {
+      const res = await fetch(imageUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'image/jpeg',

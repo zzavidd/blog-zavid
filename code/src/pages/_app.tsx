@@ -6,22 +6,25 @@ import 'bootstrap/scss/bootstrap.scss';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import Script from 'next/script';
-import React, { useEffect } from 'react';
-import type { RootStateOrAny } from 'react-redux';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { Theme } from 'classes/theme';
+import Snackbar from 'componentsv2/Snackbar';
 import Alert from 'constants/alert';
-import configureStore, { setTheme } from 'constants/reducers';
+import Contexts from 'constants/contexts';
+import type { AppState } from 'constants/reducers';
+import { persistor, store } from 'constants/reducers';
+import type {
+  AppPropsWithLayout,
+  Snack as SnackDefinition,
+} from 'constants/types';
+import AdminGateway from 'fragments/AdminGateway';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
-import Footer from 'fragments/shared/Footer';
-import Header from 'fragments/shared/Header';
 import 'styles/App.scss';
 
 library.add(fab, far, fas);
-
-const { store, persistor } = configureStore();
 
 export default function App(props: AppProps) {
   return (
@@ -42,30 +45,71 @@ export default function App(props: AppProps) {
  * @param props.pageProps The properties for each page.
  * @returns The full page including the header and footer.
  */
-function ZAVIDApp({ Component, pageProps }: AppProps) {
-  const dispatch = useDispatch();
-
-  const theme = useSelector(({ theme }: RootStateOrAny) => {
-    if (Theme.isValid(theme)) {
-      dispatch(setTheme(Theme.DARK));
-      return Theme.DARK;
-    }
-    return theme;
+function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
+  const [state, setState] = useState<ZavidAppState>({
+    snacks: [],
   });
+  const { appTheme } = useSelector((state: AppState) => state);
 
   useEffect(() => {
-    document.body.classList.add(`body-${theme}`);
+    document.body.classList.add(`body-${appTheme}`);
     Alert.check();
   }, []);
 
+  /**
+   * Sets the timeout for any displayed snacks unless the snack is defined to be
+   * indefinite.
+   */
+  useEffect(() => {
+    const index = state.snacks.findIndex(
+      ({ duration }) => typeof duration === 'number',
+    );
+    if (index === -1) return;
+
+    const duration = state.snacks[index].duration;
+    if (typeof duration === 'number') {
+      const timeout = setTimeout(() => {
+        removeSnack(index);
+        clearTimeout(timeout);
+      }, duration);
+    }
+  }, [state.snacks.length]);
+
+  /**
+   * Adds a snack to show on the snack bar.
+   * @param snack The snack definition.
+   */
+  function addSnack(snack: SnackDefinition) {
+    setState((current) => ({
+      ...current,
+      snacks: [...state.snacks, snack],
+    }));
+  }
+
+  /**
+   * Removes the snack at the specified index from the list of snacks.
+   * @param index The snack to remove.
+   */
+  function removeSnack(index: number) {
+    const snacks = [...state.snacks];
+    snacks.splice(index, 1);
+    setState((current) => ({ ...current, snacks }));
+  }
+
+  // Configure layouts for all child components;
+  const getLayout = Component.getLayout ?? ((page) => page);
+  const ComponentWithLayout = getLayout(<Component {...pageProps} />);
+
   return (
-    <React.Fragment>
-      <GoogleAnalyticsScripts />
-      <Header />
-      <Component {...pageProps} />
-      <Footer />
-      <CookiePrompt />
-    </React.Fragment>
+    <AdminGateway onlyBlockInStaging={true}>
+      <Contexts.Snacks.Provider
+        value={{ snacks: state.snacks, add: addSnack, remove: removeSnack }}>
+        <GoogleAnalyticsScripts />
+        {ComponentWithLayout}
+        <CookiePrompt />
+        <Snackbar />
+      </Contexts.Snacks.Provider>
+    </AdminGateway>
   );
 }
 
@@ -91,4 +135,8 @@ function GoogleAnalyticsScripts() {
       </Script>
     </React.Fragment>
   );
+}
+
+interface ZavidAppState {
+  snacks: SnackDefinition[];
 }

@@ -78,7 +78,9 @@ export class QueryBuilder<T extends EntityDAO> {
   }
 }
 
-export class MutationBuilder<T extends EntityDAO> extends QueryBuilder<T> {
+export class MutationBuilder<
+  Entity extends EntityDAO,
+> extends QueryBuilder<Entity> {
   private entity: string;
 
   constructor(knex: Knex, table: string, entity: string) {
@@ -88,29 +90,46 @@ export class MutationBuilder<T extends EntityDAO> extends QueryBuilder<T> {
     this.table = table;
   }
 
-  public insert(input: T): MutationBuilder<T> {
+  public insert(input: Entity): MutationBuilder<Entity> {
     if (!input) throw new Error(`No specified ${this.entity} to insert.`);
+    serializeInput(input as Record<string, unknown>);
     void this.query.insert(input);
     return this;
   }
 
-  public update(input: T): MutationBuilder<T> {
+  public update(
+    input: Entity,
+    removeProperties: (keyof Entity)[] = [],
+  ): MutationBuilder<Entity> {
     if (!input) throw new Error(`No specified ${this.entity} to update.`);
+    serializeInput(input as Record<string, unknown>);
+    removeProperties.forEach((property) => {
+      delete input[property];
+    });
     void this.query.update(input);
     return this;
   }
 
-  public delete(id: number): MutationBuilder<T> {
+  public delete(id: number): MutationBuilder<Entity> {
     if (!id) throw new Error(`No specified ${this.entity} to delete.`);
     void this.query.where(`${this.table}.id`, id).del();
     return this;
   }
 
-  public truncate(): MutationBuilder<T> {
+  public truncate(): MutationBuilder<Entity> {
     void this.query.truncate();
     return this;
   }
 }
+
+function serializeInput(input: Record<string, unknown>) {
+  Object.entries(input).forEach(([prop, value]) => {
+    if (value && typeof value === 'object' && !(value instanceof Date)) {
+      input[prop] = JSON.stringify(value);
+    }
+  });
+}
+
 export interface QuerySort<T extends EntityDAO> {
   field?: keyof T;
   order?: string;

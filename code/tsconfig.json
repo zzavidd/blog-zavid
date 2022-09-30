@@ -20,5 +20,5 @@
     "typeRoots": ["types"]
   },
   "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules", "dist/", "test/**/*", "types/**/*"]
+  "exclude": ["node_modules", "dist/", "ops/**/*", "types/**/*"]
 }

@@ -13,7 +13,7 @@ import css from 'styles/Partials.module.scss';
 export function RightSidebar() {
   const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
-  const [recentPosts, setRecentPosts] = useState([]);
+  const [recentPosts, setRecentPosts] = useState<PostDAO[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -30,7 +30,9 @@ export function RightSidebar() {
       });
 
       try {
-        const data = await Utils.request(`/api/posts?${query.toString()}`);
+        const data = await Utils.request<PostDAO[]>(
+          `/api/posts?${query.toString()}`,
+        );
         setRecentPosts(data);
       } catch (e: any) {
         reportError(e.message);

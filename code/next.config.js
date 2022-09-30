@@ -1,17 +1,21 @@
 const fs = require('fs');
 
 const dkimPath = `${__dirname}/dkim.key`;
-let dkimPrivateKey = null;
 
+let dkimPrivateKey = null;
 if (fs.existsSync(dkimPath)) {
   dkimPrivateKey = fs.readFileSync(dkimPath, { encoding: 'utf8' });
 }
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
+  compiler: {
+    styledComponents: true,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
+  poweredByHeader: false,
   reactStrictMode: true,
   serverRuntimeConfig: {
     dkimPrivateKey,
@@ -21,5 +25,3 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 };
-
-module.exports = nextConfig;

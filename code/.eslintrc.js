@@ -8,10 +8,12 @@ module.exports = {
     project: ['**/tsconfig.json'],
   },
   rules: {
+    '@typescript-eslint/explicit-function-return-type': 0,
     'react-hooks/exhaustive-deps': 0,
     'react-hooks/rules-of-hooks': 0,
-    '@typescript-eslint/explicit-function-return-type': 0,
+    'react/react-in-jsx-scope': 0,
     'spaced-comment': 0,
+    'semi': 0,
     'quotes': ['warn', 'single', { avoidEscape: true }],
   },
   overrides: [
@@ -21,17 +23,12 @@ module.exports = {
         '@typescript-eslint/no-floating-promises': 'warn',
       },
     },
-    // {
-    //   files: ['*.ts'],
-    //   rules: {
-    //     'func-style': [
-    //       'warn',
-    //       'declaration',
-    //       {
-    //         allowArrowFunctions: false,
-    //       },
-    //     ],
-    //   },
-    // },
+    {
+      files: ['**/wishlist/**'],
+      rules: {
+        'react-hooks/exhaustive-deps': 1,
+        'react-hooks/rules-of-hooks': 1,
+      },
+    },
   ],
 };

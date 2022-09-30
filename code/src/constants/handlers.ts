@@ -9,8 +9,8 @@ import type {
   PostImage,
 } from 'classes/posts/PostDAO';
 import type { DateType } from 'components/form/datepicker';
-import { saveText } from 'constants/reducers';
 
+import { AppActions } from './reducers';
 import type { ReactHook } from './types';
 
 export default function Handlers<T extends EntityDAO>(
@@ -43,7 +43,7 @@ export default function Handlers<T extends EntityDAO>(
     dispatch: Dispatch,
   ): void {
     handleText(event);
-    dispatch(saveText(event.target.value));
+    dispatch(AppActions.saveInputText(event.target.value));
   }
 
   function handleDate(date: DateType, name = 'date'): void {

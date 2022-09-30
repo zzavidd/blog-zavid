@@ -103,7 +103,6 @@ function SubscribeForm() {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-
       Alert.success(
         `Thank you for subscribing!\nI've added ${email} to my mailing list.`,
       );

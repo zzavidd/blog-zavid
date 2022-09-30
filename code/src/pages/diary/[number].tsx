@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import React, { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
@@ -15,9 +15,10 @@ import ShareBlock from 'components/share';
 import { Divider, Paragraph, Title } from 'components/text';
 import Timeline, { TimelineType } from 'components/timeline';
 import { SITE_TITLE } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import TagBlock from 'fragments/diary/DiaryTags';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import { CuratePrompt } from 'fragments/shared/CuratePrompt';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -25,7 +26,7 @@ import SSR from 'private/ssr';
 import css from 'styles/pages/Posts.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
-const DiaryEntryPage: NextPage<DiaryEntryPageProps> = ({
+const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -173,6 +174,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 };
 
+DiaryEntryPage.getLayout = Layout.addPartials;
 export default DiaryEntryPage;
 
 interface DiaryEntryPageProps {

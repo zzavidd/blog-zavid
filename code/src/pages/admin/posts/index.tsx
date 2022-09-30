@@ -1,11 +1,10 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { zText } from 'zavid-modules';
 
 import { URLBuilder } from 'classes/_/URLBuilder';
-import type { PostDAO, PostType, PostStatus } from 'classes/posts/PostDAO';
+import type { PostDAO, PostStatus, PostType } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { InvisibleButton } from 'components/button';
 import CloudImage from 'components/image';
@@ -23,18 +22,20 @@ import Alert from 'constants/alert';
 import { DOMAIN } from 'constants/settings';
 import type {
   EditButtonProps,
+  NextPageWithLayout,
   PathDefinition,
   ReactHook,
 } from 'constants/types';
 import Utils from 'constants/utils';
+import AdminGateway from 'fragments/AdminGateway';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import BottomToolbar from 'fragments/shared/BottomToolbar';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 import css from 'styles/pages/Posts.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
-const PostsAdmin: NextPage<PostsAdminProps> = ({
+const PostsAdmin: NextPageWithLayout<PostsAdminProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -75,7 +76,7 @@ const PostsAdmin: NextPage<PostsAdminProps> = ({
   }
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <Spacer>
         <Tabler<9>
@@ -158,7 +159,7 @@ const PostsAdmin: NextPage<PostsAdminProps> = ({
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
@@ -219,19 +220,7 @@ function DeleteButton({
 
 export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async ({
   query,
-  req,
-  res,
 }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
   const filterOptions = query as Record<string, string>;
   const {
     limit,
@@ -269,6 +258,7 @@ export const getServerSideProps: GetServerSideProps<PostsAdminProps> = async ({
   };
 };
 
+PostsAdmin.getLayout = Layout.addHeaderOnly;
 export default PostsAdmin;
 
 interface PostsAdminProps {

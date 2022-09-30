@@ -1,12 +1,12 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import React, { useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import type {
-  SubscriptionsMapping,
   SubscriberDAO,
+  SubscriptionsMapping,
 } from 'classes/subscribers/SubscriberDAO';
 import { ConfirmButton, InvisibleButton } from 'components/button';
 import { Container } from 'components/layout';
@@ -14,15 +14,16 @@ import { ConfirmModal } from 'components/modal';
 import { Title } from 'components/text';
 import Alert, { AlertType } from 'constants/alert';
 import { SITE_TITLE } from 'constants/settings';
-import type { AppPageProps } from 'constants/types';
+import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PreferenceChecks from 'fragments/subscribers/SubscriptionPreferences';
 import SSR from 'private/ssr';
 import css from 'styles/pages/Subscribers.module.scss';
 
 // eslint-disable-next-line react/function-component-definition
-const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
+const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -51,7 +52,6 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
         method: 'PUT',
         body: JSON.stringify(payload),
       });
-
       Alert.success(
         "You've successfully updated your subscription preferences.",
       );
@@ -66,7 +66,6 @@ const SubscriptionPreferences: NextPage<SubscriptionsProps> = ({
         method: 'DELETE',
         body: JSON.stringify({ id: subscriber.id }),
       });
-
       Alert.set({
         type: AlertType.SUCCESS,
         message: "You've successfully unsubscribed from my blog.",
@@ -131,6 +130,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+SubscriptionPreferences.getLayout = Layout.addPartials;
 export default SubscriptionPreferences;
 
 interface SubscriptionsProps extends AppPageProps {

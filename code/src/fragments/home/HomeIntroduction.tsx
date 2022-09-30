@@ -2,9 +2,9 @@ import React from 'react';
 import { zDate } from 'zavid-modules';
 
 import { Signature } from 'components/image';
-import { HomeRow, HomeField } from 'components/pages/home';
 import { Paragraph, Title } from 'components/text';
 import { BLOG_REDEVELOPMENT_DATE } from 'constants/settings';
+import { HomeRow, HomeField } from 'fragments/home/Home.styles';
 import css from 'styles/pages/Home.module.scss';
 
 export default function HomeIntroduction({

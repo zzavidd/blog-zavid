@@ -1,4 +1,4 @@
-export enum ThemeOption {
+export enum AppTheme {
   LIGHT = 'light',
   DARK = 'dark',
 }
@@ -20,20 +20,20 @@ export enum FilterShapeOption {
 }
 
 export class Theme {
-  public static LIGHT = ThemeOption.LIGHT;
-  public static DARK = ThemeOption.DARK;
+  public static LIGHT = AppTheme.LIGHT;
+  public static DARK = AppTheme.DARK;
 
-  public static switchTheme(theme: ThemeOption) {
-    const oppositeTheme = this.isLight(theme) ? Theme.DARK : ThemeOption.LIGHT;
+  public static switchTheme(theme: AppTheme) {
+    const oppositeTheme = this.isLight(theme) ? Theme.DARK : AppTheme.LIGHT;
     return oppositeTheme;
   }
 
-  public static isLight(theme: ThemeOption) {
+  public static isLight(theme: AppTheme) {
     return theme === Theme.LIGHT;
   }
 
   public static isValid(input: string) {
-    return input !== ThemeOption.LIGHT && input !== ThemeOption.DARK;
+    return input !== AppTheme.LIGHT && input !== AppTheme.DARK;
   }
 }
 

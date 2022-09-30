@@ -1,11 +1,12 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import React from 'react';
 
-import { PostType, PostStatus } from 'classes/posts/PostDAO';
+import { PostStatus, PostType } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { SITE_TITLE } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import type { PostTemplatePageProps } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
@@ -13,7 +14,7 @@ import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
-const EpistlePage: NextPage<EpistlePageProps> = ({
+const EpistlePage: NextPageWithLayout<EpistlePageProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -73,6 +74,7 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
   }
 };
 
+EpistlePage.getLayout = Layout.addPartials;
 export default EpistlePage;
 
 interface EpistlePageProps {

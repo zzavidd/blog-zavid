@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
 import React, { memo, useEffect, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -13,10 +13,11 @@ import { Spacer, Toolbar } from 'components/layout';
 import { Icon } from 'components/library';
 import { Paragraph, Title, VanillaLink } from 'components/text';
 import { SITE_TITLE } from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import TagBlock from 'fragments/diary/DiaryTags';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
@@ -26,7 +27,7 @@ const DIARY_HEADING = "Zavid's Diary";
 const PARAM_ONLY_FAVOURITES = 'onlyFavourites';
 
 // eslint-disable-next-line react/function-component-definition
-const DiaryIndex: NextPage<DiaryIndexProps> = ({
+const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -233,6 +234,7 @@ export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
   };
 };
 
+DiaryIndex.getLayout = Layout.addPartials;
 export default DiaryIndex;
 
 interface DiaryIndexProps {

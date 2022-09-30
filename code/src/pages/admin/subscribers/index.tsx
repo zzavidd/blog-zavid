@@ -1,5 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
@@ -18,15 +17,20 @@ import {
 } from 'components/library';
 import { ConfirmModal } from 'components/modal';
 import Alert from 'constants/alert';
-import type { PathDefinition, ReactHook } from 'constants/types';
+import type {
+  NextPageWithLayout,
+  PathDefinition,
+  ReactHook,
+} from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Utils from 'constants/utils';
+import AdminGateway from 'fragments/AdminGateway';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition
-const SubscribersAdmin: NextPage<SubscribersAdminProps> = ({
+const SubscribersAdmin: NextPageWithLayout<SubscribersAdminProps> = ({
   pathDefinition,
   pageProps,
 }) => {
@@ -63,7 +67,7 @@ const SubscribersAdmin: NextPage<SubscribersAdminProps> = ({
   }
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <Spacer>
         <Tabler<7>
@@ -136,7 +140,7 @@ const SubscribersAdmin: NextPage<SubscribersAdminProps> = ({
         confirmText={'Delete'}
         closeFunction={() => setDeleteModalVisibility(false)}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
@@ -178,17 +182,7 @@ function DeleteButton({
 
 export const getServerSideProps: GetServerSideProps<
   SubscribersAdminProps
-> = async ({ req, res }) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
+> = async () => {
   const subscribers = JSON.parse(
     await SSR.Subscribers.getAll({
       sort: {
@@ -209,6 +203,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+SubscribersAdmin.getLayout = Layout.addHeaderOnly;
 export default SubscribersAdmin;
 
 interface SubscribersAdminProps {

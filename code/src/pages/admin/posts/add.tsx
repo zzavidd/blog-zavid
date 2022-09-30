@@ -1,7 +1,6 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatus } from 'classes/posts/PostDAO';
@@ -9,16 +8,20 @@ import { PostStatic } from 'classes/posts/PostStatic';
 import type { SelectItem } from 'components/form';
 import Alert, { AlertType } from 'constants/alert';
 import hooks from 'constants/handlers';
-import type { PathDefinition } from 'constants/types';
+import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import AdminGateway from 'fragments/AdminGateway';
+import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import PostForm, { buildPayload } from 'fragments/posts/PostForm';
-import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import PostAPI from 'private/api/posts';
 
 // eslint-disable-next-line react/function-component-definition
-const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
+const PostAdd: NextPageWithLayout<PostAddProps> = ({
+  pathDefinition,
+  pageProps,
+}) => {
   const { domains } = pageProps;
   const router = useRouter();
 
@@ -70,7 +73,7 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
   }
 
   return (
-    <React.Fragment>
+    <AdminGateway>
       <PageMetadata {...pathDefinition} />
       <PostForm
         post={post}
@@ -82,24 +85,13 @@ const PostAdd: NextPage<PostAddProps> = ({ pathDefinition, pageProps }) => {
         cancelFunction={returnToPostAdmin}
         isRequestPending={isRequestPending}
       />
-    </React.Fragment>
+    </AdminGateway>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PostAddProps> = async ({
-  req,
-  res,
-}) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
-
+export const getServerSideProps: GetServerSideProps<
+  PostAddProps
+> = async () => {
   const domains = await PostAPI.getDomains();
   return {
     props: {
@@ -113,6 +105,7 @@ export const getServerSideProps: GetServerSideProps<PostAddProps> = async ({
   };
 };
 
+PostAdd.getLayout = Layout.addHeaderOnly;
 export default PostAdd;
 
 interface PostAddProps {
