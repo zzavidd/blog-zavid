@@ -1,6 +1,5 @@
 **/node_modules
 **/.next
-sessions/
 **/dist/
 
 **/*.env*
@@ -12,3 +11,5 @@ sessions/
 **/.yarn/*
 !**/.yarn/plugins
 !**/.yarn/releases
+
+**/.husky/_

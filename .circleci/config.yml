@@ -56,10 +56,6 @@ jobs:
           name: Run ESLint
           command: yarn run eslint --max-warnings 0
           working_directory: ./code
-      - run:
-          name: Run Prettier checks
-          command: yarn run prettier:check
-          working_directory: ./code
   build:
     executor: node
     steps:

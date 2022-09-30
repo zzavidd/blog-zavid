@@ -1,0 +1,4 @@
+#!/bin/sh
+cd code
+yarn run prettier:write
+git add -A
