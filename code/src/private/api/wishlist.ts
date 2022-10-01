@@ -1,5 +1,3 @@
-import { format } from 'date-fns';
-
 import type { QuerySort } from 'classes/_/QueryBuilder';
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import {
@@ -38,7 +36,7 @@ namespace WishlistAPI {
       .insert({
         ...wishlistItem,
         purchaseDate: wishlistItem.purchaseDate
-          ? format(new Date(wishlistItem.purchaseDate), 'yyyy-MM-dd')
+          ? new Date(wishlistItem.purchaseDate).toLocaleDateString('en-CA')
           : null,
       })
       .build();
@@ -53,7 +51,7 @@ namespace WishlistAPI {
         {
           ...wishlistItem,
           purchaseDate: wishlistItem.purchaseDate
-            ? format(new Date(wishlistItem.purchaseDate), 'yyyy-MM-dd')
+            ? new Date(wishlistItem.purchaseDate).toLocaleDateString('en-CA')
             : null,
         },
         ['createTime'],
