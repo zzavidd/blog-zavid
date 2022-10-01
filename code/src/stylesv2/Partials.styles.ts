@@ -26,7 +26,13 @@ export namespace HeaderStyle {
 
   export const BrandContainer = styled.a`
     align-items: center;
+    cursor: pointer;
     display: flex;
+    transition: all 0.3s;
+
+    &:hover {
+      transform: scale(1.08);
+    }
   `;
 
   export const Navigation = styled.nav`

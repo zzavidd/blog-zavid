@@ -13,8 +13,8 @@ import {
   WishlistPageContext,
 } from 'fragments/wishlist/WishlistContext';
 import type { ClaimWishlistItemPayload } from 'private/api/wishlist';
-import CPX from 'stylesv2/Components/Components.styles';
 import FORM from 'stylesv2/Components/Form.styles';
+import ModalStyle from 'stylesv2/Components/Modal.styles';
 import WL from 'stylesv2/Pages/Wishlist.styles';
 import { ButtonVariant } from 'stylesv2/Variables.styles';
 
@@ -58,16 +58,16 @@ export function DeleteWishlistItemModal() {
       body={`Are you sure you want to delete '${context.selectedWishlistItem?.name}'?`}
       footer={
         <React.Fragment>
-          <CPX.Modal.FooterButton
+          <ModalStyle.FooterButton
             variant={ButtonVariant.DELETE}
             onClick={deleteWishlistItem}>
             Delete
-          </CPX.Modal.FooterButton>
-          <CPX.Modal.FooterButton
+          </ModalStyle.FooterButton>
+          <ModalStyle.FooterButton
             variant={ButtonVariant.CANCEL}
             onClick={onCancelDeleteClick}>
             Cancel
-          </CPX.Modal.FooterButton>
+          </ModalStyle.FooterButton>
         </React.Fragment>
       }
     />
@@ -131,16 +131,16 @@ export function ClaimWishlistItemModal() {
       body={<ClaimForm />}
       footer={
         <React.Fragment>
-          <CPX.Modal.FooterButton
+          <ModalStyle.FooterButton
             variant={ButtonVariant.CONFIRM}
             onClick={claimItem}>
             Claim
-          </CPX.Modal.FooterButton>
-          <CPX.Modal.FooterButton
+          </ModalStyle.FooterButton>
+          <ModalStyle.FooterButton
             variant={ButtonVariant.CANCEL}
             onClick={onCancelClaimClick}>
             Cancel
-          </CPX.Modal.FooterButton>
+          </ModalStyle.FooterButton>
         </React.Fragment>
       }
     />

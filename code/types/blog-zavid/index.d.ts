@@ -8,8 +8,10 @@ declare module 'styled-components' {
   }
 }
 
-interface String {
-  standardize(): string;
+declare global {
+  interface String {
+    standardize(): string;
+  }
 }
 
 declare class Stringified<T> extends String {

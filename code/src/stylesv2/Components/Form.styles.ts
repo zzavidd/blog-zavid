@@ -14,7 +14,7 @@ namespace FORM {
     border: none;
     color: ${({ theme }) => theme.bodyFontColor};
     font-family: ${FONTS.BODY};
-    font-size: 1.2em;
+    font-size: 1.1em;
     outline: none;
     padding: 0.3em;
     width: 100%;
@@ -107,6 +107,7 @@ namespace FORM {
       ${DefaultStyle}
       border-bottom: 1px solid ${COLOR.WHITE};
       min-height: 50px;
+      padding: 0.8em;
     `;
   }
 }

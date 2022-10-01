@@ -1,16 +1,16 @@
 import React from 'react';
 
-import CPX from 'stylesv2/Components/Components.styles';
+import ModalStyle from 'stylesv2/Components/Modal.styles';
 
 export function Modal({ header, body, footer, ...props }: ModalProps) {
   return (
-    <CPX.Modal.Container {...props}>
-      <CPX.Modal.Dialog>
-        {header ? <CPX.Modal.Header>{header}</CPX.Modal.Header> : null}
-        <CPX.Modal.Body>{body}</CPX.Modal.Body>
-        {footer ? <CPX.Modal.Footer>{footer}</CPX.Modal.Footer> : null}
-      </CPX.Modal.Dialog>
-    </CPX.Modal.Container>
+    <ModalStyle.Container {...props}>
+      <ModalStyle.Dialog>
+        {header ? <ModalStyle.Header>{header}</ModalStyle.Header> : null}
+        <ModalStyle.Body>{body}</ModalStyle.Body>
+        {footer ? <ModalStyle.Footer>{footer}</ModalStyle.Footer> : null}
+      </ModalStyle.Dialog>
+    </ModalStyle.Container>
   );
 }
 

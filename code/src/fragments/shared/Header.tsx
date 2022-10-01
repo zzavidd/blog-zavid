@@ -2,18 +2,15 @@ import { faBars, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NextImage from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { Nav } from 'react-bootstrap';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Theme } from 'classes/theme';
-import { InvisibleButton } from 'components/button';
 import { Switch } from 'components/form/checkbox';
-import { Icon } from 'components/library';
+import Clickable from 'componentsv2/Clickable';
 import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
 import { CLOUDINARY_BASE_URL } from 'constants/settings';
-import css from 'styles/Partials.module.scss';
 import { HeaderStyle } from 'stylesv2/Partials.styles';
 
 const paths = [
@@ -81,15 +78,7 @@ function NavigationLinks() {
 
 function AdminButton() {
   const navigateToAdmin = () => (location.href = '/admin');
-  return (
-    <Nav.Item>
-      <InvisibleButton
-        onClick={navigateToAdmin}
-        className={css['nav-admin-button']}>
-        <Icon name={'lock'} withRightSpace={false} />
-      </InvisibleButton>
-    </Nav.Item>
-  );
+  return <Clickable.Icon onClick={navigateToAdmin} icon={faLock} />;
 }
 
 function ThemeSwitcher() {
@@ -99,17 +88,14 @@ function ThemeSwitcher() {
   const switchTheme = () => {
     const oppTheme = Theme.switchTheme(appTheme);
     dispatch(AppActions.setAppTheme(oppTheme));
-    document.body.classList.add(`body-${oppTheme}`);
-    document.body.classList.remove(`body-${appTheme}`);
   };
+
   return (
-    <Nav.Item>
-      <Switch
-        onChange={switchTheme}
-        checked={!Theme.isLight(appTheme)}
-        checkedIcon={'moon'}
-        uncheckedIcon={'sun'}
-      />
-    </Nav.Item>
+    <Switch
+      onChange={switchTheme}
+      checked={!Theme.isLight(appTheme)}
+      checkedIcon={'moon'}
+      uncheckedIcon={'sun'}
+    />
   );
 }
