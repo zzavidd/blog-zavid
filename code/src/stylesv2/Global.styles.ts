@@ -23,10 +23,10 @@ export const GlobalStyles = createGlobalStyle`
 
   div#__next {
     height: 100%;
+    position: relative;
   }
 
   h1 {
-    font-size: 2.5em;
     font-family: ${FONTS.TITLE};
   }
 

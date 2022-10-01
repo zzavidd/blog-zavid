@@ -59,7 +59,8 @@ export function applySubstitutions(
   if (text) {
     const variableRegex = new RegExp(/\$\{(.*?)\}/g); // Regex for substitutions
     text = text.replace(variableRegex, (_, p1) => {
-      return String(substitutions[p1]) || '';
+      const value = substitutions[p1];
+      return value ? value.toString() : '';
     });
   }
   return text;

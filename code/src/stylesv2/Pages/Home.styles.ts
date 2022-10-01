@@ -36,6 +36,7 @@ export namespace Introduction {
   `;
 
   export const Heading = styled.h1`
+    font-size: 2.5em;
     margin-block: 0;
   `;
 

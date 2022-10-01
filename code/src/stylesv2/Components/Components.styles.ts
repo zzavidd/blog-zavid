@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
 import type { ButtonVariant } from 'stylesv2/Variables.styles';
@@ -56,10 +57,7 @@ namespace CPX {
     }
   `;
 
-  export const Hyperlink = styled.a.attrs({
-    target: '_blank',
-    rel: 'noopener noreferrer',
-  })`
+  export const Hyperlink = styled(Link)`
     text-decoration: none;
   `;
 

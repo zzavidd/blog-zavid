@@ -9,21 +9,21 @@ import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ThemeProvider, StyleSheetManager } from 'styled-components';
+import { StyleSheetManager, ThemeProvider } from 'styled-components';
 
 import Snackbar from 'componentsv2/Snackbar';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import { persistor, store } from 'constants/reducers';
-import { THEME } from 'stylesv2/Variables.styles';
 import type {
   AppPropsWithLayout,
   Snack as SnackDefinition,
 } from 'constants/types';
 import AdminGateway from 'fragments/AdminGateway';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
-import { GlobalStyles } from 'stylesv2/Global.styles';
 import 'styles/App.scss';
+import { GlobalStyles } from 'stylesv2/Global.styles';
+import { THEME } from 'stylesv2/Variables.styles';
 
 library.add(fab, far, fas);
 
@@ -74,6 +74,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
         clearTimeout(timeout);
       }, duration);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.snacks.length]);
 
   /**

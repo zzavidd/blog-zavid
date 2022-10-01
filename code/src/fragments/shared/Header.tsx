@@ -1,77 +1,81 @@
-import React from 'react';
-import type { NavLinkProps } from 'react-bootstrap';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { faBars, faLock } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import NextImage from 'next/image';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { Nav } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Theme } from 'classes/theme';
 import { InvisibleButton } from 'components/button';
 import { Switch } from 'components/form/checkbox';
-import CloudImage from 'components/image';
-import { Icon, Responsive } from 'components/library';
+import { Icon } from 'components/library';
 import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
+import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import css from 'styles/Partials.module.scss';
+import { HeaderStyle } from 'stylesv2/Partials.styles';
+
+const paths = [
+  { title: 'Diary', url: '/diary' },
+  { title: 'Reveries', url: '/reveries' },
+  { title: 'Epistles', url: '/epistles' },
+  { title: 'Poetry', url: '/poetry' },
+  { title: 'Musings', url: '/musings' },
+  { title: 'About', url: '/about' },
+];
 
 export default function Header() {
-  const { appTheme } = useSelector((state: AppState) => state);
-
   return (
-    <Navbar
-      className={css[`nav-${appTheme}`]}
-      expand={'md'}
-      sticky={'top'}
-      variant={appTheme}>
-      <Container fluid={'lg'}>
+    <HeaderStyle.Header>
+      <HeaderStyle.HeaderContent>
         <BrandButton />
-        <Responsive
-          defaultView={
-            <React.Fragment>
-              <NavigationLinks />
-              <ThemeSwitcher />
-              <AdminButton />
-            </React.Fragment>
-          }
-          tabletView={
-            <React.Fragment>
-              <ThemeSwitcher />
-              <AdminButton />
-              <NavigationLinks />
-            </React.Fragment>
-          }
-        />
-      </Container>
-    </Navbar>
+        <NavigationLinks />
+        <ThemeSwitcher />
+        <AdminButton />
+      </HeaderStyle.HeaderContent>
+    </HeaderStyle.Header>
   );
 }
 
 function BrandButton() {
   return (
-    <Navbar.Brand href={'/'}>
-      <CloudImage
-        containerClassName={css['nav-brand']}
-        src={'/static/logos/zavid-head-logo.png'}
-        version={1598802245}
-        alt={'Zavid Logo'}
-      />
-    </Navbar.Brand>
+    <Link href={'/'}>
+      <HeaderStyle.BrandContainer>
+        <NextImage
+          src={`${CLOUDINARY_BASE_URL}/static/logos/zavid-head-logo.png`}
+          alt={'Zavid Logo'}
+          width={50}
+          height={50}
+          layout={'fixed'}
+        />
+      </HeaderStyle.BrandContainer>
+    </Link>
   );
 }
 
 function NavigationLinks() {
+  const [state, setState] = useState({ isMenuOpen: false });
+
+  function toggleNavigationMenu() {
+    setState({ isMenuOpen: !state.isMenuOpen });
+  }
+
   return (
-    <React.Fragment>
-      <Navbar.Toggle className={css['nav-toggler']} />
-      <Navbar.Collapse>
-        <Nav className={'justify-content-center'}>
-          <Nav.Link href={'/reveries'}>Reveries</Nav.Link>
-          <Nav.Link href={'/diary'}>Diary</Nav.Link>
-          <Nav.Link href={'/epistles'}>Epistles</Nav.Link>
-          <DisabledNavLink>Poetry</DisabledNavLink>
-          <DisabledNavLink>Musings</DisabledNavLink>
-          <Nav.Link href={'/about'}>About</Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
-    </React.Fragment>
+    <HeaderStyle.Navigation>
+      <HeaderStyle.NavToggle type={'button'} onClick={toggleNavigationMenu}>
+        <FontAwesomeIcon icon={faBars} />
+      </HeaderStyle.NavToggle>
+      <HeaderStyle.NavigationMenu open={state.isMenuOpen}>
+        {paths.map(({ title, url }) => {
+          return (
+            <HeaderStyle.NavigationMenuLink key={url}>
+              <Link href={url}>{title}</Link>
+            </HeaderStyle.NavigationMenuLink>
+          );
+        })}
+      </HeaderStyle.NavigationMenu>
+    </HeaderStyle.Navigation>
   );
 }
 
@@ -85,14 +89,6 @@ function AdminButton() {
         <Icon name={'lock'} withRightSpace={false} />
       </InvisibleButton>
     </Nav.Item>
-  );
-}
-
-function DisabledNavLink({ children }: NavLinkProps) {
-  return (
-    <Nav.Link href={'#'} className={css['nav-link-disabled']} disabled>
-      {children}
-    </Nav.Link>
   );
 }
 
