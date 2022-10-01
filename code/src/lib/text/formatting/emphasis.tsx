@@ -1,11 +1,12 @@
 import React from 'react';
 
-import type { FormatCSS } from '../regex';
+import type { FormatCSS } from 'lib/text/regex';
 import {
   Emphasis,
   emphasisRegexMapping,
   getCombinedEmphasisRegex,
-} from '../regex';
+} from 'lib/text/regex';
+import TextStyle, * as Styles from 'stylesv2/Components/Text.styles';
 
 export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
   if (!paragraph) return '';
@@ -69,13 +70,12 @@ export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
             const textToHyperlink = applyEmphasisFormatting(matches![1]);
             const link = matches![2];
             transformation = (
-              <a
-                rel={'noopener noreferrer'}
+              <TextStyle.Emphasis.Anchor
                 href={link}
-                key={key}
-                className={css!['hyperlink']}>
+                rel={'noopener noreferrer'}
+                key={key}>
                 {textToHyperlink}
-              </a>
+              </TextStyle.Emphasis.Anchor>
             );
             break;
           case Emphasis.HIGHLIGHT:

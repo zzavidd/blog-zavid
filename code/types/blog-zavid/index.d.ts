@@ -4,6 +4,7 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     backgroundImage: string;
     bodyFontColor: string;
+    hyperlink: string;
   }
 }
 

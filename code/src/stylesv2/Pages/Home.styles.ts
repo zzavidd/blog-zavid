@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { SignatureImage } from 'components/image';
+import { Paragraph } from 'componentsv2/Text';
 import Mixins from 'stylesv2/Mixins.styles';
 
 export const HomeMain = styled.main`
@@ -36,6 +37,10 @@ export namespace Introduction {
 
   export const Heading = styled.h1`
     margin-block: 0;
+  `;
+
+  export const Text = styled(Paragraph)`
+    font-size: 1.2em;
   `;
 
   export const Signature = styled(SignatureImage)`

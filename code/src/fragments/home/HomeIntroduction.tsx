@@ -1,7 +1,5 @@
-import { Paragraph } from 'components/text';
 import { BLOG_REDEVELOPMENT_DATE } from 'constants/settings';
 import { format } from 'lib/date';
-import css from 'styles/pages/Home.module.scss';
 import * as Styles from 'stylesv2/Pages/Home.styles';
 
 export default function HomeIntroduction({
@@ -15,14 +13,13 @@ export default function HomeIntroduction({
           You&#39;ve arrived. Welcome.
         </Styles.Introduction.Heading>
         <Styles.Introduction.Signature />
-        <Paragraph
-          className={css['introduction-text__message']}
+        <Styles.Introduction.Text
           substitutions={{
             redevelopmentDate: format(BLOG_REDEVELOPMENT_DATE),
             emailSubCount,
           }}>
           {content}
-        </Paragraph>
+        </Styles.Introduction.Text>
       </Styles.Introduction.TextContainer>
     </Styles.Introduction.Section>
   );

@@ -1,4 +1,4 @@
-import type { DetailedHTMLProps, HTMLAttributes, ReactElement } from 'react';
+import type { HTMLAttributes, ReactElement } from 'react';
 import React from 'react';
 
 import type { FormatTextOptions } from 'lib/text';
@@ -12,7 +12,8 @@ import type {
   Target,
 } from 'lib/text/functions';
 import type { FormatCSSImage } from 'lib/text/regex';
-import { sectionRegexMapping, Section, strayRegexToOmit } from 'lib/text/regex';
+import { Section, sectionRegexMapping, strayRegexToOmit } from 'lib/text/regex';
+import TextStyle from 'stylesv2/Components/Text.styles';
 
 /**
  * Formats a paragraph of text.
@@ -203,9 +204,9 @@ export const formatParagraph = (
         {applyEmphasisFormatting(paragraph, css)}
       </span>
     ) : (
-      <p className={css['paragraph']} key={key} {...LONG_PRESS_HANDLERS}>
+      <TextStyle.Section.Paragraph {...LONG_PRESS_HANDLERS} key={key}>
         {applyEmphasisFormatting(paragraph, css)}
-      </p>
+      </TextStyle.Section.Paragraph>
     );
   }
 };
@@ -284,10 +285,7 @@ const createLongPressHandlers = (onLongPress?: onLongPress) => {
     clearTimeout(longPressTimeout);
   }
 
-  const longPressHandlers: DetailedHTMLProps<
-    HTMLAttributes<HTMLParagraphElement>,
-    HTMLParagraphElement
-  > = {
+  const longPressHandlers: HTMLAttributes<HTMLParagraphElement> = {
     onMouseDown: onPress,
     onMouseUp: onRelease,
     onTouchStart: onPress,

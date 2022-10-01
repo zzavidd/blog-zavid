@@ -54,12 +54,12 @@ export function deformatText(
  */
 export function applySubstitutions(
   text: string,
-  substitutions: Record<string, string>,
+  substitutions: Record<string, string | number>,
 ): string {
   if (text) {
     const variableRegex = new RegExp(/\$\{(.*?)\}/g); // Regex for substitutions
-    text = text.replace(variableRegex, (match, p1) => {
-      return substitutions[p1] || '';
+    text = text.replace(variableRegex, (_, p1) => {
+      return String(substitutions[p1]) || '';
     });
   }
   return text;

@@ -49,10 +49,12 @@ export const THEME: Record<'light' | 'dark', DefaultTheme> = {
     backgroundImage:
       'https://res.cloudinary.com/zavid/image/upload/v1606588947/static/bg/bg-app-light',
     bodyFontColor: COLOR.BLACK,
+    hyperlink: '#ac1ef3',
   },
   dark: {
     backgroundImage:
       'https://res.cloudinary.com/zavid/image/upload/v1597608184/static/bg/bg-app-dark',
     bodyFontColor: COLOR.WHITE,
+    hyperlink: '#d98dff',
   },
 };
