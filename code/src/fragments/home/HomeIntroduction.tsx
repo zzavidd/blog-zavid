@@ -1,8 +1,6 @@
-import { zDate } from 'zavid-modules';
-
-import { SignatureImage } from 'components/image';
 import { Paragraph } from 'components/text';
 import { BLOG_REDEVELOPMENT_DATE } from 'constants/settings';
+import { format } from 'lib/date';
 import css from 'styles/pages/Home.module.scss';
 import * as Styles from 'stylesv2/Pages/Home.styles';
 
@@ -20,7 +18,7 @@ export default function HomeIntroduction({
         <Paragraph
           className={css['introduction-text__message']}
           substitutions={{
-            redevelopmentDate: zDate.formatDate(BLOG_REDEVELOPMENT_DATE),
+            redevelopmentDate: format(BLOG_REDEVELOPMENT_DATE),
             emailSubCount,
           }}>
           {content}
