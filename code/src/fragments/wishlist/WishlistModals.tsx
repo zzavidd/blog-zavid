@@ -7,16 +7,16 @@ import Input from 'componentsv2/Input';
 import { Modal } from 'componentsv2/Modal';
 import Alert from 'constants/alert';
 import HandlersV2 from 'constants/handlersv2';
-import { ButtonVariant } from 'constants/styling';
 import Utils from 'constants/utils';
 import {
   initialState,
   WishlistPageContext,
 } from 'fragments/wishlist/WishlistContext';
 import type { ClaimWishlistItemPayload } from 'private/api/wishlist';
-import CPX from 'stylesv2/Components.styles';
-import FORM from 'stylesv2/Form.styles';
-import WL from 'stylesv2/Wishlist.styles';
+import CPX from 'stylesv2/Components/Components.styles';
+import FORM from 'stylesv2/Components/Form.styles';
+import WL from 'stylesv2/Pages/Wishlist.styles';
+import { ButtonVariant } from 'stylesv2/Variables.styles';
 
 export function DeleteWishlistItemModal() {
   const [context, setContext] = useContext(WishlistPageContext);

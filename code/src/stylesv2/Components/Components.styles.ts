@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 
-import type { ButtonVariant } from 'constants/styling';
-import { COLOR } from 'constants/styling';
+import type { ButtonVariant } from 'stylesv2/Variables.styles';
+import { COLOR } from 'stylesv2/Variables.styles';
 
-import Mixins from './Mixins.styles';
+import Mixins from '../Mixins.styles';
 
 namespace CPX {
   export const Button = styled.button.attrs({ type: 'button' })`

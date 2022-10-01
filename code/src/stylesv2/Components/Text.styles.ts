@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { FONTS } from 'constants/styling';
+import { FONTS } from 'stylesv2/Variables.styles';
 
 namespace TextStyle {
   export const Collection = styled.pre`

@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import type { ReactDatePickerProps } from 'react-datepicker';
 import ReactDatePicker from 'react-datepicker';
 
-import FORM from 'stylesv2/Form.styles';
+import FORM from 'stylesv2/Components/Form.styles';
 
 import Clickable from './Clickable';
 

@@ -1,6 +1,6 @@
 import styled, { keyframes, css } from 'styled-components';
 
-import { COLOR } from 'constants/styling';
+import { COLOR } from 'stylesv2/Variables.styles';
 
 const fadeInOut = keyframes`
   0%, 16% {opacity: 0; pointer-events: auto;}

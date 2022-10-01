@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FlattenSimpleInterpolation } from 'styled-components';
 import styled, { createGlobalStyle, css } from 'styled-components';
 
-import { COLOR, FONTS } from 'constants/styling';
+import { COLOR, FONTS } from 'stylesv2/Variables.styles';
 
 namespace FORM {
   const DefaultStyle: FlattenSimpleInterpolation = css`

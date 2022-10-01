@@ -15,7 +15,7 @@ import Snackbar from 'componentsv2/Snackbar';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import { persistor, store } from 'constants/reducers';
-import { THEME } from 'constants/styling';
+import { THEME } from 'stylesv2/Variables.styles';
 import type {
   AppPropsWithLayout,
   Snack as SnackDefinition,

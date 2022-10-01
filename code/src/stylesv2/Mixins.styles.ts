@@ -1,11 +1,10 @@
 import type * as CSS from 'csstype';
 import { darken } from 'polished';
-import type React from 'react';
-import { css } from 'styled-components';
 import type { FlattenSimpleInterpolation } from 'styled-components';
+import { css } from 'styled-components';
 
-import type { Breakpoint } from 'constants/styling';
-import { BREAKPOINTS } from 'constants/styling';
+import type { Breakpoint } from 'stylesv2/Variables.styles';
+import { BREAKPOINTS } from 'stylesv2/Variables.styles';
 
 namespace Mixins {
   export function ClickBehavior(

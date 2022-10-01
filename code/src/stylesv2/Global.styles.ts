@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styled, { createGlobalStyle } from 'styled-components';
 
-import { FONTS } from 'constants/styling';
+import { FONTS } from 'stylesv2/Variables.styles';
 
 export const GlobalStyles = createGlobalStyle`
   * {

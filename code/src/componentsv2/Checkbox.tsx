@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { COLOR } from 'constants/styling';
-import CPX from 'stylesv2/Components.styles';
+import CPX from 'stylesv2/Components/Components.styles';
+import { COLOR } from 'stylesv2/Variables.styles';
 
 export default function Checkbox({ checked = false, ...props }: CheckboxProps) {
   return (

@@ -19,7 +19,7 @@ import {
   DeleteWishlistItemModal,
 } from 'fragments/wishlist/WishlistModals';
 import WishlistTray from 'fragments/wishlist/WishlistTray';
-import WL from 'stylesv2/Wishlist.styles';
+import WL from 'stylesv2/Pages/Wishlist.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({

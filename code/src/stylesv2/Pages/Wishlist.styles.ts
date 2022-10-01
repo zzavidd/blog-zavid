@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { css } from 'styled-components';
 
-import { BREAKPOINTS, COLOR, FONTS as FONT } from 'constants/styling';
+import { BREAKPOINTS, COLOR, FONTS as FONT } from 'stylesv2/Variables.styles';
 
-import CPX from './Components.styles';
-import Mixins from './Mixins.styles';
+import CPX from '../Components/Components.styles';
+import Mixins from '../Mixins.styles';
 
 namespace WL {
   export const Container = styled.div`
@@ -93,7 +93,7 @@ namespace WL {
       position: relative;
       transition: all 0.3s ease;
 
-      @media (max-width: ${BREAKPOINTS.SMALL}) {
+      @media (max-width: ${BREAKPOINTS.sm}) {
         flex: 1 1 150px;
       }
     `;

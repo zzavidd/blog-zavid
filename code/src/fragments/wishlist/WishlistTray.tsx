@@ -5,7 +5,7 @@ import Alert from 'constants/alert';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import AdminLock from 'fragments/AdminLock';
-import WL from 'stylesv2/Wishlist.styles';
+import WL from 'stylesv2/Pages/Wishlist.styles';
 
 import { WishlistPageContext } from './WishlistContext';
 import WishlistForm from './WishlistForm';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CPX from 'stylesv2/Components.styles';
+import CPX from 'stylesv2/Components/Components.styles';
 
 export function Modal({ header, body, footer, ...props }: ModalProps) {
   return (

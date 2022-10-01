@@ -5,14 +5,12 @@ import type { PostType, PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { AdminButton, BackButton as IBackButton } from 'components/button';
 import { Curator } from 'components/curator';
-import CloudImage, {
-  cloudinaryBaseUrl,
-  SignatureImage,
-} from 'components/image';
+import CloudImage, { SignatureImage } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import ShareBlock from 'components/share';
 import { Divider, Paragraph, Title } from 'components/text';
 import Timeline, { TimelineType } from 'components/timeline';
+import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import type { Substitutions } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
 import { CuratePrompt } from 'fragments/shared/CuratePrompt';
@@ -33,7 +31,7 @@ export default function PostTemplatePage({
   const substitutions: Substitutions = {};
   const contentImages = JSON.parse(post.contentImages as string) || [];
   contentImages.forEach((image: string, key: number) => {
-    substitutions[`image${key + 1}`] = `![](${cloudinaryBaseUrl}/${image})`;
+    substitutions[`image${key + 1}`] = `![](${CLOUDINARY_BASE_URL}/${image})`;
   });
 
   const sourceTitle = PostStatic.isPage(post)

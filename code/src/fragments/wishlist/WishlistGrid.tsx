@@ -6,11 +6,11 @@ import useSWR, { mutate } from 'swr';
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import Clickable from 'componentsv2/Clickable';
 import Alert from 'constants/alert';
-import { COLOR } from 'constants/styling';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
 import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';
-import WL from 'stylesv2/Wishlist.styles';
+import WL from 'stylesv2/Pages/Wishlist.styles';
+import { COLOR } from 'stylesv2/Variables.styles';
 
 import { WishlistPageContext } from './WishlistContext';
 

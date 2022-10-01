@@ -3,8 +3,9 @@ import type { Dispatch, RefObject, SetStateAction } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { InvisibleButton } from 'components/button';
-import { cloudinaryBaseUrl, validateCloudinaryImage } from 'components/image';
+import { validateCloudinaryImage } from 'components/image';
 import { Icon } from 'components/library';
+import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import css from 'styles/components/Form.module.scss';
 
 export function FileSelector(props: FileSelector) {
@@ -17,7 +18,7 @@ export function FileSelector(props: FileSelector) {
     if (isCreateOperation) return;
 
     if (validateCloudinaryImage(image)) {
-      const cloudPath = `${cloudinaryBaseUrl}/${image}`;
+      const cloudPath = `${CLOUDINARY_BASE_URL}/${image}`;
       setImage(cloudPath);
     }
   }, [image]);
@@ -43,9 +44,8 @@ function ChoosePrompt({
   placeholder = 'Choose an image...',
   setImage,
 }: ChoosePrompt) {
-  if (image) return null;
-
   const fileRef = useRef<HTMLInputElement>(null);
+  if (image) return null;
 
   /** Show preview of image. */
   const previewImage = () => {

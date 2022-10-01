@@ -15,7 +15,7 @@ import Clickable from 'componentsv2/Clickable';
 import Input from 'componentsv2/Input';
 import HandlersV2 from 'constants/handlersv2';
 import Utils from 'constants/utils';
-import FORM from 'stylesv2/Form.styles';
+import FORM from 'stylesv2/Components/Form.styles';
 
 import { WishlistPageContext } from './WishlistContext';
 

@@ -29,9 +29,9 @@ import type { DateType } from 'components/form/datepicker';
 import DatePicker from 'components/form/datepicker';
 import { FileSelector, FSAspectRatio } from 'components/form/fileselector';
 import { Foldable } from 'components/form/foldable';
-import { cloudinaryBaseUrl } from 'components/image';
 import { ScreenWidth } from 'components/library';
 import type Handlers from 'constants/handlers';
+import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import type { Substitutions } from 'constants/types';
 import css from 'styles/pages/Posts.module.scss';
 
@@ -56,7 +56,8 @@ export default function PostForm(props: PostFormProps) {
     .filter((e) => e)
     .forEach(({ source }, key) => {
       if (!source) return;
-      if (!source.startsWith('data')) source = `${cloudinaryBaseUrl}/${source}`;
+      if (!source.startsWith('data'))
+        source = `${CLOUDINARY_BASE_URL}/${source}`;
       substitutions[`image${key + 1}`] = `![](${source})`;
     });
 
