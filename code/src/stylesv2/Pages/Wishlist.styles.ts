@@ -1,14 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { css } from 'styled-components';
 
+import CPX from 'stylesv2/Components/Components.styles';
+import Mixins from 'stylesv2/Mixins.styles';
 import { BREAKPOINTS, COLOR, FONTS as FONT } from 'stylesv2/Variables.styles';
-
-import CPX from '../Components/Components.styles';
-import Mixins from '../Mixins.styles';
 
 namespace WL {
   export const Container = styled.div`
     display: flex;
+    font-family: ${FONT.BODY};
     height: 100%;
     width: 100%;
   `;
@@ -41,22 +41,26 @@ namespace WL {
       flex: 0 1 auto;
     `;
 
-    export const FormSubmitButton = styled(CPX.Button)`
+    const FormButton = styled(CPX.Button)`
+      color: ${COLOR.WHITE};
+      flex: 1 1 auto;
+      font-size: 1em;
+      font-weight: bold;
+      padding: 1.3em;
+    `;
+
+    export const FormSubmitButton = styled(FormButton)`
       ${Mixins.ClickBehavior('#2f223d', {
         hover: 0.05,
         active: 0.07,
       })}
-      flex: 1 1 auto;
-      padding: 1.3em;
     `;
 
-    export const FormCancelButton = styled(CPX.Button)`
+    export const FormCancelButton = styled(FormButton)`
       ${Mixins.ClickBehavior('#533c6c', {
         hover: -0.05,
         active: 0.02,
       })}
-      flex: 1 1 auto;
-      padding: 1.3em;
     `;
   }
 
@@ -139,7 +143,9 @@ namespace WL {
       z-index: 2;
 
       svg {
+        color: ${COLOR.WHITE};
         transition: all 0.3s;
+
         &:hover {
           transform: scale(0.9);
         }
@@ -150,6 +156,7 @@ namespace WL {
       color: ${COLOR.WHITE};
       font-family: ${FONT.TITLE};
       font-size: 1.3em;
+      margin: 0;
     `;
 
     export const ItemPrice = styled.p`
@@ -164,6 +171,7 @@ namespace WL {
     export const ItemReservees = styled.p<{ complete: boolean }>`
       color: ${({ complete }) => (complete ? '#00ff00' : '#ffff8d')};
       font-size: 0.8em;
+      margin-block: 0.4em;
       transition: all 0.3s;
     `;
 
@@ -185,6 +193,7 @@ namespace WL {
           hover: 0.1,
           active: 0.15,
         })}
+      color: ${COLOR.WHITE};
       flex: 1;
       font-size: 0.8em;
       outline: 1px solid #3d3d3d;
@@ -232,9 +241,10 @@ namespace WL {
   export const FloatingActionButton = styled.button.attrs({ type: 'button' })<{
     visible: boolean;
   }>`
-    ${Mixins.ClickBehavior('rgba(67, 37, 66, 0.95)')}
-    ${({ visible }) => Mixins.Visible(visible)}
-  border-style: none;
+    ${Mixins.ClickBehavior('rgba(67, 37, 66, 0.95)')};
+    ${({ visible }) => Mixins.Visible(visible)};
+    border-style: none;
+    color: ${COLOR.WHITE};
     border-radius: 50%;
     box-shadow: 0 0 5px 3px #7c687b;
     position: fixed;

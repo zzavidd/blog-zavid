@@ -1,6 +1,6 @@
 import styled, { keyframes, css } from 'styled-components';
 
-import { COLOR } from 'stylesv2/Variables.styles';
+import { COLOR, FONTS } from 'stylesv2/Variables.styles';
 
 const fadeInOut = keyframes`
   0%, 16% {opacity: 0; pointer-events: auto;}
@@ -37,6 +37,7 @@ export const Snack = styled.div<{ duration?: number | 'indefinite' }>`
   box-shadow: 0 0 2px 0 ${COLOR.BLACK};
   color: ${COLOR.WHITE};
   display: flex;
+  font-family: ${FONTS.BODY};
   font-size: 0.9em;
   gap: 0.4em;
   padding: 1em;

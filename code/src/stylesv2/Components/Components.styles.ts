@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
+import Mixins from 'stylesv2/Mixins.styles';
 import type { ButtonVariant } from 'stylesv2/Variables.styles';
 import { COLOR } from 'stylesv2/Variables.styles';
-
-import Mixins from '../Mixins.styles';
 
 namespace CPX {
   export const Button = styled.button.attrs({ type: 'button' })`
     border-style: none;
+    cursor: pointer;
     font-family: 'Mulish', sans-serif;
     transition: all 0.3s;
     user-select: none;
@@ -26,6 +26,11 @@ namespace CPX {
     border-style: none;
     outline: none;
     cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
+
+    svg {
+      color: ${({ theme }) => theme.bodyFontColor};
+      font-size: 1.2em;
+    }
   `;
 
   export const Checkbox = styled.label<{ checked: boolean }>`

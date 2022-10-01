@@ -1,16 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { FlattenSimpleInterpolation } from 'styled-components';
+import type {
+  DefaultTheme,
+  FlattenInterpolation,
+  ThemeProps,
+} from 'styled-components';
 import styled, { createGlobalStyle, css } from 'styled-components';
 
 import { COLOR, FONTS } from 'stylesv2/Variables.styles';
 
 namespace FORM {
-  const DefaultStyle: FlattenSimpleInterpolation = css`
+  const DefaultStyle: FlattenInterpolation<ThemeProps<DefaultTheme>> = css`
     background: none;
     border: none;
-    color: ${COLOR.WHITE};
+    color: ${({ theme }) => theme.bodyFontColor};
+    font-family: ${FONTS.BODY};
     font-size: 1.2em;
     outline: none;
+    padding: 0.3em;
     width: 100%;
   `;
 
