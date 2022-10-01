@@ -2,7 +2,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import 'bootstrap/scss/bootstrap.scss';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import Script from 'next/script';
@@ -10,18 +9,20 @@ import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { ThemeProvider, StyleSheetManager } from 'styled-components';
 
 import Snackbar from 'componentsv2/Snackbar';
-import Alert from 'constants/alert';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import { persistor, store } from 'constants/reducers';
+import { THEME } from 'constants/styling';
 import type {
   AppPropsWithLayout,
   Snack as SnackDefinition,
 } from 'constants/types';
 import AdminGateway from 'fragments/AdminGateway';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
+import { GlobalStyles } from 'stylesv2/Global.styles';
 import 'styles/App.scss';
 
 library.add(fab, far, fas);
@@ -31,7 +32,12 @@ export default function App(props: AppProps) {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SessionProvider session={props.pageProps.session}>
-          <ZAVIDApp {...props} />
+          <StyleSheetManager
+            disableVendorPrefixes={
+              process.env.NEXT_PUBLIC_APP_ENV === 'development'
+            }>
+            <ZAVIDApp {...props} />
+          </StyleSheetManager>
         </SessionProvider>
       </PersistGate>
     </Provider>
@@ -49,12 +55,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const [state, setState] = useState<ZavidAppState>({
     snacks: [],
   });
-  const { appTheme } = useSelector((state: AppState) => state);
-
-  useEffect(() => {
-    document.body.classList.add(`body-${appTheme}`);
-    Alert.check();
-  }, []);
+  const theme = useSelector((state: AppState) => THEME[state.appTheme]);
 
   /**
    * Sets the timeout for any displayed snacks unless the snack is defined to be
@@ -105,9 +106,12 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
       <Contexts.Snacks.Provider
         value={{ snacks: state.snacks, add: addSnack, remove: removeSnack }}>
         <GoogleAnalyticsScripts />
-        {ComponentWithLayout}
-        <CookiePrompt />
-        <Snackbar />
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          {ComponentWithLayout}
+          <CookiePrompt />
+          <Snackbar />
+        </ThemeProvider>
       </Contexts.Snacks.Provider>
     </AdminGateway>
   );

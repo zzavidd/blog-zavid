@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 
 import { ConfirmButton } from 'components/button';
 import { SearchBar } from 'components/form';
-import { HomeRow } from 'fragments/home/Home.styles';
 import css from 'styles/pages/Home.module.scss';
+import * as Styles from 'stylesv2/Pages/Home.styles';
 
 export default function HomeSearch() {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
-    <HomeRow className={css['home-search-row']}>
+    <Styles.HomeRow>
       <div className={css['home-search-container']}>
         <SearchBar
           value={searchTerm}
@@ -31,7 +31,7 @@ export default function HomeSearch() {
           </ConfirmButton>
         </div>
       </div>
-    </HomeRow>
+    </Styles.HomeRow>
   );
 }
 

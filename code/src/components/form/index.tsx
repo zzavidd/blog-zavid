@@ -17,7 +17,7 @@ import { Paragraph, Title } from 'components/text';
 import type { Substitutions, ReactHook } from 'constants/types';
 import css from 'styles/components/Form.module.scss';
 
-import { Signature } from '../image';
+import { SignatureImage } from '../image';
 
 export * from './checkbox';
 export * from './fileselector';
@@ -159,7 +159,7 @@ function FormPreview({
         substitutions={substitutions}>
         {previewText as string}
       </Paragraph>
-      <Signature />
+      <SignatureImage />
       <Paragraph className={css['form-preview__content']}>
         {previewFootnotes}
       </Paragraph>

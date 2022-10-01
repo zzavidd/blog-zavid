@@ -1,13 +1,16 @@
-import classnames from 'classnames';
-import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
+import {
+  CloudinaryContext,
+  Image as CloudinaryImage,
+  Transformation,
+} from 'cloudinary-react';
+import Image from 'next/image';
 import type { CSSProperties } from 'react';
 import React from 'react';
-import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { Theme } from 'classes/theme';
-
-export { CLOUDINARY_BASE_URL as cloudinaryBaseUrl } from 'constants/settings';
+import type { AppState } from 'constants/reducers';
+import { CLOUDINARY_BASE_URL } from 'constants/settings';
 
 interface CloudImageProps {
   src: string;
@@ -54,35 +57,33 @@ function CloudImage({
       cloudName={'zavid'}
       className={containerClassName}
       style={style}>
-      <Image
+      <CloudinaryImage
         publicId={publicId}
         alt={alt}
         title={title}
         width={'100%'}
         className={imageClassName}>
         <Transformation aspectRatio={aspectRatio} crop={'lfill'} />
-      </Image>
+      </CloudinaryImage>
     </CloudinaryContext>
   );
 }
 
-export function Signature({ className }: Signature) {
-  const theme = useSelector(({ theme }: RootStateOrAny) =>
-    Theme.switchTheme(theme),
+export function SignatureImage(props: React.HTMLAttributes<HTMLDivElement>) {
+  const theme = useSelector((state: AppState) =>
+    Theme.switchTheme(state.appTheme),
   );
-
-  const classes = classnames('signature', className);
   return (
-    <CloudImage
-      src={`static/logos/signature-${theme}`}
-      containerClassName={classes}
-      alt={'Z-Signature'}
-    />
+    <div {...props}>
+      <Image
+        src={`${CLOUDINARY_BASE_URL}/static/logos/signature-${theme}`}
+        alt={'Z-Signature'}
+        width={392}
+        height={309}
+        layout={'responsive'}
+      />
+    </div>
   );
-}
-
-interface Signature {
-  className?: string;
 }
 
 export default CloudImage;

@@ -141,8 +141,8 @@
 /// Image
 ////////////////////////////////
 
-.signature {
-  @include responsive(max-width, 200px, $md: 150px);
-  pointer-events: none;
-  user-select: none;
-}
+// .signature {
+//   @include responsive(max-width, 200px, $md: 150px);
+//   pointer-events: none;
+//   user-select: none;
+// }

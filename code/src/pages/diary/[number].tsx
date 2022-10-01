@@ -8,7 +8,7 @@ import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { AdminButton, BackButton } from 'components/button';
 import { Curator } from 'components/curator';
 import { Label } from 'components/form';
-import { Signature } from 'components/image';
+import { SignatureImage } from 'components/image';
 import { Spacer, Toolbar } from 'components/layout';
 import { Icon } from 'components/library';
 import ShareBlock from 'components/share';
@@ -65,7 +65,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
             onLongPress={onTextLongPress}>
             {diaryEntry.content}
           </Paragraph>
-          <Signature />
+          <SignatureImage />
           <Paragraph
             className={css['post-single-footnote']}
             onLongPress={onTextLongPress}>

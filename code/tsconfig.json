@@ -19,6 +19,6 @@
     "tsBuildInfoFile": ".tsbuildinfo",
     "typeRoots": ["types"]
   },
-  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"],
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", "types/**/*.ts"],
   "exclude": ["node_modules", "dist/", "ops/**/*", "types/**/*"]
 }
