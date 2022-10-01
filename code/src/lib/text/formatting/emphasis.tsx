@@ -1,12 +1,10 @@
-import React from 'react';
-
 import type { FormatCSS } from 'lib/text/regex';
 import {
   Emphasis,
   emphasisRegexMapping,
   getCombinedEmphasisRegex,
 } from 'lib/text/regex';
-import TextStyle, * as Styles from 'stylesv2/Components/Text.styles';
+import TextStyle from 'stylesv2/Components/Text.styles';
 
 export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
   if (!paragraph) return '';
@@ -56,15 +54,11 @@ export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
             break;
           case Emphasis.UNDERLINE:
             const textToUnderline = applyEmphasisFormatting(matches![1]);
-            transformation = (
-              <span key={key} style={{ textDecoration: 'underline' }}>
-                {textToUnderline}
-              </span>
-            );
+            transformation = <u key={key}>{textToUnderline}</u>;
             break;
           case Emphasis.STRIKETHROUGH:
             const textToStrikethrough = applyEmphasisFormatting(matches![1]);
-            transformation = <del key={key}>{textToStrikethrough}</del>;
+            transformation = <s key={key}>{textToStrikethrough}</s>;
             break;
           case Emphasis.HYPERLINK:
             const textToHyperlink = applyEmphasisFormatting(matches![1]);
@@ -82,7 +76,7 @@ export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
             const highlightColor = matches![1];
             const textToHighlight = applyEmphasisFormatting(matches![2]);
             transformation = (
-              <span
+              <mark
                 style={{
                   backgroundColor: highlightColor,
                   borderRadius: '10px',
@@ -90,7 +84,7 @@ export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
                 }}
                 key={key}>
                 {textToHighlight}
-              </span>
+              </mark>
             );
             break;
           case Emphasis.COLOR:

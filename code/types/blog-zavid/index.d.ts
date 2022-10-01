@@ -5,6 +5,7 @@ declare module 'styled-components' {
     backgroundImage: string;
     bodyFontColor: string;
     hyperlink: string;
+    readmore: string;
   }
 }
 

@@ -15,10 +15,10 @@ export const GlobalStyles = createGlobalStyle`
     background-size: cover;
     color: ${({ theme }) => theme.bodyFontColor};
     font-feature-settings: 'lnum';
+    transition: background 0.8s, color 0.8s;
     height: 100vh;
     margin: 0;
     overscroll-behavior: none;
-    transition: all 0.8s;
   }
 
   div#__next {

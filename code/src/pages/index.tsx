@@ -31,14 +31,8 @@ const HomePage: NextPageWithLayout<HomeProps> = ({
       <PageMetadata {...pathDefinition} />
       <Styles.HomeMain>
         <Introduction content={homeText} emailSubCount={emailSubCount} />
-        <Styles.HomeRow>
-          <Styles.HomeField flex={1}>
-            <LatestDiaryEntry entry={latestDiaryEntry} />
-          </Styles.HomeField>
-          <Styles.HomeField flex={1}>
-            <LatestReverie reverie={latestReverie} />
-          </Styles.HomeField>
-        </Styles.HomeRow>
+        <LatestDiaryEntry entry={latestDiaryEntry} />
+        <LatestReverie reverie={latestReverie} />
       </Styles.HomeMain>
       <Styles.HomeRow>
         <RandomPostsGrid posts={randomPosts} />

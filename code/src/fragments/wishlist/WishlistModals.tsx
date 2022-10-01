@@ -170,7 +170,7 @@ function ClaimForm() {
       <WL.Claim.Partition>
         <WL.Claim.Text>
           You are about to claim this item:&nbsp;
-          <b>{context.selectedWishlistItem?.name}</b>.
+          <strong>{context.selectedWishlistItem?.name}</strong>.
         </WL.Claim.Text>
         {maxClaimQuantity && maxClaimQuantity >= 2 ? (
           <FORM.FieldRow>

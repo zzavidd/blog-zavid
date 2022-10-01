@@ -13,6 +13,20 @@ namespace TextStyle {
       display: block;
       line-height: 1.6;
     `;
+
+    export const ReadMore = styled.a`
+      color: ${({ theme }) => theme.readmore};
+      cursor: pointer;
+      font-family: ${FONTS.BODY};
+
+      svg {
+        margin-right: 0.4em;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    `;
   }
 
   export namespace Emphasis {
