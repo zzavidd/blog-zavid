@@ -9,7 +9,6 @@ import LatestDiaryEntry from 'fragments/home/HomeDiary';
 import Introduction from 'fragments/home/HomeIntroduction';
 import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
 import LatestReverie from 'fragments/home/HomeReverie';
-import Search from 'fragments/home/HomeSearch';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import SSR from 'private/ssr';
@@ -32,7 +31,6 @@ const HomePage: NextPageWithLayout<HomeProps> = ({
       <PageMetadata {...pathDefinition} />
       <Styles.HomeMain>
         <Introduction content={homeText} emailSubCount={emailSubCount} />
-        <Search />
         <Styles.HomeRow>
           <Styles.HomeField flex={1}>
             <LatestDiaryEntry entry={latestDiaryEntry} />

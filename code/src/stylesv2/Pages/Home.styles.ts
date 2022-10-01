@@ -26,8 +26,8 @@ export const HomeField = styled.div<{ flex?: number }>`
 export namespace Introduction {
   export const Section = styled(HomeRow)`
     ${Mixins.Responsive(['width', '80%', { lg: '90%', sm: '100%' }])}
-    border-bottom: 1px solid;
     justify-self: center;
+    max-width: 800px;
     padding-bottom: 2em;
   `;
 
