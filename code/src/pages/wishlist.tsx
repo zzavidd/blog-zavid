@@ -1,4 +1,5 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import type { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useState } from 'react';
 
@@ -71,6 +72,20 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
       <ClaimWishlistItemModal />
     </WishlistPageContext.Provider>
   );
+};
+
+export const getServerSideProps: GetServerSideProps<
+  WishlistPageProps
+  // eslint-disable-next-line require-await
+> = async ({ res }) => {
+  res.setHeader('X-Robots-Tag', 'noindex');
+  return {
+    props: {
+      pathDefinition: {
+        title: "Zavid's Wishlist",
+      },
+    },
+  };
 };
 
 export default WishlistPage;
