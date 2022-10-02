@@ -1,8 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 
-import type { FilterThemeOption, AppTheme } from 'classes/theme';
+import type { AppTheme, FilterThemeOption } from 'classes/theme';
 import { FilterShape, FilterShapeOption, Theme } from 'classes/theme';
-import { DOMAIN } from 'constants/settings';
 
 const constants = {
   [FilterShapeOption.SQUARE]: {
@@ -91,8 +90,7 @@ namespace Canvas {
 
     if (ctx !== null) {
       const bgImage = new Image();
-      bgImage.src = `${DOMAIN}/images/filters/${shape}-${colour}.jpg`;
-      bgImage.crossOrigin = 'anonymous';
+      bgImage.src = `/images/filters/${shape}-${colour}.jpg`;
       bgImage.onload = () => {
         const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
 
@@ -164,7 +162,6 @@ namespace Canvas {
         canvas.toBlob((blob) => {
           const image = new Image();
           image.src = URL.createObjectURL(blob!);
-          image.crossOrigin = 'anonymous';
           image.onload = () => {
             setImageSource(image.src);
           };
