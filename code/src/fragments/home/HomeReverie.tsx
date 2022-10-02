@@ -1,3 +1,4 @@
+import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { zDate } from 'zavid-modules';
 
@@ -6,57 +7,29 @@ import CloudImage, { AspectRatio } from 'components/image';
 import { Flexer } from 'components/layout';
 import { Icon, Responsive } from 'components/library';
 import { Paragraph, Title } from 'components/text';
+import ZDate from 'lib/date';
 import css from 'styles/pages/Home.module.scss';
+import * as Style from 'stylesv2/Pages/Home.styles';
 
 export default function HomeReverie({ reverie }: LatestReverieProps) {
   return (
-    <div className={css['latest-reverie']}>
-      <Responsive
-        defaultView={
-          <Flexer>
-            <div>
-              <LatestReverieHeader reverie={reverie} />
-              <LatestReverieParagraph reverie={reverie} />
-            </div>
-            <LatestReverieImage reverie={reverie} />
-          </Flexer>
-        }
-        desktopView={
-          <React.Fragment>
-            <LatestReverieHeader reverie={reverie} />
-            <LatestReverieImage reverie={reverie} />
-            <LatestReverieParagraph reverie={reverie} />
-          </React.Fragment>
-        }
-      />
-    </div>
-  );
-}
-
-function LatestReverieHeader({ reverie }: LatestReverieProps) {
-  const date = zDate.formatDate(reverie.datePublished!, { withWeekday: true });
-  return (
-    <Flexer>
-      <Icon name={'book-open'} className={css['latest-reverie-icon']} />
-      <div>
-        <div className={css['latest-shared-heading']}>Latest Reverie:</div>
-        <Title className={css['latest-reverie-title']}>{reverie.title}</Title>
-        <div className={css['latest-reverie-date']}>{date}</div>
-      </div>
-    </Flexer>
-  );
-}
-
-function LatestReverieParagraph({ reverie }: LatestReverieProps) {
-  return (
-    <Paragraph
-      className={css['latest-reverie-content']}
-      truncate={60}
-      moreclass={css['latest-reverie-readmore']}
-      moretext={'Read my latest reverie...'}
-      morelink={`/reveries/${reverie.slug}`}>
-      {reverie.content}
-    </Paragraph>
+    <Style.Latest.Article>
+      <Style.Latest.Feather icon={faBookOpen} />
+      <Style.Latest.Label>Latest Reverie:</Style.Latest.Label>
+      <Style.Latest.Title>{reverie.title}</Style.Latest.Title>
+      <Style.Latest.Date dateTime={ZDate.formatISO(reverie.datePublished)}>
+        {ZDate.format(reverie.datePublished)}
+      </Style.Latest.Date>
+      <Style.Latest.Excerpt
+        truncate={80}
+        more={{
+          text: 'Read my latest reverie...',
+          href: `/reveries/${reverie.slug}`,
+        }}>
+        {reverie.content}
+      </Style.Latest.Excerpt>
+      <LatestReverieImage reverie={reverie} />
+    </Style.Latest.Article>
   );
 }
 

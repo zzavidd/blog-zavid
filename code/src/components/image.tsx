@@ -3,6 +3,7 @@ import {
   Image as CloudinaryImage,
   Transformation,
 } from 'cloudinary-react';
+import type { ImageProps as NextImageProps } from 'next/image';
 import Image from 'next/image';
 import type { CSSProperties } from 'react';
 import React from 'react';
@@ -67,6 +68,10 @@ function CloudImage({
       </CloudinaryImage>
     </CloudinaryContext>
   );
+}
+
+export function NextImage({ src, ...props }: NextImageProps) {
+  return <Image {...props} src={`${CLOUDINARY_BASE_URL}/${src}`} />;
 }
 
 export function SignatureImage(props: React.HTMLAttributes<HTMLDivElement>) {

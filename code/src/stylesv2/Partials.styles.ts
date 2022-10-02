@@ -9,12 +9,12 @@ export namespace HeaderStyle {
     border-bottom: 1px solid ${COLOR.WHITE};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: flex;
-    height: 70px;
+    flex: 0 0 70px;
     justify-content: center;
     position: sticky;
     top: 0;
     width: 100%;
-    z-index: 1;
+    z-index: 2;
   `;
 
   export const HeaderContent = styled.header`

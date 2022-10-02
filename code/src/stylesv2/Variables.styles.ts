@@ -49,6 +49,7 @@ export const THEME: Record<'light' | 'dark', DefaultTheme> = {
     backgroundImage:
       'https://res.cloudinary.com/zavid/image/upload/v1606588947/static/bg/bg-app-light',
     bodyFontColor: COLOR.BLACK,
+    fadedFontColor: '#3e3e3e',
     hyperlink: '#ac1ef3',
     readmore: '#0063fb',
   },
@@ -56,6 +57,7 @@ export const THEME: Record<'light' | 'dark', DefaultTheme> = {
     backgroundImage:
       'https://res.cloudinary.com/zavid/image/upload/v1597608184/static/bg/bg-app-dark',
     bodyFontColor: COLOR.WHITE,
+    fadedFontColor: '#d4d4d4',
     hyperlink: '#d98dff',
     readmore: '#87ceeb',
   },

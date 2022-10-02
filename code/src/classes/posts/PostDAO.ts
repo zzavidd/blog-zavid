@@ -1,21 +1,21 @@
 import type { EntityDAO } from '../entity';
 
 export interface PostDAO extends EntityDAO {
-  title?: string;
-  type?: PostType;
+  title: string;
+  type: PostType;
   typeId?: number;
-  content?: string;
+  content: string;
   status?: PostStatus;
-  excerpt?: string;
-  slug?: string | null;
-  tags?: string | string[];
-  datePublished?: string | Date;
-  image?: PostImage | string;
-  contentImages?: PostContentImages;
-  domainId?: number;
-  domainTitle?: string;
-  domainType?: PostType;
-  domainSlug?: string;
+  excerpt: string;
+  slug: string | null;
+  tags: string | string[];
+  datePublished: string | Date;
+  image: PostImage | string;
+  contentImages: PostContentImages;
+  domainId: number;
+  domainTitle: string;
+  domainType: PostType;
+  domainSlug: string;
 }
 
 export interface PostImage {

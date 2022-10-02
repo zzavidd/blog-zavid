@@ -19,11 +19,13 @@ export const GlobalStyles = createGlobalStyle`
     height: 100vh;
     margin: 0;
     overscroll-behavior: none;
+    position: relative;
   }
 
   div#__next {
     height: 100%;
-    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
   h1 {

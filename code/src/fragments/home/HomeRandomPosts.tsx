@@ -1,50 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { zDate } from 'zavid-modules';
+import Link from 'next/link';
+import React from 'react';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import CloudImage, { AspectRatio } from 'components/image';
-import { Title, VanillaLink } from 'components/text';
-import css from 'styles/pages/Home.module.scss';
+import ZDate from 'lib/date';
+import * as Style from 'stylesv2/Pages/Home.styles';
 
 export default function HomeRandomPosts({ posts }: RandomPostsGridProps) {
-  const [isLoaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, [isLoaded]);
-
   return (
-    <div className={css['random-posts-wrapper']}>
-      <Title className={css['random-posts-heading']}>
-        A random selection of posts to trigger the taste buds...
-      </Title>
-      <div className={css['random-posts-grid']}>
-        {posts.map((post, key) => {
+    <React.Fragment>
+      <Style.Aside.HeadingBox>
+        <Style.Aside.Heading>
+          A random selection of posts to trigger the taste buds...
+        </Style.Aside.Heading>
+      </Style.Aside.HeadingBox>
+      <Style.Aside.PostList>
+        {posts.map((post) => {
           const directory = PostStatic.getDirectory(post.type!);
           return (
-            <div className={css['random-post-unit']} key={key}>
-              <VanillaLink href={`/${directory}/${post.slug}`}>
-                <CloudImage
-                  src={post.image as string}
-                  containerClassName={css['random-post-image-wrapper']}
-                  imageClassName={css['random-post-image']}
-                  aspectRatio={AspectRatio.WIDE}
-                  alt={post.title}
-                />
-                <Title className={css['random-post-title']}>
+            <Style.Aside.Post key={post.id}>
+              <Link href={`/${directory}/${post.slug}`}>
+                <a>
+                  <Style.Aside.ImageBox>
+                    <Style.Aside.Image
+                      src={post.image as string}
+                      alt={post.title}
+                      layout={'fill'}
+                      objectFit={'cover'}
+                    />
+                  </Style.Aside.ImageBox>
+                </a>
+              </Link>
+              <Style.Aside.PostDetailsBox>
+                <Style.Aside.PostTitle>
                   {PostStatic.getPostTitle(post)}
-                </Title>
-                <div className={css['random-post-date']}>
-                  {post.type} |{' '}
-                  {zDate.formatDate(post.datePublished!, { withWeekday: true })}
-                </div>
-              </VanillaLink>
-            </div>
+                </Style.Aside.PostTitle>
+                <Style.Aside.PostMetadata>
+                  {post.type}&nbsp;&#x2022;&nbsp;
+                  <time dateTime={ZDate.formatISO(post.datePublished)}>
+                    {ZDate.format(post.datePublished)}
+                  </time>
+                </Style.Aside.PostMetadata>
+              </Style.Aside.PostDetailsBox>
+            </Style.Aside.Post>
           );
         })}
-      </div>
-    </div>
+      </Style.Aside.PostList>
+    </React.Fragment>
   );
 }
 

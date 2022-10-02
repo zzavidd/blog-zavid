@@ -27,17 +27,17 @@ const HomePage: NextPageWithLayout<HomeProps> = ({
     emailSubCount,
   } = pageProps;
   return (
-    <React.Fragment>
+    <Styles.HomePage>
       <PageMetadata {...pathDefinition} />
       <Styles.HomeMain>
         <Introduction content={homeText} emailSubCount={emailSubCount} />
         <LatestDiaryEntry entry={latestDiaryEntry} />
         <LatestReverie reverie={latestReverie} />
       </Styles.HomeMain>
-      <Styles.HomeRow>
+      <Styles.Aside.Container>
         <RandomPostsGrid posts={randomPosts} />
-      </Styles.HomeRow>
-    </React.Fragment>
+      </Styles.Aside.Container>
+    </Styles.HomePage>
   );
 };
 
