@@ -90,7 +90,7 @@ export namespace FooterStyle {
     display: flex;
     flex-direction: column;
     max-width: ${SIZES.PARTIAL_MAX_WIDTH};
-    padding-block: 0.5em;
+    padding: 1em 2em;
     width: 100%;
   `;
 
@@ -105,8 +105,11 @@ export namespace FooterStyle {
   `;
 
   export const Row = styled.section`
+    ${Mixins.Responsive(
+      ['flex-direction', 'row', { md: 'column' }],
+      ['gap', '1em', { md: '2em' }],
+    )}
     display: flex;
-    gap: 1em;
     justify-content: space-between;
   `;
 
