@@ -19,9 +19,9 @@ export namespace HeaderStyle {
   `;
 
   export const HeaderContent = styled.header`
+    ${Mixins.Responsive(['max-width', '900px', { lg: '700px' }])};
     display: flex;
     justify-content: space-between;
-    max-width: ${SIZES.PARTIAL_MAX_WIDTH};
     width: 100%;
   `;
 
@@ -87,9 +87,9 @@ export namespace FooterStyle {
   `;
 
   export const Content = styled.div`
+    ${Mixins.Responsive(['max-width', '900px', { lg: '700px' }])};
     display: flex;
     flex-direction: column;
-    max-width: ${SIZES.PARTIAL_MAX_WIDTH};
     padding: 1em 2em;
     width: 100%;
   `;

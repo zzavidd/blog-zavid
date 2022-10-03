@@ -22,22 +22,13 @@ export const HomeMain = styled.main`
   width: 100%;
 `;
 
-export const HomeRow = styled.section`
-  ${Mixins.Responsive(['width', '80%', { lg: '90%', sm: '100%' }])}
-  display: block;
-  padding: 1em 0;
-`;
-
-export const HomeField = styled.div<{ flex?: number }>`
-  flex: ${({ flex = 1 }) => `${flex} ${flex}`};
-`;
-
 export namespace Introduction {
-  export const Section = styled(HomeRow)`
-    ${Mixins.Responsive(['width', '80%', { lg: '90%', sm: '100%' }])}
+  export const Section = styled.section`
+    ${Mixins.Responsive(['max-width', '800px', { lg: '700px' }])}
+    display: block;
     justify-self: center;
-    max-width: 800px;
-    padding-bottom: 2em;
+    padding: 1em 0 2em;
+    width: 100%;
   `;
 
   export const TextContainer = styled.div`
@@ -66,8 +57,8 @@ export namespace Introduction {
 
 export namespace Latest {
   export const Article = styled.article`
+    ${Mixins.Responsive(['max-width', '800px', { lg: '700px' }])};
     border-top: 1px solid ${COLOR.WHITE};
-    max-width: 800px;
     padding-block: 2em;
     width: 100%;
   `;

@@ -53,7 +53,6 @@ export const FONTS = {
 
 export const SIZES = {
   HEADER_HEIGHT: '70px',
-  PARTIAL_MAX_WIDTH: '900px',
 };
 
 export const THEME: Record<AppTheme, DefaultTheme> = {
