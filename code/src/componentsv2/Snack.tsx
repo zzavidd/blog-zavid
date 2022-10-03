@@ -3,18 +3,18 @@ import { useContext } from 'react';
 
 import Contexts from 'constants/contexts';
 import type * as ZBT from 'constants/types';
-import * as Styles from 'stylesv2/Components/Snack.styles';
+import * as Style from 'stylesv2/Components/Popup.styles';
 
 import Clickable from './Clickable';
 
 export default function Snackbar() {
   const { snacks } = useContext(Contexts.Snacks);
   return (
-    <Styles.Snackbar>
+    <Style.Snack.Container>
       {snacks.map((props, key) => {
         return <Snack {...props} index={key} key={key} />;
       })}
-    </Styles.Snackbar>
+    </Style.Snack.Container>
   );
 }
 
@@ -26,13 +26,13 @@ function Snack({ message, duration = 6000, index }: SnackProps) {
   }
 
   return (
-    <Styles.Snack duration={duration}>
+    <Style.Snack.Dialog duration={duration}>
       {message}
       <Clickable.Icon icon={faTimes} onClick={closeSnack} />
-    </Styles.Snack>
+    </Style.Snack.Dialog>
   );
 }
 
-interface SnackProps extends ZBT.Snack {
+interface SnackProps extends ZBT.SnackDefinition {
   index: number;
 }

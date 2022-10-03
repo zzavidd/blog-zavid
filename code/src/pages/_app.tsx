@@ -11,14 +11,17 @@ import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { StyleSheetManager, ThemeProvider } from 'styled-components';
 
-import Snackbar from 'componentsv2/Snackbar';
+import AlertBar from 'componentsv2/Alert';
+import Snackbar from 'componentsv2/Snack';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import { persistor, store } from 'constants/reducers';
 import type {
+  AlertDefinition,
   AppPropsWithLayout,
-  Snack as SnackDefinition,
+  SnackDefinition,
 } from 'constants/types';
+import Utils from 'constants/utils';
 import AdminGateway from 'fragments/AdminGateway';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
 import 'styles/App.scss';
@@ -53,9 +56,29 @@ export default function App(props: AppProps) {
  */
 function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const [state, setState] = useState<ZavidAppState>({
+    alerts: [],
     snacks: [],
   });
-  const theme = useSelector((state: AppState) => THEME[state.appTheme]);
+  const dispatch = Utils.createDispatch(setState);
+
+  const themeName = useSelector((state: AppState) => state.appTheme);
+  const theme = THEME[themeName];
+
+  /**
+   * Sets the timeout for any displayed alerts.
+   */
+  useEffect(() => {
+    if (!state.alerts.length) return;
+
+    // const timeout = setTimeout(() => {
+    //   removeAlert(state.alerts.length - 1);
+    // }, 4500);
+
+    // return () => {
+    //   clearTimeout(timeout);
+    // };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.alerts.length]);
 
   /**
    * Sets the timeout for any displayed snacks unless the snack is defined to be
@@ -71,21 +94,40 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
     if (typeof duration === 'number') {
       const timeout = setTimeout(() => {
         removeSnack(index);
-        clearTimeout(timeout);
       }, duration);
+
+      return () => {
+        clearTimeout(timeout);
+      };
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.snacks.length]);
+
+  /**
+   * Adds an alert on the alert bar.
+   * @param alert The alert definition.
+   */
+  function addAlert(alert: AlertDefinition) {
+    dispatch({ alerts: [...state.alerts, alert] });
+  }
+
+  /**
+   * Removes the alert at the specified index from the list of alerts.
+   * @param index The alert to remove.
+   */
+  function removeAlert(index: number) {
+    const alerts = [...state.alerts];
+    alerts.splice(index, 1);
+    dispatch({ alerts });
+  }
 
   /**
    * Adds a snack to show on the snack bar.
    * @param snack The snack definition.
    */
   function addSnack(snack: SnackDefinition) {
-    setState((current) => ({
-      ...current,
-      snacks: [...state.snacks, snack],
-    }));
+    dispatch({ snacks: [...state.snacks, snack] });
   }
 
   /**
@@ -95,7 +137,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   function removeSnack(index: number) {
     const snacks = [...state.snacks];
     snacks.splice(index, 1);
-    setState((current) => ({ ...current, snacks }));
+    dispatch({ snacks });
   }
 
   // Configure layouts for all child components;
@@ -104,16 +146,37 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <AdminGateway onlyBlockInStaging={true}>
-      <Contexts.Snacks.Provider
-        value={{ snacks: state.snacks, add: addSnack, remove: removeSnack }}>
-        <GoogleAnalyticsScripts />
-        <ThemeProvider theme={theme}>
-          <GlobalStyles />
-          {ComponentWithLayout}
-          <CookiePrompt />
-          <Snackbar />
-        </ThemeProvider>
-      </Contexts.Snacks.Provider>
+      <Contexts.Alerts.Provider
+        value={{
+          alerts: state.alerts,
+          set: addAlert,
+          remove: removeAlert,
+          success: (message) => addAlert({ type: 'success', message }),
+          error: (message) => addAlert({ type: 'error', message }),
+          report(message: string, shouldBeExplicit?: boolean): void {
+            if (
+              process.env.NEXT_PUBLIC_APP_ENV === 'production' &&
+              !shouldBeExplicit
+            ) {
+              this.error('There was a problem. Please try again later.');
+              console.error(message);
+            } else {
+              this.error(message);
+            }
+          },
+        }}>
+        <Contexts.Snacks.Provider
+          value={{ snacks: state.snacks, add: addSnack, remove: removeSnack }}>
+          <GoogleAnalyticsScripts />
+          <ThemeProvider theme={theme}>
+            <GlobalStyles />
+            {ComponentWithLayout}
+            <CookiePrompt />
+            <Snackbar />
+            <AlertBar />
+          </ThemeProvider>
+        </Contexts.Snacks.Provider>
+      </Contexts.Alerts.Provider>
     </AdminGateway>
   );
 }
@@ -143,5 +206,6 @@ function GoogleAnalyticsScripts() {
 }
 
 interface ZavidAppState {
+  alerts: AlertDefinition[];
   snacks: SnackDefinition[];
 }

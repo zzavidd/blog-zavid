@@ -5,7 +5,7 @@ export const ACCOUNTS = {
   instagram: 'https://www.instagram.com/zavidd',
   linkedin: 'https://www.linkedin.com/in/david-egbue',
   snapchat: 'https://www.snapchat.com/add/zzavidd',
-};
+} as const;
 
 /** The date this blog was founded. Month is 0-indexed. */
 export const BLOG_CREATION_DATE = new Date(2017, 8, 2);

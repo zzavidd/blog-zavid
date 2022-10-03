@@ -108,7 +108,7 @@ namespace PostAPI {
 
     const randomPosts = await builder
       .withOrder({ order: QueryOrder.RANDOM })
-      .withLimit(4)
+      .withLimit(6)
       .build();
     return randomPosts;
   }

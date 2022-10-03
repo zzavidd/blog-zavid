@@ -33,6 +33,15 @@ namespace Input {
   }
 
   /**
+   * For email input.
+   * @param props The input props.
+   * @returns The component.
+   */
+  export function Email(props: InputProps) {
+    return <IInput {...props} type={'email'} />;
+  }
+
+  /**
    * For URL inputs.
    * @param props The input props.
    * @returns The component.

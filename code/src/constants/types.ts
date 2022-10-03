@@ -13,8 +13,6 @@ export interface AppPageProps {
   pageProps?: Record<string, unknown>;
 }
 
-export type AppTheme = 'light' | 'dark';
-
 export interface PostFiltersOptions {
   limit?: number;
   field?: string;
@@ -40,7 +38,13 @@ export enum QueryOrder {
   RANDOM = 'RANDOM',
 }
 
-export interface Snack {
+export interface AlertDefinition {
+  message: string;
+  type: 'success' | 'error';
+}
+export type AlertType = 'success' | 'error';
+
+export interface SnackDefinition {
   message: string;
   duration?: number | 'indefinite';
 }

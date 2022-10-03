@@ -1,5 +1,9 @@
 import type { DefaultTheme } from 'styled-components';
 
+import type { AppTheme } from 'classes/theme';
+import { CLOUDINARY_BASE_URL } from 'constants/settings';
+import type { AlertType } from 'constants/types';
+
 export enum Breakpoint {
   SMALL = 'sm',
   MEDIUM = 'md',
@@ -30,7 +34,10 @@ export const COLOR = {
   BLACK: '#000000',
 
   MODAL: '#202020',
-
+  ALERT: {
+    success: '#c3ffc3',
+    error: '#ffa2a2',
+  } as Record<AlertType, string>,
   BUTTON: {
     [ButtonVariant.CONFIRM]: '#391144',
     [ButtonVariant.CANCEL]: '#8e74ab',
@@ -44,18 +51,21 @@ export const FONTS = {
   BODY: "'Mulish', sans-serif",
 };
 
-export const THEME: Record<'light' | 'dark', DefaultTheme> = {
+export const SIZES = {
+  HEADER_HEIGHT: '70px',
+  PARTIAL_MAX_WIDTH: '900px',
+};
+
+export const THEME: Record<AppTheme, DefaultTheme> = {
   light: {
-    backgroundImage:
-      'https://res.cloudinary.com/zavid/image/upload/v1606588947/static/bg/bg-app-light',
+    backgroundImage: `${CLOUDINARY_BASE_URL}v1606588947/static/bg/bg-app-light`,
     bodyFontColor: COLOR.BLACK,
     fadedFontColor: '#3e3e3e',
     hyperlink: '#ac1ef3',
     readmore: '#0063fb',
   },
   dark: {
-    backgroundImage:
-      'https://res.cloudinary.com/zavid/image/upload/v1597608184/static/bg/bg-app-dark',
+    backgroundImage: `${CLOUDINARY_BASE_URL}/v1597608184/static/bg/bg-app-dark`,
     bodyFontColor: COLOR.WHITE,
     fadedFontColor: '#d4d4d4',
     hyperlink: '#d98dff',
