@@ -53,6 +53,7 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
   light: {
     backgroundImage: `${CLOUDINARY_BASE_URL}/v1606588947/static/bg/bg-app-light`,
     bodyFontColor: COLOR.BLACK,
+    bodyFontColorReverse: COLOR.WHITE,
     fadedFontColor: '#3e3e3e',
     hyperlink: '#aa00ff',
     headerBackgroundColor: '#dddddd',
@@ -68,6 +69,7 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
   dark: {
     backgroundImage: `${CLOUDINARY_BASE_URL}/v1597608184/static/bg/bg-app-dark`,
     bodyFontColor: COLOR.WHITE,
+    bodyFontColorReverse: COLOR.BLACK,
     fadedFontColor: '#d4d4d4',
     hyperlink: '#d98dff',
     headerBackgroundColor: '#202020',

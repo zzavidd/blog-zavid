@@ -1,13 +1,17 @@
-import { faBars, faLock } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBars,
+  faLock,
+  faMoon,
+  faSun,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NextImage from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Theme } from 'classes/theme';
-import { Switch } from 'components/form/checkbox';
-import Clickable from 'componentsv2/Clickable';
+import { AppTheme, Theme } from 'classes/theme';
 import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
 import { CLOUDINARY_BASE_URL } from 'constants/settings';
@@ -17,8 +21,8 @@ const paths = [
   { title: 'Diary', url: '/diary' },
   { title: 'Reveries', url: '/reveries' },
   { title: 'Epistles', url: '/epistles' },
-  { title: 'Poetry', url: '/poetry' },
-  { title: 'Musings', url: '/musings' },
+  // { title: 'Poetry', url: '/poetry' },
+  // { title: 'Musings', url: '/musings' },
   { title: 'About', url: '/about' },
 ];
 
@@ -28,7 +32,7 @@ export default function Header() {
       <HeaderStyle.HeaderContent>
         <BrandButton />
         <NavigationLinks />
-        <ThemeSwitcher />
+        <ThemeSwitch />
         <AdminButton />
       </HeaderStyle.HeaderContent>
     </HeaderStyle.Header>
@@ -77,25 +81,38 @@ function NavigationLinks() {
 }
 
 function AdminButton() {
-  const navigateToAdmin = () => (location.href = '/admin');
-  return <Clickable.Icon onClick={navigateToAdmin} icon={faLock} />;
-}
+  const router = useRouter();
 
-function ThemeSwitcher() {
-  const dispatch = useDispatch();
-  const { appTheme } = useSelector((state: AppState) => state);
-
-  const switchTheme = () => {
-    const oppTheme = Theme.switchTheme(appTheme);
-    dispatch(AppActions.setAppTheme(oppTheme));
+  const navigateToAdmin = () => {
+    void router.push('/admin');
   };
 
   return (
-    <Switch
-      onChange={switchTheme}
-      checked={!Theme.isLight(appTheme)}
-      checkedIcon={'moon'}
-      uncheckedIcon={'sun'}
-    />
+    <button onClick={navigateToAdmin}>
+      <FontAwesomeIcon icon={faLock} />
+    </button>
+  );
+}
+
+function ThemeSwitch() {
+  const dispatch = useDispatch();
+  const { appTheme } = useSelector((state: AppState) => state);
+
+  const checked = useMemo(() => {
+    return appTheme === AppTheme.DARK;
+  }, [appTheme]);
+
+  function switchTheme() {
+    const oppTheme = Theme.switchTheme(appTheme);
+    dispatch(AppActions.setAppTheme(oppTheme));
+  }
+
+  return (
+    <HeaderStyle.ThemeSwitch onClick={switchTheme}>
+      <FontAwesomeIcon icon={checked ? faMoon : faSun} />
+      <HeaderStyle.ThemeSwitchLabel>
+        {appTheme.charAt(0).toUpperCase() + appTheme.substring(1)}
+      </HeaderStyle.ThemeSwitchLabel>
+    </HeaderStyle.ThemeSwitch>
   );
 }

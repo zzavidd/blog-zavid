@@ -5,6 +5,7 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     backgroundImage: string;
     bodyFontColor: string;
+    bodyFontColorReverse: string;
     fadedFontColor: string;
     hyperlink: string;
     headerBackgroundColor: string;

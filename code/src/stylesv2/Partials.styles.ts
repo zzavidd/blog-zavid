@@ -1,3 +1,4 @@
+import { darken } from 'polished';
 import styled from 'styled-components';
 
 import CPX from './Components/Components.styles';
@@ -19,13 +20,18 @@ export namespace HeaderStyle {
   `;
 
   export const HeaderContent = styled.header`
-    ${Mixins.Responsive(['max-width', '900px', { lg: '700px' }])};
+    ${Mixins.Responsive(
+      ['max-width', '900px', { lg: '700px' }],
+      ['padding-inline', '0', { sm: '1em' }],
+    )};
+    align-items: center;
     display: flex;
     justify-content: space-between;
     width: 100%;
   `;
 
   export const BrandContainer = styled.a`
+    ${Mixins.Responsive(['order', '1', { sm: '2' }])};
     align-items: center;
     cursor: pointer;
     display: flex;
@@ -37,17 +43,25 @@ export namespace HeaderStyle {
   `;
 
   export const Navigation = styled.nav`
+    ${Mixins.Responsive(['order', '2', { sm: '1' }])};
     align-items: center;
     display: flex;
   `;
 
-  export const NavToggle = styled.button`
-    ${Mixins.Responsive(['display', 'none', { md: 'block' }])}
+  export const NavToggle = styled(CPX.Button)`
+    ${Mixins.Responsive(['display', 'none', { md: 'block' }])};
+    background-color: transparent;
+    border: 1px solid ${({ theme }) => theme.bodyFontColor};
+    border-radius: 10px;
+    box-shadow: 0 0 1px 0 ${COLOR.BLACK};
+    color: ${({ theme }) => theme.bodyFontColor};
+    font-size: 1em;
+    padding: 0.5em 0.8em;
   `;
 
   export const NavigationMenu = styled.menu<{ open: boolean }>`
+    ${Mixins.Responsive(['display', 'flex', { sm: 'none' }])};
     align-items: center;
-    display: flex;
     font-family: ${FONTS.TITLE};
     gap: 1em;
     list-style-type: none;
@@ -74,6 +88,38 @@ export namespace HeaderStyle {
         border-bottom: 2px solid ${({ theme }) => theme.bodyFontColor};
       }
     }
+  `;
+
+  export const ThemeSwitch = styled(CPX.Button)`
+    align-items: center;
+    background: none;
+    border-radius: 10px;
+    box-shadow: 0 0 1px 0 ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.fadedFontColor};
+    display: flex;
+    flex: 0 1 60px;
+    gap: 0.3em;
+    height: fit-content;
+    justify-content: center;
+    order: 3;
+    padding: 0.8em;
+    transition: all 0.3s;
+
+    &:hover {
+      background: ${({ theme }) => darken(-0.1, theme.headerBackgroundColor)};
+      color: ${({ theme }) => theme.bodyFontColor};
+    }
+
+    &:active {
+      background: ${({ theme }) => darken(-0.2, theme.headerBackgroundColor)};
+      box-shadow: none;
+    }
+  `;
+
+  export const ThemeSwitchLabel = styled.label`
+    font-size: 0.6em;
+    pointer-events: none;
+    user-select: none;
   `;
 }
 
