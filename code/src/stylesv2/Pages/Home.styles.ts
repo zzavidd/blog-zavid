@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { darken, transparentize } from 'polished';
 import styled from 'styled-components';
 
 import { NextImage, SignatureImage } from 'components/image';
@@ -58,7 +59,7 @@ export namespace Introduction {
 export namespace Latest {
   export const Article = styled.article`
     ${Mixins.Responsive(['max-width', '800px', { lg: '700px' }])};
-    border-top: 1px solid ${COLOR.WHITE};
+    border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
     padding-block: 2em;
     width: 100%;
   `;
@@ -94,8 +95,8 @@ export namespace Latest {
 export namespace Aside {
   export const Container = styled.aside`
     ${Mixins.Responsive(['display', 'block', { xl: 'none' }])}
-    background-color: #202020;
-    border-left: 1px solid ${COLOR.WHITE};
+    background-color: ${({ theme }) => theme.headerBackgroundColor};
+    border-left: 1px solid ${({ theme }) => theme.bodyFontColor};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     flex: 1 0 400px;
     height: ${`calc(100vh - ${SIZES.HEADER_HEIGHT})`};
@@ -106,13 +107,11 @@ export namespace Aside {
   `;
 
   export const HeadingBox = styled.div`
-    background: linear-gradient(
-      rgba(26, 26, 26, 1) 0%,
-      rgba(26, 26, 26, 1) 50%,
-      rgba(32, 32, 32, 0.9) 100%
-    );
-    border-bottom: 1px solid ${COLOR.WHITE};
-    box-shadow: 0 0 1px 0 ${COLOR.WHITE};
+    background: ${({ theme }) => `linear-gradient(
+      ${darken(0.02, theme.headerBackgroundColor)} 0%,
+      ${darken(0.02, theme.headerBackgroundColor)} 50%,
+      ${transparentize(0.1, theme.headerBackgroundColor)} 100%
+    )`};
     display: flex;
     justify-content: center;
     padding: 0.2em 1.5em;

@@ -2,10 +2,9 @@ import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import type { PostDAO } from 'classes/posts/PostDAO';
-import { PostStatus } from 'classes/posts/PostDAO';
+import { PostBuilder } from 'classes/posts/PostBuilder';
+import type { PostDAO, PostDomain } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import type { SelectItem } from 'components/form';
 import Alert, { AlertType } from 'constants/alert';
 import hooks from 'constants/handlers';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
@@ -25,21 +24,7 @@ const PostAdd: NextPageWithLayout<PostAddProps> = ({
   const { domains } = pageProps;
   const router = useRouter();
 
-  const [post, setPost] = useState<PostDAO>({
-    title: '',
-    content: '',
-    type: undefined,
-    typeId: undefined,
-    excerpt: '',
-    image: {
-      source: '',
-      hasChanged: false,
-    },
-    contentImages: {},
-    status: PostStatus.DRAFT,
-    datePublished: undefined,
-    domainId: undefined,
-  });
+  const [post, setPost] = useState<PostDAO>(new PostBuilder().build());
   const [isRequestPending, setRequestPending] = useState(false);
 
   // Determine if post is being published.
@@ -111,6 +96,6 @@ export default PostAdd;
 interface PostAddProps {
   pathDefinition: PathDefinition;
   pageProps: {
-    domains: (PostDAO & SelectItem)[];
+    domains: PostDomain[];
   };
 }

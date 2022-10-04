@@ -38,12 +38,6 @@ export const COLOR = {
     success: '#c3ffc3',
     error: '#ffa2a2',
   } as Record<AlertType, string>,
-  BUTTON: {
-    [ButtonVariant.CONFIRM]: '#391144',
-    [ButtonVariant.CANCEL]: '#8e74ab',
-    [ButtonVariant.DELETE]: '#c80000',
-    [ButtonVariant.ADMIN]: '#cecece',
-  } as Record<ButtonVariant, string>,
 };
 
 export const FONTS = {
@@ -57,17 +51,33 @@ export const SIZES = {
 
 export const THEME: Record<AppTheme, DefaultTheme> = {
   light: {
-    backgroundImage: `${CLOUDINARY_BASE_URL}v1606588947/static/bg/bg-app-light`,
+    backgroundImage: `${CLOUDINARY_BASE_URL}/v1606588947/static/bg/bg-app-light`,
     bodyFontColor: COLOR.BLACK,
     fadedFontColor: '#3e3e3e',
-    hyperlink: '#ac1ef3',
-    readmore: '#0063fb',
+    hyperlink: '#aa00ff',
+    headerBackgroundColor: '#dddddd',
+    footerBackgroundColor: '#dfdfdf',
+    readmore: '#005dec',
+    button: {
+      [ButtonVariant.CONFIRM]: '#643671',
+      [ButtonVariant.CANCEL]: '#8e74ab',
+      [ButtonVariant.DELETE]: '#c80000',
+      [ButtonVariant.ADMIN]: '#cecece',
+    },
   },
   dark: {
     backgroundImage: `${CLOUDINARY_BASE_URL}/v1597608184/static/bg/bg-app-dark`,
     bodyFontColor: COLOR.WHITE,
     fadedFontColor: '#d4d4d4',
     hyperlink: '#d98dff',
+    headerBackgroundColor: '#202020',
+    footerBackgroundColor: '#111111',
     readmore: '#87ceeb',
+    button: {
+      [ButtonVariant.CONFIRM]: '#391144',
+      [ButtonVariant.CANCEL]: '#8e74ab',
+      [ButtonVariant.DELETE]: '#c80000',
+      [ButtonVariant.ADMIN]: '#cecece',
+    },
   },
 };

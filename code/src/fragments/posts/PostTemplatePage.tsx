@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { zDate } from 'zavid-modules';
 
+import { PostBuilder } from 'classes/posts/PostBuilder';
 import type { PostType, PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { AdminButton, BackButton as IBackButton } from 'components/button';
@@ -18,8 +19,8 @@ import css from 'styles/pages/Posts.module.scss';
 
 export default function PostTemplatePage({
   current: post,
-  previous: previousPost = {},
-  next: nextPost = {},
+  previous: previousPost = new PostBuilder().build(),
+  next: nextPost = new PostBuilder().build(),
 }: PostTemplatePageProps) {
   const [isImageModalVisible, setImageModalVisibility] = useState(false);
   const [isCuratePromptVisible, setCuratePromptVisible] = useState(false);

@@ -6,10 +6,10 @@ import { URLBuilder } from 'classes/_/URLBuilder';
 import type {
   PostContentImageMapping,
   PostDAO,
+  PostDomain,
   PostImage,
 } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import type { SelectItem } from 'components/form';
 import Alert, { AlertType } from 'constants/alert';
 import hooks from 'constants/handlers';
 import { DOMAIN } from 'constants/settings';
@@ -151,6 +151,6 @@ interface PostEditProps {
   pathDefinition: PathDefinition;
   pageProps: {
     post: PostDAO;
-    domains: (PostDAO & SelectItem)[];
+    domains: PostDomain[];
   };
 }

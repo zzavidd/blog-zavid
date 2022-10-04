@@ -6,7 +6,7 @@ import type {
 } from 'styled-components';
 import styled, { createGlobalStyle, css } from 'styled-components';
 
-import { COLOR, FONTS } from 'stylesv2/Variables.styles';
+import { FONTS } from 'stylesv2/Variables.styles';
 
 namespace FORM {
   const DefaultStyle: FlattenInterpolation<ThemeProps<DefaultTheme>> = css`
@@ -48,14 +48,14 @@ namespace FORM {
 
   export const Select = styled.select`
     ${DefaultStyle}
-    border-bottom: 1px solid ${COLOR.WHITE};
+    border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
     padding: 0.5em;
   `;
 
   export namespace Date {
     export const Container = styled.div`
       align-items: center;
-      border-bottom: 1px solid ${COLOR.WHITE};
+      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
       display: flex;
       padding-block: 0.5em;
     `;
@@ -89,7 +89,7 @@ namespace FORM {
   export namespace Input {
     export const Container = styled.div`
       align-items: center;
-      border-bottom: 1px solid ${COLOR.WHITE};
+      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
       display: flex;
       padding-block: 0.5em;
     `;
@@ -105,7 +105,7 @@ namespace FORM {
 
     export const Paragraph = styled.textarea`
       ${DefaultStyle}
-      border-bottom: 1px solid ${COLOR.WHITE};
+      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
       min-height: 50px;
       padding: 0.8em;
     `;

@@ -10,7 +10,7 @@ import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
 import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';
 import WL from 'stylesv2/Pages/Wishlist.styles';
-import { COLOR } from 'stylesv2/Variables.styles';
+import { THEME } from 'stylesv2/Variables.styles';
 
 import { WishlistPageContext } from './WishlistContext';
 
@@ -179,7 +179,7 @@ const WishlistGridItem = React.memo(
             ) : (
               <WL.Main.ItemCellFooterButton
                 onClick={onClaimButtonClick}
-                color={COLOR.BUTTON.cancel}>
+                color={THEME.dark.button.cancel}>
                 Claim
               </WL.Main.ItemCellFooterButton>
             )}

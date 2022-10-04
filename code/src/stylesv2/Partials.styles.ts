@@ -6,8 +6,8 @@ import { COLOR, FONTS, SIZES } from './Variables.styles';
 
 export namespace HeaderStyle {
   export const Header = styled.header`
-    background-color: #202020;
-    border-bottom: 1px solid ${COLOR.WHITE};
+    background-color: ${({ theme }) => theme.headerBackgroundColor};
+    border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: flex;
     flex: 0 0 ${SIZES.HEADER_HEIGHT};
@@ -79,8 +79,8 @@ export namespace HeaderStyle {
 
 export namespace FooterStyle {
   export const Container = styled.footer`
-    background-color: #111;
-    border-top: 1px solid ${COLOR.WHITE};
+    background-color: ${({ theme }) => theme.footerBackgroundColor};
+    border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
     display: flex;
     justify-content: center;
     width: 100%;
@@ -162,7 +162,7 @@ export namespace FooterStyle {
   `;
 
   export const SubscribeButton = styled(CPX.Button)`
-    ${Mixins.ClickBehavior(COLOR.BUTTON.confirm)};
+    ${({ theme }) => Mixins.ClickBehavior(theme.button.confirm)};
     border: 1px solid ${COLOR.WHITE};
     border-radius: 20px;
     color: ${COLOR.WHITE};

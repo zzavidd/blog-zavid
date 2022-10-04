@@ -10,12 +10,12 @@ export interface PostDAO extends EntityDAO {
   slug: string | null;
   tags: string | string[];
   datePublished: string | Date;
-  image: PostImage | string;
+  image: PostImage | string | null;
   contentImages: PostContentImages;
-  domainId: number;
-  domainTitle: string;
-  domainType: PostType;
-  domainSlug: string;
+  domainId?: number;
+  domainTitle?: string;
+  domainType?: PostType;
+  domainSlug?: string;
 }
 
 export interface PostImage {
@@ -55,3 +55,8 @@ export type PostContentImages =
   | PostContentImageMapping
   | string
   | undefined;
+
+export interface PostDomain extends Pick<PostDAO, 'type' | 'status'> {
+  label: string | number;
+  value: string | number;
+}

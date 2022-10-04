@@ -1,25 +1,36 @@
 import * as faker from 'faker';
 import { zDate, zString } from 'zavid-modules';
 
-import type {
-  PostDAO,
-  PostType,
-  PostStatus,
-  PostImage,
-  RandomPostOptions,
-} from './PostDAO';
+import { PostType, PostStatus } from './PostDAO';
+import type { PostDAO, PostImage, RandomPostOptions } from './PostDAO';
 import { PostStatic } from './PostStatic';
 
 /** The class for Post objects and methods. */
 export class PostBuilder {
-  private post: PostDAO = {};
+  private post: PostDAO = {
+    title: '',
+    content: '',
+    type: PostType.REVERIE,
+    typeId: undefined,
+    excerpt: '',
+    image: {
+      source: '',
+      hasChanged: false,
+    },
+    contentImages: {},
+    status: PostStatus.DRAFT,
+    datePublished: new Date(),
+    domainId: undefined,
+    slug: null,
+    tags: [],
+  };
 
   public withTitle(title?: string): PostBuilder {
     this.post.title = title!.trim();
     return this;
   }
 
-  public withType(type?: PostType): PostBuilder {
+  public withType(type: PostType): PostBuilder {
     this.post.type = type;
     return this;
   }
@@ -44,7 +55,7 @@ export class PostBuilder {
     return this;
   }
 
-  public withImage(image?: PostImage | string): PostBuilder {
+  public withImage(image: PostImage | string | null): PostBuilder {
     this.post.image = image;
     return this;
   }
@@ -54,7 +65,7 @@ export class PostBuilder {
     return this;
   }
 
-  public withDatePublished(date?: string | Date): PostBuilder {
+  public withDatePublished(date: string | Date): PostBuilder {
     this.post.datePublished = date;
     return this;
   }

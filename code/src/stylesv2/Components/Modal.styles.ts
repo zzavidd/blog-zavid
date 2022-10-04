@@ -65,8 +65,8 @@ namespace ModalStyle {
   `;
 
   export const FooterButton = styled(CPX.Button)<{ variant: ButtonVariant }>`
-    ${({ variant }) =>
-      Mixins.ClickBehavior(COLOR.BUTTON[variant], {
+    ${({ theme, variant }) =>
+      Mixins.ClickBehavior(theme.button[variant], {
         hover: 0.1,
         active: 0.15,
       })}

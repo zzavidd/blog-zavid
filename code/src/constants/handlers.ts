@@ -66,7 +66,7 @@ export default function Handlers<T extends EntityDAO>(
   }
 
   function handleContentImages(file: string, i: number): void {
-    const contentImages = (state as PostDAO)
+    const contentImages = (state as unknown as PostDAO)
       .contentImages as PostContentImageMapping;
 
     contentImages[`image${i}`] = {

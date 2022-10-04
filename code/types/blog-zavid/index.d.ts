@@ -1,4 +1,5 @@
 import 'styled-components';
+import type { ButtonVariant } from 'stylesv2/Variables.styles';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
@@ -6,7 +7,10 @@ declare module 'styled-components' {
     bodyFontColor: string;
     fadedFontColor: string;
     hyperlink: string;
+    headerBackgroundColor: string;
+    footerBackgroundColor: string;
     readmore: string;
+    button: Record<ButtonVariant?, string>;
   }
 }
 

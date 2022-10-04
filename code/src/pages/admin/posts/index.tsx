@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { zText } from 'zavid-modules';
 
 import { URLBuilder } from 'classes/_/URLBuilder';
+import { PostBuilder } from 'classes/posts/PostBuilder';
 import type { PostDAO, PostStatus, PostType } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { InvisibleButton } from 'components/button';
@@ -42,7 +43,9 @@ const PostsAdmin: NextPageWithLayout<PostsAdminProps> = ({
   const { posts, filterOptions } = pageProps;
   const router = useRouter();
 
-  const [selectedPost, setSelectedPost] = useState<PostDAO>({});
+  const [selectedPost, setSelectedPost] = useState<PostDAO>(
+    new PostBuilder().build(),
+  );
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
   /**

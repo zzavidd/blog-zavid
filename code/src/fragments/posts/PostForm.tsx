@@ -8,6 +8,7 @@ import { PostBuilder } from 'classes/posts/PostBuilder';
 import type {
   PostContentImageMapping,
   PostDAO,
+  PostDomain,
   PostImage,
   PostType,
 } from 'classes/posts/PostDAO';
@@ -335,7 +336,7 @@ export function buildPayload(
 
 interface PostFormProps extends EntityFormProps {
   post: PostDAO;
-  domains: PostDAO[];
+  domains: PostDomain[];
   handlers: ReturnType<typeof Handlers<PostDAO>>;
   isCreateOperation: boolean;
 }
