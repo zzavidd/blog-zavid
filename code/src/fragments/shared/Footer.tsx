@@ -15,7 +15,7 @@ import { UIError } from 'constants/errors';
 import { ACCOUNTS, COPYRIGHT } from 'constants/settings';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
-import { FooterStyle } from 'stylesv2/Partials.styles';
+import FooterStyle from 'stylesv2/Partials/Footer.styles';
 
 const FOOTER_LINKS = [
   { name: 'About Zavid', url: '/about' },

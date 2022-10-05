@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CPX from 'stylesv2/Components/Components.styles';
-import { COLOR } from 'stylesv2/Variables.styles';
+import { THEME } from 'stylesv2/Variables.styles';
 
 export default function Checkbox({ checked = false, ...props }: CheckboxProps) {
   return (
@@ -20,13 +20,13 @@ export default function Checkbox({ checked = false, ...props }: CheckboxProps) {
           rx={5}
           ry={5}
           fill={'transparent'}
-          stroke={COLOR.BUTTON.cancel}
+          stroke={THEME.dark.button.cancel}
           strokeWidth={3}
         />
         <polyline
           points={'9,18 12.5,23 25,4'}
           fill={'transparent'}
-          stroke={COLOR.BUTTON.cancel}
+          stroke={THEME.dark.button.cancel}
           strokeWidth={5}
           strokeLinejoin={'round'}
           strokeLinecap={'round'}

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { NextImage, SignatureImage } from 'components/image';
 import { Paragraph } from 'componentsv2/Text';
 import Mixins from 'stylesv2/Mixins.styles';
-import { COLOR, FONTS, SIZES } from 'stylesv2/Variables.styles';
+import { COLOR, FONTS } from 'stylesv2/Variables.styles';
 
 export const HomePage = styled.div`
   display: flex;
@@ -99,10 +99,10 @@ export namespace Aside {
     border-left: 1px solid ${({ theme }) => theme.bodyFontColor};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     flex: 1 0 400px;
-    height: ${`calc(100vh - ${SIZES.HEADER_HEIGHT})`};
+    height: 100vh;
     overflow-y: auto;
     position: sticky;
-    top: ${SIZES.HEADER_HEIGHT};
+    top: 0;
     z-index: 1;
   `;
 

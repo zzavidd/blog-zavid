@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
-import { DiaryStatus } from 'classes/diary/DiaryDAO';
+import { DiaryEntryBuilder } from 'classes/diary/DiaryEntryBuilder';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { ConfirmModal } from 'components/modal';
 import Alert, { AlertType } from 'constants/alert';
@@ -26,14 +26,8 @@ const DiaryEntryAdd: NextPageWithLayout<DiaryEntryAddProps> = ({
   const router = useRouter();
 
   const [diaryEntry, setDiaryEntry] = useState<DiaryDAO>({
-    title: '',
-    content: '',
-    footnote: '',
-    date: new Date(),
-    status: DiaryStatus.PROTECTED,
+    ...new DiaryEntryBuilder().build(),
     entryNumber: latestEntryNumber + 1,
-    isFavourite: false,
-    tags: '',
   });
   const [isRequestPending, setRequestPending] = useState(false);
   const [isPublishModalVisible, setPublishModalVisibility] = useState(false);

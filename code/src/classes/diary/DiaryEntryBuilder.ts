@@ -1,12 +1,22 @@
 import * as faker from 'faker';
 import { zDate, zNumber, zString } from 'zavid-modules';
 
-import type { DiaryDAO, DiaryStatus } from './DiaryDAO';
+import { DiaryStatus } from './DiaryDAO';
+import type { DiaryDAO } from './DiaryDAO';
 import { DiaryStatic } from './DiaryStatic';
 
 /** The class for Diary objects and methods. */
 export class DiaryEntryBuilder {
-  private entry: DiaryDAO = {};
+  private entry: DiaryDAO = {
+    title: '',
+    content: '',
+    footnote: '',
+    date: new Date(),
+    status: DiaryStatus.PROTECTED,
+    entryNumber: 0,
+    isFavourite: false,
+    tags: [],
+  };
 
   public withTitle(title?: string): DiaryEntryBuilder {
     this.entry.title = title!.trim();
@@ -38,7 +48,7 @@ export class DiaryEntryBuilder {
     return this;
   }
 
-  public withEntryNumber(entryNumber?: number): DiaryEntryBuilder {
+  public withEntryNumber(entryNumber: number): DiaryEntryBuilder {
     this.entry.entryNumber = entryNumber;
     return this;
   }

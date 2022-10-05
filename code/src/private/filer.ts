@@ -32,8 +32,8 @@ namespace Filer {
     // Discontinue if no images.
     const images = PostStatic.collateImages(post);
     if (!images.length) {
-      delete post.image;
-      delete post.contentImages;
+      post.image = null;
+      post.contentImages = [];
       return post;
     }
 
