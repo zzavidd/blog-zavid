@@ -95,7 +95,7 @@ namespace HeaderStyle {
 
   export const ThemeSwitch = styled(IThemeSwitch)`
     flex: 0 1 60px;
-    gap: 0.3em;
+    gap: 0.5em;
     padding: 0.8em;
     user-select: none;
 

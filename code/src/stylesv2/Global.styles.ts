@@ -23,7 +23,7 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     overscroll-behavior: none;
     position: relative;
-    transition: background 0.8s, color 0.8s;
+    transition: background 0.8s;
   }
 
   div#__next {

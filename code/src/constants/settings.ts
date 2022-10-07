@@ -44,5 +44,7 @@ export const RESOURCE_MAP: Record<string, string> = {
 /** The website title. */
 export const SITE_TITLE = 'ZAVID';
 
+export const SITE_TAGLINE = 'A Galaxy Mind in a Universe World';
+
 /** /the date of Zavid's birthday. Month is 0-indexed. */
 export const ZAVID_BIRTHDAY = new Date(1996, 11, 2);

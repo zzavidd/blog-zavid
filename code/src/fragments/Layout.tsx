@@ -4,7 +4,7 @@ import { Body, BodyContent } from 'stylesv2/Global.styles';
 
 import Footer from './shared/Footer';
 import Header from './shared/Header';
-import LeftNavigationBar from './shared/NavigationBar';
+import LeftNavigationBar from './shared/LeftNavigationBar';
 
 namespace Layout {
   export function addPartials(page: React.ReactElement) {

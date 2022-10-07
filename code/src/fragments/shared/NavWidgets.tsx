@@ -1,5 +1,8 @@
 import {
-  faBars,
+  faAddressCard,
+  faBook,
+  faCloud,
+  faEnvelope,
   faLock,
   faMoon,
   faSun,
@@ -8,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NextImage from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppTheme, Theme } from 'classes/theme';
@@ -16,14 +19,15 @@ import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
 import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import CPX from 'stylesv2/Components/Components.styles';
+import WidgetStyle from 'stylesv2/Partials/Widgets.styles';
 
 const paths = [
-  { title: 'Diary', url: '/diary' },
-  { title: 'Reveries', url: '/reveries' },
-  { title: 'Epistles', url: '/epistles' },
+  { title: 'Diary', url: '/diary', icon: faBook },
+  { title: 'Reveries', url: '/reveries', icon: faCloud },
+  { title: 'Epistles', url: '/epistles', icon: faEnvelope },
   // { title: 'Poetry', url: '/poetry' },
   // { title: 'Musings', url: '/musings' },
-  { title: 'About', url: '/about' },
+  { title: 'About', url: '/about', icon: faAddressCard },
 ];
 
 export function BrandButton(props: React.HTMLAttributes<HTMLAnchorElement>) {
@@ -43,27 +47,28 @@ export function BrandButton(props: React.HTMLAttributes<HTMLAnchorElement>) {
 }
 
 export function NavigationLinks(props: React.HTMLAttributes<HTMLElement>) {
-  const [state, setState] = useState({ isMenuOpen: false });
+  // const [state, setState] = useState({ isMenuOpen: false });
 
-  function toggleNavigationMenu() {
-    setState({ isMenuOpen: !state.isMenuOpen });
-  }
+  // function toggleNavigationMenu() {
+  //   setState({ isMenuOpen: !state.isMenuOpen });
+  // }
 
   return (
-    <nav {...props}>
-      <button type={'button'} onClick={toggleNavigationMenu}>
+    <WidgetStyle.Navigation {...props}>
+      {/* <button type={'button'} onClick={toggleNavigationMenu}>
         <FontAwesomeIcon icon={faBars} />
-      </button>
-      <menu>
-        {paths.map(({ title, url }) => {
+      </button> */}
+      <WidgetStyle.NavigationMenu>
+        {paths.map(({ title, url, icon }) => {
           return (
-            <li key={url}>
+            <WidgetStyle.NavItem key={url}>
+              <FontAwesomeIcon icon={icon} />
               <Link href={url}>{title}</Link>
-            </li>
+            </WidgetStyle.NavItem>
           );
         })}
-      </menu>
-    </nav>
+      </WidgetStyle.NavigationMenu>
+    </WidgetStyle.Navigation>
   );
 }
 
