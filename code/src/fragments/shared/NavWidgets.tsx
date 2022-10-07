@@ -82,9 +82,10 @@ export function AdminButton(
   };
 
   return (
-    <button {...props} onClick={navigateToAdmin} type={'button'}>
+    <CPX.Button {...props} onClick={navigateToAdmin} type={'button'}>
       <FontAwesomeIcon icon={faLock} />
-    </button>
+      <span>Sign In</span>
+    </CPX.Button>
   );
 }
 

@@ -6,6 +6,7 @@ declare module 'styled-components' {
     backgroundImage: string;
     bodyFontColor: string;
     bodyFontColorReverse: string;
+    fadedBorderColor: string;
     fadedFontColor: string;
     hyperlink: string;
     headerBackgroundColor: string;

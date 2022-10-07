@@ -24,17 +24,19 @@ namespace WidgetStyle {
   export const NavItem = styled.li`
     display: grid;
     font-size: 1.1em;
-    gap: 1em;
+    gap: 1.4em;
     grid-template-columns: 20px 1fr;
     transform-origin: left center;
     transition: all 0.3s;
 
     svg {
+      color: ${({ theme }) => theme.fadedFontColor};
       font-size: 1.4em;
     }
 
     a {
       color: ${({ theme }) => theme.bodyFontColor};
+      font-size: 1.1em;
       text-decoration: none;
       transition: all 0.3s;
       transform-origin: left center;

@@ -60,6 +60,7 @@ export const Signature = styled(Image)`
 export const IThemeSwitch = styled(Widgets.ThemeSwitch)`
   align-items: center;
   background: none;
+  border: 1px solid ${({ theme }) => theme.fadedBorderColor};
   border-radius: 10px;
   box-shadow: 0 0 1px 0 ${({ theme }) => theme.bodyFontColor};
   color: ${({ theme }) => theme.fadedFontColor};

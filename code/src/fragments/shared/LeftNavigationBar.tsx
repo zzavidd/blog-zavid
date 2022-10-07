@@ -15,7 +15,10 @@ export default function LeftNavigationBar() {
         </NavStyle.BrandBox>
         <NavStyle.Navigation />
       </NavStyle.NavBox>
-      <NavStyle.ThemeSwitch />
+      <NavStyle.NavBox>
+        <NavStyle.ThemeSwitch />
+        <NavStyle.AdminButton />
+      </NavStyle.NavBox>
     </NavStyle.Container>
   );
 }
