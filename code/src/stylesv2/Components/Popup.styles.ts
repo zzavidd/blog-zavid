@@ -88,5 +88,9 @@ export namespace Snack {
     padding: 1em;
     pointer-events: auto;
     transition: all 0.3s;
+
+    svg {
+      color: ${COLOR.WHITE};
+    }
   `;
 }

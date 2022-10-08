@@ -83,7 +83,7 @@ export function ThemeSwitch(
   props: React.ButtonHTMLAttributes<HTMLButtonElement>,
 ) {
   const dispatch = useDispatch();
-  const { appTheme } = useSelector((state: AppState) => state);
+  const { appTheme } = useSelector((state: AppState) => state.local);
 
   function switchTheme() {
     const oppTheme = Theme.switchTheme(appTheme);

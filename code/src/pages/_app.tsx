@@ -2,11 +2,11 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { StyleSheetManager, ThemeProvider } from 'styled-components';
 
@@ -14,7 +14,7 @@ import AlertBar from 'componentsv2/Alert';
 import Snackbar from 'componentsv2/Snack';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
-import { persistor, store } from 'constants/reducers';
+import { AppActions, persistor, store } from 'constants/reducers';
 import type {
   AlertDefinition,
   AppPropsWithLayout,
@@ -62,8 +62,12 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   });
   const dispatch = Utils.createDispatch(setState);
 
-  const themeName = useSelector((state: AppState) => state.appTheme);
-  const theme = THEME[themeName];
+  const appState = useSelector((state: AppState) => state);
+  const appDispatch = useDispatch();
+  const theme = THEME[appState.local.appTheme];
+
+  const { data: session, status } = useSession();
+  const email = session?.user?.email;
 
   /**
    * Sets the timeout for any displayed alerts.
@@ -104,6 +108,16 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.snacks.length]);
+
+  /**
+   * Shows snack if user is logged in.
+   */
+  useEffect(() => {
+    if (status !== 'authenticated' || appState.session.loginSnackShown) return;
+    addSnack({ message: `Signed in as ${email}.` });
+    appDispatch(AppActions.setLoginSnackShown(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email, status]);
 
   /**
    * Adds an alert on the alert bar.

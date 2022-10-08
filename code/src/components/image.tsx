@@ -76,7 +76,7 @@ export function NextImage({ src, ...props }: NextImageProps) {
 
 export function SignatureImage(props: React.HTMLAttributes<HTMLDivElement>) {
   const theme = useSelector((state: AppState) =>
-    Theme.switchTheme(state.appTheme),
+    Theme.switchTheme(state.local.appTheme),
   );
   return (
     <div {...props}>
