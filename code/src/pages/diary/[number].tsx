@@ -1,3 +1,4 @@
+// import TagBlock from 'fragments/diary/DiaryTags';
 import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import React, { useState } from 'react';
@@ -17,7 +18,6 @@ import Timeline, { TimelineType } from 'components/timeline';
 import { SITE_TITLE } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import AdminLock from 'fragments/AdminLock';
-import TagBlock from 'fragments/diary/DiaryTags';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import { CuratePrompt } from 'fragments/shared/CuratePrompt';
@@ -84,7 +84,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
           />
           <Divider />
           <Label>Tags:</Label>
-          <TagBlock tags={diaryEntry.tags!} />
+          {/* <TagBlock tags={diaryEntry.tags!} /> */}
           <ShareBlock
             headline={'Share This Diary Entry'}
             message={shareMessage}

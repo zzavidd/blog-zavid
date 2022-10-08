@@ -18,6 +18,7 @@ namespace TextStyle {
       color: ${({ theme }) => theme.readmore};
       cursor: pointer;
       font-family: ${FONTS.BODY};
+      line-height: 140%;
 
       svg {
         margin-right: 0.4em;

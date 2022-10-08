@@ -80,7 +80,9 @@ export function truncateText(
   const { limit = 45, keepRichFormatting = false } = options;
 
   let text = originalText;
-  if (!keepRichFormatting) text = deformatText(originalText);
+  if (!keepRichFormatting) {
+    text = deformatText(originalText);
+  }
   const truncatedText = text.split(' ').slice(0, limit).join(' ');
   if (truncatedText.length <= limit) return originalText;
 

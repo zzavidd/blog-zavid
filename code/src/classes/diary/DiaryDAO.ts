@@ -8,7 +8,7 @@ export interface DiaryDAO extends EntityDAO {
   status: DiaryStatus;
   entryNumber: number;
   isFavourite: boolean;
-  tags: string[] | string;
+  tags: string[];
   slug?: string;
 }
 

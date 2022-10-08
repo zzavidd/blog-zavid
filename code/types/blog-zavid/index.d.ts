@@ -8,10 +8,12 @@ declare module 'styled-components' {
     bodyFontColorReverse: string;
     fadedBorderColor: string;
     fadedFontColor: string;
+    fadedFontColorReverse: string;
     hyperlink: string;
     headerBackgroundColor: string;
     footerBackgroundColor: string;
     readmore: string;
+    readmoreReverse: string;
     button: Record<ButtonVariant?, string>;
   }
 }
