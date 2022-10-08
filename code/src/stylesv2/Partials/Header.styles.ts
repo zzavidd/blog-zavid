@@ -2,9 +2,10 @@ import styled from 'styled-components';
 
 import * as NavWidgets from 'fragments/shared/NavWidgets';
 import CPX from 'stylesv2/Components/Components.styles';
-import { IThemeSwitch } from 'stylesv2/Global.styles';
 import Mixins from 'stylesv2/Mixins.styles';
 import { COLOR, SIZES } from 'stylesv2/Variables.styles';
+
+import { IThemeSwitch } from './Shared.styles';
 
 namespace HeaderStyle {
   export const Header = styled.header`

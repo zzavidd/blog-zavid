@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 
 import Contexts from 'constants/contexts';
 import { SITE_TAGLINE, SITE_TITLE } from 'constants/settings';
+import * as NavWidgets from 'fragments/shared/NavWidgets';
 import NavStyle from 'stylesv2/Partials/NavigationBar.styles';
 
 export function MainNavigationBar() {
@@ -42,7 +43,7 @@ function NavChildren() {
             </NavStyle.BrandLink>
           </Link>
         </NavStyle.BrandBox>
-        <NavStyle.Navigation />
+        <NavWidgets.NavigationLinks />
       </NavStyle.NavBox>
       <NavStyle.NavBox>
         <NavStyle.ThemeSwitch />

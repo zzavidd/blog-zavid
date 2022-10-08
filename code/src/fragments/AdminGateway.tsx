@@ -6,17 +6,22 @@ export default function AdminGateway({
   children,
   onlyBlockInStaging,
 }: AdminGatewayProps) {
-  if (onlyBlockInStaging && process.env.NEXT_PUBLIC_APP_ENV !== 'staging') {
-    return <React.Fragment>{children}</React.Fragment>;
-  }
+  const allow =
+    onlyBlockInStaging && process.env.NEXT_PUBLIC_APP_ENV !== 'staging';
 
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated: async () => {
-      await signIn('google');
+      if (!allow) {
+        await signIn('google');
+      }
     },
   });
   const router = useRouter();
+
+  if (allow) {
+    return <React.Fragment>{children}</React.Fragment>;
+  }
 
   if (status === 'loading') {
     return null;

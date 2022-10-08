@@ -2,9 +2,10 @@ import { darken } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 
 import * as NavWidgets from 'fragments/shared/NavWidgets';
-import { IThemeSwitch } from 'stylesv2/Global.styles';
 import Mixins from 'stylesv2/Mixins.styles';
 import { COLOR, FONTS } from 'stylesv2/Variables.styles';
+
+import { INavStyle, IThemeSwitch } from './Shared.styles';
 
 const MAX_NAV_WIDTH = '250px';
 
@@ -54,23 +55,55 @@ namespace NavStyle {
   export const NavBox = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 0.5em;
   `;
 
-  export const Navigation = styled(NavWidgets.NavigationLinks)`
+  export const NavigationMenu = styled.menu`
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    font-family: ${FONTS.TITLE};
+    gap: 1.4em;
+    list-style-type: none;
+    margin: 0;
     padding: 1em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  `;
+
+  export const NavItem = styled.li`
+    display: grid;
+    font-size: 1.1em;
+    gap: 1.4em;
+    grid-template-columns: 20px 1fr;
+    transform-origin: left center;
+    transition: all 0.3s;
 
     svg {
       justify-self: center;
+      color: ${({ theme }) => theme.fadedFontColor};
+      font-size: 1.4em;
     }
 
     a {
+      color: ${({ theme }) => theme.bodyFontColor};
+      font-size: 1.1em;
+      text-decoration: none;
       transform: scale(0);
+      transform-origin: left center;
+      transition: all 0.3s;
+    }
+
+    &:hover {
+      transform: scale(1.08);
+
+      a {
+        border-bottom: 2px solid ${({ theme }) => theme.bodyFontColor};
+      }
     }
   `;
 
   export const ThemeSwitch = styled(IThemeSwitch)`
-    border: 1px solid ${({ theme }) => theme.fadedBorderColor};
     box-sizing: content-box;
     font-size: 0.7em;
     gap: 0.4em;
@@ -78,18 +111,23 @@ namespace NavStyle {
     padding: 1em;
   `;
 
+  export const AdminButtonBox = styled.div`
+    display: flex;
+  `;
+
   export const AdminButton = styled(NavWidgets.AdminButton)`
     align-items: center;
     background: none;
     border: 1px solid ${({ theme }) => theme.fadedBorderColor};
     border-radius: 10px;
-    box-sizing: content-box;
     color: ${({ theme }) => theme.fadedFontColor};
     display: flex;
+    flex: 0 1 auto;
     gap: 0;
     justify-content: center;
-    max-height: 20px;
+    max-height: 40px;
     padding: 1em;
+    width: 100%;
 
     &:hover {
       background: ${({ theme }) => darken(-0.1, theme.headerBackgroundColor)};
@@ -101,30 +139,29 @@ namespace NavStyle {
       box-shadow: none;
     }
 
-    svg {
-      flex: 0;
-    }
-
-    span {
-      flex: 0 0;
-      min-width: 0;
+    &:first-of-type {
       transform: scale(0);
       transform-origin: left center;
       transition: transform 0.3s;
+      order: 2;
+    }
+
+    &:last-of-type {
+      order: 1;
+    }
+
+    svg {
+      flex: 0;
     }
   `;
 
-  const SharedNavStyle = styled.aside`
-    background-color: ${({ theme }) => theme.headerBackgroundColor};
-    border-right: 1px solid ${({ theme }) => theme.bodyFontColor};
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    justify-content: space-between;
-    overflow: hidden;
-    position: fixed;
-    transition: all 0.2s, background-color 0.8s;
-    z-index: 2;
+  export const AdminButtonLabel = styled.label`
+    flex: 0 0;
+    min-width: 0;
+    pointer-events: none;
+    transform: scale(0);
+    transform-origin: left center;
+    transition: transform 0.3s;
   `;
 
   const IChildrenStyles = css`
@@ -132,23 +169,38 @@ namespace NavStyle {
       font-size: 1em;
     }
 
-    ${NavStyle.AdminButton} {
-      font-size: 1em;
-      gap: 0.7em;
+    ${NavStyle.AdminButtonBox} {
+      gap: 0.4em;
     }
 
-    ${NavStyle.AdminButton} span {
+    ${NavStyle.AdminButton} {
+      font-size: 0.9em;
+      flex: 1 1 auto;
+      gap: 0.7em;
+      max-height: 50px;
+
+      &:first-of-type {
+        transform: scale(1);
+        order: 1;
+      }
+
+      &:last-of-type {
+        order: 2;
+      }
+    }
+
+    ${NavStyle.AdminButtonLabel} {
       flex: 0 0 max-content;
       transform: scale(1);
     }
 
     ${NavStyle.BrandTagline},
-    ${NavStyle.Navigation} a {
+    ${NavStyle.NavigationMenu} a {
       transform: scale(1);
     }
   `;
 
-  export const Container = styled(SharedNavStyle)<{ focused: boolean }>`
+  export const Container = styled(INavStyle)<{ focused: boolean }>`
     ${Mixins.Responsive(['display', 'flex', { sm: 'none' }])};
     left: 0;
     padding: 1em 0.5em;
@@ -165,7 +217,7 @@ namespace NavStyle {
       `}
   `;
 
-  export const MobileContainer = styled(SharedNavStyle)<{ open: boolean }>`
+  export const MobileContainer = styled(INavStyle)<{ open: boolean }>`
     ${Mixins.Responsive(['display', 'none', { sm: 'flex' }])};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     height: calc(100vh - 70px);

@@ -1,33 +1,31 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import { unstable_getServerSession } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { nextAuthOptions } from './api/auth/[...nextauth]';
+import { AppActions } from 'constants/reducers';
 
 // eslint-disable-next-line react/function-component-definition
 const Logout: NextPage = () => {
+  const appDispatch = useDispatch();
   const router = useRouter();
 
   useEffect(() => {
     (async () => {
       await signOut({ redirect: false });
+      appDispatch(AppActions.setLoginSnackShown(false));
       router.back();
     })();
-  }, []);
+  }, [appDispatch, router]);
 
   return null;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+// eslint-disable-next-line require-await
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   res.setHeader('X-Robots-Tag', 'noindex');
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
-  if (session) {
-    return { props: {} };
-  } else {
-    return { notFound: true };
-  }
+  return { props: {} };
 };
 
 export default Logout;

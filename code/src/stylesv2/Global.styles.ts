@@ -1,8 +1,6 @@
 import Image from 'next/image';
-import { darken } from 'polished';
 import styled, { createGlobalStyle } from 'styled-components';
 
-import * as Widgets from 'fragments/shared/NavWidgets';
 import { FONTS } from 'stylesv2/Variables.styles';
 
 import Mixins from './Mixins.styles';
@@ -55,28 +53,4 @@ export const BodyContent = styled.div`
 
 export const Signature = styled(Image)`
   pointer-events: none;
-`;
-
-export const IThemeSwitch = styled(Widgets.ThemeSwitch)`
-  align-items: center;
-  background: none;
-  border: 1px solid ${({ theme }) => theme.fadedBorderColor};
-  border-radius: 10px;
-  box-shadow: 0 0 1px 0 ${({ theme }) => theme.bodyFontColor};
-  color: ${({ theme }) => theme.fadedFontColor};
-  display: flex;
-  height: fit-content;
-  justify-content: center;
-  padding: 0.8em;
-  transition: all 0.3s;
-
-  &:hover {
-    background: ${({ theme }) => darken(-0.1, theme.headerBackgroundColor)};
-    color: ${({ theme }) => theme.bodyFontColor};
-  }
-
-  &:active {
-    background: ${({ theme }) => darken(-0.2, theme.headerBackgroundColor)};
-    box-shadow: none;
-  }
 `;

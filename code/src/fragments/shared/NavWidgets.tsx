@@ -5,9 +5,11 @@ import {
   faEnvelope,
   faLock,
   faMoon,
+  faRightFromBracket,
   faSun,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import NextImage from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -19,8 +21,9 @@ import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
 import { CLOUDINARY_BASE_URL } from 'constants/settings';
+import AdminLock from 'fragments/AdminLock';
 import CPX from 'stylesv2/Components/Components.styles';
-import WidgetStyle from 'stylesv2/Partials/Widgets.styles';
+import NavStyle from 'stylesv2/Partials/NavigationBar.styles';
 
 const paths = [
   { title: 'Diary', url: '/diary', icon: faBook },
@@ -49,34 +52,65 @@ export function NavigationLinks(props: React.HTMLAttributes<HTMLMenuElement>) {
   const [, setNavIsFocused] = useContext(Contexts.Navigation);
 
   return (
-    <WidgetStyle.NavigationMenu {...props}>
+    <NavStyle.NavigationMenu {...props}>
       {paths.map(({ title, url, icon }) => {
         return (
-          <WidgetStyle.NavItem onClick={() => setNavIsFocused(false)} key={url}>
+          <NavStyle.NavItem onClick={() => setNavIsFocused(false)} key={url}>
             <FontAwesomeIcon icon={icon} />
             <Link href={url}>{title}</Link>
-          </WidgetStyle.NavItem>
+          </NavStyle.NavItem>
         );
       })}
-    </WidgetStyle.NavigationMenu>
+    </NavStyle.NavigationMenu>
   );
 }
 
 export function AdminButton(
   props: React.ButtonHTMLAttributes<HTMLButtonElement>,
 ) {
+  const appDispatch = useDispatch();
   const router = useRouter();
+  const { status } = useSession();
+  const isAuthenticated = status === 'authenticated';
 
-  const navigateToAdmin = () => {
-    void router.push('/admin');
-  };
+  // function navigateToAdmin() {
+  //   void router.push('/admin');
+  // }
 
-  return (
-    <CPX.Button {...props} onClick={navigateToAdmin} type={'button'}>
-      <FontAwesomeIcon icon={faLock} />
-      <span>Sign In</span>
-    </CPX.Button>
-  );
+  async function logIn() {
+    await signIn('google', { redirect: true });
+  }
+
+  async function logOut() {
+    await signOut({ redirect: true });
+    appDispatch(AppActions.setLoginSnackShown(false));
+  }
+
+  if (isAuthenticated) {
+    return (
+      <NavStyle.AdminButtonBox>
+        <AdminLock>
+          <Link href={'/admin'}>
+            <CPX.Button {...props} type={'button'}>
+              <FontAwesomeIcon icon={faLock} />
+              <NavStyle.AdminButtonLabel>Admin</NavStyle.AdminButtonLabel>
+            </CPX.Button>
+          </Link>
+        </AdminLock>
+        <CPX.Button {...props} onClick={logOut} type={'button'}>
+          <FontAwesomeIcon icon={faRightFromBracket} />
+          <NavStyle.AdminButtonLabel>Logout</NavStyle.AdminButtonLabel>
+        </CPX.Button>
+      </NavStyle.AdminButtonBox>
+    );
+  } else {
+    return (
+      <CPX.Button {...props} onClick={logIn} type={'button'}>
+        <FontAwesomeIcon icon={faLock} />
+        <NavStyle.AdminButtonLabel>Sign In</NavStyle.AdminButtonLabel>
+      </CPX.Button>
+    );
+  }
 }
 
 export function ThemeSwitch(
