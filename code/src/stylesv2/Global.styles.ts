@@ -27,6 +27,7 @@ export const GlobalStyles = createGlobalStyle`
   div#__next {
     display: flex;
     flex-direction: column;
+    height: 100%;
   }
 
   h1 {
@@ -44,6 +45,7 @@ export const GlobalStyles = createGlobalStyle`
 
 export const Body = styled.div`
   display: flex;
+  flex: 1;
 `;
 
 export const BodyContent = styled.div`

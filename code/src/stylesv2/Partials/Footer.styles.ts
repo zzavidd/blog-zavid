@@ -9,6 +9,7 @@ namespace FooterStyle {
     background-color: ${({ theme }) => theme.footerBackgroundColor};
     border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
     display: flex;
+    flex: 0;
     justify-content: center;
     width: 100%;
   `;
