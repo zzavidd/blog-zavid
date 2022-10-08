@@ -1,18 +1,8 @@
-import {
-  faAddressCard,
-  faBook,
-  faCloud,
-  faEnvelope,
-  faLock,
-  faMoon,
-  faRightFromBracket,
-  faSun,
-} from '@fortawesome/free-solid-svg-icons';
+import * as FA6 from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import NextImage from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -26,12 +16,12 @@ import CPX from 'stylesv2/Components/Components.styles';
 import NavStyle from 'stylesv2/Partials/NavigationBar.styles';
 
 const paths = [
-  { title: 'Diary', url: '/diary', icon: faBook },
-  { title: 'Reveries', url: '/reveries', icon: faCloud },
-  { title: 'Epistles', url: '/epistles', icon: faEnvelope },
+  { title: 'Diary', url: '/diary', icon: FA6.faBook },
+  { title: 'Reveries', url: '/reveries', icon: FA6.faCloud },
+  { title: 'Epistles', url: '/epistles', icon: FA6.faEnvelope },
   // { title: 'Poetry', url: '/poetry' },
   // { title: 'Musings', url: '/musings' },
-  { title: 'About', url: '/about', icon: faAddressCard },
+  { title: 'About', url: '/about', icon: FA6.faAddressCard },
 ];
 
 export function BrandImage(props: React.HTMLAttributes<HTMLDivElement>) {
@@ -69,18 +59,19 @@ export function AdminButton(
   props: React.ButtonHTMLAttributes<HTMLButtonElement>,
 ) {
   const appDispatch = useDispatch();
-  const router = useRouter();
   const { status } = useSession();
   const isAuthenticated = status === 'authenticated';
 
-  // function navigateToAdmin() {
-  //   void router.push('/admin');
-  // }
-
+  /**
+   * Prompts a user log-in.
+   */
   async function logIn() {
     await signIn('google', { redirect: true });
   }
 
+  /**
+   * Logs out the user.
+   */
   async function logOut() {
     await signOut({ redirect: true });
     appDispatch(AppActions.setLoginSnackShown(false));
@@ -92,13 +83,13 @@ export function AdminButton(
         <AdminLock>
           <Link href={'/admin'}>
             <CPX.Button {...props} type={'button'}>
-              <FontAwesomeIcon icon={faLock} />
+              <FontAwesomeIcon icon={FA6.faLock} />
               <NavStyle.AdminButtonLabel>Admin</NavStyle.AdminButtonLabel>
             </CPX.Button>
           </Link>
         </AdminLock>
         <CPX.Button {...props} onClick={logOut} type={'button'}>
-          <FontAwesomeIcon icon={faRightFromBracket} />
+          <FontAwesomeIcon icon={FA6.faRightFromBracket} />
           <NavStyle.AdminButtonLabel>Logout</NavStyle.AdminButtonLabel>
         </CPX.Button>
       </NavStyle.AdminButtonBox>
@@ -106,7 +97,7 @@ export function AdminButton(
   } else {
     return (
       <CPX.Button {...props} onClick={logIn} type={'button'}>
-        <FontAwesomeIcon icon={faLock} />
+        <FontAwesomeIcon icon={FA6.faLock} />
         <NavStyle.AdminButtonLabel>Sign In</NavStyle.AdminButtonLabel>
       </CPX.Button>
     );
@@ -126,7 +117,9 @@ export function ThemeSwitch(
 
   return (
     <CPX.Button {...props} onClick={switchTheme} type={'button'}>
-      <FontAwesomeIcon icon={appTheme === AppTheme.DARK ? faMoon : faSun} />
+      <FontAwesomeIcon
+        icon={appTheme === AppTheme.DARK ? FA6.faMoon : FA6.faSun}
+      />
       <span>{appTheme.charAt(0).toUpperCase() + appTheme.substring(1)}</span>
     </CPX.Button>
   );
