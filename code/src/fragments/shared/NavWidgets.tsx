@@ -45,10 +45,12 @@ export function NavigationLinks(props: React.HTMLAttributes<HTMLMenuElement>) {
     <NavStyle.NavigationMenu {...props}>
       {paths.map(({ title, url, icon }) => {
         return (
-          <NavStyle.NavItem onClick={() => setNavIsFocused(false)} key={url}>
-            <FontAwesomeIcon icon={icon} />
-            <Link href={url}>{title}</Link>
-          </NavStyle.NavItem>
+          <Link href={url} passHref={true} key={url}>
+            <NavStyle.NavItem onClick={() => setNavIsFocused(false)}>
+              <FontAwesomeIcon icon={icon} />
+              <NavStyle.NavItemLabel>{title}</NavStyle.NavItemLabel>
+            </NavStyle.NavItem>
+          </Link>
         );
       })}
     </NavStyle.NavigationMenu>

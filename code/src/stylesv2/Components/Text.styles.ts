@@ -19,6 +19,7 @@ namespace TextStyle {
       cursor: pointer;
       font-family: ${FONTS.BODY};
       line-height: 140%;
+      text-decoration: none;
 
       svg {
         margin-right: 0.4em;

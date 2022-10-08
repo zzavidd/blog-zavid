@@ -53,6 +53,7 @@ namespace DiaryStyle {
 
   export const EntryDetails = styled.a`
     color: inherit;
+    text-decoration: none;
   `;
 
   export const EntryDate = styled.time`

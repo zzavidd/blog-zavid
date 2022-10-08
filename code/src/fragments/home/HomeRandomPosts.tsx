@@ -19,7 +19,7 @@ export default function HomeRandomPosts({ posts }: RandomPostsGridProps) {
           const directory = PostStatic.getDirectory(post.type!);
           return (
             <Style.Aside.Post key={post.id}>
-              <Link href={`/${directory}/${post.slug}`}>
+              <Link href={`/${directory}/${post.slug}`} passHref={true}>
                 <a>
                   <Style.Aside.ImageBox>
                     <Style.Aside.Image

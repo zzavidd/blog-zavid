@@ -36,7 +36,7 @@ export function Paragraph({
         {zText.formatText(text)}
       </TextStyle.Collection>
       {more && text.length > truncate ? (
-        <Link href={more.href}>
+        <Link href={more.href} passHref={true}>
           <TextStyle.Section.ReadMore>
             <FontAwesomeIcon icon={faPaperPlane} />
             <span>{more.text}</span>

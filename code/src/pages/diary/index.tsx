@@ -1,5 +1,4 @@
 import * as FA6 from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
@@ -26,8 +25,7 @@ const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({
   pathDefinition,
   pageProps,
 }) => {
-  const { diaryEntries, onlyFavourites, pageIntro } = pageProps;
-  const url = new URL(location.href);
+  const { diaryEntries, pageIntro } = pageProps;
 
   return (
     <React.Fragment>
@@ -74,7 +72,7 @@ const DiaryEntry = React.memo(
     return (
       <DiaryStyle.Entry>
         {entry.isFavourite ? <DiaryStyle.EntryStar icon={FA6.faStar} /> : null}
-        <Link href={href}>
+        <Link href={href} passHref={true}>
           <DiaryStyle.EntryDetails>
             <DiaryStyle.EntryDate dateTime={ZDate.formatISO(entry.date)}>
               {ZDate.format(entry.date)}
@@ -82,7 +80,6 @@ const DiaryEntry = React.memo(
             <DiaryStyle.EntryTitle>
               Diary Entry #{entry.entryNumber}: {entry.title}
             </DiaryStyle.EntryTitle>
-
             <DiaryStyle.EntryExcerpt
               truncate={40}
               more={{
@@ -97,7 +94,7 @@ const DiaryEntry = React.memo(
           {tags.map((tag: string, key: number) => {
             return (
               <DiaryStyle.EntryTag key={key}>
-                <Link href={`/search?term=${tag}`}>
+                <Link href={`/search?term=${tag}&onlyDiary=true`}>
                   <a>#{tag}</a>
                 </Link>
               </DiaryStyle.EntryTag>
@@ -109,10 +106,6 @@ const DiaryEntry = React.memo(
   },
   (a, b) => a.entry.id === b.entry.id,
 );
-
-const launchSearch = (searchTerm: string) => {
-  location.href = `/search?term=${searchTerm}&onlyDiary=true`;
-};
 
 export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
   query,

@@ -9,7 +9,7 @@ export default function HomeDiary({ entry }: LatestDiaryEntryProps) {
 
   return (
     <Style.Latest.Article>
-      <Style.Latest.Feather icon={faFeatherAlt} />
+      <Style.Latest.DiaryIcon icon={faFeatherAlt} />
       <Style.Latest.Label>Latest Diary Entry:</Style.Latest.Label>
       <Style.Latest.Title>
         Diary Entry #{entry.entryNumber}: {entry.title}
@@ -18,7 +18,7 @@ export default function HomeDiary({ entry }: LatestDiaryEntryProps) {
         {ZDate.format(entry.date)}
       </Style.Latest.Date>
       <Style.Latest.Excerpt
-        truncate={80}
+        truncate={50}
         more={{
           text: 'Read my latest diary entry...',
           href: `/diary/${entry.entryNumber}`,

@@ -34,7 +34,7 @@ function NavChildren() {
     <React.Fragment>
       <NavStyle.NavBox>
         <NavStyle.BrandBox>
-          <Link href={'/'}>
+          <Link href={'/'} passHref={true}>
             <NavStyle.BrandLink>
               <NavStyle.BrandImage />
               <NavStyle.BrandTagline onClick={() => setNavIsFocused(false)}>

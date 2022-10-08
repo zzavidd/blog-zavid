@@ -86,9 +86,38 @@ export namespace Latest {
     ${Mixins.Responsive(['font-size', '1.2em', { sm: '1em' }])}
   `;
 
-  export const Feather = styled(FontAwesomeIcon)`
+  export const DiaryIcon = styled(FontAwesomeIcon)`
     float: right;
     font-size: 5em;
+    margin-left: 0.3em;
+  `;
+
+  export const ReverieIcon = styled(FontAwesomeIcon)`
+    ${Mixins.Responsive(
+      ['float', 'left', { sm: 'right' }],
+      ['margin-inline', '0 0.3em', { sm: '0.3em 0' }],
+    )}
+    font-size: 5em;
+  `;
+
+  export const ImageBox = styled.div`
+    ${Mixins.Responsive(['float', 'right', { sm: 'none' }])};
+    border-radius: 10px;
+    clear: both;
+    height: 200px;
+    margin-block: 2em;
+    max-width: 400px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  `;
+
+  export const Image = styled(NextImage)`
+    transition: all 0.3s;
+
+    &:hover {
+      transform: scale(1.05);
+    }
   `;
 }
 

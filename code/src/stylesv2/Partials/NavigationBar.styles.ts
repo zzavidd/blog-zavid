@@ -71,36 +71,34 @@ namespace NavStyle {
     transition: all 0.3s;
   `;
 
-  export const NavItem = styled.li`
+  export const NavItem = styled.a`
+    color: ${({ theme }) => theme.bodyFontColor};
     display: grid;
     font-size: 1.1em;
     gap: 1.4em;
     grid-template-columns: 20px 1fr;
-    transform-origin: left center;
+    text-decoration: none;
     transition: all 0.3s;
 
     svg {
-      justify-self: center;
       color: ${({ theme }) => theme.fadedFontColor};
       font-size: 1.4em;
-    }
-
-    a {
-      color: ${({ theme }) => theme.bodyFontColor};
-      font-size: 1.1em;
-      text-decoration: none;
-      transform: scale(0);
-      transform-origin: left center;
-      transition: all 0.3s;
+      justify-self: center;
     }
 
     &:hover {
       transform: scale(1.08);
 
-      a {
+      span {
         border-bottom: 2px solid ${({ theme }) => theme.bodyFontColor};
       }
     }
+  `;
+
+  export const NavItemLabel = styled.span`
+    transform: scale(0);
+    transform-origin: left center;
+    transition: all 0.3s;
   `;
 
   export const ThemeSwitch = styled(IThemeSwitch)`
@@ -195,7 +193,7 @@ namespace NavStyle {
     }
 
     ${NavStyle.BrandTagline},
-    ${NavStyle.NavigationMenu} a {
+    ${NavStyle.NavItemLabel} {
       transform: scale(1);
     }
   `;
