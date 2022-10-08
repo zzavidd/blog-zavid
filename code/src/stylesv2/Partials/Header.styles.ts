@@ -4,7 +4,7 @@ import * as NavWidgets from 'fragments/shared/NavWidgets';
 import CPX from 'stylesv2/Components/Components.styles';
 import { IThemeSwitch } from 'stylesv2/Global.styles';
 import Mixins from 'stylesv2/Mixins.styles';
-import { COLOR, SIZES, FONTS } from 'stylesv2/Variables.styles';
+import { COLOR, SIZES } from 'stylesv2/Variables.styles';
 
 namespace HeaderStyle {
   export const Header = styled.header`
@@ -31,7 +31,23 @@ namespace HeaderStyle {
     width: 100%;
   `;
 
-  export const BrandButton = styled(NavWidgets.BrandButton)`
+  export const NavToggle = styled(CPX.Button)`
+    background: none;
+    border: 1px solid ${({ theme }) => theme.fadedBorderColor};
+    border-radius: 10px;
+    box-shadow: 0 0 2px 0 ${COLOR.BLACK};
+    color: ${({ theme }) => theme.bodyFontColor};
+    padding: 0.7em 0.9em;
+    transition: transform 0.3s;
+
+    &:active {
+      background-color: ${({ theme }) => theme.headerBackgroundColor};
+      box-shadow: 0 0 0 0 ${COLOR.BLACK};
+      transform: scale(0.95);
+    }
+  `;
+
+  export const BrandButton = styled(NavWidgets.BrandImage)`
     align-items: center;
     cursor: pointer;
     display: flex;
@@ -39,57 +55,6 @@ namespace HeaderStyle {
 
     &:hover {
       transform: scale(1.08);
-    }
-  `;
-
-  export const Navigation = styled(NavWidgets.NavigationLinks)`
-    align-items: center;
-    display: flex;
-
-    ${CPX.Button} {
-      ${Mixins.Responsive(['display', 'none', { md: 'block' }])};
-      background-color: transparent;
-      border: 1px solid ${({ theme }) => theme.bodyFontColor};
-      border-radius: 10px;
-      box-shadow: 0 0 1px 0 ${COLOR.BLACK};
-      color: ${({ theme }) => theme.bodyFontColor};
-      font-size: 1em;
-      padding: 0.5em 0.8em;
-    }
-
-    menu {
-      display: none;
-    }
-  `;
-
-  export const NavigationMenu = styled.menu<{ open: boolean }>`
-    ${Mixins.Responsive(['display', 'flex', { sm: 'none' }])};
-    align-items: center;
-    font-family: ${FONTS.TITLE};
-    gap: 1em;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-transform: uppercase;
-    transition: all 0.3s;
-  `;
-
-  export const NavigationMenuLink = styled.li`
-    font-size: 1.1em;
-    transition: all 0.3s;
-
-    a {
-      color: ${({ theme }) => theme.bodyFontColor};
-      text-decoration: none;
-      transition: all 0.3s;
-    }
-
-    &:hover {
-      transform: scale(1.08);
-
-      a {
-        border-bottom: 2px solid ${({ theme }) => theme.bodyFontColor};
-      }
     }
   `;
 

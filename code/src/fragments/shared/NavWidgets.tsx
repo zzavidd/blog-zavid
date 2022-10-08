@@ -11,10 +11,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NextImage from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppTheme, Theme } from 'classes/theme';
+import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
 import { CLOUDINARY_BASE_URL } from 'constants/settings';
@@ -30,45 +31,34 @@ const paths = [
   { title: 'About', url: '/about', icon: faAddressCard },
 ];
 
-export function BrandButton(props: React.HTMLAttributes<HTMLAnchorElement>) {
+export function BrandImage(props: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <Link href={'/'}>
-      <a {...props}>
-        <NextImage
-          src={`${CLOUDINARY_BASE_URL}/static/logos/zavid-head-logo.png`}
-          alt={'Zavid Logo'}
-          width={50}
-          height={50}
-          layout={'fixed'}
-        />
-      </a>
-    </Link>
+    <div {...props}>
+      <NextImage
+        src={`${CLOUDINARY_BASE_URL}/static/logos/zavid-head-logo.png`}
+        alt={'Zavid Logo'}
+        width={50}
+        height={50}
+        layout={'fixed'}
+      />
+    </div>
   );
 }
 
-export function NavigationLinks(props: React.HTMLAttributes<HTMLElement>) {
-  // const [state, setState] = useState({ isMenuOpen: false });
-
-  // function toggleNavigationMenu() {
-  //   setState({ isMenuOpen: !state.isMenuOpen });
-  // }
+export function NavigationLinks(props: React.HTMLAttributes<HTMLMenuElement>) {
+  const [, setNavIsFocused] = useContext(Contexts.Navigation);
 
   return (
-    <WidgetStyle.Navigation {...props}>
-      {/* <button type={'button'} onClick={toggleNavigationMenu}>
-        <FontAwesomeIcon icon={faBars} />
-      </button> */}
-      <WidgetStyle.NavigationMenu>
-        {paths.map(({ title, url, icon }) => {
-          return (
-            <WidgetStyle.NavItem key={url}>
-              <FontAwesomeIcon icon={icon} />
-              <Link href={url}>{title}</Link>
-            </WidgetStyle.NavItem>
-          );
-        })}
-      </WidgetStyle.NavigationMenu>
-    </WidgetStyle.Navigation>
+    <WidgetStyle.NavigationMenu {...props}>
+      {paths.map(({ title, url, icon }) => {
+        return (
+          <WidgetStyle.NavItem onClick={() => setNavIsFocused(false)} key={url}>
+            <FontAwesomeIcon icon={icon} />
+            <Link href={url}>{title}</Link>
+          </WidgetStyle.NavItem>
+        );
+      })}
+    </WidgetStyle.NavigationMenu>
   );
 }
 
@@ -95,10 +85,6 @@ export function ThemeSwitch(
   const dispatch = useDispatch();
   const { appTheme } = useSelector((state: AppState) => state);
 
-  const checked = useMemo(() => {
-    return appTheme === AppTheme.DARK;
-  }, [appTheme]);
-
   function switchTheme() {
     const oppTheme = Theme.switchTheme(appTheme);
     dispatch(AppActions.setAppTheme(oppTheme));
@@ -106,7 +92,7 @@ export function ThemeSwitch(
 
   return (
     <CPX.Button {...props} onClick={switchTheme} type={'button'}>
-      <FontAwesomeIcon icon={checked ? faMoon : faSun} />
+      <FontAwesomeIcon icon={appTheme === AppTheme.DARK ? faMoon : faSun} />
       <span>{appTheme.charAt(0).toUpperCase() + appTheme.substring(1)}</span>
     </CPX.Button>
   );

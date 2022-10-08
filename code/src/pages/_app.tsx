@@ -4,7 +4,6 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
-import Script from 'next/script';
 import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Provider, useSelector } from 'react-redux';
@@ -23,6 +22,7 @@ import type {
 } from 'constants/types';
 import Utils from 'constants/utils';
 import AdminGateway from 'fragments/AdminGateway';
+import GoogleAnalyticsScripts from 'fragments/GoogleAnalyticsTag';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
 import 'styles/App.scss';
 import { GlobalStyles } from 'stylesv2/Global.styles';
@@ -58,6 +58,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const [state, setState] = useState<ZavidAppState>({
     alerts: [],
     snacks: [],
+    isNavigationFocused: false,
   });
   const dispatch = Utils.createDispatch(setState);
 
@@ -144,68 +145,72 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
 
+  const providedContexts: ContextsProviderProps = {
+    alerts: {
+      alerts: state.alerts,
+      set: addAlert,
+      remove: removeAlert,
+      success: (message) => addAlert({ type: 'success', message }),
+      error: (message) => addAlert({ type: 'error', message }),
+      report(message: string, shouldBeExplicit?: boolean): void {
+        if (
+          process.env.NEXT_PUBLIC_APP_ENV === 'production' &&
+          !shouldBeExplicit
+        ) {
+          this.error('There was a problem. Please try again later.');
+          console.error(message);
+        } else {
+          this.error(message);
+        }
+      },
+    },
+    snacks: {
+      snacks: state.snacks,
+      add: addSnack,
+      remove: removeSnack,
+    },
+    navigation: [
+      state.isNavigationFocused,
+      (isOpen) => dispatch({ isNavigationFocused: isOpen }),
+    ],
+  };
+
   return (
     <AdminGateway onlyBlockInStaging={true}>
-      <Contexts.Alerts.Provider
-        value={{
-          alerts: state.alerts,
-          set: addAlert,
-          remove: removeAlert,
-          success: (message) => addAlert({ type: 'success', message }),
-          error: (message) => addAlert({ type: 'error', message }),
-          report(message: string, shouldBeExplicit?: boolean): void {
-            if (
-              process.env.NEXT_PUBLIC_APP_ENV === 'production' &&
-              !shouldBeExplicit
-            ) {
-              this.error('There was a problem. Please try again later.');
-              console.error(message);
-            } else {
-              this.error(message);
-            }
-          },
-        }}>
-        <Contexts.Snacks.Provider
-          value={{ snacks: state.snacks, add: addSnack, remove: removeSnack }}>
-          <GoogleAnalyticsScripts />
-          <ThemeProvider theme={theme}>
-            <GlobalStyles />
-            {ComponentWithLayout}
-            <CookiePrompt />
-            <Snackbar />
-            <AlertBar />
-          </ThemeProvider>
-        </Contexts.Snacks.Provider>
-      </Contexts.Alerts.Provider>
+      <ContextsProvider {...providedContexts}>
+        <GoogleAnalyticsScripts />
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          {ComponentWithLayout}
+          <Snackbar />
+          <CookiePrompt />
+          <AlertBar />
+        </ThemeProvider>
+      </ContextsProvider>
     </AdminGateway>
   );
 }
 
-function GoogleAnalyticsScripts() {
-  if (process.env.NEXT_PUBLIC_APP_ENV !== 'production') return null;
+function ContextsProvider({ children, ...props }: ContextsProviderProps) {
   return (
-    <React.Fragment>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
-        strategy={'afterInteractive'}
-      />
-      <Script id={'google-analytics'} strategy={'afterInteractive'}>
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', '${process.env.NEXT_PUBLIC_GA_TRACKING_ID}', {
-            page_title: '${document.title}',
-            page_url: '${location.pathname} + ${location.search}',
-          });
-        `}
-      </Script>
-    </React.Fragment>
+    <Contexts.Alerts.Provider value={props.alerts}>
+      <Contexts.Navigation.Provider value={props.navigation}>
+        <Contexts.Snacks.Provider value={props.snacks}>
+          {children}
+        </Contexts.Snacks.Provider>
+      </Contexts.Navigation.Provider>
+    </Contexts.Alerts.Provider>
   );
 }
 
 interface ZavidAppState {
   alerts: AlertDefinition[];
   snacks: SnackDefinition[];
+  isNavigationFocused: boolean;
+}
+
+interface ContextsProviderProps extends React.PropsWithChildren {
+  alerts: Contexts.AlertsProps;
+  navigation: Contexts.NavigationProps;
+  snacks: Contexts.SnacksProps;
 }

@@ -1,5 +1,5 @@
 import { darken } from 'polished';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import * as NavWidgets from 'fragments/shared/NavWidgets';
 import { IThemeSwitch } from 'stylesv2/Global.styles';
@@ -12,24 +12,23 @@ const pulse = keyframes`0%,100%{ transform: scale(1);} 50%{transform: scale(1.04
 
 namespace NavStyle {
   export const BrandBox = styled.div`
-    align-items: center;
     cursor: pointer;
-    display: flex;
-    gap: 0.5em;
     overflow: hidden;
     transition: all 0.3s;
     width: ${MAX_NAV_WIDTH};
 
     &:hover {
       animation: ${pulse} 1s ease 0s infinite normal both;
-
-      h3 {
-        text-decoration: underline;
-      }
     }
   `;
 
-  export const BrandButton = styled(NavWidgets.BrandButton)`
+  export const BrandLink = styled.a`
+    align-items: center;
+    display: flex;
+    gap: 0.5em;
+  `;
+
+  export const BrandImage = styled(NavWidgets.BrandImage)`
     align-items: center;
     cursor: pointer;
     display: flex;
@@ -46,6 +45,10 @@ namespace NavStyle {
     transform: scale(0);
     transform-origin: left center;
     transition: all 0.3s;
+
+    &:hover {
+      text-decoration: underline;
+    }
   `;
 
   export const NavBox = styled.div`
@@ -111,8 +114,7 @@ namespace NavStyle {
     }
   `;
 
-  export const Container = styled.aside`
-    ${Mixins.Responsive(['display', 'flex', { sm: 'none' }])}
+  const SharedNavStyle = styled.aside`
     background-color: ${({ theme }) => theme.headerBackgroundColor};
     border-right: 1px solid ${({ theme }) => theme.bodyFontColor};
     display: flex;
@@ -120,37 +122,66 @@ namespace NavStyle {
     height: 100vh;
     justify-content: space-between;
     overflow: hidden;
-    padding: 1em 0.5em;
     position: fixed;
-    top: 0;
     transition: all 0.2s, background-color 0.8s;
-    width: 70px;
     z-index: 2;
+  `;
 
-    &:hover {
-      box-shadow: 0 0 2px 0 ${COLOR.BLACK};
-      padding: 1em;
-      width: ${MAX_NAV_WIDTH};
-
-      ${NavStyle.ThemeSwitch} {
-        font-size: 1em;
-      }
-
-      ${NavStyle.AdminButton} {
-        font-size: 1em;
-        gap: 0.7em;
-      }
-
-      ${NavStyle.AdminButton} span {
-        flex: 0 0 max-content;
-        transform: scale(1);
-      }
-
-      ${NavStyle.BrandTagline},
-      ${NavStyle.Navigation} a {
-        transform: scale(1);
-      }
+  const IChildrenStyles = css`
+    ${NavStyle.ThemeSwitch} {
+      font-size: 1em;
     }
+
+    ${NavStyle.AdminButton} {
+      font-size: 1em;
+      gap: 0.7em;
+    }
+
+    ${NavStyle.AdminButton} span {
+      flex: 0 0 max-content;
+      transform: scale(1);
+    }
+
+    ${NavStyle.BrandTagline},
+    ${NavStyle.Navigation} a {
+      transform: scale(1);
+    }
+  `;
+
+  export const Container = styled(SharedNavStyle)<{ focused: boolean }>`
+    ${Mixins.Responsive(['display', 'flex', { sm: 'none' }])};
+    left: 0;
+    padding: 1em 0.5em;
+    width: 70px;
+
+    ${({ focused }) =>
+      focused &&
+      css`
+        box-shadow: 0 0 2px 0 ${COLOR.BLACK};
+        padding: 1em;
+        width: ${MAX_NAV_WIDTH};
+
+        ${IChildrenStyles};
+      `}
+  `;
+
+  export const MobileContainer = styled(SharedNavStyle)<{ open: boolean }>`
+    ${Mixins.Responsive(['display', 'none', { sm: 'flex' }])};
+    box-shadow: 0 0 2px 0 ${COLOR.BLACK};
+    height: calc(100vh - 70px);
+    padding: 1em;
+    top: 70px;
+    width: ${MAX_NAV_WIDTH};
+    ${({ open }) =>
+      open
+        ? css`
+            transform: translateX(0);
+          `
+        : css`
+            transform: translateX(-100%);
+          `};
+
+    ${IChildrenStyles};
   `;
 }
 
