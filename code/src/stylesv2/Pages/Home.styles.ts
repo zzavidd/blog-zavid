@@ -43,6 +43,10 @@ export namespace Introduction {
 
   export const Text = styled(Paragraph)`
     ${Mixins.Responsive(['font-size', '1.2em', { sm: '1em' }])}
+
+    p {
+      line-height: 1.7;
+    }
   `;
 
   export const Signature = styled(SignatureImage)`

@@ -5,11 +5,9 @@ import React, { useMemo } from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatus } from 'classes/diary/DiaryDAO';
-import { Toolbar } from 'components/layout';
 import { SITE_TITLE } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
-import AdminLock from 'fragments/AdminLock';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import ZDate from 'lib/date';
@@ -45,13 +43,6 @@ const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({
           </DiaryStyle.NoContentMessage>
         )}
       </DiaryStyle.Main>
-      <AdminLock>
-        <Toolbar spaceItems={true}>
-          <Link href={'/admin/diary'}>
-            <button type={'button'}>Diary Admin</button>
-          </Link>
-        </Toolbar>
-      </AdminLock>
     </DiaryStyle.Container>
   );
 };

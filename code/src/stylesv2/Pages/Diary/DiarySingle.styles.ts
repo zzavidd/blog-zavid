@@ -63,6 +63,10 @@ namespace DiarySingleStyle {
 
   export const Content = styled(Paragraph)`
     ${Mixins.Responsive(['font-size', '1.25em', { sm: '1.05em' }])}
+
+    p {
+      line-height: 1.8;
+    }
   `;
 
   export const Signature = styled(SignatureImage)`

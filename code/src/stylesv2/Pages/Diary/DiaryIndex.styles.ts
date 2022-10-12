@@ -38,6 +38,10 @@ namespace DiaryStyle {
     max-width: 700px;
     padding-block: 1em;
     text-align: center;
+
+    p {
+      margin: 0;
+    }
   `;
 
   export const NoContentMessage = styled.p`
@@ -48,7 +52,10 @@ namespace DiaryStyle {
   `;
 
   export const Grid = styled.section`
-    ${Mixins.Responsive(['padding', '1em', { sm: 0 }])}
+    ${Mixins.Responsive(
+      ['padding', '1em', { sm: '1em 0' }],
+      ['gap', '0.5em', { lg: '1em', sm: 0 }],
+    )}
     display: grid;
     gap: 0.5em;
     grid-template-columns: repeat(auto-fill, minmax(300px, auto));
@@ -102,14 +109,19 @@ namespace DiaryStyle {
   `;
 
   export const Entry = styled.article`
-    ${Mixins.Responsive(['padding', '1.5em', { sm: '1em' }])}
-    border-radius: 10px;
+    ${Mixins.Responsive(
+      ['border-bottom-width', '0', { md: '1px' }],
+      ['padding', '1.5em', { lg: '1em 0', sm: '1em' }],
+    )};
+    border-bottom-color: ${({ theme }) => theme.bodyFontColor};
+    border-bottom-style: solid;
     cursor: pointer;
     position: relative;
     transition: all 0.3s;
 
     &:hover {
       background-color: ${({ theme }) => theme.fadedFontColor};
+      border-radius: 10px;
       color: ${({ theme }) => theme.bodyFontColorReverse};
 
       ${TextStyle.Section.ReadMore} {

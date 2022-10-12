@@ -12,7 +12,7 @@ namespace TextStyle {
   export namespace Section {
     export const Paragraph = styled.p`
       display: block;
-      line-height: 1.8;
+      line-height: 1.6;
       margin-block: 1.2em;
     `;
 
