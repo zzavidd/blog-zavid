@@ -21,7 +21,7 @@ namespace DiaryAPI {
 
   export async function getById(id: number) {
     const [diaryEntry] = await new DiaryQueryBuilder(knex).whereId(id).build();
-    return diaryEntry;
+    return DiaryStatic.parse(diaryEntry);
   }
 
   export async function getByNumber(number: number) {
@@ -32,7 +32,7 @@ namespace DiaryAPI {
     ]);
 
     return {
-      current,
+      current: DiaryStatic.parse(current),
       previous,
       next,
     };
@@ -43,7 +43,7 @@ namespace DiaryAPI {
       .whereStatus({ include: [DiaryStatus.PUBLISHED] })
       .getLatestEntry()
       .build();
-    return latestDiaryEntry;
+    return DiaryStatic.parse(latestDiaryEntry);
   }
 }
 

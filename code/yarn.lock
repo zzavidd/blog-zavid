@@ -5307,7 +5307,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-share@npm:^4.2.1":
+"react-share@npm:^4.4.0":
   version: 4.4.0
   resolution: "react-share@npm:4.4.0"
   dependencies:
@@ -6836,7 +6836,7 @@ __metadata:
     react-lazyload: ^3.0.0
     react-redux: ^7.2.1
     react-responsive: ^8.1.0
-    react-share: ^4.2.1
+    react-share: ^4.4.0
     react-textarea-autosize: ^8.3.2
     react-toastify: ^6.0.8
     react-twitter-embed: ^3.0.3

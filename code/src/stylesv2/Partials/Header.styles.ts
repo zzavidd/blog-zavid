@@ -21,7 +21,7 @@ namespace HeaderStyle {
     z-index: 2;
   `;
 
-  export const HeaderContent = styled.header`
+  export const HeaderContent = styled.div`
     ${Mixins.Responsive(
       ['max-width', '900px', { lg: '700px' }],
       ['padding-inline', '0', { sm: '1em' }],

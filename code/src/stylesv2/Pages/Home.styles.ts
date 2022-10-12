@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { darken, transparentize } from 'polished';
 import styled from 'styled-components';
 
-import { NextImage, SignatureImage } from 'components/image';
+import { NextImage, SignatureImage } from 'componentsv2/Image';
 import { Paragraph } from 'componentsv2/Text';
 import Mixins from 'stylesv2/Mixins.styles';
 import { COLOR, FONTS } from 'stylesv2/Variables.styles';

@@ -15,10 +15,9 @@ import PageMetadata from 'fragments/PageMetadata';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
-import DiaryStyle from 'stylesv2/Pages/Diary.styles';
+import DiaryStyle from 'stylesv2/Pages/Diary/DiaryIndex.styles';
 
 const DIARY_HEADING = "Zavid's Diary";
-const PARAM_ONLY_FAVOURITES = 'onlyFavourites';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({
@@ -28,34 +27,32 @@ const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({
   const { diaryEntries, pageIntro } = pageProps;
 
   return (
-    <React.Fragment>
+    <DiaryStyle.Container>
       <PageMetadata {...pathDefinition} />
-      <DiaryStyle.Container>
-        <DiaryStyle.Main>
-          <DiaryStyle.Heading>{DIARY_HEADING}</DiaryStyle.Heading>
-          <DiaryStyle.Summary>{pageIntro}</DiaryStyle.Summary>
-          {/* <DiarySearch url={url} onlyFavs={onlyFavourites} /> */}
-          {diaryEntries.length ? (
-            <DiaryStyle.Grid>
-              {diaryEntries.map((diaryEntry, key) => {
-                return <DiaryEntry entry={diaryEntry} key={key} />;
-              })}
-            </DiaryStyle.Grid>
-          ) : (
-            <DiaryStyle.NoContentMessage>
-              No diary entries found.
-            </DiaryStyle.NoContentMessage>
-          )}
-        </DiaryStyle.Main>
-        <AdminLock>
-          <Toolbar spaceItems={true}>
-            <Link href={'/admin/diary'}>
-              <button type={'button'}>Diary Admin</button>
-            </Link>
-          </Toolbar>
-        </AdminLock>
-      </DiaryStyle.Container>
-    </React.Fragment>
+      <DiaryStyle.Main>
+        <DiaryStyle.Heading>{DIARY_HEADING}</DiaryStyle.Heading>
+        <DiaryStyle.Summary>{pageIntro}</DiaryStyle.Summary>
+        {/* <DiarySearch url={url} onlyFavs={onlyFavourites} /> */}
+        {diaryEntries.length ? (
+          <DiaryStyle.Grid>
+            {diaryEntries.map((diaryEntry, key) => {
+              return <DiaryEntry entry={diaryEntry} key={key} />;
+            })}
+          </DiaryStyle.Grid>
+        ) : (
+          <DiaryStyle.NoContentMessage>
+            No diary entries found.
+          </DiaryStyle.NoContentMessage>
+        )}
+      </DiaryStyle.Main>
+      <AdminLock>
+        <Toolbar spaceItems={true}>
+          <Link href={'/admin/diary'}>
+            <button type={'button'}>Diary Admin</button>
+          </Link>
+        </Toolbar>
+      </AdminLock>
+    </DiaryStyle.Container>
   );
 };
 

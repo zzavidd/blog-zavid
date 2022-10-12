@@ -12,7 +12,7 @@ export default function HomeIntroduction({
         <Styles.Introduction.Heading>
           You&#39;ve arrived. Welcome.
         </Styles.Introduction.Heading>
-        <Styles.Introduction.Signature />
+        <Styles.Introduction.Signature layout={'responsive'} />
         <Styles.Introduction.Text
           substitutions={{
             redevelopmentDate: ZDate.format(BLOG_REDEVELOPMENT_DATE),

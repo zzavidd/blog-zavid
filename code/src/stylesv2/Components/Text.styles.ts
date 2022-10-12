@@ -5,13 +5,15 @@ import { FONTS } from 'stylesv2/Variables.styles';
 namespace TextStyle {
   export const Collection = styled.pre`
     font-family: ${FONTS.BODY};
+    margin: 0;
     white-space: pre-wrap;
   `;
 
   export namespace Section {
     export const Paragraph = styled.p`
       display: block;
-      line-height: 1.6;
+      line-height: 1.8;
+      margin-block: 1.2em;
     `;
 
     export const ReadMore = styled.a`

@@ -10,6 +10,24 @@ export class DiaryStatic {
   public static STATUS = DiaryStatus;
   public static STATUSES = Object.values(DiaryStatus);
 
+  /**
+   * Gets the title for diary entry.
+   * @param diaryEntry The entry.
+   * @returns The title.
+   */
+  public static getTitle(diaryEntry: DiaryDAO) {
+    return `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
+  }
+
+  /**
+   * Gets the URL for diary entry.
+   * @param diaryEntry The entry.
+   * @returns The URL.
+   */
+  public static getUrl(diaryEntry: DiaryDAO) {
+    return `/diary/${diaryEntry.entryNumber}`;
+  }
+
   public static generateSlug(diaryEntry: DiaryDAO): string {
     return zDate.formatISODate(diaryEntry.date as string);
   }
@@ -33,7 +51,7 @@ export class DiaryStatic {
       return entry;
     }
 
-    entry.tags = JSON.parse(entry.tags.toString());
+    entry.tags = JSON.parse(String(entry.tags));
     return entry;
   }
 

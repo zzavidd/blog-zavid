@@ -25,9 +25,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   div#__next {
+    ${Mixins.Responsive(['height', '100%', { sm: 'auto' }])};
     display: flex;
     flex-direction: column;
-    height: 100%;
   }
 
   h1 {

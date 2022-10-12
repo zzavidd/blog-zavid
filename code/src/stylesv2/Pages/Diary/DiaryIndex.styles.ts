@@ -3,10 +3,12 @@ import styled from 'styled-components';
 
 import { Paragraph } from 'componentsv2/Text';
 import TextStyle from 'stylesv2/Components/Text.styles';
+import Mixins from 'stylesv2/Mixins.styles';
 import { FONTS } from 'stylesv2/Variables.styles';
 
 namespace DiaryStyle {
   export const Container = styled.div`
+    align-items: center;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -22,18 +24,19 @@ namespace DiaryStyle {
   `;
 
   export const Heading = styled.h1`
+    ${Mixins.Responsive(['font-size', '2.4em', { sm: '1.8em' }])}
     font-family: ${FONTS.TITLE};
-    font-size: 2.4em;
     margin: 0.5em 0 0;
     text-align: center;
     text-transform: uppercase;
   `;
 
   export const Summary = styled(Paragraph)`
+    ${Mixins.Responsive(['font-size', '1.1em', { sm: '0.9em' }])}
     border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
-    font-size: 1.1em;
-    margin: 0;
+    margin: 0 1em;
     max-width: 700px;
+    padding-block: 1em;
     text-align: center;
   `;
 
@@ -45,10 +48,10 @@ namespace DiaryStyle {
   `;
 
   export const Grid = styled.section`
+    ${Mixins.Responsive(['padding', '1em', { sm: 0 }])}
     display: grid;
     gap: 0.5em;
     grid-template-columns: repeat(auto-fill, minmax(300px, auto));
-    padding: 1em;
   `;
 
   export const EntryDetails = styled.a`
@@ -99,9 +102,9 @@ namespace DiaryStyle {
   `;
 
   export const Entry = styled.article`
+    ${Mixins.Responsive(['padding', '1.5em', { sm: '1em' }])}
     border-radius: 10px;
     cursor: pointer;
-    padding: 1.5em;
     position: relative;
     transition: all 0.3s;
 
