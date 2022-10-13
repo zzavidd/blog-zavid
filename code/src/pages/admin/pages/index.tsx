@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { zDate, zText } from 'zavid-modules';
 
+import { PageBuilder } from 'classes/pages/PageBuilder';
 import type { PageDAO } from 'classes/pages/PageDAO';
 import { AdminButton, InvisibleButton } from 'components/button';
 import { Spacer, Toolbar } from 'components/layout';
@@ -33,7 +34,9 @@ const PageAdmin: NextPageWithLayout<PageAdminProps> = ({
   pageProps,
 }) => {
   const { pages } = pageProps;
-  const [selectedPage, setSelectedPage] = useState<PageDAO>({});
+  const [selectedPage, setSelectedPage] = useState<PageDAO>(
+    new PageBuilder().build(),
+  );
   const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
 
   const router = useRouter();

@@ -3,20 +3,16 @@ import React from 'react';
 import { zDate, zText } from 'zavid-modules';
 
 import type { PageDAO } from 'classes/pages/PageDAO';
-import { AdminButton } from 'components/button';
-import { Spacer, Toolbar } from 'components/layout';
-import { Paragraph, Title } from 'components/text';
 import {
   BLOG_REDEVELOPMENT_DATE,
   SITE_TITLE,
   ZAVID_BIRTHDAY,
 } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
-import AdminLock from 'fragments/AdminLock';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import SSR from 'private/ssr';
-import css from 'styles/pages/Posts.module.scss';
+import PageStyle from 'stylesv2/Pages/Page.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const PageSingle: NextPageWithLayout<PageSingleProps> = ({
@@ -33,29 +29,16 @@ const PageSingle: NextPageWithLayout<PageSingleProps> = ({
   return (
     <React.Fragment>
       <PageMetadata {...pathDefinition} />
-      <Spacer>
-        <div className={css['post-single']}>
-          <Title className={css['post-single-title']}>{page.title}</Title>
-          <Paragraph
-            className={css['post-single-content']}
-            substitutions={substitutions}>
+      <PageStyle.Container>
+        <PageStyle.Main>
+          <PageStyle.Title>{page.title}</PageStyle.Title>
+          <PageStyle.Content substitutions={substitutions}>
             {page.content}
-          </Paragraph>
-        </div>
-        <AdminLock>
-          <Toolbar spaceItems={true} hasBackButton={true}>
-            <AdminButton onClick={() => navigateToEdit(page.id!)}>
-              Edit Page
-            </AdminButton>
-          </Toolbar>
-        </AdminLock>
-      </Spacer>
+          </PageStyle.Content>
+        </PageStyle.Main>
+      </PageStyle.Container>
     </React.Fragment>
   );
-};
-
-const navigateToEdit = (id: number): void => {
-  location.href = `/admin/pages/edit/${id}`;
 };
 
 export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({

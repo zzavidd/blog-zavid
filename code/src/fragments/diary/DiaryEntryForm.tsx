@@ -24,7 +24,6 @@ import DatePicker from 'components/form/datepicker';
 import { Foldable } from 'components/form/foldable';
 import { ScreenWidth } from 'components/library';
 import type Handlers from 'constants/handlers';
-import TagBlock from 'fragments/diary/DiaryTags';
 import css from 'styles/pages/Diary.module.scss';
 
 export default function DiaryEntryForm(props: DiaryFormProps) {
@@ -155,15 +154,15 @@ export default function DiaryEntryForm(props: DiaryFormProps) {
               <Label>Tags:</Label>
               <ShortTextArea
                 name={'tags'}
-                value={diaryEntry.tags! as string}
+                value={JSON.stringify(diaryEntry.tags)}
                 onChange={handleText}
                 placeholder={'Add tags to index the entry...'}
               />
-              <TagBlock
+              {/* <TagBlock
                 tags={diaryEntry.tags!}
                 asCSV={true}
                 className={css['diary-form-tags']}
-              />
+              /> */}
             </Field>
           </FieldRow>
         </Field>

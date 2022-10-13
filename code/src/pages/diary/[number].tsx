@@ -35,7 +35,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   const router = useRouter();
 
   const tags = useMemo(() => {
-    return diaryEntry.tags.slice(0, 9).map((tag) => {
+    return (diaryEntry.tags as string[]).slice(0, 9).map((tag) => {
       return tag.replace(/\s/, '');
     });
   }, [diaryEntry.tags]);
@@ -183,7 +183,7 @@ export const getServerSideProps: GetServerSideProps<
           url: `/diary/${diaryEntry.slug}`,
           article: {
             publishedTime: diaryEntry.date as string,
-            tags: diaryEntry.tags,
+            tags: diaryEntry.tags as string[],
           },
         },
         pageProps: diaryTrio,

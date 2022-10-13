@@ -52,7 +52,7 @@ const DiaryEntry = React.memo(
     const href = `/diary/${entry.entryNumber}`;
 
     const tags = useMemo(() => {
-      return entry.tags.slice(0, 9).map((tag) => {
+      return (entry.tags as string[]).slice(0, 9).map((tag) => {
         return tag.replace(/\s/, '');
       });
     }, [entry.tags]);
