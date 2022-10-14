@@ -8,7 +8,7 @@ namespace PageStyle {
   export const Container = styled.main`
     display: flex;
     justify-content: center;
-    padding: 1.5em;
+    padding: 2em;
   `;
 
   export const Main = styled.main`

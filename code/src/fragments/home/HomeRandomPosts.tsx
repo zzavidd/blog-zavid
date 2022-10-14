@@ -27,6 +27,7 @@ export default function HomeRandomPosts({ posts }: RandomPostsGridProps) {
                       alt={post.title}
                       layout={'fill'}
                       objectFit={'cover'}
+                      loading={'lazy'}
                     />
                   </Style.Aside.ImageBox>
                 </a>

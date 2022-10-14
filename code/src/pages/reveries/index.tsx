@@ -1,27 +1,19 @@
-import classnames from 'classnames';
 import type { GetServerSideProps } from 'next';
-import React, { memo, useState } from 'react';
-import type { RootStateOrAny } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { zDate } from 'zavid-modules';
+import Link from 'next/link';
+import React, { memo } from 'react';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatus, PostType } from 'classes/posts/PostDAO';
-import { AdminButton } from 'components/button';
-import CloudImage from 'components/image';
-import { Partitioner, Spacer, Toolbar } from 'components/layout';
-import { LazyLoader, Responsive } from 'components/library';
-import { Divider, Paragraph, Title } from 'components/text';
+import { NextImage } from 'componentsv2/Image';
 import { SITE_TITLE } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
-import AdminLock from 'fragments/AdminLock';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import { RightSidebar } from 'fragments/shared/RightSidebar';
+import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
-import css from 'styles/pages/Reveries.module.scss';
+import RS from 'stylesv2/Pages/Posts/ReverieIndex.styles';
 
 const REVERIES_HEADING = 'Reveries';
 
@@ -34,102 +26,54 @@ const ReveriesIndex: NextPageWithLayout<ReveriesIndexProps> = ({
   return (
     <React.Fragment>
       <PageMetadata {...pathDefinition} />
-      <Spacer>
-        <Partitioner>
-          <Responsive
-            defaultView={
-              <React.Fragment>
-                <ReverieList reveries={reveries} pageIntro={pageIntro} />
-                <RightSidebar />
-              </React.Fragment>
-            }
-            laptopView={
-              <ReverieList reveries={reveries} pageIntro={pageIntro} />
-            }
-          />
-        </Partitioner>
-        <AdminLock>
-          <Toolbar spaceItems={true}>
-            <AdminButton onClick={navigateToPostAdmin}>Posts Admin</AdminButton>
-          </Toolbar>
-        </AdminLock>
-      </Spacer>
+      <RS.Container>
+        <RS.Main>
+          <RS.Header>
+            <RS.PageHeading>{REVERIES_HEADING}</RS.PageHeading>
+            <RS.PageSummary>{pageIntro}</RS.PageSummary>
+          </RS.Header>
+          <RS.Grid>
+            {reveries.map((reverie, key) => (
+              <Reverie reverie={reverie} key={key} />
+            ))}
+          </RS.Grid>
+        </RS.Main>
+      </RS.Container>
     </React.Fragment>
   );
 };
 
-function ReverieList({ reveries, pageIntro }: ReverieList) {
-  return (
-    <div className={css['reveries-list']}>
-      <div>
-        <Title className={css['reveries-heading']}>{REVERIES_HEADING}</Title>
-        <div className={css['reveries-introduction']}>
-          <Paragraph
-            cssOverrides={{
-              paragraph: css['reveries-introduction-paragraph'],
-            }}>
-            {pageIntro}
-          </Paragraph>
-        </div>
-        <Divider className={css['reveries-heading-divider']} />
-      </div>
-      {reveries.map((reverie, key) => (
-        <Reverie reverie={reverie} key={key} />
-      ))}
-    </div>
-  );
-}
-
 const Reverie = memo(({ reverie }: ReverieProps) => {
-  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  const [isInView, setInView] = useState(false);
+  const href = `/reveries/${reverie.slug}`;
 
-  const datePublished = zDate.formatDate(reverie.datePublished as string, {
-    withWeekday: true,
-  });
-  const link = `/reveries/${reverie.slug}`;
-
-  const classes = classnames(css[`reveries-unit-${theme}`], {
-    [css['reveries-unit--visible']]: isInView,
-  });
   return (
-    <LazyLoader setInView={setInView}>
-      <div className={classes}>
-        <Title className={css['reveries-title']}>{reverie.title}</Title>
-        <div className={css['reveries-date']}>{datePublished}</div>
-        <a href={link}>
-          <ReverieImage reverie={reverie} />
-        </a>
-        <Paragraph
-          cssOverrides={{
-            paragraph: css['reveries-paragraph'],
-            hyperlink: css['reveries-readmore'],
-          }}
-          truncate={60}
-          moreclass={css['reveries-readmore']}
-          morelink={link}>
-          {reverie.content}
-        </Paragraph>
-      </div>
-    </LazyLoader>
+    <RS.Entry>
+      <RS.EntryHeading>{reverie.title}</RS.EntryHeading>
+      <RS.EntryDate dateTime={ZDate.formatISO(reverie.datePublished)}>
+        {ZDate.format(reverie.datePublished)}
+      </RS.EntryDate>
+      <Link href={href} passHref={true}>
+        <RS.ImageBox>
+          <NextImage
+            src={reverie.image as string}
+            alt={reverie.title}
+            layout={'fill'}
+            objectFit={'cover'}
+            loading={'lazy'}
+          />
+        </RS.ImageBox>
+      </Link>
+      <RS.EntryContent
+        truncate={45}
+        more={{
+          href: href,
+          text: `Read "${reverie.title}"`,
+        }}>
+        {reverie.content}
+      </RS.EntryContent>
+    </RS.Entry>
   );
 });
-
-function ReverieImage({ reverie }: ReverieProps) {
-  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
-  if (!reverie.image) return null;
-  return (
-    <CloudImage
-      src={reverie.image as string}
-      alt={reverie.title}
-      containerClassName={css[`reveries-image-${theme}`]}
-    />
-  );
-}
-
-function navigateToPostAdmin() {
-  location.href = '/admin/posts';
-}
 
 export const getServerSideProps: GetServerSideProps<
   ReveriesIndexProps
