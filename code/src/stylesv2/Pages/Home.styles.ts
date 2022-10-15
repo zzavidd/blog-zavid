@@ -105,11 +105,13 @@ export namespace Latest {
   `;
 
   export const ImageBox = styled.div`
-    ${Mixins.Responsive(['float', 'right', { sm: 'none' }])};
+    ${Mixins.Responsive(
+      ['float', 'right', { sm: 'none' }],
+      ['margin', '2em 0.5em', { sm: '1.5em 0' }],
+    )};
     border-radius: 10px;
     clear: both;
     height: 200px;
-    margin-block: 2em;
     max-width: 400px;
     overflow: hidden;
     position: relative;

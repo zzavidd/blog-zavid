@@ -13,6 +13,7 @@ import PageMetadata from 'fragments/PageMetadata';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
+import ArticleStyle from 'stylesv2/Pages/Article.styles';
 import DiaryStyle from 'stylesv2/Pages/Diary.styles';
 
 const DIARY_HEADING = "Zavid's Diary";
@@ -28,8 +29,8 @@ const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({
     <DiaryStyle.Container>
       <PageMetadata {...pathDefinition} />
       <DiaryStyle.Main>
-        <DiaryStyle.Heading>{DIARY_HEADING}</DiaryStyle.Heading>
-        <DiaryStyle.Summary>{pageIntro}</DiaryStyle.Summary>
+        <DiaryStyle.PageHeading>{DIARY_HEADING}</DiaryStyle.PageHeading>
+        <DiaryStyle.PageSummary>{pageIntro}</DiaryStyle.PageSummary>
         {/* <DiarySearch url={url} onlyFavs={onlyFavourites} /> */}
         {diaryEntries.length ? (
           <DiaryStyle.Grid>
@@ -78,17 +79,19 @@ const DiaryEntry = React.memo(
             </DiaryStyle.EntryExcerpt>
           </DiaryStyle.EntryDetails>
         </Link>
-        <DiaryStyle.EntryTagBlock>
-          {tags.map((tag: string, key: number) => {
-            return (
-              <DiaryStyle.EntryTag key={key}>
-                <Link href={`/search?term=${tag}&onlyDiary=true`}>
-                  <a>#{tag}</a>
-                </Link>
-              </DiaryStyle.EntryTag>
-            );
-          })}
-        </DiaryStyle.EntryTagBlock>
+        {tags.length ? (
+          <ArticleStyle.TagBlock>
+            {tags.map((tag: string, key: number) => {
+              return (
+                <ArticleStyle.Tag key={key}>
+                  <Link href={`/search?term=${tag}&onlyDiary=true`}>
+                    <a>#{tag}</a>
+                  </Link>
+                </ArticleStyle.Tag>
+              );
+            })}
+          </ArticleStyle.TagBlock>
+        ) : null}
       </DiaryStyle.Entry>
     );
   },

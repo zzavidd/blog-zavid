@@ -27,6 +27,7 @@ namespace TextStyle {
       border-left: 5px solid ${({ theme }) => theme.fadedFontColor};
       border-radius: 5px;
       color: ${({ theme }) => theme.bodyFontColor};
+      line-height: 1.6;
       margin: 0;
       padding: 0.5em 1.5em;
     `;

@@ -68,13 +68,36 @@ namespace ArticleStyle {
     ${Mixins.Responsive(['font-size', '1.25em', { sm: '1.05em' }])}
 
     p {
-      line-height: 1.8;
+      line-height: 1.7;
     }
   `;
 
   export const Signature = styled(SignatureImage)`
     position: relative;
     width: 100%;
+  `;
+
+  export const TagBlock = styled.ul`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.1em 0.5em;
+    list-style-type: none;
+    padding: 0;
+  `;
+
+  export const Tag = styled.li`
+    a {
+      color: ${({ theme }) => theme.fadedFontColor};
+      font-family: ${FONTS.BODY};
+      font-size: 0.9em;
+      font-style: italic;
+      font-weight: bold;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   `;
 
   export const FavouriteNotice = styled.div`

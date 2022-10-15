@@ -23,8 +23,7 @@ import ZDate from 'lib/date';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 import FORM from 'stylesv2/Components/Form.styles';
-import DiaryStyle from 'stylesv2/Pages/Diary.styles';
-import DSS from 'stylesv2/Pages/Article.styles';
+import AS from 'stylesv2/Pages/Article.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
@@ -41,62 +40,62 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   }, [diaryEntry.tags]);
 
   return (
-    <DSS.Container>
+    <AS.Container>
       <PageMetadata {...pathDefinition} />
-      <DSS.Layout>
+      <AS.Layout>
         <TopNavigator diaryTrio={pageProps} />
-        <DSS.Main>
-          <DSS.Date dateTime={ZDate.formatISO(diaryEntry.date)}>
+        <AS.Main>
+          <AS.Date dateTime={ZDate.formatISO(diaryEntry.date)}>
             {ZDate.format(diaryEntry.date)}
-          </DSS.Date>
-          <DSS.Title>{DiaryStatic.getTitle(diaryEntry)}</DSS.Title>
+          </AS.Date>
+          <AS.Title>{DiaryStatic.getTitle(diaryEntry)}</AS.Title>
           {diaryEntry.isFavourite ? (
-            <DSS.FavouriteNotice>
+            <AS.FavouriteNotice>
               <FontAwesomeIcon icon={faStar} />
               <span>This diary entry is a personal Zavid favourite.</span>
-            </DSS.FavouriteNotice>
+            </AS.FavouriteNotice>
           ) : null}
-          <DSS.Content>{diaryEntry.content}</DSS.Content>
-          <DSS.Signature
+          <AS.Content>{diaryEntry.content}</AS.Content>
+          <AS.Signature
             layout={'fixed'}
             width={200}
             height={200}
             objectFit={'scale-down'}
           />
-          <DSS.Content>{diaryEntry.footnote}</DSS.Content>
-          <DSS.Footer>
+          <AS.Content>{diaryEntry.footnote}</AS.Content>
+          <AS.Footer>
             <div>
               <FORM.Label>Tags:</FORM.Label>
-              <DiaryStyle.EntryTagBlock>
+              <AS.TagBlock>
                 {tags.map((tag: string, key: number) => {
                   return (
-                    <DiaryStyle.EntryTag key={key}>
+                    <AS.Tag key={key}>
                       <Link href={`/search?term=${tag}&onlyDiary=true`}>
                         <a>#{tag}</a>
                       </Link>
-                    </DiaryStyle.EntryTag>
+                    </AS.Tag>
                   );
                 })}
-              </DiaryStyle.EntryTagBlock>
+              </AS.TagBlock>
             </div>
             <ShareBlock
               headline={'Share This Diary Entry'}
               message={`Read "${DiaryStatic.getTitle(diaryEntry)}" on ZAVID`}
               url={DOMAIN + router.asPath}
             />
-          </DSS.Footer>
-        </DSS.Main>
-        <DSS.BottomNavigator>
-          <DSS.BackLinkBox>
+          </AS.Footer>
+        </AS.Main>
+        <AS.BottomNavigator>
+          <AS.BackLinkBox>
             <Link href={'/diary'} passHref={true}>
-              <DSS.BackLink>
+              <AS.BackLink>
                 <FontAwesomeIcon icon={faLeftLong} />
                 <span>Back to Diary</span>
-              </DSS.BackLink>
+              </AS.BackLink>
             </Link>
-          </DSS.BackLinkBox>
-        </DSS.BottomNavigator>
-      </DSS.Layout>
+          </AS.BackLinkBox>
+        </AS.BottomNavigator>
+      </AS.Layout>
       {/* <Curator
           visible={isImageModalVisible}
           closeFunction={() => setImageModalVisibility(false)}
@@ -112,49 +111,49 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
             setCuratePromptVisible(false);
           }}
         /> */}
-    </DSS.Container>
+    </AS.Container>
   );
 };
 
 function TopNavigator({ diaryTrio }: { diaryTrio: DiaryEntryTrio }) {
   const { current, previous, next } = diaryTrio;
   return (
-    <DSS.TopNavigator>
+    <AS.TopNavigator>
       {previous ? (
         <Link href={`/diary/${previous.entryNumber}`} passHref={true}>
-          <DSS.TopNavigatorContent direction={'previous'}>
+          <AS.TopNavigatorContent direction={'previous'}>
             <FontAwesomeIcon icon={faChevronLeft} />
-            <DSS.TopNavigatorText>
+            <AS.TopNavigatorText>
               <h6>Previous Diary Entry</h6>
               <p>
                 #{previous.entryNumber}: {previous.title}
               </p>
-            </DSS.TopNavigatorText>
-          </DSS.TopNavigatorContent>
+            </AS.TopNavigatorText>
+          </AS.TopNavigatorContent>
         </Link>
       ) : null}
-      <DSS.TopNavigatorContent direction={'current'}>
-        <DSS.TopNavigatorText>
+      <AS.TopNavigatorContent direction={'current'}>
+        <AS.TopNavigatorText>
           <h6>Current Diary Entry</h6>
           <p>
             #{current.entryNumber}: {current.title}
           </p>
-        </DSS.TopNavigatorText>
-      </DSS.TopNavigatorContent>
+        </AS.TopNavigatorText>
+      </AS.TopNavigatorContent>
       {next ? (
         <Link href={`/diary/${next.entryNumber}`} passHref={true}>
-          <DSS.TopNavigatorContent direction={'next'}>
+          <AS.TopNavigatorContent direction={'next'}>
             <FontAwesomeIcon icon={faChevronRight} />
-            <DSS.TopNavigatorText>
+            <AS.TopNavigatorText>
               <h6>Next Diary Entry</h6>
               <p>
                 #{next.entryNumber}: {next.title}
               </p>
-            </DSS.TopNavigatorText>
-          </DSS.TopNavigatorContent>
+            </AS.TopNavigatorText>
+          </AS.TopNavigatorContent>
         </Link>
       ) : null}
-    </DSS.TopNavigator>
+    </AS.TopNavigator>
   );
 }
 

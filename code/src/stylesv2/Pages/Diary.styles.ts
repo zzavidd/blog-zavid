@@ -6,6 +6,8 @@ import TextStyle from 'stylesv2/Components/Text.styles';
 import Mixins from 'stylesv2/Mixins.styles';
 import { FONTS } from 'stylesv2/Variables.styles';
 
+import ArticleStyle from './Article.styles';
+
 namespace DiaryStyle {
   export const Container = styled.div`
     align-items: center;
@@ -23,7 +25,7 @@ namespace DiaryStyle {
     padding: 1em;
   `;
 
-  export const Heading = styled.h1`
+  export const PageHeading = styled.h1`
     ${Mixins.Responsive(['font-size', '2.4em', { sm: '1.8em' }])}
     font-family: ${FONTS.TITLE};
     margin: 0.5em 0 0;
@@ -31,7 +33,7 @@ namespace DiaryStyle {
     text-transform: uppercase;
   `;
 
-  export const Summary = styled(Paragraph)`
+  export const PageSummary = styled(Paragraph)`
     ${Mixins.Responsive(['font-size', '1.1em', { sm: '0.9em' }])}
     border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
     margin: 0 1em;
@@ -68,44 +70,22 @@ namespace DiaryStyle {
 
   export const EntryDate = styled.time`
     font-family: ${FONTS.BODY};
-    font-size: 0.9em;
+    font-size: 0.8em;
   `;
 
   export const EntryTitle = styled.h2`
     font-family: ${FONTS.TITLE};
+    font-size: 1.5em;
     margin-block: 0.2em;
   `;
 
   export const EntryExcerpt = styled(Paragraph)`
-    font-size: 1.1em;
+    font-size: 1em;
   `;
 
   export const EntryStar = styled(FontAwesomeIcon)`
     float: right;
     font-size: 2.5em;
-  `;
-
-  export const EntryTagBlock = styled.ul`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.1em 0.5em;
-    list-style-type: none;
-    padding: 0;
-  `;
-
-  export const EntryTag = styled.li`
-    a {
-      color: ${({ theme }) => theme.fadedFontColor};
-      font-family: ${FONTS.BODY};
-      font-size: 0.9em;
-      font-style: italic;
-      font-weight: bold;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   `;
 
   export const Entry = styled.article`
@@ -128,7 +108,7 @@ namespace DiaryStyle {
         color: ${({ theme }) => theme.readmoreReverse};
       }
 
-      ${EntryTag} a {
+      ${ArticleStyle.Tag} a {
         color: ${({ theme }) => theme.fadedFontColorReverse};
       }
     }

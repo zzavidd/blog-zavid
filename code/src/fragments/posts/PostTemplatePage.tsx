@@ -9,7 +9,7 @@ import React, { useMemo } from 'react';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { NextImage, SignatureImage } from 'componentsv2/Image';
+import { NextImage } from 'componentsv2/Image';
 import ShareBlock from 'componentsv2/ShareBlock';
 import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import type { Substitutions } from 'constants/types';
@@ -71,7 +71,12 @@ export default function PostTemplatePage(postTrio: PostTrio) {
             />
           </AS.ImageBox>
           <AS.Content substitutions={substitutions}>{post.content}</AS.Content>
-          <SignatureImage />
+          <AS.Signature
+            layout={'fixed'}
+            width={200}
+            height={200}
+            objectFit={'scale-down'}
+          />
           <AS.Footer>
             <ShareBlock
               headline={'Share This Post'}
