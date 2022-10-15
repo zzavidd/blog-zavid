@@ -5,7 +5,6 @@ import {
   deformatParagraph,
   formatParagraph,
 } from 'lib/text/formatting/section';
-import type { FormatCSS } from 'lib/text/regex';
 import { newLinesExceptNumberedListsRegex } from 'lib/text/regex';
 
 /**
@@ -105,10 +104,8 @@ export function capitalise(text: string): string {
 }
 
 export interface FormatTextOptions {
-  css?: FormatCSS;
   inline?: boolean;
   socialWrappers?: SocialWrappers;
-  onLongPress?: onLongPress;
 }
 
 export interface DeformatTextOptions {
@@ -123,11 +120,6 @@ export interface TruncateOptions {
 interface SocialWrappers {
   Tweet?: any;
   InstagramPost?: any;
-}
-
-export interface onLongPress {
-  action?: (target: CurrentEventTarget) => void;
-  duration?: number;
 }
 
 export type Target = EventTarget | CurrentEventTarget;

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import type { HTMLAttributes, ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import React from 'react';
 
 import type { FormatTextOptions } from 'lib/text';
@@ -7,14 +7,8 @@ import {
   applyEmphasisFormatting,
   removeEmphasisFormatting,
 } from 'lib/text/formatting/emphasis';
-import type {
-  CurrentEventTarget,
-  onLongPress,
-  Target,
-} from 'lib/text/functions';
-import type { FormatCSSImage } from 'lib/text/regex';
 import { Section, sectionRegexMapping, strayRegexToOmit } from 'lib/text/regex';
-import TextStyle from 'stylesv2/Components/Text.styles';
+import TS from 'stylesv2/Components/Text.styles';
 
 /**
  * Formats a paragraph of text.
@@ -29,18 +23,12 @@ export const formatParagraph = (
 ): ReactElement => {
   if (!paragraph) return <React.Fragment></React.Fragment>;
 
-  const {
-    css = {},
-    inline = false,
-    socialWrappers: { Tweet, InstagramPost } = {},
-    onLongPress,
-  } = options;
+  const { inline = false, socialWrappers: { Tweet, InstagramPost } = {} } =
+    options;
 
   const foundSection = Object.entries(sectionRegexMapping).find(([, regex]) =>
     regex.test(paragraph),
   );
-
-  const LONG_PRESS_HANDLERS = createLongPressHandlers(onLongPress);
 
   if (foundSection) {
     const [section, regex] = foundSection!;
@@ -48,30 +36,15 @@ export const formatParagraph = (
 
     switch (section) {
       case Section.HEADING:
-        return (
-          <h1 className={css['heading']} key={key}>
-            {text}
-          </h1>
-        );
+        return <h1 key={key}>{text}</h1>;
       case Section.SUBHEADING:
-        return (
-          <h2 className={css['subheading']} key={key}>
-            {text}
-          </h2>
-        );
+        return <h2 key={key}>{text}</h2>;
       case Section.IMAGE:
-        const [, alt, src, isFloat] = paragraph.match(regex)!;
-        const { float, full } = (css['image'] as FormatCSSImage) || {};
-        const className = isFloat ? float : full;
-        return (
-          <div className={className} key={key}>
-            <img src={src} alt={alt} />
-          </div>
-        );
+        const [, alt, src] = paragraph.match(regex)!;
+        return <TS.Section.BlockImage src={src} alt={alt} key={key} />;
       case Section.DIVIDER:
         return (
           <hr
-            className={css['divider']}
             style={{
               borderStyle: 'solid',
               borderWidth: '1px',
@@ -87,28 +60,22 @@ export const formatParagraph = (
           .filter((e) => e)
           .map((item, key) => {
             const [, value] = item.match(/^\+\s*(.*)$/)!;
-            return (
-              <li
-                style={{
-                  padding: isSpacedBulletBlock ? '.5em 0' : 0,
-                  paddingLeft: '.5em',
-                }}
-                key={key}>
-                {applyEmphasisFormatting(value, css)}
-              </li>
-            );
+            return <li key={key}>{applyEmphasisFormatting(value)}</li>;
           });
 
         return (
-          <ul style={{ paddingInlineStart: '1em' }} key={key}>
+          <TS.Section.UnorderedList
+            spaced={!!isSpacedBulletBlock}
+            style={{ paddingInlineStart: '1em' }}
+            key={key}>
             {bulletListItems}
-          </ul>
+          </TS.Section.UnorderedList>
         );
       case Section.HYPHEN_LIST_ITEM:
         return (
-          <div className={css['list-item']} key={key}>
+          <div key={key}>
             <span>-</span>
-            <span>{applyEmphasisFormatting(text, css)}</span>
+            <span>{applyEmphasisFormatting(text)}</span>
           </div>
         );
       case Section.NUMBERED_LIST:
@@ -118,28 +85,19 @@ export const formatParagraph = (
           .filter((e) => e)
           .map((item, key) => {
             const [, value] = item.match(/^(?:[0-9]+[\.\)]|\+)\s*(.*)$/)!;
-            return (
-              <li
-                style={{
-                  padding: isSpacedNumberedBlock ? '.5em 0' : 0,
-                  paddingLeft: '1em',
-                }}
-                key={key}>
-                {applyEmphasisFormatting(value, css)}
-              </li>
-            );
+            return <li key={key}>{applyEmphasisFormatting(value)}</li>;
           });
 
         return (
-          <ol style={{ paddingInlineStart: '1.5em' }} key={key}>
+          <TS.Section.OrderedList spaced={!!isSpacedNumberedBlock} key={key}>
             {numberedListItems}
-          </ol>
+          </TS.Section.OrderedList>
         );
       case Section.BLOCKQUOTE:
         return (
-          <div className={css['blockquote']} key={key} {...LONG_PRESS_HANDLERS}>
-            {applyEmphasisFormatting(text, css)}
-          </div>
+          <TS.Section.Blockquote key={key}>
+            {applyEmphasisFormatting(text)}
+          </TS.Section.Blockquote>
         );
       case Section.TWEET:
         const tweetId = paragraph.match(regex)![1];
@@ -148,7 +106,7 @@ export const formatParagraph = (
         } else {
           const url = `https://www.twitter.com/zzavidd/status/${tweetId}`;
           return (
-            <div className={css['twitter-button']} key={key}>
+            <div key={key}>
               <a href={url} rel={'noopener noreferrer'}>
                 View Tweet
               </a>
@@ -161,7 +119,7 @@ export const formatParagraph = (
           return <InstagramPost url={igUrl} key={key} />;
         } else {
           return (
-            <div className={css['instagram-button']} key={key}>
+            <div key={key}>
               <a href={igUrl} rel={'noopener noreferrer'}>
                 View Instagram Post
               </a>
@@ -197,17 +155,15 @@ export const formatParagraph = (
             key={key}></iframe>
         );
       default:
-        return <React.Fragment></React.Fragment>;
+        return <React.Fragment />;
     }
   } else {
     return inline ? (
-      <span className={css['paragraph']} key={key} {...LONG_PRESS_HANDLERS}>
-        {applyEmphasisFormatting(paragraph, css)}
-      </span>
+      <span key={key}>{applyEmphasisFormatting(paragraph)}</span>
     ) : (
-      <TextStyle.Section.Paragraph {...LONG_PRESS_HANDLERS} key={key}>
-        {applyEmphasisFormatting(paragraph, css)}
-      </TextStyle.Section.Paragraph>
+      <TS.Section.Paragraph key={key}>
+        {applyEmphasisFormatting(paragraph)}
+      </TS.Section.Paragraph>
     );
   }
 };
@@ -263,35 +219,4 @@ export const deformatParagraph = (paragraph: string, key: number): string => {
   }
 
   return detransformedParagraph;
-};
-
-/**
- * Create handlers for long press events on elements.
- * @param onLongPress
- */
-const createLongPressHandlers = (onLongPress?: onLongPress) => {
-  if (!onLongPress || !onLongPress.action) return {};
-
-  const { action, duration = 1000 } = onLongPress;
-  let longPressTimeout: NodeJS.Timeout;
-
-  function onPress<T extends React.UIEvent<HTMLElement>>(e: T): void {
-    const target: Target = e.target;
-    longPressTimeout = setTimeout(() => {
-      action(target as CurrentEventTarget);
-    }, duration);
-  }
-
-  function onRelease() {
-    clearTimeout(longPressTimeout);
-  }
-
-  const longPressHandlers: HTMLAttributes<HTMLParagraphElement> = {
-    onMouseDown: onPress,
-    onMouseUp: onRelease,
-    onTouchStart: onPress,
-    onTouchEnd: onRelease,
-  };
-
-  return longPressHandlers;
 };

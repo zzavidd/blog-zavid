@@ -1,4 +1,3 @@
-import type { FormatCSS } from 'lib/text/regex';
 import {
   Emphasis,
   emphasisRegexMapping,
@@ -6,14 +5,12 @@ import {
 } from 'lib/text/regex';
 import TextStyle from 'stylesv2/Components/Text.styles';
 
-export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
+export function applyEmphasisFormatting(paragraph: string) {
   if (!paragraph) return '';
   const combinedEmphasisRegex = getCombinedEmphasisRegex();
 
   // Split by combined regex into fragments.
-  const fragments = paragraph
-    .split(combinedEmphasisRegex)
-    .filter((e) => e != null);
+  const fragments = paragraph.split(combinedEmphasisRegex).filter((e) => e);
   const formattedParagraph = fragments.map((fragment, key) => {
     let transformation: string | JSX.Element = fragment;
 
@@ -30,11 +27,7 @@ export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
         switch (emphasis) {
           case Emphasis.CUSTOM:
             const textToCustomise = matches![1];
-            transformation = (
-              <span className={css!['custom']} key={key}>
-                {textToCustomise}
-              </span>
-            );
+            transformation = <span key={key}>{textToCustomise}</span>;
             break;
           case Emphasis.BOLDITALIC:
             const textToBoldItalize = applyEmphasisFormatting(matches![1]);
@@ -98,19 +91,11 @@ export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
             break;
           case Emphasis.SUPERSCRIPT:
             const textToSuper = applyEmphasisFormatting(matches![1]);
-            transformation = (
-              <sup key={key} className={css!['superscript']}>
-                {textToSuper}
-              </sup>
-            );
+            transformation = <sup key={key}>{textToSuper}</sup>;
             break;
           case Emphasis.SUBSCRIPT:
             const textToSub = applyEmphasisFormatting(matches![1]);
-            transformation = (
-              <sub key={key} className={css!['subscript']}>
-                {textToSub}
-              </sub>
-            );
+            transformation = <sub key={key}>{textToSub}</sub>;
             break;
           case Emphasis.ESCAPE:
             transformation = matches![1];
@@ -118,8 +103,8 @@ export function applyEmphasisFormatting(paragraph: string, css?: FormatCSS) {
           default:
             break;
         }
-      } catch (e) {
-        console.error(e);
+      } catch (e: any) {
+        console.error(e.message);
       }
     }
 
