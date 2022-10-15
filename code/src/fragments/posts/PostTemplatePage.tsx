@@ -81,6 +81,7 @@ export default function PostTemplatePage(postTrio: PostTrio) {
           </AS.Footer>
         </AS.Main>
         <AS.BottomNavigator>
+          {/* TODO: Cater for post pages with 'random' domain. */}
           <AS.BackLinkBox>
             <Link href={backUrl} passHref={true}>
               <AS.BackLink>
@@ -132,14 +133,16 @@ function TopNavigator({ postTrio }: TopNavigatorProps) {
           </Link>
         ) : null}
       </div>
-      <AS.TopNavigatorContent direction={'current'}>
-        <AS.TopNavigatorText>
-          <h6>Current {postType}</h6>
-          <p>
-            #{current.typeId}: {current.title}
-          </p>
-        </AS.TopNavigatorText>
-      </AS.TopNavigatorContent>
+      {!PostStatic.isPage(current) ? (
+        <AS.TopNavigatorContent direction={'current'}>
+          <AS.TopNavigatorText>
+            <h6>Current {postType}</h6>
+            <p>
+              #{current.typeId}: {current.title}
+            </p>
+          </AS.TopNavigatorText>
+        </AS.TopNavigatorContent>
+      ) : null}
       <div>
         {next ? (
           <Link href={`/${directory}/${next.slug}`} passHref={true}>

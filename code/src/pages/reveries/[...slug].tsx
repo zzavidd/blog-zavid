@@ -69,9 +69,10 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
         url: `/reveries/${domainSlug}/${slug}`,
         article: {
           publishedTime: post.datePublished as string,
-          tags: JSON.parse(post.tags as string),
+          tags: (post.tags as string[]) || [],
         },
       };
+
       if (post.image) {
         pathDefinition.cardImage = post.image as string;
       }
@@ -120,6 +121,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
       };
     }
   } catch (e) {
+    console.error(e);
     return {
       notFound: true,
     };
