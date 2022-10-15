@@ -13,7 +13,7 @@ import PageMetadata from 'fragments/PageMetadata';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
-import RS from 'stylesv2/Pages/Posts/ReverieIndex.styles';
+import RS from 'stylesv2/Pages/Reveries.styles';
 
 const REVERIES_HEADING = 'Reveries';
 

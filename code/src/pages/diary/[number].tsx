@@ -23,8 +23,8 @@ import ZDate from 'lib/date';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 import FORM from 'stylesv2/Components/Form.styles';
-import DiaryStyle from 'stylesv2/Pages/Diary/DiaryIndex.styles';
-import DSS from 'stylesv2/Pages/Diary/DiarySingle.styles';
+import DiaryStyle from 'stylesv2/Pages/Diary.styles';
+import DSS from 'stylesv2/Pages/Article.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({

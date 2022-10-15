@@ -15,7 +15,7 @@ import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import type { Substitutions } from 'constants/types';
 import ZDate from 'lib/date';
 import * as ZText from 'lib/text';
-import AS from 'stylesv2/Pages/Diary/DiarySingle.styles';
+import AS from 'stylesv2/Pages/Article.styles';
 
 export default function PostTemplatePage(postTrio: PostTrio) {
   const { current: post } = postTrio;

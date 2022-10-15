@@ -6,8 +6,6 @@ import { Paragraph } from 'componentsv2/Text';
 import Mixins from 'stylesv2/Mixins.styles';
 import { COLOR, FONTS } from 'stylesv2/Variables.styles';
 
-import DiaryStyle from './DiaryIndex.styles';
-
 const CurrentPreviousStyles = css`
   &:hover {
     text-decoration: underline;
@@ -21,7 +19,7 @@ const CurrentPreviousStyles = css`
   }
 `;
 
-namespace DiarySingleStyle {
+namespace ArticleStyle {
   export const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -37,7 +35,7 @@ namespace DiarySingleStyle {
     width: 100%;
   `;
 
-  export const Main = styled(DiaryStyle.Main)`
+  export const Main = styled.main`
     ${Mixins.Responsive(['align-items', 'center', { sm: 'flex-start' }])}
     display: flex;
     flex: 1;
@@ -209,7 +207,7 @@ namespace DiarySingleStyle {
   `;
 }
 
-export default DiarySingleStyle;
+export default ArticleStyle;
 
 interface TopNavigatorContentProps {
   direction: 'current' | 'previous' | 'next';

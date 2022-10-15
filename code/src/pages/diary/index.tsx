@@ -13,7 +13,7 @@ import PageMetadata from 'fragments/PageMetadata';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
-import DiaryStyle from 'stylesv2/Pages/Diary/DiaryIndex.styles';
+import DiaryStyle from 'stylesv2/Pages/Diary.styles';
 
 const DIARY_HEADING = "Zavid's Diary";
 

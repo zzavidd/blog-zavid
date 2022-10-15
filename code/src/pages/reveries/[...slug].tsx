@@ -14,7 +14,7 @@ import type { PostTrio } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
-import AS from 'stylesv2/Pages/Diary/DiarySingle.styles';
+import AS from 'stylesv2/Pages/Article.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const ReveriePage: NextPageWithLayout<ReveriePageProps> = ({
