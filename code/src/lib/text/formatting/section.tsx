@@ -41,7 +41,14 @@ export const formatParagraph = (
         return <h2 key={key}>{text}</h2>;
       case Section.IMAGE:
         const [, alt, src] = paragraph.match(regex)!;
-        return <TS.Section.BlockImage src={src} alt={alt} key={key} />;
+        return (
+          <TS.Section.BlockImage
+            src={src}
+            alt={alt}
+            loading={'lazy'}
+            key={key}
+          />
+        );
       case Section.DIVIDER:
         return (
           <hr
