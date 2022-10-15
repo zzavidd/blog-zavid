@@ -17,7 +17,7 @@ export function formatText(
   fullText: string,
   options: FormatTextOptions = {},
 ): ReactElement {
-  if (!fullText) return <React.Fragment></React.Fragment>;
+  if (!fullText) return <React.Fragment />;
 
   const formattedText = fullText
     .split(newLinesExceptNumberedListsRegex)
@@ -98,6 +98,10 @@ export function extractExcerpt(originalText: string): string {
   const deformattedText = deformatText(originalText);
   const [excerpt] = deformattedText.split(/\n|\s{2,}/).filter((e) => e);
   return excerpt;
+}
+
+export function capitalise(text: string): string {
+  return text.charAt(0).toUpperCase() + text.substring(1);
 }
 
 export interface FormatTextOptions {

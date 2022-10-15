@@ -10,10 +10,11 @@ import { SITE_TITLE } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import type { PostTemplatePageProps } from 'fragments/posts/PostTemplatePage';
+import type { PostTrio } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
+import AS from 'stylesv2/Pages/Diary/DiarySingle.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const ReveriePage: NextPageWithLayout<ReveriePageProps> = ({
@@ -21,10 +22,10 @@ const ReveriePage: NextPageWithLayout<ReveriePageProps> = ({
   pageProps,
 }) => {
   return (
-    <React.Fragment>
+    <AS.Container>
       <PageMetadata {...pathDefinition} />
       <PostTemplatePage {...pageProps} />
-    </React.Fragment>
+    </AS.Container>
   );
 };
 
@@ -58,7 +59,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
           domainType: PostType.REVERIE,
           statusFilters: { exclude: [PostStatus.DRAFT] },
         }),
-      ) as PostTemplatePageProps;
+      ) as PostTrio;
 
       validateAuthorisation(post);
 
@@ -93,7 +94,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
             exclude: [PostStatus.DRAFT],
           },
         }),
-      ) as PostTemplatePageProps;
+      ) as PostTrio;
       const reverie = reverieTrio.current;
 
       validateAuthorisation(reverie);
@@ -130,5 +131,5 @@ export default ReveriePage;
 
 interface ReveriePageProps {
   pathDefinition: PathDefinition;
-  pageProps: PostTemplatePageProps;
+  pageProps: PostTrio;
 }

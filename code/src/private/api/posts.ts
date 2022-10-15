@@ -64,7 +64,7 @@ namespace PostAPI {
     const [current] = await builder.build();
 
     let previous, next;
-    if (type === PostType.PAGE) {
+    if (type !== PostType.PAGE) {
       const [[previousPost], [nextPost]] = await Promise.all([
         new PostQueryBuilder(knex)
           .getPreviousPost(current.typeId!, current.type!)

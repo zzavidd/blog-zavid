@@ -1,98 +1,102 @@
-import React, { useState } from 'react';
-import { zDate } from 'zavid-modules';
+import {
+  faChevronLeft,
+  faChevronRight,
+  faLeftLong,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
+import React, { useMemo } from 'react';
 
-import { PostBuilder } from 'classes/posts/PostBuilder';
-import type { PostType, PostDAO } from 'classes/posts/PostDAO';
+import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { AdminButton, BackButton as IBackButton } from 'components/button';
-import { Curator } from 'components/curator';
-import CloudImage, { SignatureImage } from 'components/image';
-import { Spacer, Toolbar } from 'components/layout';
-import ShareBlock from 'components/share';
-import { Divider, Paragraph, Title } from 'components/text';
-import Timeline, { TimelineType } from 'components/timeline';
+import { NextImage, SignatureImage } from 'componentsv2/Image';
+import ShareBlock from 'componentsv2/ShareBlock';
 import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import type { Substitutions } from 'constants/types';
-import AdminLock from 'fragments/AdminLock';
-import { CuratePrompt } from 'fragments/shared/CuratePrompt';
-import css from 'styles/pages/Posts.module.scss';
+import ZDate from 'lib/date';
+import * as ZText from 'lib/text';
+import AS from 'stylesv2/Pages/Diary/DiarySingle.styles';
 
-export default function PostTemplatePage({
-  current: post,
-  previous: previousPost = new PostBuilder().build(),
-  next: nextPost = new PostBuilder().build(),
-}: PostTemplatePageProps) {
-  const [isImageModalVisible, setImageModalVisibility] = useState(false);
-  const [isCuratePromptVisible, setCuratePromptVisible] = useState(false);
-  const [curatePromptRef, setCuratePromptRef] = useState<HTMLElement>();
-  const [imageContent, setImageContent] = useState('');
-
+export default function PostTemplatePage(postTrio: PostTrio) {
+  const { current: post } = postTrio;
   const shareMessage = `"${post.title}" on ZAVID`;
 
-  const substitutions: Substitutions = {};
-  const contentImages = JSON.parse(post.contentImages as string) || [];
-  contentImages.forEach((image: string, key: number) => {
-    substitutions[`image${key + 1}`] = `![](${CLOUDINARY_BASE_URL}/${image})`;
-  });
+  const substitutions = useMemo(() => {
+    const subs: Substitutions = {};
+    const contentImages = JSON.parse(post.contentImages as string) || [];
+    contentImages.forEach((image: string, key: number) => {
+      subs[`image${key + 1}`] = `![](${CLOUDINARY_BASE_URL}/${image})`;
+    });
+    return subs;
+  }, [post.contentImages]);
 
-  const sourceTitle = PostStatic.isPage(post)
-    ? `${post.domainTitle}: ${post.title}`
-    : `${post.type} #${post.typeId}: ${post.title}`;
+  const { backUrl, backButtonText } = useMemo(() => {
+    let url;
+    let buttonText = 'Back to ';
+
+    if (PostStatic.isPage(post)) {
+      const basePath = PostStatic.getDirectory(post.domainType!);
+      url = `/${basePath}/${post.domainSlug}`;
+      buttonText += post.domainTitle;
+    } else {
+      url = `/${PostStatic.getDirectory(post.type!)}`;
+      buttonText += `${post.type}s`;
+    }
+
+    return {
+      backUrl: url,
+      backButtonText: buttonText,
+    };
+  }, [post]);
 
   return (
     <React.Fragment>
-      <Spacer>
-        <div className={css['post-single']}>
-          <Title className={css['post-single-title']}>
-            {PostStatic.getPostTitle(post)}
-          </Title>
-          <PostDate post={post} />
-          <CloudImage
-            src={post.image as string}
-            containerClassName={css['post-single-image-container']}
-            imageClassName={css['post-single-image']}
-            alt={post.title}
-          />
-          <Paragraph
-            className={css['post-single-content']}
-            substitutions={substitutions}
-            onLongPress={(target: HTMLElement) => {
-              setImageContent(target.innerText);
-              setCuratePromptRef(target);
-              setCuratePromptVisible(true);
-            }}>
-            {post.content}
-          </Paragraph>
+      <AS.Layout>
+        <TopNavigator postTrio={postTrio} />
+        <AS.Main>
+          <AS.Title>{PostStatic.getPostTitle(post)}</AS.Title>
+          {post.datePublished && !PostStatic.isPrivate(post) ? (
+            <AS.Date dateTime={ZDate.formatISO(post.datePublished)}>
+              {ZDate.format(post.datePublished)}
+            </AS.Date>
+          ) : null}
+          <AS.ImageBox>
+            <NextImage
+              src={post.image as string}
+              alt={post.title}
+              layout={'responsive'}
+              width={650}
+              height={350}
+              objectFit={'cover'}
+            />
+          </AS.ImageBox>
+          <AS.Content substitutions={substitutions}>{post.content}</AS.Content>
           <SignatureImage />
-          <Timeline
-            type={getTimelineType(post.type!)!}
-            previous={{
-              slug: previousPost.slug!,
-              image: previousPost.image as string,
-              label: PostStatic.getPostTitle(previousPost),
-            }}
-            next={{
-              slug: nextPost.slug!,
-              image: nextPost.image as string,
-              label: PostStatic.getPostTitle(nextPost),
-            }}
-          />
-          <Divider />
-          <ShareBlock message={shareMessage} url={location.href} />
-        </div>
-        <Toolbar spaceItems={true} hasBackButton={true}>
-          <BackButton post={post} />
-          <AdminLock>
-            <AdminButton onClick={() => navigateToEdit(post.id!)}>
-              Edit {post.type}
-            </AdminButton>
-          </AdminLock>
-        </Toolbar>
-      </Spacer>
-      <Curator
+          <AS.Footer>
+            <ShareBlock
+              headline={'Share This Post'}
+              message={shareMessage}
+              url={location.href}
+            />
+          </AS.Footer>
+        </AS.Main>
+        <AS.BottomNavigator>
+          <AS.BackLinkBox>
+            <Link href={backUrl} passHref={true}>
+              <AS.BackLink>
+                <FontAwesomeIcon icon={faLeftLong} />
+                <span>{backButtonText}</span>
+              </AS.BackLink>
+            </Link>
+          </AS.BackLinkBox>
+        </AS.BottomNavigator>
+      </AS.Layout>
+      {/* <Curator
         visible={isImageModalVisible}
         closeFunction={() => setImageModalVisibility(false)}
-        sourceTitle={sourceTitle}
+        sourceTitle={PostStatic.isPage(post)
+    ? `${post.domainTitle}: ${post.title}`
+    : `${post.type} #${post.typeId}: ${post.title}`}
         content={imageContent}
       />
       <CuratePrompt
@@ -103,62 +107,64 @@ export default function PostTemplatePage({
           setImageModalVisibility(true);
           setCuratePromptVisible(false);
         }}
-      />
+      /> */}
     </React.Fragment>
   );
 }
-
-function BackButton({ post }: BackButtonProps) {
-  const goBack = () => {
-    let url;
-    if (PostStatic.isPage(post)) {
-      const basePath = PostStatic.getDirectory(post.domainType!);
-      url = `/${basePath}/${post.domainSlug}`;
-    } else {
-      url = `/${PostStatic.getDirectory(post.type!)}`;
-    }
-
-    location.href = url;
-  };
-
-  let buttonText = 'Back to ';
-  if (!PostStatic.isPage(post)) {
-    buttonText += `${post.type}s`;
-  } else {
-    buttonText += post.domainTitle;
-  }
-
-  return <IBackButton onClick={goBack}>{buttonText}</IBackButton>;
+function TopNavigator({ postTrio }: TopNavigatorProps) {
+  const { current, previous, next } = postTrio;
+  const directory = PostStatic.getDirectory(current.type);
+  const postType = ZText.capitalise(current.type);
+  return (
+    <AS.TopNavigator>
+      <div>
+        {previous ? (
+          <Link href={`/${directory}/${previous.slug}`} passHref={true}>
+            <AS.TopNavigatorContent direction={'previous'}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+              <AS.TopNavigatorText>
+                <h6>Previous {postType}</h6>
+                <p>
+                  #{previous.typeId}: {previous.title}
+                </p>
+              </AS.TopNavigatorText>
+            </AS.TopNavigatorContent>
+          </Link>
+        ) : null}
+      </div>
+      <AS.TopNavigatorContent direction={'current'}>
+        <AS.TopNavigatorText>
+          <h6>Current {postType}</h6>
+          <p>
+            #{current.typeId}: {current.title}
+          </p>
+        </AS.TopNavigatorText>
+      </AS.TopNavigatorContent>
+      <div>
+        {next ? (
+          <Link href={`/${directory}/${next.slug}`} passHref={true}>
+            <AS.TopNavigatorContent direction={'next'}>
+              <FontAwesomeIcon icon={faChevronRight} />
+              <AS.TopNavigatorText>
+                <h6>Next {postType}</h6>
+                <p>
+                  #{next.typeId}: {next.title}
+                </p>
+              </AS.TopNavigatorText>
+            </AS.TopNavigatorContent>
+          </Link>
+        ) : null}
+      </div>
+    </AS.TopNavigator>
+  );
 }
 
-function PostDate({ post }: PostDate) {
-  if (!post || !post.datePublished) return null;
-  if (PostStatic.isPrivate(post)) return null;
-
-  const datePublished = zDate.formatDate(post.datePublished as string, {
-    withWeekday: true,
-  });
-  return <div className={css['post-single-date']}>{datePublished}</div>;
-}
-
-function getTimelineType(type: PostType) {
-  return Object.values(TimelineType).find(({ label }) => label === type);
-}
-
-function navigateToEdit(id: number): void {
-  location.href = `/admin/posts/edit/${id}`;
-}
-
-export interface PostTemplatePageProps {
+export interface PostTrio {
   current: PostDAO;
   next?: PostDAO;
   previous?: PostDAO;
 }
 
-interface PostDate {
-  post: PostDAO;
-}
-
-interface BackButtonProps {
-  post: PostDAO;
+interface TopNavigatorProps {
+  postTrio: PostTrio;
 }

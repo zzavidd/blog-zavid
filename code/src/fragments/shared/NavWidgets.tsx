@@ -12,6 +12,7 @@ import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
 import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import AdminLock from 'fragments/AdminLock';
+import * as ZText from 'lib/text';
 import CPX from 'stylesv2/Components/Components.styles';
 import NavStyle from 'stylesv2/Partials/NavigationBar.styles';
 
@@ -122,7 +123,7 @@ export function ThemeSwitch(
       <FontAwesomeIcon
         icon={appTheme === AppTheme.DARK ? FA6.faMoon : FA6.faSun}
       />
-      <span>{appTheme.charAt(0).toUpperCase() + appTheme.substring(1)}</span>
+      <span>{ZText.capitalise(appTheme)}</span>
     </CPX.Button>
   );
 }

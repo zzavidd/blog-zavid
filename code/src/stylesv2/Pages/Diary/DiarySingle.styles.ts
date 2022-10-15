@@ -61,6 +61,11 @@ namespace DiarySingleStyle {
     width: 100%;
   `;
 
+  export const ImageBox = styled.div`
+    display: block;
+    position: relative;
+  `;
+
   export const Content = styled(Paragraph)`
     ${Mixins.Responsive(['font-size', '1.25em', { sm: '1.05em' }])}
 
