@@ -68,6 +68,7 @@ export default function PostTemplatePage(postTrio: PostTrio) {
               width={650}
               height={350}
               objectFit={'cover'}
+              priority={true}
             />
           </AS.ImageBox>
           <AS.Content substitutions={substitutions}>{post.content}</AS.Content>

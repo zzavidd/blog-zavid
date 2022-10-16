@@ -1,8 +1,11 @@
+import { getPlaiceholder } from 'plaiceholder';
+
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostType, PostStatus } from 'classes/posts/PostDAO';
 import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
+import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import { QueryOrder } from 'constants/types';
 import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
 
@@ -19,12 +22,15 @@ namespace PostAPI {
       .withOrder(sort, { forStringsWithNumbers: true })
       .withLimit(limit)
       .build();
-    return posts.map((post: PostDAO) => PostStatic.parse(post));
+    const promises = posts.map((post: PostDAO) => {
+      return addPlaceholderImage(PostStatic.parse(post));
+    });
+    return Promise.all(promises);
   }
 
-  export async function getById(id: number) {
+  export async function getById(id: number): Promise<PostDAO> {
     const [post] = await new PostQueryBuilder(knex).whereId(id).build();
-    return post;
+    return await addPlaceholderImage(post);
   }
 
   export async function getDomains() {
@@ -61,9 +67,11 @@ namespace PostAPI {
     if (domainSlug) builder.whereDomainSlug(domainSlug);
     if (domainType) builder.whereDomainType(domainType);
 
-    const [current] = await builder.build();
+    const [currentPost] = await builder.build();
+    const current = await addPlaceholderImage(currentPost);
 
-    let previous, next;
+    let previous: PostDAO | undefined;
+    let next: PostDAO | undefined;
     if (type !== PostType.PAGE) {
       const [[previousPost], [nextPost]] = await Promise.all([
         new PostQueryBuilder(knex)
@@ -73,9 +81,11 @@ namespace PostAPI {
           .getNextPost(current.typeId!, current.type!)
           .build(),
       ]);
-      previous = previousPost;
-      next = nextPost;
+      previous = await addPlaceholderImage(previousPost);
+      next = await addPlaceholderImage(nextPost);
     }
+
+    console.log(previous);
 
     return {
       current,
@@ -92,7 +102,7 @@ namespace PostAPI {
       .whereStatus({ include: [PostStatus.PUBLISHED] })
       .getLatestPost()
       .build();
-    return getLatestReverie;
+    return addPlaceholderImage(getLatestReverie);
   }
 
   export async function getRandomPosts({
@@ -110,8 +120,18 @@ namespace PostAPI {
       .withOrder({ order: QueryOrder.RANDOM })
       .withLimit(6)
       .build();
-    return randomPosts;
+    return Promise.all(randomPosts.map(addPlaceholderImage));
   }
+}
+
+async function addPlaceholderImage(post: PostDAO): Promise<PostDAO> {
+  if (!post || !post.image) return post;
+
+  const { base64 } = await getPlaiceholder(
+    `${CLOUDINARY_BASE_URL}/${post.image}`,
+  );
+  post.imagePlaceholder = base64;
+  return post;
 }
 
 export default PostAPI;

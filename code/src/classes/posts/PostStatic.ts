@@ -1,10 +1,10 @@
 import faker from 'faker';
 import { zNumber } from 'zavid-modules';
 
-import { isString, randomEnumValue, randomElementFromList } from '../helper';
+import { randomElementFromList, randomEnumValue } from '../helper';
 
 import type { PostDAO, PostImage } from './PostDAO';
-import { PostType, PostStatus } from './PostDAO';
+import { PostStatus, PostType } from './PostDAO';
 
 const PostDirectory: Record<PostType, string> = {
   [PostType.REVERIE]: 'reveries',
@@ -69,12 +69,13 @@ export class PostStatic {
     }
 
     try {
-      if (isString(images)) {
+      if (typeof images === 'string') {
         post.contentImages = JSON.parse(images as string);
       }
     } catch {
       delete post.contentImages;
     }
+
     return post;
   }
 

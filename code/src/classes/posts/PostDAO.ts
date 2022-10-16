@@ -11,6 +11,7 @@ export interface PostDAO extends EntityDAO {
   tags: string | string[];
   datePublished: string | Date;
   image: PostImage | string | null;
+  imagePlaceholder?: string;
   contentImages: PostContentImages;
   domainId?: number;
   domainTitle?: string;

@@ -1,5 +1,4 @@
 import type { GetServerSideProps } from 'next';
-import React from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import type { PostDAO } from 'classes/posts/PostDAO';
@@ -51,6 +50,7 @@ export const getServerSideProps: GetServerSideProps<
     randomPosts,
     emailSubCount,
   } = JSON.parse(await SSR.Home.getPreloadedProps());
+
   return {
     props: {
       pathDefinition: {

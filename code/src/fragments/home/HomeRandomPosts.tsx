@@ -25,6 +25,8 @@ export default function HomeRandomPosts({ posts }: RandomPostsGridProps) {
                     <Style.Aside.Image
                       src={post.image as string}
                       alt={post.title}
+                      placeholder={'blur'}
+                      blurDataURL={post.imagePlaceholder}
                       layout={'fill'}
                       objectFit={'cover'}
                       loading={'lazy'}

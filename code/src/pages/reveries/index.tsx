@@ -60,6 +60,8 @@ const Reverie = memo(({ reverie }: ReverieProps) => {
             layout={'fill'}
             objectFit={'cover'}
             loading={'lazy'}
+            placeholder={'blur'}
+            blurDataURL={reverie.imagePlaceholder}
           />
         </RS.ImageBox>
       </Link>

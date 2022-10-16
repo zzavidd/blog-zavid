@@ -18,6 +18,8 @@ export default function HomeReverie({ reverie }: HomeReverieProps) {
           <Style.Latest.Image
             src={reverie.image as string}
             alt={reverie.title}
+            placeholder={'blur'}
+            blurDataURL={reverie.imagePlaceholder}
             layout={'fill'}
             objectFit={'cover'}
           />
