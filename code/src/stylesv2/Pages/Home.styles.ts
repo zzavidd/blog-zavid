@@ -111,7 +111,7 @@ export namespace Latest {
     )};
     border-radius: 10px;
     clear: both;
-    height: 200px;
+    max-height: 300px;
     max-width: 400px;
     overflow: hidden;
     position: relative;

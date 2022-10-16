@@ -60,8 +60,10 @@ namespace ArticleStyle {
   `;
 
   export const ImageBox = styled.div`
-    display: block;
-    position: relative;
+    border-radius: 10px;
+    margin-block: 1em 0;
+    overflow: hidden;
+    width: 100%;
   `;
 
   export const Content = styled(Paragraph)`

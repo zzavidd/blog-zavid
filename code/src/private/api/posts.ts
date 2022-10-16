@@ -85,8 +85,6 @@ namespace PostAPI {
       next = await addPlaceholderImage(nextPost);
     }
 
-    console.log(previous);
-
     return {
       current,
       previous,

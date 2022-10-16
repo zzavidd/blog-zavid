@@ -65,10 +65,12 @@ export default function PostTemplatePage(postTrio: PostTrio) {
               src={post.image as string}
               alt={post.title}
               layout={'responsive'}
-              width={650}
-              height={350}
+              width={16}
+              height={9}
               objectFit={'cover'}
               priority={true}
+              placeholder={'blur'}
+              blurDataURL={post.imagePlaceholder}
             />
           </AS.ImageBox>
           <AS.Content substitutions={substitutions}>{post.content}</AS.Content>
