@@ -1,7 +1,3 @@
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
-import { fas } from '@fortawesome/free-solid-svg-icons';
 import { SessionProvider, useSession } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import React, { useEffect, useState } from 'react';
@@ -27,8 +23,6 @@ import CookiePrompt from 'fragments/shared/CookiePrompt';
 import 'styles/App.scss';
 import { GlobalStyles } from 'stylesv2/Global.styles';
 import { THEME } from 'stylesv2/Variables.styles';
-
-library.add(fab, far, fas);
 
 export default function App(props: AppProps) {
   return (

@@ -8,7 +8,7 @@ import { SITE_TITLE } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import type { PostTemplatePageProps } from 'fragments/posts/PostTemplatePage';
+import type { PostTrio } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
           exclude: [PostStatus.DRAFT],
         },
       }),
-    ) as PostTemplatePageProps;
+    ) as PostTrio;
     const epistle = epistleTrio.current;
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
@@ -79,5 +79,5 @@ export default EpistlePage;
 
 interface EpistlePageProps {
   pathDefinition: PathDefinition;
-  pageProps: PostTemplatePageProps;
+  pageProps: PostTrio;
 }

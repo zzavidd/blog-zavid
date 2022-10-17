@@ -116,7 +116,7 @@ namespace PostAPI {
 
     const randomPosts = await builder
       .withOrder({ order: QueryOrder.RANDOM })
-      .withLimit(6)
+      .withLimit(15)
       .build();
     return Promise.all(randomPosts.map(addPlaceholderImage));
   }

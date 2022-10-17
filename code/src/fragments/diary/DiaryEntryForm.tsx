@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import { zDate, zString } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
@@ -22,7 +21,6 @@ import {
 import type { DateType } from 'components/form/datepicker';
 import DatePicker from 'components/form/datepicker';
 import { Foldable } from 'components/form/foldable';
-import { ScreenWidth } from 'components/library';
 import type Handlers from 'constants/handlers';
 import css from 'styles/pages/Diary.module.scss';
 
@@ -45,7 +43,8 @@ export default function DiaryEntryForm(props: DiaryFormProps) {
     setFootnoteVisible(!isFootnoteVisible);
   };
 
-  const isXXXLarge = useMediaQuery({ query: ScreenWidth.XXXLARGE });
+  // const isXXXLarge = useMediaQuery({ query: ScreenWidth.XXXLARGE });
+  const isXXXLarge = true;
   const fieldSpan = isPreviewVisible ? (isXXXLarge ? 12 : 6) : 6;
   const contentOrder = isPreviewVisible ? (isXXXLarge ? 1 : 2) : 1;
 

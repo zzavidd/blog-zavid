@@ -1,5 +1,4 @@
 import classnames from 'classnames';
-import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 
 import { InvisibleButton } from 'components/button';
@@ -23,7 +22,7 @@ export default function CookiePrompt() {
         </span>
         <InvisibleButton
           onClick={() => {
-            Cookies.set('cookiesAccepted', 'true', { expires: 365 * 24 });
+            // Cookies.set('cookiesAccepted', 'true', { expires: 365 * 24 });
             setAcceptance(true);
           }}>
           <Icon name={'times'} />
@@ -33,6 +32,6 @@ export default function CookiePrompt() {
   );
 }
 
-function checkCookiePolicyAccepted(): boolean {
-  return Cookies.get('cookiesAccepted') === 'true';
+function checkCookiePolicyAccepted() {
+  return true;
 }

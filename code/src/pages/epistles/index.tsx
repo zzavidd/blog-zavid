@@ -3,7 +3,6 @@ import type { GetServerSideProps } from 'next';
 import React, { memo, useState } from 'react';
 import type { RootStateOrAny } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import { zDate } from 'zavid-modules';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
@@ -75,9 +74,9 @@ function EpistleGrid({ epistles, pageIntro }: EpistlesProps) {
 }
 
 function EpistleGridder({ epistles }: EpistleGridderProps) {
-  const isMedium = useMediaQuery({ query: ScreenWidth.MEDIUM });
-  const isLarge = useMediaQuery({ query: ScreenWidth.LARGE });
-  const isXLarge = useMediaQuery({ query: ScreenWidth.XLARGE });
+  const isMedium = true;
+  const isLarge = true;
+  const isXLarge = true;
 
   const COLUMN_NUMBER = isMedium ? 2 : isLarge ? 3 : isXLarge ? 4 : 5;
 
@@ -124,7 +123,8 @@ const EpistleEntry = memo(({ epistle }: EpistleEntryProps) => {
 });
 
 function EpistleParagraph({ epistle, link }: EpistleParagraphProps) {
-  const isSmall = useMediaQuery({ query: ScreenWidth.SMALL });
+  // const isSmall = useMediaQuery({ query: ScreenWidth.SMALL });
+  const isSmall = true;
 
   return (
     <Paragraph

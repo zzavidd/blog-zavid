@@ -1,7 +1,6 @@
 import React from 'react';
 import { Overlay } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 
 import { Theme } from 'classes/theme';
 import { InvisibleButton } from 'components/button';
@@ -26,7 +25,8 @@ export function CuratePrompt({
   onClick,
 }: CuratePromptProps) {
   const theme = useSelector((state: AppState) => state.local.appTheme);
-  const isMedium = useMediaQuery({ query: ScreenWidth.MEDIUM });
+  // const isMedium = useMediaQuery({ query: ScreenWidth.MEDIUM });
+  const isMedium = true;
 
   const { backgroundColor, boxShadowColor } = OVERLAY_CONSTANTS[theme];
   return (

@@ -1,4 +1,3 @@
-import type { IconName } from '@fortawesome/fontawesome-svg-core';
 import classnames from 'classnames';
 import React from 'react';
 import type { RootStateOrAny } from 'react-redux';
@@ -66,7 +65,7 @@ interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 interface SwitchProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
-  checkedIcon: IconName;
-  uncheckedIcon: IconName;
+  checkedIcon: any;
+  uncheckedIcon: any;
   onChange?: React.MouseEventHandler<HTMLButtonElement>;
 }
