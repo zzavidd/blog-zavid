@@ -9,12 +9,13 @@ const alertFadeInOut = keyframes`
   16%, 91% {opacity: 1; pointer-events: auto;}
   100% {opacity: 0; pointer-events: none;}
 `;
+
 const snackFadeInOut = keyframes`
   0%, 16% {opacity: 0; pointer-events: auto;}
   25%, 91% {opacity: 1; pointer-events: auto;}
   100% {opacity: 0; pointer-events: none;}
 `;
-const snackFadeIn = keyframes`
+const fadeIn = keyframes`
   0% {opacity: 0;}
   100% {opacity: 1;}
 `;
@@ -55,6 +56,38 @@ export namespace Alert {
   `;
 }
 
+export namespace CookieStyle {
+  export const Container = styled.div<{ visible: boolean }>`
+    ${({ visible }) =>
+      visible
+        ? css`
+            animation: ${fadeIn} 0.3s ease 2s 1 normal both;
+            pointer-events: auto;
+          `
+        : css`
+            opacity: 0;
+            pointer-events: none;
+          `}
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    z-index: 2;
+  `;
+
+  export const Dialog = styled.div`
+    display: flex;
+    max-width: 650px;
+  `;
+
+  export const Text = styled.p`
+    color: ${COLOR.WHITE};
+  `;
+}
+
 export namespace Snack {
   export const Container = styled.div`
     bottom: 3%;
@@ -71,7 +104,7 @@ export namespace Snack {
     ${({ duration }) =>
       duration === 'indefinite'
         ? css`
-            animation: ${snackFadeIn} 0.3s ease 0s 1 normal both;
+            animation: ${fadeIn} 0.3s ease 0s 1 normal both;
           `
         : css`
             animation: ${snackFadeInOut} ${duration || 6000}ms ease 0s 1 normal

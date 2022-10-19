@@ -190,8 +190,8 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           {ComponentWithLayout}
-          <Snackbar />
           <CookiePrompt />
+          <Snackbar />
           <AlertBar />
         </ThemeProvider>
       </ContextsProvider>

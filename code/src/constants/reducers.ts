@@ -18,6 +18,7 @@ import { AppTheme } from 'classes/theme';
 
 const initialLocalState: AppLocalState = {
   appTheme: AppTheme.LIGHT,
+  cookiePolicyAccepted: false,
   savedText: '',
 };
 
@@ -34,6 +35,9 @@ const localSlice = createSlice({
     },
     setAppTheme: (state, action: PayloadAction<AppTheme>) => {
       state.appTheme = action.payload;
+    },
+    setCookiePolicyAccepted: (state, action: PayloadAction<boolean>) => {
+      state.cookiePolicyAccepted = action.payload;
     },
   },
 });
@@ -80,12 +84,14 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 export namespace AppActions {
-  export const { saveInputText, setAppTheme } = localSlice.actions;
+  export const { saveInputText, setAppTheme, setCookiePolicyAccepted } =
+    localSlice.actions;
   export const { setLoginSnackShown } = sessionSlice.actions;
 }
 
 export interface AppLocalState {
   appTheme: AppTheme;
+  cookiePolicyAccepted: boolean;
   savedText: string;
 }
 

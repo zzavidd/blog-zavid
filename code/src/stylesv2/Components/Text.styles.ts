@@ -72,6 +72,7 @@ namespace TextStyle {
   export namespace Emphasis {
     export const Anchor = styled.a`
       color: ${({ theme }) => theme.hyperlink};
+      cursor: pointer;
       font-weight: bold;
       text-decoration: none;
       transition: all 0.3s;
