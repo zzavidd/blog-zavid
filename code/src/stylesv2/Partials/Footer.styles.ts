@@ -11,6 +11,7 @@ namespace FooterStyle {
     display: flex;
     flex: 0;
     justify-content: center;
+    transition: all 0.8s;
     width: 100%;
   `;
 

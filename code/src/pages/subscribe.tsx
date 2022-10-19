@@ -1,44 +1,47 @@
 import type { GetStaticProps } from 'next';
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
-import { ConfirmButton } from 'components/button';
-import { Field, FieldRow, Label, TextInput } from 'components/form';
-import { Title } from 'components/text';
-import Alert from 'constants/alert';
+import Input from 'componentsv2/Input';
+import Contexts from 'constants/contexts';
 import { UIError } from 'constants/errors';
-import hooks from 'constants/handlers';
+import HandlersV2 from 'constants/handlersv2';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import css from 'styles/pages/Subscribers.module.scss';
+import FORM from 'stylesv2/Components/Form.styles';
+import SS from 'stylesv2/Pages/Subscribe.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscribePage: NextPageWithLayout<AppPageProps> = ({
   pathDefinition,
 }) => {
-  const [subscriber, setSubscriber] = useState<SubscriberDAO>({
-    email: '',
-    firstname: '',
-    lastname: '',
+  const [state, setState] = useState<SubscribePageState>({
+    subscriber: {
+      email: '',
+      firstname: '',
+      lastname: '',
+    },
+    isRequestPending: false,
   });
-  const [isRequestPending, setRequestPending] = useState(false);
+  const dispatch = Utils.createDispatch(setState);
+  const Alerts = useContext(Contexts.Alerts);
 
   /** Create new subscriber on server. */
   async function submitSubscriber() {
-    setRequestPending(true);
+    dispatch({ isRequestPending: true });
 
     try {
-      Validate.subscriber(subscriber);
+      Validate.subscriber(state.subscriber);
 
       const payload = new SubscriberBuilder()
-        .withEmail(subscriber.email)
-        .withFirstName(subscriber.firstname)
-        .withLastName(subscriber.lastname)
+        .withEmail(state.subscriber.email)
+        .withFirstName(state.subscriber.firstname)
+        .withLastName(state.subscriber.lastname)
         .withDefaultSubscriptions()
         .build();
 
@@ -46,76 +49,69 @@ const SubscribePage: NextPageWithLayout<AppPageProps> = ({
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      Alert.success(
-        `Thank you for subscribing!\nI've added ${subscriber.email} to my mailing list.`,
+      Alerts.success(
+        `Thank you for subscribing!\nI've added ${state.subscriber.email} to my mailing list.`,
       );
       setTimeout(() => (location.href = '/'), 2000);
     } catch (e: any) {
       if (e instanceof UIError) {
-        Alert.report(e.message, true);
+        Alerts.report(e.message, true);
       } else if (e.message.includes('ER_DUP_ENTRY')) {
-        Alert.error('The email address you submitted already exists.');
+        Alerts.error('The email address you submitted already exists.');
       } else {
         reportError(e.message);
       }
     } finally {
-      setRequestPending(false);
+      dispatch({ isRequestPending: false });
     }
   }
 
-  const { handleText } = hooks(setSubscriber, subscriber);
+  const Handlers = HandlersV2(setState, 'subscriber');
 
   return (
-    <React.Fragment>
+    <SS.Container>
       <PageMetadata {...pathDefinition} />
-      <div className={css['user-subscribe-form']}>
-        <Title className={css['user-subscribe-title']}>
-          Subscribe to the ZAVID Blog
-        </Title>
-        <div className={css['user-subscribe-message']}>
-          And never miss a diary entry nor a post.
-        </div>
-        <FieldRow>
-          <Field>
-            <Label>Email:</Label>
-            <TextInput
+      <FORM.Container>
+        <SS.Heading>Subscribe to the ZAVID Blog</SS.Heading>
+        <SS.Text>And never miss a diary entry nor a post.</SS.Text>
+        <FORM.FieldRow>
+          <FORM.Field>
+            <FORM.Label>Email: *</FORM.Label>
+            <Input.Email
               name={'email'}
-              value={subscriber.email!}
-              onChange={handleText}
+              value={state.subscriber.email!}
+              onChange={Handlers.text}
               placeholder={'Enter your email address'}
             />
-          </Field>
-        </FieldRow>
-        <FieldRow>
-          <Field md={6}>
-            <Label>First Name:</Label>
-            <TextInput
+          </FORM.Field>
+        </FORM.FieldRow>
+        <FORM.FieldRow>
+          <FORM.Field flex={1}>
+            <FORM.Label>First Name:</FORM.Label>
+            <Input.Text
               name={'firstname'}
-              value={subscriber.firstname!}
-              onChange={handleText}
-              placeholder={'(Optional) Enter your first name'}
+              value={state.subscriber.firstname!}
+              onChange={Handlers.text}
+              placeholder={'Enter your first name'}
             />
-          </Field>
-          <Field md={6}>
-            <Label>Last Name:</Label>
-            <TextInput
+          </FORM.Field>
+          <FORM.Field flex={1}>
+            <FORM.Label>Last Name:</FORM.Label>
+            <Input.Text
               name={'lastname'}
-              value={subscriber.lastname!}
-              onChange={handleText}
-              placeholder={'(Optional) Enter your last name'}
+              value={state.subscriber.lastname!}
+              onChange={Handlers.text}
+              placeholder={'Enter your last name'}
             />
-          </Field>
-        </FieldRow>
-        <FieldRow>
-          <ConfirmButton
-            onClick={submitSubscriber}
-            isRequestPending={isRequestPending}
-            className={css['user-subscribe-button']}>
-            Submit
-          </ConfirmButton>
-        </FieldRow>
-      </div>
-    </React.Fragment>
+          </FORM.Field>
+        </FORM.FieldRow>
+        <FORM.FieldRow>
+          <SS.Button onClick={submitSubscriber}>
+            {state.isRequestPending ? 'Loading...' : 'Submit'}
+          </SS.Button>
+        </FORM.FieldRow>
+      </FORM.Container>
+    </SS.Container>
   );
 };
 
@@ -134,3 +130,8 @@ export const getStaticProps: GetStaticProps<AppPageProps> = () => {
 
 SubscribePage.getLayout = Layout.addPartials;
 export default SubscribePage;
+
+interface SubscribePageState {
+  subscriber: SubscriberDAO;
+  isRequestPending: boolean;
+}
