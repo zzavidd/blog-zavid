@@ -47,6 +47,7 @@ namespace ReverieStyle {
     flex-wrap: wrap;
     gap: 1em;
   `;
+
   export const Entry = styled.article`
     display: flex;
     flex: 1 1 400px;

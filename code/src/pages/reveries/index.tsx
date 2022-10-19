@@ -43,39 +43,42 @@ const ReveriesIndex: NextPageWithLayout<ReveriesIndexProps> = ({
   );
 };
 
-const Reverie = memo(({ reverie }: ReverieProps) => {
-  const href = `/reveries/${reverie.slug}`;
+const Reverie = memo(
+  ({ reverie }: ReverieProps) => {
+    const href = `/reveries/${reverie.slug}`;
 
-  return (
-    <RS.Entry>
-      <RS.EntryHeading>{reverie.title}</RS.EntryHeading>
-      <RS.EntryDate dateTime={ZDate.formatISO(reverie.datePublished)}>
-        {ZDate.format(reverie.datePublished)}
-      </RS.EntryDate>
-      <Link href={href} passHref={true}>
-        <RS.ImageBox>
-          <NextImage
-            src={reverie.image as string}
-            alt={reverie.title}
-            layout={'fill'}
-            objectFit={'cover'}
-            loading={'lazy'}
-            placeholder={'blur'}
-            blurDataURL={reverie.imagePlaceholder}
-          />
-        </RS.ImageBox>
-      </Link>
-      <RS.EntryContent
-        truncate={45}
-        more={{
-          href: href,
-          text: `Read "${reverie.title}"`,
-        }}>
-        {reverie.content}
-      </RS.EntryContent>
-    </RS.Entry>
-  );
-});
+    return (
+      <RS.Entry>
+        <RS.EntryHeading>{reverie.title}</RS.EntryHeading>
+        <RS.EntryDate dateTime={ZDate.formatISO(reverie.datePublished)}>
+          {ZDate.format(reverie.datePublished)}
+        </RS.EntryDate>
+        <Link href={href} passHref={true}>
+          <RS.ImageBox>
+            <NextImage
+              src={reverie.image as string}
+              alt={reverie.title}
+              layout={'fill'}
+              objectFit={'cover'}
+              loading={'lazy'}
+              placeholder={'blur'}
+              blurDataURL={reverie.imagePlaceholder}
+            />
+          </RS.ImageBox>
+        </Link>
+        <RS.EntryContent
+          truncate={45}
+          more={{
+            href: href,
+            text: `Read "${reverie.title}"`,
+          }}>
+          {reverie.content}
+        </RS.EntryContent>
+      </RS.Entry>
+    );
+  },
+  (a, b) => a.reverie.id === b.reverie.id,
+);
 
 export const getServerSideProps: GetServerSideProps<
   ReveriesIndexProps
