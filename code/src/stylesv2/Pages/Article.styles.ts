@@ -147,6 +147,7 @@ namespace ArticleStyle {
     position: sticky;
     top: 0;
     width: 100%;
+    z-index: 1;
   `;
 
   export const Footer = styled.section`

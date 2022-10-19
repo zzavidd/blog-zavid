@@ -8,7 +8,7 @@ namespace SubscribeStyle {
   export const Container = styled.div`
     display: flex;
     justify-content: center;
-    padding: 1em;
+    padding: 0.5em;
   `;
 
   export const Heading = styled.h2`

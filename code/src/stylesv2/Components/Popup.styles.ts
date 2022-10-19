@@ -80,11 +80,14 @@ export namespace CookieStyle {
 
   export const Dialog = styled.div`
     display: flex;
+    gap: 0.5em;
     max-width: 650px;
+    padding: 1em;
   `;
 
   export const Text = styled.p`
     color: ${COLOR.WHITE};
+    margin: 0;
   `;
 }
 
