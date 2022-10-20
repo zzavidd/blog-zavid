@@ -1,37 +1,39 @@
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import 'bootstrap/scss/bootstrap.scss';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 import type { AppProps } from 'next/app';
-import Script from 'next/script';
 import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { StyleSheetManager, ThemeProvider } from 'styled-components';
 
-import Snackbar from 'componentsv2/Snackbar';
-import Alert from 'constants/alert';
+import AlertBar from 'componentsv2/Alert';
+import Snackbar from 'componentsv2/Snack';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
-import { persistor, store } from 'constants/reducers';
+import { AppActions, persistor, store } from 'constants/reducers';
 import type {
+  AlertDefinition,
   AppPropsWithLayout,
-  Snack as SnackDefinition,
+  SnackDefinition,
 } from 'constants/types';
+import Utils from 'constants/utils';
 import AdminGateway from 'fragments/AdminGateway';
+import GoogleAnalyticsScripts from 'fragments/GoogleAnalyticsTag';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
-import 'styles/App.scss';
-
-library.add(fab, far, fas);
+import { GlobalStyles } from 'stylesv2/Global.styles';
+import { THEME } from 'stylesv2/Variables.styles';
 
 export default function App(props: AppProps) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SessionProvider session={props.pageProps.session}>
-          <ZAVIDApp {...props} />
+          <StyleSheetManager
+            disableVendorPrefixes={
+              process.env.NEXT_PUBLIC_APP_ENV === 'development'
+            }>
+            <ZAVIDApp {...props} />
+          </StyleSheetManager>
         </SessionProvider>
       </PersistGate>
     </Provider>
@@ -47,14 +49,34 @@ export default function App(props: AppProps) {
  */
 function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const [state, setState] = useState<ZavidAppState>({
+    alerts: [],
     snacks: [],
+    isNavigationFocused: false,
   });
-  const { appTheme } = useSelector((state: AppState) => state);
+  const dispatch = Utils.createDispatch(setState);
 
+  const appState = useSelector((state: AppState) => state);
+  const appDispatch = useDispatch();
+  const theme = THEME[appState.local.appTheme];
+
+  const { data: session, status } = useSession();
+  const email = session?.user?.email;
+
+  /**
+   * Sets the timeout for any displayed alerts.
+   */
   useEffect(() => {
-    document.body.classList.add(`body-${appTheme}`);
-    Alert.check();
-  }, []);
+    if (!state.alerts.length) return;
+
+    // const timeout = setTimeout(() => {
+    //   removeAlert(state.alerts.length - 1);
+    // }, 4500);
+
+    // return () => {
+    //   clearTimeout(timeout);
+    // };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.alerts.length]);
 
   /**
    * Sets the timeout for any displayed snacks unless the snack is defined to be
@@ -70,20 +92,50 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
     if (typeof duration === 'number') {
       const timeout = setTimeout(() => {
         removeSnack(index);
-        clearTimeout(timeout);
       }, duration);
+
+      return () => {
+        clearTimeout(timeout);
+      };
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.snacks.length]);
+
+  /**
+   * Shows snack if user is logged in.
+   */
+  useEffect(() => {
+    if (status !== 'authenticated' || appState.session.loginSnackShown) return;
+    addSnack({ message: `Signed in as ${email}.` });
+    appDispatch(AppActions.setLoginSnackShown(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email, status]);
+
+  /**
+   * Adds an alert on the alert bar.
+   * @param alert The alert definition.
+   */
+  function addAlert(alert: AlertDefinition) {
+    dispatch({ alerts: [...state.alerts, alert] });
+  }
+
+  /**
+   * Removes the alert at the specified index from the list of alerts.
+   * @param index The alert to remove.
+   */
+  function removeAlert(index: number) {
+    const alerts = [...state.alerts];
+    alerts.splice(index, 1);
+    dispatch({ alerts });
+  }
 
   /**
    * Adds a snack to show on the snack bar.
    * @param snack The snack definition.
    */
   function addSnack(snack: SnackDefinition) {
-    setState((current) => ({
-      ...current,
-      snacks: [...state.snacks, snack],
-    }));
+    dispatch({ snacks: [...state.snacks, snack] });
   }
 
   /**
@@ -93,50 +145,79 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   function removeSnack(index: number) {
     const snacks = [...state.snacks];
     snacks.splice(index, 1);
-    setState((current) => ({ ...current, snacks }));
+    dispatch({ snacks });
   }
 
   // Configure layouts for all child components;
   const getLayout = Component.getLayout ?? ((page) => page);
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
 
+  const providedContexts: ContextsProviderProps = {
+    alerts: {
+      alerts: state.alerts,
+      set: addAlert,
+      remove: removeAlert,
+      success: (message) => addAlert({ type: 'success', message }),
+      error: (message) => addAlert({ type: 'error', message }),
+      report(message: string, shouldBeExplicit?: boolean): void {
+        if (
+          process.env.NEXT_PUBLIC_APP_ENV === 'production' &&
+          !shouldBeExplicit
+        ) {
+          this.error('There was a problem. Please try again later.');
+          console.error(message);
+        } else {
+          this.error(message);
+        }
+      },
+    },
+    snacks: {
+      snacks: state.snacks,
+      add: addSnack,
+      remove: removeSnack,
+    },
+    navigation: [
+      state.isNavigationFocused,
+      (isOpen) => dispatch({ isNavigationFocused: isOpen }),
+    ],
+  };
+
   return (
     <AdminGateway onlyBlockInStaging={true}>
-      <Contexts.Snacks.Provider
-        value={{ snacks: state.snacks, add: addSnack, remove: removeSnack }}>
+      <ContextsProvider {...providedContexts}>
         <GoogleAnalyticsScripts />
-        {ComponentWithLayout}
-        <CookiePrompt />
-        <Snackbar />
-      </Contexts.Snacks.Provider>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          {ComponentWithLayout}
+          <CookiePrompt />
+          <Snackbar />
+          <AlertBar />
+        </ThemeProvider>
+      </ContextsProvider>
     </AdminGateway>
   );
 }
 
-function GoogleAnalyticsScripts() {
-  if (process.env.NEXT_PUBLIC_APP_ENV !== 'production') return null;
+function ContextsProvider({ children, ...props }: ContextsProviderProps) {
   return (
-    <React.Fragment>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
-        strategy={'afterInteractive'}
-      />
-      <Script id={'google-analytics'} strategy={'afterInteractive'}>
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', '${process.env.NEXT_PUBLIC_GA_TRACKING_ID}', {
-            page_title: '${document.title}',
-            page_url: '${location.pathname} + ${location.search}',
-          });
-        `}
-      </Script>
-    </React.Fragment>
+    <Contexts.Alerts.Provider value={props.alerts}>
+      <Contexts.Navigation.Provider value={props.navigation}>
+        <Contexts.Snacks.Provider value={props.snacks}>
+          {children}
+        </Contexts.Snacks.Provider>
+      </Contexts.Navigation.Provider>
+    </Contexts.Alerts.Provider>
   );
 }
 
 interface ZavidAppState {
+  alerts: AlertDefinition[];
   snacks: SnackDefinition[];
+  isNavigationFocused: boolean;
+}
+
+interface ContextsProviderProps extends React.PropsWithChildren {
+  alerts: Contexts.AlertsProps;
+  navigation: Contexts.NavigationProps;
+  snacks: Contexts.SnacksProps;
 }

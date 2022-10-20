@@ -5,7 +5,7 @@ export const ACCOUNTS = {
   instagram: 'https://www.instagram.com/zavidd',
   linkedin: 'https://www.linkedin.com/in/david-egbue',
   snapchat: 'https://www.snapchat.com/add/zzavidd',
-};
+} as const;
 
 /** The date this blog was founded. Month is 0-indexed. */
 export const BLOG_CREATION_DATE = new Date(2017, 8, 2);
@@ -43,6 +43,8 @@ export const RESOURCE_MAP: Record<string, string> = {
 
 /** The website title. */
 export const SITE_TITLE = 'ZAVID';
+
+export const SITE_TAGLINE = 'A Galaxy Mind in a Universe World';
 
 /** /the date of Zavid's birthday. Month is 0-indexed. */
 export const ZAVID_BIRTHDAY = new Date(1996, 11, 2);

@@ -5,22 +5,23 @@ import { mutate } from 'swr';
 import Checkbox from 'componentsv2/Checkbox';
 import Input from 'componentsv2/Input';
 import { Modal } from 'componentsv2/Modal';
-import Alert from 'constants/alert';
+import Contexts from 'constants/contexts';
 import HandlersV2 from 'constants/handlersv2';
-import { ButtonVariant } from 'constants/styling';
 import Utils from 'constants/utils';
 import {
   initialState,
   WishlistPageContext,
 } from 'fragments/wishlist/WishlistContext';
 import type { ClaimWishlistItemPayload } from 'private/api/wishlist';
-import CPX from 'stylesv2/Components.styles';
-import FORM from 'stylesv2/Form.styles';
-import WL from 'stylesv2/Wishlist.styles';
+import FORM from 'stylesv2/Components/Form.styles';
+import ModalStyle from 'stylesv2/Components/Modal.styles';
+import WL from 'stylesv2/Pages/Wishlist.styles';
+import { ButtonVariant } from 'stylesv2/Variables.styles';
 
 export function DeleteWishlistItemModal() {
   const [context, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
+  const Alerts = useContext(Contexts.Alerts);
 
   /**
    * Deletes the selected wishlist item.
@@ -37,11 +38,11 @@ export function DeleteWishlistItemModal() {
       });
       consign({ isDeletePromptVisible: false });
       await mutate('/api/wishlist');
-      Alert.success(
+      Alerts.success(
         `You've successfully deleted '${context.selectedWishlistItem.name}'.`,
       );
     } catch (e: any) {
-      Alert.error(e.message);
+      Alerts.error(e.message);
     }
   }
 
@@ -58,16 +59,16 @@ export function DeleteWishlistItemModal() {
       body={`Are you sure you want to delete '${context.selectedWishlistItem?.name}'?`}
       footer={
         <React.Fragment>
-          <CPX.Modal.FooterButton
+          <ModalStyle.FooterButton
             variant={ButtonVariant.DELETE}
             onClick={deleteWishlistItem}>
             Delete
-          </CPX.Modal.FooterButton>
-          <CPX.Modal.FooterButton
+          </ModalStyle.FooterButton>
+          <ModalStyle.FooterButton
             variant={ButtonVariant.CANCEL}
             onClick={onCancelDeleteClick}>
             Cancel
-          </CPX.Modal.FooterButton>
+          </ModalStyle.FooterButton>
         </React.Fragment>
       }
     />
@@ -77,6 +78,7 @@ export function DeleteWishlistItemModal() {
 export function ClaimWishlistItemModal() {
   const [context, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
+  const Alerts = useContext(Contexts.Alerts);
 
   const { data: session } = useSession();
   const email = session?.user?.email;
@@ -112,7 +114,7 @@ export function ClaimWishlistItemModal() {
       });
       await mutate('/api/wishlist');
     } catch (e: any) {
-      Alert.error(e.message);
+      Alerts.error(e.message);
     } finally {
       consign({ isClaimPromptVisible: false });
     }
@@ -131,16 +133,16 @@ export function ClaimWishlistItemModal() {
       body={<ClaimForm />}
       footer={
         <React.Fragment>
-          <CPX.Modal.FooterButton
+          <ModalStyle.FooterButton
             variant={ButtonVariant.CONFIRM}
             onClick={claimItem}>
             Claim
-          </CPX.Modal.FooterButton>
-          <CPX.Modal.FooterButton
+          </ModalStyle.FooterButton>
+          <ModalStyle.FooterButton
             variant={ButtonVariant.CANCEL}
             onClick={onCancelClaimClick}>
             Cancel
-          </CPX.Modal.FooterButton>
+          </ModalStyle.FooterButton>
         </React.Fragment>
       }
     />
@@ -170,7 +172,7 @@ function ClaimForm() {
       <WL.Claim.Partition>
         <WL.Claim.Text>
           You are about to claim this item:&nbsp;
-          <b>{context.selectedWishlistItem?.name}</b>.
+          <strong>{context.selectedWishlistItem?.name}</strong>.
         </WL.Claim.Text>
         {maxClaimQuantity && maxClaimQuantity >= 2 ? (
           <FORM.FieldRow>

@@ -1,26 +1,24 @@
 import type { GetServerSideProps } from 'next';
-import React, { useState } from 'react';
-import type { RootStateOrAny } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import React, { useContext, useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import type {
   SubscriberDAO,
   SubscriptionsMapping,
 } from 'classes/subscribers/SubscriberDAO';
-import { ConfirmButton, InvisibleButton } from 'components/button';
-import { Container } from 'components/layout';
-import { ConfirmModal } from 'components/modal';
-import { Title } from 'components/text';
-import Alert, { AlertType } from 'constants/alert';
+import Checkbox from 'componentsv2/Checkbox';
+import { Modal } from 'componentsv2/Modal';
+import Contexts from 'constants/contexts';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import PreferenceChecks from 'fragments/subscribers/SubscriptionPreferences';
 import SSR from 'private/ssr';
-import css from 'styles/pages/Subscribers.module.scss';
+import ModalStyle from 'stylesv2/Components/Modal.styles';
+import { SubscribePrefStyle as SPS } from 'stylesv2/Pages/Subscribe.styles';
+import { ButtonVariant } from 'stylesv2/Variables.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
@@ -28,12 +26,14 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
   pageProps,
 }) => {
   const { subscriber } = pageProps;
-  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
 
-  const [preferences, setPreferences] = useState(
-    subscriber.subscriptions as SubscriptionsMapping,
-  );
-  const [deleteModalVisible, setDeleteModalVisibility] = useState(false);
+  const [state, setState] = useState<SubscriptionPreferencesState>({
+    preferences: subscriber.subscriptions as SubscriptionsMapping,
+    deleteModalVisible: false,
+  });
+  const dispatch = Utils.createDispatch(setState);
+  const Alerts = useContext(Contexts.Alerts);
+  const router = useRouter();
 
   async function updateSubscriptionPreferences() {
     try {
@@ -44,7 +44,7 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
           .withEmail(email)
           .withFirstName(firstname)
           .withLastName(lastname)
-          .withSubscriptions(preferences)
+          .withSubscriptions(state.preferences)
           .build(),
       };
 
@@ -52,11 +52,11 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
         method: 'PUT',
         body: JSON.stringify(payload),
       });
-      Alert.success(
+      Alerts.success(
         "You've successfully updated your subscription preferences.",
       );
     } catch (e: any) {
-      reportError(e.message);
+      Alerts.report(e.message);
     }
   }
 
@@ -66,47 +66,75 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
         method: 'DELETE',
         body: JSON.stringify({ id: subscriber.id }),
       });
-      Alert.set({
-        type: AlertType.SUCCESS,
+      Alerts.set({
+        type: 'success',
         message: "You've successfully unsubscribed from my blog.",
       });
-      setDeleteModalVisibility(false);
-      location.href = '/';
+      dispatch({ deleteModalVisible: false });
+      void router.push('/');
     } catch (e: any) {
       reportError(e.message);
     }
   }
 
+  function markPreference(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name } = e.target;
+    dispatch({
+      preferences: {
+        ...state.preferences,
+        [name]: !state.preferences[name],
+      },
+    });
+  }
+
   return (
     <React.Fragment>
       <PageMetadata {...pathDefinition} />
-      <Container>
-        <Title className={css['pref-title']}>Subscription Preferences</Title>
-        <div className={css['pref-email']}>{subscriber.email}</div>
-        <div className={css['pref-checks-intro']}>
-          You are subscribed to my:
-        </div>
-        <PreferenceChecks
-          preferences={preferences}
-          setPreferences={setPreferences}
-        />
-        <ConfirmButton
-          onClick={updateSubscriptionPreferences}
-          className={css['pref-update-button']}>
-          Update Preferences
-        </ConfirmButton>
-        <InvisibleButton
-          onClick={() => setDeleteModalVisibility(true)}
-          className={css[`pref-unsubscribe-button-${theme}`]}>
-          Unsubscribe
-        </InvisibleButton>
-      </Container>
-      <ConfirmModal
-        visible={deleteModalVisible}
-        message={'Are you sure you want to unsubscribe?'}
-        confirmFunction={unsubscribe}
-        confirmText={'Yes, I want to unsubscribe'}
-        closeFunction={() => setDeleteModalVisibility(false)}
+      <SPS.Container>
+        <SPS.Main>
+          <SPS.Heading>Subscription Preferences</SPS.Heading>
+          <SPS.Email>{subscriber.email}</SPS.Email>
+          <SPS.Text>You are subscribed to my:</SPS.Text>
+          <SPS.PrefList>
+            {Object.entries(state.preferences).map(([label, checked], key) => {
+              return (
+                <li key={key}>
+                  <Checkbox
+                    name={label}
+                    label={label}
+                    checked={checked}
+                    onChange={markPreference}
+                  />
+                </li>
+              );
+            })}
+          </SPS.PrefList>
+          <SPS.Button onClick={updateSubscriptionPreferences}>
+            Update Preferences
+          </SPS.Button>
+          <SPS.HyperlinkButton
+            onClick={() => dispatch({ deleteModalVisible: true })}>
+            Unsubscribe
+          </SPS.HyperlinkButton>
+        </SPS.Main>
+      </SPS.Container>
+      <Modal
+        visible={state.deleteModalVisible}
+        body={'Are you sure you want to unsubscribe?'}
+        footer={
+          <React.Fragment>
+            <ModalStyle.FooterButton
+              variant={ButtonVariant.CANCEL}
+              onClick={unsubscribe}>
+              Yes, I want to unsubscribe.
+            </ModalStyle.FooterButton>
+            <ModalStyle.FooterButton
+              variant={ButtonVariant.CANCEL}
+              onClick={() => dispatch({ deleteModalVisible: false })}>
+              Cancel
+            </ModalStyle.FooterButton>
+          </React.Fragment>
+        }
       />
     </React.Fragment>
   );
@@ -116,18 +144,28 @@ export const getServerSideProps: GetServerSideProps<
   SubscriptionsProps
 > = async ({ query, res }) => {
   res.setHeader('X-Robots-Tag', 'noindex');
-  return {
-    props: {
-      pathDefinition: {
-        title: `Subscription Preferences | ${SITE_TITLE}`,
+
+  try {
+    const subscriber = JSON.parse(
+      await SSR.Subscribers.getByToken(query.token as string),
+    );
+
+    return {
+      props: {
+        pathDefinition: {
+          title: `Subscription Preferences | ${SITE_TITLE}`,
+        },
+        pageProps: {
+          subscriber,
+        },
       },
-      pageProps: {
-        subscriber: JSON.parse(
-          await SSR.Subscribers.getByToken(query.token as string),
-        ),
-      },
-    },
-  };
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      notFound: true,
+    };
+  }
 };
 
 SubscriptionPreferences.getLayout = Layout.addPartials;
@@ -137,4 +175,9 @@ interface SubscriptionsProps extends AppPageProps {
   pageProps: {
     subscriber: SubscriberDAO;
   };
+}
+
+interface SubscriptionPreferencesState {
+  preferences: SubscriptionsMapping;
+  deleteModalVisible: boolean;
 }

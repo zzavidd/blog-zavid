@@ -5,7 +5,7 @@ import type { PageDAO } from './PageDAO';
 
 /** The class for Page objects and methods. */
 export class PageBuilder {
-  private page: PageDAO = {};
+  private page: PageDAO = new PageBuilder().build();
 
   public withTitle(title?: string): PageBuilder {
     this.page.title = title!.trim();

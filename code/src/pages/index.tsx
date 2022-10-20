@@ -1,23 +1,23 @@
 import type { GetServerSideProps } from 'next';
-import React from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps, NextPageWithLayout } from 'constants/types';
-import { HomeField, HomeRow } from 'fragments/home/Home.styles';
 import LatestDiaryEntry from 'fragments/home/HomeDiary';
 import Introduction from 'fragments/home/HomeIntroduction';
 import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
 import LatestReverie from 'fragments/home/HomeReverie';
-import Search from 'fragments/home/HomeSearch';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import SSR from 'private/ssr';
-import css from 'styles/pages/Home.module.scss';
+import * as Styles from 'stylesv2/Pages/Home.styles';
 
 // eslint-disable-next-line react/function-component-definition
-const Home: NextPageWithLayout<HomeProps> = ({ pageProps, pathDefinition }) => {
+const HomePage: NextPageWithLayout<HomeProps> = ({
+  pageProps,
+  pathDefinition,
+}) => {
   const {
     homeText,
     latestDiaryEntry,
@@ -26,28 +26,19 @@ const Home: NextPageWithLayout<HomeProps> = ({ pageProps, pathDefinition }) => {
     emailSubCount,
   } = pageProps;
   return (
-    <React.Fragment>
+    <Styles.HomePage>
       <PageMetadata {...pathDefinition} />
-      <div className={css['home-page']}>
+      <Styles.HomeMain>
         <Introduction content={homeText} emailSubCount={emailSubCount} />
-        <Search />
-        <HomeRow>
-          <HomeField xl={6}>
-            <LatestDiaryEntry entry={latestDiaryEntry} />
-          </HomeField>
-          <HomeField xl={6}>
-            <LatestReverie reverie={latestReverie} />
-          </HomeField>
-        </HomeRow>
-      </div>
-      <HomeRow>
+        <LatestDiaryEntry entry={latestDiaryEntry} />
+        <LatestReverie reverie={latestReverie} />
+      </Styles.HomeMain>
+      <Styles.Aside.Container>
         <RandomPostsGrid posts={randomPosts} />
-      </HomeRow>
-    </React.Fragment>
+      </Styles.Aside.Container>
+    </Styles.HomePage>
   );
 };
-
-Home.getLayout = Layout.addPartials;
 
 export const getServerSideProps: GetServerSideProps<
   Partial<HomeProps>
@@ -59,6 +50,7 @@ export const getServerSideProps: GetServerSideProps<
     randomPosts,
     emailSubCount,
   } = JSON.parse(await SSR.Home.getPreloadedProps());
+
   return {
     props: {
       pathDefinition: {
@@ -77,7 +69,8 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-export default Home;
+HomePage.getLayout = Layout.addPartials;
+export default HomePage;
 
 interface HomeProps extends AppPageProps {
   pageProps: {

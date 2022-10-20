@@ -1,15 +1,22 @@
 import React from 'react';
 
+import { Body, BodyContent } from 'stylesv2/Global.styles';
+
 import Footer from './shared/Footer';
 import Header from './shared/Header';
+import { MainNavigationBar, MobileNavigationBar } from './shared/NavigationBar';
 
 namespace Layout {
   export function addPartials(page: React.ReactElement) {
     return (
       <React.Fragment>
         <Header />
-        {page}
+        <Body>
+          <MainNavigationBar />
+          <BodyContent>{page}</BodyContent>
+        </Body>
         <Footer />
+        <MobileNavigationBar />
       </React.Fragment>
     );
   }
@@ -19,6 +26,7 @@ namespace Layout {
       <React.Fragment>
         <Header />
         {page}
+        <MobileNavigationBar />
       </React.Fragment>
     );
   }

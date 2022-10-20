@@ -54,7 +54,7 @@ export default class AppDocument extends Document {
             rel={'stylesheet'}
           />
         </Head>
-        <body className={'body'}>
+        <body>
           <Main />
           <NextScript />
         </body>

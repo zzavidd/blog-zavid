@@ -1,17 +1,18 @@
 import type { EntityDAO } from '../entity';
 
 export interface PostDAO extends EntityDAO {
-  title?: string;
-  type?: PostType;
+  title: string;
+  type: PostType;
   typeId?: number;
-  content?: string;
+  content: string;
   status?: PostStatus;
-  excerpt?: string;
-  slug?: string | null;
-  tags?: string | string[];
-  datePublished?: string | Date;
-  image?: PostImage | string;
-  contentImages?: PostContentImages;
+  excerpt: string;
+  slug: string | null;
+  tags: string | string[];
+  datePublished: string | Date;
+  image: PostImage | string | null;
+  imagePlaceholder?: string;
+  contentImages: PostContentImages;
   domainId?: number;
   domainTitle?: string;
   domainType?: PostType;
@@ -55,3 +56,8 @@ export type PostContentImages =
   | PostContentImageMapping
   | string
   | undefined;
+
+export interface PostDomain extends Pick<PostDAO, 'type' | 'status'> {
+  label: string | number;
+  value: string | number;
+}

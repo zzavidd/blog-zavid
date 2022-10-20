@@ -1,101 +1,111 @@
-import React, { useState } from 'react';
-import { Container } from 'react-bootstrap';
+import type { IconDefinition } from '@fortawesome/free-brands-svg-icons';
+import {
+  faInstagram,
+  faLinkedin,
+  faSnapchat,
+  faTwitter,
+} from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useContext, useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
-import { ConfirmButton } from 'components/button';
-import { Field, FieldRow, TextInput } from 'components/form';
-import { Icon } from 'components/library';
-import { Title, VanillaLink } from 'components/text';
-import Alert from 'constants/alert';
+import Input from 'componentsv2/Input';
+import Contexts from 'constants/contexts';
 import { UIError } from 'constants/errors';
 import { ACCOUNTS, COPYRIGHT } from 'constants/settings';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
-import css from 'styles/Partials.module.scss';
+import FooterStyle from 'stylesv2/Partials/Footer.styles';
 
-const footerLinks = [
+const FOOTER_LINKS = [
   { name: 'About Zavid', url: '/about' },
   { name: 'Privacy Policy', url: '/privacy' },
   { name: 'Cookie Policy', url: '/cookies' },
 ];
 
+const SOCIAL_PLUGS: { name: keyof typeof ACCOUNTS; icon: IconDefinition }[] = [
+  { name: 'twitter', icon: faTwitter },
+  { name: 'instagram', icon: faInstagram },
+  { name: 'linkedin', icon: faLinkedin },
+  { name: 'snapchat', icon: faSnapchat },
+];
+
 export default function Footer() {
   return (
-    <footer className={css['footer']}>
-      <Container className={css['footer-container']}>
-        <FieldRow>
-          <Field lg={{ span: 5, order: 2 }} className={css['footer-field']}>
-            <SocialPlugs />
-          </Field>
-          <Field lg={{ span: 4, order: 3 }} className={css['footer-field']}>
-            <SubscribeForm />
-          </Field>
-          <Field lg={{ span: 3, order: 1 }} className={css['footer-field']}>
-            <FooterLinks />
-          </Field>
-        </FieldRow>
-        <FieldRow>
-          <Field>
-            <div className={css['footer-copyright']}>{COPYRIGHT}</div>
-          </Field>
-        </FieldRow>
-      </Container>
-    </footer>
+    <FooterStyle.Container>
+      <FooterStyle.Content>
+        <FooterStyle.Row>
+          <SocialPlugs />
+          <SubscribeForm />
+          <FooterLinks />
+        </FooterStyle.Row>
+        <FooterStyle.CopyrightBox>
+          <FooterStyle.Copyright>{COPYRIGHT}</FooterStyle.Copyright>
+        </FooterStyle.CopyrightBox>
+      </FooterStyle.Content>
+    </FooterStyle.Container>
   );
 }
 
 function FooterLinks() {
   return (
-    <React.Fragment>
-      <Title className={css['footer-links-title']}>INFORMATION</Title>
-      {footerLinks.map(({ name, url }, key) => {
-        return (
-          <a key={key} href={url} className={css['footer-link']}>
-            {name}
-          </a>
-        );
-      })}
-    </React.Fragment>
+    <FooterStyle.LinksMenuBox>
+      <FooterStyle.Heading>INFORMATION</FooterStyle.Heading>
+      <FooterStyle.LinksMenu>
+        {FOOTER_LINKS.map(({ name, url }, key) => {
+          return (
+            <li key={key}>
+              <a href={url}>{name}</a>
+            </li>
+          );
+        })}
+      </FooterStyle.LinksMenu>
+    </FooterStyle.LinksMenuBox>
   );
 }
 
 function SocialPlugs() {
   return (
-    <div>
-      <Title className={css['footer-socials-title']}>
-        Follow me on socials
-      </Title>
-      <div>
-        <VanillaLink href={ACCOUNTS.twitter} className={css['footer-socials']}>
-          <Icon name={'twitter'} prefix={'fab'} withRightSpace={false} />
-        </VanillaLink>
-        <VanillaLink
-          href={ACCOUNTS.instagram}
-          className={css['footer-socials']}>
-          <Icon name={'instagram'} prefix={'fab'} withRightSpace={false} />
-        </VanillaLink>
-        <VanillaLink href={ACCOUNTS.linkedin} className={css['footer-socials']}>
-          <Icon name={'linkedin'} prefix={'fab'} withRightSpace={false} />
-        </VanillaLink>
-        <VanillaLink href={ACCOUNTS.snapchat} className={css['footer-socials']}>
-          <Icon name={'snapchat-ghost'} prefix={'fab'} withRightSpace={false} />
-        </VanillaLink>
-      </div>
-    </div>
+    <FooterStyle.SocialPlugsBox>
+      <FooterStyle.Heading>Follow me on socials</FooterStyle.Heading>
+      <FooterStyle.SocialIcons>
+        {SOCIAL_PLUGS.map(({ name, icon }) => {
+          return (
+            <a href={ACCOUNTS[name]} key={name}>
+              <FontAwesomeIcon icon={icon} />
+            </a>
+          );
+        })}
+      </FooterStyle.SocialIcons>
+    </FooterStyle.SocialPlugsBox>
   );
 }
 
 function SubscribeForm() {
-  const [email, setEmail] = useState('');
-  const [isRequestPending, setRequestPending] = useState(false);
+  const [state, setState] = useState({
+    email: '',
+    isRequestPending: false,
+    honeypotInput: '',
+  });
+  const dispatch = Utils.createDispatch(setState);
+
+  const Alerts = useContext(Contexts.Alerts);
 
   async function subscribeEmail() {
-    setRequestPending(true);
+    dispatch({ isRequestPending: true });
+
+    if (state.honeypotInput) {
+      return Alerts.set({
+        type: 'success',
+        message: `Thank you for subscribing!\nI've added ${state.email} to my mailing list.`,
+      });
+    }
+
     try {
-      Validate.email(email);
+      Validate.email(state.email);
 
       const payload = new SubscriberBuilder()
-        .withEmail(email)
+        .withEmail(state.email)
         .withDefaultSubscriptions()
         .build();
 
@@ -103,40 +113,42 @@ function SubscribeForm() {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      Alert.success(
-        `Thank you for subscribing!\nI've added ${email} to my mailing list.`,
+      Alerts.success(
+        `Thank you for subscribing!\nI've added ${state.email} to my mailing list.`,
       );
     } catch (e: any) {
       if (e instanceof UIError) {
-        Alert.report(e.message, true);
+        Alerts.report(e.message, true);
       } else if (e.message.includes('ER_DUP_ENTRY')) {
-        Alert.error('The email address you submitted already exists.');
+        Alerts.error('The email address you submitted already exists.');
       } else {
-        Alert.report(e.message);
+        Alerts.report(e.message);
       }
     } finally {
-      setRequestPending(false);
+      dispatch({ isRequestPending: false });
     }
   }
 
   return (
-    <div>
-      <Title className={css['quick-subscribe-title']}>Quick Subscribe</Title>
-      <div className={css['quick-subscribe-message']}>
+    <FooterStyle.SubscribeFormBox>
+      <FooterStyle.Heading>Quick Subscribe</FooterStyle.Heading>
+      <FooterStyle.Summary>
         And never miss a diary entry nor a post.
-      </div>
-      <TextInput
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+      </FooterStyle.Summary>
+      <Input.Email
+        value={state.email}
+        onChange={(e) => dispatch({ email: e.target.value })}
         placeholder={'Enter your email address'}
-        className={css['quick-subscribe-input']}
       />
-      <ConfirmButton
-        onClick={subscribeEmail}
-        isRequestPending={isRequestPending}
-        className={css['quick-subscribe-button']}>
-        Submit
-      </ConfirmButton>
-    </div>
+      <FooterStyle.SubscribeButton onClick={subscribeEmail}>
+        {state.isRequestPending ? 'Subscribing...' : 'Subscribe'}
+      </FooterStyle.SubscribeButton>
+      <FooterStyle.HoneyPot
+        value={state.honeypotInput}
+        onChange={(e) => dispatch({ honeypotInput: e.target.value })}
+        tabIndex={-1}
+        autoComplete={'off'}
+      />
+    </FooterStyle.SubscribeFormBox>
   );
 }

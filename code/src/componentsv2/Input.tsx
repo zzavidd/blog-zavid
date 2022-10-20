@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import type { ReactDatePickerProps } from 'react-datepicker';
 import ReactDatePicker from 'react-datepicker';
 
-import FORM from 'stylesv2/Form.styles';
+import FORM from 'stylesv2/Components/Form.styles';
 
 import Clickable from './Clickable';
 
@@ -30,6 +30,15 @@ namespace Input {
     return (
       <IInput {...props} type={'number'} value={value} min={props.min ?? 0} />
     );
+  }
+
+  /**
+   * For email input.
+   * @param props The input props.
+   * @returns The component.
+   */
+  export function Email(props: InputProps) {
+    return <IInput {...props} type={'email'} />;
   }
 
   /**

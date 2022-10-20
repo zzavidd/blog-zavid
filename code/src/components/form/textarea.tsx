@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { RootStateOrAny } from 'react-redux';
-import { useSelector } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
-
-import css from 'styles/components/Form.module.scss';
 
 export function ShortTextArea(props: TextAreaProps) {
   return <TextArea {...props} minRows={1} />;
@@ -20,7 +16,6 @@ function TextArea({
   placeholder,
   minRows = 1,
 }: TextAreaProps) {
-  const theme = useSelector(({ theme }: RootStateOrAny) => theme);
   const [keysPressed, setKeysPressed] = useState<Record<string, boolean>>({});
   const [shouldSetCursor, setShouldSetCursor] = useState(false);
   const [cursorPosition, setCursorPosition] = useState(0);
@@ -38,6 +33,7 @@ function TextArea({
       textAreaElement.setSelectionRange(cursorPosition, cursorPosition);
     }
     setShouldSetCursor(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldSetCursor]);
 
   /**
@@ -218,7 +214,6 @@ function TextArea({
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
       placeholder={placeholder}
-      className={css[`textarea-${theme}`]}
       onPaste={embedLinkInText}
       ref={(element) => setTextAreaElement(element)}
     />

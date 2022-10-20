@@ -1,140 +1,161 @@
+import {
+  faChevronLeft,
+  faChevronRight,
+  faLeftLong,
+  faStar,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
-import React, { useState } from 'react';
-import { zDate, zText } from 'zavid-modules';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
+import { zText } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
-import { AdminButton, BackButton } from 'components/button';
-import { Curator } from 'components/curator';
-import { Label } from 'components/form';
-import { Signature } from 'components/image';
-import { Spacer, Toolbar } from 'components/layout';
-import { Icon } from 'components/library';
-import ShareBlock from 'components/share';
-import { Divider, Paragraph, Title } from 'components/text';
-import Timeline, { TimelineType } from 'components/timeline';
-import { SITE_TITLE } from 'constants/settings';
+import ShareBlock from 'componentsv2/ShareBlock';
+import { DOMAIN, SITE_TITLE } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
-import AdminLock from 'fragments/AdminLock';
-import TagBlock from 'fragments/diary/DiaryTags';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
-import { CuratePrompt } from 'fragments/shared/CuratePrompt';
+import ZDate from 'lib/date';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
-import css from 'styles/pages/Posts.module.scss';
+import FORM from 'stylesv2/Components/Form.styles';
+import AS from 'stylesv2/Pages/Article.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   pathDefinition,
   pageProps,
 }) => {
-  const {
-    current: diaryEntry,
-    previous: previousDiaryEntry,
-    next: nextDiaryEntry,
-  } = pageProps;
+  const { current: diaryEntry } = pageProps;
+  const router = useRouter();
 
-  const [isImageModalVisible, setImageModalVisibility] = useState(false);
-  const [isCuratePromptVisible, setCuratePromptVisible] = useState(false);
-  const [curatePromptRef, setCuratePromptRef] = useState<HTMLElement>();
-  const [imageContent, setImageContent] = useState('');
-
-  const date = zDate.formatDate(diaryEntry.date!, { withWeekday: true });
-  const shareMessage = `"Diary: ${date}" on ZAVID`;
-
-  const onTextLongPress = (target: HTMLElement) => {
-    setImageContent(target.innerText);
-    setCuratePromptRef(target);
-    setCuratePromptVisible(true);
-  };
+  const tags = useMemo(() => {
+    return (diaryEntry.tags as string[]).slice(0, 9).map((tag) => {
+      return tag.replace(/\s/, '');
+    });
+  }, [diaryEntry.tags]);
 
   return (
-    <React.Fragment>
+    <AS.Container>
       <PageMetadata {...pathDefinition} />
-      <Spacer>
-        <div className={css['post-single']}>
-          <Title className={css['diary-single-title']}>
-            Diary Entry #{diaryEntry.entryNumber}: {diaryEntry.title}
-          </Title>
-          <div className={css['diary-single-date']}>{date}</div>
-          <FavouriteNotice diaryEntry={diaryEntry} />
-          <Paragraph
-            className={css['post-single-content']}
-            onLongPress={onTextLongPress}>
-            {diaryEntry.content}
-          </Paragraph>
-          <Signature />
-          <Paragraph
-            className={css['post-single-footnote']}
-            onLongPress={onTextLongPress}>
-            {diaryEntry.footnote}
-          </Paragraph>
-          <Timeline
-            type={TimelineType.DIARY}
-            previous={{
-              slug: previousDiaryEntry?.entryNumber?.toString(),
-              label: `Diary Entry #${previousDiaryEntry?.entryNumber}: ${previousDiaryEntry?.title}`,
-            }}
-            next={{
-              slug: nextDiaryEntry?.entryNumber?.toString(),
-              label: `Diary Entry #${nextDiaryEntry?.entryNumber}: ${nextDiaryEntry?.title}`,
-            }}
+      <AS.Layout>
+        <TopNavigator diaryTrio={pageProps} />
+        <AS.Main>
+          <AS.Date dateTime={ZDate.formatISO(diaryEntry.date)}>
+            {ZDate.format(diaryEntry.date)}
+          </AS.Date>
+          <AS.Title>{DiaryStatic.getTitle(diaryEntry)}</AS.Title>
+          {diaryEntry.isFavourite ? (
+            <AS.FavouriteNotice>
+              <FontAwesomeIcon icon={faStar} />
+              <span>This diary entry is a personal Zavid favourite.</span>
+            </AS.FavouriteNotice>
+          ) : null}
+          <AS.Content>{diaryEntry.content}</AS.Content>
+          <AS.Signature
+            layout={'fixed'}
+            width={200}
+            height={200}
+            objectFit={'scale-down'}
           />
-          <Divider />
-          <Label>Tags:</Label>
-          <TagBlock tags={diaryEntry.tags!} />
-          <ShareBlock
-            headline={'Share This Diary Entry'}
-            message={shareMessage}
-            url={location.href}
-          />
-        </div>
-        <Toolbar spaceItems={true} hasBackButton={true}>
-          <BackButton onClick={navigateToReveries}>Back to Diary</BackButton>
-          <AdminLock>
-            <AdminButton onClick={() => navigateToEdit(diaryEntry.id!)}>
-              Edit Diary Entry
-            </AdminButton>
-          </AdminLock>
-        </Toolbar>
-      </Spacer>
-      <Curator
-        visible={isImageModalVisible}
-        closeFunction={() => setImageModalVisibility(false)}
-        sourceTitle={`Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`}
-        content={imageContent}
-      />
-      <CuratePrompt
-        target={curatePromptRef!}
-        visible={isCuratePromptVisible}
-        onHide={() => setCuratePromptVisible(false)}
-        onClick={() => {
-          setImageModalVisibility(true);
-          setCuratePromptVisible(false);
-        }}
-      />
-    </React.Fragment>
+          <AS.Content>{diaryEntry.footnote}</AS.Content>
+          <AS.Footer>
+            <div>
+              <FORM.Label>Tags:</FORM.Label>
+              <AS.TagBlock>
+                {tags.map((tag: string, key: number) => {
+                  return (
+                    <AS.Tag key={key}>
+                      <Link href={`/search?term=${tag}&onlyDiary=true`}>
+                        <a>#{tag}</a>
+                      </Link>
+                    </AS.Tag>
+                  );
+                })}
+              </AS.TagBlock>
+            </div>
+            <ShareBlock
+              headline={'Share This Diary Entry'}
+              message={`Read "${DiaryStatic.getTitle(diaryEntry)}" on ZAVID`}
+              url={DOMAIN + router.asPath}
+            />
+          </AS.Footer>
+        </AS.Main>
+        <AS.BottomNavigator>
+          <AS.BackLinkBox>
+            <Link href={'/diary'} passHref={true}>
+              <AS.BackLink>
+                <FontAwesomeIcon icon={faLeftLong} />
+                <span>Back to Diary</span>
+              </AS.BackLink>
+            </Link>
+          </AS.BackLinkBox>
+        </AS.BottomNavigator>
+      </AS.Layout>
+      {/* <Curator
+          visible={isImageModalVisible}
+          closeFunction={() => setImageModalVisibility(false)}
+          sourceTitle={`Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`}
+          content={imageContent}
+        />
+        <CuratePrompt
+          target={curatePromptRef!}
+          visible={isCuratePromptVisible}
+          onHide={() => setCuratePromptVisible(false)}
+          onClick={() => {
+            setImageModalVisibility(true);
+            setCuratePromptVisible(false);
+          }}
+        /> */}
+    </AS.Container>
   );
 };
 
-function FavouriteNotice({ diaryEntry }: { diaryEntry: DiaryDAO }) {
-  if (!diaryEntry.isFavourite) return null;
+function TopNavigator({ diaryTrio }: { diaryTrio: DiaryEntryTrio }) {
+  const { current, previous, next } = diaryTrio;
   return (
-    <div className={css['diary-single-favourite']}>
-      <Icon name={'star'} />
-      <span>{'This diary entry is a personal Zavid favourite.'}</span>
-    </div>
+    <AS.TopNavigator>
+      {previous ? (
+        <Link href={`/diary/${previous.entryNumber}`} passHref={true}>
+          <AS.TopNavigatorContent direction={'previous'}>
+            <FontAwesomeIcon icon={faChevronLeft} />
+            <AS.TopNavigatorText>
+              <h6>Previous Diary Entry</h6>
+              <p>
+                #{previous.entryNumber}: {previous.title}
+              </p>
+            </AS.TopNavigatorText>
+          </AS.TopNavigatorContent>
+        </Link>
+      ) : null}
+      <AS.TopNavigatorContent direction={'current'}>
+        <AS.TopNavigatorText>
+          <h6>Current Diary Entry</h6>
+          <p>
+            #{current.entryNumber}: {current.title}
+          </p>
+        </AS.TopNavigatorText>
+      </AS.TopNavigatorContent>
+      {next ? (
+        <Link href={`/diary/${next.entryNumber}`} passHref={true}>
+          <AS.TopNavigatorContent direction={'next'}>
+            <FontAwesomeIcon icon={faChevronRight} />
+            <AS.TopNavigatorText>
+              <h6>Next Diary Entry</h6>
+              <p>
+                #{next.entryNumber}: {next.title}
+              </p>
+            </AS.TopNavigatorText>
+          </AS.TopNavigatorContent>
+        </Link>
+      ) : null}
+    </AS.TopNavigator>
   );
 }
-
-const navigateToReveries = (): void => {
-  location.href = '/diary';
-};
-const navigateToEdit = (id: number): void => {
-  location.href = `/admin/diary/edit/${id}`;
-};
 
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryPageProps
@@ -161,13 +182,14 @@ export const getServerSideProps: GetServerSideProps<
           url: `/diary/${diaryEntry.slug}`,
           article: {
             publishedTime: diaryEntry.date as string,
-            tags: JSON.parse(diaryEntry.tags as string),
+            tags: diaryEntry.tags as string[],
           },
         },
         pageProps: diaryTrio,
       },
     };
   } catch (e) {
+    console.error(e);
     return {
       notFound: true,
     };
@@ -179,9 +201,11 @@ export default DiaryEntryPage;
 
 interface DiaryEntryPageProps {
   pathDefinition: PathDefinition;
-  pageProps: {
-    current: DiaryDAO;
-    previous: DiaryDAO;
-    next: DiaryDAO;
-  };
+  pageProps: DiaryEntryTrio;
+}
+
+interface DiaryEntryTrio {
+  current: DiaryDAO;
+  previous: DiaryDAO;
+  next: DiaryDAO;
 }

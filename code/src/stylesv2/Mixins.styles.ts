@@ -1,6 +1,10 @@
+import type * as CSS from 'csstype';
 import { darken } from 'polished';
-import { css } from 'styled-components';
 import type { FlattenSimpleInterpolation } from 'styled-components';
+import { css } from 'styled-components';
+
+import type { Breakpoint } from 'stylesv2/Variables.styles';
+import { BREAKPOINTS } from 'stylesv2/Variables.styles';
 
 namespace Mixins {
   export function ClickBehavior(
@@ -18,6 +22,24 @@ namespace Mixins {
         background-color: ${darken(options?.active || 0.1, color)};
       }
     `;
+  }
+
+  export function Responsive(
+    ...entries: ResponsiveEntry[]
+  ): FlattenSimpleInterpolation {
+    return entries.map(([attribute, fallback, breakpoints]) => {
+      return css`
+        ${attribute}: ${fallback};
+        ${breakpoints &&
+        Object.entries(breakpoints).map(([breakpoint, value]) => {
+          return css`
+            @media (max-width: ${BREAKPOINTS[breakpoint as Breakpoint]}) {
+              ${attribute}: ${value};
+            }
+          `;
+        })}
+      `;
+    });
   }
 
   export function Visible(
@@ -49,3 +71,9 @@ interface ConditionalAdditions {
   whenTrue: FlattenSimpleInterpolation;
   whenFalse?: FlattenSimpleInterpolation;
 }
+
+type ResponsiveEntry = [
+  keyof CSS.PropertiesHyphen,
+  string | number,
+  Partial<Record<Breakpoint, string | number>>,
+];

@@ -2,8 +2,7 @@ import Head from 'next/head';
 import React from 'react';
 import { zString } from 'zavid-modules';
 
-import { cloudinaryBaseUrl } from 'components/image';
-import { CARD_IMAGE, DOMAIN } from 'constants/settings';
+import { CARD_IMAGE, CLOUDINARY_BASE_URL, DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 
 export default function PageMetadata({
@@ -14,7 +13,7 @@ export default function PageMetadata({
   article,
 }: PathDefinition) {
   const ogUrl = `${DOMAIN}${url}`;
-  const ogImage = `${cloudinaryBaseUrl}/${cardImage}`;
+  const ogImage = `${CLOUDINARY_BASE_URL}/${cardImage}`;
   return (
     <Head>
       <title>{title}</title>

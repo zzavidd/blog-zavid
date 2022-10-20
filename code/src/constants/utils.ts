@@ -25,10 +25,8 @@ namespace Utils {
       ...options,
       body,
     });
-    if (res.status.toString().startsWith('4')) {
-      const { message } = await res.json();
-      throw new Error(message);
-    } else if (!res.ok) {
+
+    if (!res.ok) {
       throw new Error(await res.text());
     }
     return res.json();

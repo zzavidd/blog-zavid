@@ -1,37 +1,27 @@
-import React from 'react';
-import { zDate } from 'zavid-modules';
-
-import { Signature } from 'components/image';
-import { Paragraph, Title } from 'components/text';
 import { BLOG_REDEVELOPMENT_DATE } from 'constants/settings';
-import { HomeRow, HomeField } from 'fragments/home/Home.styles';
-import css from 'styles/pages/Home.module.scss';
+import ZDate from 'lib/date';
+import * as Styles from 'stylesv2/Pages/Home.styles';
 
 export default function HomeIntroduction({
   content,
   emailSubCount,
 }: IntroductionProps) {
   return (
-    <HomeRow className={css['introduction-wrapper']}>
-      <HomeField xl={7}>
-        <div className={css['introduction-text']}>
-          <Title className={css['introduction-text__heading']}>
-            You&#39;ve arrived. Welcome.
-          </Title>
-          <Paragraph
-            className={css['introduction-text__message']}
-            substitutions={{
-              redevelopmentDate: zDate.formatDate(BLOG_REDEVELOPMENT_DATE),
-              emailSubCount,
-            }}>
-            {content}
-          </Paragraph>
-        </div>
-      </HomeField>
-      <HomeField xl={5}>
-        <Signature className={css['introduction-signature']} />
-      </HomeField>
-    </HomeRow>
+    <Styles.Introduction.Section>
+      <Styles.Introduction.TextContainer>
+        <Styles.Introduction.Heading>
+          You&#39;ve arrived. Welcome.
+        </Styles.Introduction.Heading>
+        <Styles.Introduction.Signature layout={'responsive'} />
+        <Styles.Introduction.Text
+          substitutions={{
+            redevelopmentDate: ZDate.format(BLOG_REDEVELOPMENT_DATE),
+            emailSubCount,
+          }}>
+          {content}
+        </Styles.Introduction.Text>
+      </Styles.Introduction.TextContainer>
+    </Styles.Introduction.Section>
   );
 }
 

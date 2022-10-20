@@ -1,38 +1,43 @@
-import classnames from 'classnames';
-import Cookies from 'js-cookie';
-import React, { useState } from 'react';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
+import { useSelector, useDispatch } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 
-import { InvisibleButton } from 'components/button';
-import { Icon } from 'components/library';
+import { AppTheme } from 'classes/theme';
+import Clickable from 'componentsv2/Clickable';
+import type { AppState } from 'constants/reducers';
+import { AppActions } from 'constants/reducers';
+import { CookieStyle } from 'stylesv2/Components/Popup.styles';
+import TextStyle from 'stylesv2/Components/Text.styles';
+import { THEME } from 'stylesv2/Variables.styles';
 
 export default function CookiePrompt() {
-  const initialState = checkCookiePolicyAccepted();
-  const [wasAccepted] = useState(initialState);
-  const [isAccepted, setAcceptance] = useState(initialState);
-
-  const state = wasAccepted ? 'initial' : isAccepted ? 'hidden' : 'visible';
-  const classes = classnames('cookie-prompt', `cookie-prompt--${state}`);
-  return (
-    <div className={classes}>
-      <div className={'cookie-prompt__wrapper'}>
-        <span>
-          My site uses cookies and similar technologies to recognise your
-          preferences. Clue up on cookies by viewing my{' '}
-          <a href={'/cookies'}>Cookie Policy</a>. By closing this pop-up, you
-          consent to my use of cookies.
-        </span>
-        <InvisibleButton
-          onClick={() => {
-            Cookies.set('cookiesAccepted', 'true', { expires: 365 * 24 });
-            setAcceptance(true);
-          }}>
-          <Icon name={'times'} />
-        </InvisibleButton>
-      </div>
-    </div>
+  const { cookiePolicyAccepted } = useSelector(
+    (state: AppState) => state.local,
   );
-}
+  const appDispatch = useDispatch();
 
-function checkCookiePolicyAccepted(): boolean {
-  return Cookies.get('cookiesAccepted') === 'true';
+  function acceptCookiePolicy() {
+    appDispatch(AppActions.setCookiePolicyAccepted(true));
+  }
+
+  return (
+    <ThemeProvider theme={THEME[AppTheme.DARK]}>
+      <CookieStyle.Container visible={!cookiePolicyAccepted}>
+        <CookieStyle.Dialog>
+          <CookieStyle.Text>
+            My site uses cookies and similar technologies to recognise your
+            preferences. Clue up on cookies by viewing my&nbsp;
+            <Link href={'/cookies'}>
+              <TextStyle.Emphasis.Anchor>
+                Cookie Policy
+              </TextStyle.Emphasis.Anchor>
+            </Link>
+            . By closing this pop-up, you consent to my use of cookies.
+          </CookieStyle.Text>
+          <Clickable.Icon onClick={acceptCookiePolicy} icon={faTimes} />
+        </CookieStyle.Dialog>
+      </CookieStyle.Container>
+    </ThemeProvider>
+  );
 }

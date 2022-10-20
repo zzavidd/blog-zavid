@@ -1,119 +1,21 @@
-import React from 'react';
-import type { NavLinkProps } from 'react-bootstrap';
-import { Container, Nav, Navbar } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useContext } from 'react';
 
-import { Theme } from 'classes/theme';
-import { InvisibleButton } from 'components/button';
-import { Switch } from 'components/form/checkbox';
-import CloudImage from 'components/image';
-import { Icon, Responsive } from 'components/library';
-import type { AppState } from 'constants/reducers';
-import { AppActions } from 'constants/reducers';
-import css from 'styles/Partials.module.scss';
+import Contexts from 'constants/contexts';
+import HeaderStyle from 'stylesv2/Partials/Header.styles';
 
 export default function Header() {
-  const { appTheme } = useSelector((state: AppState) => state);
+  const [navIsFocused, setNavIsFocused] = useContext(Contexts.Navigation);
 
   return (
-    <Navbar
-      className={css[`nav-${appTheme}`]}
-      expand={'md'}
-      sticky={'top'}
-      variant={appTheme}>
-      <Container fluid={'lg'}>
-        <BrandButton />
-        <Responsive
-          defaultView={
-            <React.Fragment>
-              <NavigationLinks />
-              <ThemeSwitcher />
-              <AdminButton />
-            </React.Fragment>
-          }
-          tabletView={
-            <React.Fragment>
-              <ThemeSwitcher />
-              <AdminButton />
-              <NavigationLinks />
-            </React.Fragment>
-          }
-        />
-      </Container>
-    </Navbar>
-  );
-}
-
-function BrandButton() {
-  return (
-    <Navbar.Brand href={'/'}>
-      <CloudImage
-        containerClassName={css['nav-brand']}
-        src={'/static/logos/zavid-head-logo.png'}
-        version={1598802245}
-        alt={'Zavid Logo'}
-      />
-    </Navbar.Brand>
-  );
-}
-
-function NavigationLinks() {
-  return (
-    <React.Fragment>
-      <Navbar.Toggle className={css['nav-toggler']} />
-      <Navbar.Collapse>
-        <Nav className={'justify-content-center'}>
-          <Nav.Link href={'/reveries'}>Reveries</Nav.Link>
-          <Nav.Link href={'/diary'}>Diary</Nav.Link>
-          <Nav.Link href={'/epistles'}>Epistles</Nav.Link>
-          <DisabledNavLink>Poetry</DisabledNavLink>
-          <DisabledNavLink>Musings</DisabledNavLink>
-          <Nav.Link href={'/about'}>About</Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
-    </React.Fragment>
-  );
-}
-
-function AdminButton() {
-  const navigateToAdmin = () => (location.href = '/admin');
-  return (
-    <Nav.Item>
-      <InvisibleButton
-        onClick={navigateToAdmin}
-        className={css['nav-admin-button']}>
-        <Icon name={'lock'} withRightSpace={false} />
-      </InvisibleButton>
-    </Nav.Item>
-  );
-}
-
-function DisabledNavLink({ children }: NavLinkProps) {
-  return (
-    <Nav.Link href={'#'} className={css['nav-link-disabled']} disabled>
-      {children}
-    </Nav.Link>
-  );
-}
-
-function ThemeSwitcher() {
-  const dispatch = useDispatch();
-  const { appTheme } = useSelector((state: AppState) => state);
-
-  const switchTheme = () => {
-    const oppTheme = Theme.switchTheme(appTheme);
-    dispatch(AppActions.setAppTheme(oppTheme));
-    document.body.classList.add(`body-${oppTheme}`);
-    document.body.classList.remove(`body-${appTheme}`);
-  };
-  return (
-    <Nav.Item>
-      <Switch
-        onChange={switchTheme}
-        checked={!Theme.isLight(appTheme)}
-        checkedIcon={'moon'}
-        uncheckedIcon={'sun'}
-      />
-    </Nav.Item>
+    <HeaderStyle.Header>
+      <HeaderStyle.HeaderContent>
+        <HeaderStyle.NavToggle onClick={() => setNavIsFocused(!navIsFocused)}>
+          <FontAwesomeIcon icon={faBars} />
+        </HeaderStyle.NavToggle>
+        <HeaderStyle.ThemeSwitch />
+      </HeaderStyle.HeaderContent>
+    </HeaderStyle.Header>
   );
 }
