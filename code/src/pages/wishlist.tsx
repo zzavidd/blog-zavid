@@ -1,4 +1,5 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import type { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
 import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
