@@ -92,6 +92,7 @@ namespace DiaryStyle {
     ${Mixins.Responsive(
       ['border-bottom-width', '0', { md: '1px' }],
       ['padding', '1.5em', { lg: '1em 0', sm: '1em' }],
+      ['pointer-events', 'auto', { lg: 'none' }],
     )};
     border-bottom-color: ${({ theme }) => theme.bodyFontColor};
     border-bottom-style: solid;

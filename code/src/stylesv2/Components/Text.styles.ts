@@ -57,6 +57,7 @@ namespace TextStyle {
       cursor: pointer;
       font-family: ${FONTS.BODY};
       line-height: 140%;
+      pointer-events: auto;
       text-decoration: none;
 
       svg {

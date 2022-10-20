@@ -189,6 +189,7 @@ namespace ArticleStyle {
     align-items: center;
     color: ${({ theme }) => theme.bodyFontColor};
     gap: 1em;
+    overflow: hidden;
     padding: 1em;
     position: sticky;
     text-decoration: none;
@@ -204,9 +205,6 @@ namespace ArticleStyle {
     display: flex;
     flex-direction: column;
     gap: 0.2em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 
     h6 {
       ${Mixins.Responsive(['font-size', '0.9em', { sm: '0.6em' }])}
