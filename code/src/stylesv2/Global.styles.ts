@@ -31,7 +31,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1, h2 {
-    ${Mixins.Responsive(['letter-spacing', '0px', { sm: '-1px' }])};
+    ${Mixins.Responsive(['letter-spacing', '0px', { sm: '-1.5px' }])};
     font-family: ${FONTS.TITLE};
   }
 

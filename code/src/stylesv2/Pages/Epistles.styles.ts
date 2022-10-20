@@ -41,7 +41,7 @@ namespace EpistleStyle {
   `;
 
   export const PageSummary = styled(Paragraph)`
-    ${Mixins.Responsive(['font-size', '1.2em', { sm: '1em' }])}
+    ${Mixins.Responsive(['font-size', '1.2em', { sm: '0.95em' }])}
     text-align: center;
 
     p {
@@ -62,7 +62,7 @@ namespace EpistleStyle {
     border-radius: 10px;
     box-shadow: 0 0 0 1px ${({ theme }) => theme.bodyFontColor};
     display: block;
-    flex: 1 1 400px;
+    flex: 1 1 300px;
     flex-direction: column;
     height: 300px;
     overflow: hidden;

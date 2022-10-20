@@ -2,6 +2,7 @@ import { darken } from 'polished';
 import styled, { keyframes, css } from 'styled-components';
 
 import type { AlertType } from 'constants/types';
+import Mixins from 'stylesv2/Mixins.styles';
 import { COLOR, FONTS } from 'stylesv2/Variables.styles';
 
 const alertFadeInOut = keyframes`
@@ -87,6 +88,7 @@ export namespace CookieStyle {
 
   export const Text = styled.p`
     color: ${COLOR.WHITE};
+    ${Mixins.Responsive(['font-size', '1em', { sm: '0.8em' }])}
     margin: 0;
   `;
 }

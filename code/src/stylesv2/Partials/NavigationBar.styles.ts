@@ -16,7 +16,7 @@ namespace NavStyle {
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s;
-    width: ${MAX_NAV_WIDTH};
+    width: 100%;
 
     &:hover {
       animation: ${pulse} 1s ease 0s infinite normal both;
@@ -27,6 +27,7 @@ namespace NavStyle {
     align-items: center;
     display: flex;
     gap: 0.5em;
+    text-decoration: none;
   `;
 
   export const BrandImage = styled(NavWidgets.BrandImage)`

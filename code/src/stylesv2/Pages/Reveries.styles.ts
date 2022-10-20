@@ -26,14 +26,14 @@ namespace ReverieStyle {
   `;
 
   export const PageHeading = styled.h1`
-    font-size: 2.4em;
+    ${Mixins.Responsive(['font-size', '2.4em', { sm: '2em' }])}
     margin: 0;
     text-align: center;
     text-transform: uppercase;
   `;
 
   export const PageSummary = styled(Paragraph)`
-    ${Mixins.Responsive(['font-size', '1.2em', { sm: '1em' }])}
+    ${Mixins.Responsive(['font-size', '1.2em', { sm: '0.95em' }])}
     text-align: center;
 
     p {
@@ -70,7 +70,7 @@ namespace ReverieStyle {
   `;
 
   export const EntryContent = styled(Paragraph)`
-    ${Mixins.Responsive(['font-size', '1.3em', { sm: '1.15em' }])}
+    ${Mixins.Responsive(['font-size', '1.3em', { sm: '1em' }])}
     margin: 0;
   `;
 

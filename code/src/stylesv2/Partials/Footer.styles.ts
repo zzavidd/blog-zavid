@@ -54,9 +54,9 @@ namespace FooterStyle {
     padding: 0;
 
     a {
+      ${Mixins.Responsive(['font-size', '1.1em', { md: '1em' }])}
       color: ${({ theme }) => theme.bodyFontColor};
       font-family: ${FONTS.BODY};
-      font-size: 1.1em;
       font-weight: bold;
       text-decoration: none;
       transition: all 0.3s;

@@ -80,7 +80,7 @@ namespace DiaryStyle {
   `;
 
   export const EntryExcerpt = styled(Paragraph)`
-    font-size: 1em;
+    ${Mixins.Responsive(['font-size', '1em', { sm: '0.95em' }])}
   `;
 
   export const EntryStar = styled(FontAwesomeIcon)`

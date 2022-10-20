@@ -46,14 +46,20 @@ namespace ArticleStyle {
   `;
 
   export const Title = styled.h1`
-    ${Mixins.Responsive(['text-align', 'center', { sm: 'left' }])}
+    ${Mixins.Responsive(
+      ['font-size', '2em', { sm: '1.8em' }],
+      ['text-align', 'center', { sm: 'left' }],
+    )}
     font-size: 2em;
     margin: 0.2em 0;
     text-align: center;
   `;
 
   export const Date = styled.time`
-    ${Mixins.Responsive(['text-align', 'center', { sm: 'left' }])}
+    ${Mixins.Responsive(
+      ['font-size', '0.85em', { sm: '0.8em' }],
+      ['text-align', 'center', { sm: 'left' }],
+    )}
     font-family: ${FONTS.BODY};
     font-size: 0.85em;
     width: 100%;
@@ -67,7 +73,7 @@ namespace ArticleStyle {
   `;
 
   export const Content = styled(Paragraph)`
-    ${Mixins.Responsive(['font-size', '1.25em', { sm: '1.05em' }])}
+    ${Mixins.Responsive(['font-size', '1.25em', { sm: '1em' }])}
 
     p {
       line-height: 1.7;
@@ -207,7 +213,10 @@ namespace ArticleStyle {
     gap: 0.2em;
 
     h6 {
-      ${Mixins.Responsive(['font-size', '0.9em', { sm: '0.6em' }])}
+      ${Mixins.Responsive(
+        ['font-size', '0.9em', { sm: '0.6em' }],
+        ['letter-spacing', '0px', { sm: '-0.5px' }],
+      )}
       font-family: ${FONTS.TITLE};
       margin: 0;
     }

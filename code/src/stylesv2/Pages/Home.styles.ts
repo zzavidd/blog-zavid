@@ -37,7 +37,7 @@ export namespace Introduction {
   `;
 
   export const Heading = styled.h1`
-    font-size: 2.5em;
+    ${Mixins.Responsive(['font-size', '2.5em', { sm: '2em' }])}
     margin-block: 0;
   `;
 
@@ -87,7 +87,7 @@ export namespace Latest {
   `;
 
   export const Excerpt = styled(Paragraph)`
-    ${Mixins.Responsive(['font-size', '1.2em', { sm: '1em' }])}
+    ${Mixins.Responsive(['font-size', '1.2em', { sm: '0.95em' }])}
   `;
 
   export const DiaryIcon = styled(FontAwesomeIcon)`

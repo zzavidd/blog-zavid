@@ -10,7 +10,7 @@ export default function HomeIntroduction({
     <Styles.Introduction.Section>
       <Styles.Introduction.TextContainer>
         <Styles.Introduction.Heading>
-          You&#39;ve arrived. Welcome.
+          {Settings.SITE_TITLE}: {Settings.SITE_TAGLINE}
         </Styles.Introduction.Heading>
         <Styles.Introduction.Signature layout={'responsive'} />
         <Styles.Introduction.Text
