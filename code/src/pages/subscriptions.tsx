@@ -8,7 +8,6 @@ import type {
 } from 'classes/subscribers/SubscriberDAO';
 import Checkbox from 'componentsv2/Checkbox';
 import { Modal } from 'componentsv2/Modal';
-import { AlertType } from 'constants/alert';
 import Contexts from 'constants/contexts';
 import { SITE_TITLE } from 'constants/settings';
 import type { AppPageProps, NextPageWithLayout } from 'constants/types';
@@ -66,7 +65,7 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
         body: JSON.stringify({ id: subscriber.id }),
       });
       Alerts.set({
-        type: AlertType.SUCCESS,
+        type: 'success',
         message: "You've successfully unsubscribed from my blog.",
       });
       dispatch({ deleteModalVisible: false });

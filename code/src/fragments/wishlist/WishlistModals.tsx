@@ -5,7 +5,7 @@ import { mutate } from 'swr';
 import Checkbox from 'componentsv2/Checkbox';
 import Input from 'componentsv2/Input';
 import { Modal } from 'componentsv2/Modal';
-import Alert from 'constants/alert';
+import Contexts from 'constants/contexts';
 import HandlersV2 from 'constants/handlersv2';
 import Utils from 'constants/utils';
 import {
@@ -21,6 +21,7 @@ import { ButtonVariant } from 'stylesv2/Variables.styles';
 export function DeleteWishlistItemModal() {
   const [context, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
+  const Alerts = useContext(Contexts.Alerts);
 
   /**
    * Deletes the selected wishlist item.
@@ -37,11 +38,11 @@ export function DeleteWishlistItemModal() {
       });
       consign({ isDeletePromptVisible: false });
       await mutate('/api/wishlist');
-      Alert.success(
+      Alerts.success(
         `You've successfully deleted '${context.selectedWishlistItem.name}'.`,
       );
     } catch (e: any) {
-      Alert.error(e.message);
+      Alerts.error(e.message);
     }
   }
 
@@ -77,6 +78,7 @@ export function DeleteWishlistItemModal() {
 export function ClaimWishlistItemModal() {
   const [context, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
+  const Alerts = useContext(Contexts.Alerts);
 
   const { data: session } = useSession();
   const email = session?.user?.email;
@@ -112,7 +114,7 @@ export function ClaimWishlistItemModal() {
       });
       await mutate('/api/wishlist');
     } catch (e: any) {
-      Alert.error(e.message);
+      Alerts.error(e.message);
     } finally {
       consign({ isClaimPromptVisible: false });
     }

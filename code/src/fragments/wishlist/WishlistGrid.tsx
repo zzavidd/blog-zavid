@@ -5,7 +5,7 @@ import useSWR, { mutate } from 'swr';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import Clickable from 'componentsv2/Clickable';
-import Alert from 'constants/alert';
+import Contexts from 'constants/contexts';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
 import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';
@@ -48,6 +48,7 @@ const WishlistGridItem = React.memo(
   ({ wishlistItem }: WishlistGridItemProps) => {
     const [, setContext] = useContext(WishlistPageContext);
     const consign = Utils.createDispatch(setContext);
+    const Alerts = useContext(Contexts.Alerts);
 
     const { data: session, status } = useSession();
     const email = session?.user?.email;
@@ -129,7 +130,7 @@ const WishlistGridItem = React.memo(
         });
         await mutate('/api/wishlist');
       } catch (e: any) {
-        Alert.error(e.message);
+        Alerts.error(e.message);
       }
     }
 

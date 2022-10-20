@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { mutate } from 'swr';
 
-import Alert from 'constants/alert';
+import Contexts from 'constants/contexts';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import AdminLock from 'fragments/AdminLock';
@@ -14,6 +14,7 @@ export default function WishlistTray() {
   const [state, setState] = useState({ isRequestPending: false });
   const [context, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
+  const Alerts = useContext(Contexts.Alerts);
 
   /**
    * Submits the wishlist item.
@@ -28,10 +29,10 @@ export default function WishlistTray() {
         body: JSON.stringify({ wishlistItem: context.wishlistItem }),
       });
       await mutate('/api/wishlist');
-      Alert.success("You've successfully added a new wishlist item.");
+      Alerts.success("You've successfully added a new wishlist item.");
       consign({ isFormTrayOpen: false });
     } catch (e: any) {
-      Alert.error(e.message);
+      Alerts.error(e.message);
     } finally {
       setState({ isRequestPending: false });
     }
@@ -53,12 +54,12 @@ export default function WishlistTray() {
         }),
       });
       await mutate('/api/wishlist');
-      Alert.success(
+      Alerts.success(
         `You've successfully edited '${context.wishlistItem.name}'.`,
       );
       consign({ isFormTrayOpen: false });
     } catch (e: any) {
-      Alert.error(e.message);
+      Alerts.error(e.message);
     } finally {
       setState({ isRequestPending: false });
     }

@@ -20,7 +20,6 @@ import Utils from 'constants/utils';
 import AdminGateway from 'fragments/AdminGateway';
 import GoogleAnalyticsScripts from 'fragments/GoogleAnalyticsTag';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
-import 'styles/App.scss';
 import { GlobalStyles } from 'stylesv2/Global.styles';
 import { THEME } from 'stylesv2/Variables.styles';
 
