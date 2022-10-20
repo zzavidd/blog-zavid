@@ -57,6 +57,20 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
   );
 };
 
+export const getServerSideProps: GetServerSideProps<
+  WishlistPageProps
+  // eslint-disable-next-line require-await
+> = async ({ res }) => {
+  res.setHeader('X-Robots-Tag', 'noindex');
+  return {
+    props: {
+      pathDefinition: {
+        title: "Zavid's Wishlist",
+      },
+    },
+  };
+};
+
 export default WishlistPage;
 
 interface WishlistPageProps {
