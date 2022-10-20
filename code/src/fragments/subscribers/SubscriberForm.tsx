@@ -1,3 +1,4 @@
+export {};
 // import React from 'react';
 
 // import type { EntityFormProps } from 'classes/entity';

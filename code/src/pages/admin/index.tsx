@@ -1,3 +1,4 @@
+export {};
 // import classnames from 'classnames';
 // import type { GetStaticProps } from 'next';
 // import type { RootStateOrAny } from 'react-redux';
