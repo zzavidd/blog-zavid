@@ -5,7 +5,7 @@ import { PostType, PostStatus } from 'classes/posts/PostDAO';
 import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
-import { CLOUDINARY_BASE_URL } from 'constants/settings';
+import Settings from 'constants/settings';
 import { QueryOrder } from 'constants/types';
 import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
 
@@ -126,7 +126,7 @@ async function addPlaceholderImage(post: PostDAO): Promise<PostDAO> {
   if (!post || !post.image) return post;
 
   const { base64 } = await getPlaiceholder(
-    `${CLOUDINARY_BASE_URL}/${post.image}`,
+    `${Settings.CLOUDINARY_BASE_URL}/${post.image}`,
   );
   post.imagePlaceholder = base64;
   return post;

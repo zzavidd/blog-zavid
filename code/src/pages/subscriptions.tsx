@@ -10,7 +10,7 @@ import type {
 import Checkbox from 'componentsv2/Checkbox';
 import { Modal } from 'componentsv2/Modal';
 import Contexts from 'constants/contexts';
-import { SITE_TITLE } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
@@ -153,7 +153,7 @@ export const getServerSideProps: GetServerSideProps<
     return {
       props: {
         pathDefinition: {
-          title: `Subscription Preferences | ${SITE_TITLE}`,
+          title: `Subscription Preferences | ${Settings.SITE_TITLE}`,
         },
         pageProps: {
           subscriber,

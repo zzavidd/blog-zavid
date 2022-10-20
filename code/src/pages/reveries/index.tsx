@@ -5,7 +5,7 @@ import React, { memo } from 'react';
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatus, PostType } from 'classes/posts/PostDAO';
 import { NextImage } from 'componentsv2/Image';
-import { SITE_TITLE } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
@@ -98,7 +98,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       pathDefinition: {
-        title: `Reveries | ${SITE_TITLE}`,
+        title: `Reveries | ${Settings.SITE_TITLE}`,
         description: page.excerpt!,
         url: '/reveries',
       },

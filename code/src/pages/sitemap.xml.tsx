@@ -3,7 +3,7 @@ import { SitemapStream, streamToPromise } from 'sitemap';
 
 import { DiaryStatus } from 'classes/diary/DiaryDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { DOMAIN, RESOURCE_MAP } from 'constants/settings';
+import Settings from 'constants/settings';
 import DiaryAPI from 'private/api/diary';
 import PageAPI from 'private/api/pages';
 import PostAPI from 'private/api/posts';
@@ -50,11 +50,11 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     routes.push(`/diary/${diaryEntry.entryNumber}`),
   );
   pages.forEach((page) => routes.push(`/${page.slug}`));
-  Object.keys(RESOURCE_MAP).forEach((slug) =>
+  Object.keys(Settings.RESOURCE_MAP).forEach((slug) =>
     routes.push(`/resources/${slug}`),
   );
 
-  const sitemap = new SitemapStream({ hostname: DOMAIN });
+  const sitemap = new SitemapStream({ hostname: Settings.DOMAIN });
   routes.forEach((route) => {
     sitemap.write({ url: route, changefreq: 'weekly' });
   });

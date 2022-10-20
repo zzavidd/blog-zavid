@@ -4,7 +4,7 @@ import React from 'react';
 
 import { PostStatus, PostType } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { SITE_TITLE } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
@@ -56,7 +56,7 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
     return {
       props: {
         pathDefinition: {
-          title: `${epistle.title} | ${SITE_TITLE}`,
+          title: `${epistle.title} | ${Settings.SITE_TITLE}`,
           description: JSON.stringify(epistle.excerpt),
           url: `/epistles/${epistle.slug}`,
           cardImage: epistle.image as string,

@@ -12,7 +12,7 @@ import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import Input from 'componentsv2/Input';
 import Contexts from 'constants/contexts';
 import { UIError } from 'constants/errors';
-import { ACCOUNTS, COPYRIGHT } from 'constants/settings';
+import Settings from 'constants/settings';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import FooterStyle from 'stylesv2/Partials/Footer.styles';
@@ -23,7 +23,10 @@ const FOOTER_LINKS = [
   { name: 'Cookie Policy', url: '/cookies' },
 ];
 
-const SOCIAL_PLUGS: { name: keyof typeof ACCOUNTS; icon: IconDefinition }[] = [
+const SOCIAL_PLUGS: {
+  name: keyof typeof Settings.ACCOUNTS;
+  icon: IconDefinition;
+}[] = [
   { name: 'twitter', icon: faTwitter },
   { name: 'instagram', icon: faInstagram },
   { name: 'linkedin', icon: faLinkedin },
@@ -40,7 +43,7 @@ export default function Footer() {
           <FooterLinks />
         </FooterStyle.Row>
         <FooterStyle.CopyrightBox>
-          <FooterStyle.Copyright>{COPYRIGHT}</FooterStyle.Copyright>
+          <FooterStyle.Copyright>{Settings.COPYRIGHT}</FooterStyle.Copyright>
         </FooterStyle.CopyrightBox>
       </FooterStyle.Content>
     </FooterStyle.Container>
@@ -71,7 +74,7 @@ function SocialPlugs() {
       <FooterStyle.SocialIcons>
         {SOCIAL_PLUGS.map(({ name, icon }) => {
           return (
-            <a href={ACCOUNTS[name]} key={name}>
+            <a href={Settings.ACCOUNTS[name]} key={name}>
               <FontAwesomeIcon icon={icon} />
             </a>
           );

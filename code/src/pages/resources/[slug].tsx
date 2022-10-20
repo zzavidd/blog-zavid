@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
-import { CLOUDINARY_BASE_URL, RESOURCE_MAP } from 'constants/settings';
+import Settings from 'constants/settings';
 
 // eslint-disable-next-line react/function-component-definition
 const Resource: NextPage<ResourceProps> = ({ href }) => {
@@ -18,10 +18,10 @@ export const getServerSideProps: GetServerSideProps<ResourceProps> = async ({
   query,
   // eslint-disable-next-line require-await
 }) => {
-  const url = RESOURCE_MAP[query.slug as string];
+  const url = Settings.RESOURCE_MAP[query.slug as string];
   return {
     props: {
-      href: `${CLOUDINARY_BASE_URL}/${url}`,
+      href: `${Settings.CLOUDINARY_BASE_URL}/${url}`,
     },
   };
 };

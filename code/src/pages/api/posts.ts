@@ -12,7 +12,7 @@ import {
 } from 'classes/posts/PostQueryBuilder';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
-import { EMAILS_ON } from 'constants/settings';
+import Settings from 'constants/settings';
 import PostAPI from 'private/api/posts';
 import Emails from 'private/emails';
 import Filer from 'private/filer';
@@ -56,7 +56,7 @@ async function createPost({
   const post = await Filer.uploadImages(postToUpload);
   await new PostMutationBuilder(knex).insert(post).build();
 
-  if (isPublish && EMAILS_ON) {
+  if (isPublish && Settings.EMAILS_ON) {
     await Emails.notifyNewPost(post);
   }
 }
@@ -69,7 +69,7 @@ async function updatePost({
   const post = await Filer.replaceImages(id, postToUpload);
   await new PostMutationBuilder(knex).update(post).whereId(id).build();
 
-  if (isPublish && EMAILS_ON) {
+  if (isPublish && Settings.EMAILS_ON) {
     await Emails.notifyNewPost(post);
   }
 }

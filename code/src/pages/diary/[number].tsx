@@ -14,7 +14,7 @@ import { useMemo } from 'react';
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import ShareBlock from 'componentsv2/ShareBlock';
-import { DOMAIN, SITE_TITLE } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
@@ -81,7 +81,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
             <ShareBlock
               headline={'Share This Diary Entry'}
               message={`Read "${DiaryStatic.getTitle(diaryEntry)}" on ZAVID`}
-              url={DOMAIN + router.asPath}
+              url={Settings.DOMAIN + router.asPath}
             />
           </AS.Footer>
         </AS.Main>
@@ -177,7 +177,7 @@ export const getServerSideProps: GetServerSideProps<
     return {
       props: {
         pathDefinition: {
-          title: `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title} | ${SITE_TITLE}`,
+          title: `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title} | ${Settings.SITE_TITLE}`,
           description: ZText.extractExcerpt(diaryEntry.content!),
           url: `/diary/${diaryEntry.slug}`,
           article: {

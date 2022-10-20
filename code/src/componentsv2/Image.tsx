@@ -4,10 +4,16 @@ import { useSelector } from 'react-redux';
 
 import { Theme } from 'classes/theme';
 import type { AppState } from 'constants/reducers';
-import { CLOUDINARY_BASE_URL } from 'constants/settings';
+import Settings from 'constants/settings';
 
 export function NextImage({ src, alt, ...props }: NextImageProps) {
-  return <Image {...props} alt={alt} src={`${CLOUDINARY_BASE_URL}/${src}`} />;
+  return (
+    <Image
+      {...props}
+      alt={alt}
+      src={`${Settings.CLOUDINARY_BASE_URL}/${src}`}
+    />
+  );
 }
 
 export function SignatureImage({

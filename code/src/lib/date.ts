@@ -1,4 +1,4 @@
-import { ZAVID_BIRTHDAY } from 'constants/settings';
+import Settings from 'constants/settings';
 
 const suffixes = new Map([
   ['one', 'st'],
@@ -38,7 +38,7 @@ namespace ZDate {
   }
 
   export function calculateZavidAge(): number {
-    const diff = Date.now() - ZAVID_BIRTHDAY.getTime();
+    const diff = Date.now() - Settings.ZAVID_BIRTHDAY.getTime();
     const diffInYears = new Date(diff).getUTCFullYear() - 1970;
     return diffInYears;
   }

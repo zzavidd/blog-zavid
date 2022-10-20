@@ -5,7 +5,7 @@ import React from 'react';
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatus, PostType } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { SITE_TITLE } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
@@ -64,7 +64,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
       validateAuthorisation(post);
 
       const pathDefinition: PathDefinition = {
-        title: `${post.title} | ${SITE_TITLE}`,
+        title: `${post.title} | ${Settings.SITE_TITLE}`,
         description: post.excerpt || ZText.extractExcerpt(post.content!),
         url: `/reveries/${domainSlug}/${slug}`,
         article: {
@@ -101,7 +101,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
       validateAuthorisation(reverie);
 
       const pathDefinition: PathDefinition = {
-        title: `${reverie.title} | ${SITE_TITLE}`,
+        title: `${reverie.title} | ${Settings.SITE_TITLE}`,
         description: JSON.stringify(reverie.excerpt),
         url: `/reveries/${reverie.slug}`,
         article: {

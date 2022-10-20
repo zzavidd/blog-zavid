@@ -10,7 +10,7 @@ import { AppTheme, Theme } from 'classes/theme';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
-import { CLOUDINARY_BASE_URL } from 'constants/settings';
+import Settings from 'constants/settings';
 import AdminLock from 'fragments/AdminLock';
 import ZString from 'lib/string';
 import CPX from 'stylesv2/Components/Components.styles';
@@ -29,7 +29,7 @@ export function BrandImage(props: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div {...props}>
       <NextImage
-        src={`${CLOUDINARY_BASE_URL}/static/logos/zavid-head-logo.png`}
+        src={`${Settings.CLOUDINARY_BASE_URL}/static/logos/zavid-head-logo.png`}
         alt={'Zavid Logo'}
         width={50}
         height={50}

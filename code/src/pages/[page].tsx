@@ -2,7 +2,7 @@ import type { GetServerSideProps } from 'next';
 import React from 'react';
 
 import type { PageDAO } from 'classes/pages/PageDAO';
-import { BLOG_REDEVELOPMENT_DATE, SITE_TITLE } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
@@ -20,7 +20,7 @@ const PageSingle: NextPageWithLayout<PageSingleProps> = ({
   const substitutions = {
     lastModified: `**${ZDate.format(page.lastModified!)}**`,
     myAge: ZDate.calculateZavidAge(),
-    redevelopmentDate: ZDate.format(BLOG_REDEVELOPMENT_DATE),
+    redevelopmentDate: ZDate.format(Settings.BLOG_REDEVELOPMENT_DATE),
   };
 
   return (
@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
     return {
       props: {
         pathDefinition: {
-          title: `${page.title} | ${SITE_TITLE}`,
+          title: `${page.title} | ${Settings.SITE_TITLE}`,
           description: ZText.extractExcerpt(page.content!),
           url: `/${query.page}`,
         },

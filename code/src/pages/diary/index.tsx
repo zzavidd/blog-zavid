@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatus } from 'classes/diary/DiaryDAO';
-import { SITE_TITLE } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
@@ -117,7 +117,7 @@ export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
   return {
     props: {
       pathDefinition: {
-        title: `Diary | ${SITE_TITLE}`,
+        title: `Diary | ${Settings.SITE_TITLE}`,
         description: page.excerpt!,
         url: '/diary',
       },

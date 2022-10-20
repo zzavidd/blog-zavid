@@ -15,7 +15,7 @@ import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
 import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
 import { knex } from 'constants/knex';
-import { CLOUDINARY_BASE_URL, DOMAIN } from 'constants/settings';
+import Settings from 'constants/settings';
 import ZDate from 'lib/date';
 import * as ZText from 'lib/text';
 
@@ -46,9 +46,9 @@ namespace Emailer {
       post: {
         ...post,
         content: ZText.truncateText(content!),
-        slug: `${DOMAIN}/reveries/${slug}`,
+        slug: `${Settings.DOMAIN}/reveries/${slug}`,
         datePublished: ZDate.format(datePublished!),
-        image: `${CLOUDINARY_BASE_URL}/w_768,c_lfill/${image}`,
+        image: `${Settings.CLOUDINARY_BASE_URL}/w_768,c_lfill/${image}`,
       },
     };
 
@@ -83,7 +83,7 @@ namespace Emailer {
         ...diaryEntry,
         content: format(content!),
         footnote: format(footnote!),
-        slug: `${DOMAIN}/diary/${entryNumber}`,
+        slug: `${Settings.DOMAIN}/diary/${entryNumber}`,
         date: ZDate.format(date!),
       },
     };

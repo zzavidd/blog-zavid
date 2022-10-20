@@ -1,4 +1,4 @@
-import { BLOG_REDEVELOPMENT_DATE } from 'constants/settings';
+import Settings from 'constants/settings';
 import ZDate from 'lib/date';
 import * as Styles from 'stylesv2/Pages/Home.styles';
 
@@ -15,7 +15,7 @@ export default function HomeIntroduction({
         <Styles.Introduction.Signature layout={'responsive'} />
         <Styles.Introduction.Text
           substitutions={{
-            redevelopmentDate: ZDate.format(BLOG_REDEVELOPMENT_DATE),
+            redevelopmentDate: ZDate.format(Settings.BLOG_REDEVELOPMENT_DATE),
             emailSubCount,
           }}>
           {content}

@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 
-import { CARD_IMAGE, CLOUDINARY_BASE_URL, DOMAIN } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
 import ZString from 'lib/string';
 
@@ -9,11 +9,11 @@ export default function PageMetadata({
   title,
   url = '',
   description = '',
-  cardImage = CARD_IMAGE,
+  cardImage = Settings.CARD_IMAGE,
   article,
 }: PathDefinition) {
-  const ogUrl = `${DOMAIN}${url}`;
-  const ogImage = `${CLOUDINARY_BASE_URL}/${cardImage}`;
+  const ogUrl = `${Settings.DOMAIN}${url}`;
+  const ogImage = `${Settings.CLOUDINARY_BASE_URL}/${cardImage}`;
   return (
     <Head>
       <title>{title}</title>

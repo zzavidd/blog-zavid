@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React, { useContext } from 'react';
 
 import Contexts from 'constants/contexts';
-import { SITE_TAGLINE, SITE_TITLE } from 'constants/settings';
+import Settings from 'constants/settings';
 import * as NavWidgets from 'fragments/shared/NavWidgets';
 import NavStyle from 'stylesv2/Partials/NavigationBar.styles';
 
@@ -38,7 +38,7 @@ function NavChildren() {
             <NavStyle.BrandLink>
               <NavStyle.BrandImage />
               <NavStyle.BrandTagline onClick={() => setNavIsFocused(false)}>
-                {SITE_TITLE}: {SITE_TAGLINE}
+                {Settings.SITE_TITLE}: {Settings.SITE_TAGLINE}
               </NavStyle.BrandTagline>
             </NavStyle.BrandLink>
           </Link>

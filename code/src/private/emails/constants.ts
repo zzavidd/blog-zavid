@@ -4,21 +4,16 @@ import nodemailer from 'nodemailer';
 const { serverRuntimeConfig } = getConfig();
 
 import type { PostType } from 'classes/posts/PostDAO';
-import {
-  ACCOUNTS,
-  CLOUDINARY_BASE_URL,
-  COPYRIGHT,
-  DOMAIN,
-} from 'constants/settings';
+import Settings from 'constants/settings';
 
 export const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
 /** A map of variables used in all EJS emails */
 export const ejsLocals = {
-  accounts: ACCOUNTS,
-  cloudinaryBaseUrl: CLOUDINARY_BASE_URL,
-  copyright: COPYRIGHT,
-  domain: DOMAIN,
+  accounts: Settings.ACCOUNTS,
+  cloudinaryBaseUrl: Settings.CLOUDINARY_BASE_URL,
+  copyright: Settings.COPYRIGHT,
+  domain: Settings.DOMAIN,
 };
 
 /** The common HTML-to-text options for all emails. */

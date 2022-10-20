@@ -1,7 +1,7 @@
 import type { DefaultTheme } from 'styled-components';
 
 import type { AppTheme } from 'classes/theme';
-import { CLOUDINARY_BASE_URL } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { AlertType } from 'constants/types';
 
 export enum Breakpoint {
@@ -51,7 +51,7 @@ export const SIZES = {
 
 export const THEME: Record<AppTheme, DefaultTheme> = {
   light: {
-    backgroundImage: `${CLOUDINARY_BASE_URL}/v1606588947/static/bg/bg-app-light`,
+    backgroundImage: `${Settings.CLOUDINARY_BASE_URL}/v1606588947/static/bg/bg-app-light`,
     bodyFontColor: COLOR.BLACK,
     bodyFontColorReverse: COLOR.WHITE,
     fadedBorderColor: '#5a5a5a',
@@ -70,7 +70,7 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
     },
   },
   dark: {
-    backgroundImage: `${CLOUDINARY_BASE_URL}/v1597608184/static/bg/bg-app-dark`,
+    backgroundImage: `${Settings.CLOUDINARY_BASE_URL}/v1597608184/static/bg/bg-app-dark`,
     bodyFontColor: COLOR.WHITE,
     bodyFontColorReverse: COLOR.BLACK,
     fadedBorderColor: '#5a5a5a',

@@ -8,7 +8,7 @@ import Input from 'componentsv2/Input';
 import Contexts from 'constants/contexts';
 import { UIError } from 'constants/errors';
 import HandlersV2 from 'constants/handlersv2';
-import { SITE_TITLE } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
@@ -123,7 +123,7 @@ export const getStaticProps: GetStaticProps<AppPageProps> = () => {
   return {
     props: {
       pathDefinition: {
-        title: `Subscribe | ${SITE_TITLE}`,
+        title: `Subscribe | ${Settings.SITE_TITLE}`,
         description:
           'Be the first to know when a new post or diary entry drops.',
         url: '/subscribe',

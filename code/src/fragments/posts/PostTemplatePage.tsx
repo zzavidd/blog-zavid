@@ -11,7 +11,7 @@ import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { NextImage } from 'componentsv2/Image';
 import ShareBlock from 'componentsv2/ShareBlock';
-import { CLOUDINARY_BASE_URL } from 'constants/settings';
+import Settings from 'constants/settings';
 import type { Substitutions } from 'constants/types';
 import ZDate from 'lib/date';
 import ZString from 'lib/string';
@@ -25,7 +25,7 @@ export default function PostTemplatePage(postTrio: PostTrio) {
     const subs: Substitutions = {};
     const contentImages = JSON.parse(post.contentImages as string) || [];
     contentImages.forEach((image: string, key: number) => {
-      subs[`image${key + 1}`] = `![](${CLOUDINARY_BASE_URL}/${image})`;
+      subs[`image${key + 1}`] = `![](${Settings.CLOUDINARY_BASE_URL}/${image})`;
     });
     return subs;
   }, [post.contentImages]);
