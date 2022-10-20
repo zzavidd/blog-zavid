@@ -38,6 +38,7 @@ function TextArea({
       textAreaElement.setSelectionRange(cursorPosition, cursorPosition);
     }
     setShouldSetCursor(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldSetCursor]);
 
   /**
