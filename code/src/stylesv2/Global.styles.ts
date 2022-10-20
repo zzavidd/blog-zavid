@@ -11,6 +11,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    background-color: ${({ theme }) => theme.headerBackgroundColor};
     background-attachment: fixed;
     background-image: ${({ theme }) => `url(${theme.backgroundImage})`};
     background-repeat: no-repeat;
@@ -21,7 +22,7 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     overscroll-behavior: none;
     position: relative;
-    transition: background 0.8s;
+    transition: background-image 0.8s;
   }
 
   div#__next {
