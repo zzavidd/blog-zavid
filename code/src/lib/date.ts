@@ -1,3 +1,5 @@
+import { ZAVID_BIRTHDAY } from 'constants/settings';
+
 const suffixes = new Map([
   ['one', 'st'],
   ['two', 'nd'],
@@ -33,6 +35,12 @@ namespace ZDate {
 
   export function formatISO(date: Date | string) {
     return new Intl.DateTimeFormat('en-CA').format(new Date(date));
+  }
+
+  export function calculateZavidAge(): number {
+    const diff = Date.now() - ZAVID_BIRTHDAY.getTime();
+    const diffInYears = new Date(diff).getUTCFullYear() - 1970;
+    return diffInYears;
   }
 }
 

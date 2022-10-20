@@ -1,5 +1,6 @@
 import faker from 'faker';
-import { zNumber } from 'zavid-modules';
+
+import ZNumber from 'lib/number';
 
 import { randomElementFromList, randomEnumValue } from '../helper';
 
@@ -40,7 +41,7 @@ export class PostStatic {
     limit = 6,
   ): string {
     let content = faker.lorem.paragraphs(
-      zNumber.generateRandom(threshold, limit),
+      ZNumber.generateRandom(threshold, limit),
       '\n\n',
     );
 

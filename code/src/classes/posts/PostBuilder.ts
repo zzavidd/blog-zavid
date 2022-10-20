@@ -1,5 +1,7 @@
 import * as faker from 'faker';
-import { zDate, zString } from 'zavid-modules';
+
+import ZDate from 'lib/date';
+import ZString from 'lib/string';
 
 import { PostType, PostStatus } from './PostDAO';
 import type { PostDAO, PostImage, RandomPostOptions } from './PostDAO';
@@ -83,7 +85,7 @@ export class PostBuilder {
       numberOfContentImages = 0,
     } = options;
 
-    const title = `Test: ${zString.toTitleCase(faker.company.catchPhrase())}`;
+    const title = `Test: ${ZString.toTitleCase(faker.company.catchPhrase())}`;
 
     this.post = this.withTitle(title)
       .withRandomType(allowPageTypes)
@@ -113,7 +115,7 @@ export class PostBuilder {
   }
 
   public withRandomDate(): PostBuilder {
-    this.post.datePublished = zDate.formatISODate(faker.date.past());
+    this.post.datePublished = ZDate.formatISO(faker.date.past());
     return this;
   }
 

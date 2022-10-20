@@ -10,7 +10,6 @@ import { unstable_getServerSession } from 'next-auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
-import { zText } from 'zavid-modules';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
@@ -20,6 +19,7 @@ import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import ZDate from 'lib/date';
+import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 import FORM from 'stylesv2/Components/Form.styles';
@@ -178,7 +178,7 @@ export const getServerSideProps: GetServerSideProps<
       props: {
         pathDefinition: {
           title: `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title} | ${SITE_TITLE}`,
-          description: zText.extractExcerpt(diaryEntry.content!),
+          description: ZText.extractExcerpt(diaryEntry.content!),
           url: `/diary/${diaryEntry.slug}`,
           article: {
             publishedTime: diaryEntry.date as string,

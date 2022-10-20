@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import React from 'react';
-import { zString } from 'zavid-modules';
 
 import { CARD_IMAGE, CLOUDINARY_BASE_URL, DOMAIN } from 'constants/settings';
 import type { PathDefinition } from 'constants/types';
+import ZString from 'lib/string';
 
 export default function PageMetadata({
   title,
@@ -21,7 +21,7 @@ export default function PageMetadata({
       {article ? (
         <meta
           name={'keywords'}
-          content={zString.convertArrayToCsv(article!.tags)}
+          content={ZString.convertArrayToCsv(article!.tags)}
         />
       ) : null}
       <meta

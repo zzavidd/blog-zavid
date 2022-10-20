@@ -1,5 +1,7 @@
 import faker from 'faker';
-import { zDate, zNumber } from 'zavid-modules';
+
+import ZDate from 'lib/date';
+import ZNumber from 'lib/number';
 
 import { randomEnumValue } from '../helper';
 
@@ -29,12 +31,12 @@ export class DiaryStatic {
   }
 
   public static generateSlug(diaryEntry: DiaryDAO): string {
-    return zDate.formatISODate(diaryEntry.date as string);
+    return ZDate.formatISO(diaryEntry.date);
   }
 
   public static generateRandomTags(): string[] {
     const tags: string[] = [];
-    for (let i = 0; i < zNumber.generateRandom(5, 10); i++) {
+    for (let i = 0; i < ZNumber.generateRandom(5, 10); i++) {
       const word = faker.random.word().toLowerCase().replace('-', '');
       if (!tags.includes(word)) tags.push(word);
     }

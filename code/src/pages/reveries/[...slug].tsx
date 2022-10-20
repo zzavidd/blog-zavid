@@ -1,7 +1,6 @@
 import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
 import React from 'react';
-import { zText } from 'zavid-modules';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatus, PostType } from 'classes/posts/PostDAO';
@@ -12,6 +11,7 @@ import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
 import type { PostTrio } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
+import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 import AS from 'stylesv2/Pages/Article.styles';
@@ -65,7 +65,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
 
       const pathDefinition: PathDefinition = {
         title: `${post.title} | ${SITE_TITLE}`,
-        description: post.excerpt || zText.extractExcerpt(post.content!),
+        description: post.excerpt || ZText.extractExcerpt(post.content!),
         url: `/reveries/${domainSlug}/${slug}`,
         article: {
           publishedTime: post.datePublished as string,

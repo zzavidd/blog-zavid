@@ -99,10 +99,6 @@ export function extractExcerpt(originalText: string): string {
   return excerpt;
 }
 
-export function capitalise(text: string): string {
-  return text.charAt(0).toUpperCase() + text.substring(1);
-}
-
 export interface FormatTextOptions {
   inline?: boolean;
 }

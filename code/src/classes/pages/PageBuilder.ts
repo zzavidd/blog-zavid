@@ -1,5 +1,6 @@
 import * as faker from 'faker';
-import { zString } from 'zavid-modules';
+
+import ZString from 'lib/string';
 
 import type { PageDAO } from './PageDAO';
 
@@ -33,7 +34,7 @@ export class PageBuilder {
   }
 
   public random(): PageBuilder {
-    const title = `Test: ${zString.toTitleCase(
+    const title = `Test: ${ZString.toTitleCase(
       faker.company.catchPhraseNoun(),
     )}`;
     this.page = {
@@ -43,7 +44,7 @@ export class PageBuilder {
       isEmbed: true,
     };
 
-    this.page.slug = zString.constructCleanSlug(title);
+    this.page.slug = ZString.constructCleanSlug(title);
 
     return this;
   }

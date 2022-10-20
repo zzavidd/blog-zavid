@@ -1,5 +1,8 @@
 import * as faker from 'faker';
-import { zDate, zNumber, zString } from 'zavid-modules';
+
+import ZDate from 'lib/date';
+import ZNumber from 'lib/number';
+import ZString from 'lib/string';
 
 import { DiaryStatus } from './DiaryDAO';
 import type { DiaryDAO } from './DiaryDAO';
@@ -59,7 +62,7 @@ export class DiaryEntryBuilder {
   }
 
   public random(): DiaryEntryBuilder {
-    const title = zString.toTitleCase(faker.company.catchPhraseNoun());
+    const title = ZString.toTitleCase(faker.company.catchPhraseNoun());
 
     this.entry = this.withTitle(title)
       .withRandomContent()
@@ -81,20 +84,20 @@ export class DiaryEntryBuilder {
 
   public withRandomContent(threshold = 5, limit = 10): DiaryEntryBuilder {
     this.entry.content = faker.lorem.paragraphs(
-      zNumber.generateRandom(threshold, limit),
+      ZNumber.generateRandom(threshold, limit),
       '\n\n',
     );
     return this;
   }
 
   public withRandomDate(): DiaryEntryBuilder {
-    this.entry.date = zDate.formatISODate(faker.date.past());
+    this.entry.date = ZDate.formatISO(faker.date.past());
     return this;
   }
 
   public withRandomFootnote(): DiaryEntryBuilder {
     this.entry.footnote = faker.lorem.paragraphs(
-      zNumber.generateRandom(1, 2),
+      ZNumber.generateRandom(1, 2),
       '\n\n',
     );
     return this;

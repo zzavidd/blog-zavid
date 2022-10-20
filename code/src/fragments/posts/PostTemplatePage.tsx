@@ -14,7 +14,7 @@ import ShareBlock from 'componentsv2/ShareBlock';
 import { CLOUDINARY_BASE_URL } from 'constants/settings';
 import type { Substitutions } from 'constants/types';
 import ZDate from 'lib/date';
-import * as ZText from 'lib/text';
+import ZString from 'lib/string';
 import AS from 'stylesv2/Pages/Article.styles';
 
 export default function PostTemplatePage(postTrio: PostTrio) {
@@ -123,7 +123,7 @@ export default function PostTemplatePage(postTrio: PostTrio) {
 function TopNavigator({ postTrio }: TopNavigatorProps) {
   const { current, previous, next } = postTrio;
   const directory = PostStatic.getDirectory(current.type);
-  const postType = ZText.capitalise(current.type);
+  const postType = ZString.capitalise(current.type);
   return (
     <AS.TopNavigator>
       <div>

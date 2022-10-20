@@ -1,9 +1,9 @@
 import Cloudinary from 'cloudinary';
 import { debug } from 'console';
-import { zString } from 'zavid-modules';
 
 import type { PostDAO, PostImage } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
+import ZString from 'lib/string';
 
 import PostAPI from './api/posts';
 
@@ -155,7 +155,7 @@ async function generateSlugAndFilename(
  */
 function generateSlug(post: PostDAO): string {
   const title = PostStatic.getPostTitle(post);
-  const slug = zString.constructCleanSlug(title);
+  const slug = ZString.constructCleanSlug(title);
   return slug;
 }
 
@@ -170,7 +170,7 @@ async function generateFilename(post: PostDAO, slug: string): Promise<string> {
   if (PostStatic.isPage(post)) {
     try {
       const postDomain = await PostAPI.getById(post.domainId!);
-      filename = zString.constructCleanSlug(
+      filename = ZString.constructCleanSlug(
         `${postDomain.title!} ${post.title}`,
       );
     } catch (err) {

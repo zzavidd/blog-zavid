@@ -1,16 +1,13 @@
 import type { GetServerSideProps } from 'next';
 import React from 'react';
-import { zDate, zText } from 'zavid-modules';
 
 import type { PageDAO } from 'classes/pages/PageDAO';
-import {
-  BLOG_REDEVELOPMENT_DATE,
-  SITE_TITLE,
-  ZAVID_BIRTHDAY,
-} from 'constants/settings';
+import { BLOG_REDEVELOPMENT_DATE, SITE_TITLE } from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageMetadata from 'fragments/PageMetadata';
+import ZDate from 'lib/date';
+import * as ZText from 'lib/text';
 import SSR from 'private/ssr';
 import PageStyle from 'stylesv2/Pages/Page.styles';
 
@@ -21,9 +18,9 @@ const PageSingle: NextPageWithLayout<PageSingleProps> = ({
 }) => {
   const { page } = pageProps;
   const substitutions = {
-    lastModified: `**${zDate.formatDate(page.lastModified!)}**`,
-    myAge: zDate.calculateAge(ZAVID_BIRTHDAY),
-    redevelopmentDate: zDate.formatDate(BLOG_REDEVELOPMENT_DATE),
+    lastModified: `**${ZDate.format(page.lastModified!)}**`,
+    myAge: ZDate.calculateZavidAge(),
+    redevelopmentDate: ZDate.format(BLOG_REDEVELOPMENT_DATE),
   };
 
   return (
@@ -50,7 +47,7 @@ export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
       props: {
         pathDefinition: {
           title: `${page.title} | ${SITE_TITLE}`,
-          description: zText.extractExcerpt(page.content!),
+          description: ZText.extractExcerpt(page.content!),
           url: `/${query.page}`,
         },
         pageProps: {

@@ -5,7 +5,6 @@ import type { SentMessageInfo } from 'nodemailer';
 import nodemailer from 'nodemailer';
 import ReactDOMServer from 'react-dom/server';
 import * as UUID from 'uuid';
-import { zDate, zText } from 'zavid-modules';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -17,6 +16,8 @@ import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuild
 import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
 import { knex } from 'constants/knex';
 import { CLOUDINARY_BASE_URL, DOMAIN } from 'constants/settings';
+import ZDate from 'lib/date';
+import * as ZText from 'lib/text';
 
 import {
   ejsLocals,
@@ -44,9 +45,9 @@ namespace Emailer {
     const entity = {
       post: {
         ...post,
-        content: zText.truncateText(content!),
+        content: ZText.truncateText(content!),
         slug: `${DOMAIN}/reveries/${slug}`,
-        datePublished: zDate.formatDate(datePublished!, { withWeekday: true }),
+        datePublished: ZDate.format(datePublished!),
         image: `${CLOUDINARY_BASE_URL}/w_768,c_lfill/${image}`,
       },
     };
@@ -62,17 +63,18 @@ namespace Emailer {
     const { title, date, content, footnote, entryNumber } = diaryEntry;
     const subject = `Diary Entry #${entryNumber}: ${title}`;
 
-    const options = {
-      css: {
-        hyperlink: 'hyperlink-content',
-        blockquote: 'blockquote',
-        ['twitter-button']: 'button',
-        ['instagram-button']: 'button',
-      },
-    };
+    // const options = {
+    //   css: {
+    //     hyperlink: 'hyperlink-content',
+    //     blockquote: 'blockquote',
+    //     ['twitter-button']: 'button',
+    //     ['instagram-button']: 'button',
+    //   },
+    // };
 
     function format(text: string): string {
-      const formattedText = zText.formatText(text, options);
+      // TODO: Correct email text styling
+      const formattedText = ZText.formatText(text);
       return ReactDOMServer.renderToStaticMarkup(formattedText);
     }
 
@@ -82,7 +84,7 @@ namespace Emailer {
         content: format(content!),
         footnote: format(footnote!),
         slug: `${DOMAIN}/diary/${entryNumber}`,
-        date: zDate.formatDate(date!, { withWeekday: true }),
+        date: ZDate.format(date!),
       },
     };
 
