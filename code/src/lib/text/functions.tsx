@@ -105,7 +105,6 @@ export function capitalise(text: string): string {
 
 export interface FormatTextOptions {
   inline?: boolean;
-  socialWrappers?: SocialWrappers;
 }
 
 export interface DeformatTextOptions {
@@ -115,11 +114,6 @@ export interface DeformatTextOptions {
 export interface TruncateOptions {
   limit?: number;
   keepRichFormatting?: boolean;
-}
-
-interface SocialWrappers {
-  Tweet?: any;
-  InstagramPost?: any;
 }
 
 export type Target = EventTarget | CurrentEventTarget;

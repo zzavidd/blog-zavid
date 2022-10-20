@@ -13,7 +13,6 @@
     "prune": "ts-prune -p ./tsconfig.json -s **/*.ts"
   },
   "dependencies": {
-    "@aarnila/react-instagram-embed": "^2.0.2",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.2.0",
@@ -35,10 +34,11 @@
     "react-bootstrap": "^2.4.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
+    "react-instagram-embed": "^3.0.0",
     "react-redux": "^7.2.1",
     "react-share": "^4.4.0",
     "react-textarea-autosize": "^8.3.2",
-    "react-twitter-embed": "^3.0.3",
+    "react-twitter-embed": "^4.0.4",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "sass": "^1.54.0",

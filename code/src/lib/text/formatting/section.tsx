@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import type { ReactElement } from 'react';
 import React from 'react';
+import InstagramEmbed from 'react-instagram-embed';
+import { TwitterTweetEmbed } from 'react-twitter-embed';
 
 import type { FormatTextOptions } from 'lib/text';
 import {
@@ -23,8 +25,7 @@ export const formatParagraph = (
 ): ReactElement => {
   if (!paragraph) return <React.Fragment></React.Fragment>;
 
-  const { inline = false, socialWrappers: { Tweet, InstagramPost } = {} } =
-    options;
+  const { inline = false } = options;
 
   const foundSection = Object.entries(sectionRegexMapping).find(([, regex]) =>
     regex.test(paragraph),
@@ -106,33 +107,25 @@ export const formatParagraph = (
             {applyEmphasisFormatting(text)}
           </TS.Section.Blockquote>
         );
-      case Section.TWEET:
+      case Section.TWEET: {
         const tweetId = paragraph.match(regex)![1];
-        if (Tweet) {
-          return <Tweet id={tweetId} key={key} />;
-        } else {
-          const url = `https://www.twitter.com/zzavidd/status/${tweetId}`;
-          return (
-            <div key={key}>
-              <a href={url} rel={'noopener noreferrer'}>
-                View Tweet
-              </a>
-            </div>
-          );
-        }
-      case Section.INSTAGRAM:
+        return <TwitterTweetEmbed tweetId={tweetId} key={key} />;
+      }
+      case Section.INSTAGRAM: {
         const igUrl = paragraph.match(regex)![1];
-        if (InstagramPost) {
-          return <InstagramPost url={igUrl} key={key} />;
-        } else {
-          return (
-            <div key={key}>
-              <a href={igUrl} rel={'noopener noreferrer'}>
-                View Instagram Post
-              </a>
-            </div>
-          );
-        }
+        const accessToken = `${process.env.NEXT_PUBLIC_FB_APP_ID}|${process.env.NEXT_PUBLIC_FB_APP_CLIENT}`;
+        // TODO: Chase getting Instagram embeds to work
+        return (
+          <InstagramEmbed
+            url={igUrl}
+            clientAccessToken={accessToken}
+            maxWidth={500}
+            hideCaption={false}
+            key={key}
+          />
+        );
+      }
+
       case Section.SPOTIFY:
         const spotifyUrl = paragraph.match(regex)![1];
         const height = spotifyUrl.includes('podcast') ? '240' : 400;
