@@ -1,4 +1,5 @@
 import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
@@ -32,6 +33,7 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
   });
   const dispatch = Utils.createDispatch(setState);
   const Alerts = useContext(Contexts.Alerts);
+  const router = useRouter();
 
   async function updateSubscriptionPreferences() {
     try {
@@ -69,7 +71,7 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
         message: "You've successfully unsubscribed from my blog.",
       });
       dispatch({ deleteModalVisible: false });
-      location.href = '/';
+      void router.push('/');
     } catch (e: any) {
       reportError(e.message);
     }

@@ -1,4 +1,5 @@
 import type { GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
@@ -30,6 +31,7 @@ const SubscribePage: NextPageWithLayout<AppPageProps> = ({
   });
   const dispatch = Utils.createDispatch(setState);
   const Alerts = useContext(Contexts.Alerts);
+  const router = useRouter();
 
   /** Create new subscriber on server. */
   async function submitSubscriber() {
@@ -52,7 +54,9 @@ const SubscribePage: NextPageWithLayout<AppPageProps> = ({
       Alerts.success(
         `Thank you for subscribing!\nI've added ${state.subscriber.email} to my mailing list.`,
       );
-      setTimeout(() => (location.href = '/'), 2000);
+      setTimeout(() => {
+        void router.push('/');
+      }, 2000);
     } catch (e: any) {
       if (e instanceof UIError) {
         Alerts.report(e.message, true);
