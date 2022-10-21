@@ -18,7 +18,7 @@ import type {
 } from 'constants/types';
 import Utils from 'constants/utils';
 import AdminGateway from 'fragments/AdminGateway';
-import GoogleAnalyticsScripts from 'fragments/GoogleAnalyticsTag';
+import MatomoScript from 'fragments/MatomoScript';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
 import { GlobalStyles } from 'stylesv2/Global.styles';
 import { THEME } from 'stylesv2/Variables.styles';
@@ -185,7 +185,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <AdminGateway onlyBlockInStaging={true}>
       <ContextsProvider {...providedContexts}>
-        <GoogleAnalyticsScripts />
+        <MatomoScript />
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           {ComponentWithLayout}
