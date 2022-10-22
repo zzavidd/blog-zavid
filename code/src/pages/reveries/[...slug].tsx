@@ -97,7 +97,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
 
       const pathDefinition: PathDefinition = {
         title: `${reverie.title} | ${Settings.SITE_TITLE}`,
-        description: JSON.stringify(reverie.excerpt),
+        description: reverie.excerpt || ZText.extractExcerpt(reverie.content),
         url: `/reveries/${reverie.slug}`,
         article: {
           publishedTime: reverie.datePublished as string,

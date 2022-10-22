@@ -9,6 +9,7 @@ import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import type { PostTrio } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
+import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
 import AS from 'stylesv2/Pages/Article.styles';
@@ -52,7 +53,7 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
       props: {
         pathDefinition: {
           title: `#${epistle.typeId}: ${epistle.title} | ${Settings.SITE_TITLE}`,
-          description: JSON.stringify(epistle.excerpt),
+          description: epistle.excerpt || ZText.extractExcerpt(epistle.content),
           url: `/epistles/${epistle.slug}`,
           cardImage: epistle.image as string,
           article: {
