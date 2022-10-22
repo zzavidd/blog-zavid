@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<EpistlePageProps> = async ({
     return {
       props: {
         pathDefinition: {
-          title: `${epistle.title} | ${Settings.SITE_TITLE}`,
+          title: `#${epistle.typeId}: ${epistle.title} | ${Settings.SITE_TITLE}`,
           description: JSON.stringify(epistle.excerpt),
           url: `/epistles/${epistle.slug}`,
           cardImage: epistle.image as string,
