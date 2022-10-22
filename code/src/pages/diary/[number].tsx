@@ -17,7 +17,6 @@ import ShareBlock from 'componentsv2/ShareBlock';
 import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
-import PageMetadata from 'fragments/PageMetadata';
 import ZDate from 'lib/date';
 import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -27,7 +26,6 @@ import AS from 'stylesv2/Pages/Article.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
-  pathDefinition,
   pageProps,
 }) => {
   const { current: diaryEntry } = pageProps;
@@ -41,7 +39,6 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
 
   return (
     <AS.Container>
-      <PageMetadata {...pathDefinition} />
       <AS.Layout>
         <TopNavigator diaryTrio={pageProps} />
         <AS.Main>

@@ -9,7 +9,6 @@ import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
-import PageMetadata from 'fragments/PageMetadata';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
@@ -19,15 +18,11 @@ import DiaryStyle from 'stylesv2/Pages/Diary.styles';
 const DIARY_HEADING = "Zavid's Diary";
 
 // eslint-disable-next-line react/function-component-definition
-const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({
-  pathDefinition,
-  pageProps,
-}) => {
+const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({ pageProps }) => {
   const { diaryEntries, pageIntro } = pageProps;
 
   return (
     <DiaryStyle.Container>
-      <PageMetadata {...pathDefinition} />
       <DiaryStyle.Main>
         <DiaryStyle.PageHeading>{DIARY_HEADING}</DiaryStyle.PageHeading>
         <DiaryStyle.PageSummary>{pageIntro}</DiaryStyle.PageSummary>

@@ -14,7 +14,6 @@ import Settings from 'constants/settings';
 import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
-import PageMetadata from 'fragments/PageMetadata';
 import SSR from 'private/ssr';
 import ModalStyle from 'stylesv2/Components/Modal.styles';
 import { SubscribePrefStyle as SPS } from 'stylesv2/Pages/Subscribe.styles';
@@ -22,7 +21,6 @@ import { ButtonVariant } from 'stylesv2/Variables.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
-  pathDefinition,
   pageProps,
 }) => {
   const { subscriber } = pageProps;
@@ -89,7 +87,6 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
 
   return (
     <React.Fragment>
-      <PageMetadata {...pathDefinition} />
       <SPS.Container>
         <SPS.Main>
           <SPS.Heading>Subscription Preferences</SPS.Heading>

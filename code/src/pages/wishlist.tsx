@@ -6,7 +6,6 @@ import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
-import PageMetadata from 'fragments/PageMetadata';
 import type { WishlistPageState } from 'fragments/wishlist/WishlistContext';
 import {
   initialState,
@@ -21,9 +20,7 @@ import WishlistTray from 'fragments/wishlist/WishlistTray';
 import WL from 'stylesv2/Pages/Wishlist.styles';
 
 // eslint-disable-next-line react/function-component-definition
-const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
-  pathDefinition,
-}) => {
+const WishlistPage: NextPageWithLayout<WishlistPageProps> = () => {
   const [state, setState] = useState<WishlistPageState>(initialState);
   const dispatch = Utils.createDispatch(setState);
 
@@ -40,7 +37,6 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = ({
 
   return (
     <WishlistPageContext.Provider value={[state, setState]}>
-      <PageMetadata {...pathDefinition} />
       <WL.Container>
         <WishlistTray />
         <WishlistGrid />

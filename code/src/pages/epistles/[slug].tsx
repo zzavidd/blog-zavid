@@ -7,7 +7,6 @@ import { PostStatic } from 'classes/posts/PostStatic';
 import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
-import PageMetadata from 'fragments/PageMetadata';
 import type { PostTrio } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -15,13 +14,9 @@ import SSR from 'private/ssr';
 import AS from 'stylesv2/Pages/Article.styles';
 
 // eslint-disable-next-line react/function-component-definition
-const EpistlePage: NextPageWithLayout<EpistlePageProps> = ({
-  pathDefinition,
-  pageProps,
-}) => {
+const EpistlePage: NextPageWithLayout<EpistlePageProps> = ({ pageProps }) => {
   return (
     <AS.Container>
-      <PageMetadata {...pathDefinition} />
       <PostTemplatePage {...pageProps} />
     </AS.Container>
   );

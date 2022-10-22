@@ -9,15 +9,11 @@ import Introduction from 'fragments/home/HomeIntroduction';
 import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
 import LatestReverie from 'fragments/home/HomeReverie';
 import Layout from 'fragments/Layout';
-import PageMetadata from 'fragments/PageMetadata';
 import SSR from 'private/ssr';
 import * as Styles from 'stylesv2/Pages/Home.styles';
 
 // eslint-disable-next-line react/function-component-definition
-const HomePage: NextPageWithLayout<HomeProps> = ({
-  pageProps,
-  pathDefinition,
-}) => {
+const HomePage: NextPageWithLayout<HomeProps> = ({ pageProps }) => {
   const {
     homeText,
     latestDiaryEntry,
@@ -27,7 +23,6 @@ const HomePage: NextPageWithLayout<HomeProps> = ({
   } = pageProps;
   return (
     <Styles.HomePage>
-      <PageMetadata {...pathDefinition} />
       <Styles.HomeMain>
         <Introduction content={homeText} emailSubCount={emailSubCount} />
         <LatestDiaryEntry entry={latestDiaryEntry} />

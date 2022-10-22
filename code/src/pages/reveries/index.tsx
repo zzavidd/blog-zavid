@@ -1,6 +1,6 @@
 import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
-import React, { memo } from 'react';
+import { memo } from 'react';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatus, PostType } from 'classes/posts/PostDAO';
@@ -9,7 +9,6 @@ import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
-import PageMetadata from 'fragments/PageMetadata';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
@@ -19,27 +18,23 @@ const REVERIES_HEADING = 'Reveries';
 
 // eslint-disable-next-line react/function-component-definition
 const ReveriesIndex: NextPageWithLayout<ReveriesIndexProps> = ({
-  pathDefinition,
   pageProps,
 }) => {
   const { pageIntro, reveries } = pageProps;
   return (
-    <React.Fragment>
-      <PageMetadata {...pathDefinition} />
-      <RS.Container>
-        <RS.Main>
-          <RS.Header>
-            <RS.PageHeading>{REVERIES_HEADING}</RS.PageHeading>
-            <RS.PageSummary>{pageIntro}</RS.PageSummary>
-          </RS.Header>
-          <RS.Grid>
-            {reveries.map((reverie, key) => (
-              <Reverie reverie={reverie} key={key} />
-            ))}
-          </RS.Grid>
-        </RS.Main>
-      </RS.Container>
-    </React.Fragment>
+    <RS.Container>
+      <RS.Main>
+        <RS.Header>
+          <RS.PageHeading>{REVERIES_HEADING}</RS.PageHeading>
+          <RS.PageSummary>{pageIntro}</RS.PageSummary>
+        </RS.Header>
+        <RS.Grid>
+          {reveries.map((reverie, key) => (
+            <Reverie reverie={reverie} key={key} />
+          ))}
+        </RS.Grid>
+      </RS.Main>
+    </RS.Container>
   );
 };
 

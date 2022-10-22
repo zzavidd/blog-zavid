@@ -13,14 +13,11 @@ import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import Layout from 'fragments/Layout';
-import PageMetadata from 'fragments/PageMetadata';
 import FORM from 'stylesv2/Components/Form.styles';
 import SS from 'stylesv2/Pages/Subscribe.styles';
 
 // eslint-disable-next-line react/function-component-definition
-const SubscribePage: NextPageWithLayout<AppPageProps> = ({
-  pathDefinition,
-}) => {
+const SubscribePage: NextPageWithLayout<AppPageProps> = () => {
   const [state, setState] = useState<SubscribePageState>({
     subscriber: {
       email: '',
@@ -74,7 +71,6 @@ const SubscribePage: NextPageWithLayout<AppPageProps> = ({
 
   return (
     <SS.Container>
-      <PageMetadata {...pathDefinition} />
       <FORM.Container>
         <SS.Heading>Subscribe to the ZAVID Blog</SS.Heading>
         <SS.Text>And never miss a diary entry nor a post.</SS.Text>

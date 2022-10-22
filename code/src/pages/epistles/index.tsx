@@ -9,7 +9,6 @@ import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
-import PageMetadata from 'fragments/PageMetadata';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
 import ES from 'stylesv2/Pages/Epistles.styles';
@@ -18,27 +17,23 @@ const EPISTLES_HEADING = 'Epistles';
 
 // eslint-disable-next-line react/function-component-definition
 const EpistlesIndex: NextPageWithLayout<EpistlesIndexProps> = ({
-  pathDefinition,
   pageProps,
 }) => {
   const { epistles, pageIntro } = pageProps;
   return (
-    <React.Fragment>
-      <PageMetadata {...pathDefinition} />
-      <ES.Container>
-        <ES.Main>
-          <ES.Header>
-            <ES.PageHeading>{EPISTLES_HEADING}</ES.PageHeading>
-            <ES.PageSummary>{pageIntro}</ES.PageSummary>
-          </ES.Header>
-          <ES.Grid>
-            {epistles.map((epistle, key) => {
-              return <Epistle epistle={epistle} key={key} />;
-            })}
-          </ES.Grid>
-        </ES.Main>
-      </ES.Container>
-    </React.Fragment>
+    <ES.Container>
+      <ES.Main>
+        <ES.Header>
+          <ES.PageHeading>{EPISTLES_HEADING}</ES.PageHeading>
+          <ES.PageSummary>{pageIntro}</ES.PageSummary>
+        </ES.Header>
+        <ES.Grid>
+          {epistles.map((epistle, key) => {
+            return <Epistle epistle={epistle} key={key} />;
+          })}
+        </ES.Grid>
+      </ES.Main>
+    </ES.Container>
   );
 };
 

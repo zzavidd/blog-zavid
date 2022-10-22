@@ -8,7 +8,6 @@ import { PostStatic } from 'classes/posts/PostStatic';
 import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
-import PageMetadata from 'fragments/PageMetadata';
 import type { PostTrio } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
 import * as ZText from 'lib/text';
@@ -17,13 +16,9 @@ import SSR from 'private/ssr';
 import AS from 'stylesv2/Pages/Article.styles';
 
 // eslint-disable-next-line react/function-component-definition
-const ReveriePage: NextPageWithLayout<ReveriePageProps> = ({
-  pathDefinition,
-  pageProps,
-}) => {
+const ReveriePage: NextPageWithLayout<ReveriePageProps> = ({ pageProps }) => {
   return (
     <AS.Container>
-      <PageMetadata {...pathDefinition} />
       <PostTemplatePage {...pageProps} />
     </AS.Container>
   );
