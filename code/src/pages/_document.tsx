@@ -1,9 +1,6 @@
 import type { DocumentContext } from 'next/document';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
-import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
-
-import MatomoScript from 'fragments/MatomoScript';
 
 export default class AppDocument extends Document {
   /**
@@ -55,7 +52,6 @@ export default class AppDocument extends Document {
             }
             rel={'stylesheet'}
           />
-          <MatomoScript />
         </Head>
         <body>
           <Main />

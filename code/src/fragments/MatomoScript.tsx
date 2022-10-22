@@ -1,12 +1,23 @@
+import { useSession } from 'next-auth/react';
 import Script from 'next/script';
 import React from 'react';
 
 export default function MatomoScript() {
+  const { data: session, status } = useSession({ required: false });
   if (process.env.NEXT_PUBLIC_APP_ENV !== 'production') return null;
+
+  // Don't track if user is admin.
+  if (
+    status === 'unauthenticated' ||
+    (status === 'authenticated' &&
+      session.user?.email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL)
+  ) {
+    return null;
+  }
+
   return (
-    <React.Fragment>
-      <Script id={'matomo'} strategy={'afterInteractive'}>
-        {`
+    <Script id={'matomo'} strategy={'afterInteractive'}>
+      {`
           var _paq = window._paq = window._paq || [];
           /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
           _paq.push(['trackPageView']);
@@ -19,7 +30,6 @@ export default function MatomoScript() {
             g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
           })();
         `}
-      </Script>
-    </React.Fragment>
+    </Script>
   );
 }
