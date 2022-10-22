@@ -16,10 +16,11 @@ namespace NavStyle {
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s;
-    width: 100%;
+    width: ${MAX_NAV_WIDTH};
 
     &:hover {
       animation: ${pulse} 1s ease 0s infinite normal both;
+      width: 100%;
     }
   `;
 
