@@ -53,7 +53,7 @@ export default function PageMetadata({
             property={'article:published_time'}
             content={article!.publishedTime}
           />
-          {article!.tags.map((tag) => {
+          {article.tags.map((tag) => {
             return <meta property={'article:tag'} content={tag} key={tag} />;
           })}
         </React.Fragment>

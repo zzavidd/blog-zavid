@@ -67,7 +67,7 @@ const DiaryEntry = React.memo(
             <DiaryStyle.EntryExcerpt
               truncate={40}
               more={{
-                href: href,
+                href,
                 text: `Read #${entry.entryNumber}: ${entry.title}`,
               }}>
               {entry.content}

@@ -5,6 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
@@ -20,6 +21,8 @@ import AS from 'stylesv2/Pages/Article.styles';
 export default function PostTemplatePage(postTrio: PostTrio) {
   const { current: post } = postTrio;
   const shareMessage = `"${post.title}" on ZAVID`;
+
+  const router = useRouter();
 
   const substitutions = useMemo(() => {
     const subs: Substitutions = {};
@@ -84,7 +87,7 @@ export default function PostTemplatePage(postTrio: PostTrio) {
             <ShareBlock
               headline={'Share This Post'}
               message={shareMessage}
-              url={location.href}
+              url={`${Settings.DOMAIN}/${router.asPath}`}
             />
           </AS.Footer>
         </AS.Main>

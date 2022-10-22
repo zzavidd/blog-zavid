@@ -26,18 +26,21 @@ import { THEME } from 'stylesv2/Variables.styles';
 
 export default function App(props: AppProps) {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <SessionProvider session={props.pageProps.session}>
-          <StyleSheetManager
-            disableVendorPrefixes={
-              process.env.NEXT_PUBLIC_APP_ENV === 'development'
-            }>
-            <ZAVIDApp {...props} />
-          </StyleSheetManager>
-        </SessionProvider>
-      </PersistGate>
-    </Provider>
+    <React.Fragment>
+      <PageMetadata {...props.pageProps.pathDefinition} />
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SessionProvider session={props.pageProps.session}>
+            <StyleSheetManager
+              disableVendorPrefixes={
+                process.env.NEXT_PUBLIC_APP_ENV === 'development'
+              }>
+              <ZAVIDApp {...props} />
+            </StyleSheetManager>
+          </SessionProvider>
+        </PersistGate>
+      </Provider>
+    </React.Fragment>
   );
 }
 
@@ -62,22 +65,6 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const { data: session, status } = useSession();
   const email = session?.user?.email;
-
-  /**
-   * Sets the timeout for any displayed alerts.
-   */
-  useEffect(() => {
-    if (!state.alerts.length) return;
-
-    // const timeout = setTimeout(() => {
-    //   removeAlert(state.alerts.length - 1);
-    // }, 4500);
-
-    // return () => {
-    //   clearTimeout(timeout);
-    // };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.alerts.length]);
 
   /**
    * Sets the timeout for any displayed snacks unless the snack is defined to be
@@ -184,21 +171,18 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   };
 
   return (
-    <React.Fragment>
-      <PageMetadata {...pageProps.pathDefinition} />
-      <AdminGateway onlyBlockInStaging={true}>
-        <ContextsProvider {...providedContexts}>
-          <MatomoScript />
-          <ThemeProvider theme={theme}>
-            <GlobalStyles />
-            {ComponentWithLayout}
-            <CookiePrompt />
-            <Snackbar />
-            <AlertBar />
-          </ThemeProvider>
-        </ContextsProvider>
-      </AdminGateway>
-    </React.Fragment>
+    <AdminGateway onlyBlockInStaging={true}>
+      <ContextsProvider {...providedContexts}>
+        <MatomoScript />
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          {ComponentWithLayout}
+          <CookiePrompt />
+          <Snackbar />
+          <AlertBar />
+        </ThemeProvider>
+      </ContextsProvider>
+    </AdminGateway>
   );
 }
 
