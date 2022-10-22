@@ -38,6 +38,10 @@ export default class AppDocument extends Document {
             name={'google-site-verification'}
             content={'pTyeDJ3sNXD05yIxUQgX8k0Iw0_IjjRGgc_Xs49WgGI'}
           />
+          <meta
+            name={'facebook-domain-verification'}
+            content={'x5godw4ipzopqpyw778h62ucn70mfl'}
+          />
           <link rel={'icon'} href={'/favicon.png'} />
 
           <link rel={'preconnect'} href={'https://fonts.googleapis.com'} />
