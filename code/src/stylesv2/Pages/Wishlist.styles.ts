@@ -1,11 +1,11 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled, { css } from 'styled-components';
 
+import Input from 'componentsv2/Input';
 import CPX from 'stylesv2/Components/Components.styles';
 import Mixins from 'stylesv2/Mixins.styles';
 import { BREAKPOINTS, COLOR, FONTS as FONT } from 'stylesv2/Variables.styles';
 
-namespace WL {
+namespace WishlistStyle {
   export const Container = styled.div`
     display: flex;
     font-family: ${FONT.BODY};
@@ -13,62 +13,12 @@ namespace WL {
     width: 100%;
   `;
 
-  export namespace Tray {
-    export const Container = styled.aside<{ open: boolean }>`
-      background-color: rgba(26, 23, 41, 0.3);
-      border-right: 1px solid #fff;
-      display: flex;
-      flex: 1 0 ${({ open }) => (open ? '500px' : 0)};
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-      transition: all 0.3s ease;
-
-      ${(props) =>
-        props.open
-          ? css`
-              opacity: 1;
-              width: 100%;
-            `
-          : css`
-              opacity: 0;
-              width: 0;
-            `};
-    `;
-
-    export const FormFooter = styled.footer`
-      display: flex;
-      flex: 0 1 auto;
-    `;
-
-    const FormButton = styled(CPX.Button)`
-      color: ${COLOR.WHITE};
-      flex: 1 1 auto;
-      font-size: 1em;
-      font-weight: bold;
-      padding: 1.3em;
-    `;
-
-    export const FormSubmitButton = styled(FormButton)`
-      ${Mixins.ClickBehavior('#2f223d', {
-        hover: 0.05,
-        active: 0.07,
-      })}
-    `;
-
-    export const FormCancelButton = styled(FormButton)`
-      ${Mixins.ClickBehavior('#533c6c', {
-        hover: -0.05,
-        active: 0.02,
-      })}
-    `;
-  }
-
   export namespace Main {
     export const Container = styled.main`
       flex: 1 1 auto;
       height: 100vh;
       overflow-y: auto;
+      position: relative;
       width: 100%;
     `;
 
@@ -201,6 +151,57 @@ namespace WL {
     `;
   }
 
+  export namespace Tray {
+    export const Container = styled.aside<{ open: boolean }>`
+      background-color: rgba(26, 23, 41, 0.3);
+      border-left: 1px solid #fff;
+      display: flex;
+      flex: 1 0 ${({ open }) => (open ? '500px' : 0)};
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      transition: all 0.1s linear;
+
+      ${(props) =>
+        props.open
+          ? css`
+              opacity: 1;
+              width: 100%;
+            `
+          : css`
+              opacity: 0;
+              width: 0;
+            `};
+    `;
+
+    export const FormFooter = styled.footer`
+      display: flex;
+      flex: 0 1 auto;
+    `;
+
+    const FormButton = styled(CPX.Button)`
+      color: ${COLOR.WHITE};
+      flex: 1 1 auto;
+      font-size: 1em;
+      font-weight: bold;
+      padding: 1.3em;
+    `;
+
+    export const FormSubmitButton = styled(FormButton)`
+      ${Mixins.ClickBehavior('#2f223d', {
+        hover: 0.05,
+        active: 0.07,
+      })}
+    `;
+
+    export const FormCancelButton = styled(FormButton)`
+      ${Mixins.ClickBehavior('#533c6c', {
+        hover: -0.05,
+        active: 0.02,
+      })}
+    `;
+  }
+
   export namespace Claim {
     export const Container = styled.div`
       column-gap: 2em;
@@ -238,30 +239,41 @@ namespace WL {
     `;
   }
 
-  export const FloatingActionButton = styled.button.attrs({ type: 'button' })<{
-    visible: boolean;
-  }>`
-    ${Mixins.ClickBehavior('rgba(67, 37, 66, 0.95)')};
-    ${({ visible }) => Mixins.Visible(visible)};
-    border-style: none;
-    color: ${COLOR.WHITE};
-    border-radius: 50%;
-    box-shadow: 0 0 5px 3px #7c687b;
-    position: fixed;
-    padding: 0.85em;
-    font-size: 2.5em;
-    right: 3%;
-    bottom: 5%;
-    transition: all 0.3s;
+  export namespace Toolbar {
+    export const Container = styled.div`
+      background-color: ${({ theme }) => theme.headerBackgroundColor};
+      bottom: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6em 1em;
+      position: sticky;
+      z-index: 2;
+    `;
 
-    &:hover {
-      transform: scale(1.1);
-    }
-  `;
+    export const Dropdown = styled(Input.Select)`
+      appearance: none;
+      border: 1px solid ${({ theme }) => theme.bodyFontColor};
+      border-radius: 15px;
+      padding: 0.5em;
+      width: max-content;
+    `;
 
-  export const FabIcon = styled(FontAwesomeIcon)`
-    display: block;
-  `;
+    export const AddButton = styled(CPX.Button)<{ visible: boolean }>`
+      ${({ visible }) => Mixins.Visible(visible)}
+      background: none;
+      color: ${({ theme }) => theme.bodyFontColor};
+      text-decoration: none;
+
+      svg {
+        color: ${({ theme }) => theme.bodyFontColor};
+        margin-right: 0.4em;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    `;
+  }
 }
 
-export default WL;
+export default WishlistStyle;

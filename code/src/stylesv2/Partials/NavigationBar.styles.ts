@@ -205,6 +205,7 @@ namespace NavStyle {
     left: 0;
     padding: 1em 0.5em;
     width: 70px;
+    z-index: 3;
 
     ${({ focused }) =>
       focused &&

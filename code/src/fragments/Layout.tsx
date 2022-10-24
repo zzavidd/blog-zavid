@@ -25,7 +25,10 @@ namespace Layout {
     return (
       <React.Fragment>
         <Header />
-        {page}
+        <Body>
+          <MainNavigationBar />
+          <BodyContent>{page}</BodyContent>
+        </Body>
         <MobileNavigationBar />
       </React.Fragment>
     );

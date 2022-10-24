@@ -1,5 +1,6 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useMemo } from 'react';
 import type { ReactDatePickerProps } from 'react-datepicker';
 import ReactDatePicker from 'react-datepicker';
@@ -62,19 +63,22 @@ namespace Input {
    * @param props The select props.
    * @returns The component.
    */
-  export function Select({ options, ...props }: SelectProps) {
+  export function Select({ options, className, ...props }: SelectProps) {
     return (
-      <FORM.Select {...props}>
-        {options.map((option) => {
-          const label = typeof option === 'object' ? option.label : option;
-          const value = typeof option === 'object' ? option.value : option;
-          return (
-            <option value={value} key={value}>
-              {label}
-            </option>
-          );
-        })}
-      </FORM.Select>
+      <FORM.SelectContainer className={className}>
+        <FORM.Select {...props}>
+          {options.map((option) => {
+            const label = typeof option === 'object' ? option.label : option;
+            const value = typeof option === 'object' ? option.value : option;
+            return (
+              <option value={value} key={value}>
+                {label}
+              </option>
+            );
+          })}
+        </FORM.Select>
+        <FontAwesomeIcon icon={faAngleDown} />
+      </FORM.SelectContainer>
     );
   }
 

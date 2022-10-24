@@ -31,7 +31,7 @@ export const GlobalStyles = createGlobalStyle`
     flex-direction: column;
   }
 
-  h1, h2 {
+  h1, h2, h3 {
     ${Mixins.Responsive(['letter-spacing', '0px', { sm: '-1.5px' }])};
     font-family: ${FONTS.TITLE};
   }

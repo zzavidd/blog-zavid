@@ -1,11 +1,13 @@
 import { faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { signIn, useSession } from 'next-auth/react';
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import useSWR, { mutate } from 'swr';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import Clickable from 'componentsv2/Clickable';
 import Contexts from 'constants/contexts';
+import type { AppState } from 'constants/reducers';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
 import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';
@@ -13,22 +15,52 @@ import WL from 'stylesv2/Pages/Wishlist.styles';
 import { THEME } from 'stylesv2/Variables.styles';
 
 import { WishlistPageContext } from './WishlistContext';
+import WishlistToolbar from './WishlistToolbar';
+
+const SORT_BY: Record<
+  keyof WishlistDAO,
+  (a: WishlistDAO, b: WishlistDAO) => number
+> = {
+  name: (a, b) =>
+    a.name.localeCompare(b.name, 'en', {
+      ignorePunctuation: true,
+    }),
+  price: (a, b) => a.price - b.price,
+  priority: (a, b) => a.priority - b.priority,
+  createTime: (a, b) =>
+    new Date(a.createTime!).getTime() - new Date(b.createTime!).getTime(),
+};
 
 export default function WishlistGrid() {
-  const { data: wishlist, error } = useSWR<Required<WishlistDAO>[]>(
+  const [state, setState] = useState<WishlistGridState>({
+    wishlist: [],
+  });
+  const dispatch = Utils.createDispatch(setState);
+
+  const { sortProperty } = useSelector(
+    (state: AppState) => state.local.wishlist,
+  );
+  const { error } = useSWR<Required<WishlistDAO>[]>(
     '/api/wishlist',
     Utils.request,
     {
       revalidateOnFocus: false,
+      onSuccess: (data) => {
+        dispatch({ wishlist: data });
+      },
     },
   );
+
+  useEffect(() => {
+    dispatch({ wishlist: state.wishlist.sort(SORT_BY[sortProperty]) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortProperty, state.wishlist]);
 
   return (
     <WL.Main.Container>
       <WL.Main.Grid>
-        {wishlist &&
-          !error &&
-          wishlist.map((wishlistItem) => {
+        {!error &&
+          state.wishlist.map((wishlistItem) => {
             return (
               <WishlistGridItem
                 key={wishlistItem.id}
@@ -37,6 +69,7 @@ export default function WishlistGrid() {
             );
           })}
       </WL.Main.Grid>
+      <WishlistToolbar />
     </WL.Main.Container>
   );
 }
@@ -124,7 +157,7 @@ const WishlistGridItem = React.memo(
         await Utils.request<UnclaimWishlistItemPayload>('/api/wishlist/claim', {
           method: 'DELETE',
           body: {
-            id: wishlistItem.id,
+            id: wishlistItem.id!,
             email,
           },
         });
@@ -189,8 +222,13 @@ const WishlistGridItem = React.memo(
       </WL.Main.Cell>
     );
   },
+  (a, b) => a.wishlistItem.id === b.wishlistItem.id,
 );
 
+interface WishlistGridState {
+  wishlist: WishlistDAO[];
+}
+
 interface WishlistGridItemProps {
-  wishlistItem: Required<WishlistDAO>;
+  wishlistItem: WishlistDAO;
 }

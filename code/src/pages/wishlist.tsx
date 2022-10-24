@@ -1,11 +1,8 @@
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import type { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
-import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
-import Utils from 'constants/utils';
-import AdminLock from 'fragments/AdminLock';
+import Layout from 'fragments/Layout';
 import type { WishlistPageState } from 'fragments/wishlist/WishlistContext';
 import {
   initialState,
@@ -22,31 +19,12 @@ import WL from 'stylesv2/Pages/Wishlist.styles';
 // eslint-disable-next-line react/function-component-definition
 const WishlistPage: NextPageWithLayout<WishlistPageProps> = () => {
   const [state, setState] = useState<WishlistPageState>(initialState);
-  const dispatch = Utils.createDispatch(setState);
-
-  /**
-   * Opens the form tray when the action button is clicked.
-   */
-  function onAddButtonClick() {
-    dispatch({
-      isFormTrayOpen: true,
-      selectedWishlistItem: null,
-      wishlistItem: WishlistStatic.initial(),
-    });
-  }
 
   return (
     <WishlistPageContext.Provider value={[state, setState]}>
       <WL.Container>
-        <WishlistTray />
         <WishlistGrid />
-        <AdminLock>
-          <WL.FloatingActionButton
-            onClick={onAddButtonClick}
-            visible={!state.isFormTrayOpen}>
-            <WL.FabIcon icon={faPlus} />
-          </WL.FloatingActionButton>
-        </AdminLock>
+        <WishlistTray />
       </WL.Container>
       <DeleteWishlistItemModal />
       <ClaimWishlistItemModal />
@@ -68,6 +46,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+WishlistPage.getLayout = Layout.addHeaderOnly;
 export default WishlistPage;
 
 interface WishlistPageProps {

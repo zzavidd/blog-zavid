@@ -7,7 +7,7 @@ import type { ReactHook } from 'constants/types';
 export interface WishlistPageState {
   wishlistItem: WishlistDAO;
   claim: WishlistClaim;
-  selectedWishlistItem: Required<WishlistDAO> | null;
+  selectedWishlistItem: WishlistDAO | null;
   isDeletePromptVisible: boolean;
   isClaimPromptVisible: boolean;
   isFormTrayOpen: boolean;

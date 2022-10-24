@@ -46,10 +46,20 @@ namespace FORM {
     font-size: 1.1em;
   `;
 
+  export const SelectContainer = styled.div`
+    align-items: center;
+    border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+    display: flex;
+    padding-block: 0.5em;
+
+    svg {
+      margin-left: 0.4em;
+    }
+  `;
+
   export const Select = styled.select`
     ${DefaultStyle}
-    border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
-    padding: 0.5em;
+    appearance: none;
   `;
 
   export namespace Date {

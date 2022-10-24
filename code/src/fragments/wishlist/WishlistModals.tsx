@@ -15,7 +15,7 @@ import {
 import type { ClaimWishlistItemPayload } from 'private/api/wishlist';
 import FORM from 'stylesv2/Components/Form.styles';
 import ModalStyle from 'stylesv2/Components/Modal.styles';
-import WL from 'stylesv2/Pages/Wishlist.styles';
+import WishlistStyle from 'stylesv2/Pages/Wishlist.styles';
 import { ButtonVariant } from 'stylesv2/Variables.styles';
 
 export function DeleteWishlistItemModal() {
@@ -106,7 +106,7 @@ export function ClaimWishlistItemModal() {
       await Utils.request<ClaimWishlistItemPayload>('/api/wishlist/claim', {
         method: 'PUT',
         body: {
-          id: context.selectedWishlistItem.id,
+          id: context.selectedWishlistItem.id!,
           email,
           quantity: context.selectedWishlistItem.quantity,
           anonymous: false,
@@ -168,12 +168,12 @@ function ClaimForm() {
   if (!context.selectedWishlistItem) return null;
 
   return (
-    <WL.Claim.Container>
-      <WL.Claim.Partition>
-        <WL.Claim.Text>
+    <WishlistStyle.Claim.Container>
+      <WishlistStyle.Claim.Partition>
+        <WishlistStyle.Claim.Text>
           You are about to claim this item:&nbsp;
           <strong>{context.selectedWishlistItem?.name}</strong>.
-        </WL.Claim.Text>
+        </WishlistStyle.Claim.Text>
         {maxClaimQuantity && maxClaimQuantity >= 2 ? (
           <FORM.FieldRow>
             <FORM.Field>
@@ -199,13 +199,13 @@ function ClaimForm() {
             />
           </FORM.Field>
         </FORM.FieldRow>
-      </WL.Claim.Partition>
-      <WL.Claim.ImageContainer>
-        <WL.Claim.Image
+      </WishlistStyle.Claim.Partition>
+      <WishlistStyle.Claim.ImageContainer>
+        <WishlistStyle.Claim.Image
           src={context.selectedWishlistItem.image}
           alt={context.selectedWishlistItem.name}
         />
-      </WL.Claim.ImageContainer>
-    </WL.Claim.Container>
+      </WishlistStyle.Claim.ImageContainer>
+    </WishlistStyle.Claim.Container>
   );
 }

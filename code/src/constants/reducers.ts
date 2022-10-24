@@ -15,11 +15,15 @@ import localStorage from 'redux-persist/lib/storage';
 import sessionStorage from 'redux-persist/lib/storage/session';
 
 import { AppTheme } from 'classes/theme';
+import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 
 const initialLocalState: AppLocalState = {
   appTheme: AppTheme.LIGHT,
   cookiePolicyAccepted: false,
   savedText: '',
+  wishlist: {
+    sortProperty: 'createTime',
+  },
 };
 
 const initialSessionState: AppSessionState = {
@@ -38,6 +42,12 @@ const localSlice = createSlice({
     },
     setCookiePolicyAccepted: (state, action: PayloadAction<boolean>) => {
       state.cookiePolicyAccepted = action.payload;
+    },
+    setWishlistSortProperty: (
+      state,
+      action: PayloadAction<keyof WishlistDAO>,
+    ) => {
+      state.wishlist.sortProperty = action.payload;
     },
   },
 });
@@ -84,8 +94,12 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 export namespace AppActions {
-  export const { saveInputText, setAppTheme, setCookiePolicyAccepted } =
-    localSlice.actions;
+  export const {
+    saveInputText,
+    setAppTheme,
+    setCookiePolicyAccepted,
+    setWishlistSortProperty,
+  } = localSlice.actions;
   export const { setLoginSnackShown } = sessionSlice.actions;
 }
 
@@ -93,6 +107,9 @@ export interface AppLocalState {
   appTheme: AppTheme;
   cookiePolicyAccepted: boolean;
   savedText: string;
+  wishlist: {
+    sortProperty: keyof WishlistDAO;
+  };
 }
 
 export interface AppSessionState {
