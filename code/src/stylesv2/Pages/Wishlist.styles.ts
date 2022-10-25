@@ -32,6 +32,10 @@ namespace WishlistStyle {
       overscroll-behavior: contain;
       padding: 1em;
       width: 100%;
+
+      @media (max-width: ${BREAKPOINTS.sm}) {
+        grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+      }
     `;
 
     export const Cell = styled.div<{ image: string }>`
@@ -39,20 +43,17 @@ namespace WishlistStyle {
       border-radius: 15px;
       box-shadow: 0 0 10px 1px #323232;
       display: flex;
-      flex: 1 1 250px;
+      flex: 1 1;
       flex-direction: column;
       height: 100%;
       max-width: 300px;
       overflow: hidden;
       position: relative;
       transition: all 0.3s ease;
-
-      @media (max-width: ${BREAKPOINTS.sm}) {
-        flex: 1 1 150px;
-      }
     `;
 
     export const CellImageContainer = styled(CPX.Clickable)`
+      ${Mixins.Responsive(['height', '200px', { sm: '150px' }])}
       background-color: ${COLOR.WHITE};
       flex: 0 0 auto;
       height: 200px;
@@ -103,24 +104,26 @@ namespace WishlistStyle {
     `;
 
     export const ItemName = styled.h3`
+      ${Mixins.Responsive(['font-size', '1.3em', { sm: '1em' }])}
       color: ${COLOR.WHITE};
       font-family: ${FONT.TITLE};
-      font-size: 1.3em;
+      letter-spacing: -1px;
       margin: 0;
     `;
 
     export const ItemPrice = styled.p`
+      ${Mixins.Responsive(['font-size', '1em', { sm: '0.8em' }])}
       font-weight: bold;
       margin-bottom: 0.5em;
     `;
 
     export const ItemQuantity = styled.span`
-      font-size: 0.8em;
+      ${Mixins.Responsive(['font-size', '0.8em', { sm: '0.6em' }])}
     `;
 
     export const ItemReservees = styled.p<{ complete: boolean }>`
+      ${Mixins.Responsive(['font-size', '0.8em', { sm: '0.6em' }])}
       color: ${({ complete }) => (complete ? '#00ff00' : '#ffff8d')};
-      font-size: 0.8em;
       margin-block: 0.4em;
       transition: all 0.3s;
     `;
@@ -143,11 +146,13 @@ namespace WishlistStyle {
           hover: 0.1,
           active: 0.15,
         })}
+      ${Mixins.Responsive(
+        ['font-size', '0.8em', { sm: '0.6em' }],
+        ['padding', '0.75em', { sm: '0.9em 0.75em' }],
+      )}
       color: ${COLOR.WHITE};
       flex: 1;
-      font-size: 0.8em;
       outline: 1px solid #3d3d3d;
-      padding: 0.75em;
     `;
   }
 

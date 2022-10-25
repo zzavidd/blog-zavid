@@ -23,7 +23,7 @@ const SORT_OPTIONS: { label: string; value: keyof WishlistDAO & string }[] = [
 export default function WishlistToolbar() {
   const [context, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
-  const { sortProperty } = useSelector(
+  const { sortProperty, sortOrderAscending } = useSelector(
     (state: AppState) => state.local.wishlist,
   );
   const appDispatch = useDispatch();
@@ -39,8 +39,22 @@ export default function WishlistToolbar() {
     });
   }
 
-  function onSortOptionChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    appDispatch(AppActions.setWishlistSortProperty(e.target.value));
+  function onSortPropertyChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    appDispatch(
+      AppActions.setWishlistSort({
+        name: 'sortProperty',
+        value: e.target.value,
+      }),
+    );
+  }
+
+  function onSortOrderChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    appDispatch(
+      AppActions.setWishlistSort({
+        name: 'sortOrderAscending',
+        value: e.target.value === 'ASC',
+      }),
+    );
   }
 
   return (
@@ -48,7 +62,12 @@ export default function WishlistToolbar() {
       <WL.Toolbar.Dropdown
         value={sortProperty}
         options={SORT_OPTIONS}
-        onChange={onSortOptionChange}
+        onChange={onSortPropertyChange}
+      />
+      <WL.Toolbar.Dropdown
+        value={sortOrderAscending ? 'ASC' : 'DESC'}
+        options={['ASC', 'DESC']}
+        onChange={onSortOrderChange}
       />
       <AdminLock>
         <WL.Toolbar.AddButton

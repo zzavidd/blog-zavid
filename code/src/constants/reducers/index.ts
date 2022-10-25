@@ -1,4 +1,3 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
 import { combineReducers, configureStore, createSlice } from '@reduxjs/toolkit';
 import {
   FLUSH,
@@ -17,12 +16,15 @@ import sessionStorage from 'redux-persist/lib/storage/session';
 import { AppTheme } from 'classes/theme';
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 
+import Reducers from './functions';
+
 const initialLocalState: AppLocalState = {
   appTheme: AppTheme.LIGHT,
   cookiePolicyAccepted: false,
   savedText: '',
   wishlist: {
     sortProperty: 'createTime',
+    sortOrderAscending: false,
   },
 };
 
@@ -33,33 +35,13 @@ const initialSessionState: AppSessionState = {
 const localSlice = createSlice({
   name: 'local',
   initialState: initialLocalState,
-  reducers: {
-    saveInputText: (state, action: PayloadAction<string>) => {
-      state.savedText = action.payload;
-    },
-    setAppTheme: (state, action: PayloadAction<AppTheme>) => {
-      state.appTheme = action.payload;
-    },
-    setCookiePolicyAccepted: (state, action: PayloadAction<boolean>) => {
-      state.cookiePolicyAccepted = action.payload;
-    },
-    setWishlistSortProperty: (
-      state,
-      action: PayloadAction<keyof WishlistDAO>,
-    ) => {
-      state.wishlist.sortProperty = action.payload;
-    },
-  },
+  reducers: Reducers.Local,
 });
 
 const sessionSlice = createSlice({
   name: 'session',
   initialState: initialSessionState,
-  reducers: {
-    setLoginSnackShown: (state, action: PayloadAction<boolean>) => {
-      state.loginSnackShown = action.payload;
-    },
-  },
+  reducers: Reducers.Session,
 });
 
 export const store = configureStore({
@@ -95,10 +77,10 @@ export const persistor = persistStore(store);
 
 export namespace AppActions {
   export const {
-    saveInputText,
     setAppTheme,
     setCookiePolicyAccepted,
-    setWishlistSortProperty,
+    setWishlistSort,
+    saveInputText,
   } = localSlice.actions;
   export const { setLoginSnackShown } = sessionSlice.actions;
 }
@@ -109,6 +91,7 @@ export interface AppLocalState {
   savedText: string;
   wishlist: {
     sortProperty: keyof WishlistDAO;
+    sortOrderAscending: boolean;
   };
 }
 

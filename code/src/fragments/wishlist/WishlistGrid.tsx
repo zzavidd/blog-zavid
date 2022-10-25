@@ -37,7 +37,7 @@ export default function WishlistGrid() {
   });
   const dispatch = Utils.createDispatch(setState);
 
-  const { sortProperty } = useSelector(
+  const { sortProperty, sortOrderAscending } = useSelector(
     (state: AppState) => state.local.wishlist,
   );
   const { error } = useSWR<Required<WishlistDAO>[]>(
@@ -52,9 +52,13 @@ export default function WishlistGrid() {
   );
 
   useEffect(() => {
-    dispatch({ wishlist: state.wishlist.sort(SORT_BY[sortProperty]) });
+    const sortedList = state.wishlist.sort(SORT_BY[sortProperty]);
+    if (!sortOrderAscending) {
+      sortedList.reverse();
+    }
+    dispatch({ wishlist: sortedList });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortProperty, state.wishlist]);
+  }, [sortProperty, sortOrderAscending, state.wishlist]);
 
   return (
     <WL.Main.Container>
