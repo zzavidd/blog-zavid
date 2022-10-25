@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
-import Input from 'componentsv2/Input';
+import Input from 'components/Input';
 import Contexts from 'constants/contexts';
 import { UIError } from 'constants/errors';
 import Settings from 'constants/settings';

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
 import { AppTheme } from 'classes/theme';
-import Clickable from 'componentsv2/Clickable';
+import Clickable from 'components/Clickable';
 import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
 import { CookieStyle } from 'styles/Components/Popup.styles';

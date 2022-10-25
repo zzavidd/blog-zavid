@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import Input from 'componentsv2/Input';
+import Input from 'components/Input';
 import CPX from 'styles/Components/Components.styles';
 import Mixins from 'styles/Mixins.styles';
 import { BREAKPOINTS, COLOR, FONTS as FONT } from 'styles/Variables.styles';

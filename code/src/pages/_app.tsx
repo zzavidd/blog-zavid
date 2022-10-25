@@ -6,8 +6,8 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { StyleSheetManager, ThemeProvider } from 'styled-components';
 
-import AlertBar from 'componentsv2/Alert';
-import Snackbar from 'componentsv2/Snack';
+import AlertBar from 'components/Alert';
+import Snackbar from 'components/Snack';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import { AppActions, persistor, store } from 'constants/reducers';

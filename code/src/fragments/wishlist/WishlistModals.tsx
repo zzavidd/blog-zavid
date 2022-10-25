@@ -2,9 +2,9 @@ import { signIn, useSession } from 'next-auth/react';
 import React, { useContext, useEffect, useMemo } from 'react';
 import { mutate } from 'swr';
 
-import Checkbox from 'componentsv2/Checkbox';
-import Input from 'componentsv2/Input';
-import { Modal } from 'componentsv2/Modal';
+import Checkbox from 'components/Checkbox';
+import Input from 'components/Input';
+import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
 import HandlersV2 from 'constants/handlersv2';
 import Utils from 'constants/utils';

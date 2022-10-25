@@ -1,8 +1,8 @@
 import { transparentize } from 'polished';
 import styled, { css } from 'styled-components';
 
-import { SignatureImage } from 'componentsv2/Image';
-import { Paragraph } from 'componentsv2/Text';
+import { SignatureImage } from 'components/Image';
+import { Paragraph } from 'components/Text';
 import Mixins from 'styles/Mixins.styles';
 import { COLOR, FONTS } from 'styles/Variables.styles';
 

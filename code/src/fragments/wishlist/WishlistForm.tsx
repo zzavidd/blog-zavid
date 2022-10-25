@@ -11,8 +11,8 @@ import {
   WishlistItemPriority,
   WishlistItemVisibility,
 } from 'classes/wishlist/WishlistDAO';
-import Clickable from 'componentsv2/Clickable';
-import Input from 'componentsv2/Input';
+import Clickable from 'components/Clickable';
+import Input from 'components/Input';
 import HandlersV2 from 'constants/handlersv2';
 import Utils from 'constants/utils';
 import FORM from 'styles/Components/Form.styles';

@@ -10,8 +10,8 @@ import React, { useMemo } from 'react';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { NextImage } from 'componentsv2/Image';
-import ShareBlock from 'componentsv2/ShareBlock';
+import { NextImage } from 'components/Image';
+import ShareBlock from 'components/ShareBlock';
 import Settings from 'constants/settings';
 import type { Substitutions } from 'constants/types';
 import ZDate from 'lib/date';

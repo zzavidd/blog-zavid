@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
-import ShareBlock from 'componentsv2/ShareBlock';
+import ShareBlock from 'components/ShareBlock';
 import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';

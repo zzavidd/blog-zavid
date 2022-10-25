@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
-import { Paragraph } from 'componentsv2/Text';
+import { Paragraph } from 'components/Text';
 import TextStyle from 'styles/Components/Text.styles';
 import Mixins from 'styles/Mixins.styles';
 import { FONTS } from 'styles/Variables.styles';

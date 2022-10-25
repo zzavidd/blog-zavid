@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { darken, transparentize } from 'polished';
 import styled from 'styled-components';
 
-import { NextImage, SignatureImage } from 'componentsv2/Image';
-import { Paragraph } from 'componentsv2/Text';
+import { NextImage, SignatureImage } from 'components/Image';
+import { Paragraph } from 'components/Text';
 import Mixins from 'styles/Mixins.styles';
 import { COLOR, FONTS } from 'styles/Variables.styles';
 

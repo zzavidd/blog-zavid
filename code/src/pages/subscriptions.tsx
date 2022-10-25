@@ -7,8 +7,8 @@ import type {
   SubscriberDAO,
   SubscriptionsMapping,
 } from 'classes/subscribers/SubscriberDAO';
-import Checkbox from 'componentsv2/Checkbox';
-import { Modal } from 'componentsv2/Modal';
+import Checkbox from 'components/Checkbox';
+import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
 import Settings from 'constants/settings';
 import type { AppPageProps, NextPageWithLayout } from 'constants/types';

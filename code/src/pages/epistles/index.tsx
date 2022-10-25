@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatus, PostType } from 'classes/posts/PostDAO';
-import { NextImage } from 'componentsv2/Image';
+import { NextImage } from 'components/Image';
 import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';

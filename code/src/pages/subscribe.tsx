@@ -4,7 +4,7 @@ import { useContext, useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
-import Input from 'componentsv2/Input';
+import Input from 'components/Input';
 import Contexts from 'constants/contexts';
 import { UIError } from 'constants/errors';
 import HandlersV2 from 'constants/handlersv2';

@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import { Paragraph } from 'componentsv2/Text';
+import { Paragraph } from 'components/Text';
 import Mixins from 'styles/Mixins.styles';
 import { COLOR, FONTS } from 'styles/Variables.styles';
 

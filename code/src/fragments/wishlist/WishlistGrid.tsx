@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import useSWR, { mutate } from 'swr';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
-import Clickable from 'componentsv2/Clickable';
+import Clickable from 'components/Clickable';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import Utils from 'constants/utils';
