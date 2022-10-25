@@ -6,7 +6,7 @@ import type {
 } from 'styled-components';
 import styled, { createGlobalStyle, css } from 'styled-components';
 
-import { FONTS } from 'stylesv2/Variables.styles';
+import { FONTS } from 'styles/Variables.styles';
 
 namespace FORM {
   const DefaultStyle: FlattenInterpolation<ThemeProps<DefaultTheme>> = css`

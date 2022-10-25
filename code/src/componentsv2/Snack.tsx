@@ -3,7 +3,7 @@ import { useContext } from 'react';
 
 import Contexts from 'constants/contexts';
 import type * as ZBT from 'constants/types';
-import * as Style from 'stylesv2/Components/Popup.styles';
+import * as Style from 'styles/Components/Popup.styles';
 
 import Clickable from './Clickable';
 

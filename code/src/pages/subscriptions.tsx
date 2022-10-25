@@ -15,9 +15,9 @@ import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
 import SSR from 'private/ssr';
-import ModalStyle from 'stylesv2/Components/Modal.styles';
-import { SubscribePrefStyle as SPS } from 'stylesv2/Pages/Subscribe.styles';
-import { ButtonVariant } from 'stylesv2/Variables.styles';
+import ModalStyle from 'styles/Components/Modal.styles';
+import { SubscribePrefStyle as SPS } from 'styles/Pages/Subscribe.styles';
+import { ButtonVariant } from 'styles/Variables.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({

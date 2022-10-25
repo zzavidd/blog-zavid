@@ -13,10 +13,10 @@ import {
   WishlistPageContext,
 } from 'fragments/wishlist/WishlistContext';
 import type { ClaimWishlistItemPayload } from 'private/api/wishlist';
-import FORM from 'stylesv2/Components/Form.styles';
-import ModalStyle from 'stylesv2/Components/Modal.styles';
-import WishlistStyle from 'stylesv2/Pages/Wishlist.styles';
-import { ButtonVariant } from 'stylesv2/Variables.styles';
+import FORM from 'styles/Components/Form.styles';
+import ModalStyle from 'styles/Components/Modal.styles';
+import WishlistStyle from 'styles/Pages/Wishlist.styles';
+import { ButtonVariant } from 'styles/Variables.styles';
 
 export function DeleteWishlistItemModal() {
   const [context, setContext] = useContext(WishlistPageContext);

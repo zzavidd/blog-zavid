@@ -11,7 +11,7 @@ import { QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
-import ES from 'stylesv2/Pages/Epistles.styles';
+import ES from 'styles/Pages/Epistles.styles';
 
 const EPISTLES_HEADING = 'Epistles';
 

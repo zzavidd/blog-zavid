@@ -13,8 +13,8 @@ import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import Layout from 'fragments/Layout';
-import FORM from 'stylesv2/Components/Form.styles';
-import SS from 'stylesv2/Pages/Subscribe.styles';
+import FORM from 'styles/Components/Form.styles';
+import SS from 'styles/Pages/Subscribe.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscribePage: NextPageWithLayout<AppPageProps> = () => {

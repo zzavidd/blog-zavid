@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import CPX from 'stylesv2/Components/Components.styles';
-import Mixins from 'stylesv2/Mixins.styles';
-import { FONTS, COLOR } from 'stylesv2/Variables.styles';
+import CPX from 'styles/Components/Components.styles';
+import Mixins from 'styles/Mixins.styles';
+import { FONTS, COLOR } from 'styles/Variables.styles';
 
 namespace FooterStyle {
   export const Container = styled.footer`

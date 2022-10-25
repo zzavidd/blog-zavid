@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ModalStyle from 'stylesv2/Components/Modal.styles';
+import ModalStyle from 'styles/Components/Modal.styles';
 
 export function Modal({ header, body, footer, ...props }: ModalProps) {
   return (

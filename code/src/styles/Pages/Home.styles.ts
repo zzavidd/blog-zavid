@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import { NextImage, SignatureImage } from 'componentsv2/Image';
 import { Paragraph } from 'componentsv2/Text';
-import Mixins from 'stylesv2/Mixins.styles';
-import { COLOR, FONTS } from 'stylesv2/Variables.styles';
+import Mixins from 'styles/Mixins.styles';
+import { COLOR, FONTS } from 'styles/Variables.styles';
 
 export const HomePage = styled.div`
   display: flex;

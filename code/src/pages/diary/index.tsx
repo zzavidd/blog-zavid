@@ -12,8 +12,8 @@ import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
-import ArticleStyle from 'stylesv2/Pages/Article.styles';
-import DiaryStyle from 'stylesv2/Pages/Diary.styles';
+import ArticleStyle from 'styles/Pages/Article.styles';
+import DiaryStyle from 'styles/Pages/Diary.styles';
 
 const DIARY_HEADING = "Zavid's Diary";
 

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styled, { createGlobalStyle } from 'styled-components';
 
-import { FONTS } from 'stylesv2/Variables.styles';
+import { FONTS } from 'styles/Variables.styles';
 
 import Mixins from './Mixins.styles';
 

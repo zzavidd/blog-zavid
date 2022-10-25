@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useMemo } from 'react';
 
 import * as zText from 'lib/text';
-import TextStyle from 'stylesv2/Components/Text.styles';
+import TextStyle from 'styles/Components/Text.styles';
 
 export function Paragraph({
   children,

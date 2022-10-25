@@ -1,7 +1,7 @@
 import React from 'react';
 
-import CPX from 'stylesv2/Components/Components.styles';
-import { THEME } from 'stylesv2/Variables.styles';
+import CPX from 'styles/Components/Components.styles';
+import { THEME } from 'styles/Variables.styles';
 
 export default function Checkbox({ checked = false, ...props }: CheckboxProps) {
   return (

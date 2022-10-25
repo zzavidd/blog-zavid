@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { COLOR } from 'stylesv2/Variables.styles';
+import { COLOR } from 'styles/Variables.styles';
 
 import CPX from './Components.styles';
 

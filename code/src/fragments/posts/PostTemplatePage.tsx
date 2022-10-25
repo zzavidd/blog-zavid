@@ -16,7 +16,7 @@ import Settings from 'constants/settings';
 import type { Substitutions } from 'constants/types';
 import ZDate from 'lib/date';
 import ZString from 'lib/string';
-import AS from 'stylesv2/Pages/Article.styles';
+import AS from 'styles/Pages/Article.styles';
 
 export default function PostTemplatePage(postTrio: PostTrio) {
   const { current: post } = postTrio;

@@ -11,8 +11,8 @@ import type { AppState } from 'constants/reducers';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
 import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';
-import WL from 'stylesv2/Pages/Wishlist.styles';
-import { THEME } from 'stylesv2/Variables.styles';
+import WL from 'styles/Pages/Wishlist.styles';
+import { THEME } from 'styles/Variables.styles';
 
 import { WishlistPageContext } from './WishlistContext';
 import WishlistToolbar from './WishlistToolbar';

@@ -10,7 +10,7 @@ import {
   removeEmphasisFormatting,
 } from 'lib/text/formatting/emphasis';
 import { Section, sectionRegexMapping, strayRegexToOmit } from 'lib/text/regex';
-import TS from 'stylesv2/Components/Text.styles';
+import TS from 'styles/Components/Text.styles';
 
 /**
  * Formats a paragraph of text.

@@ -13,8 +13,8 @@ import { AppActions } from 'constants/reducers';
 import Settings from 'constants/settings';
 import AdminLock from 'fragments/AdminLock';
 import ZString from 'lib/string';
-import CPX from 'stylesv2/Components/Components.styles';
-import NavStyle from 'stylesv2/Partials/NavigationBar.styles';
+import CPX from 'styles/Components/Components.styles';
+import NavStyle from 'styles/Partials/NavigationBar.styles';
 
 const paths = [
   { title: 'Diary', url: '/diary', icon: FA6.faBook },

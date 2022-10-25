@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import Contexts from 'constants/contexts';
 import Settings from 'constants/settings';
 import * as NavWidgets from 'fragments/shared/NavWidgets';
-import NavStyle from 'stylesv2/Partials/NavigationBar.styles';
+import NavStyle from 'styles/Partials/NavigationBar.styles';
 
 export function MainNavigationBar() {
   const [navIsFocused, setNavIsFocused] = useContext(Contexts.Navigation);

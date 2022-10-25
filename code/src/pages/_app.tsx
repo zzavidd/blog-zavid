@@ -21,8 +21,8 @@ import AdminGateway from 'fragments/AdminGateway';
 import MatomoScript from 'fragments/MatomoScript';
 import PageMetadata from 'fragments/PageMetadata';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
-import { GlobalStyles } from 'stylesv2/Global.styles';
-import { THEME } from 'stylesv2/Variables.styles';
+import { GlobalStyles } from 'styles/Global.styles';
+import { THEME } from 'styles/Variables.styles';
 
 export default function App(props: AppProps) {
   return (

@@ -3,8 +3,8 @@ import { darken } from 'polished';
 import type { FlattenSimpleInterpolation } from 'styled-components';
 import { css } from 'styled-components';
 
-import type { Breakpoint } from 'stylesv2/Variables.styles';
-import { BREAKPOINTS } from 'stylesv2/Variables.styles';
+import type { Breakpoint } from 'styles/Variables.styles';
+import { BREAKPOINTS } from 'styles/Variables.styles';
 
 namespace Mixins {
   export function ClickBehavior(

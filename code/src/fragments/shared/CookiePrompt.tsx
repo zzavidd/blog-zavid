@@ -7,9 +7,9 @@ import { AppTheme } from 'classes/theme';
 import Clickable from 'componentsv2/Clickable';
 import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
-import { CookieStyle } from 'stylesv2/Components/Popup.styles';
-import TextStyle from 'stylesv2/Components/Text.styles';
-import { THEME } from 'stylesv2/Variables.styles';
+import { CookieStyle } from 'styles/Components/Popup.styles';
+import TextStyle from 'styles/Components/Text.styles';
+import { THEME } from 'styles/Variables.styles';
 
 export default function CookiePrompt() {
   const { cookiePolicyAccepted } = useSelector(

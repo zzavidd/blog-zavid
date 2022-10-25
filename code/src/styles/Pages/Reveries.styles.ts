@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 import { Paragraph } from 'componentsv2/Text';
-import Mixins from 'stylesv2/Mixins.styles';
-import { FONTS } from 'stylesv2/Variables.styles';
+import Mixins from 'styles/Mixins.styles';
+import { FONTS } from 'styles/Variables.styles';
 
 namespace ReverieStyle {
   export const Container = styled.div`

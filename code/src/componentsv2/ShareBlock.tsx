@@ -13,8 +13,8 @@ import {
 } from 'react-share';
 
 import Contexts from 'constants/contexts';
-import FORM from 'stylesv2/Components/Form.styles';
-import SBS from 'stylesv2/Components/ShareBlock.styles';
+import FORM from 'styles/Components/Form.styles';
+import SBS from 'styles/Components/ShareBlock.styles';
 
 export default function ShareBlock({ headline, ...props }: ShareProps) {
   return (

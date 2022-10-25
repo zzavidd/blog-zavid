@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import Mixins from 'stylesv2/Mixins.styles';
-import type { ButtonVariant } from 'stylesv2/Variables.styles';
-import { COLOR } from 'stylesv2/Variables.styles';
+import Mixins from 'styles/Mixins.styles';
+import type { ButtonVariant } from 'styles/Variables.styles';
+import { COLOR } from 'styles/Variables.styles';
 
 import CPX from './Components.styles';
 

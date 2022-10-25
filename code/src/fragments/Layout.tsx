@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Body, BodyContent } from 'stylesv2/Global.styles';
+import { Body, BodyContent } from 'styles/Global.styles';
 
 import Footer from './shared/Footer';
 import Header from './shared/Header';

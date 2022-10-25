@@ -1,6 +1,6 @@
 import Settings from 'constants/settings';
 import ZDate from 'lib/date';
-import * as Styles from 'stylesv2/Pages/Home.styles';
+import * as Styles from 'styles/Pages/Home.styles';
 
 export default function HomeIntroduction({
   content,

@@ -1,7 +1,7 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import CPX from 'stylesv2/Components/Components.styles';
+import CPX from 'styles/Components/Components.styles';
 
 namespace Clickable {
   export function Icon({ icon, ...props }: IconClickableProps) {

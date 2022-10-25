@@ -12,7 +12,7 @@ import PostTemplatePage from 'fragments/posts/PostTemplatePage';
 import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
-import AS from 'stylesv2/Pages/Article.styles';
+import AS from 'styles/Pages/Article.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const EpistlePage: NextPageWithLayout<EpistlePageProps> = ({ pageProps }) => {

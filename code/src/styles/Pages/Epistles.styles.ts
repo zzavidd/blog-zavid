@@ -1,8 +1,8 @@
 import styled, { keyframes } from 'styled-components';
 
 import { Paragraph } from 'componentsv2/Text';
-import Mixins from 'stylesv2/Mixins.styles';
-import { COLOR, FONTS } from 'stylesv2/Variables.styles';
+import Mixins from 'styles/Mixins.styles';
+import { COLOR, FONTS } from 'styles/Variables.styles';
 
 const pulse = keyframes`
     0%,100% {

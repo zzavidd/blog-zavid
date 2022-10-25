@@ -4,7 +4,7 @@ import React from 'react';
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import ZDate from 'lib/date';
-import * as Style from 'stylesv2/Pages/Home.styles';
+import * as Style from 'styles/Pages/Home.styles';
 
 export default function HomeRandomPosts({ posts }: RandomPostsGridProps) {
   return (

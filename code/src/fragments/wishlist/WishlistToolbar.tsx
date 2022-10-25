@@ -9,7 +9,7 @@ import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
-import WL from 'stylesv2/Pages/Wishlist.styles';
+import WL from 'styles/Pages/Wishlist.styles';
 
 import { WishlistPageContext } from './WishlistContext';
 

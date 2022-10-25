@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 import * as NavWidgets from 'fragments/shared/NavWidgets';
-import CPX from 'stylesv2/Components/Components.styles';
-import Mixins from 'stylesv2/Mixins.styles';
-import { COLOR, SIZES } from 'stylesv2/Variables.styles';
+import CPX from 'styles/Components/Components.styles';
+import Mixins from 'styles/Mixins.styles';
+import { COLOR, SIZES } from 'styles/Variables.styles';
 
 import { IThemeSwitch } from './Shared.styles';
 

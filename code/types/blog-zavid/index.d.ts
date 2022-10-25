@@ -1,5 +1,5 @@
 import 'styled-components';
-import type { ButtonVariant } from 'stylesv2/Variables.styles';
+import type { ButtonVariant } from 'styles/Variables.styles';
 
 declare module 'styled-components' {
   export interface DefaultTheme {

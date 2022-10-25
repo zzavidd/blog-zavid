@@ -3,7 +3,7 @@ import {
   emphasisRegexMapping,
   getCombinedEmphasisRegex,
 } from 'lib/text/regex';
-import TextStyle from 'stylesv2/Components/Text.styles';
+import TextStyle from 'styles/Components/Text.styles';
 
 export function applyEmphasisFormatting(paragraph: string) {
   if (!paragraph) return '';

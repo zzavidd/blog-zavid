@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components';
 
 import { SignatureImage } from 'componentsv2/Image';
 import { Paragraph } from 'componentsv2/Text';
-import Mixins from 'stylesv2/Mixins.styles';
-import { COLOR, FONTS } from 'stylesv2/Variables.styles';
+import Mixins from 'styles/Mixins.styles';
+import { COLOR, FONTS } from 'styles/Variables.styles';
 
 const CurrentPreviousStyles = css`
   &:hover {

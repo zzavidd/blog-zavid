@@ -2,8 +2,8 @@ import { darken } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 
 import * as NavWidgets from 'fragments/shared/NavWidgets';
-import Mixins from 'stylesv2/Mixins.styles';
-import { COLOR, FONTS } from 'stylesv2/Variables.styles';
+import Mixins from 'styles/Mixins.styles';
+import { COLOR, FONTS } from 'styles/Variables.styles';
 
 import { INavStyle, IThemeSwitch } from './Shared.styles';
 

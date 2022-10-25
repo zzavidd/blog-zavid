@@ -7,7 +7,7 @@ import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import * as ZText from 'lib/text';
 import SSR from 'private/ssr';
-import PageStyle from 'stylesv2/Pages/Page.styles';
+import PageStyle from 'styles/Pages/Page.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const PageSingle: NextPageWithLayout<PageSingleProps> = ({ pageProps }) => {

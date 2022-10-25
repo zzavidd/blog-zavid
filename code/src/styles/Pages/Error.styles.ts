@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { FONTS } from 'stylesv2/Variables.styles';
+import { FONTS } from 'styles/Variables.styles';
 
 namespace ErrorStyle {
   export const Container = styled.div`

@@ -2,8 +2,8 @@ import { darken } from 'polished';
 import styled, { keyframes, css } from 'styled-components';
 
 import type { AlertType } from 'constants/types';
-import Mixins from 'stylesv2/Mixins.styles';
-import { COLOR, FONTS } from 'stylesv2/Variables.styles';
+import Mixins from 'styles/Mixins.styles';
+import { COLOR, FONTS } from 'styles/Variables.styles';
 
 const alertFadeInOut = keyframes`
   0%, 16% {opacity: 0; pointer-events: auto;}

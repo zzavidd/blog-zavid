@@ -10,7 +10,7 @@ import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
 import LatestReverie from 'fragments/home/HomeReverie';
 import Layout from 'fragments/Layout';
 import SSR from 'private/ssr';
-import * as Styles from 'stylesv2/Pages/Home.styles';
+import * as Styles from 'styles/Pages/Home.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const HomePage: NextPageWithLayout<HomeProps> = ({ pageProps }) => {

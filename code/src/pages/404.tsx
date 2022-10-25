@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { NextPageWithLayout } from 'constants/types';
 import Layout from 'fragments/Layout';
-import ErrorStyle from 'stylesv2/Pages/Error.styles';
+import ErrorStyle from 'styles/Pages/Error.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const Custom404Page: NextPageWithLayout = () => {

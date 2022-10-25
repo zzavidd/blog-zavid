@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 
 import Input from 'componentsv2/Input';
-import CPX from 'stylesv2/Components/Components.styles';
-import Mixins from 'stylesv2/Mixins.styles';
-import { BREAKPOINTS, COLOR, FONTS as FONT } from 'stylesv2/Variables.styles';
+import CPX from 'styles/Components/Components.styles';
+import Mixins from 'styles/Mixins.styles';
+import { BREAKPOINTS, COLOR, FONTS as FONT } from 'styles/Variables.styles';
 
 namespace WishlistStyle {
   export const Container = styled.div`

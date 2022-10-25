@@ -21,8 +21,8 @@ import ZDate from 'lib/date';
 import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import SSR from 'private/ssr';
-import FORM from 'stylesv2/Components/Form.styles';
-import AS from 'stylesv2/Pages/Article.styles';
+import FORM from 'styles/Components/Form.styles';
+import AS from 'styles/Pages/Article.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
