@@ -6,46 +6,50 @@ import React, { useMemo } from 'react';
 import * as zText from 'lib/text';
 import TextStyle from 'styles/Components/Text.styles';
 
-export function Paragraph({
-  children,
-  keepRichFormatOnTruncate,
-  more,
-  truncate = 0,
-  substitutions,
-  ...props
-}: ParagraphProps) {
-  const text = useMemo(() => {
-    const result = truncate
-      ? zText.truncateText(children as string, {
-          limit: truncate,
-          keepRichFormatting: keepRichFormatOnTruncate,
-        })
-      : children;
+export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
+  (props, ref) => {
+    const {
+      children,
+      keepRichFormatOnTruncate,
+      more,
+      substitutions,
+      truncate = 0,
+      ...preProps
+    } = props;
 
-    if (substitutions) {
-      return zText.applySubstitutions(result, substitutions);
-    }
+    const text = useMemo(() => {
+      const result = truncate
+        ? zText.truncateText(children as string, {
+            limit: truncate,
+            keepRichFormatting: keepRichFormatOnTruncate,
+          })
+        : children;
 
-    return result;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [children]);
+      if (substitutions) {
+        return zText.applySubstitutions(result, substitutions);
+      }
 
-  return (
-    <React.Fragment>
-      <TextStyle.Collection {...props}>
-        {zText.formatText(text)}
-      </TextStyle.Collection>
-      {more && text.length > truncate ? (
-        <Link href={more.href} passHref={true}>
-          <TextStyle.Section.ReadMore>
-            <FontAwesomeIcon icon={faPaperPlane} />
-            <span>{more.text}</span>
-          </TextStyle.Section.ReadMore>
-        </Link>
-      ) : null}
-    </React.Fragment>
-  );
-}
+      return result;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [children]);
+
+    return (
+      <React.Fragment>
+        <TextStyle.Collection ref={ref} {...preProps}>
+          {zText.formatText(text)}
+        </TextStyle.Collection>
+        {more && text.length > truncate ? (
+          <Link href={more.href} passHref={true}>
+            <TextStyle.Section.ReadMore>
+              <FontAwesomeIcon icon={faPaperPlane} />
+              <span>{more.text}</span>
+            </TextStyle.Section.ReadMore>
+          </Link>
+        ) : null}
+      </React.Fragment>
+    );
+  },
+);
 
 interface ParagraphProps extends React.HTMLAttributes<HTMLPreElement> {
   children: string;

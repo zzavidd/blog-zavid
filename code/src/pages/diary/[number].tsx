@@ -9,14 +9,17 @@ import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import ShareBlock from 'components/ShareBlock';
+import Events from 'constants/events';
 import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
+import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
+import ContextMenu from 'fragments/shared/ContextMenu';
 import ZDate from 'lib/date';
 import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -29,7 +32,15 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   pageProps,
 }) => {
   const { current: diaryEntry } = pageProps;
+  const [state, setState] = useState({
+    contextMenuVisible: false,
+    focusedTextContent: '',
+  });
+  const dispatch = Utils.createDispatch(setState);
   const router = useRouter();
+
+  const mainRef = useRef<HTMLElement>(null);
+  const contextMenuRef = useRef<HTMLMenuElement>(null);
 
   const tags = useMemo(() => {
     return (diaryEntry.tags as string[]).slice(0, 9).map((tag) => {
@@ -37,11 +48,17 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
     });
   }, [diaryEntry.tags]);
 
+  // Register paragraph event listeners.
+  useEffect(() => {
+    Events.setContextMenuEvents(mainRef, contextMenuRef, state, dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mainRef, contextMenuRef]);
+
   return (
     <AS.Container>
       <AS.Layout>
         <TopNavigator diaryTrio={pageProps} />
-        <AS.Main>
+        <AS.Main ref={mainRef}>
           <AS.Date dateTime={ZDate.formatISO(diaryEntry.date)}>
             {ZDate.format(diaryEntry.date)}
           </AS.Date>
@@ -93,21 +110,13 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
           </AS.BackLinkBox>
         </AS.BottomNavigator>
       </AS.Layout>
-      {/* <Curator
-          visible={isImageModalVisible}
-          closeFunction={() => setImageModalVisibility(false)}
-          sourceTitle={`Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`}
-          content={imageContent}
-        />
-        <CuratePrompt
-          target={curatePromptRef!}
-          visible={isCuratePromptVisible}
-          onHide={() => setCuratePromptVisible(false)}
-          onClick={() => {
-            setImageModalVisibility(true);
-            setCuratePromptVisible(false);
-          }}
-        /> */}
+      <ContextMenu
+        sourceTitle={DiaryStatic.getTitle(diaryEntry)}
+        focalText={state.focusedTextContent}
+        visible={state.contextMenuVisible}
+        onClose={() => dispatch({ contextMenuVisible: false })}
+        ref={contextMenuRef}
+      />
     </AS.Container>
   );
 };

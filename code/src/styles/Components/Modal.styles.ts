@@ -71,6 +71,8 @@ namespace ModalStyle {
         active: 0.15,
       })}
     border-radius: 20px;
+    box-shadow: 0 0 1px 1px ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.bodyFontColor};
     font-size: 0.9em;
     min-width: 150px;
     padding: 1em;

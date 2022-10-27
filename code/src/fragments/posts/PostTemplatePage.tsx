@@ -6,14 +6,17 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { NextImage } from 'components/Image';
 import ShareBlock from 'components/ShareBlock';
+import Events from 'constants/events';
 import Settings from 'constants/settings';
 import type { Substitutions } from 'constants/types';
+import Utils from 'constants/utils';
+import ContextMenu from 'fragments/shared/ContextMenu';
 import ZDate from 'lib/date';
 import ZString from 'lib/string';
 import AS from 'styles/Pages/Article.styles';
@@ -22,6 +25,14 @@ export default function PostTemplatePage(postTrio: PostTrio) {
   const { current: post } = postTrio;
   const shareMessage = `"${post.title}" on ZAVID`;
 
+  const [state, setState] = useState({
+    contextMenuVisible: false,
+    focusedTextContent: '',
+  });
+  const dispatch = Utils.createDispatch(setState);
+
+  const mainRef = useRef<HTMLElement>(null);
+  const contextMenuRef = useRef<HTMLMenuElement>(null);
   const router = useRouter();
 
   const substitutions = useMemo(() => {
@@ -52,11 +63,17 @@ export default function PostTemplatePage(postTrio: PostTrio) {
     };
   }, [post]);
 
+  // Register paragraph event listeners.
+  useEffect(() => {
+    Events.setContextMenuEvents(mainRef, contextMenuRef, state, dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mainRef, contextMenuRef]);
+
   return (
     <React.Fragment>
       <AS.Layout>
         <TopNavigator postTrio={postTrio} />
-        <AS.Main>
+        <AS.Main ref={mainRef}>
           <AS.Title>{PostStatic.getPostTitle(post)}</AS.Title>
           {post.datePublished && !PostStatic.isPrivate(post) ? (
             <AS.Date dateTime={ZDate.formatISO(post.datePublished)}>
@@ -103,23 +120,13 @@ export default function PostTemplatePage(postTrio: PostTrio) {
           </AS.BackLinkBox>
         </AS.BottomNavigator>
       </AS.Layout>
-      {/* <Curator
-        visible={isImageModalVisible}
-        closeFunction={() => setImageModalVisibility(false)}
-        sourceTitle={PostStatic.isPage(post)
-    ? `${post.domainTitle}: ${post.title}`
-    : `${post.type} #${post.typeId}: ${post.title}`}
-        content={imageContent}
+      <ContextMenu
+        sourceTitle={`${post.type}: ${PostStatic.getPostTitle(post)}`}
+        focalText={state.focusedTextContent}
+        visible={state.contextMenuVisible}
+        onClose={() => dispatch({ contextMenuVisible: false })}
+        ref={contextMenuRef}
       />
-      <CuratePrompt
-        target={curatePromptRef!}
-        visible={isCuratePromptVisible}
-        onHide={() => setCuratePromptVisible(false)}
-        onClick={() => {
-          setImageModalVisibility(true);
-          setCuratePromptVisible(false);
-        }}
-      /> */}
     </React.Fragment>
   );
 }

@@ -77,6 +77,7 @@ namespace ArticleStyle {
 
     p {
       line-height: 1.7;
+      user-select: none;
     }
   `;
 

@@ -1,5 +1,3 @@
-import type { Dispatch, SetStateAction } from 'react';
-
 import type { AppTheme, FilterThemeOption } from 'classes/theme';
 import { FilterShape, FilterShapeOption, Theme } from 'classes/theme';
 
@@ -61,18 +59,20 @@ namespace Canvas {
    * @param setImageSource The dispatch function to set the image source.
    * @param isTitleOnly Flag indicating to only curate title..
    */
-  export function createFromContent(
+  export async function createFromContent(
     canvas: HTMLCanvasElement,
-    content: HTMLDivElement,
+    content: HTMLPreElement,
     sourceTitle: string,
     theme: AppTheme,
     colour: FilterThemeOption,
     shape: FilterShapeOption,
-    setImageSource: Dispatch<SetStateAction<string>>,
     isTitleOnly: boolean,
-  ) {
+    setImageSource: (src: string) => void,
+  ): Promise<void> {
     const ctx = canvas.getContext('2d');
-    const SHAPE = Object.assign({}, constants[shape], constants.common);
+    if (!ctx) return;
+
+    const SHAPE = { ...constants[shape], ...constants.common };
     const text: string[] = [];
 
     if (isTitleOnly) {
@@ -88,86 +88,86 @@ namespace Canvas {
       constantLineHeight: SHAPE.TITLE_LINE_HEIGHT,
     };
 
-    if (ctx !== null) {
-      const bgImage = new Image();
+    const bgImage = new Image();
+    await new Promise((resolve) => {
+      bgImage.onload = resolve;
       bgImage.src = `/images/filters/${shape}-${colour}.jpg`;
-      bgImage.onload = () => {
-        const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
+    });
 
-        let fontSize = isTitleOnly
-          ? SHAPE.TITLE_FONT_SIZE
-          : SHAPE.INITIAL_FONT_SIZE;
-        let [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
+    const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
 
-        canvas.width = bgImage.width;
-        canvas.height = bgImage.height;
+    let fontSize = isTitleOnly
+      ? SHAPE.TITLE_FONT_SIZE
+      : SHAPE.INITIAL_FONT_SIZE;
+    let [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
 
-        const rectWidth = canvas.width - SHAPE.RECT_PADDING_X;
-        const maxTextWidth = rectWidth - SHAPE.TEXT_PADDING_X * 2;
+    canvas.width = bgImage.width;
+    canvas.height = bgImage.height;
 
-        // Draft text on canvas to determine text height.
-        // Do until number of lines is less than or equal to limit.
-        let textHeight = 0;
-        let numOfLines = 0;
-        do {
-          if (fontSize < SHAPE.INITIAL_FONT_SIZE * (2 / 3)) break;
+    const rectWidth = canvas.width - SHAPE.RECT_PADDING_X;
+    const maxTextWidth = rectWidth - SHAPE.TEXT_PADDING_X * 2;
 
-          [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
-          ctx.font = fontStyle;
-          textHeight = insertText(ctx, text, 0, 0, maxTextWidth, lineHeight);
-          numOfLines = textHeight / lineHeight;
-          fontSize -= 2;
-        } while (numOfLines > LINE_LIMIT);
+    // Draft text on canvas to determine text height.
+    // Do until number of lines is less than or equal to limit.
+    let textHeight = 0;
+    let numOfLines = 0;
+    do {
+      if (fontSize < SHAPE.INITIAL_FONT_SIZE * (2 / 3)) break;
 
-        // Draw background image.
-        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+      [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
+      ctx.font = fontStyle;
+      textHeight = insertText(ctx, text, 0, 0, maxTextWidth, lineHeight);
+      numOfLines = textHeight / lineHeight;
+      fontSize -= 2;
+    } while (numOfLines > LINE_LIMIT);
 
-        const rectHeight = textHeight + SHAPE.RECT_PADDING_Y;
-        const extraYShift =
-          Math.ceil(numOfLines) === LINE_LIMIT ? SHAPE.EXTRA_Y_SHIFT : 0;
+    // Draw background image.
+    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 
-        const startRectX = canvas.width / 2 - rectWidth / 2;
-        const startRectY = canvas.height / 2 - rectHeight / 2 - extraYShift;
-        const startTextX = startRectX + SHAPE.TEXT_PADDING_X;
-        const startTextY =
-          startRectY +
-          SHAPE.TEXT_PADDING_Y +
-          (isTitleOnly && !FilterShape.isTall(shape) ? 30 : 0);
+    const rectHeight = textHeight + SHAPE.RECT_PADDING_Y;
+    const extraYShift =
+      Math.ceil(numOfLines) === LINE_LIMIT ? SHAPE.EXTRA_Y_SHIFT : 0;
 
-        // Draw bounding box for text.
-        ctx.fillStyle = Theme.isLight(theme)
-          ? 'rgba(255,255,255,0.85)'
-          : 'rgba(0,0,0,0.8)';
-        ctx.fillRect(startRectX, startRectY, rectWidth, rectHeight);
+    const startRectX = canvas.width / 2 - rectWidth / 2;
+    const startRectY = canvas.height / 2 - rectHeight / 2 - extraYShift;
+    const startTextX = startRectX + SHAPE.TEXT_PADDING_X;
+    const startTextY =
+      startRectY +
+      SHAPE.TEXT_PADDING_Y +
+      (isTitleOnly && !FilterShape.isTall(shape) ? 30 : 0);
 
-        // Insert text into bounding box.
-        ctx.fillStyle = Theme.isLight(theme) ? 'black' : 'white';
-        insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
+    // Draw bounding box for text.
+    ctx.fillStyle = Theme.isLight(theme)
+      ? 'rgba(255,255,255,0.85)'
+      : 'rgba(0,0,0,0.8)';
+    ctx.fillRect(startRectX, startRectY, rectWidth, rectHeight);
 
-        // Draw source title at top left corner if not title only.
-        if (!isTitleOnly) {
-          ctx.fillStyle = 'white';
-          ctx.font = `${SHAPE.ST_FONT_SIZE}px Calistoga`;
-          insertText(
-            ctx,
-            [sourceTitle],
-            SHAPE.ST_START_X,
-            SHAPE.ST_START_Y,
-            canvas.width * (4 / 7),
-            SHAPE.ST_LINE_HEIGHT,
-          );
-        }
+    // Insert text into bounding box.
+    ctx.fillStyle = Theme.isLight(theme) ? 'black' : 'white';
+    insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
 
-        // Marshal data source to image element.
-        canvas.toBlob((blob) => {
-          const image = new Image();
-          image.src = URL.createObjectURL(blob!);
-          image.onload = () => {
-            setImageSource(image.src);
-          };
-        }, 'image/jpeg');
-      };
+    // Draw source title at top left corner if not title only.
+    if (!isTitleOnly) {
+      ctx.fillStyle = 'white';
+      ctx.font = `${SHAPE.ST_FONT_SIZE}px Calistoga`;
+      insertText(
+        ctx,
+        [sourceTitle],
+        SHAPE.ST_START_X,
+        SHAPE.ST_START_Y,
+        canvas.width * (4 / 7),
+        SHAPE.ST_LINE_HEIGHT,
+      );
     }
+
+    // Marshal data source to image element.
+    canvas.toBlob((blob) => {
+      const image = new Image();
+      image.src = URL.createObjectURL(blob!);
+      image.onload = () => {
+        setImageSource(image.src);
+      };
+    }, 'image/jpeg');
   }
 
   /**
@@ -263,7 +263,7 @@ function insertText(
 /**
  * Generate the font style from a specified font size.
  * @param fontSize The size of the font.
- * @param isTitleOnly Flag indicating to only curate title.
+ * @param options The font style options.
  */
 function getFontStyle(
   fontSize: number,
