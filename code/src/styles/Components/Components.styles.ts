@@ -1,5 +1,8 @@
 import Link from 'next/link';
+import { darken } from 'polished';
 import styled, { css } from 'styled-components';
+
+import Mixins from 'styles/Mixins.styles';
 
 namespace CPX {
   export const Button = styled.button.attrs({ type: 'button' })`
@@ -26,6 +29,7 @@ namespace CPX {
     svg {
       color: ${({ theme }) => theme.bodyFontColor};
       font-size: 1.2em;
+      pointer-events: none;
     }
   `;
 

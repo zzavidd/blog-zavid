@@ -76,7 +76,7 @@ export namespace CookieStyle {
     justify-content: center;
     position: fixed;
     width: 100%;
-    z-index: 2;
+    z-index: 3;
   `;
 
   export const Dialog = styled.div`
@@ -102,7 +102,7 @@ export namespace Snack {
     left: 2%;
     pointer-events: none;
     position: fixed;
-    z-index: 2;
+    z-index: 3;
   `;
 
   export const Dialog = styled.div<{ duration?: number | 'indefinite' }>`
