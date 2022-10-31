@@ -1,9 +1,5 @@
 import type { PostType } from './posts/PostDAO';
 
-export interface EntityDAO extends Record<string, unknown> {
-  readonly id: number | undefined;
-}
-
 export interface SearchResultEntityDAO {
   index?: number;
   title: string;
@@ -15,8 +11,7 @@ export interface SearchResultEntityDAO {
 }
 
 export interface EntityFormProps {
-  confirmFunction?: () => void;
-  cancelFunction?: () => void;
-  confirmButtonText: string;
-  isRequestPending: boolean;
+  onSubmit?: () => void;
+  onCancel?: () => void;
+  onSubmitText: string;
 }

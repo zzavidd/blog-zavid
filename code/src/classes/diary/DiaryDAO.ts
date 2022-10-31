@@ -1,6 +1,5 @@
-import type { EntityDAO } from '../entity';
-
-export interface DiaryDAO extends EntityDAO {
+export interface DiaryDAO {
+  id?: number;
   title: string;
   content: string;
   footnote: string;

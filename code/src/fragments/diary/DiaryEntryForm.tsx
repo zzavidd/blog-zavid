@@ -1,220 +1,173 @@
-export {};
-// import React, { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { zDate, zString } from 'zavid-modules';
+import { useDispatch } from 'react-redux';
 
-// import type { DiaryDAO } from 'classes/diary/DiaryDAO';
-// import { DiaryEntryBuilder } from 'classes/diary/DiaryEntryBuilder';
-// import { DiaryStatic } from 'classes/diary/DiaryStatic';
-// import type { EntityFormProps } from 'classes/entity';
-// import {
-//   Checkbox,
-//   Field,
-//   FieldRow,
-//   Form,
-//   Label,
-//   LongTextArea,
-//   NumberInput,
-//   Select,
-//   ShortTextArea,
-//   TextInput,
-// } from 'components/form';
-// import type { DateType } from 'components/form/datepicker';
-// import DatePicker from 'components/form/datepicker';
-// import { Foldable } from 'components/form/foldable';
-// import type Handlers from 'constants/handlers';
-// import css from 'styles/pages/Diary.module.scss';
+import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+import { DiaryEntryBuilder } from 'classes/diary/DiaryEntryBuilder';
+import { DiaryStatic } from 'classes/diary/DiaryStatic';
+import type { EntityFormProps } from 'classes/entity';
+import Checkbox from 'components/Checkbox';
+import Input from 'components/Input';
+import { LongTextArea, ShortTextArea } from 'components/Textarea';
+import type HandlerFactory from 'constants/handlers';
+import ZDate from 'lib/date';
+import ZString from 'lib/string';
+import FORM from 'styles/Components/Form.styles';
 
-// export default function DiaryEntryForm(props: DiaryFormProps) {
-//   const { diaryEntry, handlers } = props;
-//   const {
-//     handleText,
-//     handleNumber,
-//     handleCheck,
-//     handleSelection,
-//     handleTextSave,
-//     handleDate,
-//   } = handlers;
+export default function DiaryEntryForm(props: DiaryFormProps) {
+  const { diaryEntry, handlers } = props;
 
-//   const [isFootnoteVisible, setFootnoteVisible] = useState(false);
-//   const [isPreviewVisible, setPreviewVisible] = useState(false);
-//   const dispatch = useDispatch();
+  const appDispatch = useDispatch();
 
-//   const toggleFootnote = () => {
-//     setFootnoteVisible(!isFootnoteVisible);
-//   };
+  return (
+    <FORM.Container>
+      <FORM.FieldRow>
+        <FORM.Field>
+          <FORM.FieldRow>
+            <FORM.Field>
+              <FORM.Label>Content:</FORM.Label>
+              <LongTextArea
+                name={'content'}
+                value={diaryEntry.content!}
+                onChange={(e) => handlers.textSave(e, appDispatch)}
+                placeholder={'Scribe your thoughts and feelings...'}
+              />
+            </FORM.Field>
+          </FORM.FieldRow>
+        </FORM.Field>
+        <FORM.Field>
+          <FORM.FieldRow>
+            <FORM.Field flex={3}>
+              <FORM.Label>Title:</FORM.Label>
+              <Input.Text
+                name={'title'}
+                value={diaryEntry.title}
+                onChange={handlers.text}
+                placeholder={'Enter the title'}
+              />
+            </FORM.Field>
+            <FORM.Field flex={1}>
+              <FORM.Label>Entry No.:</FORM.Label>
+              <Input.Number
+                name={'entryNumber'}
+                value={diaryEntry.entryNumber}
+                onChange={handlers.number}
+                placeholder={'No.'}
+                min={1}
+              />
+            </FORM.Field>
+          </FORM.FieldRow>
+          <FORM.FieldRow>
+            <FORM.Field>
+              <FORM.Label>Footnote:</FORM.Label>
+              <LongTextArea
+                name={'footnote'}
+                value={diaryEntry.footnote!}
+                onChange={handlers.text}
+                placeholder={'Add any footnotes to come after the signature...'}
+              />
+            </FORM.Field>
+          </FORM.FieldRow>
+          <FORM.FieldRow>
+            <FORM.Field flex={1}>
+              <FORM.Label>Status:</FORM.Label>
+              <Input.Select
+                name={'status'}
+                options={DiaryStatic.STATUSES}
+                value={diaryEntry.status}
+                onChange={handlers.select}
+              />
+            </FORM.Field>
+            <FORM.Field flex={2}>
+              <FORM.Label>Date:</FORM.Label>
+              <Input.DatePicker
+                name={'date'}
+                selected={new Date(diaryEntry.date)}
+                onChange={handlers.date}
+                placeholderText={'Select the date...'}
+                maxDate={new Date()}
+              />
+            </FORM.Field>
+          </FORM.FieldRow>
+          <FORM.FieldRow>
+            <FORM.Field>
+              <FORM.Label>Favourite?</FORM.Label>
+              <Checkbox
+                name={'isFavourite'}
+                label={'This diary entry is a favourite.'}
+                checked={diaryEntry.isFavourite!}
+                onChange={handlers.check}
+              />
+            </FORM.Field>
+          </FORM.FieldRow>
+          <FORM.FieldRow>
+            <FORM.Field>
+              <FORM.Label>Tags:</FORM.Label>
+              <ShortTextArea
+                name={'tags'}
+                value={JSON.stringify(diaryEntry.tags)}
+                onChange={handlers.text}
+                placeholder={'Add tags to index the entry...'}
+              />
+              {/* <TagBlock
+                tags={diaryEntry.tags!}
+                asCSV={true}
+                className={css['diary-form-tags']}
+              /> */}
+            </FORM.Field>
+          </FORM.FieldRow>
+        </FORM.Field>
+      </FORM.FieldRow>
+      <footer>
+        <button onClick={props.onSubmit}>{props.onSubmitText}</button>
+        <button onClick={props.onCancel}>Cancel</button>
+      </footer>
+    </FORM.Container>
+  );
+}
 
-//   // const isXXXLarge = useMediaQuery({ query: ScreenWidth.XXXLARGE });
-//   const isXXXLarge = true;
-//   const fieldSpan = isPreviewVisible ? (isXXXLarge ? 12 : 6) : 6;
-//   const contentOrder = isPreviewVisible ? (isXXXLarge ? 1 : 2) : 1;
+export function buildPayload(
+  clientDiaryEntry: DiaryDAO,
+  isPublish: boolean,
+  isCreateOperation: boolean,
+): DiaryRequest {
+  const {
+    id,
+    title,
+    content,
+    footnote,
+    status,
+    date,
+    entryNumber,
+    isFavourite,
+    tags,
+  } = clientDiaryEntry;
 
-//   return (
-//     <Form
-//       {...props}
-//       previewTitle={diaryEntry.title}
-//       previewText={diaryEntry.content}
-//       previewFootnotes={diaryEntry.footnote}
-//       onPreviewToggle={setPreviewVisible}
-//       formClassName={{
-//         previewOn: css['diary-form-pv'],
-//       }}
-//       editorClassName={{
-//         previewOff: css['diary-form-editor'],
-//       }}>
-//       <FieldRow>
-//         <Field xl={{ span: fieldSpan, order: contentOrder }}>
-//           <FieldRow>
-//             <Field>
-//               <Label>Content:</Label>
-//               <LongTextArea
-//                 name={'content'}
-//                 value={diaryEntry.content!}
-//                 onChange={(e) => handleTextSave(e, dispatch)}
-//                 placeholder={'Scribe your thoughts and feelings...'}
-//               />
-//             </Field>
-//           </FieldRow>
-//         </Field>
-//         <Field xl={{ span: fieldSpan, order: contentOrder === 1 ? 2 : 1 }}>
-//           <FieldRow>
-//             <Field sm={9}>
-//               <Label>Title:</Label>
-//               <TextInput
-//                 name={'title'}
-//                 value={diaryEntry.title!}
-//                 onChange={handleText}
-//                 placeholder={'Enter the title'}
-//               />
-//             </Field>
-//             <Field sm={3}>
-//               <Label>Entry No.:</Label>
-//               <NumberInput
-//                 name={'entryNumber'}
-//                 value={diaryEntry.entryNumber!}
-//                 onChange={handleNumber}
-//                 placeholder={'No.'}
-//                 min={1}
-//               />
-//             </Field>
-//           </FieldRow>
-//           <FieldRow>
-//             <Field>
-//               <Foldable
-//                 label={'Add footnote'}
-//                 visible={isFootnoteVisible}
-//                 switcher={toggleFootnote}>
-//                 <Label>Footnote:</Label>
-//                 <LongTextArea
-//                   name={'footnote'}
-//                   value={diaryEntry.footnote!}
-//                   onChange={handleText}
-//                   placeholder={
-//                     'Add any footnotes to come after the signature...'
-//                   }
-//                 />
-//               </Foldable>
-//             </Field>
-//           </FieldRow>
-//           <FieldRow>
-//             <Field md={4}>
-//               <Label>Status:</Label>
-//               <Select
-//                 name={'status'}
-//                 items={DiaryStatic.STATUSES}
-//                 value={diaryEntry.status}
-//                 onChange={handleSelection}
-//               />
-//             </Field>
-//             <Field md={8}>
-//               <Label>Date:</Label>
-//               <DatePicker
-//                 name={'date'}
-//                 date={diaryEntry.date!}
-//                 onConfirm={(date: DateType) =>
-//                   handleDate(date as DateType, 'date')
-//                 }
-//                 placeholderText={'Select the date...'}
-//               />
-//             </Field>
-//           </FieldRow>
-//           <FieldRow>
-//             <Field>
-//               <Label>Favourite?</Label>
-//               <Checkbox
-//                 name={'isFavourite'}
-//                 label={'This diary entry is a favourite.'}
-//                 checked={diaryEntry.isFavourite!}
-//                 onChange={handleCheck}
-//               />
-//             </Field>
-//           </FieldRow>
-//           <FieldRow>
-//             <Field>
-//               <Label>Tags:</Label>
-//               <ShortTextArea
-//                 name={'tags'}
-//                 value={JSON.stringify(diaryEntry.tags)}
-//                 onChange={handleText}
-//                 placeholder={'Add tags to index the entry...'}
-//               />
-//               {/* <TagBlock
-//                 tags={diaryEntry.tags!}
-//                 asCSV={true}
-//                 className={css['diary-form-tags']}
-//               /> */}
-//             </Field>
-//           </FieldRow>
-//         </Field>
-//       </FieldRow>
-//     </Form>
-//   );
-// }
+  const diaryEntry = new DiaryEntryBuilder()
+    .withTitle(title)
+    .withContent(content)
+    .withFootnote(footnote)
+    .withDate(ZDate.formatISO(date))
+    .withStatus(status)
+    .withEntryNumber(entryNumber)
+    .setIsFavourite(isFavourite)
+    .withTags(ZString.convertCsvToArray(tags as string))
+    .build();
 
-// export function buildPayload(
-//   clientDiaryEntry: DiaryDAO,
-//   isPublish: boolean,
-//   isCreateOperation: boolean,
-// ): DiaryRequest {
-//   const {
-//     id,
-//     title,
-//     content,
-//     footnote,
-//     status,
-//     date,
-//     entryNumber,
-//     isFavourite,
-//     tags,
-//   } = clientDiaryEntry;
+  const payload: DiaryRequest = { diaryEntry, isPublish };
 
-//   const diaryEntry = new DiaryEntryBuilder()
-//     .withTitle(title)
-//     .withContent(content)
-//     .withFootnote(footnote)
-//     .withDate(zDate.formatISODate(date!))
-//     .withStatus(status)
-//     .withEntryNumber(entryNumber)
-//     .setIsFavourite(isFavourite)
-//     .withTags(zString.convertCsvToArray(tags as string))
-//     .build();
+  if (!isCreateOperation) {
+    payload.id = id;
+  }
 
-//   const payload: DiaryRequest = { diaryEntry, isPublish };
+  return payload;
+}
 
-//   if (!isCreateOperation) {
-//     payload.id = id;
-//   }
+interface DiaryFormProps extends EntityFormProps {
+  diaryEntry: DiaryDAO;
+  handlers: ReturnType<typeof HandlerFactory<DiaryDAO>>;
+}
 
-//   return payload;
-// }
-
-// interface DiaryFormProps extends EntityFormProps {
-//   diaryEntry: DiaryDAO;
-//   handlers: ReturnType<typeof Handlers<DiaryDAO>>;
-// }
-
-// interface DiaryRequest {
-//   id?: number;
-//   diaryEntry: DiaryDAO;
-//   isPublish: boolean;
-// }
+interface DiaryRequest {
+  id?: number;
+  diaryEntry: DiaryDAO;
+  isPublish: boolean;
+}

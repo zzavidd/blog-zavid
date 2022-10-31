@@ -6,7 +6,7 @@ import { AppActions } from 'constants/reducers';
 
 import type { ReactHook } from './types';
 
-export default function HandlersV2<T>(
+export default function HandlerFactory<T>(
   setState: ReactHook<T>,
   property: keyof T,
 ) {

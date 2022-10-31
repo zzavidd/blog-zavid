@@ -2,6 +2,7 @@ import {
   faArrowDown,
   faArrowUp,
   faPenAlt,
+  faPlus,
   faStar,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +17,7 @@ import Contexts from 'constants/contexts';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import { QueryOrder } from 'constants/types';
 import Utils from 'constants/utils';
+import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import SSR from 'private/ssr';
@@ -99,91 +101,101 @@ const DiaryAdmin: NextPageWithLayout<DiaryAdminProps> = ({ pageProps }) => {
   }, [pageProps.diaryEntries, state.sort]);
 
   return (
-    <AL.Container>
-      <AL.Main>
-        <AL.Heading>List of Diary Entries</AL.Heading>
-        <AL.TableBox>
-          <AL.Table>
-            <AL.TableHead>
-              <AL.TableRow>
-                {FIELDS.map(({ title, property, align }) => {
-                  const icon = state.sort.ascending ? faArrowUp : faArrowDown;
+    <AdminGateway>
+      <AL.Container>
+        <AL.Main>
+          <AL.Heading>List of Diary Entries</AL.Heading>
+          <AL.TableBox>
+            <AL.Table>
+              <AL.TableHead>
+                <AL.TableRow>
+                  {FIELDS.map(({ title, property, align }) => {
+                    const icon = state.sort.ascending ? faArrowUp : faArrowDown;
+                    return (
+                      <AL.TableHeaderCell
+                        align={align}
+                        key={property}
+                        onClick={() => sortDiaryEntries(property)}>
+                        <span>{title}</span>
+                        {property === state.sort.property ? (
+                          <AL.SortIcon icon={icon} />
+                        ) : null}
+                      </AL.TableHeaderCell>
+                    );
+                  })}
+                  <AL.TableHeaderCell colSpan={2}>
+                    <Link href={'/admin/diary/add'}>
+                      <AL.AddLink>
+                        <AL.AddIcon icon={faPlus} />
+                        <span>Add Entry</span>
+                      </AL.AddLink>
+                    </Link>
+                  </AL.TableHeaderCell>
+                </AL.TableRow>
+              </AL.TableHead>
+              <tbody>
+                {state.diaryEntries.map((entry) => {
                   return (
-                    <AL.TableHeaderCell
-                      align={align}
-                      key={property}
-                      onClick={() => sortDiaryEntries(property)}>
-                      <span>{title}</span>
-                      {property === state.sort.property ? (
-                        <AL.SortIcon icon={icon} />
-                      ) : null}
-                    </AL.TableHeaderCell>
+                    <AL.TableRow key={entry.id}>
+                      <AL.TableCell align={'right'}>
+                        {entry.entryNumber}
+                      </AL.TableCell>
+                      <AL.TableCell>{entry.title}</AL.TableCell>
+                      <AL.TableCell align={'center'}>
+                        {ZDate.format(entry.date)}
+                      </AL.TableCell>
+                      <AL.TableCell align={'center'}>
+                        {entry.status}
+                      </AL.TableCell>
+                      <AL.TableCell align={'center'}>
+                        {entry.isFavourite ? (
+                          <FontAwesomeIcon icon={faStar} />
+                        ) : null}
+                      </AL.TableCell>
+                      <Link
+                        href={`/admin/diary/edit/${entry.id}`}
+                        passHref={true}>
+                        <AL.TableCell align={'center'}>
+                          <AL.Icon icon={faPenAlt} />
+                        </AL.TableCell>
+                      </Link>
+                      <AL.TableCell
+                        align={'center'}
+                        onClick={() => promptDelete(entry)}>
+                        <AL.Icon icon={faTrash} />
+                      </AL.TableCell>
+                    </AL.TableRow>
                   );
                 })}
-                <AL.TableHeaderCell />
-                <AL.TableHeaderCell />
-              </AL.TableRow>
-            </AL.TableHead>
-            <tbody>
-              {state.diaryEntries.map((entry) => {
-                return (
-                  <AL.TableRow key={entry.id}>
-                    <AL.TableCell align={'right'}>
-                      {entry.entryNumber}
-                    </AL.TableCell>
-                    <AL.TableCell>{entry.title}</AL.TableCell>
-                    <AL.TableCell align={'center'}>
-                      {ZDate.format(entry.date)}
-                    </AL.TableCell>
-                    <AL.TableCell align={'center'}>{entry.status}</AL.TableCell>
-                    <AL.TableCell align={'center'}>
-                      {entry.isFavourite ? (
-                        <FontAwesomeIcon icon={faStar} />
-                      ) : null}
-                    </AL.TableCell>
-                    <Link
-                      href={`/admin/diary/edit/${entry.id}`}
-                      passHref={true}>
-                      <AL.TableCell align={'center'}>
-                        <AL.Icon icon={faPenAlt} />
-                      </AL.TableCell>
-                    </Link>
-                    <AL.TableCell
-                      align={'center'}
-                      onClick={() => promptDelete(entry)}>
-                      <AL.Icon icon={faTrash} />
-                    </AL.TableCell>
-                  </AL.TableRow>
-                );
-              })}
-            </tbody>
-          </AL.Table>
-        </AL.TableBox>
-        <Modal
-          visible={state.deleteModalVisible}
-          body={
-            <p>
-              Are you sure you want to delete the diary entry #
-              {state.selectedDiaryEntry?.entryNumber}?
-            </p>
-          }
-          footer={
-            <React.Fragment>
-              <ModalStyle.FooterButton
-                variant={ButtonVariant.DELETE}
-                onClick={deleteDiaryEntry}>
-                Delete
-              </ModalStyle.FooterButton>
-              <ModalStyle.FooterButton
-                variant={ButtonVariant.CANCEL}
-                onClick={() => dispatch({ deleteModalVisible: false })}>
-                Cancel
-              </ModalStyle.FooterButton>
-            </React.Fragment>
-          }
-        />
-      </AL.Main>
-    </AL.Container>
+              </tbody>
+            </AL.Table>
+          </AL.TableBox>
+          <Modal
+            visible={state.deleteModalVisible}
+            body={
+              <p>
+                Are you sure you want to delete the diary entry #
+                {state.selectedDiaryEntry?.entryNumber}?
+              </p>
+            }
+            footer={
+              <React.Fragment>
+                <ModalStyle.FooterButton
+                  variant={ButtonVariant.DELETE}
+                  onClick={deleteDiaryEntry}>
+                  Delete
+                </ModalStyle.FooterButton>
+                <ModalStyle.FooterButton
+                  variant={ButtonVariant.CANCEL}
+                  onClick={() => dispatch({ deleteModalVisible: false })}>
+                  Cancel
+                </ModalStyle.FooterButton>
+              </React.Fragment>
+            }
+          />
+        </AL.Main>
+      </AL.Container>
+    </AdminGateway>
   );
 };
 

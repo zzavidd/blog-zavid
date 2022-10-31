@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { darken } from 'polished';
+import { darken, transparentize } from 'polished';
 import styled, { css } from 'styled-components';
 
 import CPX from 'styles/Components/Components.styles';
@@ -70,6 +70,12 @@ export namespace AdminList {
 
   export const TableRow = styled.tr`
     font-family: ${FONTS.BODY};
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: ${({ theme }) =>
+        transparentize(0.1, theme.headerBackgroundColor)};
+    }
   `;
 
   const CellStyle = css<CellProps>`
@@ -82,13 +88,9 @@ export namespace AdminList {
     padding: 0.75em 1em;
   `;
 
-  export const SortIcon = styled(FontAwesomeIcon)`
-    margin-left: 0.4em;
-  `;
-
   export const TableCell = styled.td<CellProps>`
     ${CellStyle}
-    padding: 0.5em 1em;
+    padding: 0.6em 1em;
   `;
 
   export const Button = styled(CPX.Button)`
@@ -108,6 +110,26 @@ export namespace AdminList {
 
   export const ModalText = styled.p`
     font-family: ${FONTS.BODY};
+  `;
+
+  export const AddLink = styled.a`
+    color: ${({ theme }) => theme.bodyFontColor};
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.1s;
+
+    &:hover {
+      border-bottom: 1px solid ${({ theme }) => theme.fadedFontColor};
+      color: ${({ theme }) => theme.fadedFontColor};
+    }
+  `;
+
+  export const AddIcon = styled(FontAwesomeIcon)`
+    margin-right: 0.4em;
+  `;
+
+  export const SortIcon = styled(FontAwesomeIcon)`
+    margin-left: 0.4em;
   `;
 }
 

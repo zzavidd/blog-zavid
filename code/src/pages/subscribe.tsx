@@ -7,7 +7,7 @@ import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import Input from 'components/Input';
 import Contexts from 'constants/contexts';
 import { UIError } from 'constants/errors';
-import HandlersV2 from 'constants/handlersv2';
+import HandlerFactory from 'constants/handlers';
 import Settings from 'constants/settings';
 import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
@@ -67,7 +67,7 @@ const SubscribePage: NextPageWithLayout<AppPageProps> = () => {
     }
   }
 
-  const Handlers = HandlersV2(setState, 'subscriber');
+  const Handlers = HandlerFactory(setState, 'subscriber');
 
   return (
     <SS.Container>

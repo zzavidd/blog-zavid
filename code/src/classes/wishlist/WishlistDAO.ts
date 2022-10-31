@@ -1,6 +1,5 @@
-import type { EntityDAO } from 'classes/entity';
-
-export default interface WishlistDAO extends EntityDAO {
+export default interface WishlistDAO {
+  id?: number;
   name: string;
   price: number;
   quantity: number;

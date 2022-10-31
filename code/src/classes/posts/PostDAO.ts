@@ -1,6 +1,5 @@
-import type { EntityDAO } from '../entity';
-
-export interface PostDAO extends EntityDAO {
+export interface PostDAO {
+  id?: number;
   title: string;
   type: PostType;
   typeId?: number;
@@ -31,8 +30,8 @@ export interface PostContentImageMapping {
 
 export interface RandomPostOptions {
   allowPageTypes?: boolean;
-  withImage?: boolean;
   numberOfContentImages?: number;
+  withImage?: boolean;
 }
 
 export enum PostStatus {

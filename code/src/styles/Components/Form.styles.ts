@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AutoSizingTextarea from 'react-textarea-autosize';
 import type {
   DefaultTheme,
   FlattenInterpolation,
@@ -113,7 +114,7 @@ namespace FORM {
         `}
     `;
 
-    export const Paragraph = styled.textarea`
+    export const Textarea = styled(AutoSizingTextarea)`
       ${DefaultStyle}
       border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
       min-height: 50px;

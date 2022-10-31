@@ -1,9 +1,8 @@
 import type { Knex } from 'knex';
 
-import type { EntityDAO } from 'classes/entity';
 import { QueryOrder } from 'constants/types';
 
-export class QueryBuilder<T extends EntityDAO> {
+export class QueryBuilder<T extends Record<string, unknown>> {
   protected query: Knex | Knex.QueryBuilder;
   protected table: string;
   protected knex: Knex;
@@ -79,7 +78,7 @@ export class QueryBuilder<T extends EntityDAO> {
 }
 
 export class MutationBuilder<
-  Entity extends EntityDAO,
+  Entity extends { readonly id?: string },
 > extends QueryBuilder<Entity> {
   private entity: string;
 
@@ -130,7 +129,7 @@ function serializeInput(input: Record<string, unknown>) {
   });
 }
 
-export interface QuerySort<T extends EntityDAO> {
+export interface QuerySort<T> {
   field?: keyof T;
   order?: string;
 }

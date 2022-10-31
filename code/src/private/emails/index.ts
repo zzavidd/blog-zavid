@@ -9,7 +9,6 @@ import * as UUID from 'uuid';
 const { serverRuntimeConfig } = getConfig();
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
-import type { EntityDAO } from 'classes/entity';
 import type { PostDAO } from 'classes/posts/PostDAO';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
@@ -106,7 +105,7 @@ export default Emailer;
  * @param template The name of the template EJS file.
  * @param subject The subject of the email.
  */
-async function prepareEmail<T extends EntityDAO>(
+async function prepareEmail<T>(
   entity: Record<string, T>,
   type: string,
   template: string,

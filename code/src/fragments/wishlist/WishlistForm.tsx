@@ -13,7 +13,7 @@ import {
 } from 'classes/wishlist/WishlistDAO';
 import Clickable from 'components/Clickable';
 import Input from 'components/Input';
-import HandlersV2 from 'constants/handlersv2';
+import HandlerFactory from 'constants/handlers';
 import Utils from 'constants/utils';
 import FORM from 'styles/Components/Form.styles';
 
@@ -23,7 +23,7 @@ export default function WishlistForm() {
   const [context, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
 
-  const Handlers = HandlersV2(setContext, 'wishlistItem');
+  const Handlers = HandlerFactory(setContext, 'wishlistItem');
 
   return (
     <FORM.Container>
@@ -94,7 +94,7 @@ export default function WishlistForm() {
       <FORM.FieldRow>
         <FORM.Field>
           <FORM.Label>Comments:</FORM.Label>
-          <FORM.Input.Paragraph
+          <FORM.Input.Textarea
             name={'comments'}
             value={context.wishlistItem.comments}
             onChange={Handlers.text}

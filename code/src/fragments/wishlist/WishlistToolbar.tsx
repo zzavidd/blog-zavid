@@ -43,7 +43,7 @@ export default function WishlistToolbar() {
     appDispatch(
       AppActions.setWishlistSort({
         name: 'sortProperty',
-        value: e.target.value,
+        value: e.target.value as keyof WishlistDAO,
       }),
     );
   }

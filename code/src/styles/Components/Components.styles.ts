@@ -1,8 +1,5 @@
 import Link from 'next/link';
-import { darken } from 'polished';
 import styled, { css } from 'styled-components';
-
-import Mixins from 'styles/Mixins.styles';
 
 namespace CPX {
   export const Button = styled.button.attrs({ type: 'button' })`

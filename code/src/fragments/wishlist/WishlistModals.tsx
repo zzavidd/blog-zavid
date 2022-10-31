@@ -6,7 +6,7 @@ import Checkbox from 'components/Checkbox';
 import Input from 'components/Input';
 import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
-import HandlersV2 from 'constants/handlersv2';
+import HandlerFactory from 'constants/handlers';
 import Utils from 'constants/utils';
 import {
   initialState,
@@ -151,7 +151,7 @@ export function ClaimWishlistItemModal() {
 
 function ClaimForm() {
   const [context, setContext] = useContext(WishlistPageContext);
-  const Handlers = HandlersV2(setContext, 'claim');
+  const Handlers = HandlerFactory(setContext, 'claim');
 
   const maxClaimQuantity = useMemo(() => {
     if (!context.selectedWishlistItem) return;

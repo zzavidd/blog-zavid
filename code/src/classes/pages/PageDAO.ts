@@ -1,6 +1,5 @@
-import type { EntityDAO } from '../entity';
-
-export interface PageDAO extends EntityDAO {
+export interface PageDAO {
+  id?: number;
   title: string;
   content: string;
   isEmbed: boolean;

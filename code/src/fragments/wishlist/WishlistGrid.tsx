@@ -17,14 +17,11 @@ import { THEME } from 'styles/Variables.styles';
 import { WishlistPageContext } from './WishlistContext';
 import WishlistToolbar from './WishlistToolbar';
 
-const SORT_BY: Record<
-  keyof WishlistDAO,
-  (a: WishlistDAO, b: WishlistDAO) => number
+const SORT_BY: Partial<
+  Record<keyof WishlistDAO, (a: WishlistDAO, b: WishlistDAO) => number>
 > = {
   name: (a, b) =>
-    a.name.localeCompare(b.name, 'en', {
-      ignorePunctuation: true,
-    }),
+    a.name.localeCompare(b.name, 'en', { ignorePunctuation: true }),
   price: (a, b) => a.price - b.price,
   priority: (a, b) => a.priority - b.priority,
   createTime: (a, b) =>

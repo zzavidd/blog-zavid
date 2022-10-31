@@ -1,6 +1,5 @@
-import type { EntityDAO } from '../entity';
-
-export interface SubscriberDAO extends EntityDAO {
+export interface SubscriberDAO {
+  id?: number;
   email?: string;
   firstname?: string;
   lastname?: string;
