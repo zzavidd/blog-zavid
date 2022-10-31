@@ -16,9 +16,8 @@
     "sourceMap": true,
     "strict": true,
     "target": "es6",
-    "tsBuildInfoFile": ".tsbuildinfo",
-    "typeRoots": ["types"]
+    "tsBuildInfoFile": ".tsbuildinfo"
   },
-  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", "index.d.ts"],
-  "exclude": ["node_modules", "dist/", "ops/**/*", "types/**/*"]
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", "types/*.d.ts"],
+  "exclude": ["node_modules", "dist/", "ops/**/*"]
 }

@@ -2,7 +2,7 @@ import type { Knex } from 'knex';
 
 import { QueryOrder } from 'constants/types';
 
-export class QueryBuilder<T extends Record<string, unknown>> {
+export class QueryBuilder<T extends EntityDAO> {
   protected query: Knex | Knex.QueryBuilder;
   protected table: string;
   protected knex: Knex;
@@ -78,7 +78,7 @@ export class QueryBuilder<T extends Record<string, unknown>> {
 }
 
 export class MutationBuilder<
-  Entity extends { readonly id?: string },
+  Entity extends EntityDAO,
 > extends QueryBuilder<Entity> {
   private entity: string;
 

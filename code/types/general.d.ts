@@ -1,0 +1,3 @@
+interface EntityDAO {
+  id?: number;
+}
