@@ -7,11 +7,7 @@
     "incremental": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -21,20 +17,8 @@
     "strict": true,
     "target": "es6",
     "tsBuildInfoFile": ".tsbuildinfo",
-    "typeRoots": [
-      "types"
-    ]
+    "typeRoots": ["types"]
   },
-  "include": [
-    "next-env.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "index.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist/",
-    "ops/**/*",
-    "types/**/*"
-  ]
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", "index.d.ts"],
+  "exclude": ["node_modules", "dist/", "ops/**/*", "types/**/*"]
 }
