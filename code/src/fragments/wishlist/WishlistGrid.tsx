@@ -169,21 +169,21 @@ const WishlistGridItem = React.memo(
     }
 
     return (
-      <WL.Main.Cell image={wishlistItem.image}>
+      <WL.Main.Item image={wishlistItem.image}>
         <AdminLock>
-          <WL.Main.CrudControls>
+          <WL.Main.CrudControlBox>
             <Clickable.Icon icon={faPen} onClick={onEditIconClick} />
             <Clickable.Icon icon={faTrashAlt} onClick={onDeleteIconClick} />
-          </WL.Main.CrudControls>
+          </WL.Main.CrudControlBox>
         </AdminLock>
-        <WL.Main.CellImageContainer onClick={onVisitLinkClick}>
-          <WL.Main.ItemCellImage
+        <WL.Main.ItemImageBox onClick={onVisitLinkClick}>
+          <WL.Main.ItemImage
             src={wishlistItem.image}
             alt={wishlistItem.name}
             loading={'lazy'}
           />
-        </WL.Main.CellImageContainer>
-        <WL.Main.CellContent>
+        </WL.Main.ItemImageBox>
+        <WL.Main.ItemDetails purchased={!!wishlistItem.purchaseDate}>
           <WL.Main.ItemName>{wishlistItem.name}</WL.Main.ItemName>
           <WL.Main.ItemPrice>
             {wishlistItem.price.toLocaleString('en-GB', {
@@ -192,20 +192,28 @@ const WishlistGridItem = React.memo(
             })}
             &nbsp;
           </WL.Main.ItemPrice>
-          <WL.Main.ItemQuantity>
-            {wishlistItem.quantity}&nbsp;wanted
-          </WL.Main.ItemQuantity>
-          <WL.Main.ItemReservees
-            complete={numberOfItemsClaimed === wishlistItem.quantity}>
-            ({numberOfItemsClaimed} out of {wishlistItem.quantity} claimed)
-          </WL.Main.ItemReservees>
+          {!wishlistItem.purchaseDate ? (
+            <React.Fragment>
+              <WL.Main.ItemQuantity>
+                {wishlistItem.quantity}&nbsp;wanted
+              </WL.Main.ItemQuantity>
+              <WL.Main.ItemReservees
+                complete={numberOfItemsClaimed === wishlistItem.quantity}>
+                ({numberOfItemsClaimed} out of {wishlistItem.quantity} claimed)
+              </WL.Main.ItemReservees>
+            </React.Fragment>
+          ) : (
+            <WL.Main.ItemPurchasedText>
+              Already purchased.
+            </WL.Main.ItemPurchasedText>
+          )}
           <WL.Main.ItemCellFooter>
             <WL.Main.ItemCellFooterButton
               onClick={onVisitLinkClick}
               color={'#50425d'}>
               Visit link
             </WL.Main.ItemCellFooterButton>
-            {isClaimedByUser ? (
+            {wishlistItem.purchaseDate ? null : isClaimedByUser ? (
               <WL.Main.ItemCellFooterButton
                 onClick={unclaimItem}
                 color={'#883e69'}>
@@ -219,8 +227,8 @@ const WishlistGridItem = React.memo(
               </WL.Main.ItemCellFooterButton>
             )}
           </WL.Main.ItemCellFooter>
-        </WL.Main.CellContent>
-      </WL.Main.Cell>
+        </WL.Main.ItemDetails>
+      </WL.Main.Item>
     );
   },
   (a, b) => a.wishlistItem.id === b.wishlistItem.id,

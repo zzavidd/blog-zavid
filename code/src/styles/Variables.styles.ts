@@ -60,6 +60,8 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
     hyperlink: '#aa00ff',
     headerBackgroundColor: '#dddddd',
     footerBackgroundColor: '#dfdfdf',
+    wishlistItem: '#ccabe5',
+    wishlistItemPurchased: '#5f5567',
     readmore: '#005dec',
     readmoreReverse: '#87ceeb',
     button: {
@@ -79,6 +81,8 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
     hyperlink: '#d98dff',
     headerBackgroundColor: '#202020',
     footerBackgroundColor: '#111111',
+    wishlistItem: '#402e4e',
+    wishlistItemPurchased: '#7b7b7b',
     readmore: '#87ceeb',
     readmoreReverse: '#005dec',
     button: {

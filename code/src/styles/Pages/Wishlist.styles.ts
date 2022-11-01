@@ -1,3 +1,4 @@
+import { transparentize } from 'polished';
 import styled, { css } from 'styled-components';
 
 import Input from 'components/Input';
@@ -38,10 +39,10 @@ namespace WishlistStyle {
       }
     `;
 
-    export const Cell = styled.div<{ image: string }>`
+    export const Item = styled.div<{ image: string }>`
       align-items: flex-end;
+      border: 2px solid ${({ theme }) => theme.bodyFontColor};
       border-radius: 15px;
-      box-shadow: 0 0 10px 1px #323232;
       display: flex;
       flex: 1 1;
       flex-direction: column;
@@ -52,7 +53,7 @@ namespace WishlistStyle {
       transition: all 0.3s ease;
     `;
 
-    export const CellImageContainer = styled(CPX.Clickable)`
+    export const ItemImageBox = styled(CPX.Clickable)`
       ${Mixins.Responsive(['height', '200px', { sm: '150px' }])}
       background-color: ${COLOR.WHITE};
       flex: 0 0 auto;
@@ -62,7 +63,7 @@ namespace WishlistStyle {
       width: 100%;
     `;
 
-    export const ItemCellImage = styled.img`
+    export const ItemImage = styled.img`
       height: 100%;
       object-fit: cover;
       transition: all 0.8s;
@@ -73,8 +74,13 @@ namespace WishlistStyle {
       }
     `;
 
-    export const CellContent = styled.div`
-      background-color: rgba(52, 43, 59, 0.8);
+    export const ItemDetails = styled.div<{ purchased: boolean }>`
+      background-color: ${({ purchased, theme }) =>
+        transparentize(
+          0.2,
+          purchased ? theme.wishlistItemPurchased : theme.wishlistItem,
+        )};
+      border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
       display: flex;
       flex: 1 0 auto;
       flex-direction: column;
@@ -82,7 +88,7 @@ namespace WishlistStyle {
       width: 100%;
     `;
 
-    export const CrudControls = styled.div`
+    export const CrudControlBox = styled.div`
       background-color: #212121ae;
       border-radius: 10px;
       display: flex;
@@ -91,7 +97,7 @@ namespace WishlistStyle {
       position: absolute;
       right: 3%;
       top: 2%;
-      z-index: 2;
+      z-index: 1;
 
       svg {
         color: ${COLOR.WHITE};
@@ -105,9 +111,8 @@ namespace WishlistStyle {
 
     export const ItemName = styled.h3`
       ${Mixins.Responsive(['font-size', '1.3em', { sm: '1em' }])}
-      color: ${COLOR.WHITE};
+      color: ${({ theme }) => theme.bodyFontColor};
       font-family: ${FONT.TITLE};
-      letter-spacing: -1px;
       margin: 0;
     `;
 
@@ -126,6 +131,10 @@ namespace WishlistStyle {
       color: ${({ complete }) => (complete ? '#00ff00' : '#ffff8d')};
       margin-block: 0.4em;
       transition: all 0.3s;
+    `;
+
+    export const ItemPurchasedText = styled.p`
+      ${Mixins.Responsive(['font-size', '1em', { sm: '0.75em' }])}
     `;
 
     export const ItemCellFooter = styled.footer`
@@ -246,7 +255,9 @@ namespace WishlistStyle {
 
   export namespace Toolbar {
     export const Container = styled.div`
+      align-items: center;
       background-color: ${({ theme }) => theme.headerBackgroundColor};
+      border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
       bottom: 0;
       display: flex;
       justify-content: space-between;
@@ -256,9 +267,9 @@ namespace WishlistStyle {
     `;
 
     export const Dropdown = styled(Input.Select)`
+      ${Mixins.Responsive(['font-size', '0.85em', { sm: '0.6em' }])}
       appearance: none;
-      border: 1px solid ${({ theme }) => theme.bodyFontColor};
-      border-radius: 15px;
+      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
       padding: 0.5em;
       width: max-content;
     `;
@@ -267,6 +278,7 @@ namespace WishlistStyle {
       ${({ visible }) => Mixins.Visible(visible)}
       background: none;
       color: ${({ theme }) => theme.bodyFontColor};
+      height: fit-content;
       text-decoration: none;
 
       svg {
@@ -275,7 +287,7 @@ namespace WishlistStyle {
       }
 
       &:hover {
-        text-decoration: underline;
+        border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
       }
     `;
   }

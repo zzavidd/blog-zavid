@@ -12,6 +12,8 @@ declare module 'styled-components' {
     hyperlink: string;
     headerBackgroundColor: string;
     footerBackgroundColor: string;
+    wishlistItem: string;
+    wishlistItemPurchased: string;
     readmore: string;
     readmoreReverse: string;
     button: Record<ButtonVariant?, string>;
