@@ -1,6 +1,7 @@
-import { transparentize } from 'polished';
+import { darken, transparentize } from 'polished';
 import styled, { css } from 'styled-components';
 
+import type { WishlistItemPriority } from 'classes/wishlist/WishlistDAO';
 import Input from 'components/Input';
 import CPX from 'styles/Components/Components.styles';
 import Mixins from 'styles/Mixins.styles';
@@ -69,6 +70,27 @@ namespace WishlistStyle {
       transition: all 0.3s ease;
     `;
 
+    export const CrudControlBox = styled.div`
+      background-color: #212121ae;
+      border-radius: 10px;
+      display: flex;
+      gap: 0.2em;
+      padding: 0.2em;
+      position: absolute;
+      right: 3%;
+      top: 2%;
+      z-index: 1;
+
+      svg {
+        color: ${COLOR.WHITE};
+        transition: all 0.3s;
+
+        &:hover {
+          transform: scale(0.9);
+        }
+      }
+    `;
+
     export const ItemImageBox = styled(CPX.Clickable)`
       ${Mixins.Responsive(['height', '200px', { sm: '150px' }])}
       background-color: ${COLOR.WHITE};
@@ -104,32 +126,28 @@ namespace WishlistStyle {
       width: 100%;
     `;
 
-    export const CrudControlBox = styled.div`
-      background-color: #212121ae;
-      border-radius: 10px;
-      display: flex;
-      gap: 0.2em;
-      padding: 0.2em;
-      position: absolute;
-      right: 3%;
-      top: 2%;
-      z-index: 1;
-
-      svg {
-        color: ${COLOR.WHITE};
-        transition: all 0.3s;
-
-        &:hover {
-          transform: scale(0.9);
-        }
-      }
-    `;
-
     export const ItemName = styled.h3`
       ${Mixins.Responsive(['font-size', '1.3em', { sm: '1em' }])}
       color: ${({ theme }) => theme.bodyFontColor};
       font-family: ${FONT.TITLE};
       margin: 0;
+    `;
+
+    export const ItemPriority = styled.small<ItemPriorityProps>`
+      ${Mixins.Responsive(
+        ['font-size', '0.65em', { sm: '0.5em' }],
+        ['min-width', '50px', { sm: '40px' }],
+      )}
+      background-color: ${({ priority }) => COLOR.WISHLIST_PRIORITY[priority]};
+      border-radius: 5px;
+      color: ${({ priority }) =>
+        darken(0.5, COLOR.WISHLIST_PRIORITY[priority])};
+      font-weight: bold;
+      padding: 0.3em;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      top: 0.5em;
     `;
 
     export const ItemPrice = styled.p`
@@ -314,3 +332,7 @@ namespace WishlistStyle {
 }
 
 export default WishlistStyle;
+
+interface ItemPriorityProps {
+  priority: WishlistItemPriority;
+}

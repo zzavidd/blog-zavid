@@ -1,6 +1,7 @@
 import type { DefaultTheme } from 'styled-components';
 
 import type { AppTheme } from 'classes/theme';
+import { WishlistItemPriority } from 'classes/wishlist/WishlistDAO';
 import Settings from 'constants/settings';
 import type { AlertType } from 'constants/types';
 
@@ -38,6 +39,11 @@ export const COLOR = {
     success: '#c3ffc3',
     error: '#ffa2a2',
   } as Record<AlertType, string>,
+  WISHLIST_PRIORITY: {
+    [WishlistItemPriority.LOW]: '#ffcb63',
+    [WishlistItemPriority.MEDIUM]: '#eeee5d',
+    [WishlistItemPriority.HIGH]: '#89ff53',
+  } as Record<WishlistItemPriority, string>,
 };
 
 export const FONTS = {

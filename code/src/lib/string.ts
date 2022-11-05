@@ -1,6 +1,7 @@
 namespace ZString {
   export function capitalise(text: string): string {
-    return text.charAt(0).toUpperCase() + text.substring(1);
+    if (!text) return text;
+    return text.charAt(0).toUpperCase() + text.substring(1).toLowerCase();
   }
 
   export const toTitleCase = (text: string): string => {

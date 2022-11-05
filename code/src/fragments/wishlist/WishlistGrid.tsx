@@ -5,11 +5,13 @@ import { useSelector } from 'react-redux';
 import useSWR, { mutate } from 'swr';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
+import { WishlistItemPriority } from 'classes/wishlist/WishlistDAO';
 import Clickable from 'components/Clickable';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
+import ZString from 'lib/string';
 import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';
 import WL from 'styles/Pages/Wishlist.styles';
 import { THEME } from 'styles/Variables.styles';
@@ -61,7 +63,9 @@ export default function WishlistGrid() {
     <WL.Main.Container>
       <WL.Main.PageDetails>
         <WL.Main.Title>Zavid&#39;s Wishlist</WL.Main.Title>
-        <WL.Main.Summary>Zavid&#39;s Wishlist</WL.Main.Summary>
+        <WL.Main.Summary>
+          Consider anything on this list nectar to my soul.
+        </WL.Main.Summary>
       </WL.Main.PageDetails>
       <WL.Main.Grid>
         {!error &&
@@ -90,6 +94,10 @@ const WishlistGridItem = React.memo(
 
     const { data: session, status } = useSession();
     const email = session?.user?.email;
+
+    const priority = ZString.capitalise(
+      WishlistItemPriority[wishlistItem.priority],
+    );
 
     /** Memoise variables relating to reservees. */
     const { isClaimedByUser, numberOfItemsClaimed } = useMemo(() => {
@@ -189,28 +197,36 @@ const WishlistGridItem = React.memo(
         </WL.Main.ItemImageBox>
         <WL.Main.ItemDetails purchased={!!wishlistItem.purchaseDate}>
           <WL.Main.ItemName>{wishlistItem.name}</WL.Main.ItemName>
-          <WL.Main.ItemPrice>
-            {wishlistItem.price.toLocaleString('en-GB', {
-              style: 'currency',
-              currency: 'GBP',
-            })}
-            &nbsp;
-          </WL.Main.ItemPrice>
-          {!wishlistItem.purchaseDate ? (
-            <React.Fragment>
-              <WL.Main.ItemQuantity>
-                {wishlistItem.quantity}&nbsp;wanted
-              </WL.Main.ItemQuantity>
-              <WL.Main.ItemReservees
-                complete={numberOfItemsClaimed === wishlistItem.quantity}>
-                ({numberOfItemsClaimed} out of {wishlistItem.quantity} claimed)
-              </WL.Main.ItemReservees>
-            </React.Fragment>
-          ) : (
-            <WL.Main.ItemPurchasedText>
-              Already purchased.
-            </WL.Main.ItemPurchasedText>
-          )}
+          <div style={{ position: 'relative' }}>
+            <WL.Main.ItemPrice>
+              {wishlistItem.price.toLocaleString('en-GB', {
+                style: 'currency',
+                currency: 'GBP',
+              })}
+              &nbsp;
+            </WL.Main.ItemPrice>
+            {!wishlistItem.purchaseDate ? (
+              <React.Fragment>
+                {wishlistItem.priority ? (
+                  <WL.Main.ItemPriority priority={wishlistItem.priority}>
+                    {priority}
+                  </WL.Main.ItemPriority>
+                ) : null}
+                <WL.Main.ItemQuantity>
+                  {wishlistItem.quantity}&nbsp;wanted
+                </WL.Main.ItemQuantity>
+                <WL.Main.ItemReservees
+                  complete={numberOfItemsClaimed === wishlistItem.quantity}>
+                  ({numberOfItemsClaimed} out of {wishlistItem.quantity}{' '}
+                  claimed)
+                </WL.Main.ItemReservees>
+              </React.Fragment>
+            ) : (
+              <WL.Main.ItemPurchasedText>
+                Already purchased.
+              </WL.Main.ItemPurchasedText>
+            )}
+          </div>
           <WL.Main.ItemCellFooter>
             <WL.Main.ItemCellFooterButton
               onClick={onVisitLinkClick}
