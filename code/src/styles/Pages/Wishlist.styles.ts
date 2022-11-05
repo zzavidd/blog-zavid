@@ -139,6 +139,10 @@ namespace WishlistStyle {
       margin: 0;
     `;
 
+    export const ItemSubBox = styled.div`
+      position: relative;
+    `;
+
     export const ItemPriority = styled.small<ItemPriorityProps>`
       ${Mixins.Responsive(
         ['font-size', '0.65em', { sm: '0.5em' }],
@@ -160,6 +164,10 @@ namespace WishlistStyle {
       ${Mixins.Responsive(['font-size', '1em', { sm: '0.8em' }])}
       font-weight: bold;
       margin: 0.5em 0;
+    `;
+
+    export const ItemCategory = styled.span`
+      ${Mixins.Responsive(['font-size', '0.7em', { sm: '0.55em' }])}
     `;
 
     export const ItemQuantity = styled.span`
@@ -312,7 +320,7 @@ namespace WishlistStyle {
 
     export const SortBox = styled.div`
       display: flex;
-      gap: 1em;
+      gap: 0.5em;
     `;
 
     export const Dropdown = styled(Input.Select)`

@@ -3,6 +3,7 @@ export default interface WishlistDAO {
   name: string;
   price: number;
   quantity: number;
+  category: number;
   visibility: WishlistItemVisibility;
   priority: WishlistItemPriority;
   image: string;
@@ -11,6 +12,16 @@ export default interface WishlistDAO {
   reservees: Reservees;
   purchaseDate: Date | string | null;
   readonly createTime?: Date;
+}
+
+export enum WishlistItemCategory {
+  ARTWORK = 'Artwork',
+  CLOTHING = 'Clothing',
+  CONFECTIONERY = 'Confectionery',
+  COSMETICS = 'Cosmetics',
+  GAMING = 'Gaming',
+  ELECTRONICS = 'Electronics',
+  HOUSEHOLD = 'Household',
 }
 
 export enum WishlistItemVisibility {

@@ -8,11 +8,13 @@ import {
 import { useContext } from 'react';
 
 import {
+  WishlistItemCategory,
   WishlistItemPriority,
   WishlistItemVisibility,
 } from 'classes/wishlist/WishlistDAO';
 import Clickable from 'components/Clickable';
 import Input from 'components/Input';
+import { ShortTextArea } from 'components/Textarea';
 import HandlerFactory from 'constants/handlers';
 import Utils from 'constants/utils';
 import FORM from 'styles/Components/Form.styles';
@@ -70,6 +72,31 @@ export default function WishlistForm() {
         </FORM.Field>
       </FORM.FieldRow>
       <FORM.FieldRow>
+        <FORM.Field flex={2}>
+          <FORM.Label>Category:</FORM.Label>
+          <Input.Select
+            name={'category'}
+            options={Object.values(WishlistItemCategory)}
+            value={context.wishlistItem.category}
+            onChange={Handlers.select}
+          />
+        </FORM.Field>
+        <FORM.Field flex={1}>
+          <FORM.Label>Priority:</FORM.Label>
+          <Input.Select
+            name={'priority'}
+            options={Object.entries(WishlistItemPriority)
+              .filter(([key]) => isNaN(Number(key)))
+              .map(([key, value]) => ({
+                label: key,
+                value: String(value),
+              }))}
+            value={context.wishlistItem.priority}
+            onChange={Handlers.select}
+          />
+        </FORM.Field>
+      </FORM.FieldRow>
+      <FORM.FieldRow>
         <FORM.Field>
           <FORM.Label>Reference Link:</FORM.Label>
           <Input.Url
@@ -94,7 +121,7 @@ export default function WishlistForm() {
       <FORM.FieldRow>
         <FORM.Field>
           <FORM.Label>Comments:</FORM.Label>
-          <FORM.Input.Textarea
+          <ShortTextArea
             name={'comments'}
             value={context.wishlistItem.comments}
             onChange={Handlers.text}
@@ -104,20 +131,6 @@ export default function WishlistForm() {
         </FORM.Field>
       </FORM.FieldRow>
       <FORM.FieldRow>
-        <FORM.Field>
-          <FORM.Label>Priority:</FORM.Label>
-          <Input.Select
-            name={'priority'}
-            options={Object.entries(WishlistItemPriority)
-              .filter(([key]) => isNaN(Number(key)))
-              .map(([key, value]) => ({
-                label: key,
-                value: String(value),
-              }))}
-            value={context.wishlistItem.priority}
-            onChange={Handlers.select}
-          />
-        </FORM.Field>
         <FORM.Field>
           <FORM.Label>Purchase Date:</FORM.Label>
           <Input.DatePicker

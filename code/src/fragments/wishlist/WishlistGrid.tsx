@@ -67,6 +67,7 @@ export default function WishlistGrid() {
           Consider anything on this list nectar to my soul.
         </WL.Main.Summary>
       </WL.Main.PageDetails>
+      <WishlistToolbar />
       <WL.Main.Grid>
         {!error &&
           state.wishlist.map((wishlistItem) => {
@@ -78,7 +79,6 @@ export default function WishlistGrid() {
             );
           })}
       </WL.Main.Grid>
-      <WishlistToolbar />
     </WL.Main.Container>
   );
 }
@@ -197,21 +197,24 @@ const WishlistGridItem = React.memo(
         </WL.Main.ItemImageBox>
         <WL.Main.ItemDetails purchased={!!wishlistItem.purchaseDate}>
           <WL.Main.ItemName>{wishlistItem.name}</WL.Main.ItemName>
-          <div style={{ position: 'relative' }}>
+          <WL.Main.ItemSubBox>
             <WL.Main.ItemPrice>
-              {wishlistItem.price.toLocaleString('en-GB', {
-                style: 'currency',
-                currency: 'GBP',
-              })}
-              &nbsp;
+              <span>
+                {wishlistItem.price.toLocaleString('en-GB', {
+                  style: 'currency',
+                  currency: 'GBP',
+                })}
+              </span>
+
+              <WL.Main.ItemCategory>
+                &nbsp;•&nbsp;{wishlistItem.category}
+              </WL.Main.ItemCategory>
             </WL.Main.ItemPrice>
             {!wishlistItem.purchaseDate ? (
               <React.Fragment>
-                {wishlistItem.priority ? (
-                  <WL.Main.ItemPriority priority={wishlistItem.priority}>
-                    {priority}
-                  </WL.Main.ItemPriority>
-                ) : null}
+                <WL.Main.ItemPriority priority={wishlistItem.priority}>
+                  {priority}
+                </WL.Main.ItemPriority>
                 <WL.Main.ItemQuantity>
                   {wishlistItem.quantity}&nbsp;wanted
                 </WL.Main.ItemQuantity>
@@ -226,7 +229,7 @@ const WishlistGridItem = React.memo(
                 Already purchased.
               </WL.Main.ItemPurchasedText>
             )}
-          </div>
+          </WL.Main.ItemSubBox>
           <WL.Main.ItemCellFooter>
             <WL.Main.ItemCellFooterButton
               onClick={onVisitLinkClick}
@@ -251,7 +254,7 @@ const WishlistGridItem = React.memo(
       </WL.Main.Item>
     );
   },
-  (a, b) => a.wishlistItem.id === b.wishlistItem.id,
+  (a, b) => a.wishlistItem === b.wishlistItem,
 );
 
 interface WishlistGridState {
