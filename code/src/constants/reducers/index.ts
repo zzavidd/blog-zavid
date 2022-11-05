@@ -19,7 +19,7 @@ import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import Reducers from './functions';
 
 const initialLocalState: AppLocalState = {
-  appTheme: AppTheme.LIGHT,
+  appTheme: AppTheme.DARK,
   cookiePolicyAccepted: false,
   savedText: '',
   wishlist: {

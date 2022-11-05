@@ -39,7 +39,7 @@ export default function WishlistForm() {
         </FORM.Field>
       </FORM.FieldRow>
       <FORM.FieldRow>
-        <FORM.Field flex={3}>
+        <FORM.Field flex={4}>
           <FORM.Label>Price:</FORM.Label>
           <Input.Number
             name={'price'}

@@ -1,11 +1,16 @@
 import { darken, transparentize } from 'polished';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import type { WishlistItemPriority } from 'classes/wishlist/WishlistDAO';
 import Input from 'components/Input';
 import CPX from 'styles/Components/Components.styles';
 import Mixins from 'styles/Mixins.styles';
 import { BREAKPOINTS, COLOR, FONTS as FONT } from 'styles/Variables.styles';
+
+const fadeIn = keyframes`
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+`;
 
 namespace WishlistStyle {
   export const Container = styled.div`
@@ -25,9 +30,8 @@ namespace WishlistStyle {
     `;
 
     export const PageDetails = styled.div`
-      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
       margin-inline: 2em;
-      padding-block: 2em;
+      padding-block: 2em 1em;
     `;
 
     export const Title = styled.h1`
@@ -38,6 +42,7 @@ namespace WishlistStyle {
 
     export const Summary = styled.p`
       ${Mixins.Responsive(['font-size', '1em', { sm: '0.85em' }])}
+      text-align: center;
     `;
 
     export const Grid = styled.div`
@@ -58,6 +63,7 @@ namespace WishlistStyle {
 
     export const Item = styled.div<{ image: string }>`
       align-items: flex-end;
+      animation: ${fadeIn} 0.5s ease;
       border: 2px solid ${({ theme }) => theme.bodyFontColor};
       border-radius: 15px;
       display: flex;
@@ -147,7 +153,7 @@ namespace WishlistStyle {
       position: absolute;
       right: 0;
       text-align: center;
-      top: 0.5em;
+      top: 1em;
     `;
 
     export const ItemPrice = styled.p`
@@ -295,24 +301,30 @@ namespace WishlistStyle {
     export const Container = styled.div`
       align-items: center;
       background-color: ${({ theme }) => theme.headerBackgroundColor};
-      border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
-      bottom: 0;
+      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
       display: flex;
       justify-content: space-between;
       padding: 0.6em 1em;
       position: sticky;
+      top: 0;
       z-index: 2;
+    `;
+
+    export const SortBox = styled.div`
+      display: flex;
+      gap: 1em;
     `;
 
     export const Dropdown = styled(Input.Select)`
       ${Mixins.Responsive(['font-size', '0.85em', { sm: '0.6em' }])}
       appearance: none;
-      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+      border: none;
       padding: 0.5em;
       width: max-content;
     `;
 
     export const AddButton = styled(CPX.Button)<{ visible: boolean }>`
+      ${Mixins.Responsive(['font-size', '0.9em', { sm: '0.6em' }])}
       ${({ visible }) => Mixins.Visible(visible)}
       background: none;
       color: ${({ theme }) => theme.bodyFontColor};

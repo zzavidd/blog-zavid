@@ -59,16 +59,18 @@ export default function WishlistToolbar() {
 
   return (
     <WL.Toolbar.Container>
-      <WL.Toolbar.Dropdown
-        value={sortProperty}
-        options={SORT_OPTIONS}
-        onChange={onSortPropertyChange}
-      />
-      <WL.Toolbar.Dropdown
-        value={sortOrderAscending ? 'ASC' : 'DESC'}
-        options={['ASC', 'DESC']}
-        onChange={onSortOrderChange}
-      />
+      <WL.Toolbar.SortBox>
+        <WL.Toolbar.Dropdown
+          value={sortProperty}
+          options={SORT_OPTIONS}
+          onChange={onSortPropertyChange}
+        />
+        <WL.Toolbar.Dropdown
+          value={sortOrderAscending ? 'ASC' : 'DESC'}
+          options={['ASC', 'DESC']}
+          onChange={onSortOrderChange}
+        />
+      </WL.Toolbar.SortBox>
       <AdminLock>
         <WL.Toolbar.AddButton
           onClick={onAddButtonClick}
