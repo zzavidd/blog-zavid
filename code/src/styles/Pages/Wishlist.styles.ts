@@ -23,6 +23,22 @@ namespace WishlistStyle {
       width: 100%;
     `;
 
+    export const PageDetails = styled.div`
+      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+      margin-inline: 2em;
+      padding-block: 2em;
+    `;
+
+    export const Title = styled.h1`
+      margin: 0;
+      text-align: center;
+      text-transform: uppercase;
+    `;
+
+    export const Summary = styled.p`
+      ${Mixins.Responsive(['font-size', '1em', { sm: '0.85em' }])}
+    `;
+
     export const Grid = styled.div`
       align-items: flex-start;
       display: grid;
@@ -78,7 +94,7 @@ namespace WishlistStyle {
       background-color: ${({ purchased, theme }) =>
         transparentize(
           0.2,
-          purchased ? theme.wishlistItemPurchased : theme.wishlistItem,
+          purchased ? theme.wishlistItem.purchased : theme.wishlistItem.cell,
         )};
       border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
       display: flex;
@@ -119,7 +135,7 @@ namespace WishlistStyle {
     export const ItemPrice = styled.p`
       ${Mixins.Responsive(['font-size', '1em', { sm: '0.8em' }])}
       font-weight: bold;
-      margin-bottom: 0.5em;
+      margin: 0.5em 0;
     `;
 
     export const ItemQuantity = styled.span`
@@ -128,7 +144,11 @@ namespace WishlistStyle {
 
     export const ItemReservees = styled.p<{ complete: boolean }>`
       ${Mixins.Responsive(['font-size', '0.8em', { sm: '0.6em' }])}
-      color: ${({ complete }) => (complete ? '#00ff00' : '#ffff8d')};
+      color: ${({ complete, theme }) =>
+        complete
+          ? theme.wishlistItem.claimCountComplete
+          : theme.wishlistItem.claimCount};
+      font-weight: ${({ theme }) => theme.wishlistItem.claimCountFontWeight};
       margin-block: 0.4em;
       transition: all 0.3s;
     `;

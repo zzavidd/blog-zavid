@@ -59,6 +59,10 @@ export default function WishlistGrid() {
 
   return (
     <WL.Main.Container>
+      <WL.Main.PageDetails>
+        <WL.Main.Title>Zavid&#39;s Wishlist</WL.Main.Title>
+        <WL.Main.Summary>Zavid&#39;s Wishlist</WL.Main.Summary>
+      </WL.Main.PageDetails>
       <WL.Main.Grid>
         {!error &&
           state.wishlist.map((wishlistItem) => {

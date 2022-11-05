@@ -60,8 +60,13 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
     hyperlink: '#aa00ff',
     headerBackgroundColor: '#dddddd',
     footerBackgroundColor: '#dfdfdf',
-    wishlistItem: '#ccabe5',
-    wishlistItemPurchased: '#5f5567',
+    wishlistItem: {
+      cell: '#ccabe5',
+      purchased: '#5f5567',
+      claimCount: '#fff35a',
+      claimCountComplete: '#007c00',
+      claimCountFontWeight: 'bold',
+    },
     readmore: '#005dec',
     readmoreReverse: '#87ceeb',
     button: {
@@ -81,8 +86,13 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
     hyperlink: '#d98dff',
     headerBackgroundColor: '#202020',
     footerBackgroundColor: '#111111',
-    wishlistItem: '#402e4e',
-    wishlistItemPurchased: '#7b7b7b',
+    wishlistItem: {
+      cell: '#402e4e',
+      purchased: '#7b7b7b',
+      claimCount: '#ffff8d',
+      claimCountComplete: '#00ff00',
+      claimCountFontWeight: 'normal',
+    },
     readmore: '#87ceeb',
     readmoreReverse: '#005dec',
     button: {

@@ -12,8 +12,13 @@ declare module 'styled-components' {
     hyperlink: string;
     headerBackgroundColor: string;
     footerBackgroundColor: string;
-    wishlistItem: string;
-    wishlistItemPurchased: string;
+    wishlistItem: {
+      cell: string;
+      claimCount: string;
+      claimCountComplete: string;
+      claimCountFontWeight: string;
+      purchased: string;
+    };
     readmore: string;
     readmoreReverse: string;
     button: Record<ButtonVariant?, string>;
