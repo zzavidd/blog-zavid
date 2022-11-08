@@ -205,7 +205,6 @@ const WishlistGridItem = React.memo(
                   currency: 'GBP',
                 })}
               </span>
-
               <WL.Main.ItemCategory>
                 &nbsp;•&nbsp;{wishlistItem.category}
               </WL.Main.ItemCategory>
@@ -236,7 +235,9 @@ const WishlistGridItem = React.memo(
               color={'#50425d'}>
               Visit link
             </WL.Main.ItemCellFooterButton>
-            {wishlistItem.purchaseDate ? null : isClaimedByUser ? (
+            {wishlistItem.purchaseDate ||
+            (numberOfItemsClaimed === wishlistItem.quantity &&
+              !isClaimedByUser) ? null : isClaimedByUser ? (
               <WL.Main.ItemCellFooterButton
                 onClick={unclaimItem}
                 color={'#883e69'}>

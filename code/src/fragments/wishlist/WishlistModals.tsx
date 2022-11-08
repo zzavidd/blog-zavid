@@ -15,7 +15,7 @@ import {
 import type { ClaimWishlistItemPayload } from 'private/api/wishlist';
 import FORM from 'styles/Components/Form.styles';
 import ModalStyle from 'styles/Components/Modal.styles';
-import WishlistStyle from 'styles/Pages/Wishlist.styles';
+import WL from 'styles/Pages/Wishlist.styles';
 import { ButtonVariant } from 'styles/Variables.styles';
 
 export function DeleteWishlistItemModal() {
@@ -85,7 +85,7 @@ export function ClaimWishlistItemModal() {
 
   useEffect(() => {
     if (context.isClaimPromptVisible) {
-      consign({ claim: initialState.claim });
+      consign({ claimRequest: initialState.claimRequest });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.isClaimPromptVisible]);
@@ -108,7 +108,7 @@ export function ClaimWishlistItemModal() {
         body: {
           id: context.selectedWishlistItem.id!,
           email,
-          quantity: context.selectedWishlistItem.quantity,
+          quantity: context.claimRequest.quantity,
           anonymous: false,
         },
       });
@@ -151,41 +151,51 @@ export function ClaimWishlistItemModal() {
 
 function ClaimForm() {
   const [context, setContext] = useContext(WishlistPageContext);
-  const Handlers = HandlerFactory(setContext, 'claim');
+  const Handlers = HandlerFactory(setContext, 'claimRequest');
+
+  const { data: session } = useSession();
+  const email = session?.user?.email;
 
   const maxClaimQuantity = useMemo(() => {
     if (!context.selectedWishlistItem) return;
     const { reservees, quantity: maxQuantity } = context.selectedWishlistItem;
-    const numberOfClaimed = Object.values(reservees).reduce(
-      (acc, { quantity }) => {
+    const numberOfClaimed = Object.entries(reservees).reduce(
+      (acc, [claimant, { quantity }]) => {
+        if (claimant === email) return acc;
         return acc + quantity;
       },
       0,
     );
     return maxQuantity - numberOfClaimed;
-  }, [context.selectedWishlistItem]);
+  }, [context.selectedWishlistItem, email]);
 
   if (!context.selectedWishlistItem) return null;
-
+  const price =
+    context.selectedWishlistItem.price * context.claimRequest.quantity;
+  const shownPrice = price.toLocaleString('en-GB', {
+    style: 'currency',
+    currency: 'GBP',
+  });
   return (
-    <WishlistStyle.Claim.Container>
-      <WishlistStyle.Claim.Partition>
-        <WishlistStyle.Claim.Text>
-          You are about to claim this item:&nbsp;
-          <strong>{context.selectedWishlistItem?.name}</strong>.
-        </WishlistStyle.Claim.Text>
+    <WL.Claim.Container>
+      <WL.Claim.Partition>
+        <WL.Claim.Text>
+          You are about to claim&nbsp;
+          <strong>{context.selectedWishlistItem.name}</strong>.
+        </WL.Claim.Text>
         {maxClaimQuantity && maxClaimQuantity >= 2 ? (
           <FORM.FieldRow>
             <FORM.Field>
               <FORM.Label>How many will you claim?</FORM.Label>
               <Input.Number
                 name={'quantity'}
-                value={context.claim.quantity}
+                value={context.claimRequest.quantity}
                 onChange={Handlers.number}
                 min={1}
                 max={maxClaimQuantity}
                 disabled={maxClaimQuantity === 1}
               />
+              <WL.Claim.DetailsBox>Max: {maxClaimQuantity}</WL.Claim.DetailsBox>
             </FORM.Field>
           </FORM.FieldRow>
         ) : null}
@@ -193,19 +203,25 @@ function ClaimForm() {
           <FORM.Field>
             <Checkbox
               name={'isAnonymous'}
-              checked={context.claim.isAnonymous}
+              checked={context.claimRequest.isAnonymous}
               onChange={Handlers.check}
               label={'Claim anonymously?'}
             />
           </FORM.Field>
         </FORM.FieldRow>
-      </WishlistStyle.Claim.Partition>
-      <WishlistStyle.Claim.ImageContainer>
-        <WishlistStyle.Claim.Image
-          src={context.selectedWishlistItem.image}
-          alt={context.selectedWishlistItem.name}
-        />
-      </WishlistStyle.Claim.ImageContainer>
-    </WishlistStyle.Claim.Container>
+      </WL.Claim.Partition>
+      <WL.Claim.Partition>
+        <WL.Claim.ImageBox>
+          <WL.Claim.Image
+            src={context.selectedWishlistItem.image}
+            alt={context.selectedWishlistItem.name}
+          />
+        </WL.Claim.ImageBox>
+        <WL.Claim.PriceBox>
+          <h3>Approx. Total:</h3>
+          <p>{shownPrice}</p>
+        </WL.Claim.PriceBox>
+      </WL.Claim.Partition>
+    </WL.Claim.Container>
   );
 }

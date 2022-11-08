@@ -1,6 +1,10 @@
 import type { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
+import Contexts from 'constants/contexts';
+import type { AppState } from 'constants/reducers';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import type { WishlistPageState } from 'fragments/wishlist/WishlistContext';
@@ -20,14 +24,29 @@ import WL from 'styles/Pages/Wishlist.styles';
 const WishlistPage: NextPageWithLayout<WishlistPageProps> = () => {
   const [state, setState] = useState<WishlistPageState>(initialState);
 
+  const appState = useSelector((state: AppState) => state);
+  const { data: session, status } = useSession();
+  const email = session?.user?.email;
+
+  const Snacks = useContext(Contexts.Snacks);
+
+  /**
+   * Shows snack if user is logged in.
+   */
+  useEffect(() => {
+    if (status !== 'authenticated' || !appState.session.loginSnackShown) return;
+    Snacks.add({ message: `Signed in as ${email}.` });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email, status]);
+
   return (
     <WishlistPageContext.Provider value={[state, setState]}>
       <WL.Container>
         <WishlistGrid />
         <WishlistTray />
+        <DeleteWishlistItemModal />
+        <ClaimWishlistItemModal />
       </WL.Container>
-      <DeleteWishlistItemModal />
-      <ClaimWishlistItemModal />
     </WishlistPageContext.Provider>
   );
 };

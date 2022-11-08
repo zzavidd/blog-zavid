@@ -6,7 +6,7 @@ import type { ReactHook } from 'constants/types';
 
 export interface WishlistPageState {
   wishlistItem: WishlistDAO;
-  claim: WishlistClaim;
+  claimRequest: WishlistClaimRequest;
   selectedWishlistItem: WishlistDAO | null;
   isDeletePromptVisible: boolean;
   isClaimPromptVisible: boolean;
@@ -15,7 +15,7 @@ export interface WishlistPageState {
 
 export const initialState: WishlistPageState = {
   wishlistItem: WishlistStatic.initial(),
-  claim: {
+  claimRequest: {
     quantity: 1,
     isAnonymous: false,
   },
@@ -29,7 +29,7 @@ export const WishlistPageContext = React.createContext<
   [WishlistPageState, ReactHook<WishlistPageState>]
 >([initialState, () => {}]);
 
-interface WishlistClaim {
+interface WishlistClaimRequest {
   quantity: number;
   isAnonymous: boolean;
 }

@@ -52,7 +52,6 @@ namespace WishlistStyle {
       grid-template-columns: repeat(auto-fill, minmax(250px, auto));
       justify-content: center;
       overflow-y: auto;
-      overscroll-behavior: contain;
       padding: 1em;
       width: 100%;
 
@@ -149,6 +148,8 @@ namespace WishlistStyle {
         ['min-width', '50px', { sm: '40px' }],
       )}
       background-color: ${({ priority }) => COLOR.WISHLIST_PRIORITY[priority]};
+      border: 1px solid
+        ${({ priority }) => darken(0.5, COLOR.WISHLIST_PRIORITY[priority])};
       border-radius: 5px;
       color: ${({ priority }) =>
         darken(0.5, COLOR.WISHLIST_PRIORITY[priority])};
@@ -270,6 +271,7 @@ namespace WishlistStyle {
 
   export namespace Claim {
     export const Container = styled.div`
+      ${Mixins.Responsive(['font-size', '100%', { sm: '75%' }])}
       column-gap: 2em;
       display: grid;
       grid-template-columns: 0.5fr 0.5fr;
@@ -278,17 +280,29 @@ namespace WishlistStyle {
 
     export const Partition = styled.section`
       display: flex;
-      flex: 1 1;
+      flex: 1 1 auto;
       flex-direction: column;
       font-size: 90%;
       gap: 2em;
-      justify-content: center;
+      justify-content: flex-start;
     `;
 
-    export const ImageContainer = styled.div`
+    export const Text = styled.p`
+      font-size: 1.2em;
+      margin: 0;
+    `;
+
+    export const DetailsBox = styled.div`
+      font-size: 0.9em;
+      margin-top: 1em;
+    `;
+
+    export const ImageBox = styled.div`
+      background-color: ${COLOR.WHITE};
       border-radius: 15px;
+      flex: 1 1;
       justify-self: flex-end;
-      max-height: 300px;
+      max-height: 200px;
       overflow: hidden;
       width: 100%;
     `;
@@ -299,9 +313,18 @@ namespace WishlistStyle {
       width: 100%;
     `;
 
-    export const Text = styled.p`
-      font-size: 1.2em;
-      margin: 0;
+    export const PriceBox = styled.div`
+      flex: 0 0;
+      text-align: right;
+
+      h3 {
+        margin: 0;
+      }
+
+      p {
+        font-size: 1.3em;
+        margin-block: 0.5em;
+      }
     `;
   }
 
@@ -309,7 +332,8 @@ namespace WishlistStyle {
     export const Container = styled.div`
       align-items: center;
       background-color: ${({ theme }) => theme.headerBackgroundColor};
-      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+      border-bottom: 1px solid ${({ theme }) => theme.fadedFontColor};
+      border-top: 1px solid ${({ theme }) => theme.fadedFontColor};
       display: flex;
       justify-content: space-between;
       padding: 0.6em 1em;
