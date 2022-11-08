@@ -16,14 +16,17 @@ import ZString from 'lib/string';
 import CPX from 'styles/Components/Components.styles';
 import NavStyle from 'styles/Partials/NavigationBar.styles';
 
-const paths = [
+const contentPaths: PathDefinition[] = [
   { title: 'Diary', url: '/diary', icon: FA6.faBook },
   { title: 'Reveries', url: '/reveries', icon: FA6.faCloud },
   { title: 'Epistles', url: '/epistles', icon: FA6.faEnvelope },
   // { title: 'Poetry', url: '/poetry' },
   // { title: 'Musings', url: '/musings' },
   { title: 'About', url: '/about', icon: FA6.faAddressCard },
-  { title: 'Wishlist', url: '/wishlist', icon: FA6.faGift },
+];
+
+const miscellaneousPaths: PathDefinition[] = [
+  { title: 'Wishlist', url: '/wishlist', icon: FA6.faGift, isNew: true },
 ];
 
 export function BrandImage(props: React.HTMLAttributes<HTMLDivElement>) {
@@ -44,18 +47,31 @@ export function NavigationLinks(props: React.HTMLAttributes<HTMLMenuElement>) {
   const [, setNavIsFocused] = useContext(Contexts.Navigation);
 
   return (
-    <NavStyle.NavigationMenu {...props}>
-      {paths.map(({ title, url, icon }) => {
+    <React.Fragment>
+      {[contentPaths, miscellaneousPaths].map((paths, key) => {
         return (
-          <Link href={url} passHref={true} key={url}>
-            <NavStyle.NavItem onClick={() => setNavIsFocused(false)}>
-              <FontAwesomeIcon icon={icon} />
-              <NavStyle.NavItemLabel>{title}</NavStyle.NavItemLabel>
-            </NavStyle.NavItem>
-          </Link>
+          <NavStyle.NavigationMenu {...props} key={key}>
+            {paths.map(({ title, url, icon, isNew = false }) => {
+              return (
+                <Link href={url} passHref={true} key={url}>
+                  <NavStyle.NavItem onClick={() => setNavIsFocused(false)}>
+                    <FontAwesomeIcon icon={icon} />
+                    <NavStyle.NavItemLabel>
+                      {title}
+                      {isNew ? (
+                        <NavStyle.NavItemNewSymbol>
+                          New
+                        </NavStyle.NavItemNewSymbol>
+                      ) : null}
+                    </NavStyle.NavItemLabel>
+                  </NavStyle.NavItem>
+                </Link>
+              );
+            })}
+          </NavStyle.NavigationMenu>
         );
       })}
-    </NavStyle.NavigationMenu>
+    </React.Fragment>
   );
 }
 
@@ -127,4 +143,11 @@ export function ThemeSwitch(
       <span>{ZString.capitalise(appTheme)}</span>
     </CPX.Button>
   );
+}
+
+interface PathDefinition {
+  title: string;
+  url: string;
+  icon: FA6.IconDefinition;
+  isNew?: boolean;
 }

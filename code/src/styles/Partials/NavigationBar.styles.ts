@@ -79,6 +79,7 @@ namespace NavStyle {
     font-size: 1.1em;
     gap: 1.4em;
     grid-template-columns: 20px 1fr;
+    position: relative;
     text-decoration: none;
     transition: all 0.3s;
 
@@ -101,6 +102,15 @@ namespace NavStyle {
     transform: scale(0);
     transform-origin: left center;
     transition: all 0.3s;
+  `;
+
+  export const NavItemNewSymbol = styled.sup`
+    background-color: #ff3e3e;
+    border-radius: 15px;
+    color: #e5ff00;
+    font-size: 0.5em;
+    margin-left: 0.8em;
+    padding: 0.2em 0.4em;
   `;
 
   export const ThemeSwitch = styled(IThemeSwitch)`
