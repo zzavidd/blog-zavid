@@ -80,19 +80,21 @@ export default function PostTemplatePage(postTrio: PostTrio) {
               {ZDate.format(post.datePublished)}
             </AS.Date>
           ) : null}
-          <AS.ImageBox>
-            <NextImage
-              src={post.image as string}
-              alt={post.title}
-              layout={'responsive'}
-              width={16}
-              height={9}
-              objectFit={'cover'}
-              priority={true}
-              placeholder={'blur'}
-              blurDataURL={post.imagePlaceholder}
-            />
-          </AS.ImageBox>
+          {post.image ? (
+            <AS.ImageBox>
+              <NextImage
+                src={post.image as string}
+                alt={post.title}
+                layout={'responsive'}
+                width={16}
+                height={9}
+                objectFit={'cover'}
+                priority={true}
+                placeholder={'blur'}
+                blurDataURL={post.imagePlaceholder}
+              />
+            </AS.ImageBox>
+          ) : null}
           <AS.Content substitutions={substitutions}>{post.content}</AS.Content>
           <AS.Signature
             layout={'fixed'}
