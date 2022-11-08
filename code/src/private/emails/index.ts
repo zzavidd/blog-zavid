@@ -13,6 +13,7 @@ import type { PostDAO } from 'classes/posts/PostDAO';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
 import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
+import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import { knex } from 'constants/knex';
 import Settings from 'constants/settings';
 import ZDate from 'lib/date';
@@ -94,6 +95,26 @@ namespace Emailer {
       subject,
     );
   }
+
+  /**
+   * Send an email to the claimant of the wishlist item.
+   * @param wishlistItem The wishlist item being claimed.
+   * @param claimant The email address of the claimant.
+   */
+  export async function notifyWishlistItemClaimant(
+    wishlistItem: WishlistDAO,
+    claimant: string,
+  ): Promise<void> {
+    const subject = "You claimed an item on on Zavid's Wishlist.";
+    const message = await ejs.renderFile(
+      `${serverRuntimeConfig.templatesDir}/wishlist.ejs`,
+      {
+        wishlistItem,
+        ...ejsLocals,
+      },
+    );
+    await sendMailToAddress(claimant, subject, message);
+  }
 }
 
 export default Emailer;
@@ -134,7 +155,7 @@ async function prepareEmail<T>(
           ...ejsLocals,
         },
       );
-      await sendMailToSubscriber(recipient.email!, subject, message);
+      await sendMailToAddress(recipient.email!, subject, message);
     });
 
     await Promise.all(promises);
@@ -152,7 +173,7 @@ async function prepareEmail<T>(
  * @param subject The subject of the email.
  * @param message The content of the message.
  */
-async function sendMailToSubscriber(
+async function sendMailToAddress(
   recipient: string,
   subject: string,
   message: string,

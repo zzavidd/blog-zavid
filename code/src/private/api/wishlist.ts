@@ -6,6 +6,7 @@ import {
 } from 'classes/wishlist/WishlistQueryBuilder';
 import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import { knex } from 'constants/knex';
+import Emailer from 'private/emails';
 
 namespace WishlistAPI {
   /**
@@ -71,7 +72,7 @@ namespace WishlistAPI {
     anonymous,
   }: ClaimWishlistItemPayload): Promise<void> {
     const wishlistItem = await getById(id);
-    await update({
+    await WishlistAPI.update({
       id,
       wishlistItem: {
         ...wishlistItem,
@@ -84,6 +85,7 @@ namespace WishlistAPI {
         },
       },
     });
+    await Emailer.notifyWishlistItemClaimant(wishlistItem, email);
   }
 
   export async function unclaim({
@@ -92,7 +94,7 @@ namespace WishlistAPI {
   }: UnclaimWishlistItemPayload): Promise<void> {
     const wishlistItem = await getById(id);
     delete wishlistItem.reservees[email];
-    await update({ id, wishlistItem });
+    await WishlistAPI.update({ id, wishlistItem });
   }
 }
 
