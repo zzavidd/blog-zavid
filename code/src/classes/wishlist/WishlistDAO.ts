@@ -3,7 +3,7 @@ export default interface WishlistDAO {
   name: string;
   price: number;
   quantity: number;
-  category: number;
+  category: WishlistItemCategory;
   visibility: WishlistItemVisibility;
   priority: WishlistItemPriority;
   image: string;

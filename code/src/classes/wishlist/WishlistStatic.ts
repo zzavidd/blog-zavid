@@ -1,5 +1,9 @@
 import type WishlistDAO from './WishlistDAO';
-import { WishlistItemPriority, WishlistItemVisibility } from './WishlistDAO';
+import {
+  WishlistItemCategory,
+  WishlistItemPriority,
+  WishlistItemVisibility,
+} from './WishlistDAO';
 
 export class WishlistStatic {
   /**
@@ -31,6 +35,7 @@ export class WishlistStatic {
       priority: WishlistItemPriority.LOW,
       comments: '',
       image: '',
+      category: WishlistItemCategory.ARTWORK,
       href: '',
       reservees: {},
       purchaseDate: null,
