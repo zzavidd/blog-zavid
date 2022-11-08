@@ -23,6 +23,7 @@ const paths = [
   // { title: 'Poetry', url: '/poetry' },
   // { title: 'Musings', url: '/musings' },
   { title: 'About', url: '/about', icon: FA6.faAddressCard },
+  { title: 'Wishlist', url: '/wishlist', icon: FA6.faGift },
 ];
 
 export function BrandImage(props: React.HTMLAttributes<HTMLDivElement>) {
