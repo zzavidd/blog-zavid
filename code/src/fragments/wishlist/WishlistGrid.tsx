@@ -58,6 +58,9 @@ export default function WishlistGrid() {
           channel your love so that it is both thoughtful and well-received.
           Consider anything on this list nectar to my soul.
         </WL.Main.Summary>
+        <WL.Main.SummarySuffix>
+          My birthday is the <strong>2nd December</strong>, by the way. &#58393;
+        </WL.Main.SummarySuffix>
       </WL.Main.PageDetails>
       <WishlistToolbar />
       <WL.Main.Grid>

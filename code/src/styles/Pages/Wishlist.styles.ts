@@ -54,6 +54,12 @@ namespace WishlistStyle {
       text-align: center;
     `;
 
+    export const SummarySuffix = styled.p`
+      ${Mixins.Responsive(['font-size', '0.9em', { sm: '0.7em' }])}
+      max-width: 800px;
+      text-align: center;
+    `;
+
     export const Grid = styled.div`
       ${Mixins.Responsive(
         ['grid-gap', '1em', { sm: '0.5em' }],
