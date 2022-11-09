@@ -2,6 +2,6 @@
 set -e
 
 cd code
-yarn run eslint
+yarn run eslint --max-warnings 0
 yarn run prettier:write
 git add -A

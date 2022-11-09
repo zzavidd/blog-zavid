@@ -14,7 +14,6 @@ import localStorage from 'redux-persist/lib/storage';
 import sessionStorage from 'redux-persist/lib/storage/session';
 
 import { AppTheme } from 'classes/theme';
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 
 import Reducers from './functions';
 

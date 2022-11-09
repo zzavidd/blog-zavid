@@ -3,16 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import type { AppState } from 'constants/reducers';
 import { AppActions } from 'constants/reducers';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
 import WL from 'styles/Pages/Wishlist.styles';
-import { SORT_OPTIONS } from './WishlistSort';
 
 import { WishlistPageContext } from './WishlistContext';
+import { SORT_OPTIONS } from './WishlistSort';
 
 export default function WishlistToolbar() {
   const [context, setContext] = useContext(WishlistPageContext);
