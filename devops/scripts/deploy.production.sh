@@ -11,4 +11,4 @@ NGINX_CONF=nginx.conf
 
 ## Run the docker script from project
 cd "/var/www/${WORKDIR}"
-docker-compose -f ./devops/docker-compose.yml up -d --build --remove-orphans production
+docker-compose -f ./devops/docker-compose.yml up -d --build --force-recreate --remove-orphans production
