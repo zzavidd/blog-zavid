@@ -132,11 +132,18 @@ namespace WishlistStyle {
       }
     `;
 
-    export const ItemDetails = styled.div<{ purchased: boolean }>`
-      background-color: ${({ purchased, theme }) =>
+    export const ItemDetails = styled.div<{
+      claimed: boolean;
+      purchased: boolean;
+    }>`
+      background-color: ${({ claimed, purchased, theme }) =>
         transparentize(
           0.2,
-          purchased ? theme.wishlistItem.purchased : theme.wishlistItem.cell,
+          purchased
+            ? theme.wishlistItem.purchased
+            : claimed
+            ? theme.wishlistItem.claimed
+            : theme.wishlistItem.cell,
         )};
       border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
       display: flex;

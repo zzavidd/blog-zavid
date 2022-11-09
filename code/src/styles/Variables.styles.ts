@@ -71,6 +71,7 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
     wishlistItem: {
       cell: '#ccabe5',
       purchased: '#5f5567',
+      claimed: '#b1c3f7',
       claimCount: '#fff35a',
       claimCountComplete: '#007c00',
       claimCountFontWeight: 'bold',
@@ -97,6 +98,7 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
     wishlistItem: {
       cell: '#402e4e',
       purchased: '#7b7b7b',
+      claimed: '#5f5e82',
       claimCount: '#ffff8d',
       claimCountComplete: '#00ff00',
       claimCountFontWeight: 'normal',

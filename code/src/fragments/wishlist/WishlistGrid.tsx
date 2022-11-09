@@ -176,6 +176,8 @@ const WishlistGridItem = React.memo(
       }
     }
 
+    const allQuantityClaimed = numberOfItemsClaimed === wishlistItem.quantity;
+
     return (
       <WL.Main.Item image={wishlistItem.image}>
         <AdminLock>
@@ -191,7 +193,9 @@ const WishlistGridItem = React.memo(
             loading={'lazy'}
           />
         </WL.Main.ItemImageBox>
-        <WL.Main.ItemDetails purchased={!!wishlistItem.purchaseDate}>
+        <WL.Main.ItemDetails
+          claimed={allQuantityClaimed}
+          purchased={!!wishlistItem.purchaseDate}>
           <div>
             {!wishlistItem.purchaseDate ? (
               <WL.Main.ItemPriority priority={wishlistItem.priority}>
@@ -217,10 +221,8 @@ const WishlistGridItem = React.memo(
                 <WL.Main.ItemQuantity>
                   {wishlistItem.quantity}&nbsp;wanted
                 </WL.Main.ItemQuantity>
-                <WL.Main.ItemReservees
-                  complete={numberOfItemsClaimed === wishlistItem.quantity}>
-                  ({numberOfItemsClaimed} out of {wishlistItem.quantity}{' '}
-                  claimed)
+                <WL.Main.ItemReservees complete={allQuantityClaimed}>
+                  {numberOfItemsClaimed} out of {wishlistItem.quantity} claimed
                 </WL.Main.ItemReservees>
               </React.Fragment>
             ) : (
@@ -236,7 +238,7 @@ const WishlistGridItem = React.memo(
               Visit link
             </WL.Main.ItemCellFooterButton>
             {wishlistItem.purchaseDate ||
-            (numberOfItemsClaimed === wishlistItem.quantity &&
+            (allQuantityClaimed &&
               !isClaimedByUser) ? null : isClaimedByUser ? (
               <WL.Main.ItemCellFooterButton
                 onClick={unclaimItem}

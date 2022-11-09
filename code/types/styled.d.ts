@@ -18,6 +18,7 @@ declare module 'styled-components' {
       claimCountComplete: string;
       claimCountFontWeight: string;
       purchased: string;
+      claimed: string;
     };
     readmore: string;
     readmoreReverse: string;
