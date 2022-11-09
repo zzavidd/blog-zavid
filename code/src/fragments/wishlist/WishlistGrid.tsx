@@ -185,7 +185,14 @@ const WishlistGridItem = React.memo(
           />
         </WL.Main.ItemImageBox>
         <WL.Main.ItemDetails purchased={!!wishlistItem.purchaseDate}>
-          <WL.Main.ItemName>{wishlistItem.name}</WL.Main.ItemName>
+          <div>
+            {!wishlistItem.purchaseDate ? (
+              <WL.Main.ItemPriority priority={wishlistItem.priority}>
+                {priority}
+              </WL.Main.ItemPriority>
+            ) : null}
+            <WL.Main.ItemName>{wishlistItem.name}</WL.Main.ItemName>
+          </div>
           <WL.Main.ItemSubBox>
             <WL.Main.ItemPrice>
               <span>
@@ -200,9 +207,6 @@ const WishlistGridItem = React.memo(
             </WL.Main.ItemPrice>
             {!wishlistItem.purchaseDate ? (
               <React.Fragment>
-                <WL.Main.ItemPriority priority={wishlistItem.priority}>
-                  {priority}
-                </WL.Main.ItemPriority>
                 <WL.Main.ItemQuantity>
                   {wishlistItem.quantity}&nbsp;wanted
                 </WL.Main.ItemQuantity>

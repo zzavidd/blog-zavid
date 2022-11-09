@@ -42,7 +42,7 @@ export const COLOR = {
   WISHLIST_PRIORITY: {
     [WishlistItemPriority.LOW]: '#ffcb63',
     [WishlistItemPriority.MEDIUM]: '#eeee5d',
-    [WishlistItemPriority.HIGH]: '#89ff53',
+    [WishlistItemPriority.HIGH]: '#a4ff7a',
   } as Record<WishlistItemPriority, string>,
 };
 

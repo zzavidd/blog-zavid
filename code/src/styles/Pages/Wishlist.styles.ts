@@ -22,9 +22,13 @@ namespace WishlistStyle {
 
   export namespace Main {
     export const Container = styled.main`
+      ${Mixins.Responsive(
+        ['height', '100vh', { sm: 'initial' }],
+        ['overflow-y', 'auto', { sm: 'visible' }],
+      )}
+      display: flex;
       flex: 1 1 auto;
-      height: 100vh;
-      overflow-y: auto;
+      flex-direction: column;
       position: relative;
       width: 100%;
     `;
@@ -46,13 +50,15 @@ namespace WishlistStyle {
     `;
 
     export const Grid = styled.div`
+      ${Mixins.Responsive(
+        ['grid-gap', '1em', { sm: '0.5em' }],
+        ['padding', '1em', { sm: '0.5em' }],
+      )}
       align-items: flex-start;
       display: grid;
-      grid-gap: 1em;
       grid-template-columns: repeat(auto-fill, minmax(250px, auto));
       justify-content: center;
       overflow-y: auto;
-      padding: 1em;
       width: 100%;
 
       @media (max-width: ${BREAKPOINTS.sm}) {
@@ -76,9 +82,9 @@ namespace WishlistStyle {
     `;
 
     export const CrudControlBox = styled.div`
+      ${Mixins.Responsive(['display', 'flex', { sm: 'none' }])}
       background-color: #212121ae;
       border-radius: 10px;
-      display: flex;
       gap: 0.2em;
       padding: 0.2em;
       position: absolute;
@@ -109,7 +115,7 @@ namespace WishlistStyle {
     export const ItemImage = styled.img`
       height: 100%;
       object-fit: cover;
-      transition: all 0.8s;
+      transition: transform 0.8s;
       width: 100%;
 
       &:hover {
@@ -144,7 +150,7 @@ namespace WishlistStyle {
 
     export const ItemPriority = styled.small<ItemPriorityProps>`
       ${Mixins.Responsive(
-        ['font-size', '0.65em', { sm: '0.5em' }],
+        ['font-size', '0.65em', { sm: '8px' }],
         ['min-width', '50px', { sm: '40px' }],
       )}
       background-color: ${({ priority }) => COLOR.WISHLIST_PRIORITY[priority]};
@@ -153,12 +159,13 @@ namespace WishlistStyle {
       border-radius: 5px;
       color: ${({ priority }) =>
         darken(0.5, COLOR.WISHLIST_PRIORITY[priority])};
+      float: right;
       font-weight: bold;
+      margin-left: 0.5em;
       padding: 0.3em;
-      position: absolute;
-      right: 0;
       text-align: center;
       top: 1em;
+      width: fit-content;
     `;
 
     export const ItemPrice = styled.p`
@@ -194,7 +201,7 @@ namespace WishlistStyle {
       align-items: flex-end;
       border-radius: 10px;
       display: flex;
-      flex: 1;
+      flex: 0 0 auto;
       justify-self: flex-end;
       margin-top: 1em;
       overflow: hidden;
@@ -330,6 +337,7 @@ namespace WishlistStyle {
 
   export namespace Toolbar {
     export const Container = styled.div`
+      ${Mixins.Responsive(['padding', '0.6em 1em', { sm: '0.3em 0.5em' }])}
       align-items: center;
       background-color: ${({ theme }) => theme.headerBackgroundColor};
       border-bottom: 1px solid ${({ theme }) => theme.fadedFontColor};
@@ -348,7 +356,7 @@ namespace WishlistStyle {
     `;
 
     export const Dropdown = styled(Input.Select)`
-      ${Mixins.Responsive(['font-size', '0.85em', { sm: '0.6em' }])}
+      ${Mixins.Responsive(['font-size', '0.85em', { sm: '0.55em' }])}
       appearance: none;
       border: none;
       padding: 0.5em;
@@ -356,10 +364,11 @@ namespace WishlistStyle {
     `;
 
     export const AddButton = styled(CPX.Button)<{ visible: boolean }>`
-      ${Mixins.Responsive(['font-size', '0.9em', { sm: '0.6em' }])}
+      ${Mixins.Responsive(['display', 'block', { sm: 'none' }])}
       ${({ visible }) => Mixins.Visible(visible)}
       background: none;
       color: ${({ theme }) => theme.bodyFontColor};
+      font-size: 0.9em;
       height: fit-content;
       text-decoration: none;
 
