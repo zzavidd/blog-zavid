@@ -23,12 +23,10 @@ namespace WishlistStyle {
   export namespace Main {
     export const Container = styled.main`
       ${Mixins.Responsive(
-        ['height', 'fit-content', { sm: 'initial' }],
+        ['height', '100vh', { sm: 'initial' }],
         ['overflow-y', 'auto', { sm: 'visible' }],
       )}
-      display: flex;
       flex: 1 1 auto;
-      flex-direction: column;
       position: relative;
       width: 100%;
     `;

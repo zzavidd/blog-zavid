@@ -56,7 +56,8 @@ export default function WishlistGrid() {
           Consider this my own personal purchase log which simultaneously serves
           as a registry for the ones who show love through gifts. The idea is to
           channel your love so that it is both thoughtful and well-received.
-          Consider anything on this list nectar to my soul.
+          Consider anything on this list nectar to my soul. Please note that
+          prices are subject to fluctuation.
         </WL.Main.Summary>
         <WL.Main.SummarySuffix>
           My birthday is the <strong>2nd December</strong>, by the way. &#58393;
