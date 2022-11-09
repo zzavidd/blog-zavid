@@ -22,16 +22,34 @@ export const SORT_BY: SortBy = {
     asc: (a, b) =>
       new Date(a.createTime!).getTime() - new Date(b.createTime!).getTime(),
     desc: (a, b) =>
-      new Date(a.createTime!).getTime() - new Date(b.createTime!).getTime(),
+      new Date(b.createTime!).getTime() - new Date(a.createTime!).getTime(),
   },
 };
 
 function numberSort(prop: KeysMatching<WishlistDAO, number>): SortFunctionPair {
   return {
-    asc: (a, b) =>
-      a.purchaseDate ? 1 : b.purchaseDate ? -1 : a[prop] - b[prop],
-    desc: (a, b) =>
-      a.purchaseDate ? 1 : b.purchaseDate ? -1 : b[prop] - a[prop],
+    asc: (a, b) => {
+      if (a.purchaseDate && b.purchaseDate) {
+        return a[prop] - b[prop];
+      } else if (a.purchaseDate) {
+        return 1;
+      } else if (b.purchaseDate) {
+        return -1;
+      } else {
+        return a[prop] - b[prop];
+      }
+    },
+    desc: (a, b) => {
+      if (a.purchaseDate && b.purchaseDate) {
+        return b[prop] - a[prop];
+      } else if (a.purchaseDate) {
+        return 1;
+      } else if (b.purchaseDate) {
+        return -1;
+      } else {
+        return b[prop] - a[prop];
+      }
+    },
   };
 }
 
