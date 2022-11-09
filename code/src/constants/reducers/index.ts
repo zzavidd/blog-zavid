@@ -90,7 +90,7 @@ export interface AppLocalState {
   cookiePolicyAccepted: boolean;
   savedText: string;
   wishlist: {
-    sortProperty: keyof WishlistDAO;
+    sortProperty: SortProperty;
     sortOrderAscending: boolean;
   };
 }

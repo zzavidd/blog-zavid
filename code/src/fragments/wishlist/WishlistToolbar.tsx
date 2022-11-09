@@ -10,15 +10,9 @@ import { AppActions } from 'constants/reducers';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
 import WL from 'styles/Pages/Wishlist.styles';
+import { SORT_OPTIONS } from './WishlistSort';
 
 import { WishlistPageContext } from './WishlistContext';
-
-const SORT_OPTIONS: { label: string; value: keyof WishlistDAO & string }[] = [
-  { label: 'Sort By Date Added', value: 'createTime' },
-  { label: 'Sort By Price', value: 'price' },
-  { label: 'Sort By Priority', value: 'priority' },
-  { label: 'Sort By Title', value: 'name' },
-];
 
 export default function WishlistToolbar() {
   const [context, setContext] = useContext(WishlistPageContext);
@@ -43,7 +37,7 @@ export default function WishlistToolbar() {
     appDispatch(
       AppActions.setWishlistSort({
         name: 'sortProperty',
-        value: e.target.value as keyof WishlistDAO,
+        value: e.target.value as SortProperty,
       }),
     );
   }

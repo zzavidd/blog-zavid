@@ -17,18 +17,8 @@ import WL from 'styles/Pages/Wishlist.styles';
 import { THEME } from 'styles/Variables.styles';
 
 import { WishlistPageContext } from './WishlistContext';
+import { SORT_BY } from './WishlistSort';
 import WishlistToolbar from './WishlistToolbar';
-
-const SORT_BY: Partial<
-  Record<keyof WishlistDAO, (a: WishlistDAO, b: WishlistDAO) => number>
-> = {
-  name: (a, b) =>
-    a.name.localeCompare(b.name, 'en', { ignorePunctuation: true }),
-  price: (a, b) => a.price - b.price,
-  priority: (a, b) => a.priority - b.priority,
-  createTime: (a, b) =>
-    new Date(a.createTime!).getTime() - new Date(b.createTime!).getTime(),
-};
 
 export default function WishlistGrid() {
   const [state, setState] = useState<WishlistGridState>({
@@ -51,10 +41,9 @@ export default function WishlistGrid() {
   );
 
   useEffect(() => {
-    const sortedList = state.wishlist.sort(SORT_BY[sortProperty]);
-    if (!sortOrderAscending) {
-      sortedList.reverse();
-    }
+    const sortFunction =
+      SORT_BY[sortProperty][sortOrderAscending ? 'asc' : 'desc'];
+    const sortedList = state.wishlist.sort(sortFunction);
     dispatch({ wishlist: sortedList });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortProperty, sortOrderAscending, state.wishlist]);
