@@ -53,6 +53,9 @@ export default function WishlistGrid() {
       <WL.Main.PageDetails>
         <WL.Main.Title>Zavid&#39;s Wishlist</WL.Main.Title>
         <WL.Main.Summary>
+          Consider this my own personal purchase log which simultaneously serves
+          as a registry for the ones who show love through gifts. The idea is to
+          channel your love so that it is both thoughtful and well-received.
           Consider anything on this list nectar to my soul.
         </WL.Main.Summary>
       </WL.Main.PageDetails>

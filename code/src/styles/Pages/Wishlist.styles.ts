@@ -23,7 +23,7 @@ namespace WishlistStyle {
   export namespace Main {
     export const Container = styled.main`
       ${Mixins.Responsive(
-        ['height', '100vh', { sm: 'initial' }],
+        ['height', 'fit-content', { sm: 'initial' }],
         ['overflow-y', 'auto', { sm: 'visible' }],
       )}
       display: flex;
@@ -34,7 +34,10 @@ namespace WishlistStyle {
     `;
 
     export const PageDetails = styled.div`
-      margin-inline: 2em;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      margin-inline: 1em;
       padding-block: 2em 1em;
     `;
 
@@ -45,7 +48,9 @@ namespace WishlistStyle {
     `;
 
     export const Summary = styled.p`
-      ${Mixins.Responsive(['font-size', '1em', { sm: '0.85em' }])}
+      ${Mixins.Responsive(['font-size', '1.2em', { sm: '0.85em' }])}
+      line-height: 160%;
+      max-width: 800px;
       text-align: center;
     `;
 
@@ -138,7 +143,7 @@ namespace WishlistStyle {
     `;
 
     export const ItemName = styled.h3`
-      ${Mixins.Responsive(['font-size', '1.3em', { sm: '1em' }])}
+      ${Mixins.Responsive(['font-size', '1.3em', { sm: '0.95em' }])}
       color: ${({ theme }) => theme.bodyFontColor};
       font-family: ${FONT.TITLE};
       margin: 0;
@@ -151,7 +156,7 @@ namespace WishlistStyle {
     export const ItemPriority = styled.small<ItemPriorityProps>`
       ${Mixins.Responsive(
         ['font-size', '0.65em', { sm: '8px' }],
-        ['min-width', '50px', { sm: '40px' }],
+        ['min-width', '50px', { sm: '35px' }],
       )}
       background-color: ${({ priority }) => COLOR.WISHLIST_PRIORITY[priority]};
       border: 1px solid
@@ -162,7 +167,7 @@ namespace WishlistStyle {
       float: right;
       font-weight: bold;
       margin-left: 0.5em;
-      padding: 0.3em;
+      padding: 0.3em 0.5em;
       text-align: center;
       top: 1em;
       width: fit-content;

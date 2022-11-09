@@ -60,6 +60,8 @@ export const getServerSideProps: GetServerSideProps<
     props: {
       pathDefinition: {
         title: "Zavid's Wishlist",
+        description: 'Consider anything on this list nectar to my soul.',
+        url: '/wishlist',
       },
     },
   };
