@@ -60,7 +60,7 @@ export default function WishlistGrid() {
           prices are subject to fluctuation.
         </WL.Main.Summary>
         <WL.Main.SummarySuffix>
-          My birthday is the <strong>2nd December</strong>, by the way. &#58393;
+          My birthday is the <strong>2nd December</strong>, by the way. 👀
         </WL.Main.SummarySuffix>
       </WL.Main.PageDetails>
       <WishlistToolbar />
