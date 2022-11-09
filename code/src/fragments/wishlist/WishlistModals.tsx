@@ -109,10 +109,13 @@ export function ClaimWishlistItemModal() {
           id: context.selectedWishlistItem.id!,
           email,
           quantity: context.claimRequest.quantity,
-          anonymous: false,
+          anonymous: context.claimRequest.isAnonymous,
         },
       });
       await mutate('/api/wishlist');
+      Alerts.success(
+        `You have claimed "${context.wishlistItem.name}". Check your email address for confirmation and more details.`,
+      );
     } catch (e: any) {
       Alerts.error(e.message);
     } finally {

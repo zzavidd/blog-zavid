@@ -171,6 +171,9 @@ const WishlistGridItem = React.memo(
           },
         });
         await mutate('/api/wishlist');
+        Alerts.success(
+          `You have removed your claim on "${wishlistItem.name}".`,
+        );
       } catch (e: any) {
         Alerts.error(e.message);
       }
