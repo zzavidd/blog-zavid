@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  staging:
+    image: zavid_dev
+    container_name: zavid_blog_staging
+    build:
+      context: ..
+      dockerfile: ./devops/Dockerfile
+      args:
+        WORKDIR: dev.zavid
+    environment:
+      PORT: 3333
+    ports:
+      - "3333:3333"
+    restart: unless-stopped
+    volumes:
+      - dev_zavid_vol:/var/www/dev.zavid
+      - /var/www/dev.zavid/code/node_modules
+
+  production:
+    image: zavid
+    container_name: zavid_blog_production
+    build:
+      context: ..
+      dockerfile: ./devops/Dockerfile
+      args:
+        WORKDIR: zavid
+    environment:
+      PORT: 4000
+    ports:
+      - "4000:4000"
+    restart: unless-stopped
+    volumes:
+      - zavid_vol:/var/www/zavid
+      - /var/www/zavid/code/node_modules
+
+volumes:
+  dev_zavid_vol:
+  zavid_vol:

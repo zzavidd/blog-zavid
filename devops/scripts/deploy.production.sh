@@ -11,4 +11,4 @@ NGINX_CONF=nginx.conf
 
 ## Run the docker script from project
 cd "/var/www/${WORKDIR}"
-./devops/scripts/build-run.sh
+docker-compose -f "$SCRIPTS_DIR/../docker-compose.yml" up -d --build production
