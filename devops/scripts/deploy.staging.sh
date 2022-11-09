@@ -11,4 +11,4 @@ NGINX_CONF=nginx.dev.conf
 
 ## Run the docker script from project
 cd "/var/www/${WORKDIR}"
-docker-compose -f "$SCRIPTS_DIR/../docker-compose.yml" up -d --build staging
+docker-compose -f ./devops/docker-compose.yml up -d --build --remove-orphans staging
