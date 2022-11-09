@@ -49,5 +49,5 @@ fi
 
 cd "/var/www/${WORKDIR}"
 docker-compose -f ./devops/docker-compose.yml build "${MODE}"
-docker-compose -f ./devops/docker-compose.yml rm --stop --force --volumes "${MODE}"
+docker-compose -f ./devops/docker-compose.yml rm --stop --force -v "${MODE}"
 docker-compose -f ./devops/docker-compose.yml up --detach "${MODE}"
