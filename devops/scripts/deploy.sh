@@ -48,6 +48,6 @@ else
 fi
 
 cd "/var/www/${WORKDIR}"
-docker-compose -f ./devops/docker-compose.yml build "${MODE}"
+docker-compose -f ./devops/docker-compose.yml build --no-cache "${MODE}"
 docker-compose -f ./devops/docker-compose.yml rm --stop --force -v "${MODE}"
 docker-compose -f ./devops/docker-compose.yml up -d "${MODE}"
