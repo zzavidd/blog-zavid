@@ -9,7 +9,8 @@ COPY ./code/.yarnrc.yml ./
 COPY ./code/package.json ./
 COPY ./code/yarn.lock ./
 
-RUN yarn install
+RUN yarn run install
+VOLUME ./code/node_modules /var/www/$WORKDIR/code/node_modules
 
 COPY ./code ./
 
