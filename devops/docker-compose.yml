@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 
 services:
   staging:
@@ -14,9 +14,6 @@ services:
     ports:
       - "3333:3333"
     restart: unless-stopped
-    volumes:
-      - dev_zavid_vol:/var/www/dev.zavid
-      - /var/www/dev.zavid/code/node_modules
 
   production:
     image: zavid
@@ -31,10 +28,3 @@ services:
     ports:
       - "4000:4000"
     restart: unless-stopped
-    volumes:
-      - zavid_vol:/var/www/zavid
-      - /var/www/zavid/code/node_modules
-
-volumes:
-  dev_zavid_vol:
-  zavid_vol:
