@@ -52,7 +52,9 @@ export const FONTS = {
 };
 
 export const SIZES = {
-  HEADER_HEIGHT: '70px',
+  HEADER_HEIGHT: '40px',
+  MIN_NAV_WIDTH: '70px',
+  MAX_NAV_WIDTH: '250px',
 };
 
 export const THEME: Record<AppTheme, DefaultTheme> = {

@@ -22,9 +22,9 @@ export function MainNavigationBar() {
 export function MobileNavigationBar() {
   const [navIsFocused] = useContext(Contexts.Navigation);
   return (
-    <NavStyle.MobileContainer open={navIsFocused}>
+    <NavStyle.MobileNavigationBar open={navIsFocused}>
       <NavChildren />
-    </NavStyle.MobileContainer>
+    </NavStyle.MobileNavigationBar>
   );
 }
 

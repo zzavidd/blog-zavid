@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { SignatureImage } from 'components/Image';
 import { Paragraph } from 'components/Text';
 import Mixins from 'styles/Mixins.styles';
-import { COLOR, FONTS } from 'styles/Variables.styles';
+import { COLOR, FONTS, SIZES } from 'styles/Variables.styles';
 
 const CurrentPreviousStyles = css`
   &:hover {
@@ -145,7 +145,7 @@ namespace ArticleStyle {
   export const TopNavigator = styled.header`
     ${Mixins.Responsive(
       ['grid-template-columns', 'repeat(3, 1fr)', { sm: 'repeat(2, 1fr)' }],
-      ['top', 0, { sm: '70px' }],
+      ['top', 0, { sm: SIZES.HEADER_HEIGHT }],
     )}
     background-color: ${({ theme }) =>
       transparentize(0.05, theme.headerBackgroundColor)};

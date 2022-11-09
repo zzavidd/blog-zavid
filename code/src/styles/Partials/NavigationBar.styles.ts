@@ -3,11 +3,9 @@ import styled, { css, keyframes } from 'styled-components';
 
 import * as NavWidgets from 'fragments/shared/NavWidgets';
 import Mixins from 'styles/Mixins.styles';
-import { COLOR, FONTS } from 'styles/Variables.styles';
+import { COLOR, FONTS, SIZES } from 'styles/Variables.styles';
 
 import { INavStyle, IThemeSwitch } from './Shared.styles';
-
-const MAX_NAV_WIDTH = '250px';
 
 const pulse = keyframes`0%,100%{ transform: scale(1);} 50%{transform: scale(1.04)}`;
 
@@ -16,7 +14,7 @@ namespace NavStyle {
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s;
-    width: ${MAX_NAV_WIDTH};
+    width: ${SIZES.MAX_NAV_WIDTH};
 
     &:hover {
       animation: ${pulse} 1s ease 0s infinite normal both;
@@ -222,19 +220,19 @@ namespace NavStyle {
       css`
         box-shadow: 0 0 2px 0 ${COLOR.BLACK};
         padding: 1em;
-        width: ${MAX_NAV_WIDTH};
+        width: ${SIZES.MAX_NAV_WIDTH};
 
         ${IChildrenStyles};
       `}
   `;
 
-  export const MobileContainer = styled(INavStyle)<{ open: boolean }>`
+  export const MobileNavigationBar = styled(INavStyle)<{ open: boolean }>`
     ${Mixins.Responsive(['display', 'none', { sm: 'flex' }])};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
-    height: calc(100vh - 70px);
+    height: calc(100vh - ${SIZES.HEADER_HEIGHT});
     padding: 1em;
-    top: 70px;
-    width: ${MAX_NAV_WIDTH};
+    top: ${SIZES.HEADER_HEIGHT};
+    width: ${SIZES.MAX_NAV_WIDTH};
     ${({ open }) =>
       open
         ? css`

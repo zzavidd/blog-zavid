@@ -35,10 +35,11 @@ namespace HeaderStyle {
   export const NavToggle = styled(CPX.Button)`
     background: none;
     border: 1px solid ${({ theme }) => theme.fadedBorderColor};
-    border-radius: 10px;
-    box-shadow: 0 0 2px 0 ${COLOR.BLACK};
+    border-radius: 5px;
+    box-shadow: 0 0 1px 0 ${COLOR.BLACK};
     color: ${({ theme }) => theme.bodyFontColor};
-    padding: 0.7em 0.9em;
+    font-size: 0.4em;
+    padding: 0.5em 1em;
     transition: transform 0.3s;
 
     &:active {
@@ -61,12 +62,13 @@ namespace HeaderStyle {
 
   export const ThemeSwitch = styled(IThemeSwitch)`
     flex: 0 1 60px;
+    font-size: 0.4em;
     gap: 0.5em;
-    padding: 0.8em;
+    padding: 0.5em;
     user-select: none;
 
     svg {
-      font-size: 125%;
+      font-size: 145%;
     }
   `;
 }
