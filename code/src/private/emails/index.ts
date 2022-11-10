@@ -107,7 +107,7 @@ namespace Emailer {
     wishlistItem: WishlistDAO,
     claimant: string,
   ): Promise<void> {
-    const subject = "You claimed an item on on Zavid's Wishlist.";
+    const subject = "You claimed an item on Zavid's Wishlist.";
     const element = React.createElement(WishlistEmail, { wishlistItem });
     const message = ReactDOMServer.renderToStaticMarkup(element);
     await sendMailToAddress(claimant, subject, message);

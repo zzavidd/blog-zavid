@@ -43,7 +43,7 @@ const COLOR = {
   White: '#ffffff',
 };
 
-const FONT = 'Mulish';
+const FONT = 'Mulish, "Trebuchet MS", Helvetica, sans-serif';
 
 function WishlistEmail({ wishlistItem }: { wishlistItem: WishlistDAO }) {
   return (
@@ -53,8 +53,8 @@ function WishlistEmail({ wishlistItem }: { wishlistItem: WishlistDAO }) {
           name={'viewport'}
           content={'width=device-width, initial-scale=1'}
         />
-        <meta name={'color-scheme'} content={'light'} />
-        <meta name={'supported-color-schemes'} content={'light'} />
+        <meta name={'color-scheme'} content={'dark'} />
+        <meta name={'supported-color-schemes'} content={'dark'} />
 
         <link
           href={'https://fonts.googleapis.com/css?family=Mulish:400,700'}
@@ -79,7 +79,7 @@ function WishlistEmail({ wishlistItem }: { wishlistItem: WishlistDAO }) {
               borderRadius: '10px',
               float: 'right',
               marginLeft: '1.5em',
-              maxWidth: '160px',
+              maxWidth: '40%',
             }}
           />
           <Paragraph>
@@ -134,7 +134,7 @@ function WishlistEmail({ wishlistItem }: { wishlistItem: WishlistDAO }) {
         <Footer>
           <table
             style={{
-              fontSize: '0.95em',
+              fontSize: '0.85em',
               margin: '0.8em auto',
               textAlign: 'center',
               width: '80%',
@@ -255,7 +255,7 @@ function Paragraph({
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      style={{ fontSize: '0.95em', lineHeight: 1.6, marginBlock: '1.8em' }}
+      style={{ fontSize: '0.85em', lineHeight: 1.6, marginBlock: '1.8em' }}
       {...props}>
       {children}
     </p>
