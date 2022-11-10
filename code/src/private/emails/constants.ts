@@ -8,6 +8,7 @@ import Settings from 'constants/settings';
 
 export const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
+
 export const EmailStyle = {
   Color: {
     Primary: '#111111',
