@@ -3,6 +3,7 @@ import htmlToText from 'html-to-text';
 import getConfig from 'next/config';
 import type { SentMessageInfo } from 'nodemailer';
 import nodemailer from 'nodemailer';
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import * as UUID from 'uuid';
 
@@ -26,6 +27,7 @@ import {
   transporter,
   typeToSubscription,
 } from './constants';
+import WishlistEmail from './templatesv2/wishlist';
 
 /** The email address of the recipient in development. */
 const testRecipient: TestRecipient = {
@@ -106,13 +108,8 @@ namespace Emailer {
     claimant: string,
   ): Promise<void> {
     const subject = "You claimed an item on on Zavid's Wishlist.";
-    const message = await ejs.renderFile(
-      `${serverRuntimeConfig.templatesDir}/wishlist.ejs`,
-      {
-        wishlistItem,
-        ...ejsLocals,
-      },
-    );
+    const element = React.createElement(WishlistEmail, { wishlistItem });
+    const message = ReactDOMServer.renderToStaticMarkup(element);
     await sendMailToAddress(claimant, subject, message);
   }
 }
