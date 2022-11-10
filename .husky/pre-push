@@ -7,4 +7,5 @@ FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
 [ -z "$FILES" ] && exit 0
 echo "$FILES" | xargs yarn run prettier:write --ignore-unknown
 echo "$FILES" | xargs git add
+echo "$FILES" | xargs git commit -m "Run Prettier"
 exit 0
