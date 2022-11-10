@@ -22,9 +22,9 @@ import * as ZText from 'lib/text';
 
 import {
   ejsLocals,
-  htmlToTextOptions,
+  HTML_TO_TEXT_OPTIONS,
   isProd,
-  transporter,
+  TRANSPORTER,
   typeToSubscription,
 } from './constants';
 import WishlistEmail from './templatesv2/wishlist';
@@ -175,12 +175,12 @@ async function sendMailToAddress(
   subject: string,
   message: string,
 ): Promise<void> {
-  const info = await transporter.sendMail({
+  const info = await TRANSPORTER.sendMail({
     from: `ZAVID <${process.env.EMAIL_USER}>`,
     to: recipient,
     subject,
     html: message,
-    text: htmlToText.fromString(message, htmlToTextOptions),
+    text: htmlToText.fromString(message, HTML_TO_TEXT_OPTIONS),
   });
   console.info(
     `Preview URL: ${nodemailer.getTestMessageUrl(info as SentMessageInfo)}`,

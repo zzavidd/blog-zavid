@@ -8,6 +8,16 @@ import Settings from 'constants/settings';
 
 export const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
+export const EmailStyle = {
+  Color: {
+    Primary: '#111111',
+    Secondary: '#080808',
+    Hyperlink: '#bc83ff',
+    White: '#ffffff',
+  },
+  Font: 'Mulish, "Trebuchet MS", Helvetica, sans-serif',
+};
+
 /** A map of variables used in all EJS emails */
 export const ejsLocals = {
   accounts: Settings.ACCOUNTS,
@@ -17,7 +27,7 @@ export const ejsLocals = {
 };
 
 /** The common HTML-to-text options for all emails. */
-export const htmlToTextOptions = {
+export const HTML_TO_TEXT_OPTIONS = {
   hideLinkHrefIfSameAsText: true,
   ignoreImage: true,
   noLinkBrackets: true,
@@ -27,7 +37,7 @@ export const htmlToTextOptions = {
 };
 
 /** Initialise the mail transporter */
-export const transporter = nodemailer.createTransport({
+export const TRANSPORTER = nodemailer.createTransport({
   host: process.env[isProd ? 'EMAIL_HOST' : 'ETHEREAL_HOST'],
   port: parseInt(
     process.env[isProd ? 'EMAIL_PORT' : 'ETHEREAL_PORT'] as string,
