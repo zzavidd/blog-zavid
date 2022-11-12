@@ -25,7 +25,7 @@ export default function WishlistForm() {
   const [context, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
 
-  const Handlers = HandlerFactory(setContext, 'wishlistItem');
+  const Handlers = HandlerFactory(setContext, 'wishlistItemRequest');
 
   return (
     <FORM.Container>
