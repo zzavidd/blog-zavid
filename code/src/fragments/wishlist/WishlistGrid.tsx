@@ -119,7 +119,7 @@ const WishlistGridItem = React.memo(
       consign({
         isFormTrayOpen: true,
         selectedWishlistItem: wishlistItem,
-        wishlistItem,
+        wishlistItemRequest: wishlistItem,
       });
     }
 

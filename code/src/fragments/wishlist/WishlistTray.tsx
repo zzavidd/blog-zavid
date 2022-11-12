@@ -22,11 +22,11 @@ export default function WishlistTray() {
   async function submitWishlistItem() {
     try {
       setState({ isRequestPending: true });
-      Validate.wishlistItem(context.wishlistItem);
+      Validate.wishlistItem(context.wishlistItemRequest);
 
       await Utils.request('/api/wishlist', {
         method: 'POST',
-        body: JSON.stringify({ wishlistItem: context.wishlistItem }),
+        body: JSON.stringify({ wishlistItem: context.wishlistItemRequest }),
       });
       await mutate('/api/wishlist');
       Alerts.success("You've successfully added a new wishlist item.");
@@ -44,18 +44,18 @@ export default function WishlistTray() {
   async function updateWishlistItem() {
     try {
       setState({ isRequestPending: true });
-      Validate.wishlistItem(context.wishlistItem);
+      Validate.wishlistItem(context.wishlistItemRequest);
 
       await Utils.request('/api/wishlist', {
         method: 'PUT',
         body: JSON.stringify({
-          id: context.wishlistItem.id,
-          wishlistItem: context.wishlistItem,
+          id: context.wishlistItemRequest.id,
+          wishlistItem: context.wishlistItemRequest,
         }),
       });
       await mutate('/api/wishlist');
       Alerts.success(
-        `You've successfully edited '${context.wishlistItem.name}'.`,
+        `You've successfully edited '${context.wishlistItemRequest.name}'.`,
       );
       consign({ isFormTrayOpen: false });
     } catch (e: any) {

@@ -114,7 +114,7 @@ export function ClaimWishlistItemModal() {
       });
       await mutate('/api/wishlist');
       Alerts.success(
-        `You have claimed "${context.wishlistItem.name}". Check your email address for confirmation and more details.`,
+        `You have claimed "${context.selectedWishlistItem.name}". Check your email address for confirmation and more details.`,
       );
     } catch (e: any) {
       Alerts.error(e.message);

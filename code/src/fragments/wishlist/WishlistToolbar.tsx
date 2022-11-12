@@ -28,7 +28,7 @@ export default function WishlistToolbar() {
     consign({
       isFormTrayOpen: true,
       selectedWishlistItem: null,
-      wishlistItem: WishlistStatic.initial(),
+      wishlistItemRequest: WishlistStatic.initial(),
     });
   }
 

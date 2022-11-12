@@ -5,7 +5,7 @@ import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import type { ReactHook } from 'constants/types';
 
 export interface WishlistPageState {
-  wishlistItem: WishlistDAO;
+  wishlistItemRequest: WishlistDAO;
   claimRequest: WishlistClaimRequest;
   selectedWishlistItem: WishlistDAO | null;
   isDeletePromptVisible: boolean;
@@ -14,7 +14,7 @@ export interface WishlistPageState {
 }
 
 export const initialState: WishlistPageState = {
-  wishlistItem: WishlistStatic.initial(),
+  wishlistItemRequest: WishlistStatic.initial(),
   claimRequest: {
     quantity: 1,
     isAnonymous: false,

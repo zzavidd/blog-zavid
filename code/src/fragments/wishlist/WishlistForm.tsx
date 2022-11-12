@@ -34,7 +34,7 @@ export default function WishlistForm() {
           <FORM.Label>Name:</FORM.Label>
           <Input.Text
             name={'name'}
-            value={context.wishlistItem.name}
+            value={context.wishlistItemRequest.name}
             onChange={Handlers.text}
             placeholder={'Enter the name'}
           />
@@ -45,7 +45,7 @@ export default function WishlistForm() {
           <FORM.Label>Price:</FORM.Label>
           <Input.Number
             name={'price'}
-            value={context.wishlistItem.price}
+            value={context.wishlistItemRequest.price}
             onChange={Handlers.number}
             step={0.01}
             leadingIcon={faPoundSign}
@@ -55,7 +55,7 @@ export default function WishlistForm() {
           <FORM.Label>Quantity:</FORM.Label>
           <Input.Number
             name={'quantity'}
-            value={context.wishlistItem.quantity}
+            value={context.wishlistItemRequest.quantity}
             onChange={Handlers.number}
             min={0}
             leadingIcon={faHashtag}
@@ -66,7 +66,7 @@ export default function WishlistForm() {
           <Input.Select
             name={'visibility'}
             options={Object.values(WishlistItemVisibility)}
-            value={context.wishlistItem.visibility}
+            value={context.wishlistItemRequest.visibility}
             onChange={Handlers.select}
           />
         </FORM.Field>
@@ -77,7 +77,7 @@ export default function WishlistForm() {
           <Input.Select
             name={'category'}
             options={Object.values(WishlistItemCategory)}
-            value={context.wishlistItem.category}
+            value={context.wishlistItemRequest.category}
             onChange={Handlers.select}
           />
         </FORM.Field>
@@ -91,7 +91,7 @@ export default function WishlistForm() {
                 label: key,
                 value: String(value),
               }))}
-            value={context.wishlistItem.priority}
+            value={context.wishlistItemRequest.priority}
             onChange={Handlers.select}
           />
         </FORM.Field>
@@ -101,7 +101,7 @@ export default function WishlistForm() {
           <FORM.Label>Reference Link:</FORM.Label>
           <Input.Url
             name={'href'}
-            value={context.wishlistItem.href}
+            value={context.wishlistItemRequest.href}
             onChange={Handlers.text}
             leadingIcon={faLink}
           />
@@ -112,7 +112,7 @@ export default function WishlistForm() {
           <FORM.Label>Image URL:</FORM.Label>
           <Input.Url
             name={'image'}
-            value={context.wishlistItem.image}
+            value={context.wishlistItemRequest.image}
             onChange={Handlers.text}
             leadingIcon={faImages}
           />
@@ -123,7 +123,7 @@ export default function WishlistForm() {
           <FORM.Label>Comments:</FORM.Label>
           <ShortTextArea
             name={'comments'}
-            value={context.wishlistItem.comments}
+            value={context.wishlistItemRequest.comments}
             onChange={Handlers.text}
             placeholder={'Add comments about this wishlist item...'}
             rows={2}
@@ -136,8 +136,8 @@ export default function WishlistForm() {
           <Input.DatePicker
             name={'purchaseDate'}
             selected={
-              context.wishlistItem.purchaseDate
-                ? new Date(context.wishlistItem.purchaseDate)
+              context.wishlistItemRequest.purchaseDate
+                ? new Date(context.wishlistItemRequest.purchaseDate)
                 : null
             }
             onChange={Handlers.date}
@@ -148,9 +148,9 @@ export default function WishlistForm() {
       <FORM.FieldRow>
         <FORM.Field>
           <FORM.Label>Reservees:</FORM.Label>
-          {Object.keys(context.wishlistItem.reservees).length ? (
+          {Object.keys(context.wishlistItemRequest.reservees).length ? (
             <ul>
-              {Object.entries(context.wishlistItem.reservees).map(
+              {Object.entries(context.wishlistItemRequest.reservees).map(
                 ([email, { anonymous }], key) => {
                   return (
                     <li key={key}>
@@ -159,12 +159,12 @@ export default function WishlistForm() {
                         icon={faTimes}
                         onClick={() => {
                           const reservees = {
-                            ...context.wishlistItem.reservees,
+                            ...context.wishlistItemRequest.reservees,
                           };
                           delete reservees[email];
                           consign({
-                            wishlistItem: {
-                              ...context.wishlistItem,
+                            wishlistItemRequest: {
+                              ...context.wishlistItemRequest,
                               reservees,
                             },
                           });
