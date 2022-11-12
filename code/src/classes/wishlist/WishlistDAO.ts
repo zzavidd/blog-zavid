@@ -35,6 +35,12 @@ export enum WishlistItemPriority {
   HIGH = 3,
 }
 
+export const WishlistDisplayedPriority = {
+  [WishlistItemPriority.LOW]: 'Desired',
+  [WishlistItemPriority.MEDIUM]: 'Wanted',
+  [WishlistItemPriority.HIGH]: 'Needed',
+};
+
 type Reservees = Record<
   string,
   {

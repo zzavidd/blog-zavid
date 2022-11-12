@@ -5,13 +5,12 @@ import { useSelector } from 'react-redux';
 import useSWR, { mutate } from 'swr';
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
-import { WishlistItemPriority } from 'classes/wishlist/WishlistDAO';
+import { WishlistDisplayedPriority } from 'classes/wishlist/WishlistDAO';
 import Clickable from 'components/Clickable';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
-import ZString from 'lib/string';
 import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';
 import WL from 'styles/Pages/Wishlist.styles';
 import { THEME } from 'styles/Variables.styles';
@@ -91,9 +90,7 @@ const WishlistGridItem = React.memo(
     const { data: session, status } = useSession();
     const email = session?.user?.email;
 
-    const priority = ZString.capitalise(
-      WishlistItemPriority[wishlistItem.priority],
-    );
+    const priority = WishlistDisplayedPriority[wishlistItem.priority];
 
     /** Memoise variables relating to reservees. */
     const { isClaimedByUser, numberOfItemsClaimed } = useMemo(() => {
