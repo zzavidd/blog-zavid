@@ -6,11 +6,14 @@ import React from 'react';
 
 import Settings from 'constants/settings';
 
-import { EmailStyle } from '../constants';
+import { EmailStyle, EmailTheme } from '../constants';
 
 import { Anchor } from './components';
 
+const Theme = EmailStyle.Color[EmailTheme];
+
 export const FOOTER_LINKS = [
+  { title: 'Diary', url: '/diary' },
   { title: 'Wishlist', url: '/wishlist' },
   { title: 'About', url: '/about' },
   { title: 'Privacy Policy', url: '/privacy' },
@@ -43,7 +46,8 @@ export function Head() {
   return (
     <head>
       <meta name={'viewport'} content={'width=device-width, initial-scale=1'} />
-      <meta name={'color-scheme'} content={'normal'} />
+      <meta name={'color-scheme'} content={'light dark'} />
+      <meta name={'supported-color-schemes'} content={'light dark'} />
       <link
         href={'https://fonts.googleapis.com/css?family=Mulish:400,700'}
         rel={'stylesheet'}
@@ -60,7 +64,7 @@ export function Body({
   return (
     <body
       style={{
-        background: EmailStyle.Color.Secondary,
+        background: Theme.Body,
         fontFamily: EmailStyle.Font,
         margin: '0 auto',
         maxWidth: '576px',
@@ -75,8 +79,8 @@ export function Header(props: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       style={{
-        background: '#111111',
-        color: '#ffffff',
+        background: Theme.Primary,
+        color: Theme.Text,
         fontSize: '0.8em',
         padding: '1em 2em',
       }}>
@@ -89,8 +93,8 @@ export function Main(props: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       style={{
-        background: '#202020',
-        color: '#ffffff',
+        background: Theme.Secondary,
+        color: Theme.Text,
         fontSize: '1.1em',
         lineHeight: 1.5,
         margin: '0 auto',
@@ -105,15 +109,15 @@ export function Footer() {
   return (
     <div
       style={{
-        background: '#111111',
-        color: '#ffffff',
+        background: Theme.Primary,
+        color: Theme.Text,
         fontSize: '0.9em',
         padding: '1em',
         textAlign: 'center',
       }}>
       <table
         style={{
-          fontSize: '0.85em',
+          fontSize: '0.95em',
           margin: '0.8em auto',
           textAlign: 'center',
           width: '80%',
@@ -125,7 +129,7 @@ export function Footer() {
                 <a
                   href={`${Settings.DOMAIN}${url}`}
                   style={{
-                    color: EmailStyle.Color.White,
+                    color: Theme.Text,
                     textDecoration: 'none',
                   }}>
                   {title}
@@ -174,7 +178,7 @@ export function Footer() {
 export function SignatureImage() {
   return (
     <img
-      src={`${Settings.CLOUDINARY_BASE_URL}/static/logos/signature-light.png`}
+      src={`${Settings.CLOUDINARY_BASE_URL}/static/logos/signature-dark.png`}
       alt={'Signature'}
       width={131}
       height={103}

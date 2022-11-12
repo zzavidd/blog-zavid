@@ -8,12 +8,28 @@ import Settings from 'constants/settings';
 
 export const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
+export const EmailTheme: 'Light' | 'Dark' = 'Light';
+
 export const EmailStyle = {
   Color: {
-    Primary: '#111111',
-    Secondary: '#080808',
-    Hyperlink: '#bc83ff',
-    White: '#ffffff',
+    Light: {
+      Primary: '#dfdfdf',
+      Secondary: '#eeeeee',
+      Body: '#f7f7f7',
+      Hyperlink: 'hsl(268, 100%, 50%)',
+      Button: '#383838',
+      ButtonText: '#ffffff',
+      Text: '#000000',
+    },
+    Dark: {
+      Primary: '#111111',
+      Secondary: '#202020',
+      Body: '#080808',
+      Hyperlink: 'hsl(268, 100%, 76%)',
+      Button: '#383838',
+      ButtonText: '#ffffff',
+      Text: '#ffffff',
+    },
   },
   Font: 'Mulish, "Trebuchet MS", Helvetica, sans-serif',
 };

@@ -1,4 +1,6 @@
-import { EmailStyle } from '../constants';
+import { EmailStyle, EmailTheme } from '../constants';
+
+const Theme = EmailStyle.Color[EmailTheme];
 
 export function Anchor({
   children,
@@ -24,6 +26,27 @@ export function Paragraph({
   );
 }
 
+export function Blockquote({
+  children,
+  ...props
+}: React.BlockquoteHTMLAttributes<HTMLElement>) {
+  return (
+    <blockquote
+      {...props}
+      style={{
+        borderLeft: `5px solid ${Theme.Primary}`,
+        borderRadius: '5px',
+        color: Theme.Text,
+        lineHeight: 1.6,
+        margin: 0,
+        padding: '0.5em 1.5em',
+        ...props.style,
+      }}>
+      {children}
+    </blockquote>
+  );
+}
+
 export function Button({
   children,
   ...props
@@ -33,10 +56,10 @@ export function Button({
       {...props}
       type={'button'}
       style={{
-        background: EmailStyle.Color.Primary,
-        border: `1px solid ${EmailStyle.Color.White}`,
+        background: Theme.Button,
+        border: `1px solid ${Theme.Text}`,
         borderRadius: '10px',
-        color: EmailStyle.Color.White,
+        color: Theme.ButtonText,
         cursor: 'pointer',
         fontFamily: EmailStyle.Font,
         fontSize: '0.85em',

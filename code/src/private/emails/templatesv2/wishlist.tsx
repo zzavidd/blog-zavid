@@ -2,9 +2,11 @@
 
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 
-import { EmailStyle } from '../constants';
-import { Anchor, Button, Paragraph } from '../lib/components';
+import { EmailStyle, EmailTheme } from '../constants';
+import { Anchor, Blockquote, Button, Paragraph } from '../lib/components';
 import { Body, Footer, Header, Main, SignatureImage } from '../lib/fragments';
+
+const Theme = EmailStyle.Color[EmailTheme];
 
 export default function WishlistEmail({ wishlistItem }: WishlistEmailProps) {
   return (
@@ -17,6 +19,7 @@ export default function WishlistEmail({ wishlistItem }: WishlistEmailProps) {
             src={wishlistItem.image}
             alt={wishlistItem.name}
             style={{
+              border: `1px solid ${Theme.Text}`,
               borderRadius: '10px',
               float: 'right',
               marginLeft: '1.5em',
@@ -40,14 +43,17 @@ export default function WishlistEmail({ wishlistItem }: WishlistEmailProps) {
             In case you need to send the gift, below is my postal address:
           </Paragraph>
 
-          <Paragraph
-            style={{ color: EmailStyle.Color.Hyperlink, fontStyle: 'italic' }}>
+          <Blockquote
+            style={{
+              fontSize: '0.85em',
+              fontStyle: 'italic',
+            }}>
             40 Impala Drive
             <br />
             Cambridge
             <br />
             CB1 9XL
-          </Paragraph>
+          </Blockquote>
 
           <Paragraph>Bless you, friend. Much love.</Paragraph>
           <Paragraph>Signed.</Paragraph>
