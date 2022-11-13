@@ -82,6 +82,7 @@ namespace ArticleStyle {
   `;
 
   export const Signature = styled(SignatureImage)`
+    margin-bottom: 1em;
     position: relative;
     width: 100%;
   `;

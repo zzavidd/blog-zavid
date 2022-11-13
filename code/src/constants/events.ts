@@ -32,7 +32,10 @@ namespace Events {
           focusedTextContent: innerText,
         } as T);
       }, 1000);
-      e.preventDefault();
+
+      if (e instanceof MouseEvent) {
+        e.preventDefault();
+      }
     };
     const onParagraphMouseUp = (e: MouseEvent | TouchEvent) => {
       clearTimeout(timeout);
