@@ -49,6 +49,7 @@ namespace Events {
     };
 
     window.addEventListener('mousedown', onAnyClick, false);
+    window.addEventListener('touchstart', onAnyClick, false);
     paragraphs.forEach((p) => {
       p.addEventListener('contextmenu', (e) => e.preventDefault());
       p.addEventListener('mousedown', onParagraphMouseDown);
@@ -58,11 +59,12 @@ namespace Events {
     });
     return () => {
       window.removeEventListener('mousedown', onAnyClick);
+      window.removeEventListener('touchstart', onAnyClick);
       paragraphs.forEach((p) => {
         p.removeEventListener('contextmenu', (e) => e.preventDefault());
         p.removeEventListener('mousedown', onParagraphMouseDown);
-        p.removeEventListener('touchstart', onParagraphMouseDown);
         p.removeEventListener('mouseup', onParagraphMouseUp);
+        p.removeEventListener('touchstart', onParagraphMouseDown);
         p.removeEventListener('touchend', onParagraphMouseUp);
       });
     };

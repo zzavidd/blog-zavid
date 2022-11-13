@@ -25,6 +25,7 @@ namespace ArticleStyle {
     flex-direction: column;
     height: 100%;
     position: relative;
+    user-select: none;
   `;
 
   export const Layout = styled.div`
