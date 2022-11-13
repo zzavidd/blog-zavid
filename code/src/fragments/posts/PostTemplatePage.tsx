@@ -111,7 +111,6 @@ export default function PostTemplatePage(postTrio: PostTrio) {
           </AS.Footer>
         </AS.Main>
         <AS.BottomNavigator>
-          {/* TODO: Cater for post pages with 'random' domain. */}
           <AS.BackLinkBox>
             <Link href={backUrl} passHref={true}>
               <AS.BackLink>
