@@ -7,6 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -39,6 +40,9 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   const dispatch = Utils.createDispatch(setState);
   const router = useRouter();
 
+  const { data: session } = useSession();
+  const email = session?.user?.email;
+
   const mainRef = useRef<HTMLElement>(null);
   const contextMenuRef = useRef<HTMLMenuElement>(null);
 
@@ -50,9 +54,11 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
 
   // Register paragraph event listeners.
   useEffect(() => {
-    Events.setContextMenuEvents(mainRef, contextMenuRef, state, dispatch);
+    if (email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL) {
+      Events.setContextMenuEvents(mainRef, contextMenuRef, state, dispatch);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mainRef, contextMenuRef]);
+  }, [mainRef, contextMenuRef, email]);
 
   return (
     <AS.Container>
