@@ -58,3 +58,10 @@ export const BodyContent = styled.div`
 export const Signature = styled(Image)`
   pointer-events: none;
 `;
+
+export const HoneyPot = styled.input.attrs({
+  type: 'text',
+  name: 'password',
+})`
+  display: none;
+`;

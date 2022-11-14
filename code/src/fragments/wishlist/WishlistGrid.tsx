@@ -4,7 +4,7 @@ import {
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useSWR, { mutate } from 'swr';
@@ -92,7 +92,7 @@ const WishlistGridItem = React.memo(
     const consign = Utils.createDispatch(setContext);
     const Alerts = useContext(Contexts.Alerts);
 
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const email = session?.user?.email;
 
     const priority = WishlistDisplayedPriority[wishlistItem.priority];
@@ -146,10 +146,6 @@ const WishlistGridItem = React.memo(
      * Claims an item by assigning a reservee to it.
      */
     function onClaimButtonClick() {
-      if (status !== 'authenticated' || !email) {
-        return signIn('google');
-      }
-
       consign({
         isClaimPromptVisible: true,
         selectedWishlistItem: wishlistItem,

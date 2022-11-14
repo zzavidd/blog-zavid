@@ -109,24 +109,25 @@ namespace Input {
 }
 
 function IInput(props: InputProps) {
+  const {
+    leadingIcon,
+    leadingIconAction,
+    trailingIcon,
+    trailingIconAction,
+    ...inputProps
+  } = props;
   return (
     <FORM.Input.Container>
-      {props.leadingIcon && (
-        <Clickable.Icon
-          icon={props.leadingIcon}
-          onClick={props.leadingIconAction}
-        />
+      {leadingIcon && (
+        <Clickable.Icon icon={leadingIcon} onClick={leadingIconAction} />
       )}
       <FORM.Input.Standard
-        {...props}
+        {...inputProps}
         autoCapitalize={'off'}
         autoComplete={'off'}
       />
-      {props.trailingIcon && (
-        <Clickable.Icon
-          icon={props.trailingIcon}
-          onClick={props.trailingIconAction}
-        />
+      {trailingIcon && (
+        <Clickable.Icon icon={trailingIcon} onClick={trailingIconAction} />
       )}
     </FORM.Input.Container>
   );

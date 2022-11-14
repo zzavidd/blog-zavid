@@ -98,20 +98,29 @@ namespace Validate {
   }
 
   /**
+   * Validate a wishlist claim.
+   * @param claim The claim to validate.
+   * @param wishlistItem The selected wishlist item.
+   */
+  export function wishlistClaim(
+    claim: WishlistClaimRequest,
+    wishlistItem: WishlistDAO | null,
+  ): asserts wishlistItem {
+    checkIfExists(wishlistItem, 'No item to claim.');
+    Validate.email(claim.emailAddress);
+  }
+
+  /**
    * Validate an email.
    * @param email The email to validate.
    * @param message The error message.
    */
   export function email(
     email: string,
-    message = 'Enter a valid email address.',
+    message = 'Please enter a valid email address.',
   ): void {
-    if (!email) {
+    if (!email || !validateEmail(email)) {
       throw new UIError(message);
-    }
-
-    if (!validateEmail(email)) {
-      throw new UIError('The email address is invalid.');
     }
   }
 }

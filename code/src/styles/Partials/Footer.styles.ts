@@ -100,13 +100,6 @@ namespace FooterStyle {
     padding: 1em 2em;
   `;
 
-  export const HoneyPot = styled.input.attrs({
-    type: 'text',
-    name: 'password',
-  })`
-    display: none;
-  `;
-
   export const CopyrightBox = styled.section`
     display: flex;
     justify-content: flex-start;

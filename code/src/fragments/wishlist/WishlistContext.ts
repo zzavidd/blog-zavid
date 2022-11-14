@@ -17,7 +17,9 @@ export const initialState: WishlistPageState = {
   wishlistItemRequest: WishlistStatic.initial(),
   claimRequest: {
     quantity: 1,
+    emailAddress: '',
     isAnonymous: false,
+    honeypot: '',
   },
   selectedWishlistItem: null,
   isDeletePromptVisible: false,
@@ -28,8 +30,3 @@ export const initialState: WishlistPageState = {
 export const WishlistPageContext = React.createContext<
   [WishlistPageState, ReactHook<WishlistPageState>]
 >([initialState, () => {}]);
-
-interface WishlistClaimRequest {
-  quantity: number;
-  isAnonymous: boolean;
-}

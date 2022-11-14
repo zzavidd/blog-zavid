@@ -1,4 +1,4 @@
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import React, { useContext, useEffect, useMemo } from 'react';
 import { mutate } from 'swr';
 
@@ -8,6 +8,7 @@ import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
 import HandlerFactory from 'constants/handlers';
 import Utils from 'constants/utils';
+import Validate from 'constants/validations';
 import {
   initialState,
   WishlistPageContext,
@@ -15,6 +16,7 @@ import {
 import type { ClaimWishlistItemPayload } from 'private/api/wishlist';
 import FORM from 'styles/Components/Form.styles';
 import ModalStyle from 'styles/Components/Modal.styles';
+import * as GS from 'styles/Global.styles';
 import WL from 'styles/Pages/Wishlist.styles';
 import { ButtonVariant } from 'styles/Variables.styles';
 
@@ -80,9 +82,6 @@ export function ClaimWishlistItemModal() {
   const consign = Utils.createDispatch(setContext);
   const Alerts = useContext(Contexts.Alerts);
 
-  const { data: session } = useSession();
-  const email = session?.user?.email;
-
   useEffect(() => {
     if (context.isClaimPromptVisible) {
       consign({ claimRequest: initialState.claimRequest });
@@ -94,32 +93,34 @@ export function ClaimWishlistItemModal() {
    * Claims an item by assigning a reservee to it.
    */
   async function claimItem() {
+    const { claimRequest, selectedWishlistItem } = context;
     try {
-      if (!context.selectedWishlistItem) {
-        throw new Error('No item to claim.');
-      }
+      Validate.wishlistClaim(claimRequest, selectedWishlistItem);
 
-      if (!email) {
-        return signIn('google');
+      const showSuccessMessage = () => {
+        Alerts.success(
+          `You have claimed "${selectedWishlistItem.name}". Check your email address for confirmation and more details.`,
+        );
+      };
+
+      if (claimRequest.honeypot) {
+        return showSuccessMessage();
       }
 
       await Utils.request<ClaimWishlistItemPayload>('/api/wishlist/claim', {
         method: 'PUT',
         body: {
-          id: context.selectedWishlistItem.id!,
-          email,
-          quantity: context.claimRequest.quantity,
-          anonymous: context.claimRequest.isAnonymous,
+          id: selectedWishlistItem.id!,
+          email: claimRequest.emailAddress,
+          quantity: claimRequest.quantity,
+          anonymous: claimRequest.isAnonymous,
         },
       });
       await mutate('/api/wishlist');
-      Alerts.success(
-        `You have claimed "${context.selectedWishlistItem.name}". Check your email address for confirmation and more details.`,
-      );
+      consign({ isClaimPromptVisible: false });
+      showSuccessMessage();
     } catch (e: any) {
       Alerts.error(e.message);
-    } finally {
-      consign({ isClaimPromptVisible: false });
     }
   }
 
@@ -154,23 +155,37 @@ export function ClaimWishlistItemModal() {
 
 function ClaimForm() {
   const [context, setContext] = useContext(WishlistPageContext);
+  const consign = Utils.createDispatch(setContext);
   const Handlers = HandlerFactory(setContext, 'claimRequest');
 
   const { data: session } = useSession();
-  const email = session?.user?.email;
+  const userEmail = session?.user?.email;
 
   const maxClaimQuantity = useMemo(() => {
     if (!context.selectedWishlistItem) return;
     const { reservees, quantity: maxQuantity } = context.selectedWishlistItem;
     const numberOfClaimed = Object.entries(reservees).reduce(
       (acc, [claimant, { quantity }]) => {
-        if (claimant === email) return acc;
+        if (claimant === userEmail) return acc;
         return acc + quantity;
       },
       0,
     );
     return maxQuantity - numberOfClaimed;
-  }, [context.selectedWishlistItem, email]);
+  }, [context.selectedWishlistItem, userEmail]);
+
+  /**
+   * Fills the honey pot input.
+   * @param e The change event.
+   */
+  function fillHoneyPot(e: React.ChangeEvent<HTMLInputElement>) {
+    consign({
+      claimRequest: {
+        ...context.claimRequest,
+        honeypot: e.target.value,
+      },
+    });
+  }
 
   if (!context.selectedWishlistItem) return null;
   const price =
@@ -202,6 +217,24 @@ function ClaimForm() {
             </FORM.Field>
           </FORM.FieldRow>
         ) : null}
+        <FORM.FieldRow>
+          <FORM.Field>
+            <FORM.Label>Email:</FORM.Label>
+            <Input.Email
+              name={'emailAddress'}
+              value={userEmail || context.claimRequest.emailAddress}
+              onChange={Handlers.text}
+              disabled={!!userEmail}
+              placeholder={'Enter your email'}
+            />
+          </FORM.Field>
+          <GS.HoneyPot
+            value={context.claimRequest.honeypot}
+            onChange={fillHoneyPot}
+            tabIndex={-1}
+            autoComplete={'off'}
+          />
+        </FORM.FieldRow>
         <FORM.FieldRow>
           <FORM.Field>
             <Checkbox

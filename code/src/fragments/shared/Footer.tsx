@@ -15,6 +15,7 @@ import { UIError } from 'constants/errors';
 import Settings from 'constants/settings';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
+import * as GS from 'styles/Global.styles';
 import FooterStyle from 'styles/Partials/Footer.styles';
 
 const FOOTER_LINKS = [
@@ -146,7 +147,7 @@ function SubscribeForm() {
       <FooterStyle.SubscribeButton onClick={subscribeEmail}>
         {state.isRequestPending ? 'Subscribing...' : 'Subscribe'}
       </FooterStyle.SubscribeButton>
-      <FooterStyle.HoneyPot
+      <GS.HoneyPot
         value={state.honeypotInput}
         onChange={(e) => dispatch({ honeypotInput: e.target.value })}
         tabIndex={-1}
