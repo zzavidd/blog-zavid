@@ -84,20 +84,22 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
           />
           <AS.Content>{diaryEntry.footnote}</AS.Content>
           <AS.Footer>
-            <div>
-              <FORM.Label>Tags:</FORM.Label>
-              <AS.TagBlock>
-                {tags.map((tag: string, key: number) => {
-                  return (
-                    <AS.Tag key={key}>
-                      <Link href={`/search?term=${tag}&onlyDiary=true`}>
-                        <a>#{tag}</a>
-                      </Link>
-                    </AS.Tag>
-                  );
-                })}
-              </AS.TagBlock>
-            </div>
+            {tags.length ? (
+              <div>
+                <FORM.Label>Tags:</FORM.Label>
+                <AS.TagBlock>
+                  {tags.map((tag: string, key: number) => {
+                    return (
+                      <AS.Tag key={key}>
+                        <Link href={`/search?term=${tag}&onlyDiary=true`}>
+                          <a>#{tag}</a>
+                        </Link>
+                      </AS.Tag>
+                    );
+                  })}
+                </AS.TagBlock>
+              </div>
+            ) : null}
             <ShareBlock
               headline={'Share This Diary Entry'}
               message={`Read "${DiaryStatic.getTitle(diaryEntry)}" on ZAVID`}
