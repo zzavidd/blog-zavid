@@ -1,4 +1,9 @@
-import { faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faComment,
+  faPen,
+  faTrashAlt,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signIn, useSession } from 'next-auth/react';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -224,6 +229,12 @@ const WishlistGridItem = React.memo(
                 <WL.Main.ItemReservees complete={allQuantityClaimed}>
                   {numberOfItemsClaimed} out of {wishlistItem.quantity} claimed
                 </WL.Main.ItemReservees>
+                {wishlistItem.comments ? (
+                  <WL.Main.ItemComments>
+                    <FontAwesomeIcon icon={faComment} />
+                    <span>{wishlistItem.comments}</span>
+                  </WL.Main.ItemComments>
+                ) : null}
               </React.Fragment>
             ) : (
               <WL.Main.ItemPurchasedText>

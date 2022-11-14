@@ -132,10 +132,7 @@ namespace WishlistStyle {
       }
     `;
 
-    export const ItemDetails = styled.div<{
-      claimed: boolean;
-      purchased: boolean;
-    }>`
+    export const ItemDetails = styled.div<ItemDetailsProps>`
       background-color: ${({ claimed, purchased, theme }) =>
         transparentize(
           0.2,
@@ -198,6 +195,21 @@ namespace WishlistStyle {
       ${Mixins.Responsive(['font-size', '0.8em', { sm: '0.6em' }])}
     `;
 
+    export const ItemComments = styled.div`
+      ${Mixins.Responsive(['font-size', '0.7em', { sm: '0.5em' }])}
+      background-color: #883e69;
+      border-radius: 1em;
+      color: ${COLOR.WHITE};
+      margin-top: 1em;
+      padding: 0.5em 1em;
+      width: fit-content;
+
+      svg {
+        margin: 0;
+        margin-right: 0.4em;
+      }
+    `;
+
     export const ItemReservees = styled.p<{ complete: boolean }>`
       ${Mixins.Responsive(['font-size', '0.8em', { sm: '0.6em' }])}
       color: ${({ complete, theme }) =>
@@ -244,7 +256,7 @@ namespace WishlistStyle {
   export namespace Tray {
     export const Container = styled.aside<{ open: boolean }>`
       background-color: rgba(26, 23, 41, 0.3);
-      border-left: 1px solid #fff;
+      border-left: 1px solid ${({ theme }) => theme.bodyFontColor};
       display: flex;
       flex: 1 0 ${({ open }) => (open ? '500px' : 0)};
       flex-direction: column;
@@ -404,4 +416,9 @@ export default WishlistStyle;
 
 interface ItemPriorityProps {
   priority: WishlistItemPriority;
+}
+
+interface ItemDetailsProps {
+  claimed: boolean;
+  purchased: boolean;
 }
