@@ -39,7 +39,7 @@ namespace Input {
    * @returns The component.
    */
   export function Email(props: InputProps) {
-    return <IInput {...props} type={'email'} />;
+    return <IInput {...props} type={'email'} autoComplete={'email'} />;
   }
 
   /**
@@ -122,9 +122,9 @@ function IInput(props: InputProps) {
         <Clickable.Icon icon={leadingIcon} onClick={leadingIconAction} />
       )}
       <FORM.Input.Standard
+        autoComplete={'off'}
         {...inputProps}
         autoCapitalize={'off'}
-        autoComplete={'off'}
       />
       {trailingIcon && (
         <Clickable.Icon icon={trailingIcon} onClick={trailingIconAction} />
