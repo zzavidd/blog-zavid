@@ -28,13 +28,19 @@ export default function WishlistEmail({ wishlistItem }: WishlistEmailProps) {
           />
           <Paragraph>
             You claimed the <strong>{wishlistItem.name}</strong> on my wishlist.
-            Click the button below to take you to the link.
           </Paragraph>
-
+          {wishlistItem.comments ? (
+            <Blockquote>
+              Note from me:
+              <br />
+              <br />
+              &ldquo;{wishlistItem.comments}&rdquo;
+            </Blockquote>
+          ) : null}
+          <Paragraph>Click the button below to take you to the link.</Paragraph>
           <Anchor href={wishlistItem.href}>
             <Button>Visit Link</Button>
           </Anchor>
-
           <Paragraph>
             I appreciate you immensely for wanting to get me a gift off my
             wishlist. It really means a lot.
@@ -42,19 +48,13 @@ export default function WishlistEmail({ wishlistItem }: WishlistEmailProps) {
           <Paragraph>
             In case you need to send the gift, below is my postal address:
           </Paragraph>
-
-          <Blockquote
-            style={{
-              fontSize: '0.85em',
-              fontStyle: 'italic',
-            }}>
+          <Blockquote style={{ fontStyle: 'italic' }}>
             40 Impala Drive
             <br />
             Cambridge
             <br />
             CB1 9XL
           </Blockquote>
-
           <Paragraph>Bless you, friend. Much love.</Paragraph>
           <Paragraph>Signed.</Paragraph>
           <SignatureImage />

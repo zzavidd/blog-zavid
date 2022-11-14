@@ -37,6 +37,8 @@ export function Blockquote({
         borderLeft: `5px solid ${Theme.Primary}`,
         borderRadius: '5px',
         color: Theme.Text,
+        fontStyle: 'italic',
+        fontSize: '0.85em',
         lineHeight: 1.6,
         margin: 0,
         padding: '0.5em 1.5em',
