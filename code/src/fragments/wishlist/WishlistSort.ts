@@ -28,28 +28,8 @@ export const SORT_BY: SortBy = {
 
 function numberSort(prop: KeysMatching<WishlistDAO, number>): SortFunctionPair {
   return {
-    asc: (a, b) => {
-      if (a.purchaseDate && b.purchaseDate) {
-        return a[prop] - b[prop];
-      } else if (a.purchaseDate) {
-        return 1;
-      } else if (b.purchaseDate) {
-        return -1;
-      } else {
-        return a[prop] - b[prop];
-      }
-    },
-    desc: (a, b) => {
-      if (a.purchaseDate && b.purchaseDate) {
-        return b[prop] - a[prop];
-      } else if (a.purchaseDate) {
-        return 1;
-      } else if (b.purchaseDate) {
-        return -1;
-      } else {
-        return b[prop] - a[prop];
-      }
-    },
+    asc: (a, b) => a[prop] - b[prop],
+    desc: (a, b) => b[prop] - a[prop],
   };
 }
 

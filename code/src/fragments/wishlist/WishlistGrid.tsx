@@ -31,9 +31,7 @@ export default function WishlistGrid() {
   });
   const dispatch = Utils.createDispatch(setState);
 
-  const [context] = useContext(WishlistPageContext);
-
-  const { sortProperty, sortOrderAscending } = useSelector(
+  const { sortProperty, sortOrderAscending, hidePurchased } = useSelector(
     (state: AppState) => state.local.wishlist,
   );
   const { error } = useSWR<Required<WishlistDAO>[]>(
@@ -52,17 +50,12 @@ export default function WishlistGrid() {
       SORT_BY[sortProperty][sortOrderAscending ? 'asc' : 'desc'];
 
     let list = state.originalWishlist.sort(sortFunction);
-    if (context.hidePurchased) {
+    if (hidePurchased) {
       list = list.filter((a) => !a.purchaseDate);
     }
     dispatch({ wishlist: list });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    sortProperty,
-    sortOrderAscending,
-    state.originalWishlist,
-    context.hidePurchased,
-  ]);
+  }, [sortProperty, sortOrderAscending, state.originalWishlist, hidePurchased]);
 
   return (
     <WL.Main.Container>

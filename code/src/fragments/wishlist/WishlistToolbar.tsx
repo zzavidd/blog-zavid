@@ -16,7 +16,7 @@ import { SORT_OPTIONS } from './WishlistSort';
 export default function WishlistToolbar() {
   const [context, setContext] = useContext(WishlistPageContext);
   const consign = Utils.createDispatch(setContext);
-  const { sortProperty, sortOrderAscending } = useSelector(
+  const { sortProperty, sortOrderAscending, hidePurchased } = useSelector(
     (state: AppState) => state.local.wishlist,
   );
   const appDispatch = useDispatch();
@@ -34,7 +34,7 @@ export default function WishlistToolbar() {
 
   function onSortPropertyChange(e: React.ChangeEvent<HTMLSelectElement>) {
     appDispatch(
-      AppActions.setWishlistSort({
+      AppActions.setWishlistState({
         name: 'sortProperty',
         value: e.target.value as SortProperty,
       }),
@@ -43,7 +43,7 @@ export default function WishlistToolbar() {
 
   function onSortOrderChange(e: React.ChangeEvent<HTMLSelectElement>) {
     appDispatch(
-      AppActions.setWishlistSort({
+      AppActions.setWishlistState({
         name: 'sortOrderAscending',
         value: e.target.value === 'ASC',
       }),
@@ -66,8 +66,15 @@ export default function WishlistToolbar() {
       </WL.Toolbar.SortBox>
       <WL.Toolbar.HidePurchasedCheckbox
         label={'Hide Purchased'}
-        checked={context.hidePurchased}
-        onChange={(e) => consign({ hidePurchased: e.target.checked })}
+        checked={hidePurchased}
+        onChange={(e) => {
+          appDispatch(
+            AppActions.setWishlistState({
+              name: 'hidePurchased',
+              value: e.target.checked,
+            }),
+          );
+        }}
       />
       <AdminLock>
         <WL.Toolbar.AddButton
