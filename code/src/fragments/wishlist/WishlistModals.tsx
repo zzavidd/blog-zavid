@@ -1,5 +1,6 @@
 import { useSession } from 'next-auth/react';
 import React, { useContext, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { mutate } from 'swr';
 
 import Checkbox from 'components/Checkbox';
@@ -7,6 +8,8 @@ import Input from 'components/Input';
 import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
 import HandlerFactory from 'constants/handlers';
+import type { AppState } from 'constants/reducers';
+import { AppActions } from 'constants/reducers';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import {
@@ -82,6 +85,8 @@ export function ClaimWishlistItemModal() {
   const consign = Utils.createDispatch(setContext);
   const Alerts = useContext(Contexts.Alerts);
 
+  const appDispatch = useDispatch();
+
   useEffect(() => {
     if (context.isClaimPromptVisible) {
       consign({ claimRequest: initialState.claimRequest });
@@ -116,7 +121,9 @@ export function ClaimWishlistItemModal() {
           anonymous: claimRequest.isAnonymous,
         },
       });
+      appDispatch(AppActions.setUserEmail(claimRequest.emailAddress));
       await mutate('/api/wishlist');
+
       consign({ isClaimPromptVisible: false });
       showSuccessMessage();
     } catch (e: any) {
@@ -158,6 +165,8 @@ function ClaimForm() {
   const consign = Utils.createDispatch(setContext);
   const Handlers = HandlerFactory(setContext, 'claimRequest');
 
+  const appLocalState = useSelector((state: AppState) => state.local);
+
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
 
@@ -166,25 +175,26 @@ function ClaimForm() {
     const { reservees, quantity: maxQuantity } = context.selectedWishlistItem;
     const numberOfClaimed = Object.entries(reservees).reduce(
       (acc, [claimant, { quantity }]) => {
-        if (claimant === userEmail) return acc;
+        if (claimant === userEmail || claimant === appLocalState.userEmail)
+          return acc;
         return acc + quantity;
       },
       0,
     );
     return maxQuantity - numberOfClaimed;
-  }, [context.selectedWishlistItem, userEmail]);
+  }, [context.selectedWishlistItem, userEmail, appLocalState.userEmail]);
 
   useEffect(() => {
     if (context.claimRequest.emailAddress) return;
+    if (!userEmail && !appLocalState.userEmail) return;
 
-    if (userEmail) {
-      consign({
-        claimRequest: {
-          ...context.claimRequest,
-          emailAddress: userEmail,
-        },
-      });
-    }
+    consign({
+      claimRequest: {
+        ...context.claimRequest,
+        emailAddress: userEmail || appLocalState.userEmail,
+      },
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.claimRequest, userEmail]);
 

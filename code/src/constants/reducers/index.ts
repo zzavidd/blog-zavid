@@ -21,6 +21,7 @@ const initialLocalState: AppLocalState = {
   appTheme: AppTheme.DARK,
   cookiePolicyAccepted: false,
   savedText: '',
+  userEmail: '',
   wishlist: {
     sortProperty: 'createTime',
     sortOrderAscending: false,
@@ -78,6 +79,7 @@ export namespace AppActions {
   export const {
     setAppTheme,
     setCookiePolicyAccepted,
+    setUserEmail,
     setWishlistSort,
     saveInputText,
   } = localSlice.actions;
@@ -88,6 +90,7 @@ export interface AppLocalState {
   appTheme: AppTheme;
   cookiePolicyAccepted: boolean;
   savedText: string;
+  userEmail: string;
   wishlist: {
     sortProperty: SortProperty;
     sortOrderAscending: boolean;

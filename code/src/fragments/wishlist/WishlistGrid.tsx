@@ -104,14 +104,17 @@ const WishlistGridItem = React.memo(
     const consign = Utils.createDispatch(setContext);
     const Alerts = useContext(Contexts.Alerts);
 
+    const appLocalState = useSelector((state: AppState) => state.local);
+
     const { data: session } = useSession();
-    const email = session?.user?.email;
+    const userEmail = session?.user?.email;
 
     const priority = WishlistDisplayedPriority[wishlistItem.priority];
 
     /** Memoise variables relating to reservees. */
     const { isClaimedByUser, numberOfItemsClaimed } = useMemo(() => {
       let isClaimedByUser = false;
+      const email = userEmail || appLocalState.userEmail;
       if (email) {
         isClaimedByUser = Object.keys(wishlistItem.reservees).includes(email);
       }
@@ -124,7 +127,7 @@ const WishlistGridItem = React.memo(
       );
 
       return { isClaimedByUser, numberOfItemsClaimed };
-    }, [email, wishlistItem.reservees]);
+    }, [userEmail, appLocalState.userEmail, wishlistItem.reservees]);
 
     /**
      * Opens the form and populates fields with the information of the item clicked.
@@ -169,15 +172,11 @@ const WishlistGridItem = React.memo(
      */
     async function unclaimItem() {
       try {
-        if (!email) {
-          throw new Error('You are not logged in.');
-        }
-
         await Utils.request<UnclaimWishlistItemPayload>('/api/wishlist/claim', {
           method: 'DELETE',
           body: {
             id: wishlistItem.id!,
-            email,
+            email: userEmail || appLocalState.userEmail,
           },
         });
         await mutate('/api/wishlist');

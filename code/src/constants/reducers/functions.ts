@@ -34,6 +34,13 @@ namespace Reducers {
       const { name, value } = action.payload;
       state.wishlist[name] = value;
     }
+
+    export function setUserEmail(
+      state: AppLocalState,
+      action: PayloadAction<string>,
+    ) {
+      state.userEmail = action.payload;
+    }
   }
 
   export namespace Session {
