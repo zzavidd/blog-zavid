@@ -26,9 +26,12 @@ import WishlistToolbar from './WishlistToolbar';
 
 export default function WishlistGrid() {
   const [state, setState] = useState<WishlistGridState>({
+    originalWishlist: [],
     wishlist: [],
   });
   const dispatch = Utils.createDispatch(setState);
+
+  const [context] = useContext(WishlistPageContext);
 
   const { sortProperty, sortOrderAscending } = useSelector(
     (state: AppState) => state.local.wishlist,
@@ -39,7 +42,7 @@ export default function WishlistGrid() {
     {
       revalidateOnFocus: false,
       onSuccess: (data) => {
-        dispatch({ wishlist: data });
+        dispatch({ originalWishlist: data, wishlist: data });
       },
     },
   );
@@ -47,10 +50,19 @@ export default function WishlistGrid() {
   useEffect(() => {
     const sortFunction =
       SORT_BY[sortProperty][sortOrderAscending ? 'asc' : 'desc'];
-    const sortedList = state.wishlist.sort(sortFunction);
-    dispatch({ wishlist: sortedList });
+
+    let list = state.originalWishlist.sort(sortFunction);
+    if (context.hidePurchased) {
+      list = list.filter((a) => !a.purchaseDate);
+    }
+    dispatch({ wishlist: list });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortProperty, sortOrderAscending, state.wishlist]);
+  }, [
+    sortProperty,
+    sortOrderAscending,
+    state.originalWishlist,
+    context.hidePurchased,
+  ]);
 
   return (
     <WL.Main.Container>
@@ -268,6 +280,7 @@ const WishlistGridItem = React.memo(
 );
 
 interface WishlistGridState {
+  originalWishlist: WishlistDAO[];
   wishlist: WishlistDAO[];
 }
 

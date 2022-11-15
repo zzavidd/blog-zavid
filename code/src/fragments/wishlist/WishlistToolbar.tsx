@@ -64,6 +64,11 @@ export default function WishlistToolbar() {
           onChange={onSortOrderChange}
         />
       </WL.Toolbar.SortBox>
+      <WL.Toolbar.HidePurchasedCheckbox
+        label={'Hide Purchased'}
+        checked={context.hidePurchased}
+        onChange={(e) => consign({ hidePurchased: e.target.checked })}
+      />
       <AdminLock>
         <WL.Toolbar.AddButton
           onClick={onAddButtonClick}

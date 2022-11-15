@@ -2,6 +2,7 @@ import { darken, transparentize } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 
 import type { WishlistItemPriority } from 'classes/wishlist/WishlistDAO';
+import Checkbox from 'components/Checkbox';
 import Input from 'components/Input';
 import CPX from 'styles/Components/Components.styles';
 import Mixins from 'styles/Mixins.styles';
@@ -389,6 +390,10 @@ namespace WishlistStyle {
       border: none;
       padding: 0.5em;
       width: max-content;
+    `;
+
+    export const HidePurchasedCheckbox = styled(Checkbox)`
+      ${Mixins.Responsive(['font-size', '1em', { sm: '0.65em' }])}
     `;
 
     export const AddButton = styled(CPX.Button)<{ visible: boolean }>`

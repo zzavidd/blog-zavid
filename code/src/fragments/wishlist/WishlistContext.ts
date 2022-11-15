@@ -11,6 +11,7 @@ export interface WishlistPageState {
   isDeletePromptVisible: boolean;
   isClaimPromptVisible: boolean;
   isFormTrayOpen: boolean;
+  hidePurchased: boolean;
 }
 
 export const initialState: WishlistPageState = {
@@ -25,6 +26,7 @@ export const initialState: WishlistPageState = {
   isDeletePromptVisible: false,
   isClaimPromptVisible: false,
   isFormTrayOpen: false,
+  hidePurchased: false,
 };
 
 export const WishlistPageContext = React.createContext<

@@ -5,7 +5,7 @@ import { THEME } from 'styles/Variables.styles';
 
 export default function Checkbox({ checked = false, ...props }: CheckboxProps) {
   return (
-    <CPX.Checkbox checked={checked}>
+    <CPX.Checkbox checked={checked} className={props.className}>
       <input {...props} type={'checkbox'} hidden={true} />
       <svg
         xmlns={'http://www.w3.org/2000/svg'}
