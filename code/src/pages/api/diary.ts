@@ -6,7 +6,6 @@ import type { DiaryStatusFilters } from 'classes/diary/DiaryQueryBuilder';
 import { DiaryMutationBuilder } from 'classes/diary/DiaryQueryBuilder';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { knex } from 'constants/knex';
-import Settings from 'constants/settings';
 import Emails from 'private/emails';
 
 export default async function handler(
@@ -45,7 +44,7 @@ async function createDiaryEntry({
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
 
   await new DiaryMutationBuilder(knex).insert(diaryEntry).build();
-  if (isPublish && Settings.EMAILS_ON) {
+  if (isPublish) {
     await Emails.notifyNewDiaryEntry(diaryEntry);
   }
 }
@@ -59,7 +58,7 @@ async function updateDiaryEntry({
   diaryEntry.tags = JSON.stringify(diaryEntry.tags);
 
   await new DiaryMutationBuilder(knex).update(diaryEntry).whereId(id).build();
-  if (isPublish && Settings.EMAILS_ON) {
+  if (isPublish) {
     await Emails.notifyNewDiaryEntry(diaryEntry);
   }
 }

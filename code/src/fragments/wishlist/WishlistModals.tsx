@@ -174,6 +174,20 @@ function ClaimForm() {
     return maxQuantity - numberOfClaimed;
   }, [context.selectedWishlistItem, userEmail]);
 
+  useEffect(() => {
+    if (context.claimRequest.emailAddress) return;
+
+    if (userEmail) {
+      consign({
+        claimRequest: {
+          ...context.claimRequest,
+          emailAddress: userEmail,
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context.claimRequest, userEmail]);
+
   /**
    * Fills the honey pot input.
    * @param e The change event.
@@ -194,6 +208,7 @@ function ClaimForm() {
     style: 'currency',
     currency: 'GBP',
   });
+
   return (
     <WL.Claim.Container>
       <WL.Claim.Partition>
@@ -222,9 +237,8 @@ function ClaimForm() {
             <FORM.Label>Email:</FORM.Label>
             <Input.Email
               name={'emailAddress'}
-              value={userEmail || context.claimRequest.emailAddress}
+              value={context.claimRequest.emailAddress}
               onChange={Handlers.text}
-              disabled={!!userEmail}
               placeholder={'Enter your email'}
             />
           </FORM.Field>

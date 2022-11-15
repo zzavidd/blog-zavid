@@ -24,10 +24,6 @@ namespace Settings {
   /** The copyright declaration. */
   export const COPYRIGHT = `\u00A9 ${new Date().getFullYear()} ZAVID`;
 
-  export const EMAILS_ON =
-    process.env.NEXT_PUBLIC_APP_ENV === 'production' ||
-    process.env.EMAILS_ON === 'true';
-
   /** Domain to use dependent on environment. */
   export const DOMAIN =
     process.env.NEXT_PUBLIC_APP_ENV === 'production'

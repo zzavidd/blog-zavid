@@ -7,6 +7,7 @@ import {
 import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
 import { knex } from 'constants/knex';
 import Emailer from 'private/emails';
+import Telegram from 'private/telegram';
 
 namespace WishlistAPI {
   /**
@@ -85,7 +86,10 @@ namespace WishlistAPI {
         },
       },
     });
-    await Emailer.notifyWishlistItemClaimant(wishlistItem, email);
+    await Promise.all([
+      Emailer.notifyWishlistItemClaimant(wishlistItem, email),
+      Telegram.notifyNewWishlistClaim(wishlistItem, email, anonymous),
+    ]);
   }
 
   export async function unclaim({
