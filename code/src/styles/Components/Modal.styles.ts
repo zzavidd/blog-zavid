@@ -23,6 +23,7 @@ namespace ModalStyle {
     height: 100vh;
     justify-content: center;
     position: fixed;
+    top: 0;
     transition: all 0.3s;
     width: 100vw;
   `;

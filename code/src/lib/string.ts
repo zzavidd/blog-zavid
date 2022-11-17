@@ -51,11 +51,12 @@ namespace ZString {
   };
 
   export const convertCsvToArray = (
-    words: string,
+    words: string | string[],
     options: CSVToArrayOptions = {},
   ): string[] => {
     let list: string[] = [];
     if (!words) return list;
+    if (typeof words === 'object') return words;
 
     const { lowercase = true } = options;
 
@@ -75,8 +76,9 @@ namespace ZString {
     return list;
   };
 
-  export const convertArrayToCsv = (list: string[]): string => {
+  export const convertArrayToCsv = (list: string | string[]): string => {
     if (!list || !list.length) return '';
+    if (typeof list === 'string') return list;
     list = list.filter((el) => el);
     return list.join(', ');
   };

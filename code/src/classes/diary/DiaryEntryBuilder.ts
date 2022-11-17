@@ -21,33 +21,33 @@ export class DiaryEntryBuilder {
     tags: [],
   };
 
-  public withTitle(title?: string): DiaryEntryBuilder {
-    this.entry.title = title!.trim();
+  public withTitle(title: string): DiaryEntryBuilder {
+    this.entry.title = title.trim();
     return this;
   }
 
-  public withDate(date?: string | Date): DiaryEntryBuilder {
-    this.entry.date = date!;
+  public withDate(date: string | Date): DiaryEntryBuilder {
+    this.entry.date = date;
     return this;
   }
 
-  public withStatus(status?: DiaryStatus): DiaryEntryBuilder {
-    this.entry.status = status!;
+  public withStatus(status: DiaryStatus): DiaryEntryBuilder {
+    this.entry.status = status;
     return this;
   }
 
-  public withContent(content?: string): DiaryEntryBuilder {
-    this.entry.content = content!.trim();
+  public withContent(content: string): DiaryEntryBuilder {
+    this.entry.content = content.trim();
     return this;
   }
 
-  public withFootnote(footnote?: string): DiaryEntryBuilder {
-    this.entry.footnote = footnote!.trim();
+  public withFootnote(footnote: string): DiaryEntryBuilder {
+    this.entry.footnote = footnote.trim();
     return this;
   }
 
-  public withTags(tags?: string[]): DiaryEntryBuilder {
-    this.entry.tags = tags!;
+  public withTags(tags: string[]): DiaryEntryBuilder {
+    this.entry.tags = tags;
     return this;
   }
 

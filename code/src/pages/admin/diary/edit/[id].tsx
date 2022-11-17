@@ -3,55 +3,65 @@ import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
-import { DiaryEntryBuilder } from 'classes/diary/DiaryEntryBuilder';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
 import HandlerFactory from 'constants/handlers';
+import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import AdminGateway from 'fragments/AdminGateway';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import Layout from 'fragments/Layout';
-import DiaryAPI from 'private/api/diary';
+import ZDate from 'lib/date';
+import ZString from 'lib/string';
+import SSR from 'private/ssr';
 import ModalStyle from 'styles/Components/Modal.styles';
 import { ButtonVariant } from 'styles/Variables.styles';
 
 // eslint-disable-next-line react/function-component-definition
-const DiaryEntryAdd: NextPageWithLayout<DiaryEntryAddProps> = ({
+const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
   pageProps,
 }) => {
-  const { latestEntryNumber } = pageProps;
-  const Alerts = useContext(Contexts.Alerts);
-  const router = useRouter();
-
-  const [state, setState] = useState<DiaryEntryAddState>({
+  const [state, setState] = useState<DiaryEntryEditState>({
     diaryEntry: {
-      ...new DiaryEntryBuilder().build(),
-      entryNumber: latestEntryNumber + 1,
+      ...pageProps.serverDiaryEntry,
+      tags: ZString.convertArrayToCsv(pageProps.serverDiaryEntry.tags),
     },
     isRequestPending: false,
     isPublishModalVisible: false,
   });
   const dispatch = Utils.createDispatch(setState);
 
-  // Determine if diary entry is being published.
-  const isPublish = DiaryStatic.isPublished(state.diaryEntry);
+  const Alerts = useContext(Contexts.Alerts);
+  const router = useRouter();
 
-  /** Create new diary entry on server. */
-  async function submitDiaryEntry() {
+  // Determine if diary entry is being published.
+  const isPublish =
+    !DiaryStatic.isPublished(pageProps.serverDiaryEntry) &&
+    DiaryStatic.isPublished(state.diaryEntry);
+
+  /** Update diary entry on server. */
+  async function updateDiaryEntry() {
     try {
       dispatch({ isRequestPending: true });
       Validate.diaryEntry(state.diaryEntry);
 
-      const payload = buildPayload(state.diaryEntry, isPublish, true);
+      const payload = buildPayload(state.diaryEntry, isPublish, false);
       await Utils.request('/api/diary', {
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(payload),
       });
-      Alerts.success("You've successfully added a new diary entry.");
-      void router.push('/admin/diary');
+      Alerts.success(
+        `You've successfully updated the diary entry for ${ZDate.format(
+          state.diaryEntry.date!,
+        )}.`,
+      );
+      const pageUrl = `${Settings.DOMAIN}/diary/${state.diaryEntry.entryNumber}`;
+      void router.push(
+        document.referrer === pageUrl ? pageUrl : '/admin/diary',
+      );
     } catch (e: any) {
       Alerts.error(e.message);
     } finally {
@@ -61,12 +71,12 @@ const DiaryEntryAdd: NextPageWithLayout<DiaryEntryAddProps> = ({
 
   const onSubmit = isPublish
     ? () => dispatch({ isPublishModalVisible: true })
-    : submitDiaryEntry;
+    : updateDiaryEntry;
   const onSubmitText = state.isRequestPending
     ? 'Loading...'
     : isPublish
-    ? 'Submit & Publish'
-    : 'Submit';
+    ? 'Update & Publish'
+    : 'Update';
 
   return (
     <AdminGateway>
@@ -89,7 +99,7 @@ const DiaryEntryAdd: NextPageWithLayout<DiaryEntryAddProps> = ({
           <React.Fragment>
             <ModalStyle.FooterButton
               variant={ButtonVariant.CONFIRM}
-              onClick={submitDiaryEntry}>
+              onClick={updateDiaryEntry}>
               {onSubmitText}
             </ModalStyle.FooterButton>
             <ModalStyle.FooterButton
@@ -105,32 +115,33 @@ const DiaryEntryAdd: NextPageWithLayout<DiaryEntryAddProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps<
-  DiaryEntryAddProps
-> = async () => {
-  const latestDiaryEntry = await DiaryAPI.getLatest();
+  DiaryEntryEditProps
+> = async ({ query }) => {
+  const id = parseInt(query.id as string);
+  const diaryEntry = await SSR.Diary.getById(id);
   return {
     props: {
       pathDefinition: {
-        title: 'Add New Diary Entry',
+        title: 'Edit Diary Entry',
       },
       pageProps: {
-        latestEntryNumber: latestDiaryEntry.entryNumber ?? 0,
+        serverDiaryEntry: JSON.parse(diaryEntry),
       },
     },
   };
 };
 
-DiaryEntryAdd.getLayout = Layout.addHeaderOnly;
-export default DiaryEntryAdd;
+DiaryEntryEdit.getLayout = Layout.addHeaderOnly;
+export default DiaryEntryEdit;
 
-interface DiaryEntryAddProps {
+interface DiaryEntryEditProps {
   pathDefinition: PathDefinition;
   pageProps: {
-    latestEntryNumber: number;
+    serverDiaryEntry: DiaryDAO;
   };
 }
 
-interface DiaryEntryAddState {
+interface DiaryEntryEditState {
   diaryEntry: DiaryDAO;
   isRequestPending: boolean;
   isPublishModalVisible: boolean;

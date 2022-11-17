@@ -11,6 +11,8 @@ import type HandlerFactory from 'constants/handlers';
 import ZDate from 'lib/date';
 import ZString from 'lib/string';
 import FORM from 'styles/Components/Form.styles';
+import ModalStyle from 'styles/Components/Modal.styles';
+import { ButtonVariant } from 'styles/Variables.styles';
 
 export default function DiaryEntryForm(props: DiaryFormProps) {
   const { diaryEntry, handlers } = props;
@@ -103,7 +105,7 @@ export default function DiaryEntryForm(props: DiaryFormProps) {
               <FORM.Label>Tags:</FORM.Label>
               <ShortTextArea
                 name={'tags'}
-                value={JSON.stringify(diaryEntry.tags)}
+                value={diaryEntry.tags as string}
                 onChange={handlers.text}
                 placeholder={'Add tags to index the entry...'}
               />
@@ -117,8 +119,16 @@ export default function DiaryEntryForm(props: DiaryFormProps) {
         </FORM.Field>
       </FORM.FieldRow>
       <footer>
-        <button onClick={props.onSubmit}>{props.onSubmitText}</button>
-        <button onClick={props.onCancel}>Cancel</button>
+        <ModalStyle.FooterButton
+          variant={ButtonVariant.CONFIRM}
+          onClick={props.onSubmit}>
+          {props.onSubmitText}
+        </ModalStyle.FooterButton>
+        <ModalStyle.FooterButton
+          variant={ButtonVariant.CANCEL}
+          onClick={props.onCancel}>
+          Cancel
+        </ModalStyle.FooterButton>
       </footer>
     </FORM.Container>
   );
@@ -149,7 +159,7 @@ export function buildPayload(
     .withStatus(status)
     .withEntryNumber(entryNumber)
     .setIsFavourite(isFavourite)
-    .withTags(ZString.convertCsvToArray(tags as string))
+    .withTags(ZString.convertCsvToArray(tags))
     .build();
 
   const payload: DiaryRequest = { diaryEntry, isPublish };
