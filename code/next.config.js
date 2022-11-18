@@ -20,10 +20,7 @@ module.exports = {
   },
   poweredByHeader: false,
   reactStrictMode: true,
-  serverRuntimeConfig: {
-    dkimPrivateKey,
-    templatesDir: `${__dirname}/src/private/emails/templates`,
-  },
+  serverRuntimeConfig: { dkimPrivateKey },
   typescript: {
     ignoreBuildErrors: true,
   },

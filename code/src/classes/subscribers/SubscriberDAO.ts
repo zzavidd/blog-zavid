@@ -1,6 +1,6 @@
 export interface SubscriberDAO {
   id?: number;
-  email?: string;
+  email: string;
   firstname?: string;
   lastname?: string;
   subscriptions?: SubscriptionsMapping | string;

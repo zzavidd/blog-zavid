@@ -59,7 +59,7 @@ export default function WishlistEmail({ wishlistItem }: WishlistEmailProps) {
           <Paragraph>Signed.</Paragraph>
           <SignatureImage />
         </Main>
-        <Footer />
+        <Footer showUnsubscribe={false} />
       </Body>
     </html>
   );

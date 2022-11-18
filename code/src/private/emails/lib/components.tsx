@@ -1,13 +1,31 @@
+import React from 'react';
+
 import { EmailStyle, EmailTheme } from '../constants';
 
 const Theme = EmailStyle.Color[EmailTheme];
+
+export function Heading({
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLHeadingElement>) {
+  return (
+    <h1
+      {...props}
+      style={{
+        lineHeight: 1.2,
+        margin: 0,
+      }}>
+      {children}
+    </h1>
+  );
+}
 
 export function Anchor({
   children,
   ...props
 }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   return (
-    <a rel={'noopener noreferrer'} {...props}>
+    <a rel={'noopener noreferrer'} {...props} style={{ color: '#7e14ff' }}>
       {children}
     </a>
   );
@@ -19,7 +37,12 @@ export function Paragraph({
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      style={{ fontSize: '0.85em', lineHeight: 1.6, marginBlock: '1.8em' }}
+      style={{
+        fontSize: '0.85em',
+        lineHeight: 1.6,
+        marginBlock: '1.8em',
+        ...props.style,
+      }}
       {...props}>
       {children}
     </p>

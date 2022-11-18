@@ -13,7 +13,7 @@ import {
 import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
 import PostAPI from 'private/api/posts';
-import Emails from 'private/emails';
+// import Emails from 'private/emails';
 import Filer from 'private/filer';
 
 export default async function handler(
@@ -50,27 +50,27 @@ export default async function handler(
 
 async function createPost({
   post: postToUpload,
-  isPublish,
-}: CreatePostPayload) {
+}: // isPublish,
+CreatePostPayload) {
   const post = await Filer.uploadImages(postToUpload);
   await new PostMutationBuilder(knex).insert(post).build();
 
-  if (isPublish) {
-    await Emails.notifyNewPost(post);
-  }
+  // if (isPublish) {
+  //   await Emails.notifyNewPost(post);
+  // }
 }
 
 async function updatePost({
   id,
   post: postToUpload,
-  isPublish,
-}: UpdatePostPayload) {
+}: // isPublish,
+UpdatePostPayload) {
   const post = await Filer.replaceImages(id, postToUpload);
   await new PostMutationBuilder(knex).update(post).whereId(id).build();
 
-  if (isPublish) {
-    await Emails.notifyNewPost(post);
-  }
+  // if (isPublish) {
+  //   await Emails.notifyNewPost(post);
+  // }
 }
 
 async function deletePost({ id }: DeletePostPayload) {

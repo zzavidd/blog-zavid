@@ -1,32 +1,20 @@
-import ejs from 'ejs';
 import htmlToText from 'html-to-text';
-import getConfig from 'next/config';
 import type { SentMessageInfo } from 'nodemailer';
 import nodemailer from 'nodemailer';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { ServerStyleSheet } from 'styled-components';
 import * as UUID from 'uuid';
 
-const { serverRuntimeConfig } = getConfig();
-
 import type { DiaryDAO } from 'classes/diary/DiaryDAO';
-import type { PostDAO } from 'classes/posts/PostDAO';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
+import { SubscriptionType } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
-import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
 import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import { knex } from 'constants/knex';
-import Settings from 'constants/settings';
-import ZDate from 'lib/date';
-import * as ZText from 'lib/text';
 
-import {
-  ejsLocals,
-  HTML_TO_TEXT_OPTIONS,
-  isProd,
-  TRANSPORTER,
-  typeToSubscription,
-} from './constants';
+import { HTML_TO_TEXT_OPTIONS, isProd, TRANSPORTER } from './constants';
+import DiaryEmail from './templatesv2/diary';
 import WishlistEmail from './templatesv2/wishlist';
 
 /** The email address of the recipient in development. */
@@ -35,66 +23,39 @@ const testRecipient: TestRecipient = {
   token: UUID.v4(),
 };
 
+const sheet = new ServerStyleSheet();
+
 namespace Emailer {
-  /**
-   * Send an email to all subscribers of new post.
-   * @param post The subject post for the email.
-   */
-  export async function notifyNewPost(post: PostDAO): Promise<void> {
-    const { title, type, typeId, content, datePublished, image, slug } = post;
-    const subject = `New ${type} (#${typeId}) "${title}"`;
-
-    const entity = {
-      post: {
-        ...post,
-        content: ZText.truncateText(content!),
-        slug: `${Settings.DOMAIN}/reveries/${slug}`,
-        datePublished: ZDate.format(datePublished!),
-        image: `${Settings.CLOUDINARY_BASE_URL}/w_768,c_lfill/${image}`,
-      },
-    };
-
-    await prepareEmail(entity, typeToSubscription[type!]!, 'post', subject);
-  }
+  // /**
+  //  * Send an email to all subscribers of new post.
+  //  * @param post The subject post for the email.
+  //  */
+  // export async function notifyNewPost(post: PostDAO): Promise<void> {
+  // const { title, type, typeId, content, datePublished, image, slug } = post;
+  // const subject = `New ${type} (#${typeId}) "${title}"`;
+  // const entity = {
+  //   post: {
+  //     ...post,
+  //     content: ZText.truncateText(content!),
+  //     slug: `${Settings.DOMAIN}/reveries/${slug}`,
+  //     datePublished: ZDate.format(datePublished!),
+  //     image: `${Settings.CLOUDINARY_BASE_URL}/w_768,c_lfill/${image}`,
+  //   },
+  // };
+  // await prepareEmail(entity, SUBSCRIPTION_TYPES[type!]!, 'post', subject);
+  // }
 
   /**
    * Send an email to all subscribers of new diary entry.
    * @param diaryEntry The subject diary entry for the email.
    */
   export function notifyNewDiaryEntry(diaryEntry: DiaryDAO): Promise<void> {
-    const { title, date, content, footnote, entryNumber } = diaryEntry;
-    const subject = `Diary Entry #${entryNumber}: ${title}`;
-
-    // const options = {
-    //   css: {
-    //     hyperlink: 'hyperlink-content',
-    //     blockquote: 'blockquote',
-    //     ['twitter-button']: 'button',
-    //     ['instagram-button']: 'button',
-    //   },
-    // };
-
-    function format(text: string): string {
-      // TODO: Correct email text styling
-      const formattedText = ZText.formatText(text);
-      return ReactDOMServer.renderToStaticMarkup(formattedText);
-    }
-
-    const entity = {
-      diaryEntry: {
-        ...diaryEntry,
-        content: format(content!),
-        footnote: format(footnote!),
-        slug: `${Settings.DOMAIN}/diary/${entryNumber}`,
-        date: ZDate.format(date!),
-      },
-    };
-
-    return prepareEmail<DiaryDAO>(
-      entity,
-      SubscriberStatic.SUBSCRIPTIONS.Diary,
-      'diary',
+    const subject = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
+    return prepareEmail(
+      DiaryEmail,
+      { diaryEntry },
       subject,
+      SubscriptionType.Diary,
     );
   }
 
@@ -118,16 +79,16 @@ export default Emailer;
 
 /**
  * Prepare and process email content.
- * @param entity The entity details to include in template.
- * @param type The subscription type expected of subscribers.
- * @param template The name of the template EJS file.
+ * @param template The template element.
+ * @param props The template props.
  * @param subject The subject of the email.
+ * @param type The subscription type expected of subscribers.
  */
-async function prepareEmail<T>(
-  entity: Record<string, T>,
-  type: string,
-  template: string,
+async function prepareEmail<T extends Record<string, unknown>>(
+  template: React.FunctionComponent<any>,
+  props: T,
   subject: string,
+  type: SubscriptionType,
 ): Promise<void> {
   let mailList: SubscriberDAO[] | [TestRecipient];
 
@@ -143,19 +104,18 @@ async function prepareEmail<T>(
         })
       : [testRecipient];
 
-    const promises = mailList.map(async (recipient) => {
-      const message = await ejs.renderFile(
-        `${serverRuntimeConfig.templatesDir}/${template}.ejs`,
-        {
-          ...entity,
-          subscriber: recipient,
-          ...ejsLocals,
-        },
+    const promises = mailList.map((recipient) => {
+      const element = React.createElement(template, {
+        ...props,
+        token: recipient.token,
+      });
+      const message = ReactDOMServer.renderToStaticMarkup(
+        sheet.collectStyles(element),
       );
-      await sendMailToAddress(recipient.email!, subject, message);
+      return sendMailToAddress(recipient.email, subject, message);
     });
-
     await Promise.all(promises);
+
     console.info(
       `Emails: "${subject}" email sent to ${mailList.length} subscribers.`,
     );

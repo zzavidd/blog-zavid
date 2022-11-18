@@ -105,16 +105,36 @@ export function Main(props: React.HTMLAttributes<HTMLDivElement>) {
   );
 }
 
-export function Footer() {
+export function Footer(props: FooterProps) {
   return (
     <div
       style={{
         background: Theme.Primary,
         color: Theme.Text,
         fontSize: '0.9em',
-        padding: '1em',
+        padding: '2em 1em',
         textAlign: 'center',
       }}>
+      {props.showUnsubscribe ? (
+        <React.Fragment>
+          <FooterText>
+            You are receiving this email because you subscribed to my mailing
+            list. If you want to change your subscription preferences or
+            unsubscribe,&nbsp;
+            <Anchor
+              href={`${Settings.DOMAIN}/subscriptions?token=${props.unsubscribeToken}`}
+              className={'hyperlink'}>
+              click here
+            </Anchor>
+            .
+          </FooterText>
+          <FooterText>
+            Got an issue with the link? Copy and paste this URL into your
+            browser:&nbsp;
+            <Anchor href={props.url}>{props.url}</Anchor>
+          </FooterText>
+        </React.Fragment>
+      ) : null}
       <table
         style={{
           fontSize: '0.95em',
@@ -184,6 +204,30 @@ export function SignatureImage() {
       height={103}
     />
   );
+}
+
+export function FooterText({
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) {
+  return (
+    <p
+      style={{
+        fontSize: '0.95em',
+        lineHeight: 1.6,
+        margin: '1.8em auto',
+        maxWidth: '350px',
+      }}
+      {...props}>
+      {children}
+    </p>
+  );
+}
+
+interface FooterProps {
+  showUnsubscribe: boolean;
+  unsubscribeToken?: string;
+  url?: string;
 }
 
 interface FooterSocial {

@@ -37,9 +37,9 @@ export const formatParagraph = (
 
     switch (section) {
       case Section.HEADING:
-        return <h1 key={key}>{text}</h1>;
-      case Section.SUBHEADING:
         return <h2 key={key}>{text}</h2>;
+      case Section.SUBHEADING:
+        return <h3 key={key}>{text}</h3>;
       case Section.IMAGE:
         const [, alt, src] = paragraph.match(regex)!;
         return (

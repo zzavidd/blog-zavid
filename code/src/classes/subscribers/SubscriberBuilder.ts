@@ -6,7 +6,9 @@ import { SubscriberStatic } from './SubscriberStatic';
 
 /** The class for building Subscriber objects. */
 export class SubscriberBuilder {
-  private subscriber: SubscriberDAO = {};
+  private subscriber: SubscriberDAO = {
+    email: '',
+  };
 
   constructor() {
     this.subscriber.firstname = '';

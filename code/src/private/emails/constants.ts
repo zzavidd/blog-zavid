@@ -3,7 +3,6 @@ import nodemailer from 'nodemailer';
 
 const { serverRuntimeConfig } = getConfig();
 
-import type { PostType } from 'classes/posts/PostDAO';
 import Settings from 'constants/settings';
 
 export const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
@@ -71,9 +70,3 @@ export const TRANSPORTER = nodemailer.createTransport({
     privateKey: serverRuntimeConfig.dkimPrivateKey,
   },
 });
-
-export const typeToSubscription: SubscriptionType = {
-  Reverie: 'Reveries',
-};
-
-type SubscriptionType = { [key in PostType]?: string };
