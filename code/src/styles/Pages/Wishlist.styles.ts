@@ -209,6 +209,10 @@ namespace WishlistStyle {
         margin: 0;
         margin-right: 0.4em;
       }
+
+      span {
+        white-space: pre-line;
+      }
     `;
 
     export const ItemReservees = styled.p<{ complete: boolean }>`
