@@ -101,7 +101,14 @@ namespace Input {
           showPopperArrow={false}
           todayButton={'Today'}
           className={'react-dateinput'}
-          popperClassName={'react-datepicker'}
+          popperModifiers={[
+            {
+              name: 'offset',
+              options: {
+                offset: [0, 10],
+              },
+            },
+          ]}
         />
       </FORM.Date.Container>
     );

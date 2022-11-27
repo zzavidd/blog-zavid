@@ -134,16 +134,22 @@ namespace FORM {
       .react-datepicker,
       .react-datepicker__header,
       .react-datepicker__today-button {
-        background-color: rgba(36, 36, 36, 0.8);
+        background-color: rgba(36, 36, 36, 1);
       }
 
       .react-datepicker-popper[data-placement^=top] {
         padding-bottom: 0;
       }
 
+      .react-datepicker__header *,
+      .react-datepicker__today-button,
+      .react-datepicker__day {
+        color: #ffffff;
+      }
+
       .react-datepicker__day--disabled,
       .react-datepicker__day--outside-month {
-        color: #808080;
+        color: rgba(255, 255, 255, 0.2);
       }
 
       .react-dateinput {

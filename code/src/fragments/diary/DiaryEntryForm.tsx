@@ -87,6 +87,7 @@ export default function DiaryEntryForm(props: DiaryFormProps) {
                   onChange={handlers.date}
                   placeholderText={'Select the date...'}
                   maxDate={new Date()}
+                  dateFormat={'dd MMMM yyyy'}
                 />
               </FORM.Field>
             </FORM.FieldRow>
