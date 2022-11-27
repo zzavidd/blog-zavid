@@ -36,8 +36,8 @@ export enum WishlistItemPriority {
 }
 
 export const WishlistDisplayedPriority = {
-  [WishlistItemPriority.LOW]: 'Desired',
-  [WishlistItemPriority.MEDIUM]: 'Wanted',
+  [WishlistItemPriority.LOW]: 'Wanted',
+  [WishlistItemPriority.MEDIUM]: 'Desired',
   [WishlistItemPriority.HIGH]: 'Needed',
 };
 
