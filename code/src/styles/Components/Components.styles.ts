@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
+import { FONTS } from 'styles/Variables.styles';
+
 namespace CPX {
   export const Button = styled.button.attrs({ type: 'button' })`
     border-style: none;
@@ -36,6 +38,7 @@ namespace CPX {
     color: white;
     cursor: pointer;
     display: flex;
+    font-family: ${FONTS.BODY};
     font-size: 0.9em;
     max-width: fit-content;
     min-width: 70px;

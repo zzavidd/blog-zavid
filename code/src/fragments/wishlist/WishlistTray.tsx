@@ -5,6 +5,7 @@ import Contexts from 'constants/contexts';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import AdminLock from 'fragments/AdminLock';
+import FORM from 'styles/Components/Form.styles';
 import WL from 'styles/Pages/Wishlist.styles';
 
 import { WishlistPageContext } from './WishlistContext';
@@ -71,26 +72,25 @@ export default function WishlistTray() {
 
   return (
     <AdminLock>
-      <WL.Tray.Container open={context.isFormTrayOpen}>
+      <WL.Tray open={context.isFormTrayOpen}>
         <WishlistForm />
-        <WL.Tray.FormFooter>
+        <FORM.Footer>
           {context.selectedWishlistItem === null ? (
-            <WL.Tray.FormSubmitButton onClick={submitWishlistItem}>
+            <FORM.SubmitButton onClick={submitWishlistItem}>
               {displayButtonText('Submit')}
-            </WL.Tray.FormSubmitButton>
+            </FORM.SubmitButton>
           ) : (
-            <WL.Tray.FormSubmitButton
+            <FORM.SubmitButton
               onClick={updateWishlistItem}
               disabled={!context.selectedWishlistItem}>
               {displayButtonText('Update')}
-            </WL.Tray.FormSubmitButton>
+            </FORM.SubmitButton>
           )}
-          <WL.Tray.FormCancelButton
-            onClick={() => consign({ isFormTrayOpen: false })}>
+          <FORM.CancelButton onClick={() => consign({ isFormTrayOpen: false })}>
             Close
-          </WL.Tray.FormCancelButton>
-        </WL.Tray.FormFooter>
-      </WL.Tray.Container>
+          </FORM.CancelButton>
+        </FORM.Footer>
+      </WL.Tray>
     </AdminLock>
   );
 }

@@ -258,56 +258,27 @@ namespace WishlistStyle {
     `;
   }
 
-  export namespace Tray {
-    export const Container = styled.aside<{ open: boolean }>`
-      background-color: rgba(26, 23, 41, 0.3);
-      border-left: 1px solid ${({ theme }) => theme.bodyFontColor};
-      display: flex;
-      flex: 1 0 ${({ open }) => (open ? '500px' : 0)};
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-      transition: all 0.1s linear;
+  export const Tray = styled.aside<{ open: boolean }>`
+    background-color: rgba(26, 23, 41, 0.3);
+    border-left: 1px solid ${({ theme }) => theme.bodyFontColor};
+    display: flex;
+    flex: 1 0 ${({ open }) => (open ? '500px' : 0)};
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    transition: all 0.1s linear;
 
-      ${(props) =>
-        props.open
-          ? css`
-              opacity: 1;
-              width: 100%;
-            `
-          : css`
-              opacity: 0;
-              width: 0;
-            `};
-    `;
-
-    export const FormFooter = styled.footer`
-      display: flex;
-      flex: 0 1 auto;
-    `;
-
-    const FormButton = styled(CPX.Button)`
-      color: ${COLOR.WHITE};
-      flex: 1 1 auto;
-      font-size: 1em;
-      font-weight: bold;
-      padding: 1.3em;
-    `;
-
-    export const FormSubmitButton = styled(FormButton)`
-      ${Mixins.ClickBehavior('#2f223d', {
-        hover: 0.05,
-        active: 0.07,
-      })}
-    `;
-
-    export const FormCancelButton = styled(FormButton)`
-      ${Mixins.ClickBehavior('#533c6c', {
-        hover: -0.05,
-        active: 0.02,
-      })}
-    `;
-  }
+    ${(props) =>
+      props.open
+        ? css`
+            opacity: 1;
+            width: 100%;
+          `
+        : css`
+            opacity: 0;
+            width: 0;
+          `};
+  `;
 
   export namespace Claim {
     export const Container = styled.div`

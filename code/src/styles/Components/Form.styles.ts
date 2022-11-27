@@ -7,7 +7,10 @@ import type {
 } from 'styled-components';
 import styled, { createGlobalStyle, css } from 'styled-components';
 
-import { FONTS } from 'styles/Variables.styles';
+import Mixins from 'styles/Mixins.styles';
+import { BREAKPOINTS, COLOR, FONTS, SIZES } from 'styles/Variables.styles';
+
+import CPX from './Components.styles';
 
 namespace FORM {
   const DefaultStyle: FlattenInterpolation<ThemeProps<DefaultTheme>> = css`
@@ -22,10 +25,21 @@ namespace FORM {
   `;
 
   export const Container = styled.form`
+    ${Mixins.Responsive([
+      'height',
+      '100vh',
+      { sm: `calc(100vh - ${SIZES.HEADER_HEIGHT})` },
+    ])}
     display: flex;
     flex-direction: column;
+    overflow-y: hidden;
+  `;
+
+  export const Main = styled.section`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     gap: 2em;
-    height: 100%;
     overflow-y: auto;
     padding: 2em;
   `;
@@ -33,13 +47,54 @@ namespace FORM {
   export const FieldRow = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5em;
+    gap: 1.5em 2.5em;
     width: 100%;
+  `;
+
+  export const FieldSet = styled.div<{ flex?: number; order?: number }>`
+    display: flex;
+    flex: ${({ flex = 1 }) => `${flex} ${flex}`};
+    flex-direction: column;
+    gap: 1.5em;
+
+    @media (max-width: ${BREAKPOINTS.lg}) {
+      flex: auto;
+      order: ${({ order = 'unset' }) => order};
+      width: 100%;
+    }
   `;
 
   export const Field = styled.div<{ flex?: number }>`
     flex: ${({ flex = 1 }) => `${flex} ${flex}`};
     width: 100%;
+  `;
+
+  export const Footer = styled.footer`
+    display: flex;
+    flex: 0 1 auto;
+  `;
+
+  const FooterButton = styled(CPX.Button)`
+    color: ${COLOR.WHITE};
+    flex: 1 1 auto;
+    font-size: 1em;
+    font-weight: bold;
+    height: 100%;
+    padding: 1.3em;
+  `;
+
+  export const SubmitButton = styled(FooterButton)`
+    ${Mixins.ClickBehavior('#2f223d', {
+      hover: 0.05,
+      active: 0.07,
+    })}
+  `;
+
+  export const CancelButton = styled(FooterButton)`
+    ${Mixins.ClickBehavior('#533c6c', {
+      hover: -0.05,
+      active: 0.02,
+    })}
   `;
 
   export const Label = styled.label`
@@ -118,7 +173,7 @@ namespace FORM {
       ${DefaultStyle}
       border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
       min-height: 50px;
-      padding: 0.8em;
+      padding: 0.8em 0.3em;
     `;
   }
 }

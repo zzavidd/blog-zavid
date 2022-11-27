@@ -11,8 +11,6 @@ import type HandlerFactory from 'constants/handlers';
 import ZDate from 'lib/date';
 import ZString from 'lib/string';
 import FORM from 'styles/Components/Form.styles';
-import ModalStyle from 'styles/Components/Modal.styles';
-import { ButtonVariant } from 'styles/Variables.styles';
 
 export default function DiaryEntryForm(props: DiaryFormProps) {
   const { diaryEntry, handlers } = props;
@@ -21,115 +19,112 @@ export default function DiaryEntryForm(props: DiaryFormProps) {
 
   return (
     <FORM.Container>
-      <FORM.FieldRow>
-        <FORM.Field>
-          <FORM.FieldRow>
-            <FORM.Field>
-              <FORM.Label>Content:</FORM.Label>
-              <LongTextArea
-                name={'content'}
-                value={diaryEntry.content!}
-                onChange={(e) => handlers.textSave(e, appDispatch)}
-                placeholder={'Scribe your thoughts and feelings...'}
-              />
-            </FORM.Field>
-          </FORM.FieldRow>
-        </FORM.Field>
-        <FORM.Field>
-          <FORM.FieldRow>
-            <FORM.Field flex={3}>
-              <FORM.Label>Title:</FORM.Label>
-              <Input.Text
-                name={'title'}
-                value={diaryEntry.title}
-                onChange={handlers.text}
-                placeholder={'Enter the title'}
-              />
-            </FORM.Field>
-            <FORM.Field flex={1}>
-              <FORM.Label>Entry No.:</FORM.Label>
-              <Input.Number
-                name={'entryNumber'}
-                value={diaryEntry.entryNumber}
-                onChange={handlers.number}
-                placeholder={'No.'}
-                min={1}
-              />
-            </FORM.Field>
-          </FORM.FieldRow>
-          <FORM.FieldRow>
-            <FORM.Field>
-              <FORM.Label>Footnote:</FORM.Label>
-              <LongTextArea
-                name={'footnote'}
-                value={diaryEntry.footnote!}
-                onChange={handlers.text}
-                placeholder={'Add any footnotes to come after the signature...'}
-              />
-            </FORM.Field>
-          </FORM.FieldRow>
-          <FORM.FieldRow>
-            <FORM.Field flex={1}>
-              <FORM.Label>Status:</FORM.Label>
-              <Input.Select
-                name={'status'}
-                options={DiaryStatic.STATUSES}
-                value={diaryEntry.status}
-                onChange={handlers.select}
-              />
-            </FORM.Field>
-            <FORM.Field flex={2}>
-              <FORM.Label>Date:</FORM.Label>
-              <Input.DatePicker
-                name={'date'}
-                selected={new Date(diaryEntry.date)}
-                onChange={handlers.date}
-                placeholderText={'Select the date...'}
-                maxDate={new Date()}
-              />
-            </FORM.Field>
-          </FORM.FieldRow>
-          <FORM.FieldRow>
-            <FORM.Field>
-              <FORM.Label>Favourite?</FORM.Label>
-              <Checkbox
-                name={'isFavourite'}
-                label={'This diary entry is a favourite.'}
-                checked={diaryEntry.isFavourite!}
-                onChange={handlers.check}
-              />
-            </FORM.Field>
-          </FORM.FieldRow>
-          <FORM.FieldRow>
-            <FORM.Field>
-              <FORM.Label>Tags:</FORM.Label>
-              <ShortTextArea
-                name={'tags'}
-                value={diaryEntry.tags as string}
-                onChange={handlers.text}
-                placeholder={'Add tags to index the entry...'}
-              />
-              {/* <TagBlock
+      <FORM.Main>
+        <FORM.FieldRow>
+          <FORM.FieldSet>
+            <FORM.FieldRow>
+              <FORM.Field>
+                <FORM.Label>Content:</FORM.Label>
+                <LongTextArea
+                  name={'content'}
+                  value={diaryEntry.content!}
+                  onChange={(e) => handlers.textSave(e, appDispatch)}
+                  placeholder={'Scribe your thoughts and feelings...'}
+                />
+              </FORM.Field>
+            </FORM.FieldRow>
+          </FORM.FieldSet>
+          <FORM.FieldSet>
+            <FORM.FieldRow>
+              <FORM.Field flex={3}>
+                <FORM.Label>Title:</FORM.Label>
+                <Input.Text
+                  name={'title'}
+                  value={diaryEntry.title}
+                  onChange={handlers.text}
+                  placeholder={'Enter the title'}
+                />
+              </FORM.Field>
+              <FORM.Field flex={1}>
+                <FORM.Label>Entry No.:</FORM.Label>
+                <Input.Number
+                  name={'entryNumber'}
+                  value={diaryEntry.entryNumber}
+                  onChange={handlers.number}
+                  placeholder={'No.'}
+                  min={1}
+                />
+              </FORM.Field>
+            </FORM.FieldRow>
+            <FORM.FieldRow>
+              <FORM.Field>
+                <FORM.Label>Footnote:</FORM.Label>
+                <LongTextArea
+                  name={'footnote'}
+                  value={diaryEntry.footnote!}
+                  onChange={handlers.text}
+                  placeholder={
+                    'Add any footnotes to come after the signature...'
+                  }
+                />
+              </FORM.Field>
+            </FORM.FieldRow>
+            <FORM.FieldRow>
+              <FORM.Field flex={1}>
+                <FORM.Label>Status:</FORM.Label>
+                <Input.Select
+                  name={'status'}
+                  options={DiaryStatic.STATUSES}
+                  value={diaryEntry.status}
+                  onChange={handlers.select}
+                />
+              </FORM.Field>
+              <FORM.Field flex={2}>
+                <FORM.Label>Date:</FORM.Label>
+                <Input.DatePicker
+                  name={'date'}
+                  selected={new Date(diaryEntry.date)}
+                  onChange={handlers.date}
+                  placeholderText={'Select the date...'}
+                  maxDate={new Date()}
+                />
+              </FORM.Field>
+            </FORM.FieldRow>
+            <FORM.FieldRow>
+              <FORM.Field>
+                <Checkbox
+                  name={'isFavourite'}
+                  label={'This diary entry is a favourite.'}
+                  checked={diaryEntry.isFavourite!}
+                  onChange={handlers.check}
+                />
+              </FORM.Field>
+            </FORM.FieldRow>
+            <FORM.FieldRow>
+              <FORM.Field>
+                <FORM.Label>Tags:</FORM.Label>
+                <ShortTextArea
+                  name={'tags'}
+                  value={diaryEntry.tags as string}
+                  onChange={handlers.text}
+                  placeholder={'Add tags to index the entry...'}
+                />
+                {/* <TagBlock
                 tags={diaryEntry.tags!}
                 asCSV={true}
                 className={css['diary-form-tags']}
               /> */}
-            </FORM.Field>
-          </FORM.FieldRow>
-        </FORM.Field>
-      </FORM.FieldRow>
-      <footer>
-        <ModalStyle.FooterButton
-          variant={ButtonVariant.CONFIRM}
-          onClick={props.onSubmit}>
+              </FORM.Field>
+            </FORM.FieldRow>
+          </FORM.FieldSet>
+        </FORM.FieldRow>
+      </FORM.Main>
+      <FORM.Footer>
+        <FORM.SubmitButton onClick={props.onSubmit}>
           {props.onSubmitText}
-        </ModalStyle.FooterButton>
-        <ModalStyle.FooterButton
-          variant={ButtonVariant.CANCEL}
-          onClick={props.onCancel}>
-          Cancel
-        </ModalStyle.FooterButton>
-      </footer>
+        </FORM.SubmitButton>
+        <FORM.CancelButton onClick={props.onCancel}>Cancel</FORM.CancelButton>
+      </FORM.Footer>
     </FORM.Container>
   );
 }
