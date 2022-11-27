@@ -29,10 +29,10 @@ services:
       - "4000:4000"
     restart: unless-stopped
 
-  analytics:
-    image: matomo
-    container_name: matomo_analytics
-    ports:
-      - "8500:80"
-    volumes:
-      - matomo:/var/www/html
+  # analytics:
+  #   image: matomo
+  #   container_name: matomo_analytics
+  #   ports:
+  #     - "8500:80"
+  #   volumes:
+  #     - matomo:/var/www/html
