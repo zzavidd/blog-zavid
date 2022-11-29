@@ -3,7 +3,7 @@ export {};
 // import { useState } from 'react';
 // import { zDate, zString } from 'zavid-modules';
 
-// import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+//
 // import { DiaryStatic } from 'classes/diary/DiaryStatic';
 // import { ConfirmModal } from 'components/modal';
 // import Alert, { AlertType } from 'constants/alert';

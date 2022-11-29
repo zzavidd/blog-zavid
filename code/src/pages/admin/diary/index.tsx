@@ -11,7 +11,6 @@ import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';

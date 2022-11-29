@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { QuerySort } from 'classes/_/QueryBuilder';
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import type { DiaryStatusFilters } from 'classes/diary/DiaryQueryBuilder';
 import { DiaryMutationBuilder } from 'classes/diary/DiaryQueryBuilder';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';

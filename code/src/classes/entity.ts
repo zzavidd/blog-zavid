@@ -1,5 +1,3 @@
-import type { PostType } from './posts/PostDAO';
-
 export interface SearchResultEntityDAO {
   index?: number;
   title: string;

@@ -1,11 +1,10 @@
 import * as faker from 'faker';
 
+import { IDiaryStatus } from 'constants/types';
 import ZDate from 'lib/date';
 import ZNumber from 'lib/number';
 import ZString from 'lib/string';
 
-import { DiaryStatus } from './DiaryDAO';
-import type { DiaryDAO } from './DiaryDAO';
 import { DiaryStatic } from './DiaryStatic';
 
 /** The class for Diary objects and methods. */
@@ -15,7 +14,7 @@ export class DiaryEntryBuilder {
     content: '',
     footnote: '',
     date: new Date(),
-    status: DiaryStatus.PROTECTED,
+    status: IDiaryStatus.PROTECTED,
     entryNumber: 0,
     isFavourite: false,
     tags: [],

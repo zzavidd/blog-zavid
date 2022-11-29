@@ -1,7 +1,5 @@
 import Cloudinary from 'cloudinary';
-import { debug } from 'console';
 
-import type { PostDAO, PostImage } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import ZString from 'lib/string';
 
@@ -174,7 +172,7 @@ async function generateFilename(post: PostDAO, slug: string): Promise<string> {
         `${postDomain.title!} ${post.title}`,
       );
     } catch (err) {
-      debug(err as Error);
+      console.error(err as Error);
     }
   } else {
     const number = post.typeId?.toString().padStart(3, '0');

@@ -2,7 +2,26 @@ import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import type { ReactElement, ReactNode } from 'react';
 
-import type { PostType, PostStatus } from 'classes/posts/PostDAO';
+export enum IDiaryStatus {
+  PROTECTED = 'PROTECTED',
+  PRIVATE = 'PRIVATE',
+  PUBLISHED = 'PUBLISHED',
+}
+
+export enum IPostStatus {
+  DRAFT = 'DRAFT',
+  PROTECTED = 'PROTECTED',
+  PRIVATE = 'PRIVATE',
+  PUBLISHED = 'PUBLISHED',
+}
+
+export enum IPostType {
+  REVERIE = 'Reverie',
+  EPISTLE = 'Epistle',
+  POEM = 'Poem',
+  MUSING = 'Musing',
+  PAGE = 'Page',
+}
 
 export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;

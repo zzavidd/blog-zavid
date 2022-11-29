@@ -1,13 +1,10 @@
 import { URLBuilder } from 'classes/_/URLBuilder';
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
-import { DiaryStatus } from 'classes/diary/DiaryDAO';
 import { DiaryQueryBuilder } from 'classes/diary/DiaryQueryBuilder';
 import type { SearchResultEntityDAO } from 'classes/entity';
-import type { PostDAO } from 'classes/posts/PostDAO';
-import { PostStatus } from 'classes/posts/PostDAO';
 import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
+import { IDiaryStatus, IPostStatus } from 'constants/types';
 
 namespace SearchAPI {
   export function getResults(searchTerm: string, onlyDiary: boolean) {
@@ -66,7 +63,7 @@ async function compilePosts(
   filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean,
 ): Promise<SearchResultEntityDAO[]> {
   const posts = await new PostQueryBuilder(knex)
-    .whereStatus({ include: [PostStatus.PRIVATE, PostStatus.PUBLISHED] })
+    .whereStatus({ include: [IPostStatus.PRIVATE, IPostStatus.PUBLISHED] })
     .build();
 
   const parsedPosts = posts.filter(filterBySearchTerm).map((post) => {
@@ -108,7 +105,7 @@ async function compileDiaryEntries(
   filterBySearchTerm: (entry: PostDAO | DiaryDAO) => boolean,
 ): Promise<SearchResultEntityDAO[]> {
   const diary = await new DiaryQueryBuilder(knex)
-    .whereStatus({ include: [DiaryStatus.PRIVATE, DiaryStatus.PUBLISHED] })
+    .whereStatus({ include: [IDiaryStatus.PRIVATE, IDiaryStatus.PUBLISHED] })
     .build();
 
   const parsedDiary: SearchResultEntityDAO[] = diary

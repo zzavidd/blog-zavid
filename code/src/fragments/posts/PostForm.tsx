@@ -69,7 +69,7 @@ export {};
 //   function onTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
 //     const selectedType = e.target.value as PostType;
 //     const postsOfType = domains.filter(({ type, status }) => {
-//       return selectedType === type && status != PostStatus.DRAFT;
+//       return selectedType === type && status != IPostStatus.DRAFT;
 //     });
 //     const newTypeId = postsOfType.length + 1;
 //     const typeId = PostStatic.isDraft(post) ? undefined : newTypeId;
@@ -84,10 +84,10 @@ export {};
 //   function onStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
 //     const selectedStatus = e.target.value as PostStatus;
 //     const postsOfType = domains.filter(({ type, status }) => {
-//       return post.type === type && status != PostStatus.DRAFT;
+//       return post.type === type && status != IPostStatus.DRAFT;
 //     });
 //     const newTypeId = postsOfType.length + 1;
-//     const typeId = selectedStatus === PostStatus.DRAFT ? undefined : newTypeId;
+//     const typeId = selectedStatus === IPostStatus.DRAFT ? undefined : newTypeId;
 
 //     setPost({
 //       ...post,

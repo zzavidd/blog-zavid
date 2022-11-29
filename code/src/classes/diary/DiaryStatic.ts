@@ -1,17 +1,12 @@
 import faker from 'faker';
 
+import { IDiaryStatus } from 'constants/types';
 import ZDate from 'lib/date';
 import ZNumber from 'lib/number';
 
 import { randomEnumValue } from '../helper';
 
-import type { DiaryDAO } from './DiaryDAO';
-import { DiaryStatus } from './DiaryDAO';
-
 export class DiaryStatic {
-  public static STATUS = DiaryStatus;
-  public static STATUSES = Object.values(DiaryStatus);
-
   /**
    * Gets the title for diary entry.
    * @param diaryEntry The entry.
@@ -43,8 +38,8 @@ export class DiaryStatic {
     return tags;
   }
 
-  public static randomStatus(): DiaryStatus {
-    return randomEnumValue(DiaryStatus);
+  public static randomStatus(): IDiaryStatus {
+    return randomEnumValue(IDiaryStatus);
   }
 
   public static parse(entry: DiaryDAO): DiaryDAO {
@@ -62,14 +57,14 @@ export class DiaryStatic {
   }
 
   public static isProtected(input: DiaryDAO): boolean {
-    return input?.status === DiaryStatus.PROTECTED;
+    return input?.status === IDiaryStatus.PROTECTED;
   }
 
   public static isPrivate(input: DiaryDAO): boolean {
-    return input?.status === DiaryStatus.PRIVATE;
+    return input?.status === IDiaryStatus.PRIVATE;
   }
 
   public static isPublished(input: DiaryDAO): boolean {
-    return input?.status === DiaryStatus.PUBLISHED;
+    return input?.status === IDiaryStatus.PUBLISHED;
   }
 }

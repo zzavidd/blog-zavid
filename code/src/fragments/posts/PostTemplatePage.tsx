@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { NextImage } from 'components/Image';
 import ShareBlock from 'components/ShareBlock';

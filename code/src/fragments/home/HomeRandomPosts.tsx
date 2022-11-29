@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import React from 'react';
 
-import type { PostDAO } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import ZDate from 'lib/date';
 import * as Style from 'styles/Pages/Home.styles';
 
-export default function HomeRandomPosts({ posts }: RandomPostsGridProps) {
+export default function HomeRandomPosts({ posts = [] }: RandomPostsGridProps) {
   return (
     <React.Fragment>
       <Style.Aside.HeadingBox>

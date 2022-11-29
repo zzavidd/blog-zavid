@@ -2,7 +2,6 @@ import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';

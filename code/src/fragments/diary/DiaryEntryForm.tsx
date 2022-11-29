@@ -1,13 +1,12 @@
 import { useDispatch } from 'react-redux';
 
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import { DiaryEntryBuilder } from 'classes/diary/DiaryEntryBuilder';
-import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import type { EntityFormProps } from 'classes/entity';
 import Checkbox from 'components/Checkbox';
 import Input from 'components/Input';
 import { LongTextArea, ShortTextArea } from 'components/Textarea';
 import type HandlerFactory from 'constants/handlers';
+import { IDiaryStatus } from 'constants/types';
 import ZDate from 'lib/date';
 import ZString from 'lib/string';
 import FORM from 'styles/Components/Form.styles';
@@ -74,7 +73,7 @@ export default function DiaryEntryForm(props: DiaryFormProps) {
                 <FORM.Label>Status:</FORM.Label>
                 <Input.Select
                   name={'status'}
-                  options={DiaryStatic.STATUSES}
+                  options={Object.values(IDiaryStatus)}
                   value={diaryEntry.status}
                   onChange={handlers.select}
                 />

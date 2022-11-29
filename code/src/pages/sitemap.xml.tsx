@@ -1,9 +1,9 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
-import { DiaryStatus } from 'classes/diary/DiaryDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import Settings from 'constants/settings';
+import { IDiaryStatus, IPostStatus, IPostType } from 'constants/types';
 import DiaryAPI from 'private/api/diary';
 import PageAPI from 'private/api/pages';
 import PostAPI from 'private/api/posts';
@@ -24,13 +24,13 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   ];
 
   const getPosts = PostAPI.getAll({
-    type: { include: [PostStatic.TYPE.REVERIE, PostStatic.TYPE.EPISTLE] },
+    type: { include: [IPostType.REVERIE, IPostType.EPISTLE] },
     status: {
-      include: [PostStatic.STATUS.PUBLISHED],
+      include: [IPostStatus.PUBLISHED],
     },
   });
   const getDiaryEntries = DiaryAPI.getAll({
-    status: { include: [DiaryStatus.PUBLISHED] },
+    status: { include: [IDiaryStatus.PUBLISHED] },
   });
   const getPages = PageAPI.getAll({ isEmbed: false });
   const [posts, diaryEntries, pages] = await Promise.all([

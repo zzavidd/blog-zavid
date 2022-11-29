@@ -1,4 +1,4 @@
-export interface PostDAO {
+interface PostDAO {
   id?: number;
   title: string;
   type: PostType;
@@ -18,45 +18,33 @@ export interface PostDAO {
   domainSlug?: string;
 }
 
-export interface PostImage {
+interface PostImage {
   source: string;
   hasChanged: boolean;
   isCover?: boolean;
 }
 
-export interface PostContentImageMapping {
+interface PostContentImageMapping {
   [key: string]: PostImage;
 }
 
-export interface RandomPostOptions {
+interface RandomPostOptions {
   allowPageTypes?: boolean;
   numberOfContentImages?: number;
   withImage?: boolean;
 }
 
-export enum PostStatus {
-  DRAFT = 'DRAFT',
-  PROTECTED = 'PROTECTED',
-  PRIVATE = 'PRIVATE',
-  PUBLISHED = 'PUBLISHED',
-}
+type PostType = 'Reverie' | 'Epistle' | 'Poem' | 'Musing' | 'Page';
+type PostStatus = 'DRAFT' | 'PROTECTED' | 'PRIVATE' | 'PUBLISHED';
 
-export enum PostType {
-  REVERIE = 'Reverie',
-  EPISTLE = 'Epistle',
-  POEM = 'Poem',
-  MUSING = 'Musing',
-  PAGE = 'Page',
-}
-
-export type PostContentImages =
+type PostContentImages =
   | PostImage[]
   | string[]
   | PostContentImageMapping
   | string
   | undefined;
 
-export interface PostDomain extends Pick<PostDAO, 'type' | 'status'> {
+interface PostDomain extends Pick<PostDAO, 'type' | 'status'> {
   label: string | number;
   value: string | number;
 }

@@ -3,7 +3,7 @@ export {};
 // import { useRouter } from 'next/router';
 // import { useState } from 'react';
 
-// import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+//
 // import { DiaryEntryBuilder } from 'classes/diary/DiaryEntryBuilder';
 // import { DiaryStatic } from 'classes/diary/DiaryStatic';
 // import { ConfirmModal } from 'components/modal';

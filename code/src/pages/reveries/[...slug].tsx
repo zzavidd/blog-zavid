@@ -2,11 +2,10 @@ import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
 import React from 'react';
 
-import type { PostDAO } from 'classes/posts/PostDAO';
-import { PostStatus, PostType } from 'classes/posts/PostDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
 import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
+import { IPostStatus, IPostType } from 'constants/types';
 import Layout from 'fragments/Layout';
 import type { PostTrio } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';
@@ -49,10 +48,10 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
       const { current: post } = JSON.parse(
         await SSR.Posts.getSingle({
           slug,
-          type: PostType.PAGE,
+          type: IPostType.PAGE,
           domainSlug,
-          domainType: PostType.REVERIE,
-          statusFilters: { exclude: [PostStatus.DRAFT] },
+          domainType: IPostType.REVERIE,
+          statusFilters: { exclude: [IPostStatus.DRAFT] },
         }),
       ) as PostTrio;
 
@@ -85,9 +84,9 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
       const reverieTrio = JSON.parse(
         await SSR.Posts.getSingle({
           slug,
-          type: PostType.REVERIE,
+          type: IPostType.REVERIE,
           statusFilters: {
-            exclude: [PostStatus.DRAFT],
+            exclude: [IPostStatus.DRAFT],
           },
         }),
       ) as PostTrio;

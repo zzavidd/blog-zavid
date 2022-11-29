@@ -1,12 +1,10 @@
 import { getPlaiceholder } from 'plaiceholder';
 
-import type { PostDAO } from 'classes/posts/PostDAO';
-import { PostType, PostStatus } from 'classes/posts/PostDAO';
 import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
 import Settings from 'constants/settings';
-import { QueryOrder } from 'constants/types';
+import { IPostStatus, IPostType, QueryOrder } from 'constants/types';
 import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
 
 namespace PostAPI {
@@ -72,7 +70,7 @@ namespace PostAPI {
 
     let previous: PostDAO | undefined;
     let next: PostDAO | undefined;
-    if (type !== PostType.PAGE) {
+    if (type !== IPostType.PAGE) {
       const [[previousPost], [nextPost]] = await Promise.all([
         new PostQueryBuilder(knex)
           .getPreviousPost(current.typeId!, current.type!)
@@ -93,22 +91,22 @@ namespace PostAPI {
   }
 
   export async function getLatestReverie(): Promise<PostDAO> {
-    const [getLatestReverie] = await new PostQueryBuilder(knex)
+    const [latestReverie] = await new PostQueryBuilder(knex)
       .whereType({
-        include: [PostType.REVERIE],
+        include: [IPostType.REVERIE],
       })
-      .whereStatus({ include: [PostStatus.PUBLISHED] })
+      .whereStatus({ include: [IPostStatus.PUBLISHED] })
       .getLatestPost()
       .build();
-    return addPlaceholderImage(getLatestReverie);
+    return addPlaceholderImage(latestReverie);
   }
 
   export async function getRandomPosts({
     exceptId,
   }: RandomPostOptions): Promise<PostDAO[]> {
     const builder = new PostQueryBuilder(knex)
-      .whereType({ exclude: [PostType.PAGE] })
-      .whereStatus({ include: [PostStatus.PUBLISHED] });
+      .whereType({ exclude: [IPostType.PAGE] })
+      .whereStatus({ include: [IPostStatus.PUBLISHED] });
 
     if (exceptId) {
       builder.exceptId(exceptId);

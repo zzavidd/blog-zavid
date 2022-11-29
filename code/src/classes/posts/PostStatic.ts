@@ -1,18 +1,16 @@
 import faker from 'faker';
 
+import { IPostStatus, IPostType } from 'constants/types';
 import ZNumber from 'lib/number';
 
 import { randomElementFromList, randomEnumValue } from '../helper';
 
-import type { PostDAO, PostImage } from './PostDAO';
-import { PostStatus, PostType } from './PostDAO';
-
 const PostDirectory: Record<PostType, string> = {
-  [PostType.REVERIE]: 'reveries',
-  [PostType.EPISTLE]: 'epistles',
-  [PostType.POEM]: 'poetry',
-  [PostType.MUSING]: 'musings',
-  [PostType.PAGE]: 'pages',
+  [IPostType.REVERIE]: 'reveries',
+  [IPostType.EPISTLE]: 'epistles',
+  [IPostType.POEM]: 'poetry',
+  [IPostType.MUSING]: 'musings',
+  [IPostType.PAGE]: 'pages',
 };
 
 enum ContentType {
@@ -21,15 +19,10 @@ enum ContentType {
 }
 
 export class PostStatic {
-  public static TYPE = PostType;
-  public static TYPES = Object.values(PostType);
-  public static STATUS = PostStatus;
-  public static STATUSES = Object.values(PostStatus);
-
   public static randomType(options: RandomTypeOptions = {}): PostType {
     const { allowPageTypes = true } = options;
-    const postTypes = this.TYPES.filter((type) => {
-      if (!allowPageTypes && type === PostType.PAGE) return false;
+    const postTypes = Object.values(IPostType).filter((type) => {
+      if (!allowPageTypes && type === IPostType.PAGE) return false;
       return true;
     });
     return randomElementFromList(postTypes);
@@ -54,7 +47,7 @@ export class PostStatic {
 
   public static getContentType(type: PostType): ContentType {
     const isProse =
-      !type || type === PostType.REVERIE || type === PostType.PAGE;
+      !type || type === IPostType.REVERIE || type === IPostType.PAGE;
     return isProse ? ContentType.PROSE : ContentType.POETRY;
   }
 
@@ -126,7 +119,7 @@ export class PostStatic {
    * @returns {boolean} True if post is PAGE.
    */
   public static isPage(input: PostDAO): boolean {
-    return input?.type === PostType.PAGE;
+    return input?.type === IPostType.PAGE;
   }
 
   /**
@@ -134,7 +127,7 @@ export class PostStatic {
    * @param input - The post or its type value.
    */
   public static isReverie(input: PostDAO): boolean {
-    return input?.type === PostType.REVERIE;
+    return input?.type === IPostType.REVERIE;
   }
 
   /**
@@ -142,33 +135,33 @@ export class PostStatic {
    * @param input - The post or its type value.
    */
   public static isEpistle(input: PostDAO): boolean {
-    return input?.type === PostType.EPISTLE;
+    return input?.type === IPostType.EPISTLE;
   }
 
   public static randomStatus(): PostStatus {
-    return randomEnumValue(PostStatus);
+    return randomEnumValue(IPostStatus);
   }
 
   /**
    * Checks if a post has the DRAFT status.
    */
   public static isDraft(input: PostDAO): boolean {
-    return input?.status === PostStatus.DRAFT;
+    return input?.status === IPostStatus.DRAFT;
   }
 
   /**
    * Checks if a post has the PROTECTED status.
    */
   public static isProtected(input: PostDAO): boolean {
-    return input?.status === PostStatus.PROTECTED;
+    return input?.status === IPostStatus.PROTECTED;
   }
 
   public static isPrivate(input: PostDAO): boolean {
-    return input?.status === PostStatus.PRIVATE;
+    return input?.status === IPostStatus.PRIVATE;
   }
 
   public static isPublished(input: PostDAO): boolean {
-    return input?.status === PostStatus.PUBLISHED;
+    return input?.status === IPostStatus.PUBLISHED;
   }
 
   /**

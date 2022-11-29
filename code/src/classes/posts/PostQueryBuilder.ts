@@ -1,10 +1,7 @@
 import type { Knex } from 'knex';
 
-import { QueryBuilder, MutationBuilder } from 'classes/_/QueryBuilder';
-import { QueryOrder } from 'constants/types';
-
-import type { PostDAO, PostType, PostStatus } from './PostDAO';
-import { PostStatic } from './PostStatic';
+import { MutationBuilder, QueryBuilder } from 'classes/_/QueryBuilder';
+import { IPostStatus, QueryOrder } from 'constants/types';
 
 const TABLE_NAME = 'posts';
 const columns = [
@@ -75,7 +72,7 @@ export class PostQueryBuilder extends QueryBuilder<PostDAO> {
         .max(typeIdField)
         .where(typeIdField, '<', typeId),
       [`${TABLE_NAME}.type`]: type,
-      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED,
+      [`${TABLE_NAME}.status`]: IPostStatus.PUBLISHED,
     });
     return this;
   }
@@ -87,7 +84,7 @@ export class PostQueryBuilder extends QueryBuilder<PostDAO> {
         .min(typeIdField)
         .where(typeIdField, '>', typeId),
       [`${TABLE_NAME}.type`]: type,
-      [`${TABLE_NAME}.status`]: PostStatic.STATUS.PUBLISHED,
+      [`${TABLE_NAME}.status`]: IPostStatus.PUBLISHED,
     });
     return this;
   }

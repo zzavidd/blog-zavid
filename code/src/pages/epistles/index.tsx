@@ -2,12 +2,10 @@ import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import React from 'react';
 
-import type { PostDAO } from 'classes/posts/PostDAO';
-import { PostStatus, PostType } from 'classes/posts/PostDAO';
 import { NextImage } from 'components/Image';
 import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
-import { QueryOrder } from 'constants/types';
+import { IPostStatus, IPostType, QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
 import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
@@ -75,8 +73,8 @@ export const getServerSideProps: GetServerSideProps<
         field: 'datePublished',
         order: QueryOrder.DESCENDING,
       },
-      type: { include: [PostType.EPISTLE] },
-      status: { include: [PostStatus.PUBLISHED] },
+      type: { include: [IPostType.EPISTLE] },
+      status: { include: [IPostStatus.PUBLISHED] },
     }),
   );
 

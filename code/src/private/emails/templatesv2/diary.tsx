@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import Settings from 'constants/settings';
 import ZDate from 'lib/date';
 import * as ZText from 'lib/text';

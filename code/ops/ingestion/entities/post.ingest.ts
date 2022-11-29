@@ -13,7 +13,7 @@ export const ingestReveries = () => {
     quantity: COUNT.REVERIE,
     postOptions: {
       generateTitle: () => faker.company.catchPhrase(),
-      type: PostType.REVERIE,
+      type: IPostType.REVERIE,
       contentThreshold: 20,
       contentLimit: 25,
     },
@@ -29,7 +29,7 @@ export const ingestEpistles = () => {
       generateTitle: () => {
         return faker.lorem.words(zNumber.generateRandom(1, 3));
       },
-      type: PostType.EPISTLE,
+      type: IPostType.EPISTLE,
       contentThreshold: 3,
       contentLimit: 5,
     },
@@ -63,7 +63,7 @@ async function ingestPost(options: IngestPostOptions) {
       .withTitle(zString.toTitleCase(generateTitle(index)))
       .withType(type)
       .withTypeId(index)
-      .withStatus(PostStatus.PUBLISHED)
+      .withStatus(IPostStatus.PUBLISHED)
       .withDatePublished(zDate.formatISODate(refDate))
       .withRandomContent(contentThreshold, contentLimit)
       .withRandomExcerpt()

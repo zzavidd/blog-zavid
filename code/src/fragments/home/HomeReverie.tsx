@@ -1,10 +1,10 @@
 import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
 
-import type { PostDAO } from 'classes/posts/PostDAO';
 import ZDate from 'lib/date';
 import * as Style from 'styles/Pages/Home.styles';
 
 export default function HomeReverie({ reverie }: HomeReverieProps) {
+  if (!reverie) return null;
   return (
     <Style.Latest.Article>
       <Style.Latest.ReverieIcon icon={faBookOpen} />
@@ -40,5 +40,5 @@ export default function HomeReverie({ reverie }: HomeReverieProps) {
 }
 
 interface HomeReverieProps {
-  reverie: PostDAO;
+  reverie: PostDAO | undefined;
 }

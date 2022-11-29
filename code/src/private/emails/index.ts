@@ -6,7 +6,6 @@ import ReactDOMServer from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 import * as UUID from 'uuid';
 
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import { SubscriptionType } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';

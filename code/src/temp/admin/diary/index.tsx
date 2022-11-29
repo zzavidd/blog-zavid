@@ -3,7 +3,7 @@ export {};
 // import { useState } from 'react';
 // import { zDate, zText } from 'zavid-modules';
 
-// import type { DiaryDAO } from 'classes/diary/DiaryDAO';
+//
 // import { AdminButton, InvisibleButton } from 'components/button';
 // import { Spacer, Toolbar } from 'components/layout';
 // import {

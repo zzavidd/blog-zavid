@@ -1,4 +1,4 @@
-export interface DiaryDAO {
+interface DiaryDAO {
   id?: number;
   title: string;
   content: string;
@@ -11,8 +11,4 @@ export interface DiaryDAO {
   slug?: string;
 }
 
-export enum DiaryStatus {
-  PROTECTED = 'PROTECTED',
-  PRIVATE = 'PRIVATE',
-  PUBLISHED = 'PUBLISHED',
-}
+type DiaryStatus = 'PROTECTED' | 'PRIVATE' | 'PUBLISHED';

@@ -32,21 +32,12 @@ namespace SSR {
 
   export namespace Home {
     export async function getPreloadedProps() {
-      const [homepage, latestDiaryEntry, latestReverie, emailSubscribers] =
-        await Promise.all([
-          PageAPI.getBySlug('home'),
-          DiaryAPI.getLatest(),
-          PostAPI.getLatestReverie(),
-          SubscriberAPI.getAll(),
-        ]);
-      const randomPosts = await PostAPI.getRandomPosts({
-        exceptId: latestReverie.id,
-      });
+      const [homepage, emailSubscribers] = await Promise.all([
+        PageAPI.getBySlug('home'),
+        SubscriberAPI.getAll(),
+      ]);
       return JSON.stringify({
         homeText: homepage.content!,
-        latestDiaryEntry,
-        latestReverie,
-        randomPosts,
         emailSubCount: emailSubscribers?.length || 0,
       });
     }

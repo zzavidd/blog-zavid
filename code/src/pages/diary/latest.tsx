@@ -1,6 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
 
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import SSR from 'private/ssr';
 
 // eslint-disable-next-line react/function-component-definition

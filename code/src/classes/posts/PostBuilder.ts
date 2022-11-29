@@ -1,10 +1,9 @@
 import * as faker from 'faker';
 
+import { IPostStatus, IPostType } from 'constants/types';
 import ZDate from 'lib/date';
 import ZString from 'lib/string';
 
-import { PostType, PostStatus } from './PostDAO';
-import type { PostDAO, PostImage, RandomPostOptions } from './PostDAO';
 import { PostStatic } from './PostStatic';
 
 /** The class for Post objects and methods. */
@@ -12,7 +11,7 @@ export class PostBuilder {
   private post: PostDAO = {
     title: '',
     content: '',
-    type: PostType.REVERIE,
+    type: IPostType.REVERIE,
     typeId: undefined,
     excerpt: '',
     image: {
@@ -20,7 +19,7 @@ export class PostBuilder {
       hasChanged: false,
     },
     contentImages: {},
-    status: PostStatus.DRAFT,
+    status: IPostStatus.DRAFT,
     datePublished: new Date(),
     domainId: undefined,
     slug: null,

@@ -3,11 +3,9 @@ import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
-import { DiaryStatus } from 'classes/diary/DiaryDAO';
 import Settings from 'constants/settings';
 import type { NextPageWithLayout, PathDefinition } from 'constants/types';
-import { QueryOrder } from 'constants/types';
+import { IDiaryStatus, QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
@@ -104,7 +102,7 @@ export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
         field: 'date',
         order: QueryOrder.DESCENDING,
       },
-      status: { include: [DiaryStatus.PUBLISHED] },
+      status: { include: [IDiaryStatus.PUBLISHED] },
       onlyFavourites,
     }),
   );

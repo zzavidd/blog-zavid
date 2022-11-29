@@ -1,10 +1,7 @@
 import type { Knex } from 'knex';
 
 import { QueryBuilder, MutationBuilder } from 'classes/_/QueryBuilder';
-import { QueryOrder } from 'constants/types';
-
-import type { DiaryDAO } from './DiaryDAO';
-import { DiaryStatus } from './DiaryDAO';
+import { IDiaryStatus, QueryOrder } from 'constants/types';
 
 const TABLE_NAME = 'diary';
 
@@ -57,7 +54,7 @@ export class DiaryQueryBuilder extends QueryBuilder<DiaryDAO> {
       [DiaryQueryBuilder.FIELD]: this.knex(TABLE_NAME)
         .max(DiaryQueryBuilder.FIELD)
         .where(DiaryQueryBuilder.FIELD, '<', operand),
-      status: DiaryStatus.PUBLISHED,
+      status: IDiaryStatus.PUBLISHED,
     });
     return this;
   }
@@ -67,7 +64,7 @@ export class DiaryQueryBuilder extends QueryBuilder<DiaryDAO> {
       [DiaryQueryBuilder.FIELD]: this.knex(TABLE_NAME)
         .min(DiaryQueryBuilder.FIELD)
         .where(DiaryQueryBuilder.FIELD, '>', operand),
-      status: DiaryStatus.PUBLISHED,
+      status: IDiaryStatus.PUBLISHED,
     });
     return this;
   }
@@ -80,6 +77,6 @@ export class DiaryMutationBuilder extends MutationBuilder<DiaryDAO> {
 }
 
 export interface DiaryStatusFilters {
-  include?: DiaryStatus[];
-  exclude?: DiaryStatus[];
+  include?: IDiaryStatus[];
+  exclude?: IDiaryStatus[];
 }

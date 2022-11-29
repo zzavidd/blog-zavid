@@ -1,6 +1,5 @@
 import { faFeatherAlt } from '@fortawesome/free-solid-svg-icons';
 
-import type { DiaryDAO } from 'classes/diary/DiaryDAO';
 import ZDate from 'lib/date';
 import * as Style from 'styles/Pages/Home.styles';
 
@@ -30,5 +29,5 @@ export default function HomeDiary({ entry }: LatestDiaryEntryProps) {
 }
 
 interface LatestDiaryEntryProps {
-  entry: DiaryDAO;
+  entry: DiaryDAO | undefined;
 }
