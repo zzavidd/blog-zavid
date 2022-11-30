@@ -91,7 +91,7 @@ const DiaryAdmin: NextPageWithLayout<DiaryAdminProps> = ({ pageProps }) => {
       }
     });
 
-    if (state.sort.ascending) {
+    if (!state.sort.ascending) {
       diaryEntries.reverse();
     }
     dispatch({ diaryEntries });
