@@ -14,7 +14,6 @@ import { NextImage } from 'components/Image';
 import ShareBlock from 'components/ShareBlock';
 import Events from 'constants/events';
 import Settings from 'constants/settings';
-import type { Substitutions } from 'constants/types';
 import Utils from 'constants/utils';
 import ContextMenu from 'fragments/shared/ContextMenu';
 import ZDate from 'lib/date';

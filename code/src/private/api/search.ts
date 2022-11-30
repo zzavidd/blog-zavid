@@ -1,10 +1,9 @@
 import { URLBuilder } from 'classes/_/URLBuilder';
 import { DiaryQueryBuilder } from 'classes/diary/DiaryQueryBuilder';
-import type { SearchResultEntityDAO } from 'classes/entity';
 import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
-import { IDiaryStatus, IPostStatus } from 'constants/types';
+import { IDiaryStatus, IPostStatus } from 'constants/enums';
 
 namespace SearchAPI {
   export function getResults(searchTerm: string, onlyDiary: boolean) {

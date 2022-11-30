@@ -1,4 +1,3 @@
-import type { PageDAO } from 'classes/pages/PageDAO';
 import {
   PageMutationBuilder,
   PageQueryBuilder,

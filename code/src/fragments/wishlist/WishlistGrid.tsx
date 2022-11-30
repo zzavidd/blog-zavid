@@ -9,11 +9,10 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useSWR, { mutate } from 'swr';
 
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
-import { WishlistDisplayedPriority } from 'classes/wishlist/WishlistDAO';
 import Clickable from 'components/Clickable';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
+import { WishlistDisplayedPriority } from 'constants/enums';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
 import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';

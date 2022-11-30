@@ -6,11 +6,9 @@ import ReactDOMServer from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 import * as UUID from 'uuid';
 
-import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
-import { SubscriptionType } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import { knex } from 'constants/knex';
+import { ISubscriptionType } from 'constants/enums';
 
 import { HTML_TO_TEXT_OPTIONS, isProd, TRANSPORTER } from './constants';
 import DiaryEmail from './templatesv2/diary';
@@ -54,7 +52,7 @@ namespace Emailer {
       DiaryEmail,
       { diaryEntry },
       subject,
-      SubscriptionType.Diary,
+      ISubscriptionType.Diary,
     );
   }
 

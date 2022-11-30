@@ -1,7 +1,7 @@
 import type { Knex } from 'knex';
 
 import { MutationBuilder, QueryBuilder } from 'classes/_/QueryBuilder';
-import { IPostStatus, QueryOrder } from 'constants/types';
+import { IPostStatus, QueryOrder } from 'constants/enums';
 
 const TABLE_NAME = 'posts';
 const columns = [

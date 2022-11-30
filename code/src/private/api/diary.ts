@@ -1,7 +1,7 @@
 import { DiaryQueryBuilder } from 'classes/diary/DiaryQueryBuilder';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { knex } from 'constants/knex';
-import { IDiaryStatus } from 'constants/types';
+import { IDiaryStatus } from 'constants/enums';
 import type { GetAllDiaryOptions } from 'pages/api/diary';
 
 namespace DiaryAPI {

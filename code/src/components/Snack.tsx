@@ -2,7 +2,6 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from 'react';
 
 import Contexts from 'constants/contexts';
-import type * as ZBT from 'constants/types';
 import * as Style from 'styles/Components/Popup.styles';
 
 import Clickable from './Clickable';
@@ -33,6 +32,6 @@ function Snack({ message, duration = 6000, index }: SnackProps) {
   );
 }
 
-interface SnackProps extends ZBT.SnackDefinition {
+interface SnackProps extends SnackDefinition {
   index: number;
 }

@@ -1,9 +1,6 @@
-import type { SubscriberDAO, SubscriptionsMapping } from './SubscriberDAO';
-import { SubscriptionType } from './SubscriberDAO';
+import { ISubscriptionType } from 'constants/enums';
 
 export class SubscriberStatic {
-  public static SUBSCRIPTIONS = SubscriptionType;
-
   /**
    * Ensure a subscriber object is able to be operated on.
    * @param {SubscriberDAO} subscriber The subscriber object.
@@ -24,7 +21,7 @@ export class SubscriberStatic {
    */
   public static defaultSubscriptions(): SubscriptionsMapping {
     const subscriptions: SubscriptionsMapping = {};
-    Object.values(SubscriptionType).forEach((type: string) => {
+    Object.values(ISubscriptionType).forEach((type: string) => {
       subscriptions[type] = true;
     });
     return subscriptions;

@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-import { IDiaryStatus } from 'constants/types';
+import { IDiaryStatus } from 'constants/enums';
 import ZDate from 'lib/date';
 import ZNumber from 'lib/number';
 

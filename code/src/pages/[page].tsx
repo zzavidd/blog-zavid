@@ -1,8 +1,6 @@
 import type { GetServerSideProps } from 'next';
 
-import type { PageDAO } from 'classes/pages/PageDAO';
 import Settings from 'constants/settings';
-import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import * as ZText from 'lib/text';

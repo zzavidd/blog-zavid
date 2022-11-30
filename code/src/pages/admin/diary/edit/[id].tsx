@@ -7,7 +7,6 @@ import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
 import HandlerFactory from 'constants/handlers';
 import Settings from 'constants/settings';
-import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import AdminGateway from 'fragments/AdminGateway';

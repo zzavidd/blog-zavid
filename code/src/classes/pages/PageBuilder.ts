@@ -2,8 +2,6 @@ import * as faker from 'faker';
 
 import ZString from 'lib/string';
 
-import type { PageDAO } from './PageDAO';
-
 /** The class for Page objects and methods. */
 export class PageBuilder {
   private page: PageDAO = new PageBuilder().build();

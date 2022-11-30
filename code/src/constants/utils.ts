@@ -1,5 +1,3 @@
-import type { LocalDispatch, ReactHook } from './types';
-
 namespace Utils {
   export function createDispatch<T>(setState: ReactHook<T>): LocalDispatch<T> {
     return (state: Partial<T>) => {

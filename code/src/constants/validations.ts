@@ -1,9 +1,6 @@
 import { validate as validateEmail } from 'email-validator';
 
-import type { PageDAO } from 'classes/pages/PageDAO';
 import { PostStatic } from 'classes/posts/PostStatic';
-import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 
 import { UIError } from './errors';
 

@@ -4,7 +4,7 @@ import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { knex } from 'constants/knex';
 import Settings from 'constants/settings';
-import { IPostStatus, IPostType, QueryOrder } from 'constants/types';
+import { IPostStatus, IPostType, QueryOrder } from 'constants/enums';
 import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
 
 namespace PostAPI {

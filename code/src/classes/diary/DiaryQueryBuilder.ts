@@ -1,7 +1,7 @@
 import type { Knex } from 'knex';
 
 import { QueryBuilder, MutationBuilder } from 'classes/_/QueryBuilder';
-import { IDiaryStatus, QueryOrder } from 'constants/types';
+import { IDiaryStatus, QueryOrder } from 'constants/enums';
 
 const TABLE_NAME = 'diary';
 

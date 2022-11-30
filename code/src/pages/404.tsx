@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
 
-import type { NextPageWithLayout } from 'constants/types';
 import Layout from 'fragments/Layout';
 import ErrorStyle from 'styles/Pages/Error.styles';
 

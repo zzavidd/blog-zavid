@@ -2,7 +2,6 @@ import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 
 import Settings from 'constants/settings';
-import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import AS from 'styles/Pages/Admin.styles';

@@ -7,15 +7,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from 'react';
 
-import {
-  WishlistItemCategory,
-  WishlistItemPriority,
-  WishlistItemVisibility,
-} from 'classes/wishlist/WishlistDAO';
 import Clickable from 'components/Clickable';
 import Input from 'components/Input';
 import { ShortTextArea } from 'components/Textarea';
 import HandlerFactory from 'constants/handlers';
+import {
+  IWishlistItemVisibility,
+  IWishlistItemCategory,
+  IWishlistItemPriority,
+} from 'constants/enums';
 import Utils from 'constants/utils';
 import FORM from 'styles/Components/Form.styles';
 
@@ -66,7 +66,7 @@ export default function WishlistForm() {
             <FORM.Label>Visibility:</FORM.Label>
             <Input.Select
               name={'visibility'}
-              options={Object.values(WishlistItemVisibility)}
+              options={Object.values(IWishlistItemVisibility)}
               value={context.wishlistItemRequest.visibility}
               onChange={Handlers.select}
             />
@@ -77,7 +77,7 @@ export default function WishlistForm() {
             <FORM.Label>Category:</FORM.Label>
             <Input.Select
               name={'category'}
-              options={Object.values(WishlistItemCategory)}
+              options={Object.values(IWishlistItemCategory)}
               value={context.wishlistItemRequest.category}
               onChange={Handlers.select}
             />
@@ -86,7 +86,7 @@ export default function WishlistForm() {
             <FORM.Label>Priority:</FORM.Label>
             <Input.Select
               name={'priority'}
-              options={Object.entries(WishlistItemPriority)
+              options={Object.entries(IWishlistItemPriority)
                 .filter(([key]) => isNaN(Number(key)))
                 .map(([key, value]) => ({
                   label: key,

@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
 
-import { QueryOrder } from 'constants/types';
+import { QueryOrder } from 'constants/enums';
 
 export class QueryBuilder<T extends EntityDAO> {
   protected query: Knex | Knex.QueryBuilder;

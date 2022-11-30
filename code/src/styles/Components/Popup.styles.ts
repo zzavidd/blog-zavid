@@ -1,7 +1,6 @@
 import { darken } from 'polished';
 import styled, { keyframes, css } from 'styled-components';
 
-import type { AlertType } from 'constants/types';
 import Mixins from 'styles/Mixins.styles';
 import { COLOR, FONTS } from 'styles/Variables.styles';
 

@@ -1,4 +1,4 @@
-export interface SubscriberDAO {
+interface SubscriberDAO {
   id?: number;
   email: string;
   firstname?: string;
@@ -8,16 +8,13 @@ export interface SubscriberDAO {
   createTime?: Date;
 }
 
-export interface SubscriptionsMapping {
+interface SubscriptionsMapping {
   [type: string]: boolean;
 }
 
-export enum SubscriptionType {
-  Reverie = 'Reveries',
-  Diary = 'Diary',
-}
-
-export interface SubscriberPayload {
+interface SubscriberPayload {
   id?: number;
   subscriber: SubscriberDAO;
 }
+
+type SubscriptionType = 'Reveries' | 'Diary';

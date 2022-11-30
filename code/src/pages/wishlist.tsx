@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
-import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Layout from 'fragments/Layout';
 import type { WishlistPageState } from 'fragments/wishlist/WishlistContext';
 import {

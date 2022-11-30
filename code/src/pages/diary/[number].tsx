@@ -16,7 +16,6 @@ import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import ShareBlock from 'components/ShareBlock';
 import Events from 'constants/events';
 import Settings from 'constants/settings';
-import type { NextPageWithLayout, PathDefinition } from 'constants/types';
 import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
 import ContextMenu from 'fragments/shared/ContextMenu';

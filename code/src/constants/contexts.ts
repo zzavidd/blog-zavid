@@ -1,7 +1,5 @@
 import React from 'react';
 
-import type { AlertDefinition, SnackDefinition } from './types';
-
 namespace Contexts {
   export const Alerts = React.createContext<Contexts.AlertsProps>({
     alerts: [],

@@ -1,6 +1,6 @@
 import * as faker from 'faker';
 
-import { IPostStatus, IPostType } from 'constants/types';
+import { IPostStatus, IPostType } from 'constants/enums';
 import ZDate from 'lib/date';
 import ZString from 'lib/string';
 

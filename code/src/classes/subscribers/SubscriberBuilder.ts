@@ -1,7 +1,7 @@
 import * as faker from 'faker';
 
-import type { SubscriberDAO, SubscriptionsMapping } from './SubscriberDAO';
-import { SubscriptionType } from './SubscriberDAO';
+import { ISubscriptionType } from 'constants/enums';
+
 import { SubscriberStatic } from './SubscriberStatic';
 
 /** The class for building Subscriber objects. */
@@ -48,7 +48,7 @@ export class SubscriberBuilder {
     const email = faker.internet.email(firstname, lastname).toLowerCase();
 
     const subscriptions: SubscriptionsMapping = {};
-    Object.values(SubscriptionType).forEach((type: string) => {
+    Object.values(ISubscriptionType).forEach((type: string) => {
       subscriptions[type] = faker.random.boolean();
     });
 

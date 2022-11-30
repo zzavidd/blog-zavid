@@ -1,8 +1,6 @@
 import React from 'react';
 
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import { WishlistStatic } from 'classes/wishlist/WishlistStatic';
-import type { ReactHook } from 'constants/types';
 
 export interface WishlistPageState {
   wishlistItemRequest: WishlistDAO;

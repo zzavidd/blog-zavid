@@ -11,11 +11,6 @@ import Snackbar from 'components/Snack';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import { AppActions, persistor, store } from 'constants/reducers';
-import type {
-  AlertDefinition,
-  AppPropsWithLayout,
-  SnackDefinition,
-} from 'constants/types';
 import Utils from 'constants/utils';
 import AdminGateway from 'fragments/AdminGateway';
 import MatomoScript from 'fragments/MatomoScript';

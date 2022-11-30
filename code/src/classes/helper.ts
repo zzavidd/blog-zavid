@@ -1,7 +1,3 @@
-export const isString = (value: unknown): boolean => {
-  return typeof value === 'string';
-};
-
 export const randomElementFromList = <T>(list: T[]): T => {
   const random = Math.floor(Math.random() * list.length);
   return list[random];

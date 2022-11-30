@@ -2,7 +2,6 @@ import type { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 
 import Settings from 'constants/settings';
-import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import LatestDiaryEntry from 'fragments/home/HomeDiary';
 import Introduction from 'fragments/home/HomeIntroduction';

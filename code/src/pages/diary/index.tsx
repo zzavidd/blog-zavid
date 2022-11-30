@@ -3,9 +3,8 @@ import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 
+import { IDiaryStatus, QueryOrder } from 'constants/enums';
 import Settings from 'constants/settings';
-import type { NextPageWithLayout, PathDefinition } from 'constants/types';
-import { IDiaryStatus, QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';

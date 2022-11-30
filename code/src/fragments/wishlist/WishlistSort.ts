@@ -1,5 +1,3 @@
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
-
 export const SORT_OPTIONS: SortOption[] = [
   { label: 'Sort By Date Added', value: 'createTime' },
   { label: 'Sort By Price', value: 'price' },

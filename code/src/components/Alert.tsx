@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 
 import Contexts from 'constants/contexts';
-import type * as ZBT from 'constants/types';
 import * as Style from 'styles/Components/Popup.styles';
 
 export default function AlertBar() {
@@ -29,6 +28,6 @@ function Alert({ message, type, index }: AlertProps) {
   );
 }
 
-interface AlertProps extends ZBT.AlertDefinition {
+interface AlertProps extends AlertDefinition {
   index: number;
 }

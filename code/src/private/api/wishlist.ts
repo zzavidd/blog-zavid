@@ -1,5 +1,4 @@
 import type { QuerySort } from 'classes/_/QueryBuilder';
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
 import {
   WishlistMutationBuilder,
   WishlistQueryBuilder,

@@ -1,7 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 
-import type WishlistDAO from 'classes/wishlist/WishlistDAO';
-
 import { EmailStyle, EmailTheme } from '../constants';
 import { Anchor, Blockquote, Button, Paragraph } from '../lib/components';
 import { Body, Footer, Header, Main, SignatureImage } from '../lib/fragments';

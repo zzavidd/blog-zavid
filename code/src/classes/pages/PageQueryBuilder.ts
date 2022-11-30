@@ -2,8 +2,6 @@ import type { Knex } from 'knex';
 
 import { QueryBuilder, MutationBuilder } from 'classes/_/QueryBuilder';
 
-import type { PageDAO } from './PageDAO';
-
 /** Builds a post query with conditions. */
 export class PageQueryBuilder extends QueryBuilder<PageDAO> {
   constructor(knex: Knex) {

@@ -1,7 +1,6 @@
 import { darken, transparentize } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 
-import type { WishlistItemPriority } from 'classes/wishlist/WishlistDAO';
 import Checkbox from 'components/Checkbox';
 import Input from 'components/Input';
 import CPX from 'styles/Components/Components.styles';

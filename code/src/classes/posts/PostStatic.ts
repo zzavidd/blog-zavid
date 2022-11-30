@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-import { IPostStatus, IPostType } from 'constants/types';
+import { IPostStatus, IPostType } from 'constants/enums';
 import ZNumber from 'lib/number';
 
 import { randomElementFromList, randomEnumValue } from '../helper';

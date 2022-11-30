@@ -2,7 +2,6 @@ import Head from 'next/head';
 import React from 'react';
 
 import Settings from 'constants/settings';
-import type { PathDefinition } from 'constants/types';
 import ZString from 'lib/string';
 
 export default function PageMetadata({

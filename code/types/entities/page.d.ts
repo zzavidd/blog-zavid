@@ -1,4 +1,4 @@
-export interface PageDAO {
+interface PageDAO {
   id?: number;
   title: string;
   content: string;

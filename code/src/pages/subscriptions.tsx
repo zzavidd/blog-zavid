@@ -3,15 +3,10 @@ import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
-import type {
-  SubscriberDAO,
-  SubscriptionsMapping,
-} from 'classes/subscribers/SubscriberDAO';
 import Checkbox from 'components/Checkbox';
 import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
 import Settings from 'constants/settings';
-import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
 import SSR from 'private/ssr';

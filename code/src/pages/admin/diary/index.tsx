@@ -13,8 +13,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
-import type { NextPageWithLayout, PathDefinition } from 'constants/types';
-import { QueryOrder } from 'constants/types';
+import { QueryOrder } from 'constants/enums';
 import Utils from 'constants/utils';
 import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';

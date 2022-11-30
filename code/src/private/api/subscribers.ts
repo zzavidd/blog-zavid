@@ -1,4 +1,3 @@
-import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
 import { SubscriberStatic } from 'classes/subscribers/SubscriberStatic';
 import { knex } from 'constants/knex';

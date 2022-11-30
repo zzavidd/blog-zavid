@@ -1,9 +1,8 @@
 import type { DefaultTheme } from 'styled-components';
 
 import type { AppTheme } from 'classes/theme';
-import { WishlistItemPriority } from 'classes/wishlist/WishlistDAO';
+import { IWishlistItemPriority } from 'constants/enums';
 import Settings from 'constants/settings';
-import type { AlertType } from 'constants/types';
 
 export enum Breakpoint {
   SMALL = 'sm',
@@ -40,9 +39,9 @@ export const COLOR = {
     error: '#ffa2a2',
   } as Record<AlertType, string>,
   WISHLIST_PRIORITY: {
-    [WishlistItemPriority.LOW]: '#ffcb63',
-    [WishlistItemPriority.MEDIUM]: '#eeee5d',
-    [WishlistItemPriority.HIGH]: '#a4ff7a',
+    [IWishlistItemPriority.LOW]: '#ffcb63',
+    [IWishlistItemPriority.MEDIUM]: '#eeee5d',
+    [IWishlistItemPriority.HIGH]: '#a4ff7a',
   } as Record<WishlistItemPriority, string>,
 };
 

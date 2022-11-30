@@ -3,9 +3,8 @@ import Link from 'next/link';
 import { memo } from 'react';
 
 import { NextImage } from 'components/Image';
+import { IPostStatus, IPostType, QueryOrder } from 'constants/enums';
 import Settings from 'constants/settings';
-import type { NextPageWithLayout, PathDefinition } from 'constants/types';
-import { IPostStatus, IPostType, QueryOrder } from 'constants/types';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';

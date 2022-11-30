@@ -3,9 +3,8 @@ import { unstable_getServerSession } from 'next-auth/next';
 import React from 'react';
 
 import { PostStatic } from 'classes/posts/PostStatic';
+import { IPostStatus, IPostType } from 'constants/enums';
 import Settings from 'constants/settings';
-import type { NextPageWithLayout, PathDefinition } from 'constants/types';
-import { IPostStatus, IPostType } from 'constants/types';
 import Layout from 'fragments/Layout';
 import type { PostTrio } from 'fragments/posts/PostTemplatePage';
 import PostTemplatePage from 'fragments/posts/PostTemplatePage';

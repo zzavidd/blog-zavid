@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from 'constants/types';
 import Layout from 'fragments/Layout';
 import ErrorStyle from 'styles/Pages/Error.styles';
 

@@ -1,9 +1,8 @@
-import type WishlistDAO from './WishlistDAO';
 import {
-  WishlistItemCategory,
-  WishlistItemPriority,
-  WishlistItemVisibility,
-} from './WishlistDAO';
+  IWishlistItemVisibility,
+  IWishlistItemPriority,
+  IWishlistItemCategory,
+} from 'constants/enums';
 
 export class WishlistStatic {
   /**
@@ -31,11 +30,11 @@ export class WishlistStatic {
       name: '',
       price: 0,
       quantity: 1,
-      visibility: WishlistItemVisibility.PRIVATE,
-      priority: WishlistItemPriority.LOW,
+      visibility: IWishlistItemVisibility.PRIVATE,
+      priority: IWishlistItemPriority.LOW,
       comments: '',
       image: '',
-      category: WishlistItemCategory.ARTWORK,
+      category: IWishlistItemCategory.ARTWORK,
       href: '',
       reservees: {},
       purchaseDate: null,

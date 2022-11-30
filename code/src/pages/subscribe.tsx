@@ -3,13 +3,11 @@ import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
-import type { SubscriberDAO } from 'classes/subscribers/SubscriberDAO';
 import Input from 'components/Input';
 import Contexts from 'constants/contexts';
 import { UIError } from 'constants/errors';
 import HandlerFactory from 'constants/handlers';
 import Settings from 'constants/settings';
-import type { AppPageProps, NextPageWithLayout } from 'constants/types';
 import Utils from 'constants/utils';
 import Validate from 'constants/validations';
 import Layout from 'fragments/Layout';
