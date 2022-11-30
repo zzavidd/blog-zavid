@@ -19,6 +19,8 @@ import CookiePrompt from 'fragments/shared/CookiePrompt';
 import { GlobalStyles } from 'styles/Global.styles';
 import { THEME } from 'styles/Variables.styles';
 
+const isDevelopmentMode = process.env.NEXT_PUBLIC_APP_ENV === 'development';
+
 export default function App(props: AppProps) {
   return (
     <React.Fragment>
@@ -26,10 +28,7 @@ export default function App(props: AppProps) {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <SessionProvider session={props.pageProps.session}>
-            <StyleSheetManager
-              disableVendorPrefixes={
-                process.env.NEXT_PUBLIC_APP_ENV === 'development'
-              }>
+            <StyleSheetManager disableVendorPrefixes={isDevelopmentMode}>
               <ZAVIDApp {...props} />
             </StyleSheetManager>
           </SessionProvider>

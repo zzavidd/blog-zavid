@@ -42,13 +42,17 @@ namespace Events {
       e.stopPropagation();
     };
 
-    const onAnyClick = () => {
-      if (state.contextMenuVisible) {
+    // console.log(state.contextMenuVisible);
+    const onAnyClick = (e: MouseEvent | TouchEvent) => {
+      if (
+        state.contextMenuVisible &&
+        !contextMenu.contains(e.target as HTMLElement)
+      ) {
         dispatch({ contextMenuVisible: false } as T);
       }
     };
 
-    window.addEventListener('mousedown', onAnyClick, false);
+    window.addEventListener('mousedown', onAnyClick);
     window.addEventListener('touchstart', onAnyClick, false);
     paragraphs.forEach((p) => {
       p.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -56,6 +60,7 @@ namespace Events {
       p.addEventListener('mouseup', onParagraphMouseUp);
       p.addEventListener('touchstart', onParagraphMouseDown);
       p.addEventListener('touchend', onParagraphMouseUp);
+      p.style.userSelect = 'none';
     });
     return () => {
       window.removeEventListener('mousedown', onAnyClick);

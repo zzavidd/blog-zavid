@@ -4,7 +4,6 @@ import {
   faLeftLong,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -33,9 +32,6 @@ export default function PostTemplatePage(postTrio: PostTrio) {
   const mainRef = useRef<HTMLElement>(null);
   const contextMenuRef = useRef<HTMLMenuElement>(null);
   const router = useRouter();
-
-  const { data: session } = useSession();
-  const email = session?.user?.email;
 
   const substitutions = useMemo(() => {
     const subs: Substitutions = {};
@@ -67,11 +63,9 @@ export default function PostTemplatePage(postTrio: PostTrio) {
 
   // Register paragraph event listeners.
   useEffect(() => {
-    if (email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL) {
-      Events.setContextMenuEvents(mainRef, contextMenuRef, state, dispatch);
-    }
+    Events.setContextMenuEvents(mainRef, contextMenuRef, state, dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mainRef, contextMenuRef, email]);
+  }, [mainRef, contextMenuRef, state.contextMenuVisible]);
 
   return (
     <React.Fragment>
