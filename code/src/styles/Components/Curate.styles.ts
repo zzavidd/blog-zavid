@@ -13,7 +13,10 @@ export namespace CuratorStyle {
   `;
 
   export const Canvas = styled.canvas`
-    display: block;
+    display: none;
+  `;
+
+  export const PreviewImage = styled.img`
     max-height: 60vh;
     max-width: 100%;
   `;
@@ -25,6 +28,12 @@ export namespace CuratorStyle {
     font-family: ${FONTS.BODY};
     gap: 1em;
     padding-block: 1em;
+  `;
+
+  export const Tip = styled.p`
+    ${Mixins.Responsive(['display', 'none', { sm: 'block' }])}
+    font-size: 0.8em;
+    margin: 0;
   `;
 
   export const FooterButton = styled(CPX.Button)<{ variant: ButtonVariant }>`

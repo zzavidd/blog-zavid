@@ -95,9 +95,13 @@ export default function Curator({
       body={
         <React.Fragment>
           <CS.CanvasBox>
-            <CS.Canvas ref={canvasRef} />
+            <CS.Canvas ref={canvasRef} style={{ display: 'none' }} />
+            <CS.PreviewImage src={state.imageSource} />
           </CS.CanvasBox>
           <CS.SettingsBox>
+            <CS.Tip>
+              Tip: Long-press the image to save to your camera roll.
+            </CS.Tip>
             <FORM.FieldRow>
               <FORM.Field flex={1}>
                 <Checkbox
