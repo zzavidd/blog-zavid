@@ -11,8 +11,8 @@ import useSWR, { mutate } from 'swr';
 
 import Clickable from 'components/Clickable';
 import Contexts from 'constants/contexts';
-import type { AppState } from 'constants/reducers';
 import { WishlistDisplayedPriority } from 'constants/enums';
+import type { AppState } from 'constants/reducers';
 import Utils from 'constants/utils';
 import AdminLock from 'fragments/AdminLock';
 import type { UnclaimWishlistItemPayload } from 'private/api/wishlist';

@@ -2,8 +2,8 @@ import type { GetServerSideProps, NextPage } from 'next';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
 import { PostStatic } from 'classes/posts/PostStatic';
-import Settings from 'constants/settings';
 import { IDiaryStatus, IPostStatus, IPostType } from 'constants/enums';
+import Settings from 'constants/settings';
 import DiaryAPI from 'private/api/diary';
 import PageAPI from 'private/api/pages';
 import PostAPI from 'private/api/posts';

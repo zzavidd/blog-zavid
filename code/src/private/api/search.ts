@@ -2,8 +2,8 @@ import { URLBuilder } from 'classes/_/URLBuilder';
 import { DiaryQueryBuilder } from 'classes/diary/DiaryQueryBuilder';
 import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
 import { PostStatic } from 'classes/posts/PostStatic';
-import { knex } from 'constants/knex';
 import { IDiaryStatus, IPostStatus } from 'constants/enums';
+import { knex } from 'constants/knex';
 
 namespace SearchAPI {
   export function getResults(searchTerm: string, onlyDiary: boolean) {

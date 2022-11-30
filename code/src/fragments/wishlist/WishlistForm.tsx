@@ -10,12 +10,12 @@ import { useContext } from 'react';
 import Clickable from 'components/Clickable';
 import Input from 'components/Input';
 import { ShortTextArea } from 'components/Textarea';
-import HandlerFactory from 'constants/handlers';
 import {
   IWishlistItemVisibility,
   IWishlistItemCategory,
   IWishlistItemPriority,
 } from 'constants/enums';
+import HandlerFactory from 'constants/handlers';
 import Utils from 'constants/utils';
 import FORM from 'styles/Components/Form.styles';
 

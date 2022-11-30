@@ -7,8 +7,8 @@ import { ServerStyleSheet } from 'styled-components';
 import * as UUID from 'uuid';
 
 import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
-import { knex } from 'constants/knex';
 import { ISubscriptionType } from 'constants/enums';
+import { knex } from 'constants/knex';
 
 import { HTML_TO_TEXT_OPTIONS, isProd, TRANSPORTER } from './constants';
 import DiaryEmail from './templatesv2/diary';
