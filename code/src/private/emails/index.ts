@@ -9,6 +9,7 @@ import * as UUID from 'uuid';
 import { SubscriberQueryBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
 import { ISubscriptionType } from 'constants/enums';
 import { knex } from 'constants/knex';
+import Logger from 'constants/logger';
 
 import { HTML_TO_TEXT_OPTIONS, isProd, TRANSPORTER } from './constants';
 import DiaryEmail from './templatesv2/diary';
@@ -113,7 +114,7 @@ async function prepareEmail<T extends Record<string, unknown>>(
     });
     await Promise.all(promises);
 
-    console.info(
+    Logger.info(
       `Emails: "${subject}" email sent to ${mailList.length} subscribers.`,
     );
   } catch (err: any) {

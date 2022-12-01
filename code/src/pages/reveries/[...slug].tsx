@@ -4,6 +4,7 @@ import React from 'react';
 
 import { PostStatic } from 'classes/posts/PostStatic';
 import { IPostStatus, IPostType } from 'constants/enums';
+import Logger from 'constants/logger';
 import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
 import type { PostTrio } from 'fragments/posts/PostTemplatePage';
@@ -114,7 +115,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async ({
       };
     }
   } catch (e) {
-    console.error(e);
+    Logger.error(e);
     return {
       notFound: true,
     };

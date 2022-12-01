@@ -1,6 +1,8 @@
 import type { AppTheme, FilterThemeOption } from 'classes/theme';
 import { FilterShape, FilterShapeOption, Theme } from 'classes/theme';
 
+import Logger from './logger';
+
 const constants = {
   [FilterShapeOption.SQUARE]: {
     RECT_PADDING_X: 115,
@@ -190,7 +192,7 @@ namespace Canvas {
       document.body.appendChild(link);
       link.click();
     } catch (e) {
-      console.error(e);
+      Logger.error(e);
     }
   }
 }

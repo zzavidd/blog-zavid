@@ -14,6 +14,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import ShareBlock from 'components/ShareBlock';
 import Events from 'constants/events';
+import Logger from 'constants/logger';
 import Settings from 'constants/settings';
 import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
@@ -195,7 +196,7 @@ export const getServerSideProps: GetServerSideProps<
       },
     };
   } catch (e) {
-    console.error(e);
+    Logger.error(e);
     return {
       notFound: true,
     };

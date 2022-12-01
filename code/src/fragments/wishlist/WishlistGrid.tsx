@@ -73,7 +73,7 @@ export default function WishlistGrid() {
         <WL.Main.SummarySuffix>
           Sort Code: 82-68-42
           <br />
-          Account Number: 20197208
+          Accountt Number: 20197208
         </WL.Main.SummarySuffix>
       </WL.Main.PageDetails>
       <WishlistToolbar />

@@ -1,3 +1,4 @@
+import Logger from 'constants/logger';
 import {
   Emphasis,
   emphasisRegexMapping,
@@ -104,7 +105,7 @@ export function applyEmphasisFormatting(paragraph: string) {
             break;
         }
       } catch (e: any) {
-        console.error(e.message);
+        Logger.error(e.message);
       }
     }
 
@@ -157,7 +158,7 @@ export function removeEmphasisFormatting(paragraph: string): string {
               break;
           }
         } catch (e) {
-          console.error(e);
+          Logger.error(e);
         }
       }
       return transformation;

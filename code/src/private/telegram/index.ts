@@ -1,5 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 
+import Logger from 'constants/logger';
 import ZDate from 'lib/date';
 
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN!);
@@ -36,7 +37,7 @@ async function notify(content: string): Promise<void> {
   } catch (error: any) {
     const description: string = error.response.body.description;
     const timestamp = getTimestamp();
-    console.error(
+    Logger.error(
       `(${timestamp}) Attempt to send Telegram message failed with response: "${description}."`,
     );
   }

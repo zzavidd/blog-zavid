@@ -6,6 +6,7 @@ import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import Checkbox from 'components/Checkbox';
 import { Modal } from 'components/Modal';
 import Contexts from 'constants/contexts';
+import Logger from 'constants/logger';
 import Settings from 'constants/settings';
 import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
@@ -153,7 +154,7 @@ export const getServerSideProps: GetServerSideProps<
       },
     };
   } catch (e) {
-    console.error(e);
+    Logger.error(e);
     return {
       notFound: true,
     };
