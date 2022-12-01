@@ -1,4 +1,3 @@
-import type { QuerySort } from 'classes/_/QueryBuilder';
 import {
   WishlistMutationBuilder,
   WishlistQueryBuilder,

@@ -1,14 +1,16 @@
 import * as FA6 from '@fortawesome/free-solid-svg-icons';
 import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
+import useSWR from 'swr';
 
-import { IDiaryStatus, QueryOrder } from 'constants/enums';
+import Loader from 'components/Loader';
 import Settings from 'constants/settings';
+import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import PageAPI from 'private/api/pages';
-import SSR from 'private/ssr';
 import ArticleStyle from 'styles/Pages/Article.styles';
 import DiaryStyle from 'styles/Pages/Diary.styles';
 
@@ -16,7 +18,19 @@ const DIARY_HEADING = "Zavid's Diary";
 
 // eslint-disable-next-line react/function-component-definition
 const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({ pageProps }) => {
-  const { diaryEntries, pageIntro } = pageProps;
+  const { pageIntro } = pageProps;
+
+  const router = useRouter();
+
+  const { data: diaryEntries } = useSWR<DiaryDAO[]>(
+    `/api/diary?favourites=${router.query.favourites}`,
+    Utils.request,
+    {
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+      revalidateOnFocus: false,
+    },
+  );
 
   return (
     <DiaryStyle.Container>
@@ -24,7 +38,9 @@ const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({ pageProps }) => {
         <DiaryStyle.PageHeading>{DIARY_HEADING}</DiaryStyle.PageHeading>
         <DiaryStyle.PageSummary>{pageIntro}</DiaryStyle.PageSummary>
         {/* <DiarySearch url={url} onlyFavs={onlyFavourites} /> */}
-        {diaryEntries.length ? (
+        {!diaryEntries ? (
+          <Placeholder />
+        ) : diaryEntries.length ? (
           <DiaryStyle.Grid>
             {diaryEntries.map((diaryEntry, key) => {
               return <DiaryEntry entry={diaryEntry} key={key} />;
@@ -39,6 +55,34 @@ const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({ pageProps }) => {
     </DiaryStyle.Container>
   );
 };
+
+function Placeholder() {
+  return (
+    <DiaryStyle.Grid>
+      {Array(13)
+        .fill(null)
+        .map((_, key) => {
+          return (
+            <DiaryStyle.PlaceholderEntry key={key}>
+              <Loader viewBox={'0 0 40 45'} key={key}>
+                <rect x={0} y={0} rx={1} width={20} height={2} />
+                <rect x={0} y={3} rx={2} width={35} height={4} />
+                <rect x={0} y={8} rx={2} width={25} height={4} />
+                <rect x={0} y={16} rx={1} width={36} height={2} />
+                <rect x={0} y={19} rx={1} width={40} height={2} />
+                <rect x={0} y={22} rx={1} width={40} height={2} />
+                <rect x={0} y={25} rx={1} width={40} height={2} />
+                <rect x={0} y={28} rx={1} width={40} height={2} />
+                <rect x={0} y={31} rx={1} width={36} height={2} />
+                <rect x={0} y={37} rx={1} width={20} height={2} />
+                <rect x={0} y={42} rx={1} width={36} height={2} />
+              </Loader>
+            </DiaryStyle.PlaceholderEntry>
+          );
+        })}
+    </DiaryStyle.Grid>
+  );
+}
 
 const DiaryEntry = React.memo(
   ({ entry }: DiaryEntryProps) => {
@@ -90,22 +134,10 @@ const DiaryEntry = React.memo(
   (a, b) => a.entry.id === b.entry.id,
 );
 
-export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  DiaryIndexProps
+> = async () => {
   const page = await PageAPI.getBySlug('diary');
-  const onlyFavourites = query.onlyFavourites === 'true';
-  const diaryEntries = JSON.parse(
-    await SSR.Diary.getAll({
-      sort: {
-        field: 'date',
-        order: QueryOrder.DESCENDING,
-      },
-      status: { include: [IDiaryStatus.PUBLISHED] },
-      onlyFavourites,
-    }),
-  );
-
   return {
     props: {
       pathDefinition: {
@@ -114,9 +146,7 @@ export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async ({
         url: '/diary',
       },
       pageProps: {
-        diaryEntries,
         pageIntro: page.content!,
-        onlyFavourites,
       },
     },
   };
@@ -128,9 +158,7 @@ export default DiaryIndex;
 interface DiaryIndexProps {
   pathDefinition: PathDefinition;
   pageProps: {
-    diaryEntries: DiaryDAO[];
     pageIntro: string;
-    onlyFavourites: boolean;
   };
 }
 

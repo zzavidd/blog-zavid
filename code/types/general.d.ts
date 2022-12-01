@@ -65,3 +65,8 @@ interface EditButtonProps {
 
 type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
 type LocalDispatch<T> = (state: Partial<T>) => void;
+
+interface QuerySort<T> {
+  field?: keyof T;
+  order?: string;
+}

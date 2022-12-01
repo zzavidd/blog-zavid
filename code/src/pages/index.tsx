@@ -16,6 +16,8 @@ const HomePage: NextPageWithLayout<HomeProps> = ({ pageProps }) => {
   const { homeText, emailSubCount } = pageProps;
 
   const { data } = useSWR<HomePageContent>('/api/home', Utils.request, {
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
     revalidateOnFocus: false,
   });
 

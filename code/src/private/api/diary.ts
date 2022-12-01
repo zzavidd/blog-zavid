@@ -1,8 +1,11 @@
-import { DiaryQueryBuilder } from 'classes/diary/DiaryQueryBuilder';
+import {
+  DiaryMutationBuilder,
+  DiaryQueryBuilder,
+} from 'classes/diary/DiaryQueryBuilder';
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { IDiaryStatus } from 'constants/enums';
 import { knex } from 'constants/knex';
-import type { GetAllDiaryOptions } from 'pages/api/diary';
+import Emails from 'private/emails';
 
 namespace DiaryAPI {
   export async function getAll({
@@ -43,6 +46,41 @@ namespace DiaryAPI {
       .getLatestEntry()
       .build();
     return DiaryStatic.parse(latestDiaryEntry);
+  }
+
+  /**
+   * Inserts a new diary entry into the database.
+   * @param payload The payload for creating a diary entry.
+   */
+  export async function create({
+    diaryEntry,
+    isPublish,
+  }: CreateDiaryEntryPayload): Promise<void> {
+    diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
+    diaryEntry.tags = JSON.stringify(diaryEntry.tags);
+
+    await new DiaryMutationBuilder(knex).insert(diaryEntry).build();
+    if (isPublish) {
+      await Emails.notifyNewDiaryEntry(diaryEntry);
+    }
+  }
+
+  export async function update({
+    id,
+    diaryEntry,
+    isPublish,
+  }: UpdateDiaryEntryPayload) {
+    diaryEntry.slug = DiaryStatic.generateSlug(diaryEntry);
+    diaryEntry.tags = JSON.stringify(diaryEntry.tags);
+
+    await new DiaryMutationBuilder(knex).update(diaryEntry).whereId(id).build();
+    if (isPublish) {
+      await Emails.notifyNewDiaryEntry(diaryEntry);
+    }
+  }
+
+  export async function destroy({ id }: DeleteDiaryEntryPayload) {
+    await new DiaryMutationBuilder(knex).delete(id).build();
   }
 }
 

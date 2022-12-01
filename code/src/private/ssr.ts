@@ -1,4 +1,3 @@
-import type { GetAllDiaryOptions } from 'pages/api/diary';
 import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
 import type { GetAllSubscriberOptions } from 'pages/api/subscribers';
 

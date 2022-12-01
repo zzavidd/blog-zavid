@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
 import { Paragraph } from 'components/Text';
+import Animations from 'styles/Animations.styles';
 import TextStyle from 'styles/Components/Text.styles';
 import Mixins from 'styles/Mixins.styles';
 import { FONTS } from 'styles/Variables.styles';
@@ -23,6 +24,7 @@ namespace DiaryStyle {
     flex-direction: column;
     height: 100%;
     padding: 1em;
+    width: 100%;
   `;
 
   export const PageHeading = styled.h1`
@@ -59,8 +61,8 @@ namespace DiaryStyle {
       ['gap', '0.5em', { lg: '1em', sm: 0 }],
     )}
     display: grid;
-    gap: 0.5em;
     grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+    width: 100%;
   `;
 
   export const EntryDetails = styled.a`
@@ -94,6 +96,7 @@ namespace DiaryStyle {
       ['padding', '1.5em', { lg: '1em 0', sm: '1em' }],
       ['pointer-events', 'auto', { lg: 'none' }],
     )};
+    animation: ${Animations.fadeIn} 0.5s ease 0s 1 normal both;
     border-bottom-color: ${({ theme }) => theme.bodyFontColor};
     border-bottom-style: solid;
     cursor: pointer;
@@ -113,6 +116,17 @@ namespace DiaryStyle {
         color: ${({ theme }) => theme.fadedFontColorReverse};
       }
     }
+  `;
+
+  export const PlaceholderEntry = styled.article`
+    ${Mixins.Responsive(
+      ['border-bottom-width', '0', { md: '1px' }],
+      ['padding', '1.5em', { lg: '1em 0', sm: '1em' }],
+    )};
+    border-bottom-color: ${({ theme }) => theme.bodyFontColor};
+    border-bottom-style: solid;
+    pointer-events: none;
+    transition: all 0.3s;
   `;
 }
 

@@ -75,8 +75,3 @@ export class DiaryMutationBuilder extends MutationBuilder<DiaryDAO> {
     super(knex, TABLE_NAME, 'diary entry');
   }
 }
-
-export interface DiaryStatusFilters {
-  include?: IDiaryStatus[];
-  exclude?: IDiaryStatus[];
-}

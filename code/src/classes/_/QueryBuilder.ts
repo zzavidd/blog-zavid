@@ -129,11 +129,6 @@ function serializeInput(input: Record<string, unknown>) {
   });
 }
 
-export interface QuerySort<T> {
-  field?: keyof T;
-  order?: string;
-}
-
 interface QuerySortOptions {
   forStringsWithNumbers?: boolean;
 }

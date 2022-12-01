@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import type { QuerySort } from 'classes/_/QueryBuilder';
 import type {
   PostStatusFilters,
   PostTypeFilters,

@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { QuerySort } from 'classes/_/QueryBuilder';
 import { SubscriberMutationBuilder } from 'classes/subscribers/SubscriberQueryBuilder';
 import { knex } from 'constants/knex';
 import SubscriberAPI from 'private/api/subscribers';
