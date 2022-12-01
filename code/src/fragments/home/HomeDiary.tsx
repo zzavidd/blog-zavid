@@ -1,6 +1,6 @@
 import { faFeatherAlt } from '@fortawesome/free-solid-svg-icons';
-import ContentLoader from 'react-content-loader';
 
+import Loader from 'components/Loader';
 import ZDate from 'lib/date';
 import * as Style from 'styles/Pages/Home.styles';
 
@@ -33,17 +33,14 @@ function Placeholder() {
   return (
     <Style.Latest.Article>
       <Style.Latest.Label>Latest Diary Entry:</Style.Latest.Label>
-      <ContentLoader
-        viewBox={'0 0 200 70'}
-        backgroundOpacity={0.7}
-        foregroundOpacity={0.9}>
+      <Loader viewBox={'0 0 200 70'}>
         <rect x={0} y={2} rx={2} width={95} height={10} />
         <rect x={0} y={15} rx={2} width={50} height={6} />
         <rect x={0} y={30} rx={2} width={180} height={6} />
         <rect x={0} y={39} rx={2} width={200} height={6} />
         <rect x={0} y={48} rx={2} width={200} height={6} />
         <rect x={0} y={57} rx={2} width={180} height={6} />
-      </ContentLoader>
+      </Loader>
     </Style.Latest.Article>
   );
 }

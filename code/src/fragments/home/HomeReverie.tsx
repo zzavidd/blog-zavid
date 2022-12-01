@@ -1,6 +1,6 @@
 import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
-import ContentLoader from 'react-content-loader';
 
+import Loader from 'components/Loader';
 import ZDate from 'lib/date';
 import * as Style from 'styles/Pages/Home.styles';
 
@@ -45,10 +45,7 @@ function Placeholder() {
   return (
     <Style.Latest.Article>
       <Style.Latest.Label>Latest Reverie:</Style.Latest.Label>
-      <ContentLoader
-        viewBox={'0 0 200 90'}
-        backgroundOpacity={0.7}
-        foregroundOpacity={0.9}>
+      <Loader viewBox={'0 0 200 90'}>
         <rect x={0} y={2} rx={2} width={95} height={10} />
         <rect x={0} y={15} rx={2} width={50} height={6} />
         <rect x={0} y={30} rx={2} width={90} height={6} />
@@ -58,7 +55,7 @@ function Placeholder() {
         <rect x={0} y={66} rx={2} width={90} height={6} />
         <rect x={0} y={75} rx={2} width={90} height={6} />
         <rect x={110} y={30} rx={5} width={90} height={50} />
-      </ContentLoader>
+      </Loader>
     </Style.Latest.Article>
   );
 }

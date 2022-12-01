@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
-import ContentLoader from 'react-content-loader';
 
 import { PostStatic } from 'classes/posts/PostStatic';
+import Loader from 'components/Loader';
 import ZDate from 'lib/date';
 import * as Style from 'styles/Pages/Home.styles';
 
@@ -53,15 +53,11 @@ export default function HomeRandomPosts({ posts = [] }: RandomPostsGridProps) {
               .fill(null)
               .map((_, key) => {
                 return (
-                  <ContentLoader
-                    viewBox={'0 0 50 40'}
-                    backgroundOpacity={0.7}
-                    foregroundOpacity={0.9}
-                    key={key}>
+                  <Loader viewBox={'0 0 50 40'} key={key}>
                     <rect x={0} y={0} rx={3} width={50} height={28} />
                     <rect x={0} y={32} rx={1} width={30} height={2} />
                     <rect x={0} y={36} rx={1} width={30} height={2} />
-                  </ContentLoader>
+                  </Loader>
                 );
               })}
       </Style.Aside.PostList>
