@@ -31,6 +31,7 @@
     "plaiceholder": "^2.5.0",
     "polished": "^4.2.2",
     "react": "^18.2.0",
+    "react-content-loader": "^6.2.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-instagram-embed": "^3.0.0",

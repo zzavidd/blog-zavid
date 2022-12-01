@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import ContentLoader from 'react-content-loader';
 
 import { PostStatic } from 'classes/posts/PostStatic';
 import ZDate from 'lib/date';
@@ -14,39 +15,55 @@ export default function HomeRandomPosts({ posts = [] }: RandomPostsGridProps) {
         </Style.Aside.Heading>
       </Style.Aside.HeadingBox>
       <Style.Aside.PostList>
-        {posts.map((post) => {
-          const directory = PostStatic.getDirectory(post.type!);
-          return (
-            <Style.Aside.Post key={post.id}>
-              <Link href={`/${directory}/${post.slug}`} passHref={true}>
-                <a>
-                  <Style.Aside.ImageBox>
-                    <Style.Aside.Image
-                      src={post.image as string}
-                      alt={post.title}
-                      placeholder={'blur'}
-                      blurDataURL={post.imagePlaceholder}
-                      layout={'fill'}
-                      objectFit={'cover'}
-                      loading={'lazy'}
-                    />
-                  </Style.Aside.ImageBox>
-                </a>
-              </Link>
-              <Style.Aside.PostDetailsBox>
-                <Style.Aside.PostTitle>
-                  {PostStatic.getPostTitle(post)}
-                </Style.Aside.PostTitle>
-                <Style.Aside.PostMetadata>
-                  {post.type}&nbsp;&#x2022;&nbsp;
-                  <time dateTime={ZDate.formatISO(post.datePublished)}>
-                    {ZDate.format(post.datePublished)}
-                  </time>
-                </Style.Aside.PostMetadata>
-              </Style.Aside.PostDetailsBox>
-            </Style.Aside.Post>
-          );
-        })}
+        {posts.length
+          ? posts.map((post) => {
+              const directory = PostStatic.getDirectory(post.type!);
+              return (
+                <Style.Aside.Post key={post.id}>
+                  <Link href={`/${directory}/${post.slug}`} passHref={true}>
+                    <a>
+                      <Style.Aside.ImageBox>
+                        <Style.Aside.Image
+                          src={post.image as string}
+                          alt={post.title}
+                          placeholder={'blur'}
+                          blurDataURL={post.imagePlaceholder}
+                          layout={'fill'}
+                          objectFit={'cover'}
+                          loading={'lazy'}
+                        />
+                      </Style.Aside.ImageBox>
+                    </a>
+                  </Link>
+                  <Style.Aside.PostDetailsBox>
+                    <Style.Aside.PostTitle>
+                      {PostStatic.getPostTitle(post)}
+                    </Style.Aside.PostTitle>
+                    <Style.Aside.PostMetadata>
+                      {post.type}&nbsp;&#x2022;&nbsp;
+                      <time dateTime={ZDate.formatISO(post.datePublished)}>
+                        {ZDate.format(post.datePublished)}
+                      </time>
+                    </Style.Aside.PostMetadata>
+                  </Style.Aside.PostDetailsBox>
+                </Style.Aside.Post>
+              );
+            })
+          : Array(4)
+              .fill(null)
+              .map((_, key) => {
+                return (
+                  <ContentLoader
+                    viewBox={'0 0 50 40'}
+                    backgroundOpacity={0.7}
+                    foregroundOpacity={0.9}
+                    key={key}>
+                    <rect x={0} y={0} rx={3} width={50} height={28} />
+                    <rect x={0} y={32} rx={1} width={30} height={2} />
+                    <rect x={0} y={36} rx={1} width={30} height={2} />
+                  </ContentLoader>
+                );
+              })}
       </Style.Aside.PostList>
     </React.Fragment>
   );
