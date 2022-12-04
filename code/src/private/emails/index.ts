@@ -140,7 +140,7 @@ async function sendMailToAddress(
     html: message,
     text: htmlToText.fromString(message, HTML_TO_TEXT_OPTIONS),
   });
-  console.info(
+  Logger.info(
     `Preview URL: ${nodemailer.getTestMessageUrl(info as SentMessageInfo)}`,
   );
 }
