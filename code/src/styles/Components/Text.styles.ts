@@ -16,11 +16,23 @@ namespace TextStyle {
       margin-block: 1.5em;
     `;
 
-    export const BlockImage = styled.img`
+    export const Image = styled.img`
       display: block;
       max-height: 400px;
       object-fit: contain;
       width: 100%;
+    `;
+
+    export const Audio = styled.audio`
+      &::-webkit-media-controls-enclosure {
+        background-color: #a5a5a5;
+        border-radius: 7px;
+      }
+
+      &::-webkit-media-controls-current-time-display,
+      &::-webkit-media-controls-time-remaining-display {
+        text-shadow: none;
+      }
     `;
 
     export const Blockquote = styled.blockquote`

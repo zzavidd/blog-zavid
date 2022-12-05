@@ -40,16 +40,22 @@ export const formatParagraph = (
         return <h2 key={key}>{text}</h2>;
       case Section.SUBHEADING:
         return <h3 key={key}>{text}</h3>;
-      case Section.IMAGE:
+      case Section.IMAGE: {
         const [, alt, src] = paragraph.match(regex)!;
         return (
-          <TS.Section.BlockImage
-            src={src}
-            alt={alt}
-            loading={'lazy'}
-            key={key}
-          />
+          <TS.Section.Image src={src} alt={alt} loading={'lazy'} key={key} />
         );
+      }
+      case Section.AUDIO: {
+        const [, alt, src] = paragraph.match(regex)!;
+        return (
+          <TS.Section.Audio controls={true}>
+            <source src={src} type={'audio/mpeg'} />
+            <source src={src} type={'audio/ogg'} />
+            {alt}
+          </TS.Section.Audio>
+        );
+      }
       case Section.DIVIDER:
         return (
           <hr

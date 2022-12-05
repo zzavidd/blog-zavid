@@ -25,6 +25,7 @@ export enum Section {
   HEADING = 'heading',
   SUBHEADING = 'subheading',
   IMAGE = 'image',
+  AUDIO = 'audio',
   DIVIDER = 'divider',
   BULLET_LIST = 'bullet',
   HYPHEN_LIST_ITEM = 'hyphen',
@@ -98,7 +99,8 @@ export const emphasisRegexMapping: Record<Emphasis, EmphasisRegexValue> = {
 export const sectionRegexMapping: Record<Section, RegExp> = {
   [Section.HEADING]: new RegExp(/^\#\s(.*?)$/),
   [Section.SUBHEADING]: new RegExp(/^\#{2}\s(.*?)$/),
-  [Section.IMAGE]: new RegExp(/^\!\[(.*?)\]\((.*?)\)(F?)$/),
+  [Section.IMAGE]: new RegExp(/^\!\[(.*?)\]\((\S*.(?:jpe?g|png|svg))\)(F?)$/),
+  [Section.AUDIO]: new RegExp(/^\!\[(.*?)\]\((\S*.(?:mp3|wav|caf))\)(F?)$/),
   [Section.DIVIDER]: new RegExp(/^(\-{3}|\_{3})$/),
   [Section.BULLET_LIST]: new RegExp(/\:\:ul(b)?\n((?:\+\s*.*\n+)*)\:\:end/),
   [Section.HYPHEN_LIST_ITEM]: new RegExp(/^\-\s*(.*?)$/),
