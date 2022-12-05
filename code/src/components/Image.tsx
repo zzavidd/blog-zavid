@@ -12,6 +12,7 @@ export function NextImage({ src, alt, ...props }: NextImageProps) {
       {...props}
       alt={alt}
       src={`${Settings.CLOUDINARY_BASE_URL}/${src}`}
+      placeholder={props.blurDataURL ? 'blur' : 'empty'}
     />
   );
 }
