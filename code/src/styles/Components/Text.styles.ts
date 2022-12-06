@@ -13,7 +13,7 @@ namespace TextStyle {
   export namespace Section {
     export const Paragraph = styled.p`
       line-height: 1.6;
-      margin-block: 0.8em;
+      margin-block: 1.2em;
     `;
 
     export const Image = styled.img`
@@ -25,7 +25,7 @@ namespace TextStyle {
 
     export const Audio = styled.audio`
       display: block;
-      margin: 0.5em auto;
+      margin: 1em auto;
       max-width: 300px;
       width: 100%;
 
