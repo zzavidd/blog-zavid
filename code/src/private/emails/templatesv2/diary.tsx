@@ -22,9 +22,9 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
             {ZDate.format(diaryEntry.date)}
           </p>
 
-          {ZText.formatText(diaryEntry.content)}
+          {ZText.formatText(diaryEntry.content, { forEmails: true })}
           <SignatureImage />
-          {ZText.formatText(diaryEntry.footnote)}
+          {ZText.formatText(diaryEntry.footnote, { forEmails: true })}
         </Main>
         <Footer showUnsubscribe={true} unsubscribeToken={token} url={href} />
       </Body>

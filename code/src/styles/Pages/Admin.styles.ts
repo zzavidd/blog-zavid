@@ -108,6 +108,15 @@ export namespace AdminList {
     }
   `;
 
+  export const Hyperlink = styled.a`
+    color: ${({ theme }) => theme.bodyFontColor};
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  `;
+
   export const ModalText = styled.p`
     font-family: ${FONTS.BODY};
   `;

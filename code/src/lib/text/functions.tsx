@@ -101,6 +101,7 @@ export function extractExcerpt(originalText: string): string {
 
 export interface FormatTextOptions {
   inline?: boolean;
+  forEmails?: boolean;
 }
 
 export interface DeformatTextOptions {

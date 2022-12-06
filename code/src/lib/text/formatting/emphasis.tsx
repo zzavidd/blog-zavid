@@ -58,10 +58,7 @@ export function applyEmphasisFormatting(paragraph: string) {
             const textToHyperlink = applyEmphasisFormatting(matches![1]);
             const link = matches![2];
             transformation = (
-              <TextStyle.Emphasis.Anchor
-                href={link}
-                rel={'noopener noreferrer'}
-                key={key}>
+              <TextStyle.Emphasis.Anchor href={link} key={key}>
                 {textToHyperlink}
               </TextStyle.Emphasis.Anchor>
             );

@@ -1,3 +1,4 @@
+import type { HtmlToTextOptions } from 'html-to-text';
 import getConfig from 'next/config';
 import nodemailer from 'nodemailer';
 
@@ -42,7 +43,7 @@ export const ejsLocals = {
 };
 
 /** The common HTML-to-text options for all emails. */
-export const HTML_TO_TEXT_OPTIONS = {
+export const HTML_TO_TEXT_OPTIONS: HtmlToTextOptions = {
   hideLinkHrefIfSameAsText: true,
   ignoreImage: true,
   noLinkBrackets: true,

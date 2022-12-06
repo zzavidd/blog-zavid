@@ -4,16 +4,18 @@ import { FONTS } from 'styles/Variables.styles';
 
 namespace TextStyle {
   export const Collection = styled.pre`
+    display: flex;
+    flex-direction: column;
     font-family: ${FONTS.BODY};
     margin: 0;
     white-space: pre-wrap;
+    width: 100%;
   `;
 
   export namespace Section {
     export const Paragraph = styled.p`
-      display: block;
       line-height: 1.6;
-      margin-block: 1.5em;
+      margin-block: 0.8em;
     `;
 
     export const Image = styled.img`
@@ -24,6 +26,12 @@ namespace TextStyle {
     `;
 
     export const Audio = styled.audio`
+      align-self: center;
+      display: block !important;
+      margin-block: 0.5em;
+      max-width: 300px;
+      width: 100%;
+
       &::-webkit-media-controls-enclosure {
         background-color: #a5a5a5;
         border-radius: 7px;
@@ -83,7 +91,7 @@ namespace TextStyle {
   }
 
   export namespace Emphasis {
-    export const Anchor = styled.a`
+    export const Anchor = styled.a.attrs({ rel: 'noopener noreferrer' })`
       color: ${({ theme }) => theme.hyperlink};
       cursor: pointer;
       font-weight: bold;

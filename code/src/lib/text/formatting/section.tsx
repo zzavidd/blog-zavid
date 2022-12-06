@@ -23,9 +23,9 @@ export const formatParagraph = (
   key: number,
   options: FormatTextOptions = {},
 ): ReactElement => {
-  if (!paragraph) return <React.Fragment></React.Fragment>;
+  if (!paragraph) return <React.Fragment />;
 
-  const { inline = false } = options;
+  const { forEmails = false, inline = false } = options;
 
   const foundSection = Object.entries(sectionRegexMapping).find(([, regex]) =>
     regex.test(paragraph),
@@ -48,13 +48,23 @@ export const formatParagraph = (
       }
       case Section.AUDIO: {
         const [, alt, src] = paragraph.match(regex)!;
-        return (
-          <TS.Section.Audio controls={true}>
-            <source src={src} type={'audio/mpeg'} />
-            <source src={src} type={'audio/ogg'} />
-            {alt}
-          </TS.Section.Audio>
-        );
+        if (forEmails) {
+          return (
+            <TS.Section.Paragraph key={key}>
+              <TS.Emphasis.Anchor href={src}>
+                Click to listen.
+              </TS.Emphasis.Anchor>
+            </TS.Section.Paragraph>
+          );
+        } else {
+          return (
+            <TS.Section.Audio controls={true} key={key}>
+              <source src={src} type={'audio/mpeg'} />
+              <source src={src} type={'audio/ogg'} />
+              {alt}
+            </TS.Section.Audio>
+          );
+        }
       }
       case Section.DIVIDER:
         return (

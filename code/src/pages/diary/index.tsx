@@ -56,34 +56,6 @@ const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({ pageProps }) => {
   );
 };
 
-function Placeholder() {
-  return (
-    <DiaryStyle.Grid>
-      {Array(13)
-        .fill(null)
-        .map((_, key) => {
-          return (
-            <DiaryStyle.PlaceholderEntry key={key}>
-              <Loader viewBox={'0 0 40 45'} key={key}>
-                <rect x={0} y={0} rx={1} width={20} height={2} />
-                <rect x={0} y={3} rx={2} width={35} height={4} />
-                <rect x={0} y={8} rx={2} width={25} height={4} />
-                <rect x={0} y={16} rx={1} width={36} height={2} />
-                <rect x={0} y={19} rx={1} width={40} height={2} />
-                <rect x={0} y={22} rx={1} width={40} height={2} />
-                <rect x={0} y={25} rx={1} width={40} height={2} />
-                <rect x={0} y={28} rx={1} width={40} height={2} />
-                <rect x={0} y={31} rx={1} width={36} height={2} />
-                <rect x={0} y={37} rx={1} width={20} height={2} />
-                <rect x={0} y={42} rx={1} width={36} height={2} />
-              </Loader>
-            </DiaryStyle.PlaceholderEntry>
-          );
-        })}
-    </DiaryStyle.Grid>
-  );
-}
-
 const DiaryEntry = React.memo(
   ({ entry }: DiaryEntryProps) => {
     const href = `/diary/${entry.entryNumber}`;
@@ -133,6 +105,34 @@ const DiaryEntry = React.memo(
   },
   (a, b) => a.entry.id === b.entry.id,
 );
+
+function Placeholder() {
+  return (
+    <DiaryStyle.Grid>
+      {Array(13)
+        .fill(null)
+        .map((_, key) => {
+          return (
+            <DiaryStyle.PlaceholderEntry key={key}>
+              <Loader viewBox={'0 0 40 45'} key={key}>
+                <rect x={0} y={0} rx={1} width={20} height={2} />
+                <rect x={0} y={3} rx={2} width={35} height={4} />
+                <rect x={0} y={8} rx={2} width={25} height={4} />
+                <rect x={0} y={16} rx={1} width={36} height={2} />
+                <rect x={0} y={19} rx={1} width={40} height={2} />
+                <rect x={0} y={22} rx={1} width={40} height={2} />
+                <rect x={0} y={25} rx={1} width={40} height={2} />
+                <rect x={0} y={28} rx={1} width={40} height={2} />
+                <rect x={0} y={31} rx={1} width={36} height={2} />
+                <rect x={0} y={37} rx={1} width={20} height={2} />
+                <rect x={0} y={42} rx={1} width={36} height={2} />
+              </Loader>
+            </DiaryStyle.PlaceholderEntry>
+          );
+        })}
+    </DiaryStyle.Grid>
+  );
+}
 
 export const getServerSideProps: GetServerSideProps<
   DiaryIndexProps

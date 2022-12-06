@@ -133,12 +133,17 @@ const DiaryAdmin: NextPageWithLayout<DiaryAdminProps> = ({ pageProps }) => {
               </AL.TableHead>
               <tbody>
                 {state.diaryEntries.map((entry) => {
+                  const href = `/diary/${entry.entryNumber}`;
                   return (
                     <AL.TableRow key={entry.id}>
                       <AL.TableCell align={'right'}>
                         {entry.entryNumber}
                       </AL.TableCell>
-                      <AL.TableCell>{entry.title}</AL.TableCell>
+                      <AL.TableCell>
+                        <Link href={href} passHref={true}>
+                          <AL.Hyperlink>{entry.title}</AL.Hyperlink>
+                        </Link>
+                      </AL.TableCell>
                       <AL.TableCell align={'center'}>
                         {ZDate.format(entry.date)}
                       </AL.TableCell>

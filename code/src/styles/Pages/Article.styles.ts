@@ -83,7 +83,7 @@ namespace ArticleStyle {
   `;
 
   export const Signature = styled(SignatureImage)`
-    margin-bottom: 1em;
+    margin-block: 0.5em;
     position: relative;
     width: 100%;
   `;
@@ -161,6 +161,7 @@ namespace ArticleStyle {
 
   export const Footer = styled.section`
     border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
+    margin-top: 1em;
     padding-top: 1em;
     width: 100%;
   `;
