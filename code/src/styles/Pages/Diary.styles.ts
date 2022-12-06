@@ -93,7 +93,7 @@ namespace DiaryStyle {
   export const Entry = styled.article`
     ${Mixins.Responsive(
       ['border-bottom-width', '0', { md: '1px' }],
-      ['padding', '1.5em', { lg: '1em 0', sm: '1em' }],
+      ['padding', '1.5em', { lg: '1em' }],
       ['pointer-events', 'auto', { lg: 'none' }],
     )};
     animation: ${Animations.fadeIn} 0.5s ease 0s 1 normal both;

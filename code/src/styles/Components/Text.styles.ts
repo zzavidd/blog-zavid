@@ -4,8 +4,6 @@ import { FONTS } from 'styles/Variables.styles';
 
 namespace TextStyle {
   export const Collection = styled.pre`
-    display: flex;
-    flex-direction: column;
     font-family: ${FONTS.BODY};
     margin: 0;
     white-space: pre-wrap;
@@ -26,9 +24,8 @@ namespace TextStyle {
     `;
 
     export const Audio = styled.audio`
-      align-self: center;
-      display: block !important;
-      margin-block: 0.5em;
+      display: block;
+      margin: 0.5em auto;
       max-width: 300px;
       width: 100%;
 
