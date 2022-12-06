@@ -52,7 +52,7 @@ export const formatParagraph = (
           return (
             <TS.Section.Paragraph key={key}>
               <TS.Emphasis.Anchor href={src}>
-                Click to listen.
+                Listen to &ldquo;{alt}&rdquo;.
               </TS.Emphasis.Anchor>
             </TS.Section.Paragraph>
           );
@@ -145,16 +145,25 @@ export const formatParagraph = (
       case Section.SPOTIFY:
         const spotifyUrl = paragraph.match(regex)![1];
         const height = spotifyUrl.includes('podcast') ? '240' : 400;
-        return (
-          <iframe
-            src={spotifyUrl}
-            height={height}
-            width={'100%'}
-            frameBorder={'0'}
-            allow={'encrypted-media'}
-            key={key}
-          />
-        );
+        if (forEmails) {
+          return (
+            <TS.Section.Paragraph key={key}>
+              <TS.Emphasis.Anchor href={spotifyUrl.replace('/embed', '')}>
+                Listen to Spotify track.
+              </TS.Emphasis.Anchor>
+            </TS.Section.Paragraph>
+          );
+        } else {
+          return (
+            <iframe
+              src={spotifyUrl}
+              height={height}
+              width={'100%'}
+              frameBorder={'0'}
+              key={key}
+            />
+          );
+        }
       case Section.SOUNDCLOUD:
         const soundcloudUrl = paragraph.match(regex)![1];
         return (
