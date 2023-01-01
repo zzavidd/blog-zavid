@@ -85,7 +85,7 @@ export namespace SubscribePrefStyle {
   `;
 
   export const HyperlinkButton = styled.p`
-    color: ${({ theme }) => theme.hyperlink};
+    color: ${({ theme }) => theme.Hyperlink};
     cursor: pointer;
     font-size: 1em;
     margin-top: 1em;

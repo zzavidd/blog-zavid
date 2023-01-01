@@ -9,16 +9,16 @@ declare module 'styled-components' {
     fadedBorderColor: string;
     fadedFontColor: string;
     fadedFontColorReverse: string;
-    hyperlink: string;
+    Hyperlink: string;
     headerBackgroundColor: string;
     footerBackgroundColor: string;
-    wishlistItem: {
-      cell: string;
-      claimCount: string;
-      claimCountComplete: string;
-      claimCountFontWeight: string;
-      purchased: string;
-      claimed: string;
+    Item: {
+      Cell: string;
+      CellClaimed: string;
+      CellPurchased: string;
+      ClaimCount: string;
+      ClaimCountComplete: string;
+      ClaimCountWeight: string;
     };
     readmore: string;
     readmoreReverse: string;

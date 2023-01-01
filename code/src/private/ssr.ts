@@ -7,8 +7,6 @@ import PageAPI from './api/pages';
 import PostAPI from './api/posts';
 import SearchAPI from './api/search';
 import SubscriberAPI from './api/subscribers';
-import type { GetWishlistParams } from './api/wishlist';
-import WishlistAPI from './api/wishlist';
 
 namespace SSR {
   export namespace Diary {
@@ -87,15 +85,6 @@ namespace SSR {
 
     export async function getByToken(token: string) {
       return JSON.stringify(await SubscriberAPI.getByToken(token));
-    }
-  }
-
-  export namespace Wishlist {
-    export async function getAll(options: GetWishlistParams) {
-      return JSON.stringify(await WishlistAPI.getAll(options));
-    }
-    export async function getById(id: number) {
-      return JSON.stringify(await WishlistAPI.getById(id));
     }
   }
 }

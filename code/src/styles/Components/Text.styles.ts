@@ -89,7 +89,7 @@ namespace TextStyle {
 
   export namespace Emphasis {
     export const Anchor = styled.a.attrs({ rel: 'noopener noreferrer' })`
-      color: ${({ theme }) => theme.hyperlink};
+      color: ${({ theme }) => theme.Hyperlink};
       cursor: pointer;
       font-weight: bold;
       text-decoration: none;

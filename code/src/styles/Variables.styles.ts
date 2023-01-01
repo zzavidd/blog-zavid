@@ -1,7 +1,6 @@
 import type { DefaultTheme } from 'styled-components';
 
 import type { AppTheme } from 'classes/theme';
-import { IWishlistItemPriority } from 'constants/enums';
 import Settings from 'constants/settings';
 
 export enum Breakpoint {
@@ -38,11 +37,6 @@ export const COLOR = {
     success: '#c3ffc3',
     error: '#ffa2a2',
   } as Record<AlertType, string>,
-  WISHLIST_PRIORITY: {
-    [IWishlistItemPriority.LOW]: '#ffcb63',
-    [IWishlistItemPriority.MEDIUM]: '#eeee5d',
-    [IWishlistItemPriority.HIGH]: '#a4ff7a',
-  } as Record<WishlistItemPriority, string>,
 };
 
 export const FONTS = {
@@ -64,16 +58,16 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
     fadedBorderColor: '#5a5a5a',
     fadedFontColor: '#3e3e3e',
     fadedFontColorReverse: '#d4d4d4',
-    hyperlink: '#aa00ff',
+    Hyperlink: '#aa00ff',
     headerBackgroundColor: '#dddddd',
     footerBackgroundColor: '#dfdfdf',
-    wishlistItem: {
-      cell: '#ccabe5',
-      purchased: '#5f5567',
-      claimed: '#b1c3f7',
-      claimCount: '#fff35a',
-      claimCountComplete: '#007c00',
-      claimCountFontWeight: 'bold',
+    Item: {
+      Cell: '#ccabe5',
+      CellPurchased: '#5f5567',
+      CellClaimed: '#b1c3f7',
+      ClaimCount: '#fff35a',
+      ClaimCountComplete: '#007c00',
+      ClaimCountWeight: 'bold',
     },
     readmore: '#005dec',
     readmoreReverse: '#87ceeb',
@@ -91,16 +85,16 @@ export const THEME: Record<AppTheme, DefaultTheme> = {
     fadedBorderColor: '#5a5a5a',
     fadedFontColor: '#d4d4d4',
     fadedFontColorReverse: '#3e3e3e',
-    hyperlink: '#d98dff',
+    Hyperlink: '#d98dff',
     headerBackgroundColor: '#202020',
     footerBackgroundColor: '#111111',
-    wishlistItem: {
-      cell: '#402e4e',
-      purchased: '#7b7b7b',
-      claimed: '#5f5e82',
-      claimCount: '#ffff8d',
-      claimCountComplete: '#00ff00',
-      claimCountFontWeight: 'normal',
+    Item: {
+      Cell: '#402e4e',
+      CellPurchased: '#7b7b7b',
+      CellClaimed: '#5f5e82',
+      ClaimCount: '#ffff8d',
+      ClaimCountComplete: '#00ff00',
+      ClaimCountWeight: 'normal',
     },
     readmore: '#87ceeb',
     readmoreReverse: '#005dec',

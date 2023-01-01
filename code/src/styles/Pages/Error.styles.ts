@@ -30,7 +30,7 @@ namespace ErrorStyle {
     justify-content: center;
 
     a {
-      color: ${({ theme }) => theme.hyperlink};
+      color: ${({ theme }) => theme.Hyperlink};
       font-size: 1.1em;
     }
   `;

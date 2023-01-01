@@ -80,32 +80,6 @@ namespace Validate {
   }
 
   /**
-   * Validate a wishlist item submission.
-   * @param wishlistItem The wishlist item to validate.
-   */
-  export function wishlistItem(wishlistItem: WishlistDAO): void {
-    checkIfExists(wishlistItem.name, 'Enter the name of the wishlist item.');
-    checkIfExists(wishlistItem.price, 'Enter the price of the wishlist item.');
-    checkIfExists(
-      wishlistItem.quantity,
-      'Enter the quantity desired for the wishlist item.',
-    );
-  }
-
-  /**
-   * Validate a wishlist claim.
-   * @param claim The claim to validate.
-   * @param wishlistItem The selected wishlist item.
-   */
-  export function wishlistClaim(
-    claim: WishlistClaimRequest,
-    wishlistItem: WishlistDAO | null,
-  ): asserts wishlistItem {
-    checkIfExists(wishlistItem, 'No item to claim.');
-    Validate.email(claim.emailAddress);
-  }
-
-  /**
    * Validate an email.
    * @param email The email to validate.
    * @param message The error message.
