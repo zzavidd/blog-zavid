@@ -3,6 +3,8 @@ import React from 'react';
 import CPX from 'styles/Components/Components.styles';
 import { THEME } from 'styles/Variables.styles';
 
+const stroke = THEME.dark.Color.Button.Cancel;
+
 export default function Checkbox({ checked = false, ...props }: CheckboxProps) {
   return (
     <CPX.Checkbox checked={checked} className={props.className}>
@@ -20,13 +22,13 @@ export default function Checkbox({ checked = false, ...props }: CheckboxProps) {
           rx={5}
           ry={5}
           fill={'transparent'}
-          stroke={THEME.dark.button.cancel}
+          stroke={stroke}
           strokeWidth={3}
         />
         <polyline
           points={'9,18 12.5,23 25,4'}
           fill={'transparent'}
-          stroke={THEME.dark.button.cancel}
+          stroke={stroke}
           strokeWidth={5}
           strokeLinejoin={'round'}
           strokeLinecap={'round'}

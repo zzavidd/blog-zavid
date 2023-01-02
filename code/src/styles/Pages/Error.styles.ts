@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { FONTS } from 'styles/Variables.styles';
-
 namespace ErrorStyle {
   export const Container = styled.div`
     align-items: center;
@@ -13,12 +11,12 @@ namespace ErrorStyle {
 
   export const Main = styled.main`
     display: block;
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     max-width: 500px;
   `;
 
   export const Text = styled.p`
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 1.3em;
     line-height: 1.6;
     text-align: center;
@@ -30,7 +28,7 @@ namespace ErrorStyle {
     justify-content: center;
 
     a {
-      color: ${({ theme }) => theme.Hyperlink};
+      color: ${({ theme }) => theme.Color.Hyperlink};
       font-size: 1.1em;
     }
   `;

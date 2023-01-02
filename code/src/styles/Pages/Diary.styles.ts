@@ -5,7 +5,6 @@ import { Paragraph } from 'components/Text';
 import Animations from 'styles/Animations.styles';
 import TextStyle from 'styles/Components/Text.styles';
 import Mixins from 'styles/Mixins.styles';
-import { FONTS } from 'styles/Variables.styles';
 
 import ArticleStyle from './Article.styles';
 
@@ -29,7 +28,7 @@ namespace DiaryStyle {
 
   export const PageHeading = styled.h1`
     ${Mixins.Responsive(['font-size', '2.4em', { sm: '1.8em' }])}
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     margin: 0.5em 0 0;
     text-align: center;
     text-transform: uppercase;
@@ -37,7 +36,7 @@ namespace DiaryStyle {
 
   export const PageSummary = styled(Paragraph)`
     ${Mixins.Responsive(['font-size', '1.1em', { sm: '0.9em' }])}
-    border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+    border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
     margin: 0 1em;
     max-width: 700px;
     padding-block: 1em;
@@ -71,12 +70,12 @@ namespace DiaryStyle {
   `;
 
   export const EntryDate = styled.time`
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 0.8em;
   `;
 
   export const EntryTitle = styled.h2`
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 1.5em;
     margin-block: 0.2em;
   `;
@@ -97,23 +96,23 @@ namespace DiaryStyle {
       ['pointer-events', 'auto', { lg: 'none' }],
     )};
     animation: ${Animations.fadeIn} 0.5s ease 0s 1 normal both;
-    border-bottom-color: ${({ theme }) => theme.bodyFontColor};
+    border-bottom-color: ${({ theme }) => theme.Color.Font.Body};
     border-bottom-style: solid;
     cursor: pointer;
     position: relative;
     transition: all 0.3s;
 
     &:hover {
-      background-color: ${({ theme }) => theme.fadedFontColor};
+      background-color: ${({ theme }) => theme.Color.Font.Faded};
       border-radius: 10px;
-      color: ${({ theme }) => theme.bodyFontColorReverse};
+      color: ${({ theme }) => theme.Color.Font.BodyReverse};
 
       ${TextStyle.Section.ReadMore} {
-        color: ${({ theme }) => theme.readmoreReverse};
+        color: ${({ theme }) => theme.Color.Font.ReadmoreReverse};
       }
 
       ${ArticleStyle.Tag} a {
-        color: ${({ theme }) => theme.fadedFontColorReverse};
+        color: ${({ theme }) => theme.Color.Font.FadedReverse};
       }
     }
   `;
@@ -123,7 +122,7 @@ namespace DiaryStyle {
       ['border-bottom-width', '0', { md: '1px' }],
       ['padding', '1.5em', { lg: '1em 0', sm: '1em' }],
     )};
-    border-bottom-color: ${({ theme }) => theme.bodyFontColor};
+    border-bottom-color: ${({ theme }) => theme.Color.Font.Body};
     border-bottom-style: solid;
     pointer-events: none;
     transition: all 0.3s;

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { NextImage, SignatureImage } from 'components/Image';
 import { Paragraph } from 'components/Text';
 import Mixins from 'styles/Mixins.styles';
-import { COLOR, FONTS } from 'styles/Variables.styles';
+import { COLOR } from 'styles/Variables.styles';
 
 export const HomePage = styled.div`
   display: flex;
@@ -63,14 +63,14 @@ export namespace Introduction {
 export namespace Latest {
   export const Article = styled.article`
     ${Mixins.Responsive(['max-width', '800px', { lg: '700px' }])};
-    border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
+    border-top: 1px solid ${({ theme }) => theme.Color.Font.Body};
     padding-block: 2em;
     width: 100%;
   `;
 
   export const Label = styled.label`
-    color: ${({ theme }) => theme.fadedFontColor};
-    font-family: ${FONTS.BODY};
+    color: ${({ theme }) => theme.Color.Font.Faded};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 0.8em;
     font-style: italic;
     font-weight: bold;
@@ -78,12 +78,12 @@ export namespace Latest {
 
   export const Title = styled.h2`
     ${Mixins.Responsive(['font-size', '2em', { sm: '1.7em' }])}
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     margin-block: 0.1em;
   `;
 
   export const Date = styled.time`
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
   `;
 
   export const Excerpt = styled(Paragraph)`
@@ -130,8 +130,8 @@ export namespace Latest {
 export namespace Aside {
   export const Container = styled.aside`
     ${Mixins.Responsive(['display', 'block', { xl: 'none' }])}
-    background-color: ${({ theme }) => theme.headerBackgroundColor};
-    border-left: 1px solid ${({ theme }) => theme.bodyFontColor};
+    background-color: ${({ theme }) => theme.Color.Background.Header};
+    border-left: 1px solid ${({ theme }) => theme.Color.Font.Body};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     flex: 1 0 400px;
     height: 100vh;
@@ -143,9 +143,9 @@ export namespace Aside {
 
   export const HeadingBox = styled.div`
     background: ${({ theme }) => `linear-gradient(
-      ${darken(0.02, theme.headerBackgroundColor)} 0%,
-      ${darken(0.02, theme.headerBackgroundColor)} 50%,
-      ${transparentize(0.1, theme.headerBackgroundColor)} 100%
+      ${darken(0.02, theme.Color.Background.Header)} 0%,
+      ${darken(0.02, theme.Color.Background.Header)} 50%,
+      ${transparentize(0.1, theme.Color.Background.Header)} 100%
     )`};
     display: flex;
     justify-content: center;
@@ -156,7 +156,7 @@ export namespace Aside {
   `;
 
   export const Heading = styled.h2`
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 0.9em;
     max-width: 250px;
     padding-block: 0.2em;
@@ -196,7 +196,7 @@ export namespace Aside {
   `;
 
   export const PostTitle = styled.h2`
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 1.2em;
     margin: 0;
   `;

@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import styled, { createGlobalStyle } from 'styled-components';
 
-import { FONTS } from 'styles/Variables.styles';
-
 import Mixins from './Mixins.styles';
 
 export const GlobalStyles = createGlobalStyle`
@@ -11,12 +9,12 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background-color: ${({ theme }) => theme.headerBackgroundColor};
+    background-color: ${({ theme }) => theme.Color.Background.Header};
     background-attachment: fixed;
-    background-image: ${({ theme }) => `url(${theme.backgroundImage})`};
+    background-image: ${({ theme }) => `url(${theme.Image.Background})`};
     background-repeat: no-repeat;
     background-size: cover;
-    color: ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.Color.Font.Body};
     font-feature-settings: 'lnum';
     height: 100vh;
     margin: 0;
@@ -33,11 +31,11 @@ export const GlobalStyles = createGlobalStyle`
 
   h1, h2, h3 {
     ${Mixins.Responsive(['letter-spacing', '0px', { sm: '-1px' }])};
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
   }
 
   p {
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
   }
 
   img {

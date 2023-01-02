@@ -22,10 +22,10 @@ export const BREAKPOINTS = {
 };
 
 export enum ButtonVariant {
-  CONFIRM = 'confirm',
-  CANCEL = 'cancel',
-  DELETE = 'delete',
-  ADMIN = 'admin',
+  CONFIRM = 'Confirm',
+  CANCEL = 'Cancel',
+  DELETE = 'Delete',
+  ADMIN = 'Admin',
 }
 
 export const COLOR = {
@@ -39,70 +39,94 @@ export const COLOR = {
   } as Record<AlertType, string>,
 };
 
-export const FONTS = {
-  TITLE: "'Calistoga', 'cursive'",
-  BODY: "'Mulish', sans-serif",
-};
-
 export const SIZES = {
   HEADER_HEIGHT: '40px',
   MIN_NAV_WIDTH: '70px',
   MAX_NAV_WIDTH: '250px',
 };
 
+const Font = {
+  Title: "'Calistoga', 'cursive'",
+  Body: "'Mulish', sans-serif",
+};
+
 export const THEME: Record<AppTheme, DefaultTheme> = {
   light: {
-    backgroundImage: `${Settings.CLOUDINARY_BASE_URL}/v1606588947/static/bg/bg-app-light`,
-    bodyFontColor: COLOR.BLACK,
-    bodyFontColorReverse: COLOR.WHITE,
-    fadedBorderColor: '#5a5a5a',
-    fadedFontColor: '#3e3e3e',
-    fadedFontColorReverse: '#d4d4d4',
-    Hyperlink: '#aa00ff',
-    headerBackgroundColor: '#dddddd',
-    footerBackgroundColor: '#dfdfdf',
-    Item: {
-      Cell: '#ccabe5',
-      CellPurchased: '#5f5567',
-      CellClaimed: '#b1c3f7',
-      ClaimCount: '#fff35a',
-      ClaimCountComplete: '#007c00',
-      ClaimCountWeight: 'bold',
+    Color: {
+      Background: {
+        Header: '#dddddd',
+        Footer: '#dfdfdf',
+        Modal: '#dfdfdf',
+      },
+      Border: {
+        Faded: '#5a5a5a',
+      },
+      Font: {
+        Body: COLOR.BLACK,
+        BodyReverse: COLOR.WHITE,
+        Faded: '#3e3e3e',
+        FadedReverse: '#d4d4d4',
+        Readmore: '#005dec',
+        ReadmoreReverse: '#87ceeb',
+      },
+      Button: {
+        [ButtonVariant.CONFIRM]: '#643671',
+        [ButtonVariant.CANCEL]: '#8e74ab',
+        [ButtonVariant.DELETE]: '#c80000',
+        [ButtonVariant.ADMIN]: '#cecece',
+      },
+      Hyperlink: '#aa00ff',
+      Item: {
+        Cell: '#ccabe5',
+        CellPurchased: '#5f5567',
+        CellClaimed: '#b1c3f7',
+        ClaimCount: '#fff35a',
+        ClaimCountComplete: '#007c00',
+        ClaimCountWeight: 'bold',
+      },
     },
-    readmore: '#005dec',
-    readmoreReverse: '#87ceeb',
-    button: {
-      [ButtonVariant.CONFIRM]: '#643671',
-      [ButtonVariant.CANCEL]: '#8e74ab',
-      [ButtonVariant.DELETE]: '#c80000',
-      [ButtonVariant.ADMIN]: '#cecece',
+    Font,
+    Image: {
+      Background: `${Settings.CLOUDINARY_BASE_URL}/v1606588947/static/bg/bg-app-light`,
     },
   },
   dark: {
-    backgroundImage: `${Settings.CLOUDINARY_BASE_URL}/v1597608184/static/bg/bg-app-dark`,
-    bodyFontColor: COLOR.WHITE,
-    bodyFontColorReverse: COLOR.BLACK,
-    fadedBorderColor: '#5a5a5a',
-    fadedFontColor: '#d4d4d4',
-    fadedFontColorReverse: '#3e3e3e',
-    Hyperlink: '#d98dff',
-    headerBackgroundColor: '#202020',
-    footerBackgroundColor: '#111111',
-    Item: {
-      Cell: '#402e4e',
-      CellPurchased: '#7b7b7b',
-      CellClaimed: '#5f5e82',
-      ClaimCount: '#ffff8d',
-      ClaimCountComplete: '#00ff00',
-      ClaimCountWeight: 'normal',
+    Color: {
+      Background: {
+        Header: '#202020',
+        Footer: '#111111',
+        Modal: 'rgba(0, 0, 0, 0.6)',
+      },
+      Border: {
+        Faded: '#5a5a5a',
+      },
+      Button: {
+        [ButtonVariant.CONFIRM]: '#391144',
+        [ButtonVariant.CANCEL]: '#8e74ab',
+        [ButtonVariant.DELETE]: '#c80000',
+        [ButtonVariant.ADMIN]: '#cecece',
+      },
+      Font: {
+        Body: COLOR.WHITE,
+        BodyReverse: COLOR.BLACK,
+        Faded: '#d4d4d4',
+        FadedReverse: '#3e3e3e',
+        Readmore: '#87ceeb',
+        ReadmoreReverse: '#005dec',
+      },
+      Hyperlink: '#d98dff',
+      Item: {
+        Cell: '#402e4e',
+        CellPurchased: '#7b7b7b',
+        CellClaimed: '#5f5e82',
+        ClaimCount: '#ffff8d',
+        ClaimCountComplete: '#00ff00',
+        ClaimCountWeight: 'normal',
+      },
     },
-    readmore: '#87ceeb',
-    readmoreReverse: '#005dec',
-    button: {
-      [ButtonVariant.CONFIRM]: '#391144',
-      [ButtonVariant.CANCEL]: '#8e74ab',
-      [ButtonVariant.DELETE]: '#c80000',
-      [ButtonVariant.ADMIN]: '#cecece',
+    Font,
+    Image: {
+      Background: `${Settings.CLOUDINARY_BASE_URL}/v1597608184/static/bg/bg-app-dark`,
     },
   },
 };

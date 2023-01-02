@@ -67,13 +67,13 @@ namespace ModalStyle {
 
   export const FooterButton = styled(CPX.Button)<{ variant: ButtonVariant }>`
     ${({ theme, variant }) =>
-      Mixins.ClickBehavior(theme.button[variant], {
+      Mixins.ClickBehavior(theme.Color.Button[variant], {
         hover: 0.1,
         active: 0.15,
       })}
     border-radius: 20px;
-    box-shadow: 0 0 1px 1px ${({ theme }) => theme.bodyFontColor};
-    color: ${({ theme }) => theme.bodyFontColor};
+    box-shadow: 0 0 1px 1px ${({ theme }) => theme.Color.Font.Body};
+    color: ${({ theme }) => theme.Color.Font.Body};
     font-size: 0.9em;
     min-width: 150px;
     padding: 1em;

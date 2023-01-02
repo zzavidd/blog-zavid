@@ -4,18 +4,18 @@ import styled, { css } from 'styled-components';
 import { SignatureImage } from 'components/Image';
 import { Paragraph } from 'components/Text';
 import Mixins from 'styles/Mixins.styles';
-import { COLOR, FONTS, SIZES } from 'styles/Variables.styles';
+import { COLOR, SIZES } from 'styles/Variables.styles';
 
 const CurrentPreviousStyles = css`
   &:hover {
     text-decoration: underline;
     svg {
-      border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+      border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
     }
   }
 
   &:active {
-    color: ${({ theme }) => theme.fadedFontColor};
+    color: ${({ theme }) => theme.Color.Font.Faded};
   }
 `;
 
@@ -61,7 +61,7 @@ namespace ArticleStyle {
       ['font-size', '0.85em', { sm: '0.8em' }],
       ['text-align', 'center', { sm: 'left' }],
     )}
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 0.85em;
     width: 100%;
   `;
@@ -98,8 +98,8 @@ namespace ArticleStyle {
 
   export const Tag = styled.li`
     a {
-      color: ${({ theme }) => theme.fadedFontColor};
-      font-family: ${FONTS.BODY};
+      color: ${({ theme }) => theme.Color.Font.Faded};
+      font-family: ${({ theme }) => theme.Font.Body};
       font-size: 0.9em;
       font-style: italic;
       font-weight: bold;
@@ -114,7 +114,7 @@ namespace ArticleStyle {
   export const FavouriteNotice = styled.div`
     ${Mixins.Responsive(['font-size', '0.9em', { sm: '0.85em' }])}
     display: flex;
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     gap: 0.4em;
     margin-block: 0.5em;
   `;
@@ -126,8 +126,8 @@ namespace ArticleStyle {
   `;
 
   export const BackLink = styled.a`
-    color: ${({ theme }) => theme.bodyFontColor};
-    font-family: ${FONTS.BODY};
+    color: ${({ theme }) => theme.Color.Font.Body};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-weight: bold;
     text-decoration: none;
 
@@ -139,7 +139,7 @@ namespace ArticleStyle {
       text-decoration: underline;
 
       svg {
-        border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+        border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
       }
     }
   `;
@@ -150,7 +150,7 @@ namespace ArticleStyle {
       ['top', 0, { sm: SIZES.HEADER_HEIGHT }],
     )}
     background-color: ${({ theme }) =>
-      transparentize(0.05, theme.headerBackgroundColor)};
+      transparentize(0.05, theme.Color.Background.Header)};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: grid;
     position: sticky;
@@ -160,7 +160,7 @@ namespace ArticleStyle {
   `;
 
   export const Footer = styled.section`
-    border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
+    border-top: 1px solid ${({ theme }) => theme.Color.Font.Body};
     margin-top: 1em;
     padding-top: 1em;
     width: 100%;
@@ -197,7 +197,7 @@ namespace ArticleStyle {
       }
     }};
     align-items: center;
-    color: ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.Color.Font.Body};
     gap: 1em;
     overflow: hidden;
     padding: 1em;
@@ -221,7 +221,7 @@ namespace ArticleStyle {
         ['font-size', '0.9em', { sm: '0.6em' }],
         ['letter-spacing', '0px', { sm: '-0.5px' }],
       )}
-      font-family: ${FONTS.TITLE};
+      font-family: ${({ theme }) => theme.Font.Title};
       margin: 0;
     }
 
@@ -233,7 +233,7 @@ namespace ArticleStyle {
 
   export const BottomNavigator = styled.div`
     background-color: ${({ theme }) =>
-      transparentize(0.05, theme.headerBackgroundColor)};
+      transparentize(0.05, theme.Color.Background.Header)};
     bottom: 0;
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: grid;

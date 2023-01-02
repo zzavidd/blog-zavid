@@ -1,4 +1,4 @@
-import ZIV from '@ziventi/wishlist';
+import * as ZIV from '@ziventi/wishlist';
 import type { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import { useContext, useEffect } from 'react';
