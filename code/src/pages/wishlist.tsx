@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import Layout from 'fragments/Layout';
+import WL from 'styles/Pages/Wishlist.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const WishlistPage: NextPageWithLayout<WishlistPageProps> = () => {
@@ -28,7 +29,27 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = () => {
   return (
     <ZIV.WishlistProvider>
       <ZIV.WLStyles.Container>
-        <ZIV.Grid />
+        <ZIV.WLStyles.GridBox>
+          <WL.Main.PageDetails>
+            <WL.Main.Title>Zavid&#39;s Wishlist</WL.Main.Title>
+            <WL.Main.Summary>
+              Consider this my own personal purchase log which simultaneously
+              serves as a registry for the ones who show love through gifts. The
+              idea is to channel your love so that it is both thoughtful and
+              well-received. Consider anything on this list nectar to my soul.
+              Please note that prices are subject to fluctuation.
+            </WL.Main.Summary>
+            <WL.Main.SummarySuffix>
+              My birthday is the <strong>2nd December</strong>, by the way. 👀
+            </WL.Main.SummarySuffix>
+            <WL.Main.SummarySuffix>
+              Sort Code: 82-68-42
+              <br />
+              Accountt Number: 20197208
+            </WL.Main.SummarySuffix>
+          </WL.Main.PageDetails>
+          <ZIV.Grid />
+        </ZIV.WLStyles.GridBox>
         <ZIV.Tray />
       </ZIV.WLStyles.Container>
     </ZIV.WishlistProvider>
