@@ -3,7 +3,7 @@
   "packageManager": "yarn@3.2.2",
   "prettier": "@zzavidd/prettier-config",
   "prisma": {
-    "schema": "./node_modules/@ziventi/wishlist/schema.prisma"
+    "schema": "./schema.prisma"
   },
   "scripts": {
     "dev": "next dev -p 4000",
@@ -12,10 +12,7 @@
     "tsc": "tsc --noEmit",
     "eslint": "eslint --ext .ts,.tsx src/ --cache",
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
-    "prettier:write": "yarn run prettier --write",
-    "prune": "ts-prune -p ./tsconfig.json -s **/*.ts",
-    "prisma:generate": "prisma generate",
-    "prisma:push": "prisma db push"
+    "prettier:write": "yarn run prettier --write"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
@@ -23,7 +20,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@reduxjs/toolkit": "^1.8.5",
-    "@ziventi/wishlist": "^0.2.3",
+    "@ziventi/wishlist": "^0.3.1",
     "cloudinary": "^1.30.1",
     "ejs": "^3.1.5",
     "email-validator": "^2.0.4",
