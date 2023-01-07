@@ -8,6 +8,7 @@ COPY ./code/.yarnrc.yml ./
 COPY ./code/package.json ./
 COPY ./code/yarn.lock ./
 
+RUN yarn config set unsafe-perm true
 RUN yarn install
 
 COPY ./code ./
