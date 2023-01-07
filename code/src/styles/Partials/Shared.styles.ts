@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import * as NavWidgets from 'fragments/shared/NavWidgets';
 
 export const INavStyle = styled.aside`
-  background-color: ${({ theme }) => theme.headerBackgroundColor};
-  border-right: 1px solid ${({ theme }) => theme.bodyFontColor};
+  background-color: ${({ theme }) => theme.Color.Background.Header};
+  border-right: 1px solid ${({ theme }) => theme.Color.Font.Body};
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -19,10 +19,10 @@ export const INavStyle = styled.aside`
 export const IThemeSwitch = styled(NavWidgets.ThemeSwitch)`
   align-items: center;
   background: none;
-  border: 1px solid ${({ theme }) => theme.fadedBorderColor};
+  border: 1px solid ${({ theme }) => theme.Color.Border.Faded};
   border-radius: 10px;
-  box-shadow: 0 0 1px 0 ${({ theme }) => theme.bodyFontColor};
-  color: ${({ theme }) => theme.fadedFontColor};
+  box-shadow: 0 0 1px 0 ${({ theme }) => theme.Color.Font.Body};
+  color: ${({ theme }) => theme.Color.Font.Faded};
   display: flex;
   height: fit-content;
   justify-content: center;
@@ -30,12 +30,12 @@ export const IThemeSwitch = styled(NavWidgets.ThemeSwitch)`
   transition: all 0.3s;
 
   &:hover {
-    background: ${({ theme }) => darken(-0.1, theme.headerBackgroundColor)};
-    color: ${({ theme }) => theme.bodyFontColor};
+    background: ${({ theme }) => darken(-0.1, theme.Color.Background.Header)};
+    color: ${({ theme }) => theme.Color.Font.Body};
   }
 
   &:active {
-    background: ${({ theme }) => darken(-0.2, theme.headerBackgroundColor)};
+    background: ${({ theme }) => darken(-0.2, theme.Color.Background.Header)};
     box-shadow: none;
   }
 `;

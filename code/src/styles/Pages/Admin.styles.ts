@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components';
 
 import CPX from 'styles/Components/Components.styles';
 import Mixins from 'styles/Mixins.styles';
-import { FONTS } from 'styles/Variables.styles';
 
 namespace AdminStyle {
   export const Container = styled.div`
@@ -21,11 +20,11 @@ namespace AdminStyle {
   `;
 
   export const NavButton = styled(CPX.Button)`
-    ${({ theme }) => Mixins.ClickBehavior(theme.headerBackgroundColor)}
-    background-color: ${({ theme }) => theme.headerBackgroundColor};
-    border: 2px solid ${({ theme }) => theme.bodyFontColor};
+    ${({ theme }) => Mixins.ClickBehavior(theme.Color.Background.Header)}
+    background-color: ${({ theme }) => theme.Color.Background.Header};
+    border: 2px solid ${({ theme }) => theme.Color.Font.Body};
     border-radius: 20px;
-    color: ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.Color.Font.Body};
     font-size: 1.5em;
     padding: 1em 2em;
   `;
@@ -55,26 +54,26 @@ export namespace AdminList {
 
   export const Table = styled.table`
     border-spacing: 0;
-    border-top: 1px solid ${({ theme }) => theme.bodyFontColor};
+    border-top: 1px solid ${({ theme }) => theme.Color.Font.Body};
     font-size: 1.1em;
     position: relative;
     width: 100%;
   `;
 
   export const TableHead = styled.thead`
-    background-color: ${({ theme }) => theme.headerBackgroundColor};
-    font-family: ${FONTS.TITLE};
+    background-color: ${({ theme }) => theme.Color.Background.Header};
+    font-family: ${({ theme }) => theme.Font.Title};
     position: sticky;
     top: 0;
   `;
 
   export const TableRow = styled.tr`
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     transition: all 0.3s;
 
     &:hover {
       background-color: ${({ theme }) =>
-        transparentize(0.1, theme.headerBackgroundColor)};
+        transparentize(0.1, theme.Color.Background.Header)};
     }
   `;
 
@@ -99,17 +98,17 @@ export namespace AdminList {
   `;
 
   export const Icon = styled(FontAwesomeIcon)`
-    color: ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.Color.Font.Body};
 
     &:hover {
       svg {
-        color: ${({ theme }) => darken(0.5, theme.bodyFontColor)};
+        color: ${({ theme }) => darken(0.5, theme.Font.Body)};
       }
     }
   `;
 
   export const Hyperlink = styled.a`
-    color: ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.Color.Font.Body};
     text-decoration: none;
 
     &:hover {
@@ -118,18 +117,18 @@ export namespace AdminList {
   `;
 
   export const ModalText = styled.p`
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
   `;
 
   export const AddLink = styled.a`
-    color: ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.Color.Font.Body};
     cursor: pointer;
     text-decoration: none;
     transition: all 0.1s;
 
     &:hover {
-      border-bottom: 1px solid ${({ theme }) => theme.fadedFontColor};
-      color: ${({ theme }) => theme.fadedFontColor};
+      border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Faded};
+      color: ${({ theme }) => theme.Color.Font.Faded};
     }
   `;
 

@@ -1,28 +1,16 @@
+import * as ZIV from '@ziventi/wishlist';
 import type { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import Layout from 'fragments/Layout';
-import type { WishlistPageState } from 'fragments/wishlist/WishlistContext';
-import {
-  initialState,
-  WishlistPageContext,
-} from 'fragments/wishlist/WishlistContext';
-import WishlistGrid from 'fragments/wishlist/WishlistGrid';
-import {
-  ClaimWishlistItemModal,
-  DeleteWishlistItemModal,
-} from 'fragments/wishlist/WishlistModals';
-import WishlistTray from 'fragments/wishlist/WishlistTray';
 import WL from 'styles/Pages/Wishlist.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const WishlistPage: NextPageWithLayout<WishlistPageProps> = () => {
-  const [state, setState] = useState<WishlistPageState>(initialState);
-
   const appState = useSelector((state: AppState) => state);
   const { data: session, status } = useSession();
   const email = session?.user?.email;
@@ -39,14 +27,32 @@ const WishlistPage: NextPageWithLayout<WishlistPageProps> = () => {
   }, [email, status]);
 
   return (
-    <WishlistPageContext.Provider value={[state, setState]}>
-      <WL.Container>
-        <WishlistGrid />
-        <WishlistTray />
-        <DeleteWishlistItemModal />
-        <ClaimWishlistItemModal />
-      </WL.Container>
-    </WishlistPageContext.Provider>
+    <ZIV.WishlistProvider>
+      <ZIV.WLStyles.Container>
+        <ZIV.WLStyles.GridBox>
+          <WL.Main.PageDetails>
+            <WL.Main.Title>Zavid&#39;s Wishlist</WL.Main.Title>
+            <WL.Main.Summary>
+              Consider this my own personal purchase log which simultaneously
+              serves as a registry for the ones who show love through gifts. The
+              idea is to channel your love so that it is both thoughtful and
+              well-received. Consider anything on this list nectar to my soul.
+              Please note that prices are subject to fluctuation.
+            </WL.Main.Summary>
+            <WL.Main.SummarySuffix>
+              My birthday is the <strong>2nd December</strong>, by the way. 👀
+            </WL.Main.SummarySuffix>
+            <WL.Main.SummarySuffix>
+              Sort Code: 82-68-42
+              <br />
+              Accountt Number: 20197208
+            </WL.Main.SummarySuffix>
+          </WL.Main.PageDetails>
+          <ZIV.Grid />
+        </ZIV.WLStyles.GridBox>
+        <ZIV.Tray />
+      </ZIV.WLStyles.Container>
+    </ZIV.WishlistProvider>
   );
 };
 

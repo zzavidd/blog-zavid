@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import { Paragraph } from 'components/Text';
 import Mixins from 'styles/Mixins.styles';
-import { FONTS } from 'styles/Variables.styles';
 
 namespace ReverieStyle {
   export const Container = styled.div`
@@ -18,7 +17,7 @@ namespace ReverieStyle {
 
   export const Header = styled.section`
     align-items: center;
-    border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+    border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
     display: flex;
     flex-direction: column;
     max-width: 650px;
@@ -58,13 +57,13 @@ namespace ReverieStyle {
   `;
 
   export const EntryHeading = styled.h2`
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 1.8em;
     margin: 0;
   `;
 
   export const EntryDate = styled.time`
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 0.85em;
     padding-block: 0.4em;
   `;

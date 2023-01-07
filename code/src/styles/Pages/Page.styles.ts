@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import { Paragraph } from 'components/Text';
 import Mixins from 'styles/Mixins.styles';
-import { FONTS } from 'styles/Variables.styles';
 
 namespace PageStyle {
   export const Container = styled.main`
@@ -18,7 +17,7 @@ namespace PageStyle {
   `;
 
   export const Title = styled.h2`
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 2.4em;
     margin: 0;
   `;

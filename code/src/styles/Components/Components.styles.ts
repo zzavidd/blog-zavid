@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
-import { FONTS } from 'styles/Variables.styles';
-
 namespace CPX {
   export const Button = styled.button.attrs({ type: 'button' })`
     border-style: none;
@@ -26,7 +24,7 @@ namespace CPX {
     cursor: ${({ onClick }) => (onClick ? 'pointer' : 'auto')};
 
     svg {
-      color: ${({ theme }) => theme.bodyFontColor};
+      color: ${({ theme }) => theme.Color.Font.Body};
       font-size: 1.2em;
       pointer-events: none;
     }
@@ -38,7 +36,7 @@ namespace CPX {
     color: white;
     cursor: pointer;
     display: flex;
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 0.9em;
     max-width: fit-content;
     min-width: 70px;

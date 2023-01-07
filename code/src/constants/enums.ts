@@ -24,33 +24,6 @@ export enum ISubscriptionType {
   Diary = 'Diary',
 }
 
-export enum IWishlistItemCategory {
-  ARTWORK = 'Artwork',
-  CLOTHING = 'Clothing',
-  CONFECTIONERY = 'Confectionery',
-  COSMETICS = 'Cosmetics',
-  GAMING = 'Gaming',
-  ELECTRONICS = 'Electronics',
-  HOUSEHOLD = 'Household',
-}
-
-export enum IWishlistItemVisibility {
-  PRIVATE = 'PRIVATE',
-  PUBLIC = 'PUBLIC',
-}
-
-export enum IWishlistItemPriority {
-  LOW = 1,
-  MEDIUM = 2,
-  HIGH = 3,
-}
-
-export const WishlistDisplayedPriority = {
-  [IWishlistItemPriority.LOW]: 'Wanted',
-  [IWishlistItemPriority.MEDIUM]: 'Desired',
-  [IWishlistItemPriority.HIGH]: 'Needed',
-};
-
 export enum QueryOrder {
   ASCENDING = 'ASC',
   DESCENDING = 'DESC',

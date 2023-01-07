@@ -10,8 +10,8 @@ import { IThemeSwitch } from './Shared.styles';
 namespace HeaderStyle {
   export const Header = styled.header`
     ${Mixins.Responsive(['display', 'none', { sm: 'flex' }])};
-    background-color: ${({ theme }) => theme.headerBackgroundColor};
-    border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+    background-color: ${({ theme }) => theme.Color.Background.Header};
+    border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     flex: 0 0 ${SIZES.HEADER_HEIGHT};
     justify-content: center;
@@ -34,16 +34,16 @@ namespace HeaderStyle {
 
   export const NavToggle = styled(CPX.Button)`
     background: none;
-    border: 1px solid ${({ theme }) => theme.fadedBorderColor};
+    border: 1px solid ${({ theme }) => theme.Color.Border.Faded};
     border-radius: 5px;
     box-shadow: 0 0 1px 0 ${COLOR.BLACK};
-    color: ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.Color.Font.Body};
     font-size: 0.4em;
     padding: 0.5em 1em;
     transition: transform 0.3s;
 
     &:active {
-      background-color: ${({ theme }) => theme.headerBackgroundColor};
+      background-color: ${({ theme }) => theme.Color.Background.Header};
       box-shadow: 0 0 0 0 ${COLOR.BLACK};
       transform: scale(0.95);
     }

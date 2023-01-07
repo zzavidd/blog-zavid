@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 import { Paragraph } from 'components/Text';
 import Mixins from 'styles/Mixins.styles';
-import { COLOR, FONTS } from 'styles/Variables.styles';
+import { COLOR } from 'styles/Variables.styles';
 
 const pulse = keyframes`
     0%,100% {
@@ -26,7 +26,7 @@ namespace EpistleStyle {
 
   export const Header = styled.section`
     align-items: center;
-    border-bottom: 1px solid ${({ theme }) => theme.bodyFontColor};
+    border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
     display: flex;
     flex-direction: column;
     max-width: 650px;
@@ -60,7 +60,7 @@ namespace EpistleStyle {
 
   export const Entry = styled.a`
     border-radius: 10px;
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.bodyFontColor};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.Color.Font.Body};
     display: block;
     flex: 1 1 300px;
     flex-direction: column;
@@ -92,7 +92,7 @@ namespace EpistleStyle {
 
   export const EntryHeading = styled.h2`
     ${Mixins.Responsive(['font-size', '1.5em', { sm: '1.4em' }])}
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     margin: 0;
   `;
 

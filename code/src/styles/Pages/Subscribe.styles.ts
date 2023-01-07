@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import CPX from 'styles/Components/Components.styles';
 import Mixins from 'styles/Mixins.styles';
-import { COLOR, FONTS } from 'styles/Variables.styles';
+import { COLOR } from 'styles/Variables.styles';
 
 namespace SubscribeStyle {
   export const Container = styled.div`
@@ -12,7 +12,7 @@ namespace SubscribeStyle {
   `;
 
   export const Heading = styled.h2`
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 2.4em;
     margin: 0;
   `;
@@ -23,7 +23,7 @@ namespace SubscribeStyle {
   `;
 
   export const Button = styled(CPX.Button)`
-    ${({ theme }) => Mixins.ClickBehavior(theme.button.confirm)};
+    ${({ theme }) => Mixins.ClickBehavior(theme.Color.Button.Confirm)};
     border: 1px solid ${COLOR.WHITE};
     border-radius: 15px;
     color: ${COLOR.WHITE};
@@ -47,7 +47,7 @@ export namespace SubscribePrefStyle {
   `;
 
   export const Heading = styled.h2`
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 2.4em;
     margin: 0;
   `;
@@ -70,13 +70,13 @@ export namespace SubscribePrefStyle {
     padding: 0.5em 0;
 
     li {
-      font-family: ${FONTS.BODY};
+      font-family: ${({ theme }) => theme.Font.Body};
       font-size: 1.2em;
     }
   `;
 
   export const Button = styled(CPX.Button)`
-    ${({ theme }) => Mixins.ClickBehavior(theme.button.confirm)};
+    ${({ theme }) => Mixins.ClickBehavior(theme.Color.Button.Confirm)};
     border: 1px solid ${COLOR.WHITE};
     border-radius: 15px;
     color: ${COLOR.WHITE};
@@ -85,7 +85,7 @@ export namespace SubscribePrefStyle {
   `;
 
   export const HyperlinkButton = styled.p`
-    color: ${({ theme }) => theme.hyperlink};
+    color: ${({ theme }) => theme.Color.Hyperlink};
     cursor: pointer;
     font-size: 1em;
     margin-top: 1em;

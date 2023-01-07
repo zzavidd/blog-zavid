@@ -1,12 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 
+import type { WishlistItem } from '@ziventi/wishlist/types';
+
 import { EmailStyle, EmailTheme } from '../constants';
 import { Anchor, Blockquote, Button, Paragraph } from '../lib/components';
 import { Body, Footer, Header, Main, SignatureImage } from '../lib/fragments';
 
 const Theme = EmailStyle.Color[EmailTheme];
 
-export default function WishlistEmail({ wishlistItem }: WishlistEmailProps) {
+export default function WishlistClaimEmail({
+  wishlistItem,
+}: WishlistEmailProps) {
   return (
     <html>
       <Body>
@@ -64,5 +68,5 @@ export default function WishlistEmail({ wishlistItem }: WishlistEmailProps) {
 }
 
 interface WishlistEmailProps {
-  wishlistItem: WishlistDAO;
+  wishlistItem: WishlistItem;
 }

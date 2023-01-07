@@ -2,7 +2,7 @@ import { darken } from 'polished';
 import styled, { keyframes, css } from 'styled-components';
 
 import Mixins from 'styles/Mixins.styles';
-import { COLOR, FONTS } from 'styles/Variables.styles';
+import { COLOR } from 'styles/Variables.styles';
 
 const alertFadeInOut = keyframes`
   0%, 16% {opacity: 0; pointer-events: auto;}
@@ -42,7 +42,7 @@ export namespace Alert {
     color: ${({ type }) => darken(1, COLOR.ALERT[type])};
     cursor: pointer;
     display: flex;
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 0.9em;
     font-weight: bold;
     gap: 0.4em;
@@ -119,7 +119,7 @@ export namespace Snack {
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     color: ${COLOR.WHITE};
     display: flex;
-    font-family: ${FONTS.BODY};
+    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 0.9em;
     gap: 0.4em;
     padding: 1em;

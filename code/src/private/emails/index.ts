@@ -13,7 +13,7 @@ import Logger from 'constants/logger';
 
 import { HTML_TO_TEXT_OPTIONS, isProd, TRANSPORTER } from './constants';
 import DiaryEmail from './templatesv2/diary';
-import WishlistEmail from './templatesv2/wishlist';
+// import WishlistEmail from './templatesv2/wishlist';
 
 /** The email address of the recipient in development. */
 const testRecipient: TestRecipient = {
@@ -55,21 +55,6 @@ namespace Emailer {
       subject,
       ISubscriptionType.Diary,
     );
-  }
-
-  /**
-   * Send an email to the claimant of the wishlist item.
-   * @param wishlistItem The wishlist item being claimed.
-   * @param claimant The email address of the claimant.
-   */
-  export async function notifyWishlistItemClaimant(
-    wishlistItem: WishlistDAO,
-    claimant: string,
-  ): Promise<void> {
-    const subject = "You claimed an item on Zavid's Wishlist.";
-    const element = React.createElement(WishlistEmail, { wishlistItem });
-    const message = ReactDOMServer.renderToStaticMarkup(element);
-    await sendMailToAddress(claimant, subject, message);
   }
 }
 

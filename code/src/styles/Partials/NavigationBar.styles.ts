@@ -3,7 +3,7 @@ import styled, { css, keyframes } from 'styled-components';
 
 import * as NavWidgets from 'fragments/shared/NavWidgets';
 import Mixins from 'styles/Mixins.styles';
-import { COLOR, FONTS, SIZES } from 'styles/Variables.styles';
+import { COLOR, SIZES } from 'styles/Variables.styles';
 
 import { INavStyle, IThemeSwitch } from './Shared.styles';
 
@@ -38,8 +38,8 @@ namespace NavStyle {
   `;
 
   export const BrandTagline = styled.h3`
-    color: ${({ theme }) => theme.bodyFontColor};
-    font-family: ${FONTS.TITLE};
+    color: ${({ theme }) => theme.Color.Font.Body};
+    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 0.85em;
     line-height: 140%;
     margin: 0;
@@ -62,7 +62,7 @@ namespace NavStyle {
     align-items: flex-start;
     display: flex;
     flex-direction: column;
-    font-family: ${FONTS.TITLE};
+    font-family: ${({ theme }) => theme.Font.Title};
     gap: 1.4em;
     list-style-type: none;
     margin: 0;
@@ -72,7 +72,7 @@ namespace NavStyle {
   `;
 
   export const NavItem = styled.a`
-    color: ${({ theme }) => theme.bodyFontColor};
+    color: ${({ theme }) => theme.Color.Font.Body};
     display: grid;
     font-size: 1.1em;
     gap: 1.4em;
@@ -82,7 +82,7 @@ namespace NavStyle {
     transition: all 0.3s;
 
     svg {
-      color: ${({ theme }) => theme.fadedFontColor};
+      color: ${({ theme }) => theme.Color.Font.Faded};
       font-size: 1.4em;
       justify-self: center;
     }
@@ -91,7 +91,7 @@ namespace NavStyle {
       transform: scale(1.08);
 
       span {
-        border-bottom: 2px solid ${({ theme }) => theme.bodyFontColor};
+        border-bottom: 2px solid ${({ theme }) => theme.Color.Font.Body};
       }
     }
   `;
@@ -126,9 +126,9 @@ namespace NavStyle {
   export const AdminButton = styled(NavWidgets.AdminButton)`
     align-items: center;
     background: none;
-    border: 1px solid ${({ theme }) => theme.fadedBorderColor};
+    border: 1px solid ${({ theme }) => theme.Color.Border.Faded};
     border-radius: 10px;
-    color: ${({ theme }) => theme.fadedFontColor};
+    color: ${({ theme }) => theme.Color.Font.Faded};
     display: flex;
     flex: 0 1 auto;
     gap: 0;
@@ -138,12 +138,12 @@ namespace NavStyle {
     width: 100%;
 
     &:hover {
-      background: ${({ theme }) => darken(-0.1, theme.headerBackgroundColor)};
-      color: ${({ theme }) => theme.bodyFontColor};
+      background: ${({ theme }) => darken(-0.1, theme.Color.Background.Header)};
+      color: ${({ theme }) => theme.Color.Font.Body};
     }
 
     &:active {
-      background: ${({ theme }) => darken(-0.2, theme.headerBackgroundColor)};
+      background: ${({ theme }) => darken(-0.2, theme.Color.Background.Header)};
       box-shadow: none;
     }
 
