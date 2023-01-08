@@ -12,6 +12,7 @@ RUN yarn install
 
 COPY ./code ./
 
+RUN yarn prisma generate
 RUN yarn run build
 
 CMD yarn run start
