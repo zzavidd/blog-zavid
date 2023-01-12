@@ -27,14 +27,6 @@ namespace Reducers {
       state.cookiePolicyAccepted = action.payload;
     }
 
-    export function setWishlistState<T extends keyof AppLocalState['wishlist']>(
-      state: AppLocalState,
-      action: PayloadAction<{ name: T; value: AppLocalState['wishlist'][T] }>,
-    ) {
-      const { name, value } = action.payload;
-      state.wishlist[name] = value;
-    }
-
     export function setUserEmail(
       state: AppLocalState,
       action: PayloadAction<string>,
