@@ -4,9 +4,9 @@ ARG WORKDIR
 
 WORKDIR /var/www/$WORKDIR/code
 COPY ./code/.yarn ./.yarn/
-COPY ./code/.yarnrc.yml ./
-COPY ./code/package.json ./
-COPY ./code/yarn.lock ./
+COPY ./code/.yarnrc.yml .
+COPY ./code/package.json .
+COPY ./code/yarn.lock .
 
 RUN yarn install
 
