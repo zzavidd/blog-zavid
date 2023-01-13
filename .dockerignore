@@ -1,9 +1,9 @@
 **/.next
 **/.DS_Store
 **/.git
-# **/node_modules
+**/node_modules
 **/devops/scripts
-# **/.yarn/cache
+**/.yarn/cache
 **/ops
 **/test
 
