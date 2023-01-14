@@ -15,7 +15,7 @@ services:
       - "3333:3333"
     restart: unless-stopped
     volumes:
-        - /node_modules
+        - /var/www/dev.zavid/node_modules
 
   production:
     image: zavid
