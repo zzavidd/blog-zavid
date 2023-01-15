@@ -102,7 +102,7 @@ export namespace AdminList {
 
     &:hover {
       svg {
-        color: ${({ theme }) => darken(0.5, theme.Font.Body)};
+        color: ${({ theme }) => darken(0.5, theme.Color.Font.Body)};
       }
     }
   `;

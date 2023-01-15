@@ -26,6 +26,7 @@ export const formatParagraph = (
   if (!paragraph) return <React.Fragment />;
 
   const { forEmails = false, inline = false } = options;
+  const emphasise = (text: string) => applyEmphasisFormatting(text, options);
 
   const foundSection = Object.entries(sectionRegexMapping).find(([, regex]) =>
     regex.test(paragraph),
@@ -84,7 +85,7 @@ export const formatParagraph = (
           .filter((e) => e)
           .map((item, key) => {
             const [, value] = item.match(/^\+\s*(.*)$/)!;
-            return <li key={key}>{applyEmphasisFormatting(value)}</li>;
+            return <li key={key}>{emphasise(value)}</li>;
           });
 
         return (
@@ -99,7 +100,7 @@ export const formatParagraph = (
         return (
           <div key={key}>
             <span>-</span>
-            <span>{applyEmphasisFormatting(text)}</span>
+            <span>{emphasise(text)}</span>
           </div>
         );
       case Section.NUMBERED_LIST:
@@ -109,7 +110,7 @@ export const formatParagraph = (
           .filter((e) => e)
           .map((item, key) => {
             const [, value] = item.match(/^(?:[0-9]+[\.\)]|\+)\s*(.*)$/)!;
-            return <li key={key}>{applyEmphasisFormatting(value)}</li>;
+            return <li key={key}>{emphasise(value)}</li>;
           });
 
         return (
@@ -120,7 +121,7 @@ export const formatParagraph = (
       case Section.BLOCKQUOTE:
         return (
           <TS.Section.Blockquote key={key}>
-            {applyEmphasisFormatting(text)}
+            {emphasise(text)}
           </TS.Section.Blockquote>
         );
       case Section.TWEET: {
@@ -184,10 +185,10 @@ export const formatParagraph = (
     }
   } else {
     return inline ? (
-      <span key={key}>{applyEmphasisFormatting(paragraph)}</span>
+      <span key={key}>{emphasise(paragraph)}</span>
     ) : (
       <TS.Section.Paragraph key={key}>
-        {applyEmphasisFormatting(paragraph)}
+        {emphasise(paragraph)}
       </TS.Section.Paragraph>
     );
   }

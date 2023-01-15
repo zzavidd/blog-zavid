@@ -25,7 +25,11 @@ export function Anchor({
   ...props
 }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   return (
-    <a rel={'noopener noreferrer'} {...props} style={{ color: '#7e14ff' }}>
+    <a
+      rel={'noopener noreferrer'}
+      {...props}
+      style={{ color: '#7e14ff' }}
+      target={'_blank'}>
       {children}
     </a>
   );

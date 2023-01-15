@@ -6,7 +6,12 @@ import {
 } from 'lib/text/regex';
 import TextStyle from 'styles/Components/Text.styles';
 
-export function applyEmphasisFormatting(paragraph: string) {
+import type { FormatTextOptions } from '../functions';
+
+export function applyEmphasisFormatting(
+  paragraph: string,
+  options: FormatTextOptions = {},
+) {
   if (!paragraph) return '';
   const combinedEmphasisRegex = getCombinedEmphasisRegex();
 
@@ -23,15 +28,16 @@ export function applyEmphasisFormatting(paragraph: string) {
     if (foundEmphasis) {
       const [emphasis, { pure: regex }] = foundEmphasis;
       const matches = fragment.match(regex);
+      if (!matches) return;
 
       try {
         switch (emphasis) {
           case Emphasis.CUSTOM:
-            const textToCustomise = matches![1];
+            const textToCustomise = matches[1];
             transformation = <span key={key}>{textToCustomise}</span>;
             break;
           case Emphasis.BOLDITALIC:
-            const textToBoldItalize = applyEmphasisFormatting(matches![1]);
+            const textToBoldItalize = applyEmphasisFormatting(matches[1]);
             transformation = (
               <strong key={key}>
                 <em>{textToBoldItalize}</em>
@@ -39,33 +45,46 @@ export function applyEmphasisFormatting(paragraph: string) {
             );
             break;
           case Emphasis.ITALIC:
-            const textToItalize = applyEmphasisFormatting(matches![1]);
+            const textToItalize = applyEmphasisFormatting(matches[1]);
             transformation = <em key={key}>{textToItalize}</em>;
             break;
           case Emphasis.BOLD:
-            const textToBold = applyEmphasisFormatting(matches![1]);
+            const textToBold = applyEmphasisFormatting(matches[1]);
             transformation = <strong key={key}>{textToBold}</strong>;
             break;
           case Emphasis.UNDERLINE:
-            const textToUnderline = applyEmphasisFormatting(matches![1]);
+            const textToUnderline = applyEmphasisFormatting(matches[1]);
             transformation = <u key={key}>{textToUnderline}</u>;
             break;
           case Emphasis.STRIKETHROUGH:
-            const textToStrikethrough = applyEmphasisFormatting(matches![1]);
+            const textToStrikethrough = applyEmphasisFormatting(matches[1]);
             transformation = <s key={key}>{textToStrikethrough}</s>;
             break;
           case Emphasis.HYPERLINK:
-            const textToHyperlink = applyEmphasisFormatting(matches![1]);
-            const link = matches![2];
-            transformation = (
-              <TextStyle.Emphasis.Anchor href={link} key={key}>
-                {textToHyperlink}
-              </TextStyle.Emphasis.Anchor>
-            );
+            const textToHyperlink = applyEmphasisFormatting(matches[1]);
+            const link = matches[2];
+            if (options.forEmails) {
+              transformation = (
+                <a
+                  href={link}
+                  style={{ color: '#7e14ff' }}
+                  rel={'noopener noreferrer'}
+                  target={'_blank'}
+                  key={key}>
+                  {textToHyperlink}
+                </a>
+              );
+            } else {
+              transformation = (
+                <TextStyle.Emphasis.Anchor href={link} key={key}>
+                  {textToHyperlink}
+                </TextStyle.Emphasis.Anchor>
+              );
+            }
             break;
           case Emphasis.HIGHLIGHT:
-            const highlightColor = matches![1];
-            const textToHighlight = applyEmphasisFormatting(matches![2]);
+            const highlightColor = matches[1];
+            const textToHighlight = applyEmphasisFormatting(matches[2]);
             transformation = (
               <mark
                 style={{
@@ -79,8 +98,8 @@ export function applyEmphasisFormatting(paragraph: string) {
             );
             break;
           case Emphasis.COLOR:
-            const color = matches![1];
-            const textToColor = applyEmphasisFormatting(matches![2]);
+            const color = matches[1];
+            const textToColor = applyEmphasisFormatting(matches[2]);
             transformation = (
               <span style={{ color }} key={key}>
                 {textToColor}
@@ -88,21 +107,21 @@ export function applyEmphasisFormatting(paragraph: string) {
             );
             break;
           case Emphasis.SUPERSCRIPT:
-            const textToSuper = applyEmphasisFormatting(matches![1]);
+            const textToSuper = applyEmphasisFormatting(matches[1]);
             transformation = <sup key={key}>{textToSuper}</sup>;
             break;
           case Emphasis.SUBSCRIPT:
-            const textToSub = applyEmphasisFormatting(matches![1]);
+            const textToSub = applyEmphasisFormatting(matches[1]);
             transformation = <sub key={key}>{textToSub}</sub>;
             break;
           case Emphasis.ESCAPE:
-            transformation = matches![1];
+            transformation = matches[1];
             break;
           default:
             break;
         }
       } catch (e: any) {
-        Logger.error(e.message);
+        throw new Error(e);
       }
     }
 
@@ -132,6 +151,7 @@ export function removeEmphasisFormatting(paragraph: string): string {
       if (foundEmphasis) {
         const [emphasis, { pure: regex }] = foundEmphasis;
         const matches = fragment.match(regex);
+        if (!matches) return;
 
         try {
           switch (emphasis) {
@@ -145,11 +165,11 @@ export function removeEmphasisFormatting(paragraph: string): string {
             case Emphasis.SUPERSCRIPT:
             case Emphasis.SUBSCRIPT:
             case Emphasis.ESCAPE:
-              transformation = removeEmphasisFormatting(matches![1]);
+              transformation = removeEmphasisFormatting(matches[1]);
               break;
             case Emphasis.HIGHLIGHT:
             case Emphasis.COLOR:
-              transformation = removeEmphasisFormatting(matches![2]);
+              transformation = removeEmphasisFormatting(matches[2]);
               break;
             default:
               break;
