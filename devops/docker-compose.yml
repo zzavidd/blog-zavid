@@ -14,6 +14,9 @@ services:
     ports:
       - "3333:3333"
     restart: unless-stopped
+    volumes:
+        - /var/www/dev.zavid/code:/var/www/dev.zavid/code
+        - /var/www/dev.zavid/code/node_modules
 
   production:
     image: zavid
