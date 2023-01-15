@@ -10,9 +10,10 @@ COPY ./code/.yarnrc.yml .
 COPY ./code/package.json .
 COPY ./code/yarn.lock .
 
+COPY ./code ./
+
 RUN yarn install
 
-COPY ./code ./
 
 RUN yarn prisma generate
 RUN yarn run build
