@@ -48,4 +48,4 @@ else
 fi
 
 cd "/var/www/${WORKDIR}"
-docker-compose -f ./devops/docker-compose.yml up -d "${MODE}"
+docker-compose -f ./devops/docker-compose.yml up -d --build "${MODE}"
