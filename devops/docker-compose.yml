@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
     volumes:
         - .:/var/www/dev.zavid
-        - /var/www/dev.zavid/node_modules
+        - /var/www/dev.zavid/code/node_modules
 
   production:
     image: zavid
