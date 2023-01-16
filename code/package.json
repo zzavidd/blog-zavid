@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "tsc": "tsc --noEmit",
+    "release": "../devops/scripts/release.sh",
     "eslint": "eslint --ext .ts,.tsx src/ --cache",
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
     "prettier:write": "yarn run prettier --write"
