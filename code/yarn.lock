@@ -1059,9 +1059,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ziventi/wishlist@npm:^0.4.6":
-  version: 0.4.6
-  resolution: "@ziventi/wishlist@npm:0.4.6"
+"@ziventi/wishlist@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@ziventi/wishlist@npm:0.6.0"
   dependencies:
     "@fortawesome/fontawesome-svg-core": ^6.2.1
     "@fortawesome/free-solid-svg-icons": ^6.2.1
@@ -1073,6 +1073,7 @@ __metadata:
     polished: ^4.2.2
     react-datepicker: ^4.8.0
     swr: ^2.0.0
+    uuid: ^9.0.0
     zod: ^3.20.2
   peerDependencies:
     "@prisma/client": ^4.7.1
@@ -1085,7 +1086,7 @@ __metadata:
     redux: ^4.2.0
     redux-persist: ^6.0.0
     styled-components: ^5.3.6
-  checksum: 1f439eeb546942ec3469cdb4995d6718dac52c58a5cfee1829c1d75cf72a5f84c08f3710e82c24618b565eaa123d2b4adb723f432153170b6f73daf41e05bccd
+  checksum: 03220f2d83ed31b1616ac8849bc7525865f2a3c29886c50d376675d99fedb154bf878565619110df9bdfa9f4d83d8fdea0984875a37b2511ec07c629a7e75751
   languageName: node
   linkType: hard
 
@@ -1509,7 +1510,7 @@ __metadata:
     "@types/uuid": ^8.3.0
     "@typescript-eslint/eslint-plugin": ^5.31.0
     "@typescript-eslint/parser": ^5.31.0
-    "@ziventi/wishlist": ^0.4.6
+    "@ziventi/wishlist": ^0.6.0
     "@zzavidd/eslint-config": ^1.4.8
     "@zzavidd/prettier-config": ^1.4.8
     cloudinary: ^1.30.1
@@ -6722,6 +6723,15 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "uuid@npm:9.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 8dd2c83c43ddc7e1c71e36b60aea40030a6505139af6bee0f382ebcd1a56f6cd3028f7f06ffb07f8cf6ced320b76aea275284b224b002b289f89fe89c389b028
   languageName: node
   linkType: hard
 

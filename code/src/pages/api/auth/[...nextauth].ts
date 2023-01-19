@@ -1,16 +1,5 @@
-import type { NextAuthOptions } from 'next-auth';
+import { nextAuthOptions } from '@ziventi/wishlist/server';
 import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
 
-export const nextAuthOptions: NextAuthOptions = {
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      checks: ['state', 'pkce'],
-    }),
-  ],
-  secret: process.env.SESSION_SECRET,
-};
-
+export { nextAuthOptions } from '@ziventi/wishlist/server';
 export default NextAuth(nextAuthOptions);
