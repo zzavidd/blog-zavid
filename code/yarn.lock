@@ -1059,9 +1059,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ziventi/wishlist@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "@ziventi/wishlist@npm:0.7.0"
+"@ziventi/wishlist@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@ziventi/wishlist@npm:0.8.0"
   dependencies:
     "@fortawesome/fontawesome-svg-core": ^6.2.1
     "@fortawesome/free-solid-svg-icons": ^6.2.1
@@ -1087,7 +1087,7 @@ __metadata:
     redux: ^4.2.0
     redux-persist: ^6.0.0
     styled-components: ^5.3.6
-  checksum: 4022d7df3f1200dd3f182c8b1db552b0ae9182316ec1975599674efba971193f200f76cdd7709f208abc9deed24a96eaac08a3cbb36f7ca1b90594a57b9c31ae
+  checksum: 9558ffe9c303ed1456de6746a742a0cff7dcb35c72e4c8a4a4620fc41e505edc70d2177aed32d288d61f42d6b9507545ea9216bb4a74559f55dcfac0d2d6901a
   languageName: node
   linkType: hard
 
@@ -1511,7 +1511,7 @@ __metadata:
     "@types/uuid": ^8.3.0
     "@typescript-eslint/eslint-plugin": ^5.31.0
     "@typescript-eslint/parser": ^5.31.0
-    "@ziventi/wishlist": ^0.7.0
+    "@ziventi/wishlist": ^0.8.0
     "@zzavidd/eslint-config": ^1.4.8
     "@zzavidd/prettier-config": ^1.4.8
     cloudinary: ^1.30.1
