@@ -34,7 +34,7 @@ namespace ZDate {
   }
 
   export function formatISO(date: Date | string) {
-    return new Intl.DateTimeFormat('en-CA').format(new Date(date));
+    return new Intl.DateTimeFormat('sv-SE').format(new Date(date));
   }
 
   export function calculateZavidAge(): number {
