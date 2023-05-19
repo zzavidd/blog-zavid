@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node:
     docker:
-      - image: cimg/node:16.3.0
+      - image: node:18
   ssh:
     docker:
       - image: arvindr226/alpine-ssh
@@ -14,19 +14,24 @@ commands:
     steps:
       - checkout
       - restore_cache:
-          name: Restore yarn cache
+          name: Restore pnpm cache
           keys:
-            - yarn-packages-{{ .Environment.CACHE_VERSION }}-{{ checksum "./code/yarn.lock" }}
+            - pnpm-packages-{{ checksum "./code/pnpm-lock.yaml" }}
+      - run:
+          name: Install pnpm package manager
+          command: |
+            corepack enable
+            corepack prepare pnpm@8.1.0 --activate
+          working_directory: ./code
       - run:
           name: Install dependencies
-          command: yarn install
+          command: pnpm install
           working_directory: ./code
       - save_cache:
-          name: Save yarn cache
-          key: yarn-packages-{{ .Environment.CACHE_VERSION }}-{{ checksum "./code/yarn.lock" }}
+          name: Save pnpm cache
+          key: pnpm-packages-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
-            - code/.yarn/cache
-            - code/.yarn/unplugged
+            - node_modules
   transfer_scripts:
     description: "Transfers deployment scripts via SCP"
     parameters:
@@ -50,11 +55,11 @@ jobs:
       - install_dependencies
       - run:
           name: Run TypeScript checks
-          command: yarn run tsc
+          command: pnpm run tsc
           working_directory: ./code
       - run:
           name: Run ESLint
-          command: yarn run eslint --max-warnings 0
+          command: pnpm run eslint --max-warnings 0
           working_directory: ./code
   build:
     executor: node
@@ -63,13 +68,17 @@ jobs:
       - restore_cache:
           name: Restore build cache
           keys:
-            - next-build-{{ .Environment.CACHE_VERSION }}-{{ checksum "./code/yarn.lock" }}
+            - next-build-{{ checksum "./code/pnpm-lock.yaml" }}
+      - run:
+          name: Initialise Prisma client
+          command: pnpm prisma generate
+          working_directory: ./code
       - run:
           name: Build project
-          command: yarn run build
+          command: pnpm run build
           working_directory: ./code
       - save_cache:
-          key: next-build-{{ .Environment.CACHE_VERSION }}-{{ checksum "./code/yarn.lock" }}
+          key: next-build-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
             - code/.next/cache
   deploy_staging:

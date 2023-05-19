@@ -1,20 +1,35 @@
-FROM node:18-slim
+FROM node:18-slim AS builder
+
+RUN corepack enable
+RUN corepack prepare pnpm@8.1.0 --activate
 
 RUN apt-get update -y && apt-get install -y openssl
 
 ARG WORKDIR
 
 WORKDIR /var/www/$WORKDIR/code
-COPY ./code/.yarn ./.yarn/
-COPY ./code/.yarnrc.yml .
+COPY ./code/pnpm-lock.yaml .
 COPY ./code/package.json .
-COPY ./code/yarn.lock .
 
-RUN yarn install
+RUN pnpm install
 
 COPY ./code ./
 
-RUN yarn prisma generate
-RUN yarn run build
+RUN pnpm prisma generate
+RUN pnpm run build
 
-CMD yarn run start
+FROM node:18-slim AS runner
+ARG WORKDIR
+
+RUN corepack enable
+RUN corepack prepare pnpm@8.1.0 --activate
+
+WORKDIR /var/www/$WORKDIR
+
+COPY --from=builder /var/www/$WORKDIR/code/package.json .
+COPY --from=builder /var/www/$WORKDIR/code/pnpm-lock.yaml .
+COPY --from=builder /var/www/$WORKDIR/code/next.config.js .
+COPY --from=builder /var/www/$WORKDIR/code/.next/standalone .
+COPY --from=builder /var/www/$WORKDIR/code/.next/static ./.next/static
+
+CMD pnpm run start

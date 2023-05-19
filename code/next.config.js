@@ -21,6 +21,7 @@ module.exports = {
   poweredByHeader: false,
   reactStrictMode: true,
   serverRuntimeConfig: { dkimPrivateKey },
+  output: 'standalone',
   typescript: {
     ignoreBuildErrors: true,
   },

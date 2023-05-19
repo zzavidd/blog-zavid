@@ -1,7 +1,7 @@
 import type * as CSS from 'csstype';
 import { darken } from 'polished';
-import type { FlattenSimpleInterpolation } from 'styled-components';
 import { css } from 'styled-components';
+import type { FlattenSimpleInterpolation, CSSObject } from 'styled-components';
 
 import type { Breakpoint } from 'styles/Variables.styles';
 import { BREAKPOINTS } from 'styles/Variables.styles';
@@ -28,17 +28,15 @@ namespace Mixins {
     ...entries: ResponsiveEntry[]
   ): FlattenSimpleInterpolation {
     return entries.map(([attribute, fallback, breakpoints]) => {
-      return css`
-        ${attribute}: ${fallback};
-        ${breakpoints &&
-        Object.entries(breakpoints).map(([breakpoint, value]) => {
-          return css`
-            @media (max-width: ${BREAKPOINTS[breakpoint as Breakpoint]}) {
-              ${attribute}: ${value};
-            }
-          `;
-        })}
-      `;
+      const styles: CSSObject = { [attribute]: fallback };
+      Object.entries(breakpoints).forEach(([breakpoint, value]) => {
+        styles[`@media (max-width: ${BREAKPOINTS[breakpoint as Breakpoint]}`] =
+          {
+            [attribute]: value,
+          };
+      });
+
+      return styles;
     });
   }
 

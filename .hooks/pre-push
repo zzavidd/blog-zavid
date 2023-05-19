@@ -1,11 +1,11 @@
 #!/bin/bash
 
 cd code || exit 1
-yarn run eslint --max-warnings 0 || exit 1
+pnpm run eslint --max-warnings 0 || exit 1
 
 FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
 [ -z "$FILES" ] && exit 0
-echo "$FILES" | xargs yarn run prettier:write --ignore-unknown
+echo "$FILES" | xargs pnpm run prettier:write --ignore-unknown
 echo "$FILES" | xargs git add
 echo "$FILES" | xargs git commit -m "Run Prettier"
 exit 0

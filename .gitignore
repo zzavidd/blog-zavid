@@ -8,8 +8,4 @@
 **/.eslintcache
 **/.tsbuildinfo
 
-**/.yarn/*
-!**/.yarn/plugins
-!**/.yarn/releases
-
 **/.husky/_

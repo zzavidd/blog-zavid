@@ -3,7 +3,6 @@
 **/.git
 # **/node_modules
 **/devops/scripts
-**/.yarn/cache
 **/ops
 **/test
 
@@ -11,4 +10,3 @@
 **/.husky
 
 /package.json
-/yarn.lock
