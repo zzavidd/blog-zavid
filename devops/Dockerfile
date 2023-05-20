@@ -24,7 +24,7 @@ ARG WORKDIR
 RUN corepack enable
 RUN corepack prepare pnpm@8.1.0 --activate
 
-WORKDIR /var/www/$WORKDIR
+WORKDIR /var/www/$WORKDIR/code
 
 COPY --from=builder /var/www/$WORKDIR/code/package.json .
 COPY --from=builder /var/www/$WORKDIR/code/pnpm-lock.yaml .
@@ -32,4 +32,4 @@ COPY --from=builder /var/www/$WORKDIR/code/next.config.js .
 COPY --from=builder /var/www/$WORKDIR/code/.next/standalone .
 COPY --from=builder /var/www/$WORKDIR/code/.next/static ./.next/static
 
-CMD pnpm run start
+CMD node server.js
