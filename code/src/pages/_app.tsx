@@ -1,10 +1,10 @@
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { SessionProvider, useSession } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import React, { useEffect, useState } from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { StyleSheetManager, ThemeProvider } from 'styled-components';
+import { StyleSheetManager } from 'styled-components';
 
 import AlertBar from 'components/Alert';
 import Snackbar from 'components/Snack';
@@ -16,12 +16,16 @@ import AdminGateway from 'fragments/AdminGateway';
 import MatomoScript from 'fragments/MatomoScript';
 import PageMetadata from 'fragments/PageMetadata';
 import CookiePrompt from 'fragments/shared/CookiePrompt';
-import { GlobalStyles } from 'styles/Global.styles';
 import { THEME } from 'styles/Variables.styles';
+
+// eslint-disable-next-line import/order
+import 'react-datepicker/dist/react-datepicker.css';
+import theme from 'stylesv2/Theme.styles';
+import { trpc } from 'utils/trpc';
 
 const isDevelopmentMode = process.env.NEXT_PUBLIC_APP_ENV === 'development';
 
-export default function App(props: AppProps) {
+const App = (props: AppProps) => {
   return (
     <React.Fragment>
       <PageMetadata {...props.pageProps.pathDefinition} />
@@ -29,14 +33,19 @@ export default function App(props: AppProps) {
         <PersistGate loading={null} persistor={persistor}>
           <SessionProvider session={props.pageProps.session}>
             <StyleSheetManager disableVendorPrefixes={isDevelopmentMode}>
-              <ZAVIDApp {...props} />
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <ZAVIDApp {...props} />
+              </ThemeProvider>
             </StyleSheetManager>
           </SessionProvider>
         </PersistGate>
       </Provider>
     </React.Fragment>
   );
-}
+};
+
+export default trpc.withTRPC(App);
 
 /**
  * The root of the ZAVID blog.
@@ -168,13 +177,10 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
     <AdminGateway onlyBlockInStaging={true}>
       <ContextsProvider {...providedContexts}>
         <MatomoScript />
-        <ThemeProvider theme={theme}>
-          <GlobalStyles />
-          {ComponentWithLayout}
-          <CookiePrompt />
-          <Snackbar />
-          <AlertBar />
-        </ThemeProvider>
+        {ComponentWithLayout}
+        <CookiePrompt />
+        <Snackbar />
+        <AlertBar />
       </ContextsProvider>
     </AdminGateway>
   );

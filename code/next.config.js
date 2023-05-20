@@ -24,6 +24,13 @@ const config = {
   },
   images: {
     domains: ['res.cloudinary.com'],
+    loader: 'custom',
+    loaderFile: './image-optimiser.js',
+  },
+  modularizeImports: {
+    '@mui/icons-material': {
+      transform: '@mui/icons-material/{{member}}',
+    },
   },
   output: 'standalone',
   poweredByHeader: false,

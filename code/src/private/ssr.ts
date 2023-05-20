@@ -27,19 +27,6 @@ namespace SSR {
     }
   }
 
-  export namespace Home {
-    export async function getPreloadedProps() {
-      const [homepage, emailSubscribers] = await Promise.all([
-        PageAPI.getBySlug('home'),
-        SubscriberAPI.getAll(),
-      ]);
-      return JSON.stringify({
-        homeText: homepage.content!,
-        emailSubCount: emailSubscribers?.length || 0,
-      });
-    }
-  }
-
   export namespace Pages {
     export async function getAll(params?: GetAllPageParams) {
       return JSON.stringify(await PageAPI.getAll(params));

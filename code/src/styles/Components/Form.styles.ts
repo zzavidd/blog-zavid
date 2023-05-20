@@ -16,8 +16,6 @@ namespace FORM {
   const DefaultStyle: FlattenInterpolation<ThemeProps<DefaultTheme>> = css`
     background: none;
     border: none;
-    color: ${({ theme }) => theme.Color.Font.Body};
-    font-family: ${({ theme }) => theme.Font.Body};
     font-size: 1.1em;
     outline: none;
     padding: 0.3em;
@@ -98,13 +96,11 @@ namespace FORM {
   `;
 
   export const Label = styled.label`
-    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 1.1em;
   `;
 
   export const SelectContainer = styled.div`
     align-items: center;
-    border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
     display: flex;
     padding-block: 0.5em;
 
@@ -121,7 +117,6 @@ namespace FORM {
   export namespace Date {
     export const Container = styled.div`
       align-items: center;
-      border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
       display: flex;
       padding-block: 0.5em;
     `;
@@ -161,7 +156,6 @@ namespace FORM {
   export namespace Input {
     export const Container = styled.div`
       align-items: center;
-      border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
       display: flex;
       padding-block: 0.5em;
     `;
@@ -177,7 +171,6 @@ namespace FORM {
 
     export const Textarea = styled(AutoSizingTextarea)`
       ${DefaultStyle}
-      border-bottom: 1px solid ${({ theme }) => theme.Color.Font.Body};
       min-height: 50px;
       padding: 0.8em 0.3em;
     `;

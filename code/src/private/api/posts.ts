@@ -1,3 +1,4 @@
+import type { Post } from '@prisma/client';
 import { getPlaiceholder } from 'plaiceholder';
 
 import { PostQueryBuilder } from 'classes/posts/PostQueryBuilder';
@@ -6,6 +7,7 @@ import { IPostStatus, IPostType, QueryOrder } from 'constants/enums';
 import { knex } from 'constants/knex';
 import Settings from 'constants/settings';
 import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
+import prisma from 'server/prisma';
 
 namespace PostAPI {
   export async function getAll({
@@ -90,15 +92,16 @@ namespace PostAPI {
     };
   }
 
-  export async function getLatestReverie(): Promise<PostDAO> {
-    const [latestReverie] = await new PostQueryBuilder(knex)
-      .whereType({
-        include: [IPostType.REVERIE],
-      })
-      .whereStatus({ include: [IPostStatus.PUBLISHED] })
-      .getLatestPost()
-      .build();
-    return addPlaceholderImage(latestReverie);
+  export function getLatestReverie(): Promise<Post | null> {
+    return prisma.post.findFirst({
+      orderBy: {
+        typeId: 'desc',
+      },
+      where: {
+        type: IPostType.REVERIE,
+        status: IPostStatus.PUBLISHED,
+      },
+    });
   }
 
   export async function getRandomPosts({

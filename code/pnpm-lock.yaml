@@ -22,6 +22,9 @@ dependencies:
   '@fortawesome/react-fontawesome':
     specifier: ^0.2.0
     version: 0.2.0(@fortawesome/fontawesome-svg-core@6.2.0)(react@18.2.0)
+  '@mui/icons-material':
+    specifier: ^5.11.16
+    version: 5.11.16(@mui/material@5.13.1)(@types/react@18.2.6)(react@18.2.0)
   '@mui/material':
     specifier: ^5.13.1
     version: 5.13.1(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.2.6)(react-dom@18.2.0)(react@18.2.0)
@@ -31,6 +34,21 @@ dependencies:
   '@reduxjs/toolkit':
     specifier: ^1.8.5
     version: 1.8.5(react-redux@8.0.5)(react@18.2.0)
+  '@tanstack/react-query':
+    specifier: ^4.29.7
+    version: 4.29.7(react-dom@18.2.0)(react@18.2.0)
+  '@trpc/client':
+    specifier: ^10.27.1
+    version: 10.27.1(@trpc/server@10.27.1)
+  '@trpc/next':
+    specifier: ^10.27.1
+    version: 10.27.1(@tanstack/react-query@4.29.7)(@trpc/client@10.27.1)(@trpc/react-query@10.27.1)(@trpc/server@10.27.1)(next@13.4.3)(react-dom@18.2.0)(react@18.2.0)
+  '@trpc/react-query':
+    specifier: ^10.27.1
+    version: 10.27.1(@tanstack/react-query@4.29.7)(@trpc/client@10.27.1)(@trpc/server@10.27.1)(react-dom@18.2.0)(react@18.2.0)
+  '@trpc/server':
+    specifier: ^10.27.1
+    version: 10.27.1
   '@ziventi/wishlist':
     specifier: ^0.8.0
     version: 0.8.0(@prisma/client@4.14.1)(@reduxjs/toolkit@1.8.5)(next@13.4.3)(react-dom@18.2.0)(react-is@18.2.0)(react-redux@8.0.5)(react@18.2.0)(redux-persist@6.0.0)(redux@4.0.5)(styled-components@5.0.0)
@@ -109,12 +127,18 @@ dependencies:
   styled-components:
     specifier: ^5
     version: 5.0.0(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+  superjson:
+    specifier: ^1.12.3
+    version: 1.12.3
   swr:
     specifier: ^1.3.0
     version: 1.3.0(react@18.2.0)
   uuid:
     specifier: ^8.3.0
     version: 8.3.0
+  zod:
+    specifier: ^3.21.4
+    version: 3.21.4
 
 devDependencies:
   '@faker-js/faker':
@@ -659,6 +683,23 @@ packages:
     resolution: {integrity: sha512-qDHtNDO72NcBQMhaWBt9EZMvNiO+OXjPg5Sdk/6LgRDw6Zr3HdEZ5n2FJ/qtYsaT/okGyCuQavQkcZCOCEVf/g==}
     dev: false
 
+  /@mui/icons-material@5.11.16(@mui/material@5.13.1)(@types/react@18.2.6)(react@18.2.0):
+    resolution: {integrity: sha512-oKkx9z9Kwg40NtcIajF9uOXhxiyTZrrm9nmIJ4UjkU2IdHpd4QVLbCc/5hZN/y0C6qzi2Zlxyr9TGddQx2vx2A==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@mui/material': ^5.0.0
+      '@types/react': ^17.0.0 || ^18.0.0
+      react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.21.5
+      '@mui/material': 5.13.1(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.2.6)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': 18.2.6
+      react: 18.2.0
+    dev: false
+
   /@mui/material@5.13.1(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.2.6)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-qSnbJZer8lIuDYFDv19/t3s0AXYY9SxcOdhCnGvetRSfOG4gy3TkiFXNCdW5OLNveTieiMpOuv46eXUmE3ZA6A==}
     engines: {node: '>=12.0.0'}
@@ -992,11 +1033,82 @@ packages:
       tslib: 2.5.2
     dev: false
 
+  /@tanstack/query-core@4.29.7:
+    resolution: {integrity: sha512-GXG4b5hV2Loir+h2G+RXhJdoZhJLnrBWsuLB2r0qBRyhWuXq9w/dWxzvpP89H0UARlH6Mr9DiVj4SMtpkF/aUA==}
+    dev: false
+
+  /@tanstack/react-query@4.29.7(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ijBWEzAIo09fB1yd22slRZzprrZ5zMdWYzBnCg5qiXuFbH78uGN1qtGz8+Ed4MuhaPaYSD+hykn+QEKtQviEtg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@tanstack/query-core': 4.29.7
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
   /@tootallnate/once@1.1.2:
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
     engines: {node: '>= 6'}
     dev: false
     optional: true
+
+  /@trpc/client@10.27.1(@trpc/server@10.27.1):
+    resolution: {integrity: sha512-e9Syj6F41OHDSUg3JvT67fgoD22UbxPzYgp9Bno13NFpyeJc6vkXRlAgDc8ZuouqUPQuouJWll/I90CsuxEqvA==}
+    peerDependencies:
+      '@trpc/server': 10.27.1
+    dependencies:
+      '@trpc/server': 10.27.1
+    dev: false
+
+  /@trpc/next@10.27.1(@tanstack/react-query@4.29.7)(@trpc/client@10.27.1)(@trpc/react-query@10.27.1)(@trpc/server@10.27.1)(next@13.4.3)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-3aMGjhJXiJOj/tjqkyMot3x/nbxbHeEcCWjgYiCHmiXVk9h9liIG73f2is8jWEPs3o/eJ+eNwNSzkfhrhIWq2g==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.18.0
+      '@trpc/client': 10.27.1
+      '@trpc/react-query': 10.27.1
+      '@trpc/server': 10.27.1
+      next: '*'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@tanstack/react-query': 4.29.7(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/client': 10.27.1(@trpc/server@10.27.1)
+      '@trpc/react-query': 10.27.1(@tanstack/react-query@4.29.7)(@trpc/client@10.27.1)(@trpc/server@10.27.1)(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/server': 10.27.1
+      next: 13.4.3(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-ssr-prepass: 1.5.0(react@18.2.0)
+    dev: false
+
+  /@trpc/react-query@10.27.1(@tanstack/react-query@4.29.7)(@trpc/client@10.27.1)(@trpc/server@10.27.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-6Q6B5cGKvxnmy/B5VsOjOG4sBl19VJJrGloFp93jc3Hq3+EfniOssdoA81VLI3fInif8ns0Z4jgWUIpq8741cA==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.18.0
+      '@trpc/client': 10.27.1
+      '@trpc/server': 10.27.1
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@tanstack/react-query': 4.29.7(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/client': 10.27.1(@trpc/server@10.27.1)
+      '@trpc/server': 10.27.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@trpc/server@10.27.1:
+    resolution: {integrity: sha512-oMTNpei0+CAet0BuDdBE9cup0SseJAOlWRhWhcTAU05rETsJnzCA5DfNkf+aP3XiAM8rMJfrTfC0Z3aeADhHaA==}
+    dev: false
 
   /@ts-morph/common@0.12.3:
     resolution: {integrity: sha512-4tUmeLyXJnJWvTFOKtcNJ1yh0a3SsTLi2MUoyj8iUNznFRN1ZquaNe7Oukqrnki2FzZkm0J9adCNLDZxUzvj+w==}
@@ -1908,6 +2020,13 @@ packages:
   /cookie@0.4.2:
     resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /copy-anything@3.0.4:
+    resolution: {integrity: sha512-MaQ9FwzlZ/KLeVCLhzI3rZw0EhrIryfZa3AyT4agVybR0DjlkDHA8898lamLD6kfkf9MMn8D+zDAUR4+GxaymQ==}
+    engines: {node: '>=12.13'}
+    dependencies:
+      is-what: 4.1.10
     dev: false
 
   /core-js@3.6.5:
@@ -3487,6 +3606,11 @@ packages:
       get-intrinsic: 1.2.1
     dev: true
 
+  /is-what@4.1.10:
+    resolution: {integrity: sha512-JBy26nXqBUwzTfgj6T5Y/UgXSmRd+03FTq5v3P+N1cOmOtI1hz7dBn+ZfqM7c86qqWTNBEH98h3pkpmI6USnQA==}
+    engines: {node: '>=12.13'}
+    dev: false
+
   /is-wsl@2.2.0:
     resolution: {integrity: sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==}
     engines: {node: '>=8'}
@@ -4566,6 +4690,14 @@ packages:
       - supports-color
     dev: false
 
+  /react-ssr-prepass@1.5.0(react@18.2.0):
+    resolution: {integrity: sha512-yFNHrlVEReVYKsLI5lF05tZoHveA5pGzjFbFJY/3pOqqjGOmMmqx83N4hIjN2n6E1AOa+eQEUxs3CgRnPmT0RQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-textarea-autosize@8.3.2(@types/react@18.2.6)(react@18.2.0):
     resolution: {integrity: sha512-JrMWVgQSaExQByP3ggI1eA8zF4mF0+ddVuX7acUeK2V7bmrpjVOY72vmLz2IXFJSAXoY3D80nEzrn0GWajWK3Q==}
     engines: {node: '>=10'}
@@ -5182,6 +5314,13 @@ packages:
 
   /stylis@4.2.0:
     resolution: {integrity: sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw==}
+    dev: false
+
+  /superjson@1.12.3:
+    resolution: {integrity: sha512-0j+U70KUtP8+roVPbwfqkyQI7lBt7ETnuA7KXbTDX3mCKiD/4fXs2ldKSMdt0MCfpTwiMxo20yFU3vu6ewETpQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      copy-anything: 3.0.4
     dev: false
 
   /supports-color@5.5.0:

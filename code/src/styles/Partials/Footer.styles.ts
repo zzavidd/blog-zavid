@@ -6,8 +6,6 @@ import { COLOR } from 'styles/Variables.styles';
 
 namespace FooterStyle {
   export const Container = styled.footer`
-    background-color: ${({ theme }) => theme.Color.Background.Footer};
-    border-top: 1px solid ${({ theme }) => theme.Color.Font.Body};
     display: flex;
     flex: 0;
     justify-content: center;
@@ -24,7 +22,6 @@ namespace FooterStyle {
   `;
 
   export const Heading = styled.h3`
-    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 1.2em;
     text-transform: uppercase;
   `;
@@ -55,8 +52,6 @@ namespace FooterStyle {
 
     a {
       ${Mixins.Responsive(['font-size', '1.1em', { md: '1em' }])}
-      color: ${({ theme }) => theme.Color.Font.Body};
-      font-family: ${({ theme }) => theme.Font.Body};
       font-weight: bold;
       text-decoration: none;
       transition: all 0.3s;
@@ -76,7 +71,6 @@ namespace FooterStyle {
     gap: 1em;
 
     a {
-      color: ${({ theme }) => theme.Color.Font.Body};
       font-size: 3em;
       transition: all 0.3s;
 
@@ -91,7 +85,6 @@ namespace FooterStyle {
   `;
 
   export const SubscribeButton = styled(CPX.Button)`
-    ${({ theme }) => Mixins.ClickBehavior(theme.Color.Button.Confirm)};
     border: 1px solid ${COLOR.WHITE};
     border-radius: 20px;
     color: ${COLOR.WHITE};
@@ -107,7 +100,6 @@ namespace FooterStyle {
   `;
 
   export const Copyright = styled.small`
-    font-family: ${({ theme }) => theme.Font.Title};
     font-size: 1em;
   `;
 }

@@ -1,21 +1,35 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DarkModeOutlined } from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Button, IconButton, Stack, Toolbar } from '@mui/material';
 import { useContext } from 'react';
 
 import Contexts from 'constants/contexts';
-import HeaderStyle from 'styles/Partials/Header.styles';
 
 export default function Header() {
-  const [navIsFocused, setNavIsFocused] = useContext(Contexts.Navigation);
+  const [isNavOpen, setNavOpen] = useContext(Contexts.Navigation);
+
+  function openNav() {
+    setNavOpen(!isNavOpen);
+  }
 
   return (
-    <HeaderStyle.Header>
-      <HeaderStyle.HeaderContent>
-        <HeaderStyle.NavToggle onClick={() => setNavIsFocused(!navIsFocused)}>
-          <FontAwesomeIcon icon={faBars} />
-        </HeaderStyle.NavToggle>
-        <HeaderStyle.ThemeSwitch />
-      </HeaderStyle.HeaderContent>
-    </HeaderStyle.Header>
+    <AppBar position={'sticky'}>
+      <Toolbar>
+        <Stack
+          direction={'row'}
+          justifyContent={'space-between'}
+          width={'100%'}>
+          <IconButton onClick={openNav} size={'large'} edge={'start'}>
+            <MenuIcon />
+          </IconButton>
+          <Stack direction={'row'} spacing={2}>
+            <IconButton>
+              <DarkModeOutlined />
+            </IconButton>
+            <Button variant={'outlined'}>Sign In</Button>
+          </Stack>
+        </Stack>
+      </Toolbar>
+    </AppBar>
   );
 }

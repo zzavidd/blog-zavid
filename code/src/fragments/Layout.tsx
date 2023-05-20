@@ -1,22 +1,17 @@
 import React from 'react';
 
-import { Body, BodyContent } from 'styles/Global.styles';
-
 import Footer from './shared/Footer';
 import Header from './shared/Header';
-import { MainNavigationBar, MobileNavigationBar } from './shared/NavigationBar';
+import { NavigationDrawer } from './shared/NavigationDrawer';
 
 namespace Layout {
   export function addPartials(page: React.ReactElement) {
     return (
       <React.Fragment>
         <Header />
-        <Body>
-          <MainNavigationBar />
-          <BodyContent>{page}</BodyContent>
-        </Body>
+        <NavigationDrawer />
+        {page}
         <Footer />
-        <MobileNavigationBar />
       </React.Fragment>
     );
   }
@@ -24,12 +19,8 @@ namespace Layout {
   export function addHeaderOnly(page: React.ReactElement) {
     return (
       <React.Fragment>
-        <Header />
-        <Body>
-          <MainNavigationBar />
-          <BodyContent>{page}</BodyContent>
-        </Body>
-        <MobileNavigationBar />
+        <NavigationDrawer />
+        {page}
       </React.Fragment>
     );
   }

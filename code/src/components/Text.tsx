@@ -1,10 +1,9 @@
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Send } from '@mui/icons-material';
 import { Typography } from '@mui/material';
 import React, { useMemo } from 'react';
 
+import Link from 'componentsv2/Link';
 import * as zText from 'lib/text';
-import TextStyle from 'styles/Components/Text.styles';
 
 export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
   (props, ref) => {
@@ -35,14 +34,19 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
 
     return (
       <React.Fragment>
-        <Typography variant={'body1'} component={'pre'} ref={ref} {...preProps}>
+        <Typography
+          variant={'body1'}
+          component={'pre'}
+          whiteSpace={'pre-wrap'}
+          ref={ref}
+          {...preProps}>
           {zText.formatText(text)}
         </Typography>
         {more && text.length > truncate ? (
-          <TextStyle.Section.ReadMore href={more.href}>
-            <FontAwesomeIcon icon={faPaperPlane} />
-            <span>{more.text}</span>
-          </TextStyle.Section.ReadMore>
+          <Link href={more.href}>
+            <Send />
+            {more.text}
+          </Link>
         ) : null}
       </React.Fragment>
     );

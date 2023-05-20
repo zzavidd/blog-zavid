@@ -1,3 +1,5 @@
+import type { Diary } from '@prisma/client';
+
 import {
   DiaryMutationBuilder,
   DiaryQueryBuilder,
@@ -6,6 +8,7 @@ import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import { IDiaryStatus } from 'constants/enums';
 import { knex } from 'constants/knex';
 import Emails from 'private/emails';
+import prisma from 'server/prisma';
 
 namespace DiaryAPI {
   export async function getAll({
@@ -40,12 +43,15 @@ namespace DiaryAPI {
     };
   }
 
-  export async function getLatest(): Promise<DiaryDAO> {
-    const [latestDiaryEntry] = await new DiaryQueryBuilder(knex)
-      .whereStatus({ include: [IDiaryStatus.PUBLISHED] })
-      .getLatestEntry()
-      .build();
-    return DiaryStatic.parse(latestDiaryEntry);
+  export function getLatest(): Promise<Diary | null> {
+    return prisma.diary.findFirst({
+      orderBy: {
+        entryNumber: 'desc',
+      },
+      where: {
+        status: IDiaryStatus.PUBLISHED,
+      },
+    });
   }
 
   /**

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 namespace TextStyle {
   export const Collection = styled.pre`
-    font-family: ${({ theme }) => theme.Font.Body};
     margin: 0;
     white-space: pre-wrap;
     width: 100%;
@@ -40,9 +39,7 @@ namespace TextStyle {
     `;
 
     export const Blockquote = styled.blockquote`
-      border-left: 5px solid ${({ theme }) => theme.Color.Font.Faded};
       border-radius: 5px;
-      color: ${({ theme }) => theme.Color.Font.Body};
       line-height: 1.6;
       margin: 0;
       padding: 0.5em 1.5em;
@@ -69,9 +66,7 @@ namespace TextStyle {
     `;
 
     export const ReadMore = styled(Link)`
-      color: ${({ theme }) => theme.Color.Font.Readmore};
       cursor: pointer;
-      font-family: ${({ theme }) => theme.Font.Body};
       line-height: 140%;
       pointer-events: auto;
       text-decoration: none;
@@ -88,7 +83,6 @@ namespace TextStyle {
 
   export namespace Emphasis {
     export const Anchor = styled(Link).attrs({ rel: 'noopener noreferrer' })`
-      color: ${({ theme }) => theme.Color.Hyperlink};
       cursor: pointer;
       font-weight: bold;
       text-decoration: none;

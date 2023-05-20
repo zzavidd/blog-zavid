@@ -1,50 +1,51 @@
-import { faFeatherAlt } from '@fortawesome/free-solid-svg-icons';
+import { HistoryEdu } from '@mui/icons-material';
+import { Skeleton, Stack, Typography, useTheme } from '@mui/material';
 
-import Loader from 'components/Loader';
+import { Paragraph } from 'components/Text';
 import ZDate from 'lib/date';
-import * as Style from 'styles/Pages/Home.styles';
+import { trpc } from 'utils/trpc';
 
-export default function HomeDiary({ entry }: LatestDiaryEntryProps) {
+export default function HomeDiary() {
+  const { data: entry } = trpc.getLatestDiaryEntry.useQuery();
+
   if (!entry) return <Placeholder />;
 
   return (
-    <Style.Latest.Article>
-      <Style.Latest.DiaryIcon icon={faFeatherAlt} />
-      <Style.Latest.Label>Latest Diary Entry:</Style.Latest.Label>
-      <Style.Latest.Title>
-        Diary Entry #{entry.entryNumber}: {entry.title}
-      </Style.Latest.Title>
-      <Style.Latest.Date dateTime={ZDate.formatISO(entry.date)}>
-        {ZDate.format(entry.date)}
-      </Style.Latest.Date>
-      <Style.Latest.Excerpt
+    <Stack>
+      <Stack direction={'row'} alignItems={'center'}>
+        <HistoryEdu sx={{ fontSize: (t) => t.spacing(10) }} />
+        <Stack>
+          <Typography variant={'overline'}>Latest Diary Entry:</Typography>
+          <Typography variant={'h2'}>
+            Diary Entry #{entry.entryNumber}: {entry.title}
+          </Typography>
+          <Typography
+            variant={'subtitle1'}
+            component={'time'}
+            dateTime={ZDate.formatISO(entry.date)}>
+            {ZDate.format(entry.date)}
+          </Typography>
+        </Stack>
+      </Stack>
+      <Paragraph
         truncate={50}
         more={{
           text: 'Read my latest diary entry...',
           href: `/diary/${entry.entryNumber}`,
         }}>
         {entry.content}
-      </Style.Latest.Excerpt>
-    </Style.Latest.Article>
+      </Paragraph>
+    </Stack>
   );
 }
 
 function Placeholder() {
+  const theme = useTheme();
   return (
-    <Style.Latest.Article>
-      <Style.Latest.Label>Latest Diary Entry:</Style.Latest.Label>
-      <Loader viewBox={'0 0 200 70'}>
-        <rect x={0} y={2} rx={2} width={95} height={10} />
-        <rect x={0} y={15} rx={2} width={50} height={6} />
-        <rect x={0} y={30} rx={2} width={180} height={6} />
-        <rect x={0} y={39} rx={2} width={200} height={6} />
-        <rect x={0} y={48} rx={2} width={200} height={6} />
-        <rect x={0} y={57} rx={2} width={180} height={6} />
-      </Loader>
-    </Style.Latest.Article>
+    <Skeleton
+      variant={'rounded'}
+      width={theme.spacing(14)}
+      height={theme.spacing(7)}
+    />
   );
-}
-
-interface LatestDiaryEntryProps {
-  entry: DiaryDAO | undefined;
 }

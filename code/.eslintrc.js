@@ -14,4 +14,12 @@ module.exports = {
     'semi': 0,
     'quotes': ['warn', 'single', { avoidEscape: true }],
   },
+  overrides: [
+    {
+      files: ['**/pages/**/*.tsx'],
+      rules: {
+        'react/function-component-definition': 'off',
+      },
+    },
+  ],
 };

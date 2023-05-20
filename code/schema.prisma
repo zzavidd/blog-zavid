@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model diary {
+model Diary {
   id          Int      @id @default(autoincrement()) @db.UnsignedInt
   title       String   @db.VarChar(100)
   date        DateTime @db.Date
@@ -18,19 +18,23 @@ model diary {
   footnote    String   @db.Text
   isFavourite Int      @db.TinyInt
   tags        String   @db.Text
+
+  @@map("diary")
 }
 
-model pages {
+model Page {
   id           Int      @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   title        String   @db.VarChar(45)
   content      String   @db.Text
   excerpt      String   @db.Text
   slug         String   @unique(map: "slug_UNIQUE") @db.VarChar(45)
   lastModified DateTime @default(now()) @db.DateTime(0)
-  isEmbed      Int      @default(0) @db.TinyInt
+  isEmbed      Boolean  @default(false)
+
+  @@map("pages")
 }
 
-model posts {
+model Post {
   id            Int       @id @default(autoincrement()) @db.UnsignedInt
   title         String    @db.Text
   datePublished DateTime? @db.Date
@@ -46,9 +50,10 @@ model posts {
   domainId      Int?      @db.UnsignedInt
 
   @@index([createTime, id], map: "type_status_date")
+  @@map("posts")
 }
 
-model subscribers {
+model Subscriber {
   id            Int      @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   email         String   @unique(map: "email_UNIQUE") @db.VarChar(45)
   firstname     String   @db.VarChar(45)
@@ -56,6 +61,8 @@ model subscribers {
   subscriptions String   @db.Text
   token         String   @db.Text
   createTime    DateTime @default(now()) @db.DateTime(0)
+
+  @@map("subscribers")
 }
 
 model WishlistItem {
