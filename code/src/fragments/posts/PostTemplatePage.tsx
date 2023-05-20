@@ -82,10 +82,8 @@ export default function PostTemplatePage(postTrio: PostTrio) {
               <NextImage
                 src={post.image as string}
                 alt={post.title}
-                layout={'responsive'}
                 width={16}
                 height={9}
-                objectFit={'cover'}
                 priority={true}
                 placeholder={'blur'}
                 blurDataURL={post.imagePlaceholder}
@@ -93,12 +91,7 @@ export default function PostTemplatePage(postTrio: PostTrio) {
             </AS.ImageBox>
           ) : null}
           <AS.Content substitutions={substitutions}>{post.content}</AS.Content>
-          <AS.Signature
-            layout={'fixed'}
-            width={200}
-            height={200}
-            objectFit={'scale-down'}
-          />
+          <AS.Signature width={200} height={200} />
           <AS.Footer>
             <ShareBlock
               headline={'Share This Post'}

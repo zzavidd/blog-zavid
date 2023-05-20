@@ -37,7 +37,6 @@ export function BrandImage(props: React.HTMLAttributes<HTMLDivElement>) {
         alt={'Zavid Logo'}
         width={50}
         height={50}
-        layout={'fixed'}
       />
     </div>
   );

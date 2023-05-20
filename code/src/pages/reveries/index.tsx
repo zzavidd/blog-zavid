@@ -48,8 +48,6 @@ const Reverie = memo(
           <NextImage
             src={reverie.image as string}
             alt={reverie.title}
-            layout={'fill'}
-            objectFit={'cover'}
             loading={'lazy'}
             placeholder={'blur'}
             blurDataURL={reverie.imagePlaceholder}

@@ -41,8 +41,6 @@ const Epistle = React.memo<EpistleProps>(
         <NextImage
           src={epistle.image as string}
           alt={epistle.title}
-          layout={'fill'}
-          objectFit={'cover'}
           loading={'lazy'}
           placeholder={'blur'}
           blurDataURL={epistle.imagePlaceholder}

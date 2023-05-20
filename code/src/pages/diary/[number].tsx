@@ -69,12 +69,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
             </AS.FavouriteNotice>
           ) : null}
           <AS.Content>{diaryEntry.content}</AS.Content>
-          <AS.Signature
-            layout={'fixed'}
-            width={150}
-            height={150}
-            objectFit={'scale-down'}
-          />
+          <AS.Signature width={150} height={150} />
           <AS.Content>{diaryEntry.footnote}</AS.Content>
           <AS.Footer>
             {tags.length ? (

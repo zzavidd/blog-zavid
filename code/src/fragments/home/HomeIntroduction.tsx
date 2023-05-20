@@ -12,7 +12,7 @@ export default function HomeIntroduction({
         <Styles.Introduction.Heading>
           {Settings.SITE_TITLE}: {Settings.SITE_TAGLINE}
         </Styles.Introduction.Heading>
-        <Styles.Introduction.Signature layout={'responsive'} />
+        <Styles.Introduction.Signature />
         <Styles.Introduction.Text
           substitutions={{
             redevelopmentDate: ZDate.format(Settings.BLOG_REDEVELOPMENT_DATE),

@@ -1,17 +1,31 @@
 import type { ImageProps as NextImageProps } from 'next/image';
-import Image from 'next/image';
+import NextDefaultImage from 'next/image';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Theme } from 'classes/theme';
 import type { AppState } from 'constants/reducers';
 import Settings from 'constants/settings';
 
-export function NextImage({ src, alt, ...props }: NextImageProps) {
+export function NextImage(props: NextImageProps) {
+  const [state, setState] = useState({
+    height: 0,
+    width: 0,
+  });
+  const src = `${Settings.CLOUDINARY_BASE_URL}/${props.src}`;
+
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => setState({ height: img.height, width: img.width });
+    if (state.height && state.width) return;
+    img.src = src;
+  }, [src, state.height, state.width]);
+
   return (
-    <Image
+    <NextDefaultImage
       {...props}
-      alt={alt}
-      src={`${Settings.CLOUDINARY_BASE_URL}/${src}`}
+      {...state}
+      src={src}
       placeholder={props.blurDataURL ? 'blur' : 'empty'}
     />
   );

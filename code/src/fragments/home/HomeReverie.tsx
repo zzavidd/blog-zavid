@@ -22,10 +22,8 @@ export default function HomeReverie({ reverie }: HomeReverieProps) {
             alt={reverie.title}
             placeholder={'blur'}
             blurDataURL={reverie.imagePlaceholder}
-            layout={'responsive'}
             width={16}
             height={9}
-            objectFit={'contain'}
           />
         </Style.Latest.ImageBox>
       ) : null}
