@@ -1,4 +1,6 @@
+// @ts-check
 const fs = require('fs');
+const NextBundleAnalyzer = require('@next/bundle-analyzer');
 
 const dkimPath = `${__dirname}/dkim.key`;
 
@@ -7,8 +9,13 @@ if (fs.existsSync(dkimPath)) {
   dkimPrivateKey = fs.readFileSync(dkimPath, { encoding: 'utf8' });
 }
 
+const withBundleAnalyzer = NextBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: true,
+});
+
 /** @type {import('next').NextConfig} */
-module.exports = {
+const config = {
   compiler: {
     styledComponents: true,
   },
@@ -27,3 +34,5 @@ module.exports = {
     ignoreBuildErrors: true,
   },
 };
+
+module.exports = withBundleAnalyzer(config);
