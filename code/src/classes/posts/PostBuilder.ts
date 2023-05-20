@@ -1,4 +1,4 @@
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker/locale/en_GB';
 
 import { IPostStatus, IPostType } from 'constants/enums';
 import ZDate from 'lib/date';
@@ -97,7 +97,7 @@ export class PostBuilder {
       .build();
 
     if (!PostStatic.isPage(this.post)) {
-      this.post.typeId = faker.random.number();
+      this.post.typeId = faker.number.int();
     }
 
     return this;

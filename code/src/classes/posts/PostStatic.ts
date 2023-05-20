@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker/locale/en_GB';
 
 import { IPostStatus, IPostType } from 'constants/enums';
 import ZNumber from 'lib/number';

@@ -1,4 +1,4 @@
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker/locale/en_GB';
 
 import { ISubscriptionType } from 'constants/enums';
 
@@ -49,7 +49,7 @@ export class SubscriberBuilder {
 
     const subscriptions: SubscriptionsMapping = {};
     Object.values(ISubscriptionType).forEach((type: string) => {
-      subscriptions[type] = faker.random.boolean();
+      subscriptions[type] = faker.datatype.boolean();
     });
 
     this.subscriber = {

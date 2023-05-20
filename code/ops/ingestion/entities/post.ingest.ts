@@ -1,4 +1,4 @@
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker/locale/en_GB';
 import { zDate, zString, zNumber } from 'zavid-modules';
 
 import { fetch } from '../..';

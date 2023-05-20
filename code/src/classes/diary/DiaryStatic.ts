@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker/locale/en_GB';
 
 import { IDiaryStatus } from 'constants/enums';
 import ZDate from 'lib/date';
