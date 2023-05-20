@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { darken, transparentize } from 'polished';
 import styled, { css } from 'styled-components';
 
@@ -107,7 +108,7 @@ export namespace AdminList {
     }
   `;
 
-  export const Hyperlink = styled.a`
+  export const Hyperlink = styled(Link)`
     color: ${({ theme }) => theme.Color.Font.Body};
     text-decoration: none;
 
@@ -120,7 +121,7 @@ export namespace AdminList {
     font-family: ${({ theme }) => theme.Font.Body};
   `;
 
-  export const AddLink = styled.a`
+  export const AddLink = styled(Link)`
     color: ${({ theme }) => theme.Color.Font.Body};
     cursor: pointer;
     text-decoration: none;

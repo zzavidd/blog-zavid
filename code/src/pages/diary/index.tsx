@@ -69,31 +69,29 @@ const DiaryEntry = React.memo(
     return (
       <DiaryStyle.Entry>
         {entry.isFavourite ? <DiaryStyle.EntryStar icon={FA6.faStar} /> : null}
-        <Link href={href} passHref={true}>
-          <DiaryStyle.EntryDetails>
-            <DiaryStyle.EntryDate dateTime={ZDate.formatISO(entry.date)}>
-              {ZDate.format(entry.date)}
-            </DiaryStyle.EntryDate>
-            <DiaryStyle.EntryTitle>
-              Diary Entry #{entry.entryNumber}: {entry.title}
-            </DiaryStyle.EntryTitle>
-            <DiaryStyle.EntryExcerpt
-              truncate={40}
-              more={{
-                href,
-                text: `Read #${entry.entryNumber}: ${entry.title}`,
-              }}>
-              {entry.content}
-            </DiaryStyle.EntryExcerpt>
-          </DiaryStyle.EntryDetails>
-        </Link>
+        <DiaryStyle.EntryDetails href={href}>
+          <DiaryStyle.EntryDate dateTime={ZDate.formatISO(entry.date)}>
+            {ZDate.format(entry.date)}
+          </DiaryStyle.EntryDate>
+          <DiaryStyle.EntryTitle>
+            Diary Entry #{entry.entryNumber}: {entry.title}
+          </DiaryStyle.EntryTitle>
+          <DiaryStyle.EntryExcerpt
+            truncate={40}
+            more={{
+              href,
+              text: `Read #${entry.entryNumber}: ${entry.title}`,
+            }}>
+            {entry.content}
+          </DiaryStyle.EntryExcerpt>
+        </DiaryStyle.EntryDetails>
         {tags.length ? (
           <ArticleStyle.TagBlock>
             {tags.map((tag: string, key: number) => {
               return (
                 <ArticleStyle.Tag key={key}>
                   <Link href={`/search?term=${tag}&onlyDiary=true`}>
-                    <a>#{tag}</a>
+                    #{tag}
                   </Link>
                 </ArticleStyle.Tag>
               );

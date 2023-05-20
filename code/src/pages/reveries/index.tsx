@@ -1,5 +1,4 @@
 import type { GetServerSideProps } from 'next';
-import Link from 'next/link';
 import { memo } from 'react';
 
 import { NextImage } from 'components/Image';
@@ -45,19 +44,17 @@ const Reverie = memo(
         <RS.EntryDate dateTime={ZDate.formatISO(reverie.datePublished)}>
           {ZDate.format(reverie.datePublished)}
         </RS.EntryDate>
-        <Link href={href} passHref={true}>
-          <RS.ImageBox>
-            <NextImage
-              src={reverie.image as string}
-              alt={reverie.title}
-              layout={'fill'}
-              objectFit={'cover'}
-              loading={'lazy'}
-              placeholder={'blur'}
-              blurDataURL={reverie.imagePlaceholder}
-            />
-          </RS.ImageBox>
-        </Link>
+        <RS.ImageBox href={href}>
+          <NextImage
+            src={reverie.image as string}
+            alt={reverie.title}
+            layout={'fill'}
+            objectFit={'cover'}
+            loading={'lazy'}
+            placeholder={'blur'}
+            blurDataURL={reverie.imagePlaceholder}
+          />
+        </RS.ImageBox>
         <RS.EntryContent
           truncate={45}
           more={{

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { darken } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 
@@ -22,7 +23,7 @@ namespace NavStyle {
     }
   `;
 
-  export const BrandLink = styled.a`
+  export const BrandLink = styled(Link)`
     align-items: center;
     display: flex;
     gap: 0.5em;
@@ -71,7 +72,7 @@ namespace NavStyle {
     transition: all 0.3s;
   `;
 
-  export const NavItem = styled.a`
+  export const NavItem = styled(Link)`
     color: ${({ theme }) => theme.Color.Font.Body};
     display: grid;
     font-size: 1.1em;

@@ -20,20 +20,18 @@ export default function HomeRandomPosts({ posts = [] }: RandomPostsGridProps) {
               const directory = PostStatic.getDirectory(post.type!);
               return (
                 <Style.Aside.Post key={post.id}>
-                  <Link href={`/${directory}/${post.slug}`} passHref={true}>
-                    <a>
-                      <Style.Aside.ImageBox>
-                        <Style.Aside.Image
-                          src={post.image as string}
-                          alt={post.title}
-                          placeholder={'blur'}
-                          blurDataURL={post.imagePlaceholder}
-                          layout={'fill'}
-                          objectFit={'cover'}
-                          loading={'lazy'}
-                        />
-                      </Style.Aside.ImageBox>
-                    </a>
+                  <Link href={`/${directory}/${post.slug}`}>
+                    <Style.Aside.ImageBox>
+                      <Style.Aside.Image
+                        src={post.image as string}
+                        alt={post.title}
+                        placeholder={'blur'}
+                        blurDataURL={post.imagePlaceholder}
+                        layout={'fill'}
+                        objectFit={'cover'}
+                        loading={'lazy'}
+                      />
+                    </Style.Aside.ImageBox>
                   </Link>
                   <Style.Aside.PostDetailsBox>
                     <Style.Aside.PostTitle>

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import React, { useContext } from 'react';
 
 import Contexts from 'constants/contexts';
@@ -34,14 +33,12 @@ function NavChildren() {
     <React.Fragment>
       <NavStyle.NavBox>
         <NavStyle.BrandBox>
-          <Link href={'/'} passHref={true}>
-            <NavStyle.BrandLink>
-              <NavStyle.BrandImage />
-              <NavStyle.BrandTagline onClick={() => setNavIsFocused(false)}>
-                {Settings.SITE_TITLE}: {Settings.SITE_TAGLINE}
-              </NavStyle.BrandTagline>
-            </NavStyle.BrandLink>
-          </Link>
+          <NavStyle.BrandLink href={'/'}>
+            <NavStyle.BrandImage />
+            <NavStyle.BrandTagline onClick={() => setNavIsFocused(false)}>
+              {Settings.SITE_TITLE}: {Settings.SITE_TAGLINE}
+            </NavStyle.BrandTagline>
+          </NavStyle.BrandLink>
         </NavStyle.BrandBox>
         <NavWidgets.NavigationLinks />
       </NavStyle.NavBox>

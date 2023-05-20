@@ -85,7 +85,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
                     return (
                       <AS.Tag key={key}>
                         <Link href={`/search?term=${tag}&onlyDiary=true`}>
-                          <a>#{tag}</a>
+                          #{tag}
                         </Link>
                       </AS.Tag>
                     );
@@ -102,12 +102,10 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
         </AS.Main>
         <AS.BottomNavigator>
           <AS.BackLinkBox>
-            <Link href={'/diary'} passHref={true}>
-              <AS.BackLink>
-                <FontAwesomeIcon icon={faLeftLong} />
-                <span>Back to Diary</span>
-              </AS.BackLink>
-            </Link>
+            <AS.BackLink href={'/diary'}>
+              <FontAwesomeIcon icon={faLeftLong} />
+              <span>Back to Diary</span>
+            </AS.BackLink>
           </AS.BackLinkBox>
         </AS.BottomNavigator>
       </AS.Layout>
@@ -127,19 +125,19 @@ function TopNavigator({ diaryTrio }: { diaryTrio: DiaryEntryTrio }) {
   return (
     <AS.TopNavigator>
       {previous ? (
-        <Link href={`/diary/${previous.entryNumber}`} passHref={true}>
-          <AS.TopNavigatorContent direction={'previous'}>
-            <FontAwesomeIcon icon={faChevronLeft} />
-            <AS.TopNavigatorText>
-              <h6>Previous Diary Entry</h6>
-              <p>
-                #{previous.entryNumber}: {previous.title}
-              </p>
-            </AS.TopNavigatorText>
-          </AS.TopNavigatorContent>
-        </Link>
+        <AS.TopNavigatorContent
+          href={`/diary/${previous.entryNumber}`}
+          direction={'previous'}>
+          <FontAwesomeIcon icon={faChevronLeft} />
+          <AS.TopNavigatorText>
+            <h6>Previous Diary Entry</h6>
+            <p>
+              #{previous.entryNumber}: {previous.title}
+            </p>
+          </AS.TopNavigatorText>
+        </AS.TopNavigatorContent>
       ) : null}
-      <AS.TopNavigatorContent direction={'current'}>
+      <AS.TopNavigatorContent href={{}} direction={'current'}>
         <AS.TopNavigatorText>
           <h6>Current Diary Entry</h6>
           <p>
@@ -148,17 +146,17 @@ function TopNavigator({ diaryTrio }: { diaryTrio: DiaryEntryTrio }) {
         </AS.TopNavigatorText>
       </AS.TopNavigatorContent>
       {next ? (
-        <Link href={`/diary/${next.entryNumber}`} passHref={true}>
-          <AS.TopNavigatorContent direction={'next'}>
-            <FontAwesomeIcon icon={faChevronRight} />
-            <AS.TopNavigatorText>
-              <h6>Next Diary Entry</h6>
-              <p>
-                #{next.entryNumber}: {next.title}
-              </p>
-            </AS.TopNavigatorText>
-          </AS.TopNavigatorContent>
-        </Link>
+        <AS.TopNavigatorContent
+          href={`/diary/${next.entryNumber}`}
+          direction={'next'}>
+          <FontAwesomeIcon icon={faChevronRight} />
+          <AS.TopNavigatorText>
+            <h6>Next Diary Entry</h6>
+            <p>
+              #{next.entryNumber}: {next.title}
+            </p>
+          </AS.TopNavigatorText>
+        </AS.TopNavigatorContent>
       ) : null}
     </AS.TopNavigator>
   );

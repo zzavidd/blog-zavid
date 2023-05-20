@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 namespace TextStyle {
@@ -67,7 +68,7 @@ namespace TextStyle {
       }
     `;
 
-    export const ReadMore = styled.a`
+    export const ReadMore = styled(Link)`
       color: ${({ theme }) => theme.Color.Font.Readmore};
       cursor: pointer;
       font-family: ${({ theme }) => theme.Font.Body};
@@ -86,7 +87,7 @@ namespace TextStyle {
   }
 
   export namespace Emphasis {
-    export const Anchor = styled.a.attrs({ rel: 'noopener noreferrer' })`
+    export const Anchor = styled(Link).attrs({ rel: 'noopener noreferrer' })`
       color: ${({ theme }) => theme.Color.Hyperlink};
       cursor: pointer;
       font-weight: bold;

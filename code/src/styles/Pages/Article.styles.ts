@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { transparentize } from 'polished';
 import styled, { css } from 'styled-components';
 
@@ -125,7 +126,7 @@ namespace ArticleStyle {
     position: sticky;
   `;
 
-  export const BackLink = styled.a`
+  export const BackLink = styled(Link)`
     color: ${({ theme }) => theme.Color.Font.Body};
     font-family: ${({ theme }) => theme.Font.Body};
     font-weight: bold;
@@ -166,7 +167,7 @@ namespace ArticleStyle {
     width: 100%;
   `;
 
-  export const TopNavigatorContent = styled.a<TopNavigatorContentProps>`
+  export const TopNavigatorContent = styled(Link)<TopNavigatorContentProps>`
     ${({ direction }) => {
       switch (direction) {
         case 'previous': {

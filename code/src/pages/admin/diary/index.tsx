@@ -122,12 +122,10 @@ const DiaryAdmin: NextPageWithLayout<DiaryAdminProps> = ({ pageProps }) => {
                     );
                   })}
                   <AL.TableHeaderCell colSpan={2}>
-                    <Link href={'/admin/diary/add'}>
-                      <AL.AddLink>
-                        <AL.AddIcon icon={faPlus} />
-                        <span>Add Entry</span>
-                      </AL.AddLink>
-                    </Link>
+                    <AL.AddLink href={'/admin/diary/add'}>
+                      <AL.AddIcon icon={faPlus} />
+                      <span>Add Entry</span>
+                    </AL.AddLink>
                   </AL.TableHeaderCell>
                 </AL.TableRow>
               </AL.TableHead>
@@ -140,9 +138,7 @@ const DiaryAdmin: NextPageWithLayout<DiaryAdminProps> = ({ pageProps }) => {
                         {entry.entryNumber}
                       </AL.TableCell>
                       <AL.TableCell>
-                        <Link href={href} passHref={true}>
-                          <AL.Hyperlink>{entry.title}</AL.Hyperlink>
-                        </Link>
+                        <AL.Hyperlink href={href}>{entry.title}</AL.Hyperlink>
                       </AL.TableCell>
                       <AL.TableCell align={'center'}>
                         {ZDate.format(entry.date)}

@@ -1,5 +1,4 @@
 import type { GetServerSideProps } from 'next';
-import Link from 'next/link';
 import React from 'react';
 
 import { NextImage } from 'components/Image';
@@ -38,25 +37,23 @@ const Epistle = React.memo<EpistleProps>(
   ({ epistle }) => {
     const href = `/epistles/${epistle.slug}`;
     return (
-      <Link href={href} passHref={true}>
-        <ES.Entry>
-          <NextImage
-            src={epistle.image as string}
-            alt={epistle.title}
-            layout={'fill'}
-            objectFit={'cover'}
-            loading={'lazy'}
-            placeholder={'blur'}
-            blurDataURL={epistle.imagePlaceholder}
-          />
-          <ES.EntryLabel>
-            <ES.EntryHeading>
-              #{epistle.typeId}: {epistle.title}
-            </ES.EntryHeading>
-            <ES.EntryContent truncate={15}>{epistle.content}</ES.EntryContent>
-          </ES.EntryLabel>
-        </ES.Entry>
-      </Link>
+      <ES.Entry href={href}>
+        <NextImage
+          src={epistle.image as string}
+          alt={epistle.title}
+          layout={'fill'}
+          objectFit={'cover'}
+          loading={'lazy'}
+          placeholder={'blur'}
+          blurDataURL={epistle.imagePlaceholder}
+        />
+        <ES.EntryLabel>
+          <ES.EntryHeading>
+            #{epistle.typeId}: {epistle.title}
+          </ES.EntryHeading>
+          <ES.EntryContent truncate={15}>{epistle.content}</ES.EntryContent>
+        </ES.EntryLabel>
+      </ES.Entry>
     );
   },
   (a, b) => a.epistle.id === b.epistle.id,

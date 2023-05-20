@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 import { Paragraph } from 'components/Text';
@@ -73,7 +74,7 @@ namespace ReverieStyle {
     margin: 0;
   `;
 
-  export const ImageBox = styled.a`
+  export const ImageBox = styled(Link)`
     border-radius: 10px;
     display: block;
     overflow: hidden;

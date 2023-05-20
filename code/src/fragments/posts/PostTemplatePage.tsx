@@ -4,7 +4,6 @@ import {
   faLeftLong,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -110,12 +109,10 @@ export default function PostTemplatePage(postTrio: PostTrio) {
         </AS.Main>
         <AS.BottomNavigator>
           <AS.BackLinkBox>
-            <Link href={backUrl} passHref={true}>
-              <AS.BackLink>
-                <FontAwesomeIcon icon={faLeftLong} />
-                <span>{backButtonText}</span>
-              </AS.BackLink>
-            </Link>
+            <AS.BackLink href={backUrl}>
+              <FontAwesomeIcon icon={faLeftLong} />
+              <span>{backButtonText}</span>
+            </AS.BackLink>
           </AS.BackLinkBox>
         </AS.BottomNavigator>
       </AS.Layout>
@@ -137,21 +134,21 @@ function TopNavigator({ postTrio }: TopNavigatorProps) {
     <AS.TopNavigator>
       <div>
         {previous ? (
-          <Link href={`/${directory}/${previous.slug}`} passHref={true}>
-            <AS.TopNavigatorContent direction={'previous'}>
-              <FontAwesomeIcon icon={faChevronLeft} />
-              <AS.TopNavigatorText>
-                <h6>Previous {postType}</h6>
-                <p>
-                  #{previous.typeId}: {previous.title}
-                </p>
-              </AS.TopNavigatorText>
-            </AS.TopNavigatorContent>
-          </Link>
+          <AS.TopNavigatorContent
+            href={`/${directory}/${previous.slug}`}
+            direction={'previous'}>
+            <FontAwesomeIcon icon={faChevronLeft} />
+            <AS.TopNavigatorText>
+              <h6>Previous {postType}</h6>
+              <p>
+                #{previous.typeId}: {previous.title}
+              </p>
+            </AS.TopNavigatorText>
+          </AS.TopNavigatorContent>
         ) : null}
       </div>
       {!PostStatic.isPage(current) ? (
-        <AS.TopNavigatorContent direction={'current'}>
+        <AS.TopNavigatorContent href={{}} direction={'current'}>
           <AS.TopNavigatorText>
             <h6>Current {postType}</h6>
             <p>
@@ -162,17 +159,17 @@ function TopNavigator({ postTrio }: TopNavigatorProps) {
       ) : null}
       <div>
         {next ? (
-          <Link href={`/${directory}/${next.slug}`} passHref={true}>
-            <AS.TopNavigatorContent direction={'next'}>
-              <FontAwesomeIcon icon={faChevronRight} />
-              <AS.TopNavigatorText>
-                <h6>Next {postType}</h6>
-                <p>
-                  #{next.typeId}: {next.title}
-                </p>
-              </AS.TopNavigatorText>
-            </AS.TopNavigatorContent>
-          </Link>
+          <AS.TopNavigatorContent
+            href={`/${directory}/${next.slug}`}
+            direction={'next'}>
+            <FontAwesomeIcon icon={faChevronRight} />
+            <AS.TopNavigatorText>
+              <h6>Next {postType}</h6>
+              <p>
+                #{next.typeId}: {next.title}
+              </p>
+            </AS.TopNavigatorText>
+          </AS.TopNavigatorContent>
         ) : null}
       </div>
     </AS.TopNavigator>

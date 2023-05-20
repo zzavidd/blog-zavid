@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import React from 'react';
 
 import Layout from 'fragments/Layout';
 import ErrorStyle from 'styles/Pages/Error.styles';
@@ -15,7 +14,7 @@ const Custom404Page: NextPageWithLayout = () => {
         </ErrorStyle.Text>
         <ErrorStyle.Links>
           <Link href={'/'} passHref={true}>
-            <a>Go to Home</a>
+            Go to Home
           </Link>
         </ErrorStyle.Links>
       </ErrorStyle.Main>

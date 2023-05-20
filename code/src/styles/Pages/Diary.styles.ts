@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import styled from 'styled-components';
 
 import { Paragraph } from 'components/Text';
@@ -64,7 +65,7 @@ namespace DiaryStyle {
     width: 100%;
   `;
 
-  export const EntryDetails = styled.a`
+  export const EntryDetails = styled(Link)`
     color: inherit;
     text-decoration: none;
   `;

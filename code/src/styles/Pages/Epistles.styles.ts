@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled, { keyframes } from 'styled-components';
 
 import { Paragraph } from 'components/Text';
@@ -58,7 +59,7 @@ namespace EpistleStyle {
     flex-wrap: wrap;
   `;
 
-  export const Entry = styled.a`
+  export const Entry = styled(Link)`
     border-radius: 10px;
     box-shadow: 0 0 0 1px ${({ theme }) => theme.Color.Font.Body};
     display: block;

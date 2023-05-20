@@ -1,6 +1,5 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
 import { AppTheme } from 'classes/theme';
@@ -28,11 +27,9 @@ export default function CookiePrompt() {
           <CookieStyle.Text>
             My site uses cookies and similar technologies to recognise your
             preferences. Clue up on cookies by viewing my&nbsp;
-            <Link href={'/cookies'}>
-              <TextStyle.Emphasis.Anchor>
-                Cookie Policy
-              </TextStyle.Emphasis.Anchor>
-            </Link>
+            <TextStyle.Emphasis.Anchor href={'/cookies'}>
+              Cookie Policy
+            </TextStyle.Emphasis.Anchor>
             . By closing this pop-up, you consent to my use of cookies.
           </CookieStyle.Text>
           <Clickable.Icon onClick={acceptCookiePolicy} icon={faTimes} />

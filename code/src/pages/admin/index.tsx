@@ -17,9 +17,7 @@ const AdminConsole: NextPageWithLayout<AdminConsoleProps> = () => {
           {NAV_BUTTONS.map(({ title, href }, key) => {
             return (
               <Link href={href} passHref={true} key={key}>
-                <AS.NavButton>
-                  <a>{title}</a>
-                </AS.NavButton>
+                <AS.NavButton>{title}</AS.NavButton>
               </Link>
             );
           })}
