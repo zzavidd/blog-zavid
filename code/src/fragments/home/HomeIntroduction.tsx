@@ -1,3 +1,5 @@
+import { Typography } from '@mui/material';
+
 import Settings from 'constants/settings';
 import ZDate from 'lib/date';
 import * as Styles from 'styles/Pages/Home.styles';
@@ -9,9 +11,9 @@ export default function HomeIntroduction({
   return (
     <Styles.Introduction.Section>
       <Styles.Introduction.TextContainer>
-        <Styles.Introduction.Heading>
+        <Typography variant={'h1'}>
           {Settings.SITE_TITLE}: {Settings.SITE_TAGLINE}
-        </Styles.Introduction.Heading>
+        </Typography>
         <Styles.Introduction.Signature />
         <Styles.Introduction.Text
           substitutions={{

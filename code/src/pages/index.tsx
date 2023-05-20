@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import type { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 
@@ -22,7 +23,7 @@ const HomePage: NextPageWithLayout<HomeProps> = ({ pageProps }) => {
   });
 
   return (
-    <Styles.HomePage>
+    <Box>
       <Styles.HomeMain>
         <Introduction content={homeText} emailSubCount={emailSubCount} />
         <LatestDiaryEntry entry={data?.latestDiaryEntry} />
@@ -31,7 +32,7 @@ const HomePage: NextPageWithLayout<HomeProps> = ({ pageProps }) => {
       <Styles.Aside.Container>
         <RandomPostsGrid posts={data?.randomPosts} />
       </Styles.Aside.Container>
-    </Styles.HomePage>
+    </Box>
   );
 };
 
