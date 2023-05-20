@@ -28,7 +28,7 @@
     "html-to-text": "^5.1.1",
     "knex": "^2.2.0",
     "mysql": "^2.18.1",
-    "next": "^12.2.3",
+    "next": "^13.4.3",
     "next-auth": "^4.10.3",
     "nodemailer": "^6.7.8",
     "plaiceholder": "^2.5.0",

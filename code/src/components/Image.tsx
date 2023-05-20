@@ -20,7 +20,7 @@ export function NextImage({ src, alt, ...props }: NextImageProps) {
 export function SignatureImage({
   className,
   ...props
-}: Omit<NextImageProps, 'src'>) {
+}: Omit<NextImageProps, 'src' | 'alt'>) {
   const theme = useSelector((state: AppState) =>
     Theme.switchTheme(state.local.appTheme),
   );

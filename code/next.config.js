@@ -18,10 +18,11 @@ module.exports = {
   images: {
     domains: ['res.cloudinary.com'],
   },
+  output: 'standalone',
   poweredByHeader: false,
   reactStrictMode: true,
   serverRuntimeConfig: { dkimPrivateKey },
-  output: 'standalone',
+  swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,
   },
