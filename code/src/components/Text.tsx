@@ -1,4 +1,5 @@
 import { SendRounded } from '@mui/icons-material';
+import type { TypographyProps } from '@mui/material';
 import { Typography } from '@mui/material';
 import React, { useMemo } from 'react';
 
@@ -54,7 +55,7 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
   },
 );
 
-interface ParagraphProps extends React.HTMLAttributes<HTMLPreElement> {
+interface ParagraphProps extends TypographyProps<'pre'> {
   children: string;
   keepRichFormatOnTruncate?: true;
   more?: {
