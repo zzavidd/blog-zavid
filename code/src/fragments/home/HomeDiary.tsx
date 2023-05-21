@@ -1,4 +1,4 @@
-import { HistoryEdu } from '@mui/icons-material';
+import { HistoryEduRounded } from '@mui/icons-material';
 import { Skeleton, Stack, Typography, useTheme } from '@mui/material';
 
 import { Paragraph } from 'components/Text';
@@ -12,11 +12,11 @@ export default function HomeDiary() {
 
   return (
     <Stack>
-      <Stack direction={'row'} alignItems={'center'}>
-        <HistoryEdu sx={{ fontSize: (t) => t.spacing(10) }} />
+      <Stack direction={'row'} alignItems={'center'} spacing={2}>
+        <HistoryEduRounded sx={{ fontSize: (t) => t.spacing(10) }} />
         <Stack>
           <Typography variant={'overline'}>Latest Diary Entry:</Typography>
-          <Typography variant={'h2'}>
+          <Typography variant={'h3'}>
             Diary Entry #{entry.entryNumber}: {entry.title}
           </Typography>
           <Typography
@@ -30,7 +30,7 @@ export default function HomeDiary() {
       <Paragraph
         truncate={50}
         more={{
-          text: 'Read my latest diary entry...',
+          text: 'Read my latest diary entry',
           href: `/diary/${entry.entryNumber}`,
         }}>
         {entry.content}

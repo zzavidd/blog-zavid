@@ -1,4 +1,4 @@
-import { Book } from '@mui/icons-material';
+import { BookOutlined } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
 import { Paragraph } from 'components/Text';
@@ -13,11 +13,11 @@ export default function HomeReverie() {
 
   return (
     <Stack>
-      <Stack direction={'row'} alignItems={'center'}>
-        <Book />
+      <Stack direction={'row'} alignItems={'center'} spacing={2}>
+        <BookOutlined sx={{ fontSize: (t) => t.spacing(9) }} />
         <Stack>
           <Typography variant={'overline'}>Latest Reverie:</Typography>
-          <Typography variant={'h2'}>{reverie.title}</Typography>
+          <Typography variant={'h3'}>{reverie.title}</Typography>
           <Typography
             variant={'subtitle1'}
             component={'time'}
@@ -27,16 +27,18 @@ export default function HomeReverie() {
         </Stack>
       </Stack>
       <Stack direction={'row'}>
-        <Paragraph
-          truncate={50}
-          more={{
-            text: 'Read my latest reverie...',
-            href: `/reveries/${reverie.slug}`,
-          }}>
-          {reverie.content}
-        </Paragraph>
+        <Stack>
+          <Paragraph
+            truncate={50}
+            more={{
+              text: 'Read my latest reverie',
+              href: `/reveries/${reverie.slug}`,
+            }}>
+            {reverie.content}
+          </Paragraph>
+        </Stack>
         {reverie.image ? (
-          <NextImage src={reverie.image as string} alt={reverie.title} />
+          <NextImage src={reverie.image} alt={reverie.title} />
         ) : null}
       </Stack>
     </Stack>

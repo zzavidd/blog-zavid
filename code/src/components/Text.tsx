@@ -1,8 +1,8 @@
-import { Send } from '@mui/icons-material';
+import { SendRounded } from '@mui/icons-material';
 import { Typography } from '@mui/material';
 import React, { useMemo } from 'react';
 
-import Link from 'componentsv2/Link';
+import { LinkButton } from 'componentsv2/Link';
 import * as zText from 'lib/text';
 
 export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
@@ -43,10 +43,11 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           {zText.formatText(text)}
         </Typography>
         {more && text.length > truncate ? (
-          <Link href={more.href}>
-            <Send />
+          <LinkButton
+            href={more.href}
+            startIcon={<SendRounded fontSize={'small'} />}>
             {more.text}
-          </Link>
+          </LinkButton>
         ) : null}
       </React.Fragment>
     );

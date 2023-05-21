@@ -16,7 +16,9 @@ export default function HomeIntroduction() {
       <Typography variant={'h1'}>
         {Settings.SITE_TITLE}: {Settings.SITE_TAGLINE}
       </Typography>
-      <Signature />
+      <Signature
+        sx={{ float: 'right', margin: (t) => t.spacing(4), width: '30%' }}
+      />
       <Paragraph
         substitutions={{
           redevelopmentDate: ZDate.format(Settings.BLOG_REDEVELOPMENT_DATE),

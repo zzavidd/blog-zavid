@@ -1,10 +1,10 @@
+import Link from 'componentsv2/Link';
 import Logger from 'constants/logger';
 import {
   Emphasis,
   emphasisRegexMapping,
   getCombinedEmphasisRegex,
 } from 'lib/text/regex';
-import TextStyle from 'styles/Components/Text.styles';
 
 import type { FormatTextOptions } from '../functions';
 
@@ -76,9 +76,9 @@ export function applyEmphasisFormatting(
               );
             } else {
               transformation = (
-                <TextStyle.Emphasis.Anchor href={link} key={key}>
+                <Link href={link} key={key}>
                   {textToHyperlink}
-                </TextStyle.Emphasis.Anchor>
+                </Link>
               );
             }
             break;

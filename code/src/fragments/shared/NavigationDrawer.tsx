@@ -49,7 +49,7 @@ export function NavigationDrawer() {
       <Link href={'/'}>
         <Stack direction={'row'} spacing={3} alignItems={'center'}>
           <NextImage
-            src={'/static/logos/zavid-head-logo.png'}
+            src={'static/logos/zavid-head-logo.png'}
             alt={'Zavid Logo'}
             width={50}
             height={50}

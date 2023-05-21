@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Container, Divider, Stack } from '@mui/material';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
 import superjson from 'superjson';
@@ -6,18 +6,19 @@ import superjson from 'superjson';
 import Settings from 'constants/settings';
 import LatestDiaryEntry from 'fragments/home/HomeDiary';
 import Introduction from 'fragments/home/HomeIntroduction';
-import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
 import LatestReverie from 'fragments/home/HomeReverie';
 import Layout from 'fragments/Layout';
 import { appRouter } from 'server/routers/_app';
 
 const HomePage: NextPageWithLayout<AppPageProps> = () => {
   return (
-    <Container>
-      <Introduction />
-      <LatestDiaryEntry />
-      <LatestReverie />
-      <RandomPostsGrid posts={[]} />
+    <Container maxWidth={'md'} sx={{ padding: (t) => t.spacing(5) }}>
+      <Stack spacing={6} divider={<Divider />}>
+        <Introduction />
+        <LatestDiaryEntry />
+        <LatestReverie />
+      </Stack>
+      {/* <RandomPostsGrid posts={[]} /> */}
     </Container>
   );
 };
