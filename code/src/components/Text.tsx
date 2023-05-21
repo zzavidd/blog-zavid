@@ -11,8 +11,9 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
     const {
       children,
       keepRichFormatOnTruncate,
-      more,
       substitutions,
+      moreHref = '#',
+      moreText,
       truncate = 0,
       ...preProps
     } = props;
@@ -33,6 +34,8 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [children]);
 
+    const showReadMore = !!moreText && text.length > truncate;
+
     return (
       <React.Fragment>
         <Typography
@@ -43,11 +46,11 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           {...preProps}>
           {zText.formatText(text)}
         </Typography>
-        {more && text.length > truncate ? (
+        {showReadMore ? (
           <LinkButton
-            href={more.href}
+            href={moreHref}
             startIcon={<SendRounded fontSize={'small'} />}>
-            {more.text}
+            {moreText}
           </LinkButton>
         ) : null}
       </React.Fragment>
@@ -58,10 +61,8 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
 interface ParagraphProps extends TypographyProps<'pre'> {
   children: string;
   keepRichFormatOnTruncate?: true;
-  more?: {
-    text: string;
-    href: string;
-  };
+  moreText?: string;
+  moreHref?: string;
   substitutions?: Record<string, string | number>;
   truncate?: number;
 }

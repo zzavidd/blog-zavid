@@ -41,12 +41,12 @@ function Content() {
         <Skeleton variant={'text'} />
         <Skeleton variant={'text'} />
         <Skeleton variant={'text'} />
-        <Skeleton variant={'text'} width={'80%'} />
+        <Skeleton variant={'text'} width={'60%'} />
       </Stack>
       <Stack>
         <Skeleton variant={'text'} />
         <Skeleton variant={'text'} />
-        <Skeleton variant={'text'} width={'80%'} />
+        <Skeleton variant={'text'} width={'60%'} />
       </Stack>
     </Stack>
   );

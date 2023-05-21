@@ -4,19 +4,28 @@ import type { GetServerSideProps } from 'next';
 import superjson from 'superjson';
 
 import Settings from 'constants/settings';
-import LatestDiaryEntry from 'fragments/home/HomeDiary';
 import Introduction from 'fragments/home/HomeIntroduction';
-import LatestReverie from 'fragments/home/HomeReverie';
+import HomeLatest from 'fragments/home/HomeLatest';
 import Layout from 'fragments/Layout';
 import { appRouter } from 'server/routers/_app';
+import { trpc } from 'utils/trpc';
 
 const HomePage: NextPageWithLayout<AppPageProps> = () => {
+  const { data: entry, isLoading: isEntryLoading } =
+    trpc.getLatestDiaryEntry.useQuery();
   return (
     <Container maxWidth={'md'} sx={{ padding: (t) => t.spacing(5) }}>
       <Stack spacing={6} divider={<Divider />}>
         <Introduction />
-        <LatestDiaryEntry />
-        <LatestReverie />
+        <HomeLatest
+          overline={'Latest Diary Entry'}
+          title={entry?.title}
+          date={entry?.date}
+          content={entry?.content}
+          isLoading={isEntryLoading}
+          moreText={'Read my latest diary entry'}
+          moreHref={`/diary/${entry?.entryNumber}`}
+        />
       </Stack>
       {/* <RandomPostsGrid posts={[]} /> */}
     </Container>

@@ -8,7 +8,8 @@ const suffixes = new Map([
 ]);
 
 namespace ZDate {
-  export function format(date: Date | string) {
+  export function format(date?: Date | string): string {
+    if (!date) return '';
     const parts = new Intl.DateTimeFormat('en-GB', {
       dateStyle: 'full',
     })
@@ -33,7 +34,8 @@ namespace ZDate {
     return parts.join('');
   }
 
-  export function formatISO(date: Date | string) {
+  export function formatISO(date?: Date | string): string {
+    if (!date) return '';
     return new Intl.DateTimeFormat('sv-SE').format(new Date(date));
   }
 
