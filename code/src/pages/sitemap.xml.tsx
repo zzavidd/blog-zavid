@@ -4,8 +4,8 @@ import { SitemapStream, streamToPromise } from 'sitemap';
 import { PostStatic } from 'classes/posts/PostStatic';
 import { IDiaryStatus, IPostStatus, IPostType } from 'constants/enums';
 import Settings from 'constants/settings';
-import DiaryAPI from 'private/api/diary';
 import PostAPI from 'private/api/posts';
+import DiaryAPI from 'server/api/diary';
 import PageAPI from 'server/api/pages';
 
 // eslint-disable-next-line react/function-component-definition

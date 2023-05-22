@@ -6,7 +6,7 @@ import type { GetAllPageParams } from '../server/api/pages';
 import PageAPI from '../server/api/pages';
 import SubscriberAPI from '../server/api/subscribers';
 
-import DiaryAPI from './api/diary';
+import DiaryAPI from '../server/api/diary';
 import PostAPI from './api/posts';
 import SearchAPI from './api/search';
 

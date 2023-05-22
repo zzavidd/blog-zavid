@@ -12,7 +12,7 @@ import Validate from 'constants/validations';
 import AdminGateway from 'fragments/AdminGateway';
 import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import Layout from 'fragments/Layout';
-import DiaryAPI from 'private/api/diary';
+import DiaryAPI from 'server/api/diary';
 import ModalStyle from 'styles/Components/Modal.styles';
 import { ButtonVariant } from 'styles/Variables.styles';
 
