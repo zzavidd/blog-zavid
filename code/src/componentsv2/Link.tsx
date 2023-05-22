@@ -1,11 +1,15 @@
 import type { ButtonProps, LinkProps } from '@mui/material';
-import { Button, Link as MuiLink } from '@mui/material';
+import { Button, IconButton, Link as MuiLink } from '@mui/material';
 import NextLink from 'next/link';
 
-export default function Link({ children, ...props }: LinkProps) {
+export default function Link({ children, newTab, ...props }: ZavidLinkProps) {
+  const extraProps: LinkProps = newTab
+    ? { target: '_blank', rel: 'noopener' }
+    : {};
   return (
     <MuiLink
       {...props}
+      {...extraProps}
       component={NextLink}
       fontWeight={800}
       underline={'hover'}>
@@ -14,7 +18,10 @@ export default function Link({ children, ...props }: LinkProps) {
   );
 }
 
-export function LinkButton({ children, ...props }: ButtonProps) {
+export function LinkButton({
+  children,
+  ...props
+}: ButtonProps & ZavidLinkProps) {
   return (
     <Button
       {...props}
@@ -24,4 +31,19 @@ export function LinkButton({ children, ...props }: ButtonProps) {
       {children}
     </Button>
   );
+}
+
+export function LinkIconButton({
+  children,
+  ...props
+}: ButtonProps & ZavidLinkProps) {
+  return (
+    <IconButton {...props} LinkComponent={Link}>
+      {children}
+    </IconButton>
+  );
+}
+
+interface ZavidLinkProps extends LinkProps {
+  newTab?: boolean;
 }

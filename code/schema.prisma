@@ -56,9 +56,9 @@ model Post {
 model Subscriber {
   id            Int      @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   email         String   @unique(map: "email_UNIQUE") @db.VarChar(45)
-  firstname     String   @db.VarChar(45)
-  lastname      String   @db.VarChar(45)
-  subscriptions String   @db.Text
+  firstname     String?  @db.VarChar(45)
+  lastname      String?  @db.VarChar(45)
+  subscriptions Json     @db.Json
   token         String   @db.Text
   createTime    DateTime @default(now()) @db.DateTime(0)
 

@@ -4,6 +4,13 @@ import { css } from '@mui/material';
 import Settings from 'constants/settings';
 
 const components: Components<Theme> = {
+  MuiButton: {
+    styleOverrides: {
+      root: ({ theme }) => css`
+        min-height: ${theme.spacing(7)};
+      `,
+    },
+  },
   MuiCssBaseline: {
     styleOverrides: (theme) => {
       const bgImage = `${Settings.CLOUDINARY_BASE_URL}/static/bg/bg-app-${theme.palette.mode}`;

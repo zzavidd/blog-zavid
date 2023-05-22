@@ -1,12 +1,14 @@
-import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
 import type { GetAllSubscriberOptions } from 'pages/api/subscribers';
 
+import type { GetAllPostOptions, GetPostPayload } from 'pages/api/posts';
+
+import type { GetAllPageParams } from '../server/api/pages';
+import PageAPI from '../server/api/pages';
+import SubscriberAPI from '../server/api/subscribers';
+
 import DiaryAPI from './api/diary';
-import type { GetAllPageParams } from './api/pages';
-import PageAPI from './api/pages';
 import PostAPI from './api/posts';
 import SearchAPI from './api/search';
-import SubscriberAPI from './api/subscribers';
 
 namespace SSR {
   export namespace Diary {
@@ -29,7 +31,7 @@ namespace SSR {
 
   export namespace Pages {
     export async function getAll(params?: GetAllPageParams) {
-      return JSON.stringify(await PageAPI.getAll(params));
+      return JSON.stringify(await PageAPI.findMany(params));
     }
 
     export async function getById(id: number) {
@@ -67,7 +69,7 @@ namespace SSR {
     }
 
     export async function getById(id: number) {
-      return JSON.stringify(await SubscriberAPI.getById(id));
+      return JSON.stringify(await SubscriberAPI.find(id));
     }
 
     export async function getByToken(token: string) {

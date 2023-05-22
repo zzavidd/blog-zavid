@@ -1,11 +1,24 @@
 import { initTRPC } from '@trpc/server';
 
-// Avoid exporting the entire t-object
-// since it's not very descriptive.
-// For instance, the use of a t variable
-// is common in i18n libraries.
-const t = initTRPC.create();
+const QUERY_ERROR_MSG =
+  'There was a problem retrieving data. Please try again later.';
+const MUTATION_ERROR_MSG = 'There was a problem. Please try again later.';
 
-// Base router and procedure helpers
+const t = initTRPC.create({
+  errorFormatter: ({ error, type, shape }) => {
+    if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
+      if (type === 'query') {
+        shape.message = QUERY_ERROR_MSG;
+      } else {
+        shape.message = MUTATION_ERROR_MSG;
+      }
+    } else {
+      shape.message = error.message;
+    }
+
+    return shape;
+  },
+});
+
 export const router = t.router;
 export const procedure = t.procedure;

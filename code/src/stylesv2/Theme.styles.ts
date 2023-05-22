@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material';
+import { createTheme, responsiveFontSizes } from '@mui/material';
 
 import components from './Components.styles';
 import palette from './Palette.styles';
@@ -17,4 +17,4 @@ const theme = createTheme({
   typography,
 });
 
-export default theme;
+export default responsiveFontSizes(theme);

@@ -6,6 +6,9 @@ const palette: PaletteOptions = {
   primary: {
     main: purple['A100'],
   },
+  background: {
+    paper: 'rgb(17, 17, 17)',
+  },
 };
 
 export default palette;

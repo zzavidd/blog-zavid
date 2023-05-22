@@ -13,7 +13,7 @@ export default function Header() {
   }
 
   return (
-    <AppBar position={'sticky'}>
+    <AppBar position={'sticky'} sx={{ paddingInline: (t) => t.spacing(2) }}>
       <Toolbar>
         <Stack
           direction={'row'}

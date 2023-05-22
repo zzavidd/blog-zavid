@@ -14,8 +14,8 @@ const HomePage: NextPageWithLayout<AppPageProps> = () => {
   const { data: entry, isLoading: isEntryLoading } =
     trpc.getLatestDiaryEntry.useQuery();
   return (
-    <Container maxWidth={'md'} sx={{ padding: (t) => t.spacing(5) }}>
-      <Stack spacing={6} divider={<Divider />}>
+    <Container maxWidth={'md'} sx={{ padding: (t) => t.spacing(6, 5) }}>
+      <Stack spacing={4} divider={<Divider />}>
         <Introduction />
         <HomeLatest
           overline={'Latest Diary Entry'}

@@ -10,7 +10,7 @@ import Settings from 'constants/settings';
 import Utils from 'constants/utils';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
-import PageAPI from 'private/api/pages';
+import PageAPI from 'server/api/pages';
 import ArticleStyle from 'styles/Pages/Article.styles';
 import DiaryStyle from 'styles/Pages/Diary.styles';
 

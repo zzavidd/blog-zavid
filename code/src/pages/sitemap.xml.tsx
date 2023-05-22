@@ -5,8 +5,8 @@ import { PostStatic } from 'classes/posts/PostStatic';
 import { IDiaryStatus, IPostStatus, IPostType } from 'constants/enums';
 import Settings from 'constants/settings';
 import DiaryAPI from 'private/api/diary';
-import PageAPI from 'private/api/pages';
 import PostAPI from 'private/api/posts';
+import PageAPI from 'server/api/pages';
 
 // eslint-disable-next-line react/function-component-definition
 const Sitemap: NextPage = () => {
@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const getDiaryEntries = DiaryAPI.getAll({
     status: { include: [IDiaryStatus.PUBLISHED] },
   });
-  const getPages = PageAPI.getAll({ isEmbed: false });
+  const getPages = PageAPI.findMany({ isEmbed: false });
   const [posts, diaryEntries, pages] = await Promise.all([
     getPosts,
     getDiaryEntries,

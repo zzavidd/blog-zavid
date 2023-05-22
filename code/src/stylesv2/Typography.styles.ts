@@ -35,9 +35,24 @@ const typography: TypographyOptions = {
     lineHeight: 1.1,
     marginBottom: 5,
   },
+  h4: {
+    fontFamily: calistoga.style.fontFamily,
+    fontSize: 20,
+    fontWeight: 700,
+    marginBottom: 10,
+    textTransform: 'uppercase',
+  },
+  subtitle2: {
+    fontFamily: calistoga.style.fontFamily,
+    fontWeight: 700,
+  },
   body1: {
     fontFamily: mulish.style.fontFamily,
     fontSize: 20,
+  },
+  body2: {
+    fontFamily: mulish.style.fontFamily,
+    fontSize: 18,
   },
   overline: {},
 };

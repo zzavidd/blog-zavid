@@ -1,21 +1,22 @@
-import type { IconDefinition } from '@fortawesome/free-brands-svg-icons';
+import type { SvgIconComponent } from '@mui/icons-material';
+import { Instagram, LinkedIn, Twitter } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import {
-  faInstagram,
-  faLinkedin,
-  faSnapchat,
-  faTwitter,
-} from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useState } from 'react';
+  Box,
+  Container,
+  Divider,
+  FormControl,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { useSnackbar } from 'notistack';
+import { useEffect, useState } from 'react';
 
-import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
-import Input from 'components/Input';
-import Contexts from 'constants/contexts';
-import { UIError } from 'constants/errors';
+import Link, { LinkIconButton } from 'componentsv2/Link';
 import Settings from 'constants/settings';
-import Utils from 'constants/utils';
-import Validate from 'constants/validations';
-import FooterStyle from 'styles/Partials/Footer.styles';
+import { trpc } from 'utils/trpc';
 
 const FOOTER_LINKS = [
   { name: 'About Zavid', url: '/about' },
@@ -23,129 +24,136 @@ const FOOTER_LINKS = [
   { name: 'Cookie Policy', url: '/cookies' },
 ];
 
-const SOCIAL_PLUGS: {
-  name: keyof typeof Settings.ACCOUNTS;
-  icon: IconDefinition;
-}[] = [
-  { name: 'twitter', icon: faTwitter },
-  { name: 'instagram', icon: faInstagram },
-  { name: 'linkedin', icon: faLinkedin },
-  { name: 'snapchat', icon: faSnapchat },
+const SOCIAL_PLUGS: SocialPlug[] = [
+  { name: 'twitter', Icon: Twitter },
+  { name: 'instagram', Icon: Instagram },
+  { name: 'linkedin', Icon: LinkedIn },
 ];
 
 export default function Footer() {
   return (
-    <FooterStyle.Container>
-      <FooterStyle.Content>
-        <FooterStyle.Row>
-          <SocialPlugs />
-          <SubscribeForm />
-          <FooterLinks />
-        </FooterStyle.Row>
-        <FooterStyle.CopyrightBox>
-          <FooterStyle.Copyright>{Settings.COPYRIGHT}</FooterStyle.Copyright>
-        </FooterStyle.CopyrightBox>
-      </FooterStyle.Content>
-    </FooterStyle.Container>
+    <Paper sx={{ padding: (t) => t.spacing(5, 4) }}>
+      <Container maxWidth={'md'}>
+        <Stack>
+          <Stack
+            direction={'row'}
+            justifyContent={'space-between'}
+            divider={<Divider orientation={'vertical'} flexItem={true} />}>
+            <FooterLinks />
+            <SubscribeForm />
+            <SocialPlugs />
+          </Stack>
+          <Typography variant={'subtitle2'}>{Settings.COPYRIGHT}</Typography>
+        </Stack>
+      </Container>
+    </Paper>
   );
 }
 
 function FooterLinks() {
   return (
-    <FooterStyle.LinksMenuBox>
-      <FooterStyle.Heading>INFORMATION</FooterStyle.Heading>
-      <FooterStyle.LinksMenu>
+    <Stack>
+      <Typography variant={'h4'}>INFORMATION</Typography>
+      <Stack spacing={1}>
         {FOOTER_LINKS.map(({ name, url }, key) => {
           return (
-            <li key={key}>
-              <a href={url}>{name}</a>
-            </li>
+            <Link color={'text.primary'} variant={'body2'} href={url} key={key}>
+              {name}
+            </Link>
           );
         })}
-      </FooterStyle.LinksMenu>
-    </FooterStyle.LinksMenuBox>
+      </Stack>
+    </Stack>
+  );
+}
+
+function SubscribeForm() {
+  const [state, setState] = useState({ email: '' });
+  const { enqueueSnackbar } = useSnackbar();
+  const { mutate, error, isSuccess } = trpc.createSubscriber.useMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      enqueueSnackbar(
+        <Typography variant={'body2'}>
+          Thank you for subscribing! I&apos;ve added&nbsp;
+          <Box fontWeight={'bold'} display={'inline'}>
+            &ldquo;{state.email}&rdquo;
+          </Box>
+          &nbsp;to my mailing list.
+        </Typography>,
+        { variant: 'success' },
+      );
+    }
+
+    if (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, error]);
+
+  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setState({ email: e.target.value });
+  }
+
+  function subscribeEmail() {
+    mutate({
+      email: state.email,
+      subscriptions: { Diary: true, Reveries: true },
+    });
+  }
+
+  return (
+    <Stack>
+      <Typography variant={'h4'}>Quick Subscribe</Typography>
+      <Stack spacing={4}>
+        <Typography variant={'body2'}>
+          And never miss a diary entry nor a post.
+        </Typography>
+        <FormControl>
+          <TextField
+            variant={'outlined'}
+            type={'email'}
+            value={state.email}
+            label={'Email address:'}
+            onChange={onChange}
+            placeholder={'Enter your email address'}
+          />
+        </FormControl>
+        <LoadingButton variant={'outlined'} onClick={subscribeEmail}>
+          Subscribe
+        </LoadingButton>
+      </Stack>
+    </Stack>
   );
 }
 
 function SocialPlugs() {
   return (
-    <FooterStyle.SocialPlugsBox>
-      <FooterStyle.Heading>Follow me on socials</FooterStyle.Heading>
-      <FooterStyle.SocialIcons>
-        {SOCIAL_PLUGS.map(({ name, icon }) => {
+    <Stack alignItems={'center'}>
+      <Typography variant={'h4'}>Follow me on socials</Typography>
+      <Stack direction={'row'} justifyContent={'center'}>
+        {SOCIAL_PLUGS.map(({ name, Icon }) => {
           return (
-            <a href={Settings.ACCOUNTS[name]} key={name}>
-              <FontAwesomeIcon icon={icon} />
-            </a>
+            <LinkIconButton
+              href={Settings.ACCOUNTS[name]}
+              newTab={true}
+              key={name}>
+              <Icon
+                sx={{
+                  color: (t) => t.palette.text.primary,
+                  fontSize: (t) => t.spacing(7),
+                }}
+              />
+            </LinkIconButton>
           );
         })}
-      </FooterStyle.SocialIcons>
-    </FooterStyle.SocialPlugsBox>
+      </Stack>
+    </Stack>
   );
 }
 
-function SubscribeForm() {
-  const [state, setState] = useState({
-    email: '',
-    isRequestPending: false,
-    honeypotInput: '',
-  });
-  const dispatch = Utils.createDispatch(setState);
-
-  const Alerts = useContext(Contexts.Alerts);
-
-  async function subscribeEmail() {
-    dispatch({ isRequestPending: true });
-
-    if (state.honeypotInput) {
-      return Alerts.set({
-        type: 'success',
-        message: `Thank you for subscribing!\nI've added ${state.email} to my mailing list.`,
-      });
-    }
-
-    try {
-      Validate.email(state.email);
-
-      const payload = new SubscriberBuilder()
-        .withEmail(state.email)
-        .withDefaultSubscriptions()
-        .build();
-
-      await Utils.request('/api/subscribers', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
-      Alerts.success(
-        `Thank you for subscribing!\nI've added ${state.email} to my mailing list.`,
-      );
-    } catch (e: any) {
-      if (e instanceof UIError) {
-        Alerts.report(e.message, true);
-      } else if (e.message.includes('ER_DUP_ENTRY')) {
-        Alerts.error('The email address you submitted already exists.');
-      } else {
-        Alerts.report(e.message);
-      }
-    } finally {
-      dispatch({ isRequestPending: false });
-    }
-  }
-
-  return (
-    <FooterStyle.SubscribeFormBox>
-      <FooterStyle.Heading>Quick Subscribe</FooterStyle.Heading>
-      <FooterStyle.Summary>
-        And never miss a diary entry nor a post.
-      </FooterStyle.Summary>
-      <Input.Email
-        value={state.email}
-        onChange={(e) => dispatch({ email: e.target.value })}
-        placeholder={'Enter your email address'}
-      />
-      <FooterStyle.SubscribeButton onClick={subscribeEmail}>
-        {state.isRequestPending ? 'Subscribing...' : 'Subscribe'}
-      </FooterStyle.SubscribeButton>
-    </FooterStyle.SubscribeFormBox>
-  );
+interface SocialPlug {
+  name: keyof typeof Settings.ACCOUNTS;
+  Icon: SvgIconComponent;
 }

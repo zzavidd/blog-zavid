@@ -5,8 +5,8 @@ import { NextImage } from 'components/Image';
 import { IPostStatus, IPostType, QueryOrder } from 'constants/enums';
 import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
-import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
+import PageAPI from 'server/api/pages';
 import ES from 'styles/Pages/Epistles.styles';
 
 const EPISTLES_HEADING = 'Epistles';

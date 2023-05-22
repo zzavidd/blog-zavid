@@ -31,6 +31,9 @@ const config = {
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',
     },
+    '@mui/lab': {
+      transform: '@mui/lab/{{member}}',
+    },
   },
   output: 'standalone',
   poweredByHeader: false,

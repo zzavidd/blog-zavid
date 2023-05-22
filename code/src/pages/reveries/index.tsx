@@ -6,8 +6,8 @@ import { IPostStatus, IPostType, QueryOrder } from 'constants/enums';
 import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
-import PageAPI from 'private/api/pages';
 import SSR from 'private/ssr';
+import PageAPI from 'server/api/pages';
 import RS from 'styles/Pages/Reveries.styles';
 
 const REVERIES_HEADING = 'Reveries';
