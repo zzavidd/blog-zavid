@@ -12,14 +12,15 @@ import {
   MenuItem,
   MenuList,
   Stack,
+  Toolbar,
   Typography,
 } from '@mui/material';
 import NextImage from 'next/image';
 import { useContext } from 'react';
 
 import Link from 'componentsv2/Link';
-import Contexts from 'constants/contexts';
 import Settings from 'constants/settings';
+import { NavigationContext } from 'utils/contexts';
 
 const paths: PathDefinition[] = [
   { title: 'Diary', url: '/diary', icon: <Book /> },
@@ -32,7 +33,7 @@ const paths: PathDefinition[] = [
 ];
 
 export function NavigationDrawer() {
-  const [isNavOpen, setNavOpen] = useContext(Contexts.Navigation);
+  const [isNavOpen, setNavOpen] = useContext(NavigationContext);
 
   function closeNav() {
     setNavOpen(false);
@@ -44,9 +45,13 @@ export function NavigationDrawer() {
       onClose={closeNav}
       anchor={'left'}
       PaperProps={{
-        sx: { padding: (t) => t.spacing(4), width: (t) => t.spacing(12) },
+        sx: {
+          padding: (t) => t.spacing(4),
+          width: (t) => t.spacing(12),
+        },
       }}>
-      <Link href={'/'}>
+      <Toolbar />
+      <Link href={'/'} color={'text.primary'}>
         <Stack direction={'row'} spacing={3} alignItems={'center'}>
           <NextImage
             src={'static/logos/zavid-head-logo.png'}
@@ -62,11 +67,16 @@ export function NavigationDrawer() {
       <MenuList>
         {paths.map(({ title, url, icon }) => {
           return (
-            <Link href={url} key={title}>
+            <Link href={url} color={'text.primary'} key={title}>
               <MenuItem>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText
-                  primaryTypographyProps={{ textTransform: 'uppercase' }}>
+                  primaryTypographyProps={{
+                    fontFamily: (t) => t.typography.h4.fontFamily,
+                    marginBottom: 0,
+                    sx: { marginBlock: (t) => t.spacing(1) },
+                    variant: 'h4',
+                  }}>
                   {title}
                 </ListItemText>
               </MenuItem>

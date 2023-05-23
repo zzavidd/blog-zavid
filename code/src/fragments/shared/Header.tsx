@@ -3,17 +3,22 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Button, IconButton, Stack, Toolbar } from '@mui/material';
 import { useContext } from 'react';
 
-import Contexts from 'constants/contexts';
+import { NavigationContext } from 'utils/contexts';
 
 export default function Header() {
-  const [isNavOpen, setNavOpen] = useContext(Contexts.Navigation);
+  const [isNavOpen, setNavOpen] = useContext(NavigationContext);
 
   function openNav() {
     setNavOpen(!isNavOpen);
   }
 
   return (
-    <AppBar position={'sticky'} sx={{ paddingInline: (t) => t.spacing(2) }}>
+    <AppBar
+      position={'sticky'}
+      sx={{
+        paddingInline: (t) => t.spacing(2),
+        zIndex: (t) => t.zIndex.drawer + 1,
+      }}>
       <Toolbar>
         <Stack
           direction={'row'}

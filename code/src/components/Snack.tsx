@@ -1,8 +1,8 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from 'react';
 
-import Contexts from 'constants/contexts';
 import * as Style from 'styles/Components/Popup.styles';
+import Contexts from 'utils/contexts';
 
 import Clickable from './Clickable';
 

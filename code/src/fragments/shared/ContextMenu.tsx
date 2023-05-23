@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
-import Contexts from 'constants/contexts';
 import { CuratePromptStyle as CPS } from 'styles/Components/Curate.styles';
+import Contexts from 'utils/contexts';
 
 import Curator from './Curator';
 

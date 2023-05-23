@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import Contexts from 'constants/contexts';
 import * as Style from 'styles/Components/Popup.styles';
+import Contexts from 'utils/contexts';
 
 export default function AlertBar() {
   const { alerts } = useContext(Contexts.Alerts);

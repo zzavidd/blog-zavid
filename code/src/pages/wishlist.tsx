@@ -4,10 +4,10 @@ import { useSession } from 'next-auth/react';
 import { useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import Contexts from 'constants/contexts';
 import type { AppState } from 'constants/reducers';
 import Layout from 'fragments/Layout';
 import WL from 'styles/Pages/Wishlist.styles';
+import Contexts from 'utils/contexts';
 
 // eslint-disable-next-line react/function-component-definition
 const WishlistPage: NextPageWithLayout<WishlistPageProps> = () => {

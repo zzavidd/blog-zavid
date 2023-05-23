@@ -5,7 +5,6 @@ import React, { useContext, useState } from 'react';
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import Checkbox from 'components/Checkbox';
 import { Modal } from 'components/Modal';
-import Contexts from 'constants/contexts';
 import Logger from 'constants/logger';
 import Settings from 'constants/settings';
 import Utils from 'constants/utils';
@@ -14,6 +13,7 @@ import SSR from 'private/ssr';
 import ModalStyle from 'styles/Components/Modal.styles';
 import { SubscribePrefStyle as SPS } from 'styles/Pages/Subscribe.styles';
 import { ButtonVariant } from 'styles/Variables.styles';
+import Contexts from 'utils/contexts';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({

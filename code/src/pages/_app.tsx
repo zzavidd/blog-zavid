@@ -2,7 +2,7 @@ import { CssBaseline, Fade, ThemeProvider } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { SnackbarProvider } from 'notistack';
-import React from 'react';
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -15,6 +15,8 @@ import CookiePrompt from 'fragments/shared/CookiePrompt';
 // eslint-disable-next-line import/order
 import 'react-datepicker/dist/react-datepicker.css';
 import theme from 'stylesv2/Theme.styles';
+import type { NavigationContextProps } from 'utils/contexts';
+import { NavigationContext } from 'utils/contexts';
 import { trpc } from 'utils/trpc';
 
 const App = (props: AppProps) => {
@@ -42,12 +44,19 @@ export default trpc.withTRPC(App);
  * @returns The full page including the header and footer.
  */
 function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
+  const [state, setState] = useState({ isNavOpen: false });
+  const context: NavigationContextProps = [
+    state.isNavOpen,
+    (isNavOpen) => setState({ isNavOpen }),
+  ];
+
   // Configure layouts for all child components;
   const getLayout = Component.getLayout ?? ((page) => page);
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
 
   return (
     <AdminGateway onlyBlockInStaging={true}>
+      <MatomoScript />
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <SnackbarProvider
@@ -55,8 +64,9 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
           autoHideDuration={6000}
           maxSnack={2}
           TransitionComponent={Fade}>
-          <MatomoScript />
-          {ComponentWithLayout}
+          <NavigationContext.Provider value={context}>
+            {ComponentWithLayout}
+          </NavigationContext.Provider>
           <CookiePrompt />
         </SnackbarProvider>
       </ThemeProvider>

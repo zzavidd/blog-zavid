@@ -12,9 +12,9 @@ import {
   WhatsappShareButton,
 } from 'react-share';
 
-import Contexts from 'constants/contexts';
 import FORM from 'styles/Components/Form.styles';
 import SBS from 'styles/Components/ShareBlock.styles';
+import Contexts from 'utils/contexts';
 
 export default function ShareBlock({ headline, ...props }: ShareProps) {
   return (

@@ -32,7 +32,7 @@ const SOCIAL_PLUGS: SocialPlug[] = [
 
 export default function Footer() {
   return (
-    <Paper sx={{ padding: (t) => t.spacing(5, 4) }}>
+    <Paper square={true} sx={{ padding: (t) => t.spacing(5, 4) }}>
       <Container maxWidth={'md'}>
         <Stack>
           <Stack

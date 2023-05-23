@@ -38,7 +38,7 @@ const typography: TypographyOptions = {
   h4: {
     fontFamily: calistoga.style.fontFamily,
     fontSize: 20,
-    fontWeight: 700,
+    fontWeight: 500,
     marginBottom: 10,
     textTransform: 'uppercase',
   },
