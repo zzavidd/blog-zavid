@@ -103,6 +103,8 @@ function SubscribeForm() {
     });
   }
 
+  const inputProps = { style: { fontSize: 16 } };
+
   return (
     <Stack>
       <Typography variant={'h4'}>Quick Subscribe</Typography>
@@ -118,6 +120,8 @@ function SubscribeForm() {
             label={'Email address:'}
             onChange={onChange}
             placeholder={'Enter your email address'}
+            InputProps={inputProps}
+            InputLabelProps={inputProps}
           />
         </FormControl>
         <LoadingButton variant={'outlined'} onClick={subscribeEmail}>
