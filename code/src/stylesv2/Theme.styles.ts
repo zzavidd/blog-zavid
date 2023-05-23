@@ -1,12 +1,13 @@
+import type { ThemeOptions } from '@mui/material';
 import { createTheme, responsiveFontSizes } from '@mui/material';
 
 import components from './Components.styles';
-import palette from './Palette.styles';
+import { darkPalette } from './Palette.styles';
 import typography from './Typography.styles';
 
-const theme = createTheme({
+export const themeOptions: ThemeOptions = {
   components,
-  palette,
+  palette: darkPalette,
   shape: {
     borderRadius: 10,
   },
@@ -15,6 +16,7 @@ const theme = createTheme({
     1024, 1152, 1280,
   ],
   typography,
-});
+};
 
+const theme = createTheme(themeOptions);
 export default responsiveFontSizes(theme);

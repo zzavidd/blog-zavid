@@ -1,23 +1,15 @@
+import type { PaletteMode } from '@mui/material';
 import type { PayloadAction } from '@reduxjs/toolkit';
-
-import type { AppTheme } from 'classes/theme';
 
 import type { AppLocalState, AppSessionState } from '.';
 
 namespace Reducers {
   export namespace Local {
-    export function saveInputText(
-      state: AppLocalState,
-      action: PayloadAction<string>,
-    ) {
-      state.savedText = action.payload;
-    }
-
     export function setAppTheme(
       state: AppLocalState,
-      action: PayloadAction<AppTheme>,
+      action: PayloadAction<PaletteMode>,
     ) {
-      state.appTheme = action.payload;
+      state.theme = action.payload;
     }
 
     export function setCookiePolicyAccepted(
@@ -25,13 +17,6 @@ namespace Reducers {
       action: PayloadAction<boolean>,
     ) {
       state.cookiePolicyAccepted = action.payload;
-    }
-
-    export function setUserEmail(
-      state: AppLocalState,
-      action: PayloadAction<string>,
-    ) {
-      state.userEmail = action.payload;
     }
   }
 

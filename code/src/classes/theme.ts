@@ -19,24 +19,6 @@ export enum FilterShapeOption {
   WIDE = 'wide',
 }
 
-export class Theme {
-  public static LIGHT = AppTheme.LIGHT;
-  public static DARK = AppTheme.DARK;
-
-  public static switchTheme(theme: AppTheme) {
-    const oppositeTheme = this.isLight(theme) ? Theme.DARK : AppTheme.LIGHT;
-    return oppositeTheme;
-  }
-
-  public static isLight(theme: AppTheme) {
-    return theme === Theme.LIGHT;
-  }
-
-  public static isValid(input: string) {
-    return input !== AppTheme.LIGHT && input !== AppTheme.DARK;
-  }
-}
-
 export class FilterTheme {
   public static OPTIONS = Object.values(FilterThemeOption);
 }

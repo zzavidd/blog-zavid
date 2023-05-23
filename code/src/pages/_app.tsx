@@ -1,12 +1,18 @@
-import { CssBaseline, Fade, ThemeProvider } from '@mui/material';
+import {
+  CssBaseline,
+  Fade,
+  ThemeProvider,
+  createTheme,
+  responsiveFontSizes,
+} from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { SnackbarProvider } from 'notistack';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { persistor, store } from 'constants/reducers';
+import { persistor, store, useAppSelector } from 'constants/reducers';
 import AdminGateway from 'fragments/AdminGateway';
 import MatomoScript from 'fragments/MatomoScript';
 import PageMetadata from 'fragments/PageMetadata';
@@ -14,7 +20,8 @@ import CookiePrompt from 'fragments/shared/CookiePrompt';
 
 // eslint-disable-next-line import/order
 import 'react-datepicker/dist/react-datepicker.css';
-import theme from 'stylesv2/Theme.styles';
+import { darkPalette, lightPalette } from 'stylesv2/Palette.styles';
+import { themeOptions } from 'stylesv2/Theme.styles';
 import type { NavigationContextProps } from 'utils/contexts';
 import { NavigationContext } from 'utils/contexts';
 import { trpc } from 'utils/trpc';
@@ -45,14 +52,23 @@ export default trpc.withTRPC(App);
  */
 function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const [state, setState] = useState({ isNavOpen: false });
-  const context: NavigationContextProps = [
-    state.isNavOpen,
-    (isNavOpen) => setState({ isNavOpen }),
-  ];
+  const mode = useAppSelector((state) => state.local.theme);
+
+  // Use theme for MUI.
+  const theme = useMemo(() => {
+    const palette = mode === 'light' ? lightPalette : darkPalette;
+    const options = { ...themeOptions, palette };
+    return responsiveFontSizes(createTheme(options));
+  }, [mode]);
 
   // Configure layouts for all child components;
   const getLayout = Component.getLayout ?? ((page) => page);
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
+
+  const navigationContext: NavigationContextProps = [
+    state.isNavOpen,
+    (isNavOpen) => setState({ isNavOpen }),
+  ];
 
   return (
     <AdminGateway onlyBlockInStaging={true}>
@@ -64,7 +80,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
           autoHideDuration={6000}
           maxSnack={2}
           TransitionComponent={Fade}>
-          <NavigationContext.Provider value={context}>
+          <NavigationContext.Provider value={navigationContext}>
             {ComponentWithLayout}
           </NavigationContext.Provider>
           <CookiePrompt />

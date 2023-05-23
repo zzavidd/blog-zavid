@@ -1,27 +1,26 @@
+import type { PaletteMode } from '@mui/material';
 import { combineReducers, configureStore, createSlice } from '@reduxjs/toolkit';
+import type { TypedUseSelectorHook } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   FLUSH,
   PAUSE,
   PERSIST,
-  persistReducer,
-  persistStore,
   PURGE,
   REGISTER,
   REHYDRATE,
+  persistReducer,
+  persistStore,
 } from 'redux-persist';
 import type { PersistPartial } from 'redux-persist/lib/persistReducer';
 import localStorage from 'redux-persist/lib/storage';
 import sessionStorage from 'redux-persist/lib/storage/session';
 
-import { AppTheme } from 'classes/theme';
-
 import Reducers from './functions';
 
 const initialLocalState: AppLocalState = {
-  appTheme: AppTheme.DARK,
+  theme: 'dark',
   cookiePolicyAccepted: false,
-  savedText: '',
-  userEmail: '',
 };
 
 const initialSessionState: AppSessionState = {
@@ -71,21 +70,14 @@ export const store = configureStore({
 });
 export const persistor = persistStore(store);
 
-export namespace AppActions {
-  export const {
-    setAppTheme,
-    setCookiePolicyAccepted,
-    setUserEmail,
-    saveInputText,
-  } = localSlice.actions;
-  export const { setLoginSnackShown } = sessionSlice.actions;
-}
+export const AppActions = { ...localSlice.actions, ...sessionSlice.actions };
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 export interface AppLocalState {
-  appTheme: AppTheme;
   cookiePolicyAccepted: boolean;
-  savedText: string;
-  userEmail: string;
+  theme: PaletteMode;
 }
 
 export interface AppSessionState {
@@ -93,3 +85,4 @@ export interface AppSessionState {
 }
 
 export type AppState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
