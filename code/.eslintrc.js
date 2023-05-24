@@ -8,10 +8,9 @@ module.exports = {
     project: ['**/tsconfig.json'],
   },
   rules: {
-    '@typescript-eslint/explicit-function-return-type': 0,
-    'react/react-in-jsx-scope': 0,
-    'spaced-comment': 0,
-    'semi': 0,
+    'react/react-in-jsx-scope': 'off',
+    // 'spaced-comment': 0,
+    // 'semi': 0,
     'quotes': ['warn', 'single', { avoidEscape: true }],
   },
   overrides: [

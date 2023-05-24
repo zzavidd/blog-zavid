@@ -1,9 +1,9 @@
 import {
-  AccountCircle,
-  Book,
-  Cloud,
-  HistoryEdu,
-  Redeem,
+  AccountCircleRounded,
+  BookRounded,
+  CloudRounded,
+  HistoryEduRounded,
+  RedeemRounded,
 } from '@mui/icons-material';
 import {
   Drawer,
@@ -23,13 +23,13 @@ import Settings from 'constants/settings';
 import { NavigationContext } from 'utils/contexts';
 
 const paths: PathDefinition[] = [
-  { title: 'Diary', url: '/diary', icon: <Book /> },
-  { title: 'Reveries', url: '/reveries', icon: <Cloud /> },
-  { title: 'Epistles', url: '/epistles', icon: <HistoryEdu /> },
+  { title: 'Diary', url: '/diary', icon: <BookRounded /> },
+  { title: 'Reveries', url: '/reveries', icon: <CloudRounded /> },
+  { title: 'Epistles', url: '/epistles', icon: <HistoryEduRounded /> },
   // { title: 'Poetry', url: '/poetry' },
   // { title: 'Musings', url: '/musings' },
-  { title: 'About', url: '/about', icon: <AccountCircle /> },
-  { title: 'Wishlist', url: '/wishlist', icon: <Redeem /> },
+  { title: 'About', url: '/about', icon: <AccountCircleRounded /> },
+  { title: 'Wishlist', url: '/wishlist', icon: <RedeemRounded /> },
 ];
 
 export function NavigationDrawer() {
@@ -44,6 +44,7 @@ export function NavigationDrawer() {
       open={isNavOpen}
       onClose={closeNav}
       anchor={'left'}
+      SlideProps={{ timeout: 150 }}
       PaperProps={{
         sx: {
           padding: (t) => t.spacing(4),
@@ -51,7 +52,7 @@ export function NavigationDrawer() {
         },
       }}>
       <Toolbar />
-      <Link href={'/'} color={'text.primary'}>
+      <Link href={'/'} color={'text.primary'} onClick={closeNav}>
         <Stack direction={'row'} spacing={3} alignItems={'center'}>
           <NextImage
             src={'static/logos/zavid-head-logo.png'}
@@ -68,7 +69,7 @@ export function NavigationDrawer() {
         {paths.map(({ title, url, icon }) => {
           return (
             <Link href={url} color={'text.primary'} key={title}>
-              <MenuItem>
+              <MenuItem onClick={closeNav}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText
                   primaryTypographyProps={{

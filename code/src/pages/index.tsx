@@ -10,7 +10,7 @@ import Layout from 'fragments/Layout';
 import { appRouter } from 'server/routers/_app';
 import { trpc } from 'utils/trpc';
 
-const HomePage: NextPageWithLayout<AppPageProps> = () => {
+const HomePage: NextPageWithLayout = () => {
   const { data: entry, isLoading: isEntryLoading } =
     trpc.getLatestDiaryEntry.useQuery();
   return (

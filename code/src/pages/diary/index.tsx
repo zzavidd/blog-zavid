@@ -1,165 +1,122 @@
-import * as FA6 from '@fortawesome/free-solid-svg-icons';
+import type { Theme } from '@mui/material';
+import {
+  Container,
+  Divider,
+  Skeleton,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
-import useSWR from 'swr';
+import SuperJSON from 'superjson';
 
-import Loader from 'components/Loader';
 import Settings from 'constants/settings';
-import Utils from 'constants/utils';
+import DiaryEachItem from 'fragments/diary/DiaryEachItem';
 import Layout from 'fragments/Layout';
-import ZDate from 'lib/date';
-import PageAPI from 'server/api/pages';
-import ArticleStyle from 'styles/Pages/Article.styles';
-import DiaryStyle from 'styles/Pages/Diary.styles';
+import { appRouter } from 'server/routers/_app';
+import { trpc } from 'utils/trpc';
 
 const DIARY_HEADING = "Zavid's Diary";
 
-// eslint-disable-next-line react/function-component-definition
-const DiaryIndex: NextPageWithLayout<DiaryIndexProps> = ({ pageProps }) => {
-  const { pageIntro } = pageProps;
-
-  const router = useRouter();
-
-  const { data: diaryEntries } = useSWR<DiaryDAO[]>(
-    `/api/diary?favourites=${router.query.favourites}`,
-    Utils.request,
-    {
-      revalidateIfStale: false,
-      revalidateOnReconnect: false,
-      revalidateOnFocus: false,
-    },
-  );
-
+const DiaryIndex: NextPageWithLayout = () => {
+  const isMediumAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('sm'));
   return (
-    <DiaryStyle.Container>
-      <DiaryStyle.Main>
-        <DiaryStyle.PageHeading>{DIARY_HEADING}</DiaryStyle.PageHeading>
-        <DiaryStyle.PageSummary>{pageIntro}</DiaryStyle.PageSummary>
-        {/* <DiarySearch url={url} onlyFavs={onlyFavourites} /> */}
-        {!diaryEntries ? (
-          <Placeholder />
-        ) : diaryEntries.length ? (
-          <DiaryStyle.Grid>
-            {diaryEntries.map((diaryEntry, key) => {
-              return <DiaryEntry entry={diaryEntry} key={key} />;
-            })}
-          </DiaryStyle.Grid>
-        ) : (
-          <DiaryStyle.NoContentMessage>
-            No diary entries found.
-          </DiaryStyle.NoContentMessage>
-        )}
-      </DiaryStyle.Main>
-    </DiaryStyle.Container>
+    <Container maxWidth={false} sx={{ padding: (t) => t.spacing(5, 3) }}>
+      <Stack divider={<Divider />} spacing={isMediumAbove ? 5 : 3}>
+        <Container maxWidth={'md'}>
+          <Stack alignItems={'center'} spacing={3}>
+            <Typography variant={'h2'} textTransform={'uppercase'}>
+              {DIARY_HEADING}
+            </Typography>
+            <DiaryPagePreamble />
+          </Stack>
+        </Container>
+        <DiaryCollection />
+      </Stack>
+    </Container>
   );
 };
 
-const DiaryEntry = React.memo(
-  ({ entry }: DiaryEntryProps) => {
-    const href = `/diary/${entry.entryNumber}`;
+/**
+ * The preamble for the diary page.
+ */
+function DiaryPagePreamble() {
+  const { data: page, isLoading } = trpc.getDiaryPageContent.useQuery();
 
-    const tags = useMemo(() => {
-      return (entry.tags as string[]).slice(0, 9).map((tag) => {
-        return tag.replace(/\s/, '');
-      });
-    }, [entry.tags]);
-
+  if (isLoading) {
     return (
-      <DiaryStyle.Entry>
-        {entry.isFavourite ? <DiaryStyle.EntryStar icon={FA6.faStar} /> : null}
-        <DiaryStyle.EntryDetails href={href}>
-          <DiaryStyle.EntryDate dateTime={ZDate.formatISO(entry.date)}>
-            {ZDate.format(entry.date)}
-          </DiaryStyle.EntryDate>
-          <DiaryStyle.EntryTitle>
-            Diary Entry #{entry.entryNumber}: {entry.title}
-          </DiaryStyle.EntryTitle>
-          <DiaryStyle.EntryExcerpt
-            truncate={40}
-            more={{
-              href,
-              text: `Read #${entry.entryNumber}: ${entry.title}`,
-            }}>
-            {entry.content}
-          </DiaryStyle.EntryExcerpt>
-        </DiaryStyle.EntryDetails>
-        {tags.length ? (
-          <ArticleStyle.TagBlock>
-            {tags.map((tag: string, key: number) => {
-              return (
-                <ArticleStyle.Tag key={key}>
-                  <Link href={`/search?term=${tag}&onlyDiary=true`}>
-                    #{tag}
-                  </Link>
-                </ArticleStyle.Tag>
-              );
-            })}
-          </ArticleStyle.TagBlock>
-        ) : null}
-      </DiaryStyle.Entry>
+      <Stack>
+        <Skeleton variant={'text'} width={'100%'} />
+        <Skeleton variant={'text'} width={'100%'} />
+        <Skeleton variant={'text'} width={'100%'} />
+        <Skeleton variant={'text'} width={'80%'} />
+      </Stack>
     );
-  },
-  (a, b) => a.entry.id === b.entry.id,
-);
+  }
 
-function Placeholder() {
+  if (!page) return null;
   return (
-    <DiaryStyle.Grid>
-      {Array(13)
-        .fill(null)
-        .map((_, key) => {
-          return (
-            <DiaryStyle.PlaceholderEntry key={key}>
-              <Loader viewBox={'0 0 40 45'} key={key}>
-                <rect x={0} y={0} rx={1} width={20} height={2} />
-                <rect x={0} y={3} rx={2} width={35} height={4} />
-                <rect x={0} y={8} rx={2} width={25} height={4} />
-                <rect x={0} y={16} rx={1} width={36} height={2} />
-                <rect x={0} y={19} rx={1} width={40} height={2} />
-                <rect x={0} y={22} rx={1} width={40} height={2} />
-                <rect x={0} y={25} rx={1} width={40} height={2} />
-                <rect x={0} y={28} rx={1} width={40} height={2} />
-                <rect x={0} y={31} rx={1} width={36} height={2} />
-                <rect x={0} y={37} rx={1} width={20} height={2} />
-                <rect x={0} y={42} rx={1} width={36} height={2} />
-              </Loader>
-            </DiaryStyle.PlaceholderEntry>
-          );
-        })}
-    </DiaryStyle.Grid>
+    <Typography variant={'body1'} textAlign={'center'}>
+      {page.content}
+    </Typography>
   );
 }
 
-export const getServerSideProps: GetServerSideProps<
-  DiaryIndexProps
-> = async () => {
-  const page = await PageAPI.getBySlug('diary');
+/**
+ * The list of diary entries displayed in a grid.
+ */
+function DiaryCollection() {
+  const { data: diaryEntries, isLoading } = trpc.getDiary.useQuery();
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (!diaryEntries) {
+    return (
+      <Stack>
+        <Typography variant={'body2'}>No diary entries found</Typography>
+      </Stack>
+    );
+  }
+
+  return (
+    <Grid
+      container={true}
+      columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+      columnSpacing={{ xs: 3, lg: 5 }}
+      rowSpacing={3}>
+      {diaryEntries.map((entry) => (
+        <DiaryEachItem entry={entry} key={entry.id} />
+      ))}
+    </Grid>
+  );
+}
+
+export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
+  ctx,
+) => {
+  const helpers = createServerSideHelpers({
+    ctx,
+    router: appRouter,
+    transformer: SuperJSON,
+  });
+
+  const page = await helpers.getHomePageContent.fetch();
+
   return {
     props: {
       pathDefinition: {
         title: `Diary | ${Settings.SITE_TITLE}`,
-        description: page.excerpt!,
+        description: page.excerpt,
         url: '/diary',
       },
-      pageProps: {
-        pageIntro: page.content!,
-      },
+      trpcState: helpers.dehydrate(),
     },
   };
 };
 
 DiaryIndex.getLayout = Layout.addPartials;
 export default DiaryIndex;
-
-interface DiaryIndexProps {
-  pathDefinition: PathDefinition;
-  pageProps: {
-    pageIntro: string;
-  };
-}
-
-interface DiaryEntryProps {
-  entry: DiaryDAO;
-}

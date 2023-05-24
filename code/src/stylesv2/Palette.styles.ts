@@ -6,9 +6,6 @@ export const lightPalette: PaletteOptions = {
   primary: {
     main: purple['A100'],
   },
-  background: {
-    paper: 'rgb(17, 17, 17)',
-  },
 };
 
 export const darkPalette: PaletteOptions = {

@@ -7,7 +7,12 @@ import { zCreateSubscriberPayload } from 'utils/validators';
 import { procedure, router } from '../trpc';
 
 export const appRouter = router({
+  getDiary: procedure.query(() =>
+    DiaryAPI.findMany({ orderBy: { entryNumber: 'desc' } }),
+  ),
   getLatestDiaryEntry: procedure.query(() => DiaryAPI.getLatest()),
+  getDiaryPageContent: procedure.query(() => PageAPI.find({ slug: 'diary' })),
+
   getLatestReverie: procedure.query(() => PostAPI.getLatestReverie()),
   getHomePageContent: procedure.query(() => PageAPI.find({ slug: 'home' })),
 

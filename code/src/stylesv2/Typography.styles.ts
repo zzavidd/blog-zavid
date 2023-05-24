@@ -23,17 +23,16 @@ const typography: TypographyOptions = {
     lineHeight: 1.1,
   },
   h2: {
-    fontFamily: mulish.style.fontFamily,
-    fontSize: 48,
+    fontFamily: calistoga.style.fontFamily,
+    fontSize: 40,
     fontWeight: 700,
     lineHeight: 1.1,
   },
   h3: {
-    fontFamily: mulish.style.fontFamily,
+    fontFamily: calistoga.style.fontFamily,
     fontSize: 32,
     fontWeight: 700,
     lineHeight: 1.1,
-    marginBottom: 5,
   },
   h4: {
     fontFamily: calistoga.style.fontFamily,
@@ -48,7 +47,7 @@ const typography: TypographyOptions = {
   },
   body1: {
     fontFamily: mulish.style.fontFamily,
-    fontSize: 20,
+    fontSize: 18,
   },
   body2: {
     fontFamily: mulish.style.fontFamily,

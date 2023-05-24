@@ -1,6 +1,7 @@
 import type { SvgIconComponent } from '@mui/icons-material';
 import { Instagram, LinkedIn, Twitter } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import type { Theme } from '@mui/material';
 import {
   Box,
   Container,
@@ -10,6 +11,7 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
@@ -31,18 +33,32 @@ const SOCIAL_PLUGS: SocialPlug[] = [
 ];
 
 export default function Footer() {
+  const isMediumAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('sm'));
   return (
     <Paper square={true} sx={{ padding: (t) => t.spacing(5, 4) }}>
       <Container maxWidth={'md'}>
-        <Stack>
-          <Stack
-            direction={'row'}
-            justifyContent={'space-between'}
-            divider={<Divider orientation={'vertical'} flexItem={true} />}>
-            <FooterLinks />
-            <SubscribeForm />
-            <SocialPlugs />
-          </Stack>
+        <Stack spacing={5}>
+          {isMediumAbove ? (
+            <Stack
+              direction={'row'}
+              justifyContent={'space-between'}
+              spacing={4}
+              divider={<Divider orientation={'vertical'} flexItem={true} />}>
+              <FooterLinks />
+              <QuickSubscribe />
+              <SocialPlugs />
+            </Stack>
+          ) : (
+            <Stack
+              direction={'column'}
+              justifyContent={'space-between'}
+              spacing={4}
+              divider={<Divider />}>
+              <QuickSubscribe />
+              <SocialPlugs />
+              <FooterLinks />
+            </Stack>
+          )}
           <Typography variant={'subtitle2'}>{Settings.COPYRIGHT}</Typography>
         </Stack>
       </Container>
@@ -67,7 +83,7 @@ function FooterLinks() {
   );
 }
 
-function SubscribeForm() {
+function QuickSubscribe() {
   const [state, setState] = useState({ email: '' });
   const { enqueueSnackbar } = useSnackbar();
   const { mutate, error, isSuccess } = trpc.createSubscriber.useMutation();
@@ -133,8 +149,9 @@ function SubscribeForm() {
 }
 
 function SocialPlugs() {
+  const isMediumAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('sm'));
   return (
-    <Stack alignItems={'center'}>
+    <Stack alignItems={isMediumAbove ? 'center' : 'flex-start'}>
       <Typography variant={'h4'}>Follow me on socials</Typography>
       <Stack direction={'row'} justifyContent={'center'}>
         {SOCIAL_PLUGS.map(({ name, Icon }) => {

@@ -1,4 +1,5 @@
 import { initTRPC } from '@trpc/server';
+import SuperJSON from 'superjson';
 
 const QUERY_ERROR_MSG =
   'There was a problem retrieving data. Please try again later.';
@@ -18,6 +19,7 @@ const t = initTRPC.create({
 
     return shape;
   },
+  transformer: SuperJSON,
 });
 
 export const router = t.router;
