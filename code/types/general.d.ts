@@ -1,17 +1,3 @@
-interface EntityDAO {
-  id?: number;
-}
-
-interface SearchResultEntityDAO {
-  index?: number;
-  title: string;
-  type: PostType | 'Diary Entry';
-  content: string;
-  date: string | Date;
-  slug: string;
-  image?: string;
-}
-
 interface EntityFormProps {
   onSubmit?: () => void;
   onCancel?: () => void;
@@ -21,14 +7,6 @@ interface EntityFormProps {
 interface AppPageProps {
   pathDefinition: PathDefinition;
   pageProps?: Record<string, unknown>;
-}
-
-interface PostFiltersOptions {
-  limit?: number;
-  field?: string;
-  order?: string;
-  type?: PostType | null;
-  status?: PostStatus;
 }
 
 interface PathDefinition {
@@ -42,15 +20,12 @@ interface PathDefinition {
   };
 }
 
-interface AlertDefinition {
-  message: string;
-  type: 'success' | 'error';
-}
-type AlertType = 'success' | 'error';
-
-interface SnackDefinition {
-  message: string;
-  duration?: number | 'indefinite';
+interface CuratorState {
+  contentTheme: PaletteMode;
+  filterTheme: FilterThemeOption;
+  filterShape: FilterShapeOption;
+  imageSource: string;
+  isTitleOnly: boolean;
 }
 
 interface Substitutions {
@@ -59,12 +34,4 @@ interface Substitutions {
 
 interface EditButtonProps {
   id: number;
-}
-
-type ReactHook<T> = React.Dispatch<React.SetStateAction<T>>;
-type LocalDispatch<T> = (state: Partial<T>) => void;
-
-interface QuerySort<T> {
-  field?: keyof T;
-  order?: string;
 }

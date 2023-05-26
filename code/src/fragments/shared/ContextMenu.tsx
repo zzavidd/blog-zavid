@@ -1,51 +1,48 @@
+import { Menu, MenuItem, MenuList } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import React, { useContext, useState } from 'react';
 
-import { CuratePromptStyle as CPS } from 'styles/Components/Curate.styles';
-import Contexts from 'utils/contexts';
+import { MenuContext } from 'utils/contexts';
 
 import Curator from './Curator';
 
-const ContextMenu = React.forwardRef<HTMLMenuElement, CuratePromptProps>(
-  ({ sourceTitle, focalText, visible, onClose }, ref) => {
-    const [state, setState] = useState({
-      curatorVisible: false,
-    });
+export default function ContextMenu() {
+  const [state, setState] = useState({ curatorVisible: false });
+  const [context, setContext] = useContext(MenuContext);
+  const { enqueueSnackbar } = useSnackbar();
 
-    const Alerts = useContext(Contexts.Alerts);
+  async function copyText() {
+    await navigator.clipboard.writeText(context.focusedTextContent);
+    enqueueSnackbar('Copied paragraph to clipboard.', { variant: 'info' });
+    onClose();
+  }
 
-    async function copyText() {
-      await navigator.clipboard.writeText(focalText);
-      Alerts.success('Copied paragraph to clipboard.');
-      onClose();
-    }
+  function curate() {
+    setState({ curatorVisible: true });
+    onClose();
+  }
 
-    function curate() {
-      setState({ curatorVisible: true });
-      onClose();
-    }
+  function onClose() {
+    setContext((s) => ({ ...s, contextMenuVisible: false }));
+  }
 
-    return (
-      <React.Fragment>
-        <CPS.Menu visible={visible} ref={ref}>
-          <CPS.MenuItem onClick={copyText}>Copy Text</CPS.MenuItem>
-          <CPS.MenuItem onClick={curate}>Curate</CPS.MenuItem>
-        </CPS.Menu>
-        <Curator
-          visible={state.curatorVisible}
-          sourceTitle={sourceTitle}
-          focalText={focalText}
-          onClose={() => setState({ curatorVisible: false })}
-        />
-      </React.Fragment>
-    );
-  },
-);
-
-export default ContextMenu;
-
-interface CuratePromptProps {
-  sourceTitle: string;
-  focalText: string;
-  visible: boolean;
-  onClose: () => void;
+  return (
+    <React.Fragment>
+      <Menu
+        open={context.contextMenuVisible}
+        onClose={onClose}
+        elevation={2}
+        anchorReference={'anchorPosition'}
+        anchorPosition={context.position}>
+        <MenuList disablePadding={true}>
+          <MenuItem onClick={copyText}>Copy Text</MenuItem>
+          <MenuItem onClick={curate}>Curate</MenuItem>
+        </MenuList>
+      </Menu>
+      <Curator
+        visible={state.curatorVisible}
+        onClose={() => setState({ curatorVisible: false })}
+      />
+    </React.Fragment>
+  );
 }

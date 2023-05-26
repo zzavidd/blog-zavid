@@ -18,7 +18,7 @@ import {
 import NextImage from 'next/image';
 import { useContext } from 'react';
 
-import Link from 'componentsv2/Link';
+import { Link } from 'componentsv2/Link';
 import Settings from 'constants/settings';
 import { NavigationContext } from 'utils/contexts';
 

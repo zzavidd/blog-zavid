@@ -51,7 +51,7 @@ const typography: TypographyOptions = {
   },
   body2: {
     fontFamily: mulish.style.fontFamily,
-    fontSize: 18,
+    fontSize: 14,
   },
   overline: {},
 };

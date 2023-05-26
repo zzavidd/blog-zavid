@@ -1,9 +1,8 @@
-import type { AppTheme, FilterThemeOption } from 'classes/theme';
-import { FilterShape, FilterShapeOption, Theme } from 'classes/theme';
+import { FilterShape, FilterShapeOption } from 'classes/theme';
 
 import Logger from './logger';
 
-const constants = {
+const Constants = {
   [FilterShapeOption.SQUARE]: {
     RECT_PADDING_X: 115,
     RECT_PADDING_Y: 80,
@@ -65,16 +64,20 @@ namespace Canvas {
     canvas: HTMLCanvasElement,
     content: HTMLPreElement,
     sourceTitle: string,
-    theme: AppTheme,
-    colour: FilterThemeOption,
-    shape: FilterShapeOption,
-    isTitleOnly: boolean,
+    state: CuratorState,
     setImageSource: (src: string) => void,
   ): Promise<void> {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const SHAPE = { ...constants[shape], ...constants.common };
+    const {
+      contentTheme: theme,
+      filterTheme: colour,
+      filterShape: shape,
+      isTitleOnly,
+    } = state;
+
+    const SHAPE = { ...Constants[shape], ...Constants.common };
     const text: string[] = [];
 
     if (isTitleOnly) {
@@ -137,15 +140,14 @@ namespace Canvas {
       startRectY +
       SHAPE.TEXT_PADDING_Y +
       (isTitleOnly && !FilterShape.isTall(shape) ? 30 : 0);
+    const isLightTheme = theme === 'light';
 
     // Draw bounding box for text.
-    ctx.fillStyle = Theme.isLight(theme)
-      ? 'rgba(255,255,255,0.85)'
-      : 'rgba(0,0,0,0.8)';
+    ctx.fillStyle = isLightTheme ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.8)';
     ctx.fillRect(startRectX, startRectY, rectWidth, rectHeight);
 
     // Insert text into bounding box.
-    ctx.fillStyle = Theme.isLight(theme) ? 'black' : 'white';
+    ctx.fillStyle = isLightTheme ? 'black' : 'white';
     insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
 
     // Draw source title at top left corner if not title only.
@@ -165,10 +167,8 @@ namespace Canvas {
     // Marshal data source to image element.
     canvas.toBlob((blob) => {
       const image = new Image();
+      image.onload = () => setImageSource(image.src);
       image.src = URL.createObjectURL(blob!);
-      image.onload = () => {
-        setImageSource(image.src);
-      };
     }, 'image/jpeg');
   }
 
@@ -176,13 +176,11 @@ namespace Canvas {
    * Downloads the image on the canvas.
    * @param imageUrl The URL of the image.
    */
-  export async function downloadImage(imageUrl: string) {
+  export async function downloadImage(imageUrl: string): Promise<void> {
     try {
       const res = await fetch(imageUrl, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'image/jpeg',
-        },
+        headers: { 'Content-Type': 'image/jpeg' },
       });
       const buffer = await res.arrayBuffer();
       const url = window.URL.createObjectURL(new Blob([buffer]));

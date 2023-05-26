@@ -11,6 +11,13 @@ const components: Components<Theme> = {
       `,
     },
   },
+  MuiCheckbox: {
+    styleOverrides: {
+      root: ({ theme }) => css`
+        padding: ${theme.spacing(1)};
+      `,
+    },
+  },
   MuiCssBaseline: {
     styleOverrides: (theme) => {
       const bgImage = `${Settings.CLOUDINARY_BASE_URL}/static/bg/bg-app-${theme.palette.mode}`;
@@ -26,6 +33,20 @@ const components: Components<Theme> = {
           transition: background-image 0.8s;
         }
       `;
+    },
+  },
+  MuiMenu: {
+    styleOverrides: {
+      list: {
+        padding: 0,
+      },
+    },
+  },
+  MuiMenuItem: {
+    styleOverrides: {
+      root: ({ theme }) => css`
+        padding: ${theme.spacing(4, 5)};
+      `,
     },
   },
 };

@@ -1,54 +1,63 @@
-import type React from 'react';
+import { useEffect, useState } from 'react';
 
-namespace Events {
-  /**
-   * Sets the context menu events.
-   * @param mainRef The content ref.
-   * @param contextMenuRef The context menu ref.
-   * @param state The page state.
-   * @param dispatch The page dispatch.
-   */
-  export function setContextMenuEvents<T extends EventState>(
-    mainRef: React.RefObject<HTMLElement>,
-    contextMenuRef: React.RefObject<HTMLMenuElement>,
-    state: T,
-    dispatch: (state: Partial<T>) => void,
-  ) {
-    const paragraphs = mainRef.current?.querySelectorAll('p');
-    const contextMenu = contextMenuRef.current;
-    if (!contextMenu || !paragraphs) return;
+import type { MenuContextProps, MenuContextState } from 'utils/contexts';
+import { MenuContext } from 'utils/contexts';
+
+import ContextMenu from './ContextMenu';
+
+export default function MenuProvider({ title, children }: MenuProviderProps) {
+  const context = useContextMenuEvents(title);
+  return (
+    <MenuContext.Provider value={context}>
+      {children}
+      <ContextMenu />
+    </MenuContext.Provider>
+  );
+}
+
+/**
+ * Custom hook for setting the context menu events.
+ * @param title The title of the page for the curate prompt.
+ * @returns The menu state.
+ */
+function useContextMenuEvents(title: string): MenuContextProps {
+  const [state, setState] = useState<MenuContextState>({
+    contextMenuVisible: false,
+    focusedTextContent: '',
+    position: { left: 0, top: 0 },
+    title,
+  });
+
+  useEffect(() => {
+    const paragraphs = document.querySelectorAll<HTMLParagraphElement>('p');
 
     let timeout: NodeJS.Timeout;
     const onParagraphMouseDown = (e: MouseEvent | TouchEvent) => {
       timeout = setTimeout(() => {
         const left = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
         const top = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
-        contextMenu.style.left = `${left}px`;
-        contextMenu.style.top = `${top}px`;
 
         const { innerText } = e.target as HTMLParagraphElement;
-        dispatch({
+        setState((s) => ({
+          ...s,
           contextMenuVisible: true,
           focusedTextContent: innerText,
-        } as T);
+          position: { left, top },
+        }));
       }, 1000);
 
       if (e instanceof MouseEvent) {
         e.preventDefault();
       }
     };
-    const onParagraphMouseUp = (e: MouseEvent | TouchEvent) => {
+    const onParagraphMouseUp = (e: MouseEvent | TouchEvent): void => {
       clearTimeout(timeout);
       e.stopPropagation();
     };
 
-    // console.log(state.contextMenuVisible);
-    const onAnyClick = (e: MouseEvent | TouchEvent) => {
-      if (
-        state.contextMenuVisible &&
-        !contextMenu.contains(e.target as HTMLElement)
-      ) {
-        dispatch({ contextMenuVisible: false } as T);
+    const onAnyClick = (): void => {
+      if (state.contextMenuVisible) {
+        setState((s) => ({ ...s, contextMenuVisible: false }));
       }
     };
 
@@ -73,12 +82,11 @@ namespace Events {
         p.removeEventListener('touchend', onParagraphMouseUp);
       });
     };
-  }
+  }, [state.contextMenuVisible]);
+
+  return [state, setState];
 }
 
-export default Events;
-
-interface EventState {
-  contextMenuVisible: boolean;
-  focusedTextContent: string;
+interface MenuProviderProps extends React.PropsWithChildren {
+  title: string;
 }

@@ -24,6 +24,7 @@ export function NextImage(props: NextImageProps) {
       {...props}
       {...state}
       placeholder={props.blurDataURL ? 'blur' : 'empty'}
+      style={{ height: '100%', width: '100%' }}
     />
   );
 }

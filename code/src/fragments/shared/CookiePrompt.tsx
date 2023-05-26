@@ -1,40 +1,29 @@
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
+import { Dialog, DialogContent, Typography } from '@mui/material';
 
-import { AppTheme } from 'classes/theme';
-import Clickable from 'components/Clickable';
-import type { AppState } from 'constants/reducers';
-import { AppActions } from 'constants/reducers';
-import { CookieStyle } from 'styles/Components/Popup.styles';
-import TextStyle from 'styles/Components/Text.styles';
-import { THEME } from 'styles/Variables.styles';
+import { Link } from 'componentsv2/Link';
+import { AppActions, useAppDispatch, useAppSelector } from 'constants/reducers';
 
 export default function CookiePrompt() {
-  const { cookiePolicyAccepted } = useSelector(
-    (state: AppState) => state.local,
-  );
-  const appDispatch = useDispatch();
+  const { cookiePolicyAccepted } = useAppSelector((state) => state.local);
+  const dispatch = useAppDispatch();
 
   function acceptCookiePolicy() {
-    appDispatch(AppActions.setCookiePolicyAccepted(true));
+    dispatch(AppActions.setCookiePolicyAccepted(true));
   }
 
   return (
-    <ThemeProvider theme={THEME[AppTheme.DARK]}>
-      <CookieStyle.Container visible={!cookiePolicyAccepted}>
-        <CookieStyle.Dialog>
-          <CookieStyle.Text>
-            My site uses cookies and similar technologies to recognise your
-            preferences. Clue up on cookies by viewing my&nbsp;
-            <TextStyle.Emphasis.Anchor href={'/cookies'}>
-              Cookie Policy
-            </TextStyle.Emphasis.Anchor>
-            . By closing this pop-up, you consent to my use of cookies.
-          </CookieStyle.Text>
-          <Clickable.Icon onClick={acceptCookiePolicy} icon={faTimes} />
-        </CookieStyle.Dialog>
-      </CookieStyle.Container>
-    </ThemeProvider>
+    <Dialog
+      open={!cookiePolicyAccepted}
+      onClose={acceptCookiePolicy}
+      hideBackdrop={true}>
+      <DialogContent>
+        <Typography variant={'body2'}>
+          My site uses cookies and similar technologies to recognise your
+          preferences. Clue up on cookies by viewing my&nbsp;
+          <Link href={'/cookies'}>Cookie Policy</Link>. By closing this pop-up,
+          you consent to my use of cookies.
+        </Typography>
+      </DialogContent>
+    </Dialog>
   );
 }

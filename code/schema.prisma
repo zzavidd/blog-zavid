@@ -8,16 +8,16 @@ datasource db {
 }
 
 model Diary {
-  id          Int      @id @default(autoincrement()) @db.UnsignedInt
-  title       String   @db.VarChar(100)
-  date        DateTime @db.Date
-  content     String   @db.Text
-  slug        String   @db.Text
-  status      String   @db.VarChar(45)
-  entryNumber Int      @unique(map: "entryNumber_UNIQUE") @db.UnsignedInt
-  footnote    String   @db.Text
-  isFavourite Int      @db.TinyInt
-  tags        String   @db.Text
+  id          Int         @id @default(autoincrement()) @db.UnsignedInt
+  title       String      @db.VarChar(100)
+  date        DateTime    @db.Date
+  content     String      @db.Text
+  slug        String      @db.Text
+  status      DiaryStatus
+  entryNumber Int         @unique(map: "entryNumber_UNIQUE") @db.UnsignedInt
+  footnote    String      @db.Text
+  isFavourite Int         @db.TinyInt
+  tags        String      @db.Text
 
   @@map("diary")
 }
@@ -35,19 +35,19 @@ model Page {
 }
 
 model Post {
-  id            Int       @id @default(autoincrement()) @db.UnsignedInt
-  title         String    @db.Text
-  datePublished DateTime? @db.Date
-  content       String    @db.LongText
-  image         String?   @db.Text
-  contentImages String?   @db.Text
-  status        String?   @default("DRAFT") @db.VarChar(45)
-  slug          String?   @db.Text
-  excerpt       String    @db.Text
-  type          String?   @db.VarChar(45)
+  id            Int        @id @default(autoincrement()) @db.UnsignedInt
+  title         String     @db.Text
+  datePublished DateTime?  @db.Date
+  content       String     @db.LongText
+  image         String?    @db.Text
+  contentImages String?    @db.Text
+  status        PostStatus
+  slug          String?    @db.Text
+  excerpt       String     @db.Text
+  type          String?    @db.VarChar(45)
   typeId        Int?
-  createTime    DateTime? @default(now()) @db.DateTime(0)
-  domainId      Int?      @db.UnsignedInt
+  createTime    DateTime?  @default(now()) @db.DateTime(0)
+  domainId      Int?       @db.UnsignedInt
 
   @@index([createTime, id], map: "type_status_date")
   @@map("posts")
@@ -66,20 +66,20 @@ model Subscriber {
 }
 
 model WishlistItem {
-  id           Int               @id @default(autoincrement()) @db.UnsignedInt
+  id           Int                @id @default(autoincrement()) @db.UnsignedInt
   name         String
   price        Float
   comments     String
   quantity     Int
-  category     WishlistCategory? @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  category     WishlistCategory?  @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   categoryId   Int?
-  visibility   Visibility
-  priority     Priority
-  image        String            @db.Text
-  href         String            @db.Text
-  reservees    Json              @default("{}")
-  purchaseDate DateTime?         @db.Date()
-  createTime   DateTime          @default(now()) @db.Timestamp(0)
+  visibility   WishlistVisibility
+  priority     WishlistPriority
+  image        String             @db.Text
+  href         String             @db.Text
+  reservees    Json               @default("{}")
+  purchaseDate DateTime?          @db.Date()
+  createTime   DateTime           @default(now()) @db.Timestamp(0)
 
   @@map("wishlist")
 }
@@ -92,13 +92,31 @@ model WishlistCategory {
   @@map("wishlist_categories")
 }
 
-enum Priority {
+enum WishlistPriority {
   HIGH
   MEDIUM
   LOW
+
+  @@map("Priority")
 }
 
-enum Visibility {
+enum WishlistVisibility {
   PUBLIC
   PRIVATE
+
+  @@map("Visibility")
+}
+
+enum DiaryStatus {
+  DRAFT
+  PROTECTED
+  PRIVATE
+  PUBLISHED
+}
+
+enum PostStatus {
+  DRAFT
+  PROTECTED
+  PRIVATE
+  PUBLISHED
 }

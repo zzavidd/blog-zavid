@@ -16,7 +16,7 @@ import {
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 
-import Link, { LinkIconButton } from 'componentsv2/Link';
+import { Link, LinkIconButton } from 'componentsv2/Link';
 import Settings from 'constants/settings';
 import { trpc } from 'utils/trpc';
 

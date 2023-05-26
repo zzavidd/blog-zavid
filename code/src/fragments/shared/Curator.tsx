@@ -1,4 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
+import type { SelectChangeEvent } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  Typography,
+} from '@mui/material';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import {
   AppTheme,
@@ -6,33 +23,23 @@ import {
   FilterShapeOption,
   FilterTheme,
   FilterThemeOption,
-  Theme,
 } from 'classes/theme';
-import Checkbox from 'components/Checkbox';
-import Input from 'components/Input';
-import { Modal } from 'components/Modal';
 import { Paragraph } from 'components/Text';
+import { NextImage } from 'componentsv2/Image';
 import Canvas from 'constants/canvas';
-import Utils from 'constants/utils';
 import ZString from 'lib/string';
-import { CuratorStyle as CS } from 'styles/Components/Curate.styles';
-import FORM from 'styles/Components/Form.styles';
-import { ButtonVariant } from 'styles/Variables.styles';
+import { MenuContext } from 'utils/contexts';
 
-export default function Curator({
-  sourceTitle,
-  focalText,
-  onClose,
-  visible,
-}: CuratorProps) {
-  const [state, setState] = useState({
+export default function Curator({ onClose, visible }: CuratorProps) {
+  const [state, setState] = useState<CuratorState>({
     contentTheme: AppTheme.DARK,
     filterTheme: FilterThemeOption.PURPLE,
     filterShape: FilterShapeOption.SQUARE,
     imageSource: '',
     isTitleOnly: false,
   });
-  const dispatch = Utils.createDispatch(setState);
+
+  const [context] = useContext(MenuContext);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textRef = useRef<HTMLPreElement>(null);
@@ -47,22 +54,12 @@ export default function Curator({
       await Canvas.createFromContent(
         canvas,
         content,
-        sourceTitle,
-        state.contentTheme,
-        state.filterTheme,
-        state.filterShape,
-        state.isTitleOnly,
-        (imageSource) => dispatch({ imageSource }),
+        context.title,
+        state,
+        (imageSource) => setState((s) => ({ ...s, imageSource })),
       );
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    visible,
-    state.contentTheme,
-    state.filterTheme,
-    state.filterShape,
-    state.isTitleOnly,
-  ]);
+  }, [context.title, state, visible]);
 
   /** Download the canvas as an image. */
   async function downloadCanvasAsImage() {
@@ -71,103 +68,123 @@ export default function Curator({
 
   /** Toggle the theme of the image content. */
   function toggleContentTheme() {
-    dispatch({ contentTheme: Theme.switchTheme(state.contentTheme) });
+    const oppositeTheme =
+      state.contentTheme === AppTheme.LIGHT ? AppTheme.DARK : AppTheme.LIGHT;
+    setState((s) => ({
+      ...s,
+      contentTheme: oppositeTheme,
+    }));
   }
 
   /** Toggle the filter theme of the image background. */
-  function toggleFilterTheme(e: React.ChangeEvent<HTMLSelectElement>) {
-    dispatch({ filterTheme: e.target.value as FilterThemeOption });
+  function toggleFilterTheme(e: SelectChangeEvent<FilterThemeOption>) {
+    setState((s) => ({
+      ...s,
+      filterTheme: e.target.value,
+    }));
   }
 
   /** Toggle the filter shape of the image. */
-  function toggleFilterShape(e: React.ChangeEvent<HTMLSelectElement>) {
-    dispatch({ filterShape: e.target.value as FilterShapeOption });
+  function toggleFilterShape(e: SelectChangeEvent<FilterShapeOption>) {
+    setState((s) => ({
+      ...s,
+      filterShape: e.target.value,
+    }));
   }
 
   /** Toggle whether curation is title only. */
   function toggleTitleOnly(e: React.ChangeEvent<HTMLInputElement>) {
-    dispatch({ isTitleOnly: e.target.checked });
+    setState((s) => ({ ...s, isTitleOnly: e.target.checked }));
   }
 
   return (
-    <Modal
-      visible={visible}
-      body={
-        <React.Fragment>
-          <CS.CanvasBox>
-            <CS.Canvas ref={canvasRef} style={{ display: 'none' }} />
-            <CS.PreviewImage src={state.imageSource} />
-          </CS.CanvasBox>
-          <CS.SettingsBox>
-            <CS.Tip>
-              Tip: Long-press the image to save to your camera roll.
-            </CS.Tip>
-            <FORM.FieldRow>
-              <FORM.Field flex={1}>
-                <Checkbox
-                  label={'Curate title only'}
-                  checked={state.isTitleOnly}
-                  onChange={toggleTitleOnly}
-                />
-              </FORM.Field>
-              <FORM.Field flex={1}>
-                <Checkbox
-                  checked={!Theme.isLight(state.contentTheme)}
-                  onChange={toggleContentTheme}
-                  label={'Dark theme?'}
-                />
-              </FORM.Field>
+    <Dialog open={visible} maxWidth={'sm'}>
+      <DialogContent>
+        <Box width={'100%'}>
+          <canvas ref={canvasRef} style={{ display: 'none' }} />
+          <NextImage src={state.imageSource} alt={context.title} />
+        </Box>
+        <Stack spacing={2} divider={<Divider />}>
+          <Typography variant={'caption'}>
+            Tip: Long-press the image to save to your camera roll.
+          </Typography>
+          <Stack spacing={4}>
+            <Stack
+              direction={'row'}
+              justifyContent={'space-between'}
+              spacing={4}>
+              <FormControlLabel
+                label={'Curate title only'}
+                slotProps={{ typography: { variant: 'body2' } }}
+                control={
+                  <Checkbox
+                    checked={state.isTitleOnly}
+                    onChange={toggleTitleOnly}
+                  />
+                }
+              />
+              <FormControlLabel
+                label={'Dark theme?'}
+                slotProps={{ typography: { variant: 'body2' } }}
+                control={
+                  <Checkbox
+                    checked={state.contentTheme === AppTheme.DARK}
+                    onChange={toggleContentTheme}
+                  />
+                }
+              />
               <Paragraph ref={textRef} hidden>
-                {focalText}
+                {context.focusedTextContent}
               </Paragraph>
-            </FORM.FieldRow>
-            <FORM.FieldRow>
-              <FORM.Field flex={1}>
-                <label>Colour:</label>
-                <Input.Select
+            </Stack>
+            <Stack
+              direction={'row'}
+              justifyContent={'space-between'}
+              spacing={4}>
+              <FormControl fullWidth={true}>
+                <InputLabel>Colour</InputLabel>
+                <Select
+                  label={'Colour'}
                   value={state.filterTheme}
-                  options={FilterTheme.OPTIONS.map((colour) => ({
-                    label: ZString.toTitleCase(colour),
-                    value: colour,
-                  }))}
-                  onChange={toggleFilterTheme}
-                />
-              </FORM.Field>
-              <FORM.Field flex={1}>
-                <label>Shape:</label>
-                <Input.Select
-                  name={'filterShape'}
+                  onChange={toggleFilterTheme}>
+                  {FilterTheme.OPTIONS.map((colour) => (
+                    <MenuItem value={colour} key={colour}>
+                      {ZString.toTitleCase(colour)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth={true}>
+                <InputLabel>Shape</InputLabel>
+                <Select
+                  label={'Shape'}
                   value={state.filterShape}
-                  options={FilterShape.OPTIONS.map((shape) => ({
-                    label: ZString.toTitleCase(shape),
-                    value: shape,
-                  }))}
-                  onChange={toggleFilterShape}
-                />
-              </FORM.Field>
-            </FORM.FieldRow>
-          </CS.SettingsBox>
-        </React.Fragment>
-      }
-      footer={
-        <React.Fragment>
-          <CS.FooterButton
-            variant={ButtonVariant.CONFIRM}
-            onClick={downloadCanvasAsImage}>
-            Download
-          </CS.FooterButton>
-          <CS.FooterButton variant={ButtonVariant.CANCEL} onClick={onClose}>
-            Cancel
-          </CS.FooterButton>
-        </React.Fragment>
-      }
-    />
+                  onChange={toggleFilterShape}>
+                  {FilterShape.OPTIONS.map((shape) => (
+                    <MenuItem value={shape} key={shape}>
+                      {ZString.toTitleCase(shape)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
+          </Stack>
+        </Stack>
+      </DialogContent>
+      <Divider />
+      <DialogActions>
+        <Button variant={'outlined'} onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant={'contained'} onClick={downloadCanvasAsImage}>
+          Download
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 
 interface CuratorProps {
-  sourceTitle: string;
-  focalText: string;
   visible: boolean;
   onClose: () => void;
 }
