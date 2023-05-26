@@ -15,7 +15,7 @@ export default function CookiePrompt() {
     <Dialog
       open={!cookiePolicyAccepted}
       onClose={acceptCookiePolicy}
-      hideBackdrop={true}>
+      disableScrollLock={true}>
       <DialogContent>
         <Typography variant={'body2'}>
           My site uses cookies and similar technologies to recognise your
