@@ -1,15 +1,20 @@
+import { Container, Stack, Typography } from '@mui/material';
+import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
+import SuperJSON from 'superjson';
 
+import { Paragraph } from 'components/Text';
 import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import * as ZText from 'lib/text';
-import SSR from 'private/ssr';
-import PageStyle from 'styles/Pages/Page.styles';
+import { appRouter } from 'server/routers/_app';
+import { trpc } from 'utils/trpc';
 
-// eslint-disable-next-line react/function-component-definition
-const PageSingle: NextPageWithLayout<PageSingleProps> = ({ pageProps }) => {
-  const { page } = pageProps;
+const DynamicPage: NextPageWithLayout<DynamicPageProps> = ({ slug }) => {
+  const { data: page } = trpc.getPageBySlug.useQuery(slug);
+  if (!page) return null;
+
   const substitutions = {
     lastModified: `**${ZDate.format(page.lastModified!)}**`,
     myAge: ZDate.calculateZavidAge(),
@@ -17,31 +22,34 @@ const PageSingle: NextPageWithLayout<PageSingleProps> = ({ pageProps }) => {
   };
 
   return (
-    <PageStyle.Container>
-      <PageStyle.Main>
-        <PageStyle.Title>{page.title}</PageStyle.Title>
-        <PageStyle.Content substitutions={substitutions}>
-          {page.content}
-        </PageStyle.Content>
-      </PageStyle.Main>
-    </PageStyle.Container>
+    <Container>
+      <Stack>
+        <Typography variant={'h2'}>{page.title}</Typography>
+        <Paragraph substitutions={substitutions}>{page.content}</Paragraph>
+      </Stack>
+    </Container>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps<DynamicPageProps> = async (
+  ctx,
+) => {
   try {
-    const page = JSON.parse(await SSR.Pages.getBySlug(query.page as string));
+    const helpers = createServerSideHelpers({
+      ctx,
+      router: appRouter,
+      transformer: SuperJSON,
+    });
+
+    const slug = ctx.query.page as string;
+    const page = await helpers.getPageBySlug.fetch(slug);
     return {
       props: {
+        slug,
         pathDefinition: {
           title: `${page.title} | ${Settings.SITE_TITLE}`,
           description: ZText.extractExcerpt(page.content!),
-          url: `/${query.page}`,
-        },
-        pageProps: {
-          page,
+          url: `/${slug}`,
         },
       },
     };
@@ -52,12 +60,9 @@ export const getServerSideProps: GetServerSideProps<PageSingleProps> = async ({
   }
 };
 
-PageSingle.getLayout = Layout.addPartials;
-export default PageSingle;
+DynamicPage.getLayout = Layout.addPartials;
+export default DynamicPage;
 
-interface PageSingleProps {
-  pathDefinition: PathDefinition;
-  pageProps: {
-    page: PageDAO;
-  };
+interface DynamicPageProps extends AppPageProps {
+  slug: string;
 }
