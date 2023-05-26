@@ -15,99 +15,98 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import {
-  AppTheme,
-  FilterShape,
-  FilterShapeOption,
-  FilterTheme,
-  FilterThemeOption,
-} from 'classes/theme';
+import type { FilterShapeOption, FilterThemeOption } from 'classes/theme';
+import { AppTheme, FilterShape, FilterTheme } from 'classes/theme';
 import { Paragraph } from 'components/Text';
 import { NextImage } from 'componentsv2/Image';
 import Canvas from 'constants/canvas';
 import ZString from 'lib/string';
 import { MenuContext } from 'utils/contexts';
 
+import { CuratorContext } from './Curator.context';
+
 export default function Curator({ onClose, visible }: CuratorProps) {
-  const [state, setState] = useState<CuratorState>({
-    contentTheme: AppTheme.DARK,
-    filterTheme: FilterThemeOption.PURPLE,
-    filterShape: FilterShapeOption.SQUARE,
-    imageSource: '',
-    isTitleOnly: false,
-  });
+  const [menuContext] = useContext(MenuContext);
+  const [curatorContext, setCuratorContext] = useContext(CuratorContext);
 
-  const [context] = useContext(MenuContext);
-
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const textRef = useRef<HTMLPreElement>(null);
+  const { canvasRef, textRef, curateContent } = Canvas.useCurateContent();
 
   // Redraw the canvas with new properties.
   useEffect(() => {
-    (async () => {
-      const canvas = canvasRef.current;
-      const content = textRef.current;
-      if (!canvas || !content) return;
+    if (!visible) return;
 
-      await Canvas.createFromContent(
-        canvas,
-        content,
-        context.title,
-        state,
-        (imageSource) => setState((s) => ({ ...s, imageSource })),
-      );
+    (async () => {
+      const imageSource = await curateContent();
+      if (imageSource) {
+        setCuratorContext((c) => ({ ...c, imageSource }));
+      }
     })();
-  }, [context.title, state, visible]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    curatorContext.filterShape,
+    curatorContext.filterTheme,
+    curatorContext.contentTheme,
+    curatorContext.isTitleOnly,
+    visible,
+  ]);
 
   /** Download the canvas as an image. */
   async function downloadCanvasAsImage() {
-    await Canvas.downloadImage(state.imageSource);
+    await Canvas.downloadImage(curatorContext.imageSource);
   }
 
   /** Toggle the theme of the image content. */
   function toggleContentTheme() {
     const oppositeTheme =
-      state.contentTheme === AppTheme.LIGHT ? AppTheme.DARK : AppTheme.LIGHT;
-    setState((s) => ({
-      ...s,
+      curatorContext.contentTheme === AppTheme.LIGHT
+        ? AppTheme.DARK
+        : AppTheme.LIGHT;
+    setCuratorContext((c) => ({
+      ...c,
       contentTheme: oppositeTheme,
     }));
   }
 
   /** Toggle the filter theme of the image background. */
   function toggleFilterTheme(e: SelectChangeEvent<FilterThemeOption>) {
-    setState((s) => ({
-      ...s,
-      filterTheme: e.target.value,
+    setCuratorContext((c) => ({
+      ...c,
+      filterTheme: e.target.value as FilterThemeOption,
     }));
   }
 
   /** Toggle the filter shape of the image. */
   function toggleFilterShape(e: SelectChangeEvent<FilterShapeOption>) {
-    setState((s) => ({
-      ...s,
-      filterShape: e.target.value,
+    setCuratorContext((c) => ({
+      ...c,
+      filterShape: e.target.value as FilterShapeOption,
     }));
   }
 
   /** Toggle whether curation is title only. */
   function toggleTitleOnly(e: React.ChangeEvent<HTMLInputElement>) {
-    setState((s) => ({ ...s, isTitleOnly: e.target.checked }));
+    setCuratorContext((c) => ({ ...c, isTitleOnly: e.target.checked }));
   }
 
   return (
-    <Dialog open={visible} maxWidth={'sm'}>
+    <Dialog open={visible} fullWidth={true} maxWidth={'xs'} keepMounted={true}>
       <DialogContent>
-        <Box width={'100%'}>
-          <canvas ref={canvasRef} style={{ display: 'none' }} />
-          <NextImage src={state.imageSource} alt={context.title} />
-        </Box>
-        <Stack spacing={2} divider={<Divider />}>
+        <Stack spacing={2}>
+          <Box sx={{ height: (t) => t.spacing(13), width: '100%' }}>
+            <canvas ref={canvasRef} style={{ display: 'none' }} />
+            {curatorContext.imageSource ? (
+              <NextImage
+                src={curatorContext.imageSource}
+                alt={menuContext.title}
+              />
+            ) : null}
+          </Box>
           <Typography variant={'caption'}>
             Tip: Long-press the image to save to your camera roll.
           </Typography>
+          <Divider />
           <Stack spacing={4}>
             <Stack
               direction={'row'}
@@ -118,7 +117,7 @@ export default function Curator({ onClose, visible }: CuratorProps) {
                 slotProps={{ typography: { variant: 'body2' } }}
                 control={
                   <Checkbox
-                    checked={state.isTitleOnly}
+                    checked={curatorContext.isTitleOnly}
                     onChange={toggleTitleOnly}
                   />
                 }
@@ -128,13 +127,13 @@ export default function Curator({ onClose, visible }: CuratorProps) {
                 slotProps={{ typography: { variant: 'body2' } }}
                 control={
                   <Checkbox
-                    checked={state.contentTheme === AppTheme.DARK}
+                    checked={curatorContext.contentTheme === AppTheme.DARK}
                     onChange={toggleContentTheme}
                   />
                 }
               />
-              <Paragraph ref={textRef} hidden>
-                {context.focusedTextContent}
+              <Paragraph ref={textRef} hidden={true}>
+                {menuContext.focusedTextContent}
               </Paragraph>
             </Stack>
             <Stack
@@ -145,7 +144,7 @@ export default function Curator({ onClose, visible }: CuratorProps) {
                 <InputLabel>Colour</InputLabel>
                 <Select
                   label={'Colour'}
-                  value={state.filterTheme}
+                  value={curatorContext.filterTheme}
                   onChange={toggleFilterTheme}>
                   {FilterTheme.OPTIONS.map((colour) => (
                     <MenuItem value={colour} key={colour}>
@@ -158,7 +157,7 @@ export default function Curator({ onClose, visible }: CuratorProps) {
                 <InputLabel>Shape</InputLabel>
                 <Select
                   label={'Shape'}
-                  value={state.filterShape}
+                  value={curatorContext.filterShape}
                   onChange={toggleFilterShape}>
                   {FilterShape.OPTIONS.map((shape) => (
                     <MenuItem value={shape} key={shape}>

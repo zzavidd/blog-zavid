@@ -19,6 +19,10 @@ export const appRouter = router({
   getDiaryPageContent: procedure.query(() => PageAPI.find({ slug: 'diary' })),
 
   getLatestReverie: procedure.query(() => PostAPI.getLatestReverie()),
+
+  getPageBySlug: procedure
+    .input(z.string())
+    .query(({ input }) => PageAPI.find({ slug: input })),
   getHomePageContent: procedure.query(() => PageAPI.find({ slug: 'home' })),
 
   createSubscriber: procedure

@@ -1,4 +1,9 @@
-import { FilterShape, FilterShapeOption } from 'classes/theme';
+import { useCallback, useContext, useRef } from 'react';
+import invariant from 'tiny-invariant';
+
+import { AppTheme, FilterShape, FilterShapeOption } from 'classes/theme';
+import { CuratorContext } from 'fragments/shared/Curator.context';
+import { MenuContext } from 'utils/contexts';
 
 import Logger from './logger';
 
@@ -49,127 +54,134 @@ const Constants = {
 };
 
 namespace Canvas {
-  /**
-   * Creates a canvas from a div element.
-   * @param canvas The base canvas.
-   * @param content The div element to create the canvas from.
-   * @param sourceTitle The title of the source post.
-   * @param theme The theme of the context text to be displayed.
-   * @param colour The colour of the background image filter.
-   * @param shape The dimensions of the image.
-   * @param setImageSource The dispatch function to set the image source.
-   * @param isTitleOnly Flag indicating to only curate title..
-   */
-  export async function createFromContent(
-    canvas: HTMLCanvasElement,
-    content: HTMLPreElement,
-    sourceTitle: string,
-    state: CuratorState,
-    setImageSource: (src: string) => void,
-  ): Promise<void> {
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+  export function useCurateContent(): UseCurateContent {
+    const [menuContext] = useContext(MenuContext);
+    const [curatorContext] = useContext(CuratorContext);
 
-    const {
-      contentTheme: theme,
-      filterTheme: colour,
-      filterShape: shape,
-      isTitleOnly,
-    } = state;
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const textRef = useRef<HTMLPreElement>(null);
 
-    const SHAPE = { ...Constants[shape], ...Constants.common };
-    const text: string[] = [];
+    /**
+     * Uses all required information to draw content on the canvas and create an
+     * image from it.
+     */
+    const curateContent = useCallback(async () => {
+      try {
+        const canvas = canvasRef.current;
+        const content = textRef.current;
+        invariant(canvas && content, 'No canvas or text content found.');
 
-    if (isTitleOnly) {
-      text.push(sourceTitle);
-    } else {
-      content.firstChild?.childNodes.forEach((value) => {
-        text.push(value.textContent!);
-      });
-    }
+        const ctx = canvas.getContext('2d');
+        invariant(ctx, 'No canvas context found.');
 
-    const fontStyleOptions = {
-      isTitleOnly,
-      constantLineHeight: SHAPE.TITLE_LINE_HEIGHT,
-    };
+        const SHAPE = {
+          ...Constants[curatorContext.filterShape],
+          ...Constants.common,
+        };
+        const text: string[] = [];
 
-    const bgImage = new Image();
-    await new Promise((resolve) => {
-      bgImage.onload = resolve;
-      bgImage.src = `/images/filters/${shape}-${colour}.jpg`;
-    });
+        if (curatorContext.isTitleOnly) {
+          text.push(menuContext.title);
+        } else {
+          content.firstChild?.childNodes.forEach((value) => {
+            text.push(value.textContent!);
+          });
+        }
 
-    const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
+        const fontStyleOptions = {
+          isTitleOnly: curatorContext.isTitleOnly,
+          constantLineHeight: SHAPE.TITLE_LINE_HEIGHT,
+        };
 
-    let fontSize = isTitleOnly
-      ? SHAPE.TITLE_FONT_SIZE
-      : SHAPE.INITIAL_FONT_SIZE;
-    let [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
+        const bgImage = new Image();
+        await new Promise((resolve) => {
+          bgImage.onload = resolve;
+          bgImage.src = `/images/filters/${curatorContext.filterShape}-${curatorContext.filterTheme}.jpg`;
+        });
 
-    canvas.width = bgImage.width;
-    canvas.height = bgImage.height;
+        const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
 
-    const rectWidth = canvas.width - SHAPE.RECT_PADDING_X;
-    const maxTextWidth = rectWidth - SHAPE.TEXT_PADDING_X * 2;
+        let fontSize = curatorContext.isTitleOnly
+          ? SHAPE.TITLE_FONT_SIZE
+          : SHAPE.INITIAL_FONT_SIZE;
+        let [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
 
-    // Draft text on canvas to determine text height.
-    // Do until number of lines is less than or equal to limit.
-    let textHeight = 0;
-    let numOfLines = 0;
-    do {
-      if (fontSize < SHAPE.INITIAL_FONT_SIZE * (2 / 3)) break;
+        canvas.width = bgImage.width;
+        canvas.height = bgImage.height;
 
-      [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
-      ctx.font = fontStyle;
-      textHeight = insertText(ctx, text, 0, 0, maxTextWidth, lineHeight);
-      numOfLines = textHeight / lineHeight;
-      fontSize -= 2;
-    } while (numOfLines > LINE_LIMIT);
+        const rectWidth = canvas.width - SHAPE.RECT_PADDING_X;
+        const maxTextWidth = rectWidth - SHAPE.TEXT_PADDING_X * 2;
 
-    // Draw background image.
-    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+        // Draft text on canvas to determine text height.
+        // Do until number of lines is less than or equal to limit.
+        let textHeight = 0;
+        let numOfLines = 0;
+        do {
+          if (fontSize < SHAPE.INITIAL_FONT_SIZE * (2 / 3)) break;
 
-    const rectHeight = textHeight + SHAPE.RECT_PADDING_Y;
-    const extraYShift =
-      Math.ceil(numOfLines) === LINE_LIMIT ? SHAPE.EXTRA_Y_SHIFT : 0;
+          [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
+          ctx.font = fontStyle;
+          textHeight = insertText(ctx, text, 0, 0, maxTextWidth, lineHeight);
+          numOfLines = textHeight / lineHeight;
+          fontSize -= 2;
+        } while (numOfLines > LINE_LIMIT);
 
-    const startRectX = canvas.width / 2 - rectWidth / 2;
-    const startRectY = canvas.height / 2 - rectHeight / 2 - extraYShift;
-    const startTextX = startRectX + SHAPE.TEXT_PADDING_X;
-    const startTextY =
-      startRectY +
-      SHAPE.TEXT_PADDING_Y +
-      (isTitleOnly && !FilterShape.isTall(shape) ? 30 : 0);
-    const isLightTheme = theme === 'light';
+        // Draw background image.
+        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 
-    // Draw bounding box for text.
-    ctx.fillStyle = isLightTheme ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.8)';
-    ctx.fillRect(startRectX, startRectY, rectWidth, rectHeight);
+        const rectHeight = textHeight + SHAPE.RECT_PADDING_Y;
+        const extraYShift =
+          Math.ceil(numOfLines) === LINE_LIMIT ? SHAPE.EXTRA_Y_SHIFT : 0;
 
-    // Insert text into bounding box.
-    ctx.fillStyle = isLightTheme ? 'black' : 'white';
-    insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
+        const startRectX = canvas.width / 2 - rectWidth / 2;
+        const startRectY = canvas.height / 2 - rectHeight / 2 - extraYShift;
+        const startTextX = startRectX + SHAPE.TEXT_PADDING_X;
+        const startTextY =
+          startRectY +
+          SHAPE.TEXT_PADDING_Y +
+          (curatorContext.isTitleOnly &&
+          !FilterShape.isTall(curatorContext.filterShape)
+            ? 30
+            : 0);
+        const isLightTheme = curatorContext.contentTheme === AppTheme.LIGHT;
 
-    // Draw source title at top left corner if not title only.
-    if (!isTitleOnly) {
-      ctx.fillStyle = 'white';
-      ctx.font = `${SHAPE.ST_FONT_SIZE}px Calistoga`;
-      insertText(
-        ctx,
-        [sourceTitle],
-        SHAPE.ST_START_X,
-        SHAPE.ST_START_Y,
-        canvas.width * (4 / 7),
-        SHAPE.ST_LINE_HEIGHT,
-      );
-    }
+        // Draw bounding box for text.
+        ctx.fillStyle = isLightTheme
+          ? 'rgba(255,255,255,0.85)'
+          : 'rgba(0,0,0,0.8)';
+        ctx.fillRect(startRectX, startRectY, rectWidth, rectHeight);
 
-    // Marshal data source to image element.
-    canvas.toBlob((blob) => {
-      const image = new Image();
-      image.onload = () => setImageSource(image.src);
-      image.src = URL.createObjectURL(blob!);
-    }, 'image/jpeg');
+        // Insert text into bounding box.
+        ctx.fillStyle = isLightTheme ? 'black' : 'white';
+        insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
+
+        // Draw source title at top left corner if not title only.
+        if (!curatorContext.isTitleOnly) {
+          ctx.fillStyle = 'white';
+          ctx.font = `${SHAPE.ST_FONT_SIZE}px Calistoga`;
+          insertText(
+            ctx,
+            [menuContext.title],
+            SHAPE.ST_START_X,
+            SHAPE.ST_START_Y,
+            canvas.width * (4 / 7),
+            SHAPE.ST_LINE_HEIGHT,
+          );
+        }
+
+        return canvas.toDataURL('image/jpeg');
+      } catch (e) {
+        return null;
+      }
+    }, [
+      curatorContext.contentTheme,
+      curatorContext.filterShape,
+      curatorContext.filterTheme,
+      curatorContext.isTitleOnly,
+      menuContext.title,
+    ]);
+
+    return { canvasRef, textRef, curateContent };
   }
 
   /**
@@ -278,4 +290,10 @@ function getFontStyle(
 interface FontStyleOptions {
   isTitleOnly?: boolean;
   constantLineHeight?: number;
+}
+
+interface UseCurateContent {
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  textRef: React.RefObject<HTMLPreElement>;
+  curateContent: () => Promise<string | null>;
 }

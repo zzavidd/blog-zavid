@@ -35,6 +35,13 @@ const components: Components<Theme> = {
       `;
     },
   },
+  MuiFormControlLabel: {
+    styleOverrides: {
+      label: () => css`
+        user-select: none;
+      `,
+    },
+  },
   MuiMenu: {
     styleOverrides: {
       list: {

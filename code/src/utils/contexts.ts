@@ -1,5 +1,4 @@
 import type { PopoverPosition } from '@mui/material';
-import type { Dispatch, SetStateAction } from 'react';
 import React from 'react';
 
 export const NavigationContext = React.createContext<NavigationContextProps>([
@@ -26,5 +25,3 @@ export interface MenuContextState {
 
 export type NavigationContextProps = ReactUseState<boolean>;
 export type MenuContextProps = ReactUseState<MenuContextState>;
-
-type ReactUseState<T> = [T, Dispatch<SetStateAction<T>>];

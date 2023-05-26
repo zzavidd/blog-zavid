@@ -1,37 +1,29 @@
-interface EntityFormProps {
-  onSubmit?: () => void;
-  onCancel?: () => void;
-  onSubmitText: string;
-}
+import type { Dispatch, SetStateAction } from 'react';
 
-interface AppPageProps {
-  pathDefinition: PathDefinition;
-  pageProps?: Record<string, unknown>;
-}
+declare global {
+  interface AppPageProps {
+    pathDefinition: PathDefinition;
+    pageProps?: Record<string, unknown>;
+  }
 
-interface PathDefinition {
-  title: string;
-  description?: string;
-  url?: string;
-  cardImage?: string;
-  article?: {
-    publishedTime: string;
-    tags: string[];
-  };
-}
+  interface PathDefinition {
+    title: string;
+    description?: string;
+    url?: string;
+    cardImage?: string;
+    article?: {
+      publishedTime: string;
+      tags: string[];
+    };
+  }
 
-interface CuratorState {
-  contentTheme: PaletteMode;
-  filterTheme: FilterThemeOption;
-  filterShape: FilterShapeOption;
-  imageSource: string;
-  isTitleOnly: boolean;
-}
+  interface Substitutions {
+    [key: string]: string | number;
+  }
 
-interface Substitutions {
-  [key: string]: string | number;
-}
+  interface EditButtonProps {
+    id: number;
+  }
 
-interface EditButtonProps {
-  id: number;
+  type ReactUseState<T> = [T, Dispatch<SetStateAction<T>>];
 }

@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import type { Theme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 
 import type { MenuContextProps, MenuContextState } from 'utils/contexts';
 import { MenuContext } from 'utils/contexts';
@@ -27,62 +29,54 @@ function useContextMenuEvents(title: string): MenuContextProps {
     position: { left: 0, top: 0 },
     title,
   });
+  const isDesktopAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('lg'));
+
+  const openContextMenu = useCallback((e: MouseEvent | TouchEvent) => {
+    const left = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
+    const top = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
+
+    const { innerText } = e.target as HTMLParagraphElement;
+    setState((s) => ({
+      ...s,
+      contextMenuVisible: true,
+      focusedTextContent: innerText,
+      position: { left, top },
+    }));
+
+    if (e instanceof MouseEvent) {
+      e.preventDefault();
+    }
+  }, []);
 
   useEffect(() => {
-    const paragraphs = document.querySelectorAll<HTMLParagraphElement>('p');
-
     let timeout: NodeJS.Timeout;
     const onParagraphMouseDown = (e: MouseEvent | TouchEvent) => {
-      timeout = setTimeout(() => {
-        const left = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
-        const top = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
-
-        const { innerText } = e.target as HTMLParagraphElement;
-        setState((s) => ({
-          ...s,
-          contextMenuVisible: true,
-          focusedTextContent: innerText,
-          position: { left, top },
-        }));
-      }, 1000);
-
-      if (e instanceof MouseEvent) {
-        e.preventDefault();
-      }
+      timeout = setTimeout(() => openContextMenu(e), 1000);
     };
-    const onParagraphMouseUp = (e: MouseEvent | TouchEvent): void => {
-      clearTimeout(timeout);
-      e.stopPropagation();
-    };
+    const onParagraphMouseUp = () => clearTimeout(timeout);
 
-    const onAnyClick = (): void => {
-      if (state.contextMenuVisible) {
-        setState((s) => ({ ...s, contextMenuVisible: false }));
-      }
-    };
-
-    window.addEventListener('mousedown', onAnyClick);
-    window.addEventListener('touchstart', onAnyClick, false);
+    const paragraphs = document.querySelectorAll<HTMLParagraphElement>('pre p');
     paragraphs.forEach((p) => {
-      p.addEventListener('contextmenu', (e) => e.preventDefault());
-      p.addEventListener('mousedown', onParagraphMouseDown);
-      p.addEventListener('mouseup', onParagraphMouseUp);
+      if (isDesktopAbove) {
+        p.addEventListener('contextmenu', openContextMenu);
+      } else {
+        p.addEventListener('mousedown', onParagraphMouseDown);
+        p.addEventListener('mouseup', onParagraphMouseUp);
+      }
       p.addEventListener('touchstart', onParagraphMouseDown);
       p.addEventListener('touchend', onParagraphMouseUp);
       p.style.userSelect = 'none';
     });
     return () => {
-      window.removeEventListener('mousedown', onAnyClick);
-      window.removeEventListener('touchstart', onAnyClick);
       paragraphs.forEach((p) => {
-        p.removeEventListener('contextmenu', (e) => e.preventDefault());
+        p.removeEventListener('contextmenu', openContextMenu);
         p.removeEventListener('mousedown', onParagraphMouseDown);
         p.removeEventListener('mouseup', onParagraphMouseUp);
         p.removeEventListener('touchstart', onParagraphMouseDown);
         p.removeEventListener('touchend', onParagraphMouseUp);
       });
     };
-  }, [state.contextMenuVisible]);
+  }, [isDesktopAbove, openContextMenu, state.contextMenuVisible]);
 
   return [state, setState];
 }
