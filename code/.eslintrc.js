@@ -2,7 +2,8 @@
  * @type {import('eslint').Linter.Config}
  */
 module.exports = {
-  extends: ['next/core-web-vitals', '@zzavidd/eslint-config/react-ts'],
+  extends: ['@zzavidd/eslint-config/react-ts'],
+  ignorePatterns: ['**/schemas/**/*.ts'],
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: ['**/tsconfig.json'],
