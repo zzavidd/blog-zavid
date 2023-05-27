@@ -54,7 +54,10 @@ export default function ContextMenu() {
         anchorPosition={context.position}>
         <MenuList disablePadding={true}>
           {menuItems.map(({ label, icon, onClick }) => (
-            <MenuItem onClick={onClick} key={label}>
+            <MenuItem
+              onClick={onClick}
+              sx={{ padding: (t) => t.spacing(4, 5) }}
+              key={label}>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText>{label}</ListItemText>
               <ListItemIcon />

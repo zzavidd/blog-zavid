@@ -62,7 +62,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({ id }) => {
                 alignItems={'center'}
                 spacing={1}
                 justifyContent={isMobile ? 'flex-start' : 'center'}>
-                <FavoriteRoundedIcon fontSize={'small'} />
+                <FavoriteRoundedIcon color={'primary'} fontSize={'small'} />
                 <Typography variant={'body2'}>
                   This diary entry is a personal Zavid favourite.
                 </Typography>

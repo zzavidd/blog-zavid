@@ -11,7 +11,6 @@ export default function Breadcrumbs({ links, ...props }: BreadcrumbsProps) {
           return (
             <Link
               href={href}
-              color={'inherit'}
               underline={'hover'}
               variant={'caption'}
               key={href}>

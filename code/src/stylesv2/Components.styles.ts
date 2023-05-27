@@ -49,13 +49,6 @@ const components: Components<Theme> = {
       },
     },
   },
-  MuiMenuItem: {
-    styleOverrides: {
-      root: ({ theme }) => css`
-        padding: ${theme.spacing(4, 5)};
-      `,
-    },
-  },
 };
 
 export default components;
