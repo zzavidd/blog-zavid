@@ -6,21 +6,17 @@ import { Link } from './Link';
 export default function Breadcrumbs({ links, ...props }: BreadcrumbsProps) {
   return (
     <MuiBreadcrumbs {...props}>
-      {links.map(({ label, href }) => {
+      {links.map(({ label, href }, key) => {
         if (href) {
           return (
-            <Link
-              href={href}
-              underline={'hover'}
-              variant={'caption'}
-              key={href}>
+            <Link href={href} underline={'hover'} variant={'caption'} key={key}>
               {label}
             </Link>
           );
         }
 
         return (
-          <Typography variant={'caption'} fontWeight={700} key={href}>
+          <Typography variant={'caption'} fontWeight={700} key={key}>
             {label}
           </Typography>
         );

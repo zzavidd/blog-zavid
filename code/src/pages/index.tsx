@@ -27,7 +27,6 @@ const HomePage: NextPageWithLayout = () => {
           moreHref={`/diary/${entry?.entryNumber}`}
         />
       </Stack>
-      {/* <RandomPostsGrid posts={[]} /> */}
     </Container>
   );
 };

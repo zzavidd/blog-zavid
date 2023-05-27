@@ -12,8 +12,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import type { Diary } from '@prisma/client';
 import React from 'react';
 
-import { Paragraph } from 'componentsv2/Typography/Paragraph';
-import { Time } from 'componentsv2/Typography/Time';
+import Paragraph from 'componentsv2/Typography/Paragraph';
+import Time from 'componentsv2/Typography/Time';
 
 const cardProps: SxProps<Theme> = {
   'height': '100%',
@@ -28,7 +28,7 @@ const cardProps: SxProps<Theme> = {
 };
 
 const DiaryEachItem = React.memo<DiaryEachItemProps>(
-  function DiaryEntry({ entry }) {
+  function DiaryEachItem({ entry }) {
     const href = `/diary/${entry.entryNumber}`;
 
     return (
@@ -50,7 +50,6 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
             <Typography variant={'h3'}>
               Diary Entry #{entry.entryNumber}: {entry.title}
             </Typography>
-
             <Divider sx={{ marginBlock: (t) => t.spacing(4) }} />
             <Paragraph
               variant={'body1'}

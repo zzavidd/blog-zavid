@@ -6,7 +6,7 @@ import React, { useMemo } from 'react';
 import { LinkButton } from 'componentsv2/Link';
 import * as zText from 'lib/text';
 
-export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
+const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
   (props, ref) => {
     const {
       children,
@@ -41,13 +41,9 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
         <Typography
           variant={'body1'}
           component={'pre'}
+          whiteSpace={'pre-wrap'}
           ref={ref}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: (t) => t.spacing(5),
-            whiteSpace: 'pre-wrap',
-          }}
+          mb={showReadMore ? 3 : 0}
           {...preProps}>
           {zText.formatText(text)}
         </Typography>
@@ -62,6 +58,8 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
     );
   },
 );
+
+export default Paragraph;
 
 interface ParagraphProps extends TypographyProps<'pre'> {
   children: string;

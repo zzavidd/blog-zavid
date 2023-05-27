@@ -13,7 +13,7 @@ export default class DiaryAPI {
   }
 
   public static async getTriplet(currentId: number): Promise<DiaryTriplet> {
-    const [current, previous, next] = await this.findMany({
+    const [previous, current, next] = await this.findMany({
       where: { entryNumber: { in: [currentId, currentId - 1, currentId + 1] } },
     });
     return { current, previous, next };

@@ -7,21 +7,35 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import { DiaryStatus } from '@prisma/client';
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import type { GetServerSideProps } from 'next';
+import { unstable_getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
+import SuperJSON from 'superjson';
 
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import ShareBlock from 'components/ShareBlock';
 import Breadcrumbs from 'componentsv2/Breadcrumbs';
 import { Signature } from 'componentsv2/Image';
-import { Paragraph } from 'componentsv2/Typography/Paragraph';
-import { Time } from 'componentsv2/Typography/Time';
+import Paragraph from 'componentsv2/Typography/Paragraph';
+import Time from 'componentsv2/Typography/Time';
+import Logger from 'constants/logger';
+import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
 import MenuProvider from 'fragments/shared/MenuProvider';
+import ZString from 'lib/string';
+import * as ZText from 'lib/text';
+import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
+import { appRouter } from 'server/routers/_app';
 import { trpc } from 'utils/trpc';
 
-const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({ id }) => {
-  const { data: diaryTriplet, error } = trpc.getDiaryTriplet.useQuery(id);
+const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
+  entryNumber,
+}) => {
+  const { data: diaryTriplet, error } =
+    trpc.getDiaryTriplet.useQuery(entryNumber);
   const isMobile = useMediaQuery<Theme>((t) => t.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
 
@@ -91,9 +105,57 @@ function TopNavigator({ diaryTriplet }: { diaryTriplet?: DiaryTriplet }) {
   return null;
 }
 
+export const getServerSideProps: GetServerSideProps<
+  DiaryEntryPageProps
+> = async (ctx) => {
+  const helpers = createServerSideHelpers({
+    ctx,
+    router: appRouter,
+    transformer: SuperJSON,
+  });
+
+  try {
+    const { query, req, res } = ctx;
+
+    const entryNumber = parseInt(query.number as string);
+    const diaryTriplet = await helpers.getDiaryTriplet.fetch(entryNumber);
+    const entry = diaryTriplet.current;
+
+    const session = await unstable_getServerSession(req, res, nextAuthOptions);
+    if (!session && entry.status === DiaryStatus.PROTECTED) {
+      throw new Error('No diary entry found.');
+    }
+
+    if (entry.status !== DiaryStatus.PUBLISHED) {
+      res.setHeader('X-Robots-Tag', 'noindex');
+    }
+
+    return {
+      props: {
+        entryNumber,
+        pathDefinition: {
+          title: `Diary Entry #${entry.entryNumber}: ${entry.title} | ${Settings.SITE_TITLE}`,
+          description: ZText.extractExcerpt(entry.content),
+          url: `/diary/${entry.entryNumber}`,
+          article: {
+            publishedTime: new Date(entry.date).toDateString(),
+            tags: ZString.convertCsvToArray(entry.tags),
+          },
+        },
+        trpcState: helpers.dehydrate(),
+      },
+    };
+  } catch (e) {
+    Logger.error(e);
+    return {
+      notFound: true,
+    };
+  }
+};
+
 DiaryEntryPage.getLayout = Layout.addPartials;
 export default DiaryEntryPage;
 
 interface DiaryEntryPageProps extends AppPageProps {
-  id: number;
+  entryNumber: number;
 }

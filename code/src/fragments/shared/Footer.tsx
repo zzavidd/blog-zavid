@@ -37,10 +37,9 @@ export default function Footer() {
   return (
     <Paper
       square={true}
+      elevation={4}
       sx={{
-        bottom: 0,
         padding: (t) => t.spacing(5, 4),
-        position: 'relative',
         width: '100%',
       }}>
       <Container maxWidth={'md'}>

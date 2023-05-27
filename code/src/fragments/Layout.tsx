@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import React from 'react';
 
 import Footer from './shared/Footer';
@@ -8,10 +8,10 @@ import { NavigationDrawer } from './shared/NavigationDrawer';
 namespace Layout {
   export function addPartials(page: React.ReactElement) {
     return (
-      <Stack height={'100vh'}>
+      <Stack minHeight={'100vh'}>
         <Header />
         <NavigationDrawer />
-        <Box flex={1}>{page}</Box>
+        <Stack flex={1}>{page}</Stack>
         <Footer />
       </Stack>
     );

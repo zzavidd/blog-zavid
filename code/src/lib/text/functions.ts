@@ -1,10 +1,9 @@
-import type { ReactElement } from 'react';
-import React from 'react';
+import type React from 'react';
 
 import {
   deformatParagraph,
   formatParagraph,
-} from 'lib/text/formatting/section';
+} from 'lib/text/formatting/Section';
 import { newLinesExceptNumberedListsRegex } from 'lib/text/regex';
 
 /**
@@ -15,14 +14,14 @@ import { newLinesExceptNumberedListsRegex } from 'lib/text/regex';
 export function formatText(
   fullText: string,
   options: FormatTextOptions = {},
-): ReactElement {
-  if (!fullText) return <React.Fragment />;
+): React.ReactNode {
+  if (!fullText) return null;
 
   const formattedText = fullText
     .split(newLinesExceptNumberedListsRegex)
     .map((paragraph, key) => formatParagraph(paragraph, key, options));
 
-  return <React.Fragment>{formattedText}</React.Fragment>;
+  return formattedText;
 }
 
 /**

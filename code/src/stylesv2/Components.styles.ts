@@ -28,7 +28,6 @@ const components: Components<Theme> = {
           background-repeat: no-repeat;
           background-size: cover;
           font-feature-settings: 'lnum';
-          height: 100vh;
           overscroll-behavior: none;
           transition: background-image 0.8s;
         }

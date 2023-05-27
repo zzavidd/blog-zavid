@@ -1,4 +1,6 @@
-import Link from 'componentsv2/Link';
+import { Typography } from '@mui/material';
+
+import { Link } from 'componentsv2/Link';
 import Logger from 'constants/logger';
 import {
   Emphasis,
@@ -6,12 +8,7 @@ import {
   getCombinedEmphasisRegex,
 } from 'lib/text/regex';
 
-import type { FormatTextOptions } from '../functions';
-
-export function applyEmphasisFormatting(
-  paragraph: string,
-  options: FormatTextOptions = {},
-) {
+export function applyEmphasisFormatting(paragraph: string) {
   if (!paragraph) return '';
   const combinedEmphasisRegex = getCombinedEmphasisRegex();
 
@@ -34,85 +31,117 @@ export function applyEmphasisFormatting(
         switch (emphasis) {
           case Emphasis.CUSTOM:
             const textToCustomise = matches[1];
-            transformation = <span key={key}>{textToCustomise}</span>;
+            transformation = (
+              <Typography key={key} display={'inline'}>
+                {textToCustomise}
+              </Typography>
+            );
             break;
           case Emphasis.BOLDITALIC:
             const textToBoldItalize = applyEmphasisFormatting(matches[1]);
             transformation = (
-              <strong key={key}>
-                <em>{textToBoldItalize}</em>
-              </strong>
+              <Typography
+                fontWeight={'bold'}
+                fontStyle={'italic'}
+                display={'inline'}
+                key={key}>
+                {textToBoldItalize}
+              </Typography>
             );
             break;
           case Emphasis.ITALIC:
             const textToItalize = applyEmphasisFormatting(matches[1]);
-            transformation = <em key={key}>{textToItalize}</em>;
+            transformation = (
+              <Typography fontStyle={'italic'} display={'inline'} key={key}>
+                {textToItalize}
+              </Typography>
+            );
             break;
           case Emphasis.BOLD:
             const textToBold = applyEmphasisFormatting(matches[1]);
-            transformation = <strong key={key}>{textToBold}</strong>;
+            transformation = (
+              <Typography fontWeight={'bold'} display={'inline'} key={key}>
+                {textToBold}
+              </Typography>
+            );
             break;
           case Emphasis.UNDERLINE:
             const textToUnderline = applyEmphasisFormatting(matches[1]);
-            transformation = <u key={key}>{textToUnderline}</u>;
+            transformation = (
+              <Typography
+                sx={{ textDecoration: 'underline' }}
+                display={'inline'}
+                key={key}>
+                {textToUnderline}
+              </Typography>
+            );
             break;
           case Emphasis.STRIKETHROUGH:
             const textToStrikethrough = applyEmphasisFormatting(matches[1]);
-            transformation = <s key={key}>{textToStrikethrough}</s>;
+            transformation = (
+              <Typography
+                sx={{ textDecoration: 'line-through' }}
+                display={'inline'}
+                key={key}>
+                {textToStrikethrough}
+              </Typography>
+            );
             break;
           case Emphasis.HYPERLINK:
             const textToHyperlink = applyEmphasisFormatting(matches[1]);
             const link = matches[2];
-            if (options.forEmails) {
-              transformation = (
-                <a
-                  href={link}
-                  style={{ color: '#7e14ff' }}
-                  rel={'noopener noreferrer'}
-                  target={'_blank'}
-                  key={key}>
-                  {textToHyperlink}
-                </a>
-              );
-            } else {
-              transformation = (
-                <Link href={link} key={key}>
-                  {textToHyperlink}
-                </Link>
-              );
-            }
+            transformation = (
+              <Link href={link} key={key}>
+                {textToHyperlink}
+              </Link>
+            );
             break;
           case Emphasis.HIGHLIGHT:
             const highlightColor = matches[1];
             const textToHighlight = applyEmphasisFormatting(matches[2]);
             transformation = (
-              <mark
-                style={{
+              <Typography
+                sx={{
                   backgroundColor: highlightColor,
-                  borderRadius: '10px',
-                  padding: '0.2em',
+                  borderRadius: (t) => `${t.shape.borderRadius}px`,
+                  padding: (t) => t.spacing(1),
                 }}
+                display={'inline'}
                 key={key}>
                 {textToHighlight}
-              </mark>
+              </Typography>
             );
             break;
           case Emphasis.COLOR:
             const color = matches[1];
             const textToColor = applyEmphasisFormatting(matches[2]);
             transformation = (
-              <span style={{ color }} key={key}>
+              <Typography sx={{ color }} display={'inline'} key={key}>
                 {textToColor}
-              </span>
+              </Typography>
             );
             break;
           case Emphasis.SUPERSCRIPT:
             const textToSuper = applyEmphasisFormatting(matches[1]);
-            transformation = <sup key={key}>{textToSuper}</sup>;
+            transformation = (
+              <Typography
+                sx={{ verticalAlign: 'super' }}
+                display={'inline'}
+                key={key}>
+                {textToSuper}
+              </Typography>
+            );
             break;
           case Emphasis.SUBSCRIPT:
             const textToSub = applyEmphasisFormatting(matches[1]);
-            transformation = <sub key={key}>{textToSub}</sub>;
+            transformation = (
+              <Typography
+                sx={{ verticalAlign: 'sub' }}
+                display={'inline'}
+                key={key}>
+                {textToSub}
+              </Typography>
+            );
             break;
           case Emphasis.ESCAPE:
             transformation = matches[1];

@@ -1,15 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import { Typography } from '@mui/material';
-import type { ReactElement } from 'react';
+import { Box, Divider, Typography } from '@mui/material';
 import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 
+import { NextImage } from 'componentsv2/Image';
 import type { FormatTextOptions } from 'lib/text';
 import {
   applyEmphasisFormatting,
   removeEmphasisFormatting,
-} from 'lib/text/formatting/emphasis';
+} from 'lib/text/formatting/Emphasis';
 import { Section, sectionRegexMapping, strayRegexToOmit } from 'lib/text/regex';
 import TS from 'styles/Components/Text.styles';
 
@@ -19,15 +19,15 @@ import TS from 'styles/Components/Text.styles';
  * @param key The paragraph index.
  * @param options The formatting options.
  */
-export const formatParagraph = (
+export function formatParagraph(
   paragraph: string,
   key: number,
   options: FormatTextOptions = {},
-): ReactElement => {
+): React.ReactNode {
   if (!paragraph) return <React.Fragment />;
 
-  const { forEmails = false, inline = false } = options;
-  const emphasise = (text: string) => applyEmphasisFormatting(text, options);
+  const { inline = false } = options;
+  const emphasise = (text: string) => applyEmphasisFormatting(text);
 
   const foundSection = Object.entries(sectionRegexMapping).find(([, regex]) =>
     regex.test(paragraph),
@@ -39,46 +39,62 @@ export const formatParagraph = (
 
     switch (section) {
       case Section.HEADING:
-        return <h2 key={key}>{text}</h2>;
+        return (
+          <Typography variant={'h2'} key={key}>
+            {text}
+          </Typography>
+        );
       case Section.SUBHEADING:
-        return <h3 key={key}>{text}</h3>;
+        return (
+          <Typography variant={'h3'} key={key}>
+            {text}
+          </Typography>
+        );
       case Section.IMAGE: {
         const [, alt, src] = paragraph.match(regex)!;
-        return (
-          <TS.Section.Image src={src} alt={alt} loading={'lazy'} key={key} />
-        );
+        return <NextImage src={src} alt={alt} loading={'lazy'} key={key} />;
       }
       case Section.AUDIO: {
         const [, alt, src] = paragraph.match(regex)!;
-        if (forEmails) {
-          return (
-            <TS.Section.Paragraph key={key}>
-              <TS.Emphasis.Anchor href={src}>
-                Listen to &ldquo;{alt}&rdquo;.
-              </TS.Emphasis.Anchor>
-            </TS.Section.Paragraph>
-          );
-        } else {
-          return (
-            <TS.Section.Audio controls={true} key={key}>
-              <source src={src} type={'audio/mpeg'} />
-              <source src={src} type={'audio/ogg'} />
-              {alt}
-            </TS.Section.Audio>
-          );
-        }
+        // if (forEmails) {
+        //   return (
+        //     <TS.Section.Paragraph key={key}>
+        //       <TS.Emphasis.Anchor href={src}>
+        //         Listen to &ldquo;{alt}&rdquo;.
+        //       </TS.Emphasis.Anchor>
+        //     </TS.Section.Paragraph>
+        //   );
+        // } else {
+        return (
+          <Box
+            component={'audio'}
+            controls={true}
+            sx={{
+              'display': 'block',
+              'marginBlock': (t) => t.spacing(3),
+              'maxWidth': (t) => t.spacing(13),
+              'width': '100%',
+              '&::-webkit-media-controls-enclosure': {
+                backgroundColor: (t) => t.palette.action.active,
+                borderRadius: (t) => `${t.shape.borderRadius}px`,
+              },
+              '&::-webkit-media-controls-current-time-display': {
+                textShadow: 'none',
+              },
+              '&::-webkit-media-controls-time-remaining-display': {
+                textShadow: 'none',
+              },
+            }}
+            key={key}>
+            <source src={src} type={'audio/mpeg'} />
+            <source src={src} type={'audio/ogg'} />
+            {alt}
+          </Box>
+        );
+        // }
       }
       case Section.DIVIDER:
-        return (
-          <hr
-            style={{
-              borderStyle: 'solid',
-              borderWidth: '1px',
-              margin: '2rem 0 1rem',
-            }}
-            key={key}
-          />
-        );
+        return <Divider />;
       case Section.BULLET_LIST:
         const [, isSpacedBulletBlock, bulletList] = paragraph.match(regex)!;
         const bulletListItems = bulletList
@@ -147,25 +163,25 @@ export const formatParagraph = (
       case Section.SPOTIFY:
         const spotifyUrl = paragraph.match(regex)![1];
         const height = spotifyUrl.includes('podcast') ? '240' : 400;
-        if (forEmails) {
-          return (
-            <TS.Section.Paragraph key={key}>
-              <TS.Emphasis.Anchor href={spotifyUrl.replace('/embed', '')}>
-                Listen to Spotify track.
-              </TS.Emphasis.Anchor>
-            </TS.Section.Paragraph>
-          );
-        } else {
-          return (
-            <iframe
-              src={spotifyUrl}
-              height={height}
-              width={'100%'}
-              frameBorder={'0'}
-              key={key}
-            />
-          );
-        }
+        // if (forEmails) {
+        //   return (
+        //     <TS.Section.Paragraph key={key}>
+        //       <TS.Emphasis.Anchor href={spotifyUrl.replace('/embed', '')}>
+        //         Listen to Spotify track.
+        //       </TS.Emphasis.Anchor>
+        //     </TS.Section.Paragraph>
+        //   );
+        // } else {
+        return (
+          <iframe
+            src={spotifyUrl}
+            height={height}
+            width={'100%'}
+            frameBorder={'0'}
+            key={key}
+          />
+        );
+      // }
       case Section.SOUNDCLOUD:
         const soundcloudUrl = paragraph.match(regex)![1];
         return (
@@ -188,19 +204,19 @@ export const formatParagraph = (
     return inline ? (
       <span key={key}>{emphasise(paragraph)}</span>
     ) : (
-      <Typography variant={'body1'} key={key}>
+      <Typography variant={'body1'} mt={key ? 5 : 0} key={key}>
         {emphasise(paragraph)}
       </Typography>
     );
   }
-};
+}
 
 /**
  * Deformats a paragraph of text.
  * @param paragraph The paragraph to be deformatted.
  * @param key The paragraph index.
  */
-export const deformatParagraph = (paragraph: string, key: number): string => {
+export function deformatParagraph(paragraph: string, key: number): string {
   if (!paragraph) return '';
   if (strayRegexToOmit.test(paragraph)) return '';
 
@@ -246,4 +262,4 @@ export const deformatParagraph = (paragraph: string, key: number): string => {
   }
 
   return detransformedParagraph;
-};
+}

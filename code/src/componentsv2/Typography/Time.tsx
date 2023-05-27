@@ -3,10 +3,10 @@ import { Typography } from '@mui/material';
 
 import ZDate from 'lib/date';
 
-export function Time({ date, ...props }: TimeProps) {
+export default function Time({ date, ...props }: TimeProps) {
   return (
     <Typography
-      variant={'body1'}
+      variant={'body2'}
       component={'time'}
       display={'block'}
       dateTime={ZDate.formatISO(date)}

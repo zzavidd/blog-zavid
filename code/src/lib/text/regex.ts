@@ -130,7 +130,7 @@ export const strayRegexToOmit = new RegExp(/\:{2}[a-z]+/);
  */
 export function getCombinedEmphasisRegex(
   options: CombinedEmphasisOptions = {},
-) {
+): RegExp {
   const { alterForHyperlinks = false } = options;
 
   const emphasisRegexList = Object.values(emphasisRegexMapping).map(

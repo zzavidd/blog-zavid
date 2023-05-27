@@ -1,24 +1,18 @@
-import Link from 'next/link';
+import { Container, Typography } from '@mui/material';
 
+import { Link } from 'componentsv2/Link';
 import Layout from 'fragments/Layout';
-import ErrorStyle from 'styles/Pages/Error.styles';
 
 // eslint-disable-next-line react/function-component-definition
 const Custom404Page: NextPageWithLayout = () => {
   return (
-    <ErrorStyle.Container>
-      <ErrorStyle.Main>
-        <ErrorStyle.Text>
-          Not gonna lie, I don&#39;t know who sent you here but the page
-          you&#39;re looking for doesn&#39;t exist.
-        </ErrorStyle.Text>
-        <ErrorStyle.Links>
-          <Link href={'/'} passHref={true}>
-            Go to Home
-          </Link>
-        </ErrorStyle.Links>
-      </ErrorStyle.Main>
-    </ErrorStyle.Container>
+    <Container maxWidth={'sm'}>
+      <Typography variant={'body1'}>
+        Not gonna lie, I don&#39;t know who sent you here but the page
+        you&#39;re looking for doesn&#39;t exist.
+      </Typography>
+      <Link href={'/'}>Go home</Link>
+    </Container>
   );
 };
 
