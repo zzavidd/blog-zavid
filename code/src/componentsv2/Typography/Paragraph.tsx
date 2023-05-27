@@ -41,8 +41,13 @@ export const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
         <Typography
           variant={'body1'}
           component={'pre'}
-          whiteSpace={'pre-wrap'}
           ref={ref}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: (t) => t.spacing(5),
+            whiteSpace: 'pre-wrap',
+          }}
           {...preProps}>
           {zText.formatText(text)}
         </Typography>

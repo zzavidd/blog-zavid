@@ -19,8 +19,8 @@ import React, { useContext, useEffect } from 'react';
 
 import type { FilterShapeOption, FilterThemeOption } from 'classes/theme';
 import { AppTheme, FilterShape, FilterTheme } from 'classes/theme';
-import { Paragraph } from 'components/Text';
 import { NextImage } from 'componentsv2/Image';
+import { Paragraph } from 'componentsv2/Typography/Paragraph';
 import Canvas from 'constants/canvas';
 import ZString from 'lib/string';
 import { MenuContext } from 'utils/contexts';

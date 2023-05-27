@@ -2,8 +2,8 @@ import { HistoryEduRounded } from '@mui/icons-material';
 import { Skeleton, Stack, Typography, useTheme } from '@mui/material';
 import React from 'react';
 
-import { Paragraph } from 'components/Text';
-import ZDate from 'lib/date';
+import { Paragraph } from 'componentsv2/Typography/Paragraph';
+import { Time } from 'componentsv2/Typography/Time';
 
 export default function HomeLatest({
   content = '',
@@ -34,12 +34,7 @@ export default function HomeLatest({
           ) : (
             <React.Fragment>
               <Typography variant={'h3'}>{title}</Typography>
-              <Typography
-                variant={'subtitle1'}
-                component={'time'}
-                dateTime={ZDate.formatISO(date)}>
-                {ZDate.format(date)}
-              </Typography>
+              <Time variant={'subtitle1'} date={date!} />
             </React.Fragment>
           )}
         </Stack>
@@ -62,7 +57,7 @@ export default function HomeLatest({
 
 interface HomeLatestProps {
   content?: string;
-  date?: string;
+  date?: Date;
   isLoading: boolean;
   moreHref?: string;
   moreText: string;

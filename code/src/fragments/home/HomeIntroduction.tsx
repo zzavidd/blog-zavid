@@ -1,7 +1,7 @@
 import { Box, Skeleton, Stack, Typography } from '@mui/material';
 
-import { Paragraph } from 'components/Text';
 import { Signature } from 'componentsv2/Image';
+import { Paragraph } from 'componentsv2/Typography/Paragraph';
 import Settings from 'constants/settings';
 import ZDate from 'lib/date';
 import { trpc } from 'utils/trpc';

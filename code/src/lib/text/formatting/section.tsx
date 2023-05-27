@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { Typography } from '@mui/material';
 import type { ReactElement } from 'react';
 import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
@@ -187,9 +188,9 @@ export const formatParagraph = (
     return inline ? (
       <span key={key}>{emphasise(paragraph)}</span>
     ) : (
-      <TS.Section.Paragraph key={key}>
+      <Typography variant={'body1'} key={key}>
         {emphasise(paragraph)}
-      </TS.Section.Paragraph>
+      </Typography>
     );
   }
 };

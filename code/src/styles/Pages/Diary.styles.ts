@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import { Paragraph } from 'components/Text';
+import { Paragraph } from 'componentsv2/Typography/Paragraph';
 import Animations from 'styles/Animations.styles';
 import TextStyle from 'styles/Components/Text.styles';
 import Mixins from 'styles/Mixins.styles';

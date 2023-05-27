@@ -22,7 +22,6 @@ import CookiePrompt from 'fragments/shared/CookiePrompt';
 import 'react-datepicker/dist/react-datepicker.css';
 import { darkPalette, lightPalette } from 'stylesv2/Palette.styles';
 import { themeOptions } from 'stylesv2/Theme.styles';
-import type { NavigationContextProps } from 'utils/contexts';
 import { NavigationContext } from 'utils/contexts';
 import { trpc } from 'utils/trpc';
 
@@ -51,7 +50,7 @@ export default trpc.withTRPC(App);
  * @returns The full page including the header and footer.
  */
 function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
-  const [state, setState] = useState({ isNavOpen: false });
+  const [isNavOpen, setNavOpen] = useState(false);
   const mode = useAppSelector((state) => state.local.theme);
 
   // Use theme for MUI.
@@ -65,11 +64,6 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
 
-  const navigationContext: NavigationContextProps = [
-    state.isNavOpen,
-    (isNavOpen) => setState({ isNavOpen }),
-  ];
-
   return (
     <AdminGateway onlyBlockInStaging={true}>
       <MatomoScript />
@@ -80,7 +74,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
           autoHideDuration={6000}
           maxSnack={2}
           TransitionComponent={Fade}>
-          <NavigationContext.Provider value={navigationContext}>
+          <NavigationContext.Provider value={[isNavOpen, setNavOpen]}>
             {ComponentWithLayout}
           </NavigationContext.Provider>
           <CookiePrompt />

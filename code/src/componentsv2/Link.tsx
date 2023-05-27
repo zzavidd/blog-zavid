@@ -10,10 +10,10 @@ export const Link = React.forwardRef<HTMLAnchorElement, ZavidLinkProps>(
       : {};
     return (
       <MuiLink
+        fontWeight={700}
         {...props}
         {...extraProps}
         component={NextLink}
-        fontWeight={800}
         underline={'hover'}
         ref={ref}>
         {children}

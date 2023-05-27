@@ -47,7 +47,8 @@ const typography: TypographyOptions = {
   },
   body1: {
     fontFamily: mulish.style.fontFamily,
-    fontSize: 18,
+    fontSize: 19,
+    lineHeight: 1.6,
   },
   body2: {
     fontFamily: mulish.style.fontFamily,

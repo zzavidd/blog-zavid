@@ -3,7 +3,7 @@ import { transparentize } from 'polished';
 import styled, { css } from 'styled-components';
 
 import { SignatureImage } from 'components/Image';
-import { Paragraph } from 'components/Text';
+import { Paragraph } from 'componentsv2/Typography/Paragraph';
 import Mixins from 'styles/Mixins.styles';
 import { COLOR, SIZES } from 'styles/Variables.styles';
 

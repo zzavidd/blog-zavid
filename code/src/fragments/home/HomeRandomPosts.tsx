@@ -2,8 +2,8 @@ import { Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { PostStatic } from 'classes/posts/PostStatic';
-import Link from 'componentsv2/Link';
-import ZDate from 'lib/date';
+import { Link } from 'componentsv2/Link';
+import { Time } from 'componentsv2/Typography/Time';
 
 export default function HomeRandomPosts({ posts = [] }: RandomPostsGridProps) {
   return (
@@ -25,12 +25,7 @@ export default function HomeRandomPosts({ posts = [] }: RandomPostsGridProps) {
                 </Typography>
                 <Stack direction={'row'} divider={'&#x2022;'}>
                   <Typography variant={'body1'}>{post.type}</Typography>
-                  <Typography
-                    variant={'body1'}
-                    component={'time'}
-                    dateTime={ZDate.formatISO(post.datePublished)}>
-                    {ZDate.format(post.datePublished)}
-                  </Typography>
+                  <Time date={post.datePublished!} />
                 </Stack>
               </CardContent>
             </Card>

@@ -35,7 +35,14 @@ const SOCIAL_PLUGS: SocialPlug[] = [
 export default function Footer() {
   const isMediumAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('sm'));
   return (
-    <Paper square={true} sx={{ padding: (t) => t.spacing(5, 4) }}>
+    <Paper
+      square={true}
+      sx={{
+        bottom: 0,
+        padding: (t) => t.spacing(5, 4),
+        position: 'relative',
+        width: '100%',
+      }}>
       <Container maxWidth={'md'}>
         <Stack spacing={5}>
           {isMediumAbove ? (

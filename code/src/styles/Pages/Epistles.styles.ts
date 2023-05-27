@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styled, { keyframes } from 'styled-components';
 
-import { Paragraph } from 'components/Text';
+import { Paragraph } from 'componentsv2/Typography/Paragraph';
 import Mixins from 'styles/Mixins.styles';
 import { COLOR } from 'styles/Variables.styles';
 

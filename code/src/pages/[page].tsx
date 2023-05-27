@@ -3,7 +3,7 @@ import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
 
-import { Paragraph } from 'components/Text';
+import { Paragraph } from 'componentsv2/Typography/Paragraph';
 import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
