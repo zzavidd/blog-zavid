@@ -1,10 +1,12 @@
 import { z } from 'zod';
+import { DiarySelectObjectSchema } from './objects/DiarySelect.schema';
 import { DiaryOrderByWithRelationInputObjectSchema } from './objects/DiaryOrderByWithRelationInput.schema';
 import { DiaryWhereInputObjectSchema } from './objects/DiaryWhereInput.schema';
 import { DiaryWhereUniqueInputObjectSchema } from './objects/DiaryWhereUniqueInput.schema';
 import { DiaryScalarFieldEnumSchema } from './enums/DiaryScalarFieldEnum.schema';
 
 export const DiaryFindFirstSchema = z.object({
+  select: DiarySelectObjectSchema.optional(),
   orderBy: z
     .union([
       DiaryOrderByWithRelationInputObjectSchema,

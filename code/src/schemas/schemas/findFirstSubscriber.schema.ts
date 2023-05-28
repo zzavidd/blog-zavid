@@ -1,10 +1,12 @@
 import { z } from 'zod';
+import { SubscriberSelectObjectSchema } from './objects/SubscriberSelect.schema';
 import { SubscriberOrderByWithRelationInputObjectSchema } from './objects/SubscriberOrderByWithRelationInput.schema';
 import { SubscriberWhereInputObjectSchema } from './objects/SubscriberWhereInput.schema';
 import { SubscriberWhereUniqueInputObjectSchema } from './objects/SubscriberWhereUniqueInput.schema';
 import { SubscriberScalarFieldEnumSchema } from './enums/SubscriberScalarFieldEnum.schema';
 
 export const SubscriberFindFirstSchema = z.object({
+  select: SubscriberSelectObjectSchema.optional(),
   orderBy: z
     .union([
       SubscriberOrderByWithRelationInputObjectSchema,

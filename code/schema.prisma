@@ -3,8 +3,9 @@ generator client {
 }
 
 generator zod {
-  provider = "prisma-zod-generator"
-  output   = "./src/schemas"
+  provider         = "prisma-zod-generator"
+  output           = "./src/schemas"
+  isGenerateSelect = true
 }
 
 datasource db {
