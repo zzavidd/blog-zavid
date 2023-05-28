@@ -5,6 +5,9 @@ import Settings from 'constants/settings';
 
 const components: Components<Theme> = {
   MuiButton: {
+    defaultProps: {
+      disableElevation: true,
+    },
     styleOverrides: {
       root: ({ theme }) => css`
         min-height: ${theme.spacing(7)};

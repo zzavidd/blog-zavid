@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
 import AdminGateway from 'fragments/AdminGateway';
-import DiaryAdmin from 'fragments/diary/DiaryAdmin';
+import DiaryAdmin from 'fragments/diary/DiaryAdmin/DiaryAdmin';
 import {
   DiaryAdminContext,
   InitialDiaryAdminState,
-} from 'fragments/diary/DiaryAdmin.context';
+} from 'fragments/diary/DiaryAdmin/DiaryAdmin.context';
 import Layout from 'fragments/Layout';
 
 const DiaryAdminPage: NextPageWithLayout = () => {
