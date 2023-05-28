@@ -12,6 +12,14 @@ export default class DiaryAPI {
     return prisma.diary.findFirstOrThrow(args);
   }
 
+  public static update(args: Prisma.DiaryUpdateArgs): Promise<Diary> {
+    return prisma.diary.update(args);
+  }
+
+  public static async delete(ids: number[]): Promise<void> {
+    await prisma.diary.deleteMany({ where: { id: { in: ids } } });
+  }
+
   public static async getTriplet(currentId: number): Promise<DiaryTriplet> {
     const [previous, current, next] = await this.findMany({
       where: { entryNumber: { in: [currentId, currentId - 1, currentId + 1] } },

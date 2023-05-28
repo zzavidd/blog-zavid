@@ -7,7 +7,6 @@ const Schema: z.ZodType<Prisma.DiaryAvgOrderByAggregateInput> = z
   .object({
     id: z.lazy(() => SortOrderSchema).optional(),
     entryNumber: z.lazy(() => SortOrderSchema).optional(),
-    isFavourite: z.lazy(() => SortOrderSchema).optional(),
   })
   .strict();
 

@@ -6,7 +6,6 @@ const Schema: z.ZodType<Prisma.DiarySumAggregateInputType> = z
   .object({
     id: z.literal(true).optional(),
     entryNumber: z.literal(true).optional(),
-    isFavourite: z.literal(true).optional(),
   })
   .strict();
 

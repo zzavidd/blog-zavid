@@ -1,18 +1,20 @@
-import Layout from 'fragments/Layout';
-import ErrorStyle from 'styles/Pages/Error.styles';
+import { Container, Stack, Typography } from '@mui/material';
 
-// eslint-disable-next-line react/function-component-definition
+import Layout from 'fragments/Layout';
+
 const Custom500Page: NextPageWithLayout = () => {
   return (
-    <ErrorStyle.Container>
-      <ErrorStyle.Main>
-        <ErrorStyle.Text>Yikes. We seem to have a problem.</ErrorStyle.Text>
-        <ErrorStyle.Text>
+    <Container maxWidth={'sm'} sx={{ alignSelf: 'center' }}>
+      <Stack alignItems={'center'} spacing={3}>
+        <Typography variant={'body1'} textAlign={'center'}>
+          Yikes. We seem to have a problem.
+        </Typography>
+        <Typography variant={'body1'} textAlign={'center'}>
           Try refreshing the page. If that didn&#39;t work, please bear with me
           and try again later.
-        </ErrorStyle.Text>
-      </ErrorStyle.Main>
-    </ErrorStyle.Container>
+        </Typography>
+      </Stack>
+    </Container>
   );
 };
 

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { DiaryFindManySchema, DiaryUpdateOneSchema } from 'schemas/schemas';
 import DiaryAPI from 'server/api/diary';
 import PageAPI from 'server/api/pages';
 import PostAPI from 'server/api/posts';
@@ -9,9 +10,16 @@ import { zCreateSubscriberPayload } from 'utils/validators';
 import { procedure, router } from '../trpc';
 
 export const appRouter = router({
-  getDiary: procedure.query(() =>
-    DiaryAPI.findMany({ orderBy: { entryNumber: 'desc' } }),
-  ),
+  getDiary: procedure
+    .input(DiaryFindManySchema)
+    .query(({ input }) => DiaryAPI.findMany(input)),
+  updateDiaryEntry: procedure
+    .input(DiaryUpdateOneSchema)
+    .mutation(({ input }) => DiaryAPI.update(input)),
+  deleteDiaryEntry: procedure
+    .input(z.array(z.number()))
+    .mutation(({ input }) => DiaryAPI.delete(input)),
+
   getDiaryTriplet: procedure
     .input(z.number())
     .query(({ input }) => DiaryAPI.getTriplet(input)),

@@ -16,12 +16,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "es6",
-    "tsBuildInfoFile": ".tsbuildinfo",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "tsBuildInfoFile": ".tsbuildinfo"
   },
   "include": [
     "next-env.d.ts",

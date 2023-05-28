@@ -41,6 +41,11 @@ const typography: TypographyOptions = {
     marginBottom: 10,
     textTransform: 'uppercase',
   },
+  h6: {
+    fontFamily: calistoga.style.fontFamily,
+    fontSize: 18,
+    fontWeight: 600,
+  },
   subtitle2: {
     fontFamily: calistoga.style.fontFamily,
     fontWeight: 700,

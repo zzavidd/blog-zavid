@@ -4,6 +4,7 @@ import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFi
 import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
 import { EnumDiaryStatusWithAggregatesFilterObjectSchema } from './EnumDiaryStatusWithAggregatesFilter.schema';
 import { DiaryStatusSchema } from '../enums/DiaryStatus.schema';
+import { BoolWithAggregatesFilterObjectSchema } from './BoolWithAggregatesFilter.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -56,7 +57,7 @@ const Schema: z.ZodType<Prisma.DiaryScalarWhereWithAggregatesInput> = z
       .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])
       .optional(),
     isFavourite: z
-      .union([z.lazy(() => IntWithAggregatesFilterObjectSchema), z.number()])
+      .union([z.lazy(() => BoolWithAggregatesFilterObjectSchema), z.boolean()])
       .optional(),
     tags: z
       .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])

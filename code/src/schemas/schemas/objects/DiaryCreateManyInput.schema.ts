@@ -13,7 +13,7 @@ const Schema: z.ZodType<Prisma.DiaryCreateManyInput> = z
     status: z.lazy(() => DiaryStatusSchema),
     entryNumber: z.number(),
     footnote: z.string(),
-    isFavourite: z.number(),
+    isFavourite: z.boolean().optional(),
     tags: z.string(),
   })
   .strict();

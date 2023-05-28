@@ -4,6 +4,7 @@ import { StringFilterObjectSchema } from './StringFilter.schema';
 import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
 import { EnumDiaryStatusFilterObjectSchema } from './EnumDiaryStatusFilter.schema';
 import { DiaryStatusSchema } from '../enums/DiaryStatus.schema';
+import { BoolFilterObjectSchema } from './BoolFilter.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -51,7 +52,7 @@ const Schema: z.ZodType<Prisma.DiaryWhereInput> = z
       .union([z.lazy(() => StringFilterObjectSchema), z.string()])
       .optional(),
     isFavourite: z
-      .union([z.lazy(() => IntFilterObjectSchema), z.number()])
+      .union([z.lazy(() => BoolFilterObjectSchema), z.boolean()])
       .optional(),
     tags: z
       .union([z.lazy(() => StringFilterObjectSchema), z.string()])

@@ -11,7 +11,9 @@ namespace Layout {
       <Stack minHeight={'100vh'}>
         <Header />
         <NavigationDrawer />
-        <Stack flex={1}>{page}</Stack>
+        <Stack display={'grid'} flex={1}>
+          {page}
+        </Stack>
         <Footer />
       </Stack>
     );

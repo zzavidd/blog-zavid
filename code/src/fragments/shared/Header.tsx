@@ -1,6 +1,7 @@
 import {
   DarkMode,
   LightModeOutlined as LightModeOutlinedIcon,
+  Lock as LockIcon,
   Login as LoginIcon,
   Logout as LogoutIcon,
 } from '@mui/icons-material';
@@ -22,7 +23,9 @@ import {
   Typography,
 } from '@mui/material';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import React, { useContext, useRef, useState } from 'react';
+import { useIsAdmin } from 'utils/hooks';
 
 import { AppActions, useAppDispatch, useAppSelector } from 'constants/reducers';
 import { NavigationContext } from 'utils/contexts';
@@ -87,9 +90,11 @@ export default function Header() {
 function AuthButton() {
   const [state, setState] = useState({ isMenuOpen: false });
   const avatarRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const session = useSession();
   const user = session.data?.user;
+  const isAdmin = useIsAdmin();
 
   function openMenu() {
     setState({ isMenuOpen: true });
@@ -97,6 +102,10 @@ function AuthButton() {
 
   function onMenuClose() {
     setState({ isMenuOpen: false });
+  }
+
+  function navigateToAdminConsole() {
+    void router.push('/admin');
   }
 
   if (!user) {
@@ -116,6 +125,15 @@ function AuthButton() {
     : '';
 
   const menuItemSxProps: SxProps<Theme> = { padding: (t) => t.spacing(4, 5) };
+  const menuItems = [
+    {
+      label: 'Admin Console',
+      icon: <LockIcon />,
+      onClick: navigateToAdminConsole,
+      adminOnly: true,
+    },
+    { label: 'Sign Out', icon: <LogoutIcon />, onClick: () => signOut() },
+  ];
   return (
     <React.Fragment>
       <IconButton onClick={openMenu}>
@@ -150,15 +168,23 @@ function AuthButton() {
             <Typography variant={'body2'}>{user.email}</Typography>
           </Stack>
         </MenuItem>
-        <MenuItem onClick={() => signOut()} sx={menuItemSxProps}>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ fontSize: 18, variant: 'button' }}>
-            Sign Out
-          </ListItemText>
-        </MenuItem>
+        {menuItems.map(({ label, icon, onClick, adminOnly }, key) => {
+          if (adminOnly && !isAdmin) return null;
+          return (
+            <MenuItem onClick={onClick} sx={menuItemSxProps} key={key}>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{
+                  fontSize: 18,
+                  variant: 'h4',
+                  m: 0,
+                }}>
+                {label}
+              </ListItemText>
+              <ListItemIcon />
+            </MenuItem>
+          );
+        })}
       </Menu>
     </React.Fragment>
   );

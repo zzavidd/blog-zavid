@@ -4,6 +4,7 @@ import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdat
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
 import { DiaryStatusSchema } from '../enums/DiaryStatus.schema';
 import { EnumDiaryStatusFieldUpdateOperationsInputObjectSchema } from './EnumDiaryStatusFieldUpdateOperationsInput.schema';
+import { BoolFieldUpdateOperationsInputObjectSchema } from './BoolFieldUpdateOperationsInput.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -59,8 +60,8 @@ const Schema: z.ZodType<Prisma.DiaryUncheckedUpdateManyInput> = z
       .optional(),
     isFavourite: z
       .union([
-        z.number(),
-        z.lazy(() => IntFieldUpdateOperationsInputObjectSchema),
+        z.boolean(),
+        z.lazy(() => BoolFieldUpdateOperationsInputObjectSchema),
       ])
       .optional(),
     tags: z

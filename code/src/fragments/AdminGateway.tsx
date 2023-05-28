@@ -19,20 +19,18 @@ export default function AdminGateway({
   });
   const router = useRouter();
 
-  if (allow) {
-    return <React.Fragment>{children}</React.Fragment>;
-  }
+  if (!allow) {
+    if (status === 'loading') {
+      return null;
+    }
 
-  if (status === 'loading') {
-    return null;
-  }
-
-  if (
-    status === 'authenticated' &&
-    session.user?.email !== process.env.NEXT_PUBLIC_GOOGLE_EMAIL
-  ) {
-    void router.push('/');
-    return null;
+    if (
+      status === 'authenticated' &&
+      session.user?.email !== process.env.NEXT_PUBLIC_GOOGLE_EMAIL
+    ) {
+      void router.push('/');
+      return null;
+    }
   }
 
   return <React.Fragment>{children}</React.Fragment>;

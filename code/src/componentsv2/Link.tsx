@@ -11,10 +11,10 @@ export const Link = React.forwardRef<HTMLAnchorElement, ZavidLinkProps>(
     return (
       <MuiLink
         fontWeight={700}
+        underline={'hover'}
         {...props}
         {...extraProps}
         component={NextLink}
-        underline={'hover'}
         ref={ref}>
         {children}
       </MuiLink>
@@ -31,7 +31,10 @@ export function LinkButton({
       {...props}
       LinkComponent={Link}
       variant={'outlined'}
-      sx={{ padding: (t) => t.spacing(3, 5), width: 'fit-content' }}>
+      sx={{
+        padding: (t) => t.spacing(3, 5),
+        width: 'fit-content',
+      }}>
       {children}
     </Button>
   );

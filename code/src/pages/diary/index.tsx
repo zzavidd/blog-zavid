@@ -8,6 +8,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { DiaryStatus } from '@prisma/client';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
@@ -68,7 +69,10 @@ function DiaryPagePreamble() {
  * The list of diary entries displayed in a grid.
  */
 function DiaryCollection() {
-  const { data: diaryEntries, isLoading } = trpc.getDiary.useQuery();
+  const { data: diaryEntries, isLoading } = trpc.getDiary.useQuery({
+    where: { status: DiaryStatus.PUBLISHED },
+    orderBy: { entryNumber: 'desc' },
+  });
 
   if (isLoading) {
     return null;

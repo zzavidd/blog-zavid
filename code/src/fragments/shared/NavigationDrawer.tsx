@@ -1,10 +1,4 @@
-import {
-  AccountCircleRounded,
-  BookRounded,
-  CloudRounded,
-  HistoryEduRounded,
-  RedeemRounded,
-} from '@mui/icons-material';
+import { AccountCircleRounded, BookRounded } from '@mui/icons-material';
 import {
   Drawer,
   ListItemIcon,
@@ -24,12 +18,12 @@ import { NavigationContext } from 'utils/contexts';
 
 const paths: PathDefinition[] = [
   { title: 'Diary', url: '/diary', icon: <BookRounded /> },
-  { title: 'Reveries', url: '/reveries', icon: <CloudRounded /> },
-  { title: 'Epistles', url: '/epistles', icon: <HistoryEduRounded /> },
+  // { title: 'Reveries', url: '/reveries', icon: <CloudRounded /> },
+  // { title: 'Epistles', url: '/epistles', icon: <HistoryEduRounded /> },
   // { title: 'Poetry', url: '/poetry' },
   // { title: 'Musings', url: '/musings' },
   { title: 'About', url: '/about', icon: <AccountCircleRounded /> },
-  { title: 'Wishlist', url: '/wishlist', icon: <RedeemRounded /> },
+  // { title: 'Wishlist', url: '/wishlist', icon: <RedeemRounded /> },
 ];
 
 export function NavigationDrawer() {

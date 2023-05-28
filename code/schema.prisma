@@ -21,7 +21,7 @@ model Diary {
   status      DiaryStatus
   entryNumber Int         @unique(map: "entryNumber_UNIQUE") @db.UnsignedInt
   footnote    String      @db.Text
-  isFavourite Int         @db.TinyInt
+  isFavourite Boolean     @default(false)
   tags        String      @db.Text
 
   @@map("diary")
