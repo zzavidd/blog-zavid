@@ -24,7 +24,7 @@ const STATUS_ICONS = {
   [DiaryStatus.PUBLISHED]: <Article />,
 };
 
-export function useDiaryTableFields(isHovered: boolean): DiaryTableField[] {
+export function useDiaryTableFields(isHovered?: boolean): DiaryTableField[] {
   const { enqueueSnackbar } = useSnackbar();
   const trpcContext = trpc.useContext();
   const { mutate: updateDiaryEntry } = trpc.updateDiaryEntry.useMutation({

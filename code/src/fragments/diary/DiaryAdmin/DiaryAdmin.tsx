@@ -1,4 +1,9 @@
-import { Delete, Edit, MoreVert as MoreVertIcon } from '@mui/icons-material';
+import {
+  Add as AddIcon,
+  Delete,
+  Edit,
+  MoreVert as MoreVertIcon,
+} from '@mui/icons-material';
 import {
   Container,
   IconButton,
@@ -8,6 +13,7 @@ import {
   MenuItem,
   MenuList,
   Paper,
+  Skeleton,
   Stack,
   Table,
   TableBody,
@@ -23,19 +29,15 @@ import { useSnackbar } from 'notistack';
 import React, { useContext, useState } from 'react';
 
 import { ActionDialog } from 'componentsv2/Dialog';
+import { LinkButton } from 'componentsv2/Link';
 import { trpc } from 'utils/trpc';
 
 import { DiaryAdminContext } from './DiaryAdmin.context';
 import { useDiaryTableFields } from './DiaryAdmin.hooks';
 
 export default function DiaryAdmin() {
-  const [context, setContext] = useContext(DiaryAdminContext);
-  const diaryTableFields = useDiaryTableFields(false);
-
-  const { order, property } = context.sort;
-  const { data: diaryEntries } = trpc.getDiary.useQuery({
-    orderBy: { [property]: order },
-  });
+  const [, setContext] = useContext(DiaryAdminContext);
+  const diaryTableFields = useDiaryTableFields();
 
   function sortDiaryEntries(property: keyof Diary) {
     setContext((s) => {
@@ -51,7 +53,12 @@ export default function DiaryAdmin() {
     <React.Fragment>
       <Container maxWidth={'xl'}>
         <Stack m={5} spacing={5}>
-          <Typography variant={'h2'}>List of Diary Entries</Typography>
+          <Stack direction={'row'} justifyContent={'space-between'}>
+            <Typography variant={'h2'}>List of Diary Entries</Typography>
+            <LinkButton href={'/diary/add'} startIcon={<AddIcon />}>
+              Add entry
+            </LinkButton>
+          </Stack>
           <TableContainer>
             <Table>
               <TableHead>
@@ -64,20 +71,67 @@ export default function DiaryAdmin() {
                   <TableCell />
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {diaryEntries
-                  ? diaryEntries.map((entry) => (
-                      <DiaryEachRow entry={entry} key={entry.id} />
-                    ))
-                  : null}
-              </TableBody>
+              <DiaryTableContent />
             </Table>
           </TableContainer>
         </Stack>
       </Container>
+
       <DeleteModal />
       <DiaryEachMenu />
     </React.Fragment>
+  );
+}
+
+function DiaryTableContent() {
+  const [context] = useContext(DiaryAdminContext);
+  const diaryTableFields = useDiaryTableFields();
+  const { order, property } = context.sort;
+  const { data: diaryEntries, isLoading } = trpc.getDiary.useQuery({
+    orderBy: { [property]: order },
+  });
+
+  if (isLoading) {
+    return (
+      <TableBody>
+        {Array(20)
+          .fill(null)
+          .map((_, key) => (
+            <TableRow key={key}>
+              {diaryTableFields.map(({ property }) => (
+                <TableCell key={property}>
+                  <Skeleton variant={'text'} width={'80%'} />
+                </TableCell>
+              ))}
+              <TableCell>
+                <Skeleton variant={'text'} width={'80%'} />
+              </TableCell>
+            </TableRow>
+          ))}
+      </TableBody>
+    );
+  }
+
+  if (!diaryEntries?.length) {
+    return (
+      <TableBody>
+        <TableRow>
+          <TableCell align={'center'} colSpan={diaryTableFields.length + 1}>
+            <Typography variant={'body1'}> No diary entries found.</Typography>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    );
+  }
+
+  return (
+    <TableBody>
+      {diaryEntries
+        ? diaryEntries.map((entry) => (
+            <DiaryEachRow entry={entry} key={entry.id} />
+          ))
+        : null}
+    </TableBody>
   );
 }
 
