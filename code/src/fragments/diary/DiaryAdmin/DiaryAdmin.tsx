@@ -89,6 +89,14 @@ function DiaryTableContent() {
   const { order, property } = context.sort;
   const { data: diaryEntries, isLoading } = trpc.getDiary.useQuery({
     orderBy: { [property]: order },
+    select: {
+      id: true,
+      title: true,
+      status: true,
+      date: true,
+      entryNumber: true,
+      isFavourite: true,
+    },
   });
 
   if (isLoading) {

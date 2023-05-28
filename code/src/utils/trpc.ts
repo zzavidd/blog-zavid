@@ -13,6 +13,18 @@ export const trpc = createTRPCNext<AppRouter>({
         url: `${Settings.DOMAIN}/api/trpc`,
       }),
     ],
+    queryClientConfig: {
+      defaultOptions: {
+        queries: {
+          refetchOnMount: false,
+          refetchInterval: false,
+          refetchOnWindowFocus: false,
+        },
+        mutations: {
+          retry: 2,
+        },
+      },
+    },
     transformer: SuperJSON,
   }),
   ssr: false,
