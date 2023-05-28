@@ -45,15 +45,15 @@ export function useDiaryTableFields(isHovered?: boolean): DiaryTableField[] {
 
   return [
     {
-      title: '#',
-      property: 'id',
+      title: <Typography variant={'h6'}>#</Typography>,
+      property: 'entryNumber',
       align: 'right',
       renderValue: (e) => (
         <Typography variant={'body1'}>{e.entryNumber}</Typography>
       ),
     },
     {
-      title: 'Title',
+      title: <Typography variant={'h6'}>Title</Typography>,
       property: 'title',
       align: 'left',
       renderValue: (e) => (
@@ -68,9 +68,9 @@ export function useDiaryTableFields(isHovered?: boolean): DiaryTableField[] {
       ),
     },
     {
-      title: <Favorite fontSize={'medium'} />,
+      title: <Favorite fontSize={'medium'} sx={{ mx: 2 }} />,
       property: 'isFavourite',
-      align: 'center',
+      align: 'left',
       renderValue: (e) => {
         if (e.isFavourite) {
           return (
@@ -90,7 +90,7 @@ export function useDiaryTableFields(isHovered?: boolean): DiaryTableField[] {
       },
     },
     {
-      title: 'Date Published',
+      title: <Typography variant={'h6'}>Date Published</Typography>,
       property: 'date',
       align: 'left',
       renderValue: (e) => (
@@ -98,7 +98,7 @@ export function useDiaryTableFields(isHovered?: boolean): DiaryTableField[] {
       ),
     },
     {
-      title: 'Status',
+      title: <Typography variant={'h6'}>Status</Typography>,
       property: 'status',
       align: 'left',
       renderValue: (e) => {

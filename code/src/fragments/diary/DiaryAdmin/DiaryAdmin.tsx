@@ -21,6 +21,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
   Typography,
 } from '@mui/material';
 import type { Diary } from '@prisma/client';
@@ -36,10 +37,10 @@ import { DiaryAdminContext } from './DiaryAdmin.context';
 import { useDiaryTableFields } from './DiaryAdmin.hooks';
 
 export default function DiaryAdmin() {
-  const [, setContext] = useContext(DiaryAdminContext);
+  const [context, setContext] = useContext(DiaryAdminContext);
   const diaryTableFields = useDiaryTableFields();
 
-  function sortDiaryEntries(property: keyof Diary) {
+  function setSortProperty(property: keyof Diary) {
     setContext((s) => {
       const order =
         s.sort.order === Prisma.SortOrder.asc
@@ -63,11 +64,22 @@ export default function DiaryAdmin() {
             <Table>
               <TableHead>
                 <TableRow component={Paper}>
-                  {diaryTableFields.map(({ title, property, align }) => (
-                    <TableCell align={align} key={property}>
-                      <Typography variant={'h6'}>{title}</Typography>
-                    </TableCell>
-                  ))}
+                  {diaryTableFields.map(({ title, property, align }) => {
+                    const isActive = context.sort.property === property;
+                    return (
+                      <TableCell
+                        align={align}
+                        sortDirection={isActive ? context.sort.order : false}
+                        key={property}>
+                        <TableSortLabel
+                          active={isActive}
+                          direction={isActive ? context.sort.order : 'asc'}
+                          onClick={() => setSortProperty(property)}>
+                          {title}
+                        </TableSortLabel>
+                      </TableCell>
+                    );
+                  })}
                   <TableCell />
                 </TableRow>
               </TableHead>
@@ -125,7 +137,7 @@ function DiaryTableContent() {
       <TableBody>
         <TableRow>
           <TableCell align={'center'} colSpan={diaryTableFields.length + 1}>
-            <Typography variant={'body1'}> No diary entries found.</Typography>
+            <Typography variant={'body1'}>No diary entries found.</Typography>
           </TableCell>
         </TableRow>
       </TableBody>
