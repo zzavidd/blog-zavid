@@ -25,14 +25,14 @@ import { DiaryAdminContext } from 'fragments/diary/DiaryAdmin.context';
 import { useDiaryTableFields } from 'fragments/diary/DiaryAdmin.utils';
 import { trpc } from 'utils/trpc';
 
-import { useGetDiary } from './DiaryAdmin.hooks';
-
 export default function DiaryAdmin() {
   const [context, setContext] = useContext(DiaryAdminContext);
   const diaryTableFields = useDiaryTableFields(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  const { data: diaryEntries, refetch: refetchDiaryEntries } = useGetDiary();
+  const { order, property } = context.sort;
+  const { data: diaryEntries, refetch: refetchDiaryEntries } =
+    trpc.getDiary.useQuery({ orderBy: { [property]: order } });
 
   const { mutate: deleteDiaryEntry, isLoading: isDeleteLoading } =
     trpc.deleteDiaryEntry.useMutation({

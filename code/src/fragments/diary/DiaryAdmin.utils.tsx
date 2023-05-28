@@ -10,12 +10,12 @@ import type { TableCellProps } from '@mui/material';
 import { IconButton, Stack, Typography } from '@mui/material';
 import type { Diary } from '@prisma/client';
 import { DiaryStatus } from '@prisma/client';
+import { useSnackbar } from 'notistack';
 import React from 'react';
 
 import { Link } from 'componentsv2/Link';
 import ZDate from 'lib/date';
-
-import { useUpdateDiaryEntry } from './DiaryAdmin.hooks';
+import { trpc } from 'utils/trpc';
 
 const STATUS_ICONS = {
   [DiaryStatus.DRAFT]: <EditNote />,
@@ -25,7 +25,16 @@ const STATUS_ICONS = {
 };
 
 export function useDiaryTableFields(isHovered: boolean): DiaryTableField[] {
-  const { mutate: updateDiaryEntry } = useUpdateDiaryEntry();
+  const { enqueueSnackbar } = useSnackbar();
+  const trpcContext = trpc.useContext();
+  const { mutate: updateDiaryEntry } = trpc.updateDiaryEntry.useMutation({
+    onSuccess: async (entry) => {
+      await trpcContext.getDiary.refetch();
+      const verb = entry.isFavourite ? 'favourited' : 'unfavourited';
+      const message = `You've ${verb} diary entry #${entry.entryNumber}.`;
+      enqueueSnackbar(message, { variant: 'success' });
+    },
+  });
 
   function onFavouriteClick(e: Diary) {
     updateDiaryEntry({
@@ -59,7 +68,7 @@ export function useDiaryTableFields(isHovered: boolean): DiaryTableField[] {
       ),
     },
     {
-      title: <FavoriteBorder fontSize={'medium'} />,
+      title: <Favorite fontSize={'medium'} />,
       property: 'isFavourite',
       align: 'center',
       renderValue: (e) => {
