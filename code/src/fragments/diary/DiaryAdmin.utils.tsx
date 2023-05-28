@@ -24,7 +24,7 @@ const STATUS_ICONS = {
   [DiaryStatus.PUBLISHED]: <Article />,
 };
 
-export function useDiaryTableFields(): DiaryTableField[] {
+export function useDiaryTableFields(isHovered: boolean): DiaryTableField[] {
   const { mutate: updateDiaryEntry } = useUpdateDiaryEntry();
 
   function onFavouriteClick(e: Diary) {
@@ -62,16 +62,23 @@ export function useDiaryTableFields(): DiaryTableField[] {
       title: <FavoriteBorder fontSize={'medium'} />,
       property: 'isFavourite',
       align: 'center',
-      renderValue: (e) =>
-        e.isFavourite ? (
-          <IconButton onClick={() => onFavouriteClick(e)}>
-            <Favorite color={'primary'} fontSize={'medium'} />
-          </IconButton>
-        ) : (
-          <IconButton onClick={() => onFavouriteClick(e)}>
+      renderValue: (e) => {
+        if (e.isFavourite) {
+          return (
+            <IconButton onClick={() => onFavouriteClick(e)}>
+              <Favorite color={'primary'} fontSize={'medium'} />
+            </IconButton>
+          );
+        }
+
+        return (
+          <IconButton
+            onClick={() => onFavouriteClick(e)}
+            sx={{ visibility: isHovered ? 'visible' : 'hidden' }}>
             <FavoriteBorder fontSize={'medium'} />
           </IconButton>
-        ),
+        );
+      },
     },
     {
       title: 'Date Published',
@@ -84,7 +91,7 @@ export function useDiaryTableFields(): DiaryTableField[] {
     {
       title: 'Status',
       property: 'status',
-      align: 'center',
+      align: 'left',
       renderValue: (e) => {
         return (
           <Stack direction={'row'} alignItems={'center'} spacing={2}>

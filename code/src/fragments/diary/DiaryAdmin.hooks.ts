@@ -20,10 +20,10 @@ export function useUpdateDiaryEntry() {
   const utils = trpc.useContext();
 
   return trpc.updateDiaryEntry.useMutation({
-    onSuccess: (entry) => {
+    onSuccess: async (entry) => {
+      await utils.getDiary.refetch();
       const message = `You've updated diary entry #${entry.entryNumber}.`;
       enqueueSnackbar(message, { variant: 'success' });
-      void utils.getDiary.refetch();
     },
   });
 }

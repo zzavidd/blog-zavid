@@ -19,7 +19,7 @@ import {
 import type { Diary } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { useSnackbar } from 'notistack';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { DiaryAdminContext } from 'fragments/diary/DiaryAdmin.context';
 import { useDiaryTableFields } from 'fragments/diary/DiaryAdmin.utils';
@@ -29,7 +29,7 @@ import { useGetDiary } from './DiaryAdmin.hooks';
 
 export default function DiaryAdmin() {
   const [context, setContext] = useContext(DiaryAdminContext);
-  const diaryTableFields = useDiaryTableFields();
+  const diaryTableFields = useDiaryTableFields(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const { data: diaryEntries, refetch: refetchDiaryEntries } = useGetDiary();
@@ -128,9 +128,13 @@ export default function DiaryAdmin() {
 
 const DiaryEachRow = React.memo<DiaryEachRowProps>(
   function DiaryEachRow({ entry }) {
-    const diaryTableFields = useDiaryTableFields();
+    const [state, setState] = useState({ isHovered: false });
+    const diaryTableFields = useDiaryTableFields(state.isHovered);
     return (
-      <TableRow hover={true}>
+      <TableRow
+        hover={true}
+        onMouseEnter={() => setState({ isHovered: true })}
+        onMouseLeave={() => setState({ isHovered: false })}>
         {diaryTableFields.map(({ align, property, renderValue }) => (
           <TableCell align={align} key={property}>
             {renderValue(entry)}
