@@ -1,4 +1,6 @@
+import type { AlertColor } from '@mui/material';
 import {
+  Alert,
   CssBaseline,
   Fade,
   ThemeProvider,
@@ -7,6 +9,7 @@ import {
 } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
+import type { CustomContentProps } from 'notistack';
 import { SnackbarProvider } from 'notistack';
 import React, { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
@@ -72,6 +75,9 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
         <SnackbarProvider
           anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
           autoHideDuration={6000}
+          Components={{
+            success: Snack,
+          }}
           maxSnack={2}
           TransitionComponent={Fade}>
           <NavigationContext.Provider value={[isNavOpen, setNavOpen]}>
@@ -83,3 +89,13 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
     </AdminGateway>
   );
 }
+
+const Snack = React.forwardRef<HTMLDivElement, CustomContentProps>(
+  ({ message, variant }, ref) => {
+    return (
+      <Alert variant={'standard'} severity={variant as AlertColor} ref={ref}>
+        {message}
+      </Alert>
+    );
+  },
+);

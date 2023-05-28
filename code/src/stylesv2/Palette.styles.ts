@@ -7,6 +7,7 @@ export const lightPalette: PaletteOptions = {
     main: purple['A100'],
   },
   divider: 'rgba(0,0,0,0.3)',
+  contrastThreshold: 4.5,
 };
 
 export const darkPalette: PaletteOptions = {
@@ -18,4 +19,5 @@ export const darkPalette: PaletteOptions = {
     paper: 'rgb(17, 17, 17)',
   },
   divider: 'rgba(255,255,255,0.3)',
+  contrastThreshold: 4.5,
 };
