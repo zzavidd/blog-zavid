@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { IntFilterObjectSchema } from './IntFilter.schema';
 import { StringFilterObjectSchema } from './StringFilter.schema';
-import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
+import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
 import { EnumDiaryStatusFilterObjectSchema } from './EnumDiaryStatusFilter.schema';
 import { DiaryStatusSchema } from '../enums/DiaryStatus.schema';
 import { BoolFilterObjectSchema } from './BoolFilter.schema';
+import { JsonFilterObjectSchema } from './JsonFilter.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -31,12 +32,13 @@ const Schema: z.ZodType<Prisma.DiaryWhereInput> = z
       .union([z.lazy(() => StringFilterObjectSchema), z.string()])
       .optional(),
     date: z
-      .union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()])
-      .optional(),
+      .union([
+        z.lazy(() => DateTimeNullableFilterObjectSchema),
+        z.coerce.date(),
+      ])
+      .optional()
+      .nullable(),
     content: z
-      .union([z.lazy(() => StringFilterObjectSchema), z.string()])
-      .optional(),
-    slug: z
       .union([z.lazy(() => StringFilterObjectSchema), z.string()])
       .optional(),
     status: z
@@ -54,9 +56,7 @@ const Schema: z.ZodType<Prisma.DiaryWhereInput> = z
     isFavourite: z
       .union([z.lazy(() => BoolFilterObjectSchema), z.boolean()])
       .optional(),
-    tags: z
-      .union([z.lazy(() => StringFilterObjectSchema), z.string()])
-      .optional(),
+    tags: z.lazy(() => JsonFilterObjectSchema).optional(),
   })
   .strict();
 

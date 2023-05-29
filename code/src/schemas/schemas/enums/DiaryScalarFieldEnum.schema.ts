@@ -5,7 +5,6 @@ export const DiaryScalarFieldEnumSchema = z.enum([
   'title',
   'date',
   'content',
-  'slug',
   'status',
   'entryNumber',
   'footnote',

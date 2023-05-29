@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { IntWithAggregatesFilterObjectSchema } from './IntWithAggregatesFilter.schema';
 import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
-import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
+import { DateTimeNullableWithAggregatesFilterObjectSchema } from './DateTimeNullableWithAggregatesFilter.schema';
 import { EnumDiaryStatusWithAggregatesFilterObjectSchema } from './EnumDiaryStatusWithAggregatesFilter.schema';
 import { DiaryStatusSchema } from '../enums/DiaryStatus.schema';
 import { BoolWithAggregatesFilterObjectSchema } from './BoolWithAggregatesFilter.schema';
+import { JsonWithAggregatesFilterObjectSchema } from './JsonWithAggregatesFilter.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -34,14 +35,12 @@ const Schema: z.ZodType<Prisma.DiaryScalarWhereWithAggregatesInput> = z
       .optional(),
     date: z
       .union([
-        z.lazy(() => DateTimeWithAggregatesFilterObjectSchema),
+        z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema),
         z.coerce.date(),
       ])
-      .optional(),
+      .optional()
+      .nullable(),
     content: z
-      .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])
-      .optional(),
-    slug: z
       .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])
       .optional(),
     status: z
@@ -59,9 +58,7 @@ const Schema: z.ZodType<Prisma.DiaryScalarWhereWithAggregatesInput> = z
     isFavourite: z
       .union([z.lazy(() => BoolWithAggregatesFilterObjectSchema), z.boolean()])
       .optional(),
-    tags: z
-      .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])
-      .optional(),
+    tags: z.lazy(() => JsonWithAggregatesFilterObjectSchema).optional(),
   })
   .strict();
 

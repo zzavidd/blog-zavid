@@ -7,6 +7,8 @@ import {
   createTheme,
   responsiveFontSizes,
 } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import type { CustomContentProps } from 'notistack';
@@ -75,14 +77,14 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
         <SnackbarProvider
           anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
           autoHideDuration={6000}
-          Components={{
-            success: Snack,
-          }}
+          Components={{ success: Snack }}
           maxSnack={2}
           TransitionComponent={Fade}>
-          <NavigationContext.Provider value={[isNavOpen, setNavOpen]}>
-            {ComponentWithLayout}
-          </NavigationContext.Provider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <NavigationContext.Provider value={[isNavOpen, setNavOpen]}>
+              {ComponentWithLayout}
+            </NavigationContext.Provider>
+          </LocalizationProvider>
           <CookiePrompt />
         </SnackbarProvider>
       </ThemeProvider>

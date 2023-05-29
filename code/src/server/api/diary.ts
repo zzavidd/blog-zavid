@@ -12,6 +12,10 @@ export default class DiaryAPI {
     return prisma.diary.findFirstOrThrow(args);
   }
 
+  public static create(args: Prisma.DiaryCreateArgs): Promise<Diary> {
+    return prisma.diary.create(args);
+  }
+
   public static update(args: Prisma.DiaryUpdateArgs): Promise<Diary> {
     return prisma.diary.update(args);
   }

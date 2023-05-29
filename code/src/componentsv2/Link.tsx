@@ -33,7 +33,7 @@ export function LinkButton({
       variant={'outlined'}
       sx={{
         padding: (t) => t.spacing(3, 5),
-        width: 'fit-content',
+        width: props.fullWidth ? undefined : 'fit-content',
       }}>
       {children}
     </Button>

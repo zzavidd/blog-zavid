@@ -1,135 +1,89 @@
-import type { GetServerSideProps } from 'next';
+import { DiaryStatus } from '@prisma/client';
+import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import { useSnackbar } from 'notistack';
+import { useState } from 'react';
 
-import { DiaryEntryBuilder } from 'classes/diary/DiaryEntryBuilder';
-import { DiaryStatic } from 'classes/diary/DiaryStatic';
-import { Modal } from 'components/Modal';
-import HandlerFactory from 'constants/handlers';
-import Utils from 'constants/utils';
-import Validate from 'constants/validations';
+import { ActionDialog } from 'componentsv2/Dialog';
 import AdminGateway from 'fragments/AdminGateway';
+import DiaryForm from 'fragments/diary/DiaryForm/DiaryForm';
+import {
+  DiaryFormContext,
+  InitialDiaryFormState,
+} from 'fragments/diary/DiaryForm/DiaryForm.context';
 import Layout from 'fragments/Layout';
-import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
-import DiaryAPI from 'server/api/diary';
-import ModalStyle from 'styles/Components/Modal.styles';
-import { ButtonVariant } from 'styles/Variables.styles';
-import Contexts from 'utils/contexts';
+import { trpc } from 'utils/trpc';
 
-// eslint-disable-next-line react/function-component-definition
-const DiaryEntryAdd: NextPageWithLayout<DiaryEntryAddProps> = ({
-  pageProps,
-}) => {
-  const { latestEntryNumber } = pageProps;
-  const Alerts = useContext(Contexts.Alerts);
+const DiaryEntryAdd: NextPageWithLayout = () => {
+  const [state, setState] = useState(InitialDiaryFormState);
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const { mutate: createDiaryEntry, isLoading: isCreateLoading } =
+    trpc.diary.create.useMutation({
+      onSuccess: (entry) => {
+        const verb =
+          entry.status === DiaryStatus.PUBLISHED ? 'published' : 'drafted';
+        enqueueSnackbar(
+          `Successfully ${verb} '#${entry.entryNumber}: ${entry.title}'.`,
+          { variant: 'success' },
+        );
+        void router.push('/admin/diary');
+      },
+      onError: (e) => {
+        enqueueSnackbar(e.message, { variant: 'error' });
+      },
+    });
 
-  const [state, setState] = useState<DiaryEntryAddState>({
-    diaryEntry: {
-      ...new DiaryEntryBuilder().build(),
-      entryNumber: latestEntryNumber + 1,
-    },
-    isRequestPending: false,
-    isPublishModalVisible: false,
-  });
-  const dispatch = Utils.createDispatch(setState);
+  const isPublish = state.entry.status === DiaryStatus.PUBLISHED;
+  const submitText = isPublish ? 'Submit & Publish' : 'Submit';
 
-  // Determine if diary entry is being published.
-  const isPublish = DiaryStatic.isPublished(state.diaryEntry);
+  function submitEntry() {
+    createDiaryEntry({ data: state.entry });
+  }
 
-  /** Create new diary entry on server. */
-  async function submitDiaryEntry() {
-    try {
-      dispatch({ isRequestPending: true });
-      Validate.diaryEntry(state.diaryEntry);
-
-      const payload = buildPayload(state.diaryEntry, isPublish, true);
-      await Utils.request('/api/diary', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
-      Alerts.success("You've successfully added a new diary entry.");
-      void router.push('/admin/diary');
-    } catch (e: any) {
-      Alerts.error(e.message);
-    } finally {
-      dispatch({ isRequestPending: false });
+  function onSubmit() {
+    if (isPublish) {
+      setState((s) => ({ ...s, isPublishModalVisible: true }));
+    } else {
+      submitEntry();
     }
   }
 
-  const onSubmit = isPublish
-    ? () => dispatch({ isPublishModalVisible: true })
-    : submitDiaryEntry;
-  const onSubmitText = state.isRequestPending
-    ? 'Loading...'
-    : isPublish
-    ? 'Submit & Publish'
-    : 'Submit';
+  function closePublishModal() {
+    setState((s) => ({ ...s, isPublishModalVisible: false }));
+  }
 
   return (
     <AdminGateway>
-      <DiaryEntryForm
-        diaryEntry={state.diaryEntry}
-        handlers={HandlerFactory(setState, 'diaryEntry')}
-        onSubmit={onSubmit}
-        onSubmitText={onSubmitText}
-        onCancel={() => router.push('/admin/diary')}
-      />
-      <Modal
-        visible={state.isPublishModalVisible}
-        body={
-          <p>
-            By publishing this diary entry, you&#39;ll be notifying all
-            subscribers of this new release. Confirm that you want to publish.
-          </p>
-        }
-        footer={
-          <React.Fragment>
-            <ModalStyle.FooterButton
-              variant={ButtonVariant.CONFIRM}
-              onClick={submitDiaryEntry}>
-              {onSubmitText}
-            </ModalStyle.FooterButton>
-            <ModalStyle.FooterButton
-              variant={ButtonVariant.CANCEL}
-              onClick={() => dispatch({ isPublishModalVisible: false })}>
-              Cancel
-            </ModalStyle.FooterButton>
-          </React.Fragment>
-        }
-      />
+      <DiaryFormContext.Provider value={[state, setState]}>
+        <DiaryForm
+          onSubmit={onSubmit}
+          submitText={submitText}
+          isActionLoading={isCreateLoading}
+        />
+        <ActionDialog
+          open={state.isPublishModalVisible}
+          onConfirm={submitEntry}
+          onCancel={closePublishModal}
+          confirmText={'Publish'}
+          isActionLoading={isCreateLoading}>
+          By publishing this diary entry, you&#39;ll be notifying all
+          subscribers of this new release. Confirm that you want to publish.
+        </ActionDialog>
+      </DiaryFormContext.Provider>
     </AdminGateway>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  DiaryEntryAddProps
-> = async () => {
-  const latestDiaryEntry = await DiaryAPI.getLatest();
+export const getStaticProps: GetStaticProps<AppPageProps> = () => {
   return {
     props: {
       pathDefinition: {
         title: 'Add New Diary Entry',
       },
-      pageProps: {
-        latestEntryNumber: latestDiaryEntry.entryNumber ?? 0,
-      },
     },
   };
 };
 
-DiaryEntryAdd.getLayout = Layout.addHeaderOnly;
+DiaryEntryAdd.getLayout = Layout.addPartials;
 export default DiaryEntryAdd;
-
-interface DiaryEntryAddProps {
-  pathDefinition: PathDefinition;
-  pageProps: {
-    latestEntryNumber: number;
-  };
-}
-
-interface DiaryEntryAddState {
-  diaryEntry: DiaryDAO;
-  isRequestPending: boolean;
-  isPublishModalVisible: boolean;
-}

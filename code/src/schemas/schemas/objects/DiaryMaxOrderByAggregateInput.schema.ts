@@ -9,12 +9,10 @@ const Schema: z.ZodType<Prisma.DiaryMaxOrderByAggregateInput> = z
     title: z.lazy(() => SortOrderSchema).optional(),
     date: z.lazy(() => SortOrderSchema).optional(),
     content: z.lazy(() => SortOrderSchema).optional(),
-    slug: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
     entryNumber: z.lazy(() => SortOrderSchema).optional(),
     footnote: z.lazy(() => SortOrderSchema).optional(),
     isFavourite: z.lazy(() => SortOrderSchema).optional(),
-    tags: z.lazy(() => SortOrderSchema).optional(),
   })
   .strict();
 

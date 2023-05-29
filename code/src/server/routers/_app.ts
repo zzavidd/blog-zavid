@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 import {
+  DiaryCreateOneSchema,
+  DiaryFindFirstSchema,
   DiaryFindManySchema,
   DiaryUpdateOneSchema,
   SubscriberCreateOneSchema,
@@ -13,6 +15,17 @@ import SubscriberAPI from 'server/api/subscribers';
 import { procedure, router } from '../trpc';
 
 export const appRouter = router({
+  diary: router({
+    find: procedure
+      .input(DiaryFindFirstSchema)
+      .query(({ input }) => DiaryAPI.find(input)),
+    findMany: procedure
+      .input(DiaryFindManySchema)
+      .query(({ input }) => DiaryAPI.findMany(input)),
+    create: procedure
+      .input(DiaryCreateOneSchema)
+      .mutation(({ input }) => DiaryAPI.create(input)),
+  }),
   getDiary: procedure
     .input(DiaryFindManySchema)
     .query(({ input }) => DiaryAPI.findMany(input)),

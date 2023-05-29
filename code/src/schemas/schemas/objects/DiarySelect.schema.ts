@@ -8,7 +8,6 @@ const Schema: z.ZodType<Prisma.DiarySelect> = z
     title: z.boolean().optional(),
     date: z.boolean().optional(),
     content: z.boolean().optional(),
-    slug: z.boolean().optional(),
     status: z.boolean().optional(),
     entryNumber: z.boolean().optional(),
     footnote: z.boolean().optional(),

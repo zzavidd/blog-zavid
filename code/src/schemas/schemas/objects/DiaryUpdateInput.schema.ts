@@ -1,12 +1,22 @@
 import { z } from 'zod';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
-import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
+import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { DiaryStatusSchema } from '../enums/DiaryStatus.schema';
 import { EnumDiaryStatusFieldUpdateOperationsInputObjectSchema } from './EnumDiaryStatusFieldUpdateOperationsInput.schema';
 import { IntFieldUpdateOperationsInputObjectSchema } from './IntFieldUpdateOperationsInput.schema';
 import { BoolFieldUpdateOperationsInputObjectSchema } from './BoolFieldUpdateOperationsInput.schema';
+import { JsonNullValueInputSchema } from '../enums/JsonNullValueInput.schema';
 
 import type { Prisma } from '@prisma/client';
+
+const literalSchema = z.union([z.string(), z.number(), z.boolean()]);
+const jsonSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
+  z.union([
+    literalSchema,
+    z.array(jsonSchema.nullable()),
+    z.record(jsonSchema.nullable()),
+  ]),
+);
 
 const Schema: z.ZodType<Prisma.DiaryUpdateInput> = z
   .object({
@@ -19,16 +29,11 @@ const Schema: z.ZodType<Prisma.DiaryUpdateInput> = z
     date: z
       .union([
         z.coerce.date(),
-        z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema),
       ])
-      .optional(),
+      .optional()
+      .nullable(),
     content: z
-      .union([
-        z.string(),
-        z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
-      ])
-      .optional(),
-    slug: z
       .union([
         z.string(),
         z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
@@ -59,10 +64,7 @@ const Schema: z.ZodType<Prisma.DiaryUpdateInput> = z
       ])
       .optional(),
     tags: z
-      .union([
-        z.string(),
-        z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
-      ])
+      .union([z.lazy(() => JsonNullValueInputSchema), jsonSchema])
       .optional(),
   })
   .strict();

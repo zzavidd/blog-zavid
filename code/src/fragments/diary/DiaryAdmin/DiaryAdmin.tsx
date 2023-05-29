@@ -56,7 +56,7 @@ export default function DiaryAdmin() {
         <Stack m={5} spacing={5}>
           <Stack direction={'row'} justifyContent={'space-between'}>
             <Typography variant={'h2'}>List of Diary Entries</Typography>
-            <LinkButton href={'/diary/add'} startIcon={<AddIcon />}>
+            <LinkButton href={'/admin/diary/add'} startIcon={<AddIcon />}>
               Add entry
             </LinkButton>
           </Stack>
@@ -146,11 +146,9 @@ function DiaryTableContent() {
 
   return (
     <TableBody>
-      {diaryEntries
-        ? diaryEntries.map((entry) => (
-            <DiaryEachRow entry={entry} key={entry.id} />
-          ))
-        : null}
+      {diaryEntries.map((entry) => (
+        <DiaryEachRow entry={entry} key={entry.id} />
+      ))}
     </TableBody>
   );
 }
