@@ -124,7 +124,9 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
     transformer: SuperJSON,
   });
 
-  const page = await helpers.page.find.fetch({ where: { slug: 'home' } });
+  const page = await helpers.page.find.fetch({
+    where: { slug: 'home' },
+  });
 
   return {
     props: {
