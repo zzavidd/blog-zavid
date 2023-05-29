@@ -1,7 +1,5 @@
 import { Container, Stack, Typography } from '@mui/material';
-import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
-import SuperJSON from 'superjson';
 import invariant from 'tiny-invariant';
 
 import Paragraph from 'componentsv2/Typography/Paragraph';
@@ -9,7 +7,7 @@ import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
 import * as ZText from 'lib/text';
-import { appRouter } from 'server/routers/_app';
+import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
 const DynamicPage: NextPageWithLayout<DynamicPageProps> = ({ slug }) => {
@@ -36,13 +34,8 @@ export const getServerSideProps: GetServerSideProps<DynamicPageProps> = async (
   ctx,
 ) => {
   try {
-    const helpers = createServerSideHelpers({
-      ctx,
-      router: appRouter,
-      transformer: SuperJSON,
-    });
-
     const slug = ctx.query.page as string;
+    const helpers = getServerSideHelpers(ctx);
     const page = await helpers.page.find.fetch({ where: { slug } });
     invariant(page, 'No page found.');
     return {

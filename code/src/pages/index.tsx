@@ -1,13 +1,11 @@
 import { Container, Divider, Stack } from '@mui/material';
-import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
-import superjson from 'superjson';
 
 import Settings from 'constants/settings';
 import Introduction from 'fragments/home/HomeIntroduction';
 import HomeLatest from 'fragments/home/HomeLatest';
 import Layout from 'fragments/Layout';
-import { appRouter } from 'server/routers/_app';
+import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
 const HomePage: NextPageWithLayout = () => {
@@ -34,12 +32,7 @@ const HomePage: NextPageWithLayout = () => {
 export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
   ctx,
 ) => {
-  const helpers = createServerSideHelpers({
-    ctx,
-    router: appRouter,
-    transformer: superjson,
-  });
-
+  const helpers = getServerSideHelpers(ctx);
   await helpers.page.find.prefetch({ where: { slug: 'home' } });
 
   return {

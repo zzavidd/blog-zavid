@@ -25,10 +25,10 @@ import {
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { useContext, useRef, useState } from 'react';
-import { useIsAdmin } from 'utils/hooks';
 
 import { AppActions, useAppDispatch, useAppSelector } from 'constants/reducers';
 import { NavigationContext } from 'utils/contexts';
+import { useIsAdmin } from 'utils/hooks';
 
 export default function Header() {
   const [isNavOpen, setNavOpen] = useContext(NavigationContext);
@@ -150,6 +150,7 @@ function AuthButton() {
       <Menu
         open={state.isMenuOpen}
         anchorEl={avatarRef.current}
+        onClick={onMenuClose}
         onClose={onMenuClose}
         anchorOrigin={{ horizontal: 'left', vertical: 50 }}
         MenuListProps={{ disablePadding: true }}>

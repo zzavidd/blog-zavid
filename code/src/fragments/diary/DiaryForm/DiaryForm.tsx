@@ -27,10 +27,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DiaryStatus } from '@prisma/client';
 import dayjs from 'dayjs';
 import immutate from 'immutability-helper';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 
 import { LinkButton } from 'componentsv2/Link';
-import { trpc } from 'utils/trpc';
 
 import { DiaryFormContext } from './DiaryForm.context';
 
@@ -41,20 +40,6 @@ export default function DiaryForm({
 }: DiaryFormProps) {
   const [context, setContext] = useContext(DiaryFormContext);
   const { entry } = context;
-
-  const { data: latestEntry } = trpc.diary.find.useQuery({
-    orderBy: { entryNumber: 'desc' },
-    select: { entryNumber: true },
-  });
-
-  useEffect(() => {
-    if (!latestEntry) return;
-    setContext((c) =>
-      immutate(c, {
-        entry: { entryNumber: { $set: latestEntry.entryNumber + 1 } },
-      }),
-    );
-  }, [latestEntry, setContext]);
 
   const isPublish = entry.status === DiaryStatus.PUBLISHED;
 

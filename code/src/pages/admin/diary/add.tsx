@@ -1,8 +1,9 @@
 import { DiaryStatus } from '@prisma/client';
-import type { GetStaticProps } from 'next';
+import immutate from 'immutability-helper';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ActionDialog } from 'componentsv2/Dialog';
 import AdminGateway from 'fragments/AdminGateway';
@@ -12,6 +13,7 @@ import {
   InitialDiaryFormState,
 } from 'fragments/diary/DiaryForm/DiaryForm.context';
 import Layout from 'fragments/Layout';
+import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
 const DiaryEntryAdd: NextPageWithLayout = () => {
@@ -33,6 +35,19 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
         enqueueSnackbar(e.message, { variant: 'error' });
       },
     });
+  const { data: latestEntry } = trpc.diary.find.useQuery({
+    orderBy: { entryNumber: 'desc' },
+    select: { entryNumber: true },
+  });
+
+  useEffect(() => {
+    if (!latestEntry) return;
+    setState((state) =>
+      immutate(state, {
+        entry: { entryNumber: { $set: latestEntry.entryNumber + 1 } },
+      }),
+    );
+  }, [latestEntry]);
 
   const isPublish = state.entry.status === DiaryStatus.PUBLISHED;
   const submitText = isPublish ? 'Submit & Publish' : 'Submit';
@@ -75,7 +90,12 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
   );
 };
 
-export const getStaticProps: GetStaticProps<AppPageProps> = () => {
+export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
+  ctx,
+) => {
+  const helpers = getServerSideHelpers(ctx);
+  await helpers.page.find.prefetch({ where: { slug: 'home' } });
+
   return {
     props: {
       pathDefinition: {

@@ -10,16 +10,14 @@ import {
 import type { Grid2Props } from '@mui/material/Unstable_Grid2';
 import Grid from '@mui/material/Unstable_Grid2';
 import { DiaryStatus } from '@prisma/client';
-import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
-import SuperJSON from 'superjson';
 
 import Settings from 'constants/settings';
 import DiaryEachItem, {
   DiaryEachSkeleton,
 } from 'fragments/diary/DiaryEachItem';
 import Layout from 'fragments/Layout';
-import { appRouter } from 'server/routers/_app';
+import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
 const DIARY_HEADING = "Zavid's Diary";
@@ -118,12 +116,7 @@ function DiaryCollection() {
 export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
   ctx,
 ) => {
-  const helpers = createServerSideHelpers({
-    ctx,
-    router: appRouter,
-    transformer: SuperJSON,
-  });
-
+  const helpers = getServerSideHelpers(ctx);
   const page = await helpers.page.find.fetch({
     where: { slug: 'home' },
   });

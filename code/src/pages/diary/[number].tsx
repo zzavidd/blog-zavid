@@ -8,12 +8,11 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { DiaryStatus } from '@prisma/client';
-import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
-import SuperJSON from 'superjson';
+import invariant from 'tiny-invariant';
 
 import { DiaryStatic } from 'classes/diary/DiaryStatic';
 import ShareBlock from 'components/ShareBlock';
@@ -28,7 +27,7 @@ import MenuProvider from 'fragments/shared/MenuProvider';
 import ZString from 'lib/string';
 import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import { appRouter } from 'server/routers/_app';
+import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
 const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
@@ -103,22 +102,21 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryPageProps
 > = async (ctx) => {
-  const helpers = createServerSideHelpers({
-    ctx,
-    router: appRouter,
-    transformer: SuperJSON,
-  });
-
   try {
     const { query, req, res } = ctx;
-
     const entryNumber = parseInt(query.number as string);
+
+    const helpers = getServerSideHelpers(ctx);
     const [, entry] = await helpers.diary.custom.triple.fetch(entryNumber);
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
-    if (!session && entry.status === DiaryStatus.PROTECTED) {
-      throw new Error('No diary entry found.');
-    }
+    const isAdmin =
+      session && session.user?.email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL;
+    const isVisibleToAll =
+      entry.status === DiaryStatus.PUBLISHED ||
+      entry.status === DiaryStatus.PRIVATE;
+    const isVisibleToAdmin = isAdmin && entry.status === DiaryStatus.PROTECTED;
+    invariant(isVisibleToAll || isVisibleToAdmin, 'No diary entry found.');
 
     if (entry.status !== DiaryStatus.PUBLISHED) {
       res.setHeader('X-Robots-Tag', 'noindex');
