@@ -55,6 +55,14 @@ async function ingestPages(): Promise<void> {
       lastModified: new Date(),
     },
     {
+      title: 'About Zavid',
+      content: faker.lorem.paragraphs(15, '\n\n'),
+      excerpt: faker.lorem.sentence(),
+      slug: 'about',
+      isEmbed: false,
+      lastModified: new Date(),
+    },
+    {
       title: 'Privacy Policy',
       content: faker.lorem.paragraphs(8, '\n\n'),
       excerpt: faker.lorem.sentence(),
