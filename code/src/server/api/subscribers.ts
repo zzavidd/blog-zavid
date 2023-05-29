@@ -1,23 +1,27 @@
 import type { Prisma, Subscriber } from '@prisma/client';
+import ImmutabilityHelper from 'immutability-helper';
 import { v4 as UUIDv4 } from 'uuid';
 
 import prisma from 'server/prisma';
 
 export default class SubscriberAPI {
   public static findMany(
-    payload: Prisma.SubscriberWhereInput,
+    args: Prisma.SubscriberFindManyArgs,
   ): Promise<Subscriber[]> {
-    return prisma.subscriber.findMany({ where: payload });
-  }
-  public static find(
-    payload: Prisma.SubscriberWhereInput,
-  ): Promise<Subscriber> {
-    return prisma.subscriber.findFirstOrThrow({ where: payload });
+    return prisma.subscriber.findMany(args);
   }
 
-  public static create(payload: CreateSubscriberPayload) {
-    return prisma.subscriber.create({
-      data: { ...payload, token: UUIDv4() },
-    });
+  public static find(
+    args: Prisma.SubscriberFindFirstArgs,
+  ): Promise<Subscriber | null> {
+    return prisma.subscriber.findFirst(args);
+  }
+
+  public static create(args: Prisma.SubscriberCreateArgs): Promise<Subscriber> {
+    return prisma.subscriber.create(
+      ImmutabilityHelper(args, {
+        data: { token: { $set: UUIDv4() } },
+      }),
+    );
   }
 }

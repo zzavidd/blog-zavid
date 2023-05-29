@@ -120,8 +120,11 @@ function QuickSubscribe() {
 
   function subscribeEmail() {
     mutate({
-      email: state.email,
-      subscriptions: { Diary: true, Reveries: true },
+      data: {
+        email: state.email,
+        subscriptions: { Diary: true, Reveries: true },
+        token: '',
+      },
     });
   }
 
