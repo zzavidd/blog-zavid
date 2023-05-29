@@ -27,9 +27,9 @@ const STATUS_ICONS = {
 export function useDiaryTableFields(isHovered?: boolean): DiaryTableField[] {
   const { enqueueSnackbar } = useSnackbar();
   const trpcContext = trpc.useContext();
-  const { mutate: updateDiaryEntry } = trpc.updateDiaryEntry.useMutation({
+  const { mutate: updateDiaryEntry } = trpc.diary.update.useMutation({
     onSuccess: async (entry) => {
-      await trpcContext.getDiary.refetch();
+      await trpcContext.diary.findMany.refetch();
       const verb = entry.isFavourite ? 'favourited' : 'unfavourited';
       const message = `You've ${verb} diary entry #${entry.entryNumber}.`;
       enqueueSnackbar(message, { variant: 'success' });

@@ -34,8 +34,11 @@ import { trpc } from 'utils/trpc';
 const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   entryNumber,
 }) => {
-  const { data: diaryTriplet, error } =
-    trpc.getDiaryTriplet.useQuery(entryNumber);
+  const { data: diaryTriplet, error } = trpc.diary.findMany.useQuery({
+    where: {
+      entryNumber: { in: [entryNumber, entryNumber - 1, entryNumber + 1] },
+    },
+  });
   const isMobile = useMediaQuery<Theme>((t) => t.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
 
@@ -46,7 +49,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   }, [enqueueSnackbar, error]);
 
   if (!diaryTriplet) return null;
-  const { current: diaryEntry } = diaryTriplet;
+  const [, diaryEntry] = diaryTriplet;
 
   const title = DiaryStatic.getTitle(diaryEntry);
 
@@ -58,7 +61,6 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   return (
     <MenuProvider title={DiaryStatic.getTitle(diaryEntry)}>
       <Container maxWidth={'sm'} sx={{ padding: (t) => t.spacing(4) }}>
-        <TopNavigator diaryTriplet={diaryTriplet} />
         <Stack spacing={4} divider={<Divider />}>
           <Breadcrumbs links={links} />
           <Stack spacing={2}>
@@ -98,13 +100,6 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   );
 };
 
-function TopNavigator({ diaryTriplet }: { diaryTriplet?: DiaryTriplet }) {
-  if (!diaryTriplet) return null;
-
-  // const { current, previous, next } = diaryTriplet;
-  return null;
-}
-
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryPageProps
 > = async (ctx) => {
@@ -118,8 +113,7 @@ export const getServerSideProps: GetServerSideProps<
     const { query, req, res } = ctx;
 
     const entryNumber = parseInt(query.number as string);
-    const diaryTriplet = await helpers.getDiaryTriplet.fetch(entryNumber);
-    const entry = diaryTriplet.current;
+    const [, entry] = await helpers.diary.custom.triple.fetch(entryNumber);
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
     if (!session && entry.status === DiaryStatus.PROTECTED) {
@@ -138,8 +132,8 @@ export const getServerSideProps: GetServerSideProps<
           description: ZText.extractExcerpt(entry.content),
           url: `/diary/${entry.entryNumber}`,
           article: {
-            publishedTime: new Date(entry.date).toDateString(),
-            tags: ZString.convertCsvToArray(entry.tags),
+            publishedTime: entry.date!.toDateString(),
+            tags: ZString.convertCsvToArray(entry.tags as string[]),
           },
         },
         trpcState: helpers.dehydrate(),

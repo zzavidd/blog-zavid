@@ -21,7 +21,9 @@ export default function HomeIntroduction() {
 }
 
 function Content() {
-  const { data: page } = trpc.getHomePageContent.useQuery();
+  const { data: page } = trpc.page.find.useQuery({
+    where: { slug: 'home' },
+  });
 
   if (page) {
     return (

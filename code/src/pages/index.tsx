@@ -12,7 +12,7 @@ import { trpc } from 'utils/trpc';
 
 const HomePage: NextPageWithLayout = () => {
   const { data: entry, isLoading: isEntryLoading } =
-    trpc.getLatestDiaryEntry.useQuery();
+    trpc.diary.custom.latest.useQuery();
   return (
     <Container maxWidth={'md'} sx={{ padding: (t) => t.spacing(6, 5) }}>
       <Stack spacing={4} divider={<Divider />}>
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
     transformer: superjson,
   });
 
-  await helpers.getHomePageContent.prefetch();
+  await helpers.page.find.prefetch({ where: { slug: 'home' } });
 
   return {
     props: {

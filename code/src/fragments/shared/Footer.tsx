@@ -92,7 +92,7 @@ function FooterLinks() {
 function QuickSubscribe() {
   const [state, setState] = useState({ email: '' });
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate, error, isSuccess } = trpc.createSubscriber.useMutation();
+  const { mutate, error, isSuccess } = trpc.subscriber.create.useMutation();
 
   useEffect(() => {
     if (isSuccess) {

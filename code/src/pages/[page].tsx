@@ -2,8 +2,9 @@ import { Container, Stack, Typography } from '@mui/material';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 import type { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
+import invariant from 'tiny-invariant';
 
-import { Paragraph } from 'componentsv2/Typography/Paragraph';
+import Paragraph from 'componentsv2/Typography/Paragraph';
 import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
@@ -12,7 +13,7 @@ import { appRouter } from 'server/routers/_app';
 import { trpc } from 'utils/trpc';
 
 const DynamicPage: NextPageWithLayout<DynamicPageProps> = ({ slug }) => {
-  const { data: page } = trpc.getPageBySlug.useQuery(slug);
+  const { data: page } = trpc.page.find.useQuery({ where: { slug } });
   if (!page) return null;
 
   const substitutions = {
@@ -42,7 +43,8 @@ export const getServerSideProps: GetServerSideProps<DynamicPageProps> = async (
     });
 
     const slug = ctx.query.page as string;
-    const page = await helpers.getPageBySlug.fetch(slug);
+    const page = await helpers.page.find.fetch({ where: { slug } });
+    invariant(page, 'No page found.');
     return {
       props: {
         slug,

@@ -1,3 +1,4 @@
+import { DiaryStatus } from '@prisma/client';
 import { z } from 'zod';
 
 import {
@@ -5,11 +6,11 @@ import {
   DiaryFindFirstSchema,
   DiaryFindManySchema,
   DiaryUpdateOneSchema,
+  PageFindFirstSchema,
   SubscriberCreateOneSchema,
 } from 'schemas/schemas';
 import DiaryAPI from 'server/api/diary';
 import PageAPI from 'server/api/pages';
-import PostAPI from 'server/api/posts';
 import SubscriberAPI from 'server/api/subscribers';
 
 import { procedure, router } from '../trpc';
@@ -25,33 +26,38 @@ export const appRouter = router({
     create: procedure
       .input(DiaryCreateOneSchema)
       .mutation(({ input }) => DiaryAPI.create(input)),
+    update: procedure
+      .input(DiaryUpdateOneSchema)
+      .mutation(({ input }) => DiaryAPI.update(input)),
+    delete: procedure
+      .input(z.array(z.number()))
+      .mutation(({ input }) => DiaryAPI.delete(input)),
+    custom: router({
+      latest: procedure.query(() =>
+        DiaryAPI.find({
+          orderBy: { entryNumber: 'desc' },
+          where: { status: DiaryStatus.PUBLISHED },
+        }),
+      ),
+      triple: procedure.input(z.number()).query(({ input }) =>
+        DiaryAPI.findMany({
+          where: {
+            entryNumber: { in: [input, input - 1, input + 1] },
+          },
+        }),
+      ),
+    }),
   }),
-  getDiary: procedure
-    .input(DiaryFindManySchema)
-    .query(({ input }) => DiaryAPI.findMany(input)),
-  updateDiaryEntry: procedure
-    .input(DiaryUpdateOneSchema)
-    .mutation(({ input }) => DiaryAPI.update(input)),
-  deleteDiaryEntry: procedure
-    .input(z.array(z.number()))
-    .mutation(({ input }) => DiaryAPI.delete(input)),
-
-  getDiaryTriplet: procedure
-    .input(z.number())
-    .query(({ input }) => DiaryAPI.getTriplet(input)),
-  getLatestDiaryEntry: procedure.query(() => DiaryAPI.getLatest()),
-  getDiaryPageContent: procedure.query(() => PageAPI.find({ slug: 'diary' })),
-
-  getLatestReverie: procedure.query(() => PostAPI.getLatestReverie()),
-
-  getPageBySlug: procedure
-    .input(z.string())
-    .query(({ input }) => PageAPI.find({ slug: input })),
-  getHomePageContent: procedure.query(() => PageAPI.find({ slug: 'home' })),
-
-  createSubscriber: procedure
-    .input(SubscriberCreateOneSchema)
-    .mutation(({ input }) => SubscriberAPI.create(input)),
+  page: router({
+    find: procedure
+      .input(PageFindFirstSchema)
+      .query(({ input }) => PageAPI.find(input)),
+  }),
+  subscriber: router({
+    create: procedure
+      .input(SubscriberCreateOneSchema)
+      .mutation(({ input }) => SubscriberAPI.create(input)),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -57,7 +57,7 @@ export default function HomeLatest({
 
 interface HomeLatestProps {
   content?: string;
-  date?: Date;
+  date?: Date | null;
   isLoading: boolean;
   moreHref?: string;
   moreText: string;

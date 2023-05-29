@@ -44,7 +44,9 @@ const DiaryIndex: NextPageWithLayout = () => {
  * The preamble for the diary page.
  */
 function DiaryPagePreamble() {
-  const { data: page, isLoading } = trpc.getDiaryPageContent.useQuery();
+  const { data: page, isLoading } = trpc.page.find.useQuery({
+    where: { slug: 'diary' },
+  });
 
   if (isLoading) {
     return (
@@ -69,7 +71,7 @@ function DiaryPagePreamble() {
  * The list of diary entries displayed in a grid.
  */
 function DiaryCollection() {
-  const { data: diaryEntries, isLoading } = trpc.getDiary.useQuery({
+  const { data: diaryEntries, isLoading } = trpc.diary.findMany.useQuery({
     where: { status: DiaryStatus.PUBLISHED },
     orderBy: { entryNumber: 'desc' },
   });
@@ -108,13 +110,13 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
     transformer: SuperJSON,
   });
 
-  const page = await helpers.getHomePageContent.fetch();
+  const page = await helpers.page.find.fetch({ where: { slug: 'home' } });
 
   return {
     props: {
       pathDefinition: {
         title: `Diary | ${Settings.SITE_TITLE}`,
-        description: page.excerpt,
+        description: page?.excerpt,
         url: '/diary',
       },
       trpcState: helpers.dehydrate(),

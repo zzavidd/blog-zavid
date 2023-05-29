@@ -99,7 +99,7 @@ function DiaryTableContent() {
   const [context] = useContext(DiaryAdminContext);
   const diaryTableFields = useDiaryTableFields();
   const { order, property } = context.sort;
-  const { data: diaryEntries, isLoading } = trpc.getDiary.useQuery({
+  const { data: diaryEntries, isLoading } = trpc.diary.findMany.useQuery({
     orderBy: { [property]: order },
     select: {
       id: true,
@@ -205,9 +205,9 @@ function DeleteModal() {
   const trpcContext = trpc.useContext();
 
   const { mutate: deleteDiaryEntry, isLoading: isDeleteLoading } =
-    trpc.deleteDiaryEntry.useMutation({
+    trpc.diary.delete.useMutation({
       onSuccess: async () => {
-        await trpcContext.getDiary.refetch();
+        await trpcContext.diary.findMany.refetch();
         const { entryNumber } = context.selectedDiaryEntry!;
         const message = `You've deleted diary entry #${entryNumber}.`;
         enqueueSnackbar(message, { variant: 'success' });

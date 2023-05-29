@@ -4,6 +4,7 @@ import { Typography } from '@mui/material';
 import ZDate from 'lib/date';
 
 export default function Time({ date, ...props }: TimeProps) {
+  if (!date) return null;
   return (
     <Typography
       variant={'body2'}
@@ -17,5 +18,5 @@ export default function Time({ date, ...props }: TimeProps) {
 }
 
 interface TimeProps extends TypographyProps<'time'> {
-  date: Date;
+  date: Date | null;
 }
