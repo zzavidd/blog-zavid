@@ -41,6 +41,7 @@ const components: Components<Theme> = {
     styleOverrides: {
       label: () => css`
         user-select: none;
+        width: fit-content;
       `,
     },
   },

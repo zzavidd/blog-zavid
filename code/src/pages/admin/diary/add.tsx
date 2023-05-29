@@ -94,7 +94,10 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
   ctx,
 ) => {
   const helpers = getServerSideHelpers(ctx);
-  await helpers.page.find.prefetch({ where: { slug: 'home' } });
+  await helpers.diary.find.prefetch({
+    orderBy: { entryNumber: 'desc' },
+    select: { entryNumber: true },
+  });
 
   return {
     props: {
