@@ -74,7 +74,7 @@ async function ingestPages(): Promise<void> {
       title: 'Cookie Policy',
       content: faker.lorem.paragraphs(8, '\n\n'),
       excerpt: faker.lorem.sentence(),
-      slug: 'cookie',
+      slug: 'cookies',
       isEmbed: false,
       lastModified: new Date(),
     },

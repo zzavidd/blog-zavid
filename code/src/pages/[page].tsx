@@ -17,14 +17,14 @@ const DynamicPage: NextPageWithLayout<DynamicPageProps> = ({ slug }) => {
   if (!page) return null;
 
   const substitutions = {
-    lastModified: `**${ZDate.format(page.lastModified!)}**`,
+    lastModified: `**${ZDate.format(page.lastModified)}**`,
     myAge: ZDate.calculateZavidAge(),
     redevelopmentDate: ZDate.format(Settings.BLOG_REDEVELOPMENT_DATE),
   };
 
   return (
-    <Container>
-      <Stack>
+    <Container maxWidth={'sm'}>
+      <Stack m={5} spacing={5}>
         <Typography variant={'h2'}>{page.title}</Typography>
         <Paragraph substitutions={substitutions}>{page.content}</Paragraph>
       </Stack>
