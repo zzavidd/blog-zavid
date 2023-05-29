@@ -3,10 +3,10 @@ import { IntFieldUpdateOperationsInputObjectSchema } from './IntFieldUpdateOpera
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { FloatFieldUpdateOperationsInputObjectSchema } from './FloatFieldUpdateOperationsInput.schema';
 import { NullableIntFieldUpdateOperationsInputObjectSchema } from './NullableIntFieldUpdateOperationsInput.schema';
-import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
-import { EnumWishlistVisibilityFieldUpdateOperationsInputObjectSchema } from './EnumWishlistVisibilityFieldUpdateOperationsInput.schema';
 import { WishlistPrioritySchema } from '../enums/WishlistPriority.schema';
 import { EnumWishlistPriorityFieldUpdateOperationsInputObjectSchema } from './EnumWishlistPriorityFieldUpdateOperationsInput.schema';
+import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
+import { EnumWishlistVisibilityFieldUpdateOperationsInputObjectSchema } from './EnumWishlistVisibilityFieldUpdateOperationsInput.schema';
 import { JsonNullValueInputSchema } from '../enums/JsonNullValueInput.schema';
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
@@ -42,12 +42,6 @@ const Schema: z.ZodType<Prisma.WishlistItemUncheckedUpdateInput> = z
         z.lazy(() => FloatFieldUpdateOperationsInputObjectSchema),
       ])
       .optional(),
-    comments: z
-      .union([
-        z.string(),
-        z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
-      ])
-      .optional(),
     quantity: z
       .union([
         z.number(),
@@ -61,19 +55,19 @@ const Schema: z.ZodType<Prisma.WishlistItemUncheckedUpdateInput> = z
       ])
       .optional()
       .nullable(),
-    visibility: z
-      .union([
-        z.lazy(() => WishlistVisibilitySchema),
-        z.lazy(
-          () => EnumWishlistVisibilityFieldUpdateOperationsInputObjectSchema,
-        ),
-      ])
-      .optional(),
     priority: z
       .union([
         z.lazy(() => WishlistPrioritySchema),
         z.lazy(
           () => EnumWishlistPriorityFieldUpdateOperationsInputObjectSchema,
+        ),
+      ])
+      .optional(),
+    visibility: z
+      .union([
+        z.lazy(() => WishlistVisibilitySchema),
+        z.lazy(
+          () => EnumWishlistVisibilityFieldUpdateOperationsInputObjectSchema,
         ),
       ])
       .optional(),
@@ -84,6 +78,12 @@ const Schema: z.ZodType<Prisma.WishlistItemUncheckedUpdateInput> = z
       ])
       .optional(),
     href: z
+      .union([
+        z.string(),
+        z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+      ])
+      .optional(),
+    comments: z
       .union([
         z.string(),
         z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),

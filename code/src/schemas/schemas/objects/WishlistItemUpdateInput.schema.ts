@@ -2,10 +2,10 @@ import { z } from 'zod';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { FloatFieldUpdateOperationsInputObjectSchema } from './FloatFieldUpdateOperationsInput.schema';
 import { IntFieldUpdateOperationsInputObjectSchema } from './IntFieldUpdateOperationsInput.schema';
-import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
-import { EnumWishlistVisibilityFieldUpdateOperationsInputObjectSchema } from './EnumWishlistVisibilityFieldUpdateOperationsInput.schema';
 import { WishlistPrioritySchema } from '../enums/WishlistPriority.schema';
 import { EnumWishlistPriorityFieldUpdateOperationsInputObjectSchema } from './EnumWishlistPriorityFieldUpdateOperationsInput.schema';
+import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
+import { EnumWishlistVisibilityFieldUpdateOperationsInputObjectSchema } from './EnumWishlistVisibilityFieldUpdateOperationsInput.schema';
 import { JsonNullValueInputSchema } from '../enums/JsonNullValueInput.schema';
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
@@ -36,24 +36,10 @@ const Schema: z.ZodType<Prisma.WishlistItemUpdateInput> = z
         z.lazy(() => FloatFieldUpdateOperationsInputObjectSchema),
       ])
       .optional(),
-    comments: z
-      .union([
-        z.string(),
-        z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
-      ])
-      .optional(),
     quantity: z
       .union([
         z.number(),
         z.lazy(() => IntFieldUpdateOperationsInputObjectSchema),
-      ])
-      .optional(),
-    visibility: z
-      .union([
-        z.lazy(() => WishlistVisibilitySchema),
-        z.lazy(
-          () => EnumWishlistVisibilityFieldUpdateOperationsInputObjectSchema,
-        ),
       ])
       .optional(),
     priority: z
@@ -64,6 +50,14 @@ const Schema: z.ZodType<Prisma.WishlistItemUpdateInput> = z
         ),
       ])
       .optional(),
+    visibility: z
+      .union([
+        z.lazy(() => WishlistVisibilitySchema),
+        z.lazy(
+          () => EnumWishlistVisibilityFieldUpdateOperationsInputObjectSchema,
+        ),
+      ])
+      .optional(),
     image: z
       .union([
         z.string(),
@@ -71,6 +65,12 @@ const Schema: z.ZodType<Prisma.WishlistItemUpdateInput> = z
       ])
       .optional(),
     href: z
+      .union([
+        z.string(),
+        z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+      ])
+      .optional(),
+    comments: z
       .union([
         z.string(),
         z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),

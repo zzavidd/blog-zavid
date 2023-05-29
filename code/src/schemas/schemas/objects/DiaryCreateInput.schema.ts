@@ -22,9 +22,7 @@ const Schema: z.ZodType<Prisma.DiaryCreateInput> = z
     entryNumber: z.number(),
     footnote: z.string(),
     isFavourite: z.boolean().optional(),
-    tags: z
-      .union([z.lazy(() => JsonNullValueInputSchema), jsonSchema])
-      .optional(),
+    tags: z.union([z.lazy(() => JsonNullValueInputSchema), jsonSchema]),
   })
   .strict();
 

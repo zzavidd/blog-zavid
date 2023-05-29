@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
 import { WishlistPrioritySchema } from '../enums/WishlistPriority.schema';
+import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
 import { JsonNullValueInputSchema } from '../enums/JsonNullValueInput.schema';
 
 import type { Prisma } from '@prisma/client';
@@ -19,15 +19,13 @@ const Schema: z.ZodType<Prisma.WishlistItemCreateManyCategoryInput> = z
     id: z.number().optional(),
     name: z.string(),
     price: z.number(),
-    comments: z.string(),
     quantity: z.number(),
-    visibility: z.lazy(() => WishlistVisibilitySchema),
     priority: z.lazy(() => WishlistPrioritySchema),
+    visibility: z.lazy(() => WishlistVisibilitySchema),
     image: z.string(),
     href: z.string(),
-    reservees: z
-      .union([z.lazy(() => JsonNullValueInputSchema), jsonSchema])
-      .optional(),
+    comments: z.string(),
+    reservees: z.union([z.lazy(() => JsonNullValueInputSchema), jsonSchema]),
     purchaseDate: z.coerce.date().optional().nullable(),
     createTime: z.coerce.date().optional(),
   })

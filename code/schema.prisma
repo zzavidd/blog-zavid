@@ -5,7 +5,7 @@ generator client {
 generator zod {
   provider         = "prisma-zod-generator"
   output           = "./src/schemas"
-  isGenerateSelect = true
+  isGenerateSelect = "true"
 }
 
 datasource db {
@@ -16,13 +16,13 @@ datasource db {
 model Diary {
   id          Int         @id @default(autoincrement()) @db.UnsignedInt
   title       String      @db.VarChar(100)
-  date        DateTime?    @db.Date
+  date        DateTime?   @db.Date
   content     String      @db.Text
   status      DiaryStatus
   entryNumber Int         @unique(map: "entryNumber_UNIQUE") @db.UnsignedInt
   footnote    String      @db.Text
   isFavourite Boolean     @default(false)
-  tags        Json        @default("[]")
+  tags        Json
 
   @@map("diary")
 }
@@ -63,7 +63,7 @@ model Subscriber {
   email         String   @unique(map: "email_UNIQUE") @db.VarChar(45)
   firstname     String?  @db.VarChar(45)
   lastname      String?  @db.VarChar(45)
-  subscriptions Json     @db.Json
+  subscriptions Json
   token         String   @db.Text
   createTime    DateTime @default(now()) @db.DateTime(0)
 
@@ -74,18 +74,19 @@ model WishlistItem {
   id           Int                @id @default(autoincrement()) @db.UnsignedInt
   name         String
   price        Float
-  comments     String
   quantity     Int
-  category     WishlistCategory?  @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   categoryId   Int?
-  visibility   WishlistVisibility
   priority     WishlistPriority
+  visibility   WishlistVisibility
   image        String             @db.Text
   href         String             @db.Text
-  reservees    Json               @default("{}")
-  purchaseDate DateTime?          @db.Date()
+  comments     String
+  reservees    Json
+  purchaseDate DateTime?          @db.Date
   createTime   DateTime           @default(now()) @db.Timestamp(0)
+  category     WishlistCategory?  @relation(fields: [categoryId], references: [id])
 
+  @@index([categoryId], map: "wishlist_categoryId_fkey")
   @@map("wishlist")
 }
 

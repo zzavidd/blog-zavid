@@ -3,10 +3,10 @@ import { IntWithAggregatesFilterObjectSchema } from './IntWithAggregatesFilter.s
 import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
 import { FloatWithAggregatesFilterObjectSchema } from './FloatWithAggregatesFilter.schema';
 import { IntNullableWithAggregatesFilterObjectSchema } from './IntNullableWithAggregatesFilter.schema';
-import { EnumWishlistVisibilityWithAggregatesFilterObjectSchema } from './EnumWishlistVisibilityWithAggregatesFilter.schema';
-import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
 import { EnumWishlistPriorityWithAggregatesFilterObjectSchema } from './EnumWishlistPriorityWithAggregatesFilter.schema';
 import { WishlistPrioritySchema } from '../enums/WishlistPriority.schema';
+import { EnumWishlistVisibilityWithAggregatesFilterObjectSchema } from './EnumWishlistVisibilityWithAggregatesFilter.schema';
+import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
 import { JsonWithAggregatesFilterObjectSchema } from './JsonWithAggregatesFilter.schema';
 import { DateTimeNullableWithAggregatesFilterObjectSchema } from './DateTimeNullableWithAggregatesFilter.schema';
 import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
@@ -44,9 +44,6 @@ const Schema: z.ZodType<Prisma.WishlistItemScalarWhereWithAggregatesInput> = z
     price: z
       .union([z.lazy(() => FloatWithAggregatesFilterObjectSchema), z.number()])
       .optional(),
-    comments: z
-      .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])
-      .optional(),
     quantity: z
       .union([z.lazy(() => IntWithAggregatesFilterObjectSchema), z.number()])
       .optional(),
@@ -57,22 +54,25 @@ const Schema: z.ZodType<Prisma.WishlistItemScalarWhereWithAggregatesInput> = z
       ])
       .optional()
       .nullable(),
-    visibility: z
-      .union([
-        z.lazy(() => EnumWishlistVisibilityWithAggregatesFilterObjectSchema),
-        z.lazy(() => WishlistVisibilitySchema),
-      ])
-      .optional(),
     priority: z
       .union([
         z.lazy(() => EnumWishlistPriorityWithAggregatesFilterObjectSchema),
         z.lazy(() => WishlistPrioritySchema),
       ])
       .optional(),
+    visibility: z
+      .union([
+        z.lazy(() => EnumWishlistVisibilityWithAggregatesFilterObjectSchema),
+        z.lazy(() => WishlistVisibilitySchema),
+      ])
+      .optional(),
     image: z
       .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])
       .optional(),
     href: z
+      .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])
+      .optional(),
+    comments: z
       .union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()])
       .optional(),
     reservees: z.lazy(() => JsonWithAggregatesFilterObjectSchema).optional(),

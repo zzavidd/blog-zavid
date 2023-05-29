@@ -3,10 +3,10 @@ import { IntFilterObjectSchema } from './IntFilter.schema';
 import { StringFilterObjectSchema } from './StringFilter.schema';
 import { FloatFilterObjectSchema } from './FloatFilter.schema';
 import { IntNullableFilterObjectSchema } from './IntNullableFilter.schema';
-import { EnumWishlistVisibilityFilterObjectSchema } from './EnumWishlistVisibilityFilter.schema';
-import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
 import { EnumWishlistPriorityFilterObjectSchema } from './EnumWishlistPriorityFilter.schema';
 import { WishlistPrioritySchema } from '../enums/WishlistPriority.schema';
+import { EnumWishlistVisibilityFilterObjectSchema } from './EnumWishlistVisibilityFilter.schema';
+import { WishlistVisibilitySchema } from '../enums/WishlistVisibility.schema';
 import { JsonFilterObjectSchema } from './JsonFilter.schema';
 import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
 import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
@@ -40,9 +40,6 @@ const Schema: z.ZodType<Prisma.WishlistItemWhereInput> = z
     price: z
       .union([z.lazy(() => FloatFilterObjectSchema), z.number()])
       .optional(),
-    comments: z
-      .union([z.lazy(() => StringFilterObjectSchema), z.string()])
-      .optional(),
     quantity: z
       .union([z.lazy(() => IntFilterObjectSchema), z.number()])
       .optional(),
@@ -50,22 +47,25 @@ const Schema: z.ZodType<Prisma.WishlistItemWhereInput> = z
       .union([z.lazy(() => IntNullableFilterObjectSchema), z.number()])
       .optional()
       .nullable(),
-    visibility: z
-      .union([
-        z.lazy(() => EnumWishlistVisibilityFilterObjectSchema),
-        z.lazy(() => WishlistVisibilitySchema),
-      ])
-      .optional(),
     priority: z
       .union([
         z.lazy(() => EnumWishlistPriorityFilterObjectSchema),
         z.lazy(() => WishlistPrioritySchema),
       ])
       .optional(),
+    visibility: z
+      .union([
+        z.lazy(() => EnumWishlistVisibilityFilterObjectSchema),
+        z.lazy(() => WishlistVisibilitySchema),
+      ])
+      .optional(),
     image: z
       .union([z.lazy(() => StringFilterObjectSchema), z.string()])
       .optional(),
     href: z
+      .union([z.lazy(() => StringFilterObjectSchema), z.string()])
+      .optional(),
+    comments: z
       .union([z.lazy(() => StringFilterObjectSchema), z.string()])
       .optional(),
     reservees: z.lazy(() => JsonFilterObjectSchema).optional(),
