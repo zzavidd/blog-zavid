@@ -12,7 +12,8 @@
     "release": "../devops/scripts/release.sh",
     "eslint": "eslint --ext .ts,.tsx src/ --cache",
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
-    "prettier:write": "pnpm run prettier --write"
+    "prettier:write": "pnpm run prettier --write",
+    "ops:ingest": "ts-node ops/ingestion"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",

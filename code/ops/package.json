@@ -1,6 +1,0 @@
-{
-  "scripts": {
-    "manual": "ts-node --project test/tsconfig.test.json test/manual",
-    "ingestion": "ts-node --project test/tsconfig.test.json test/ingestion"
-  }
-}
