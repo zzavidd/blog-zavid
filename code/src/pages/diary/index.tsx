@@ -7,6 +7,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import type { Grid2Props } from '@mui/material/Unstable_Grid2';
 import Grid from '@mui/material/Unstable_Grid2';
 import { DiaryStatus } from '@prisma/client';
 import { createServerSideHelpers } from '@trpc/react-query/server';
@@ -14,7 +15,9 @@ import type { GetServerSideProps } from 'next';
 import SuperJSON from 'superjson';
 
 import Settings from 'constants/settings';
-import DiaryEachItem from 'fragments/diary/DiaryEachItem';
+import DiaryEachItem, {
+  DiaryEachSkeleton,
+} from 'fragments/diary/DiaryEachItem';
 import Layout from 'fragments/Layout';
 import { appRouter } from 'server/routers/_app';
 import { trpc } from 'utils/trpc';
@@ -76,8 +79,23 @@ function DiaryCollection() {
     orderBy: { entryNumber: 'desc' },
   });
 
+  const gridProps: Grid2Props = {
+    container: true,
+    columns: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 },
+    columnSpacing: { xs: 3, lg: 5 },
+    rowSpacing: 3,
+  };
+
   if (isLoading) {
-    return null;
+    return (
+      <Grid {...gridProps}>
+        {Array(8)
+          .fill(null)
+          .map((_, key) => (
+            <DiaryEachSkeleton key={key} />
+          ))}
+      </Grid>
+    );
   }
 
   if (!diaryEntries) {
@@ -89,11 +107,7 @@ function DiaryCollection() {
   }
 
   return (
-    <Grid
-      container={true}
-      columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-      columnSpacing={{ xs: 3, lg: 5 }}
-      rowSpacing={3}>
+    <Grid {...gridProps}>
       {diaryEntries.map((entry) => (
         <DiaryEachItem entry={entry} key={entry.id} />
       ))}

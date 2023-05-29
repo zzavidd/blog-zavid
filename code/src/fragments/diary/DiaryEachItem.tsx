@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   Divider,
+  Skeleton,
   Tooltip,
   Typography,
   lighten,
@@ -67,6 +68,26 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
 );
 
 export default DiaryEachItem;
+
+export function DiaryEachSkeleton() {
+  return (
+    <Grid xs={1}>
+      <Card sx={cardProps}>
+        <CardContent>
+          <Skeleton variant={'text'} width={'50%'} />
+          <Skeleton variant={'text'} />
+          <Divider sx={{ marginBlock: (t) => t.spacing(4) }} />
+          {Array(7)
+            .fill(null)
+            .map((_, key) => (
+              <Skeleton variant={'text'} key={key} />
+            ))}
+          <Skeleton variant={'text'} width={'60%'} />
+        </CardContent>
+      </Card>
+    </Grid>
+  );
+}
 
 interface DiaryEachItemProps {
   entry: Diary;
