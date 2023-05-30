@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
-import Settings from 'constants/settings';
-import ZDate from 'lib/date';
-import * as ZText from 'lib/text';
+import ZDate from 'utils/lib/date';
+import * as ZText from 'utils/lib/text';
+import Settings from 'utils/settings';
 
 import { Anchor, Heading } from '../lib/components';
 import { Body, Footer, Header, Main, SignatureImage } from '../lib/fragments';

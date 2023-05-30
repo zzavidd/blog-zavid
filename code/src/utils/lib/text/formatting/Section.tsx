@@ -11,12 +11,16 @@ import InstagramEmbed from 'react-instagram-embed';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 
 import { NextImage } from 'components/Image';
-import type { FormatTextOptions } from 'lib/text';
+import type { FormatTextOptions } from 'utils/lib/text';
 import {
   applyEmphasisFormatting,
   removeEmphasisFormatting,
-} from 'lib/text/formatting/Emphasis';
-import { Section, sectionRegexMapping, strayRegexToOmit } from 'lib/text/regex';
+} from 'utils/lib/text/formatting/Emphasis';
+import {
+  Section,
+  sectionRegexMapping,
+  strayRegexToOmit,
+} from 'utils/lib/text/regex';
 
 /**
  * Formats a paragraph of text.

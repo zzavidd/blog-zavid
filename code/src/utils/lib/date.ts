@@ -1,4 +1,4 @@
-import Settings from 'constants/settings';
+import Settings from 'utils/settings';
 
 const suffixes = new Map([
   ['one', 'st'],

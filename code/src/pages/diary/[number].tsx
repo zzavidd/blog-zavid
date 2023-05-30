@@ -13,19 +13,19 @@ import { unstable_getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import invariant from 'tiny-invariant';
+import Logger from 'utils/logger';
 
 import Breadcrumbs from 'components/Breadcrumbs';
 import { Signature } from 'components/Image';
 import ShareBlock from 'components/ShareBlock';
 import Paragraph from 'components/Typography/Paragraph';
 import Time from 'components/Typography/Time';
-import Logger from 'constants/logger';
-import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
 import MenuProvider from 'fragments/Shared/MenuProvider';
-import ZString from 'lib/string';
-import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
+import ZString from 'utils/lib/string';
+import * as ZText from 'utils/lib/text';
+import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 

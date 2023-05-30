@@ -14,7 +14,7 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 
 import { Link } from 'components/Link';
-import ZDate from 'lib/date';
+import ZDate from 'utils/lib/date';
 import { trpc } from 'utils/trpc';
 
 const STATUS_ICONS = {

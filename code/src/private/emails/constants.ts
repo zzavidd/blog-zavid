@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 
 const { serverRuntimeConfig } = getConfig();
 
-import Settings from 'constants/settings';
+import Settings from 'utils/settings';
 
 export const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 

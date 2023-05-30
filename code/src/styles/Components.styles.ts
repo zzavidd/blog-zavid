@@ -1,7 +1,7 @@
 import type { Components, Theme } from '@mui/material';
 import { css } from '@mui/material';
 
-import Settings from 'constants/settings';
+import Settings from 'utils/settings';
 
 const components: Components<Theme> = {
   MuiButton: {

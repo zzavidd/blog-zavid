@@ -3,8 +3,8 @@ import type React from 'react';
 import {
   deformatParagraph,
   formatParagraph,
-} from 'lib/text/formatting/Section';
-import { newLinesExceptNumberedListsRegex } from 'lib/text/regex';
+} from 'utils/lib/text/formatting/Section';
+import { newLinesExceptNumberedListsRegex } from 'utils/lib/text/regex';
 
 /**
  * Apply rich formatting to text.

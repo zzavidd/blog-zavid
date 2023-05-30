@@ -19,13 +19,13 @@ import React, { useContext, useEffect } from 'react';
 
 import { NextImage } from 'components/Image';
 import Paragraph from 'components/Typography/Paragraph';
-import Canvas from 'constants/canvas';
-import ZString from 'lib/string';
 import { MenuContext } from 'utils/contexts';
+import ZString from 'utils/lib/string';
 import type { FilterShapeOption, FilterThemeOption } from 'utils/theme';
 import { AppTheme, FilterShape, FilterTheme } from 'utils/theme';
 
 import { CuratorContext } from './Curator.context';
+import * as Canvas from './Curator.utils';
 
 export default function Curator({ onClose, visible }: CuratorProps) {
   const [menuContext] = useContext(MenuContext);

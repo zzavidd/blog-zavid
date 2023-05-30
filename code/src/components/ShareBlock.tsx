@@ -13,7 +13,7 @@ import {
   WhatsappShareButton,
 } from 'react-share';
 
-import Settings from 'constants/settings';
+import Settings from 'utils/settings';
 
 export default function ShareBlock({ headline, message }: ShareBlockProps) {
   const router = useRouter();

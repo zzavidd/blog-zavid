@@ -4,7 +4,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 
-import Settings from 'constants/settings';
+import Settings from 'utils/settings';
 
 import { EmailStyle, EmailTheme } from '../constants';
 

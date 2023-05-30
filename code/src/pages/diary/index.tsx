@@ -12,11 +12,11 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { DiaryStatus } from '@prisma/client';
 import type { GetServerSideProps } from 'next';
 
-import Settings from 'constants/settings';
 import DiaryEachItem, {
   DiaryEachSkeleton,
 } from 'fragments/Diary/DiaryEachItem';
 import Layout from 'fragments/Layout';
+import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 

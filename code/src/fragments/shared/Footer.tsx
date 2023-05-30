@@ -17,7 +17,7 @@ import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 
 import { Link, LinkIconButton } from 'components/Link';
-import Settings from 'constants/settings';
+import Settings from 'utils/settings';
 import { trpc } from 'utils/trpc';
 
 const FOOTER_LINKS = [

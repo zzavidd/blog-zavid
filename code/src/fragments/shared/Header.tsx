@@ -26,9 +26,9 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { useContext, useRef, useState } from 'react';
 
-import { AppActions, useAppDispatch, useAppSelector } from 'constants/reducers';
 import { NavigationContext } from 'utils/contexts';
 import { useIsAdmin } from 'utils/hooks';
+import { AppActions, useAppDispatch, useAppSelector } from 'utils/reducers';
 
 export default function Header() {
   const [isNavOpen, setNavOpen] = useContext(NavigationContext);

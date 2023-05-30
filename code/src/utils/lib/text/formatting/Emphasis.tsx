@@ -1,12 +1,12 @@
 import { Typography } from '@mui/material';
 
 import { Link } from 'components/Link';
-import Logger from 'constants/logger';
 import {
   Emphasis,
   emphasisRegexMapping,
   getCombinedEmphasisRegex,
-} from 'lib/text/regex';
+} from 'utils/lib/text/regex';
+import Logger from 'utils/logger';
 
 export function applyEmphasisFormatting(paragraph: string) {
   if (!paragraph) return '';

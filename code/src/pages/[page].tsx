@@ -3,10 +3,10 @@ import type { GetServerSideProps } from 'next';
 import invariant from 'tiny-invariant';
 
 import Paragraph from 'components/Typography/Paragraph';
-import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
-import ZDate from 'lib/date';
-import * as ZText from 'lib/text';
+import ZDate from 'utils/lib/date';
+import * as ZText from 'utils/lib/text';
+import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 

@@ -1,19 +1,19 @@
-import type { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
-
 import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
 import Checkbox from 'components/Checkbox';
 import { Modal } from 'components/Modal';
-import Logger from 'constants/logger';
-import Settings from 'constants/settings';
-import Utils from 'constants/utils';
-import Layout from 'fragments/Layout';
+import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import SSR from 'private/ssr';
+import React, { useContext, useState } from 'react';
 import ModalStyle from 'styles/Components/Modal.styles';
 import { SubscribePrefStyle as SPS } from 'styles/Pages/Subscribe.styles';
 import { ButtonVariant } from 'styles/Variables.styles';
+import Logger from 'utils/logger';
+import Utils from 'utils/utils';
+
+import Layout from 'fragments/Layout';
 import Contexts from 'utils/contexts';
+import Settings from 'utils/settings';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({

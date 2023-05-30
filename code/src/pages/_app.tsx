@@ -17,11 +17,11 @@ import React, { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { persistor, store, useAppSelector } from 'constants/reducers';
 import AdminGateway from 'fragments/AdminGateway';
 import MatomoScript from 'fragments/MatomoScript';
 import PageMetadata from 'fragments/PageMetadata';
 import CookiePrompt from 'fragments/Shared/CookiePrompt';
+import { persistor, store, useAppSelector } from 'utils/reducers';
 
 // eslint-disable-next-line import/order
 import 'react-datepicker/dist/react-datepicker.css';

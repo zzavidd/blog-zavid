@@ -13,8 +13,8 @@ import NextImage from 'next/image';
 import { useContext } from 'react';
 
 import { Link } from 'components/Link';
-import Settings from 'constants/settings';
 import { NavigationContext } from 'utils/contexts';
+import Settings from 'utils/settings';
 
 const paths: PathDefinition[] = [
   { title: 'Diary', url: '/diary', icon: <BookRounded /> },

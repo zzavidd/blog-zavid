@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, Typography } from '@mui/material';
 
 import { Link } from 'components/Link';
-import { AppActions, useAppDispatch, useAppSelector } from 'constants/reducers';
+import { AppActions, useAppDispatch, useAppSelector } from 'utils/reducers';
 
 export default function CookiePrompt() {
   const { cookiePolicyAccepted } = useAppSelector((state) => state.local);

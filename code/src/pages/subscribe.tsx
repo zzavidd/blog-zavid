@@ -1,18 +1,18 @@
+import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
+import Input from 'components/Input';
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
-
-import { SubscriberBuilder } from 'classes/subscribers/SubscriberBuilder';
-import Input from 'components/Input';
-import { UIError } from 'constants/errors';
-import HandlerFactory from 'constants/handlers';
-import Settings from 'constants/settings';
-import Utils from 'constants/utils';
-import Validate from 'constants/validations';
-import Layout from 'fragments/Layout';
 import FORM from 'styles/Components/Form.styles';
 import SS from 'styles/Pages/Subscribe.styles';
+import { UIError } from 'utils/errors';
+import HandlerFactory from 'utils/handlers';
+import Utils from 'utils/utils';
+import Validate from 'utils/validations';
+
+import Layout from 'fragments/Layout';
 import Contexts from 'utils/contexts';
+import Settings from 'utils/settings';
 
 // eslint-disable-next-line react/function-component-definition
 const SubscribePage: NextPageWithLayout<AppPageProps> = () => {

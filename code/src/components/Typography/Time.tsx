@@ -1,7 +1,7 @@
 import type { TypographyProps } from '@mui/material';
 import { Typography } from '@mui/material';
 
-import ZDate from 'lib/date';
+import ZDate from 'utils/lib/date';
 
 export default function Time({ date, ...props }: TimeProps) {
   if (!date) return null;

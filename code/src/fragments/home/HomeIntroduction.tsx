@@ -2,8 +2,8 @@ import { Box, Skeleton, Stack, Typography } from '@mui/material';
 
 import { Signature } from 'components/Image';
 import Paragraph from 'components/Typography/Paragraph';
-import Settings from 'constants/settings';
-import ZDate from 'lib/date';
+import ZDate from 'utils/lib/date';
+import Settings from 'utils/settings';
 import { trpc } from 'utils/trpc';
 
 export default function HomeIntroduction() {

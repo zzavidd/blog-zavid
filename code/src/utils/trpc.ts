@@ -2,7 +2,7 @@ import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 import SuperJSON from 'superjson';
 
-import Settings from 'constants/settings';
+import Settings from 'utils/settings';
 
 import type { AppRouter } from '../server/routers/_app';
 

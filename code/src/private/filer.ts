@@ -1,8 +1,8 @@
 import Cloudinary from 'cloudinary';
 
 import { PostStatic } from 'classes/posts/PostStatic';
-import Logger from 'constants/logger';
-import ZString from 'lib/string';
+import ZString from 'utils/lib/string';
+import Logger from 'utils/logger';
 
 import PostAPI from './api/posts';
 

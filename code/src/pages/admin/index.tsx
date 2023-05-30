@@ -2,9 +2,9 @@ import { Container, Stack } from '@mui/material';
 import type { GetStaticProps } from 'next';
 
 import { LinkButton } from 'components/Link';
-import Settings from 'constants/settings';
 import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
+import Settings from 'utils/settings';
 
 const NAV_BUTTONS = [{ title: 'Diary', href: '/admin/diary' }];
 

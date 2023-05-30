@@ -14,8 +14,11 @@ import React, { useContext, useState } from 'react';
 
 import { MenuContext } from 'utils/contexts';
 
-import Curator from './Curator';
-import { CuratorContext, InitialCuratorContextState } from './Curator.context';
+import Curator from './Curator/Curator';
+import {
+  CuratorContext,
+  InitialCuratorContextState,
+} from './Curator/Curator.context';
 
 export default function ContextMenu() {
   const [state, setState] = useState({ curatorVisible: false });
