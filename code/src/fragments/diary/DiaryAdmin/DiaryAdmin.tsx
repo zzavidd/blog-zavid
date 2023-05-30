@@ -26,6 +26,7 @@ import {
 } from '@mui/material';
 import type { Diary } from '@prisma/client';
 import { Prisma } from '@prisma/client';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useState } from 'react';
 
@@ -88,7 +89,6 @@ export default function DiaryAdmin() {
           </TableContainer>
         </Stack>
       </Container>
-
       <DeleteModal />
       <DiaryEachMenu />
     </React.Fragment>
@@ -156,45 +156,44 @@ function DiaryTableContent() {
 /**
  * Memoised component for each diary entry table row.
  */
-const DiaryEachRow = React.memo<DiaryEachRowProps>(
-  function DiaryEachRow({ entry }) {
-    const [state, setState] = useState({ isHovered: false });
-    const [, setContext] = useContext(DiaryAdminContext);
-    const diaryTableFields = useDiaryTableFields(state.isHovered);
+const DiaryEachRow = React.memo<DiaryEachRowProps>(function DiaryEachRow({
+  entry,
+}) {
+  const [state, setState] = useState({ isHovered: false });
+  const [, setContext] = useContext(DiaryAdminContext);
+  const diaryTableFields = useDiaryTableFields(state.isHovered);
 
-    function setHoverState(isHovered: boolean) {
-      setState((s) => ({ ...s, isHovered }));
-    }
+  function setHoverState(isHovered: boolean) {
+    setState((s) => ({ ...s, isHovered }));
+  }
 
-    function onMoreClick(e: React.MouseEvent) {
-      setContext((c) => ({
-        ...c,
-        isMenuVisible: true,
-        menuAnchor: e.target as HTMLButtonElement,
-        selectedDiaryEntry: entry,
-      }));
-    }
+  function onMoreClick(e: React.MouseEvent) {
+    setContext((c) => ({
+      ...c,
+      isMenuVisible: true,
+      menuAnchor: e.target as HTMLButtonElement,
+      selectedDiaryEntry: entry,
+    }));
+  }
 
-    return (
-      <TableRow
-        hover={true}
-        onMouseEnter={() => setHoverState(true)}
-        onMouseLeave={() => setHoverState(false)}>
-        {diaryTableFields.map(({ align, property, renderValue }) => (
-          <TableCell align={align} key={property}>
-            {renderValue(entry)}
-          </TableCell>
-        ))}
-        <TableCell align={'center'}>
-          <IconButton onClick={onMoreClick}>
-            <MoreVertIcon />
-          </IconButton>
+  return (
+    <TableRow
+      hover={true}
+      onMouseEnter={() => setHoverState(true)}
+      onMouseLeave={() => setHoverState(false)}>
+      {diaryTableFields.map(({ align, property, renderValue }) => (
+        <TableCell align={align} key={property}>
+          {renderValue(entry)}
         </TableCell>
-      </TableRow>
-    );
-  },
-  (a, b) => a.entry.isFavourite === b.entry.isFavourite,
-);
+      ))}
+      <TableCell align={'center'}>
+        <IconButton onClick={onMoreClick}>
+          <MoreVertIcon />
+        </IconButton>
+      </TableCell>
+    </TableRow>
+  );
+});
 
 /**
  * The delete modal for the diary entry.
@@ -206,8 +205,8 @@ function DeleteModal() {
 
   const { mutate: deleteDiaryEntry, isLoading: isDeleteLoading } =
     trpc.diary.delete.useMutation({
-      onSuccess: async () => {
-        await trpcContext.diary.findMany.refetch();
+      onSuccess: () => {
+        void trpcContext.diary.findMany.refetch();
         const { entryNumber } = context.selectedDiaryEntry!;
         const message = `You've deleted diary entry #${entryNumber}.`;
         enqueueSnackbar(message, { variant: 'success' });
@@ -247,6 +246,7 @@ function DeleteModal() {
  */
 function DiaryEachMenu() {
   const [context, setContext] = useContext(DiaryAdminContext);
+  const router = useRouter();
 
   function openDeleteModal() {
     setContext((s) => ({ ...s, isDeleteModalVisible: true }));
@@ -256,8 +256,14 @@ function DiaryEachMenu() {
     setContext((s) => ({ ...s, isMenuVisible: false }));
   }
 
+  function navigateToEdit() {
+    if (context.selectedDiaryEntry) {
+      void router.push(`/admin/diary/edit/${context.selectedDiaryEntry?.id}`);
+    }
+  }
+
   const menuItems = [
-    { label: 'Edit', icon: <Edit />, onClick: () => {}, disabled: true },
+    { label: 'Edit', icon: <Edit />, onClick: navigateToEdit },
     { label: 'Delete', icon: <Delete />, onClick: openDeleteModal },
   ];
 
@@ -269,8 +275,8 @@ function DiaryEachMenu() {
       onClose={closeMenu}
       hideBackdrop={true}>
       <MenuList>
-        {menuItems.map(({ label, icon, onClick, disabled }, key) => (
-          <MenuItem onClick={onClick} disabled={disabled} key={key}>
+        {menuItems.map(({ label, icon, onClick }, key) => (
+          <MenuItem onClick={onClick} key={key}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText>{label}</ListItemText>
             <ListItemIcon />

@@ -52,6 +52,16 @@ const components: Components<Theme> = {
       },
     },
   },
+  MuiOutlinedInput: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        padding: theme.spacing(3),
+      }),
+      input: ({ theme }) => ({
+        padding: theme.spacing(2),
+      }),
+    },
+  },
 };
 
 export default components;

@@ -87,7 +87,7 @@ function DiaryCollection() {
   if (isLoading) {
     return (
       <Grid {...gridProps}>
-        {Array(8)
+        {Array(10)
           .fill(null)
           .map((_, key) => (
             <DiaryEachSkeleton key={key} />

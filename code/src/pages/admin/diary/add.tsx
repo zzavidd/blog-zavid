@@ -20,9 +20,12 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
   const [state, setState] = useState(InitialDiaryFormState);
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const trpcContext = trpc.useContext();
+
   const { mutate: createDiaryEntry, isLoading: isCreateLoading } =
     trpc.diary.create.useMutation({
       onSuccess: (entry) => {
+        void trpcContext.diary.findMany.refetch();
         const verb =
           entry.status === DiaryStatus.PUBLISHED ? 'published' : 'drafted';
         enqueueSnackbar(

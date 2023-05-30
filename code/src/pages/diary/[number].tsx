@@ -104,7 +104,7 @@ export const getServerSideProps: GetServerSideProps<
 > = async (ctx) => {
   try {
     const { query, req, res } = ctx;
-    const entryNumber = parseInt(query.number as string);
+    const entryNumber = Number(query.number);
 
     const helpers = getServerSideHelpers(ctx);
     const [, entry] = await helpers.diary.custom.triple.fetch(entryNumber);
