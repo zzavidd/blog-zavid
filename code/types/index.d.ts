@@ -17,13 +17,5 @@ declare global {
     };
   }
 
-  interface Substitutions {
-    [key: string]: string | number;
-  }
-
-  interface EditButtonProps {
-    id: number;
-  }
-
   type ReactUseState<T> = [T, Dispatch<SetStateAction<T>>];
 }
