@@ -1,14 +1,14 @@
 namespace Logger {
-  export function info(message: any) {
+  export function info(message: any): void {
     console.info(`${format(message)} [INFO]`);
   }
 
-  export function error(message: any) {
+  export function error(message: any): void {
     console.error(`${format(message)} [ERROR]`);
   }
 }
 
-function format(message: any) {
+function format(message: any): string {
   const timestamp = new Intl.DateTimeFormat('en-CA', {
     hour: 'numeric',
     minute: 'numeric',
