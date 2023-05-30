@@ -13,7 +13,6 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "sourceMap": true,
     "strict": true,
     "target": "es6",
     "tsBuildInfoFile": ".tsbuildinfo"
@@ -23,8 +22,7 @@
     "src/ops/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "types/**/*.d.ts",
-    ".next/types/**/*.ts"
+    "types/**/*.d.ts"
   ],
   "exclude": ["node_modules"],
   "ts-node": {
