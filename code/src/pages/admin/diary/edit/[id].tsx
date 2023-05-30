@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 
-import { ActionDialog } from 'componentsv2/Dialog';
+import { ActionDialog } from 'components/Dialog';
 import AdminGateway from 'fragments/AdminGateway';
 import DiaryForm from 'fragments/Diary/DiaryForm/DiaryForm';
 import {

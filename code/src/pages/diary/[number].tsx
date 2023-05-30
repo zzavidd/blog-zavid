@@ -14,11 +14,11 @@ import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import invariant from 'tiny-invariant';
 
-import Breadcrumbs from 'componentsv2/Breadcrumbs';
-import { Signature } from 'componentsv2/Image';
-import ShareBlock from 'componentsv2/ShareBlock';
-import Paragraph from 'componentsv2/Typography/Paragraph';
-import Time from 'componentsv2/Typography/Time';
+import Breadcrumbs from 'components/Breadcrumbs';
+import { Signature } from 'components/Image';
+import ShareBlock from 'components/ShareBlock';
+import Paragraph from 'components/Typography/Paragraph';
+import Time from 'components/Typography/Time';
 import Logger from 'constants/logger';
 import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';

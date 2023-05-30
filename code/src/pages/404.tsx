@@ -1,6 +1,6 @@
 import { Container, Stack, Typography } from '@mui/material';
 
-import { LinkButton } from 'componentsv2/Link';
+import { LinkButton } from 'components/Link';
 import Layout from 'fragments/Layout';
 
 const Custom404Page: NextPageWithLayout = () => {

@@ -13,8 +13,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import type { Diary } from '@prisma/client';
 import React from 'react';
 
-import Paragraph from 'componentsv2/Typography/Paragraph';
-import Time from 'componentsv2/Typography/Time';
+import Paragraph from 'components/Typography/Paragraph';
+import Time from 'components/Typography/Time';
 
 const cardProps: SxProps<Theme> = {
   'height': '100%',

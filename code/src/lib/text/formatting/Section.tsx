@@ -10,7 +10,7 @@ import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 
-import { NextImage } from 'componentsv2/Image';
+import { NextImage } from 'components/Image';
 import type { FormatTextOptions } from 'lib/text';
 import {
   applyEmphasisFormatting,

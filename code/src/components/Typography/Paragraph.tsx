@@ -3,7 +3,7 @@ import type { TypographyProps } from '@mui/material';
 import { Typography } from '@mui/material';
 import React, { useMemo } from 'react';
 
-import { LinkButton } from 'componentsv2/Link';
+import { LinkButton } from 'components/Link';
 import * as zText from 'lib/text';
 
 const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(

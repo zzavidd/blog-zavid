@@ -29,7 +29,7 @@ import dayjs from 'dayjs';
 import immutate from 'immutability-helper';
 import React, { useContext, useRef } from 'react';
 
-import { LinkButton } from 'componentsv2/Link';
+import { LinkButton } from 'components/Link';
 
 import { DiaryFormContext } from './DiaryForm.context';
 

@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 
-import { Link } from 'componentsv2/Link';
+import { Link } from 'components/Link';
 import Logger from 'constants/logger';
 import {
   Emphasis,

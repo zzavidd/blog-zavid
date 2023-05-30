@@ -1,7 +1,7 @@
 import type { PaletteMode } from '@mui/material';
 import React from 'react';
 
-import { AppTheme, FilterShapeOption, FilterThemeOption } from 'classes/theme';
+import { AppTheme, FilterShapeOption, FilterThemeOption } from 'utils/theme';
 
 export const InitialCuratorContextState: CuratorContextState = {
   contentTheme: AppTheme.DARK,

@@ -17,13 +17,13 @@ import {
 } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
 
-import type { FilterShapeOption, FilterThemeOption } from 'classes/theme';
-import { AppTheme, FilterShape, FilterTheme } from 'classes/theme';
-import { NextImage } from 'componentsv2/Image';
-import Paragraph from 'componentsv2/Typography/Paragraph';
+import { NextImage } from 'components/Image';
+import Paragraph from 'components/Typography/Paragraph';
 import Canvas from 'constants/canvas';
 import ZString from 'lib/string';
 import { MenuContext } from 'utils/contexts';
+import type { FilterShapeOption, FilterThemeOption } from 'utils/theme';
+import { AppTheme, FilterShape, FilterTheme } from 'utils/theme';
 
 import { CuratorContext } from './Curator.context';
 

@@ -30,8 +30,8 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useState } from 'react';
 
-import { ActionDialog } from 'componentsv2/Dialog';
-import { LinkButton } from 'componentsv2/Link';
+import { ActionDialog } from 'components/Dialog';
+import { LinkButton } from 'components/Link';
 import { trpc } from 'utils/trpc';
 
 import { DiaryAdminContext } from './DiaryAdmin.context';

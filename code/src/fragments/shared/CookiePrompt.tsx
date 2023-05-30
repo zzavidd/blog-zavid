@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, Typography } from '@mui/material';
 
-import { Link } from 'componentsv2/Link';
+import { Link } from 'components/Link';
 import { AppActions, useAppDispatch, useAppSelector } from 'constants/reducers';
 
 export default function CookiePrompt() {

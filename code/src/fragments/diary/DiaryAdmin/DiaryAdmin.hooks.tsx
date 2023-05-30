@@ -13,7 +13,7 @@ import { DiaryStatus } from '@prisma/client';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 
-import { Link } from 'componentsv2/Link';
+import { Link } from 'components/Link';
 import ZDate from 'lib/date';
 import { trpc } from 'utils/trpc';
 

@@ -1,7 +1,7 @@
 import { Container, Stack } from '@mui/material';
 import type { GetStaticProps } from 'next';
 
-import { LinkButton } from 'componentsv2/Link';
+import { LinkButton } from 'components/Link';
 import Settings from 'constants/settings';
 import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';

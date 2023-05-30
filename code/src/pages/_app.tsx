@@ -25,8 +25,8 @@ import CookiePrompt from 'fragments/Shared/CookiePrompt';
 
 // eslint-disable-next-line import/order
 import 'react-datepicker/dist/react-datepicker.css';
-import { darkPalette, lightPalette } from 'stylesv2/Palette.styles';
-import { themeOptions } from 'stylesv2/Theme.styles';
+import { darkPalette, lightPalette } from 'styles/Palette.styles';
+import { themeOptions } from 'styles/Theme.styles';
 import { NavigationContext } from 'utils/contexts';
 import { trpc } from 'utils/trpc';
 

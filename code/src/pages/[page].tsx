@@ -2,7 +2,7 @@ import { Container, Stack, Typography } from '@mui/material';
 import type { GetServerSideProps } from 'next';
 import invariant from 'tiny-invariant';
 
-import Paragraph from 'componentsv2/Typography/Paragraph';
+import Paragraph from 'components/Typography/Paragraph';
 import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
 import ZDate from 'lib/date';
