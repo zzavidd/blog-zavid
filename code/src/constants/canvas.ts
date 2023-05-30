@@ -2,7 +2,7 @@ import { useCallback, useContext, useRef } from 'react';
 import invariant from 'tiny-invariant';
 
 import { AppTheme, FilterShape, FilterShapeOption } from 'classes/theme';
-import { CuratorContext } from 'fragments/shared/Curator.context';
+import { CuratorContext } from 'fragments/Shared/Curator.context';
 import { MenuContext } from 'utils/contexts';
 
 import Logger from './logger';

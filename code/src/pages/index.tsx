@@ -2,8 +2,8 @@ import { Container, Divider, Stack } from '@mui/material';
 import type { GetServerSideProps } from 'next';
 
 import Settings from 'constants/settings';
-import Introduction from 'fragments/home/HomeIntroduction';
-import HomeLatest from 'fragments/home/HomeLatest';
+import Introduction from 'fragments/Home/HomeIntroduction';
+import HomeLatest from 'fragments/Home/HomeLatest';
 import Layout from 'fragments/Layout';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';

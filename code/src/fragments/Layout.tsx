@@ -1,9 +1,9 @@
 import { Stack } from '@mui/material';
 import React from 'react';
 
-import Footer from './shared/Footer';
-import Header from './shared/Header';
-import { NavigationDrawer } from './shared/NavigationDrawer';
+import Footer from './Shared/Footer';
+import Header from './Shared/Header';
+import { NavigationDrawer } from './Shared/NavigationDrawer';
 
 namespace Layout {
   export function addPartials(page: React.ReactElement) {

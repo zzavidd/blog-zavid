@@ -15,7 +15,7 @@ import type { GetServerSideProps } from 'next';
 import Settings from 'constants/settings';
 import DiaryEachItem, {
   DiaryEachSkeleton,
-} from 'fragments/diary/DiaryEachItem';
+} from 'fragments/Diary/DiaryEachItem';
 import Layout from 'fragments/Layout';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';

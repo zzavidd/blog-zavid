@@ -14,16 +14,15 @@ import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import invariant from 'tiny-invariant';
 
-import { DiaryStatic } from 'classes/diary/DiaryStatic';
-import ShareBlock from 'components/ShareBlock';
 import Breadcrumbs from 'componentsv2/Breadcrumbs';
 import { Signature } from 'componentsv2/Image';
+import ShareBlock from 'componentsv2/ShareBlock';
 import Paragraph from 'componentsv2/Typography/Paragraph';
 import Time from 'componentsv2/Typography/Time';
 import Logger from 'constants/logger';
 import Settings from 'constants/settings';
 import Layout from 'fragments/Layout';
-import MenuProvider from 'fragments/shared/MenuProvider';
+import MenuProvider from 'fragments/Shared/MenuProvider';
 import ZString from 'lib/string';
 import * as ZText from 'lib/text';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
@@ -50,15 +49,15 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   if (!diaryTriplet) return null;
   const [, diaryEntry] = diaryTriplet;
 
-  const title = DiaryStatic.getTitle(diaryEntry);
+  const title = `#${diaryEntry.entryNumber}: ${diaryEntry.title}`;
 
   const links = [
     { label: 'Home', href: '/' },
     { label: 'Diary', href: '/diary' },
-    { label: `#${diaryEntry.entryNumber}: ${diaryEntry.title}` },
+    { label: title },
   ];
   return (
-    <MenuProvider title={DiaryStatic.getTitle(diaryEntry)}>
+    <MenuProvider title={title}>
       <Container maxWidth={'sm'} sx={{ padding: (t) => t.spacing(4) }}>
         <Stack spacing={4} divider={<Divider />}>
           <Breadcrumbs links={links} />
@@ -91,7 +90,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
           </Stack>
           <ShareBlock
             headline={'Share This Diary Entry'}
-            message={`Read "${DiaryStatic.getTitle(diaryEntry)}" on ZAVID`}
+            message={`Read "${title}" on ZAVID`}
           />
         </Stack>
       </Container>

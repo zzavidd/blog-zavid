@@ -1,5 +1,11 @@
-/* eslint-disable @next/next/no-img-element */
-import { Box, Divider, Typography } from '@mui/material';
+import {
+  Box,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
@@ -11,7 +17,6 @@ import {
   removeEmphasisFormatting,
 } from 'lib/text/formatting/Emphasis';
 import { Section, sectionRegexMapping, strayRegexToOmit } from 'lib/text/regex';
-import TS from 'styles/Components/Text.styles';
 
 /**
  * Formats a paragraph of text.
@@ -102,16 +107,17 @@ export function formatParagraph(
           .filter((e) => e)
           .map((item, key) => {
             const [, value] = item.match(/^\+\s*(.*)$/)!;
-            return <li key={key}>{emphasise(value)}</li>;
+            return (
+              <ListItem key={key}>
+                <ListItemText>{emphasise(value)}</ListItemText>
+              </ListItem>
+            );
           });
 
         return (
-          <TS.Section.UnorderedList
-            spaced={!!isSpacedBulletBlock}
-            style={{ paddingInlineStart: '1em' }}
-            key={key}>
+          <List disablePadding={!isSpacedBulletBlock} key={key}>
             {bulletListItems}
-          </TS.Section.UnorderedList>
+          </List>
         );
       case Section.HYPHEN_LIST_ITEM:
         return (
@@ -127,19 +133,23 @@ export function formatParagraph(
           .filter((e) => e)
           .map((item, key) => {
             const [, value] = item.match(/^(?:[0-9]+[\.\)]|\+)\s*(.*)$/)!;
-            return <li key={key}>{emphasise(value)}</li>;
+            return (
+              <ListItem key={key}>
+                <ListItemText>{emphasise(value)}</ListItemText>
+              </ListItem>
+            );
           });
 
         return (
-          <TS.Section.OrderedList spaced={!!isSpacedNumberedBlock} key={key}>
+          <List disablePadding={!isSpacedNumberedBlock} key={key}>
             {numberedListItems}
-          </TS.Section.OrderedList>
+          </List>
         );
       case Section.BLOCKQUOTE:
         return (
-          <TS.Section.Blockquote key={key}>
+          <Typography component={'blockquote'} key={key}>
             {emphasise(text)}
-          </TS.Section.Blockquote>
+          </Typography>
         );
       case Section.TWEET: {
         const tweetId = paragraph.match(regex)![1];

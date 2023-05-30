@@ -21,7 +21,7 @@ import { persistor, store, useAppSelector } from 'constants/reducers';
 import AdminGateway from 'fragments/AdminGateway';
 import MatomoScript from 'fragments/MatomoScript';
 import PageMetadata from 'fragments/PageMetadata';
-import CookiePrompt from 'fragments/shared/CookiePrompt';
+import CookiePrompt from 'fragments/Shared/CookiePrompt';
 
 // eslint-disable-next-line import/order
 import 'react-datepicker/dist/react-datepicker.css';
