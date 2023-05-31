@@ -17,5 +17,12 @@ declare global {
     };
   }
 
+  interface TableField<T> {
+    title: React.ReactNode;
+    property: keyof T;
+    align?: TableCellProps['align'];
+    renderValue: (entry: T) => React.ReactNode;
+  }
+
   type ReactUseState<T> = [T, Dispatch<SetStateAction<T>>];
 }

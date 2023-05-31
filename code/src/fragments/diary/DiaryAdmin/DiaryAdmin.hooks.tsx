@@ -6,12 +6,10 @@ import {
   Lock,
   VisibilityOff,
 } from '@mui/icons-material';
-import type { TableCellProps } from '@mui/material';
 import { IconButton, Stack, Typography } from '@mui/material';
 import type { Diary } from '@prisma/client';
 import { DiaryStatus } from '@prisma/client';
 import { useSnackbar } from 'notistack';
-import React from 'react';
 
 import { Link } from 'components/Link';
 import ZDate from 'utils/lib/date';
@@ -24,7 +22,7 @@ const STATUS_ICONS = {
   [DiaryStatus.PUBLISHED]: <Article />,
 };
 
-export function useDiaryTableFields(isHovered?: boolean): DiaryTableField[] {
+export function useDiaryTableFields(isHovered?: boolean): TableField<Diary>[] {
   const { enqueueSnackbar } = useSnackbar();
   const trpcContext = trpc.useContext();
   const { mutate: updateDiaryEntry } = trpc.diary.update.useMutation({
@@ -111,11 +109,4 @@ export function useDiaryTableFields(isHovered?: boolean): DiaryTableField[] {
       },
     },
   ];
-}
-
-interface DiaryTableField {
-  title: React.ReactNode;
-  property: keyof Diary;
-  align?: TableCellProps['align'];
-  renderValue: (entry: Diary) => React.ReactNode;
 }

@@ -2,11 +2,11 @@ import type { GetStaticProps } from 'next';
 import { useState } from 'react';
 
 import Layout from 'fragments/Layout';
-import SubscribeForm from 'fragments/Subscribe/SubscribeForm';
+import SubscribeForm from 'fragments/Subscribe/SubscribeForm/SubscribeForm';
 import {
   InitialSubscribeFormState,
   SubscribeFormContext,
-} from 'fragments/Subscribe/SubscribeForm.context';
+} from 'fragments/Subscribe/SubscribeForm/SubscribeForm.context';
 import Settings from 'utils/settings';
 
 const SubscribePage: NextPageWithLayout<AppPageProps> = () => {

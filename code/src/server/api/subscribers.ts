@@ -24,4 +24,8 @@ export default class SubscriberAPI {
       }),
     );
   }
+
+  public static async delete(args: Prisma.SubscriberDeleteArgs): Promise<void> {
+    await prisma.subscriber.delete(args);
+  }
 }

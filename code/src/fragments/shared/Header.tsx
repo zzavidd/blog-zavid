@@ -26,6 +26,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { useContext, useRef, useState } from 'react';
 
+import { Link } from 'components/Link';
 import { NavigationContext } from 'utils/contexts';
 import { useIsAdmin } from 'utils/hooks';
 import { AppActions, useAppDispatch, useAppSelector } from 'utils/reducers';
@@ -125,13 +126,21 @@ function AuthButton() {
     : '';
 
   const menuItemSxProps: SxProps<Theme> = { padding: (t) => t.spacing(4, 5) };
+  const adminOnlyMenuItems = isAdmin
+    ? [
+        {
+          label: 'Diary',
+          icon: <LockIcon />,
+          href: '/admin/diary',
+        },
+        {
+          label: 'Subscribers',
+          icon: <LockIcon />,
+          href: '/admin/subscribers',
+        },
+      ]
+    : [];
   const menuItems = [
-    {
-      label: 'Admin Console',
-      icon: <LockIcon />,
-      onClick: navigateToAdminConsole,
-      adminOnly: true,
-    },
     { label: 'Sign Out', icon: <LogoutIcon />, onClick: () => signOut() },
   ];
   return (
@@ -169,10 +178,9 @@ function AuthButton() {
             <Typography variant={'body2'}>{user.email}</Typography>
           </Stack>
         </MenuItem>
-        {menuItems.map(({ label, icon, onClick, adminOnly }, key) => {
-          if (adminOnly && !isAdmin) return null;
-          return (
-            <MenuItem onClick={onClick} sx={menuItemSxProps} key={key}>
+        {adminOnlyMenuItems.map(({ label, icon, href }) => (
+          <Link color={'inherit'} underline={'none'} href={href} key={href}>
+            <MenuItem sx={menuItemSxProps}>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{
@@ -184,8 +192,22 @@ function AuthButton() {
               </ListItemText>
               <ListItemIcon />
             </MenuItem>
-          );
-        })}
+          </Link>
+        ))}
+        {menuItems.map(({ label, icon, onClick }, key) => (
+          <MenuItem onClick={onClick} sx={menuItemSxProps} key={key}>
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText
+              primaryTypographyProps={{
+                fontSize: 18,
+                variant: 'h4',
+                m: 0,
+              }}>
+              {label}
+            </ListItemText>
+            <ListItemIcon />
+          </MenuItem>
+        ))}
       </Menu>
     </React.Fragment>
   );
