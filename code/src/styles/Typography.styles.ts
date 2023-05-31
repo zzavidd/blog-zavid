@@ -41,6 +41,13 @@ const typography: TypographyOptions = {
     marginBottom: 10,
     textTransform: 'uppercase',
   },
+  h5: {
+    fontFamily: mulish.style.fontFamily,
+    fontSize: 16,
+    fontWeight: 700,
+    marginBottom: 10,
+    textTransform: 'uppercase',
+  },
   h6: {
     fontFamily: calistoga.style.fontFamily,
     fontSize: 18,

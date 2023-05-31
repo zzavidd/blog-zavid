@@ -1,7 +1,9 @@
 import { Container, Stack, Typography } from '@mui/material';
+import type { GetStaticProps } from 'next';
 
-import { LinkButton } from 'components/Link';
 import Layout from 'fragments/Layout';
+import SuggestiveLinks from 'fragments/Shared/SuggestiveLinks';
+import Settings from 'utils/settings';
 
 const Custom404Page: NextPageWithLayout = () => {
   return (
@@ -11,7 +13,7 @@ const Custom404Page: NextPageWithLayout = () => {
           Not gonna lie, I don&#39;t know who sent you here but the page
           you&#39;re looking for doesn&#39;t exist.
         </Typography>
-        <LinkButton href={'/'}>Go home</LinkButton>
+        <SuggestiveLinks />
       </Stack>
     </Container>
   );
@@ -19,3 +21,13 @@ const Custom404Page: NextPageWithLayout = () => {
 
 Custom404Page.getLayout = Layout.addPartials;
 export default Custom404Page;
+
+export const getStaticProps: GetStaticProps<AppPageProps> = () => {
+  return {
+    props: {
+      pathDefinition: {
+        title: `404: Not Found | ${Settings.SITE_TITLE}`,
+      },
+    },
+  };
+};

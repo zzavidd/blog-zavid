@@ -1,5 +1,10 @@
-import { AccountCircleRounded, BookRounded } from '@mui/icons-material';
 import {
+  AccountCircleRounded,
+  BookRounded,
+  Email as EmailIcon,
+} from '@mui/icons-material';
+import {
+  Divider,
   Drawer,
   ListItemIcon,
   ListItemText,
@@ -16,14 +21,19 @@ import { Link } from 'components/Link';
 import { NavigationContext } from 'utils/contexts';
 import Settings from 'utils/settings';
 
-const paths: PathDefinition[] = [
-  { title: 'Diary', url: '/diary', icon: <BookRounded /> },
-  // { title: 'Reveries', url: '/reveries', icon: <CloudRounded /> },
-  // { title: 'Epistles', url: '/epistles', icon: <HistoryEduRounded /> },
-  // { title: 'Poetry', url: '/poetry' },
-  // { title: 'Musings', url: '/musings' },
-  { title: 'About', url: '/about', icon: <AccountCircleRounded /> },
-  // { title: 'Wishlist', url: '/wishlist', icon: <RedeemRounded /> },
+const pathDefinitions: PathDefinition[][] = [
+  [
+    { title: 'Diary', url: '/diary', icon: <BookRounded /> },
+    // { title: 'Reveries', url: '/reveries', icon: <CloudRounded /> },
+    // { title: 'Epistles', url: '/epistles', icon: <HistoryEduRounded /> },
+    // { title: 'Poetry', url: '/poetry' },
+    // { title: 'Musings', url: '/musings' },
+  ],
+  [
+    { title: 'About', url: '/about', icon: <AccountCircleRounded /> },
+    { title: 'Subscribe', url: '/subscribe', icon: <EmailIcon /> },
+    // { title: 'Wishlist', url: '/wishlist', icon: <RedeemRounded /> },
+  ],
 ];
 
 export function NavigationDrawer() {
@@ -59,26 +69,28 @@ export function NavigationDrawer() {
           </Typography>
         </Stack>
       </Link>
-      <MenuList>
-        {paths.map(({ title, url, icon }) => {
-          return (
-            <Link href={url} color={'text.primary'} key={title}>
-              <MenuItem onClick={closeNav}>
-                <ListItemIcon>{icon}</ListItemIcon>
-                <ListItemText
-                  primaryTypographyProps={{
-                    fontFamily: (t) => t.typography.h4.fontFamily,
-                    marginBottom: 0,
-                    sx: { marginBlock: (t) => t.spacing(1) },
-                    variant: 'h4',
-                  }}>
-                  {title}
-                </ListItemText>
-              </MenuItem>
-            </Link>
-          );
-        })}
-      </MenuList>
+      <Stack divider={<Divider />}>
+        {pathDefinitions.map((paths, key) => (
+          <MenuList key={key}>
+            {paths.map(({ title, url, icon }) => (
+              <Link href={url} color={'text.primary'} key={title}>
+                <MenuItem onClick={closeNav}>
+                  <ListItemIcon>{icon}</ListItemIcon>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      fontFamily: (t) => t.typography.h4.fontFamily,
+                      marginBottom: 0,
+                      sx: { marginBlock: (t) => t.spacing(1) },
+                      variant: 'h4',
+                    }}>
+                    {title}
+                  </ListItemText>
+                </MenuItem>
+              </Link>
+            ))}
+          </MenuList>
+        ))}
+      </Stack>
     </Drawer>
   );
 }

@@ -28,9 +28,9 @@ export function LinkButton({
 }: ButtonProps & ZavidLinkProps) {
   return (
     <Button
+      variant={'outlined'}
       {...props}
       LinkComponent={Link}
-      variant={'outlined'}
       sx={{
         padding: (t) => t.spacing(3, 5),
         width: props.fullWidth ? undefined : 'fit-content',

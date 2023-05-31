@@ -39,6 +39,9 @@ const components: Components<Theme> = {
   },
   MuiFormControlLabel: {
     styleOverrides: {
+      root: {
+        width: 'fit-content',
+      },
       label: () => css`
         user-select: none;
         width: fit-content;
@@ -52,14 +55,14 @@ const components: Components<Theme> = {
       },
     },
   },
-  MuiOutlinedInput: {
-    styleOverrides: {
-      root: ({ theme }) => ({
-        padding: theme.spacing(3),
-      }),
-      input: ({ theme }) => ({
-        padding: theme.spacing(2),
-      }),
+  MuiTypography: {
+    defaultProps: {
+      variantMapping: {
+        h1: 'h1',
+        h2: 'h1',
+        h3: 'h2',
+        h4: 'h3',
+      },
     },
   },
 };

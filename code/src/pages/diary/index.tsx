@@ -51,7 +51,7 @@ function DiaryPagePreamble() {
 
   if (isLoading) {
     return (
-      <Stack>
+      <Stack alignItems={'center'} width={'100%'}>
         <Skeleton variant={'text'} width={'100%'} />
         <Skeleton variant={'text'} width={'100%'} />
         <Skeleton variant={'text'} width={'100%'} />
