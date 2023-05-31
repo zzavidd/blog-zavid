@@ -46,7 +46,8 @@ function Completion() {
 function Form() {
   const [context, setContext] = useContext(SubscribeFormContext);
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate: addSubscriber } = trpc.subscriber.create.useMutation();
+  const { mutate: addSubscriber, isLoading: isCreateLoading } =
+    trpc.subscriber.create.useMutation();
 
   function onTextChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -136,11 +137,11 @@ function Form() {
           )}
         </FormGroup>
       </Stack>
-
       <Stack direction={'row'} spacing={4}>
         <LoadingButton
           variant={'contained'}
           onClick={submitSubscriber}
+          loading={isCreateLoading}
           sx={{ px: 7 }}>
           Submit
         </LoadingButton>

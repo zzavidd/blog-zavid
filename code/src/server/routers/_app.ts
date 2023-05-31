@@ -9,7 +9,9 @@ import {
   PageFindFirstSchema,
   SubscriberCreateOneSchema,
   SubscriberDeleteOneSchema,
+  SubscriberFindFirstSchema,
   SubscriberFindManySchema,
+  SubscriberUpdateOneSchema,
 } from 'schemas/schemas';
 import DiaryAPI from 'server/api/diary';
 import PageAPI from 'server/api/pages';
@@ -56,12 +58,18 @@ export const appRouter = router({
       .query(({ input }) => PageAPI.find(input)),
   }),
   subscriber: router({
+    find: procedure
+      .input(SubscriberFindFirstSchema)
+      .query(({ input }) => SubscriberAPI.find(input)),
     findMany: procedure
       .input(SubscriberFindManySchema)
       .query(({ input }) => SubscriberAPI.findMany(input)),
     create: procedure
       .input(SubscriberCreateOneSchema)
       .mutation(({ input }) => SubscriberAPI.create(input)),
+    update: procedure
+      .input(SubscriberUpdateOneSchema)
+      .mutation(({ input }) => SubscriberAPI.update(input)),
     delete: procedure
       .input(SubscriberDeleteOneSchema)
       .mutation(({ input }) => SubscriberAPI.delete(input)),

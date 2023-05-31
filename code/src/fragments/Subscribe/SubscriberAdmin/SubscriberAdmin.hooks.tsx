@@ -13,6 +13,11 @@ import ZDate from 'utils/lib/date';
 export function useSubscriberTableFields(): TableField<Subscriber>[] {
   return [
     {
+      title: <Typography variant={'h6'}>#</Typography>,
+      property: 'email',
+      renderValue: (_, i) => <Typography variant={'body1'}>{i}</Typography>,
+    },
+    {
       title: <Typography variant={'h6'}>Email</Typography>,
       property: 'email',
       renderValue: (e) => <Typography variant={'body1'}>{e.email}</Typography>,

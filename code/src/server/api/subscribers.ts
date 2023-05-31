@@ -25,6 +25,10 @@ export default class SubscriberAPI {
     );
   }
 
+  public static update(args: Prisma.SubscriberUpdateArgs): Promise<Subscriber> {
+    return prisma.subscriber.update(args);
+  }
+
   public static async delete(args: Prisma.SubscriberDeleteArgs): Promise<void> {
     await prisma.subscriber.delete(args);
   }

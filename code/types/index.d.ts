@@ -17,11 +17,16 @@ declare global {
     };
   }
 
+  interface SubscriptionMapping {
+    Diary: boolean;
+    Reverie: boolean;
+  }
+
   interface TableField<T> {
     title: React.ReactNode;
     property: keyof T;
     align?: TableCellProps['align'];
-    renderValue: (entry: T) => React.ReactNode;
+    renderValue: (entry: T, index?: number) => React.ReactNode;
   }
 
   type ReactUseState<T> = [T, Dispatch<SetStateAction<T>>];

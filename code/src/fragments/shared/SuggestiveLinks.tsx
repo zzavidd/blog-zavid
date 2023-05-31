@@ -13,10 +13,10 @@ export default function SuggestiveLinks() {
       }
       spacing={3}>
       <Link href={'/'} variant={'button'}>
-        home
+        Home
       </Link>
       <Link href={'/diary'} variant={'button'}>
-        diary
+        Diary
       </Link>
     </Stack>
   );

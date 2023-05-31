@@ -3,6 +3,7 @@ import {
   Delete,
   Edit,
   MoreVert as MoreVertIcon,
+  Unsubscribe,
 } from '@mui/icons-material';
 import {
   Container,
@@ -138,8 +139,12 @@ function SubscriberTableContent() {
 
   return (
     <TableBody>
-      {subscribers.map((subscriber) => (
-        <SubscriberEachRow entity={subscriber} key={subscriber.id} />
+      {subscribers.map((subscriber, key) => (
+        <SubscriberEachRow
+          entity={subscriber}
+          index={key + 1}
+          key={subscriber.id}
+        />
       ))}
     </TableBody>
   );
@@ -149,7 +154,7 @@ function SubscriberTableContent() {
  * Memoised component for each subscriber entry table row.
  */
 const SubscriberEachRow = React.memo<SubscriberEachRowProps>(
-  function SubscriberEachRow({ entity }) {
+  function SubscriberEachRow({ entity, index }) {
     const [, setContext] = useContext(SubscriberAdminContext);
     const fields = useSubscriberTableFields();
 
@@ -166,7 +171,7 @@ const SubscriberEachRow = React.memo<SubscriberEachRowProps>(
       <TableRow hover={true}>
         {fields.map(({ align, property, renderValue }) => (
           <TableCell align={align} key={property}>
-            {renderValue(entity)}
+            {renderValue(entity, index)}
           </TableCell>
         ))}
         <TableCell align={'center'}>
@@ -243,7 +248,15 @@ function SubscriberEachMenu() {
   function navigateToEdit() {
     if (context.selectedSubscriber) {
       void router.push(
-        `/admin/subscribers/edit/${context.selectedSubscriber?.id}`,
+        `/admin/subscribers/edit/${context.selectedSubscriber.id}`,
+      );
+    }
+  }
+
+  function navigateToUnsubscribePage() {
+    if (context.selectedSubscriber) {
+      void router.push(
+        `/subscriptions?token=${context.selectedSubscriber.token}`,
       );
     }
   }
@@ -251,6 +264,11 @@ function SubscriberEachMenu() {
   const menuItems = [
     { label: 'Edit', icon: <Edit />, onClick: navigateToEdit },
     { label: 'Delete', icon: <Delete />, onClick: openDeleteModal },
+    {
+      label: 'View subscribe page',
+      icon: <Unsubscribe />,
+      onClick: navigateToUnsubscribePage,
+    },
   ];
 
   return (
@@ -275,4 +293,5 @@ function SubscriberEachMenu() {
 
 interface SubscriberEachRowProps {
   entity: Subscriber;
+  index: number;
 }
