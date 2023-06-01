@@ -12,13 +12,15 @@ import {
   TextField,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Link, LinkIconButton } from 'components/Link';
 import Settings from 'utils/settings';
 import { trpc } from 'utils/trpc';
+import { zSubscribeForm } from 'utils/validators';
 
 const FOOTER_LINKS = [
   { name: 'About Zavid', url: '/about' },
@@ -92,43 +94,50 @@ function FooterLinks() {
 function QuickSubscribe() {
   const [state, setState] = useState({ email: '' });
   const { enqueueSnackbar } = useSnackbar();
-  const { mutate, error, isSuccess } = trpc.subscriber.create.useMutation();
-
-  useEffect(() => {
-    if (isSuccess) {
-      enqueueSnackbar(
-        <Typography variant={'body2'}>
-          Thank you for subscribing! I&apos;ve added&nbsp;
-          <Box fontWeight={'bold'} display={'inline'}>
-            &ldquo;{state.email}&rdquo;
-          </Box>
-          &nbsp;to my mailing list.
-        </Typography>,
-        { variant: 'success' },
-      );
-    }
-
-    if (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, error]);
+  const { mutate: addSubscriber } = trpc.subscriber.create.useMutation();
+  const theme = useTheme();
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     setState({ email: e.target.value });
   }
 
   function subscribeEmail() {
-    mutate({
-      data: {
-        email: state.email,
-        subscriptions: { Diary: true, Reveries: true },
-        token: '',
+    const result = zSubscribeForm.safeParse({ email: state.email });
+    if (!result.success) {
+      return enqueueSnackbar(result.error.issues[0].message, {
+        variant: 'error',
+      });
+    }
+
+    addSubscriber(
+      {
+        data: {
+          email: state.email,
+          subscriptions: { Diary: true, Reveries: true },
+          token: '',
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          enqueueSnackbar(
+            <Typography variant={'body2'}>
+              Thank you for subscribing! I&apos;ve added&nbsp;
+              <Box fontWeight={'bold'} display={'inline'}>
+                &ldquo;{state.email}&rdquo;
+              </Box>
+              &nbsp;to my mailing list.
+            </Typography>,
+            { variant: 'success' },
+          );
+        },
+        onError: (e) => {
+          enqueueSnackbar(e.message, { variant: 'error' });
+        },
+      },
+    );
   }
 
-  const inputProps = { style: { fontSize: 16 } };
+  const inputProps = { style: { fontSize: theme.spacing(4) } };
 
   return (
     <Stack>
@@ -145,11 +154,15 @@ function QuickSubscribe() {
             label={'Email address:'}
             onChange={onChange}
             placeholder={'Enter your email address'}
+            inputProps={{ 'data-testid': 'zb.quicksubscribe.email' }}
             InputProps={inputProps}
             InputLabelProps={inputProps}
           />
         </FormControl>
-        <LoadingButton variant={'outlined'} onClick={subscribeEmail}>
+        <LoadingButton
+          variant={'outlined'}
+          onClick={subscribeEmail}
+          data-testid={'zb.quicksubscribe.button'}>
           Subscribe
         </LoadingButton>
       </Stack>
@@ -158,9 +171,8 @@ function QuickSubscribe() {
 }
 
 function SocialPlugs() {
-  const isMediumAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('sm'));
   return (
-    <Stack alignItems={isMediumAbove ? 'center' : 'flex-start'}>
+    <Stack alignItems={{ xs: 'flex-start', md: 'center' }}>
       <Typography variant={'h4'}>Follow me on socials</Typography>
       <Stack direction={'row'} justifyContent={'center'}>
         {SOCIAL_PLUGS.map(({ name, Icon }) => {

@@ -5,17 +5,19 @@ import { SnackbarProvider } from 'notistack';
 import React from 'react';
 
 export default function SnackbarManager({ children }: React.PropsWithChildren) {
-  const snackbarProps = {
-    'data-testid': 'zb.alert',
-  } as React.HTMLAttributes<HTMLDivElement>;
   return (
     <SnackbarProvider
-      anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+      anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       autoHideDuration={6000}
-      Components={{ success: Snack }}
+      Components={{
+        default: Snack,
+        success: Snack,
+        warning: Snack,
+        error: Snack,
+        info: Snack,
+      }}
       maxSnack={2}
       preventDuplicate={true}
-      SnackbarProps={snackbarProps}
       TransitionComponent={Fade}>
       {children}
     </SnackbarProvider>
@@ -25,7 +27,11 @@ export default function SnackbarManager({ children }: React.PropsWithChildren) {
 const Snack = React.forwardRef<HTMLDivElement, CustomContentProps>(
   ({ message, variant }, ref) => {
     return (
-      <Alert variant={'standard'} severity={variant as AlertColor} ref={ref}>
+      <Alert
+        variant={'filled'}
+        severity={variant as AlertColor}
+        ref={ref}
+        data-testid={`zb.alert.${variant}`}>
         {message}
       </Alert>
     );

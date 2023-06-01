@@ -73,7 +73,6 @@ function Form() {
     if (!result.success) {
       return enqueueSnackbar(result.error.issues[0].message, {
         variant: 'error',
-        persist: true,
       });
     }
 
