@@ -17,6 +17,9 @@ namespace Settings {
   /** The default card image to use for SEO. */
   export const CARD_IMAGE = 'v1600638270/static/bg/card-home.jpg';
 
+  /** The name of the site cookie for consent. */
+  export const COOKIE_NAME = 'zblog.consent';
+
   /** The base URL for Cloudinary media. */
   export const CLOUDINARY_BASE_URL =
     'https://res.cloudinary.com/zavid/image/upload';
