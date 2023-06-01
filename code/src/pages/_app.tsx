@@ -1,8 +1,5 @@
-import type { AlertColor } from '@mui/material';
 import {
-  Alert,
   CssBaseline,
-  Fade,
   ThemeProvider,
   createTheme,
   responsiveFontSizes,
@@ -11,8 +8,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
-import type { CustomContentProps } from 'notistack';
-import { SnackbarProvider } from 'notistack';
 import React, { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -21,13 +16,11 @@ import AdminGateway from 'fragments/AdminGateway';
 import MatomoScript from 'fragments/MatomoScript';
 import PageMetadata from 'fragments/PageMetadata';
 import CookiePrompt from 'fragments/Shared/CookiePrompt';
-import { persistor, store, useAppSelector } from 'utils/reducers';
-
-// eslint-disable-next-line import/order
-import 'react-datepicker/dist/react-datepicker.css';
+import SnackbarManager from 'fragments/SnackbarManager';
 import { darkPalette, lightPalette } from 'styles/Palette.styles';
 import { themeOptions } from 'styles/Theme.styles';
 import { NavigationContext } from 'utils/contexts';
+import { persistor, store, useAppSelector } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
 const App = (props: AppProps) => {
@@ -74,30 +67,15 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
       <MatomoScript />
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <SnackbarProvider
-          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-          autoHideDuration={6000}
-          Components={{ success: Snack }}
-          maxSnack={2}
-          TransitionComponent={Fade}>
+        <SnackbarManager>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <NavigationContext.Provider value={[isNavOpen, setNavOpen]}>
               {ComponentWithLayout}
             </NavigationContext.Provider>
           </LocalizationProvider>
           <CookiePrompt />
-        </SnackbarProvider>
+        </SnackbarManager>
       </ThemeProvider>
     </AdminGateway>
   );
 }
-
-const Snack = React.forwardRef<HTMLDivElement, CustomContentProps>(
-  ({ message, variant }, ref) => {
-    return (
-      <Alert variant={'standard'} severity={variant as AlertColor} ref={ref}>
-        {message}
-      </Alert>
-    );
-  },
-);

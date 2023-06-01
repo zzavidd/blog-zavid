@@ -14,7 +14,11 @@ const t = initTRPC.create({
         shape.message = MUTATION_ERROR_MSG;
       }
     } else {
-      shape.message = error.message;
+      if (shape.message.includes('email_UNIQUE')) {
+        shape.message = 'This email address is already subscribed.';
+      } else {
+        shape.message = error.message;
+      }
     }
 
     return shape;

@@ -10,8 +10,6 @@ module.exports = {
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
-    // 'spaced-comment': 0,
-    // 'semi': 0,
     'quotes': ['warn', 'single', { avoidEscape: true }],
   },
   overrides: [

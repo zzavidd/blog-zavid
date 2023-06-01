@@ -9,3 +9,7 @@
 **/.tsbuildinfo
 
 **/.husky/_
+
+/test-results/
+/playwright-report/
+/playwright/.cache/

@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker/locale/en_GB';
 import type { Prisma } from '@prisma/client';
 import { DiaryStatus, PrismaClient } from '@prisma/client';
 
-import ZString from '../../src/lib/string';
+import ZString from '../../src/utils/lib/string';
 
 const prisma = new PrismaClient();
 

@@ -10,7 +10,8 @@ const components: Components<Theme> = {
     },
     styleOverrides: {
       root: ({ theme }) => css`
-        min-height: ${theme.spacing(7)};
+        min-width: ${theme.spacing(9)};
+        padding-block: ${theme.spacing(3)};
       `,
     },
   },

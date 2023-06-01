@@ -19,9 +19,11 @@
   },
   "include": [
     "next-env.d.ts",
-    "src/ops/**/*.ts",
+    "playwright.config.ts",
+    "ops/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "test/**/*.ts",
     "types/**/*.d.ts"
   ],
   "exclude": ["node_modules"],
