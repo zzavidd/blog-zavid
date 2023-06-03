@@ -1,6 +1,8 @@
 import { initTRPC } from '@trpc/server';
 import SuperJSON from 'superjson';
 
+import Logger from 'utils/logger';
+
 const QUERY_ERROR_MSG =
   'There was a problem retrieving data. Please try again later.';
 const MUTATION_ERROR_MSG = 'There was a problem. Please try again later.';
@@ -20,6 +22,8 @@ const t = initTRPC.create({
         shape.message = error.message;
       }
     }
+
+    Logger.error(error);
 
     return shape;
   },

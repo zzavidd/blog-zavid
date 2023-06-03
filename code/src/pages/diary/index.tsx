@@ -1,16 +1,10 @@
-import type { Theme } from '@mui/material';
-import {
-  Container,
-  Divider,
-  Skeleton,
-  Stack,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Container, Divider, Skeleton, Stack, Typography } from '@mui/material';
 import type { Grid2Props } from '@mui/material/Unstable_Grid2';
 import Grid from '@mui/material/Unstable_Grid2';
 import { DiaryStatus } from '@prisma/client';
 import type { GetServerSideProps } from 'next';
+import { useSnackbar } from 'notistack';
+import { useEffect } from 'react';
 
 import Layout from 'fragments/Layout';
 import DiaryEachItem, {
@@ -23,10 +17,9 @@ import { trpc } from 'utils/trpc';
 const DIARY_HEADING = "Zavid's Diary";
 
 const DiaryIndex: NextPageWithLayout = () => {
-  const isMediumAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('sm'));
   return (
     <Container maxWidth={false} sx={{ padding: (t) => t.spacing(5, 3) }}>
-      <Stack divider={<Divider />} spacing={isMediumAbove ? 5 : 3}>
+      <Stack divider={<Divider />} spacing={{ xs: 3, md: 5 }}>
         <Container maxWidth={'md'}>
           <Stack alignItems={'center'} spacing={3}>
             <Typography variant={'h2'} textTransform={'uppercase'}>
@@ -72,10 +65,21 @@ function DiaryPagePreamble() {
  * The list of diary entries displayed in a grid.
  */
 function DiaryCollection() {
-  const { data: diaryEntries, isLoading } = trpc.diary.findMany.useQuery({
+  const {
+    data: diaryEntries,
+    error,
+    isLoading,
+  } = trpc.diary.findMany.useQuery({
     where: { status: DiaryStatus.PUBLISHED },
     orderBy: { entryNumber: 'desc' },
   });
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(error.message, { variant: 'success' });
+    }
+  }, [enqueueSnackbar, error]);
 
   const gridProps: Grid2Props = {
     container: true,
