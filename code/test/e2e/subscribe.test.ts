@@ -21,7 +21,7 @@ test.describe('Subscribe', () => {
       await page.getByTestId('zb.accept').click();
     });
 
-    test('has title', async ({ page }) => {
+    test('has correct page title', async ({ page }) => {
       await expect(page).toHaveTitle(`Subscribe | ${Settings.SITE_TITLE}`);
     });
 

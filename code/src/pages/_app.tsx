@@ -12,7 +12,6 @@ import React, { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import AdminGateway from 'fragments/AdminGateway';
 import MatomoScript from 'fragments/MatomoScript';
 import PageMetadata from 'fragments/PageMetadata';
 import CookiePrompt from 'fragments/Shared/CookiePrompt';
@@ -63,7 +62,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
 
   return (
-    <AdminGateway onlyBlockInStaging={true}>
+    <React.Fragment>
       <MatomoScript />
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -76,6 +75,6 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
           <CookiePrompt />
         </SnackbarManager>
       </ThemeProvider>
-    </AdminGateway>
+    </React.Fragment>
   );
 }

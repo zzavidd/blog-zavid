@@ -1,16 +1,7 @@
-import {
-  Box,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from '@mui/material';
+import { MjmlText } from '@faire/mjml-react';
+import { Typography } from '@mui/material';
 import React from 'react';
-import InstagramEmbed from 'react-instagram-embed';
-import { TwitterTweetEmbed } from 'react-twitter-embed';
 
-import { NextImage } from 'components/Image';
 import type { FormatTextOptions } from 'utils/lib/text';
 import {
   applyEmphasisFormatting,
@@ -21,6 +12,9 @@ import {
   sectionRegexMapping,
   strayRegexToOmit,
 } from 'utils/lib/text/regex';
+
+import FormatEmail from './Paragraph/FormatEmail';
+import FormatSite from './Paragraph/FormatSite';
 
 /**
  * Formats a paragraph of text.
@@ -35,7 +29,6 @@ export function formatParagraph(
 ): React.ReactNode {
   if (!paragraph) return <React.Fragment />;
 
-  const { inline = false } = options;
   const emphasise = (text: string) => applyEmphasisFormatting(text);
 
   const foundSection = Object.entries(sectionRegexMapping).find(([, regex]) =>
@@ -44,180 +37,20 @@ export function formatParagraph(
 
   if (foundSection) {
     const [section, regex] = foundSection!;
-    const [, text] = paragraph.match(regex)!;
-
-    switch (section) {
-      case Section.HEADING:
-        return (
-          <Typography variant={'h2'} key={key}>
-            {text}
-          </Typography>
-        );
-      case Section.SUBHEADING:
-        return (
-          <Typography variant={'h3'} key={key}>
-            {text}
-          </Typography>
-        );
-      case Section.IMAGE: {
-        const [, alt, src] = paragraph.match(regex)!;
-        return <NextImage src={src} alt={alt} loading={'lazy'} key={key} />;
-      }
-      case Section.AUDIO: {
-        const [, alt, src] = paragraph.match(regex)!;
-        // if (forEmails) {
-        //   return (
-        //     <TS.Section.Paragraph key={key}>
-        //       <TS.Emphasis.Anchor href={src}>
-        //         Listen to &ldquo;{alt}&rdquo;.
-        //       </TS.Emphasis.Anchor>
-        //     </TS.Section.Paragraph>
-        //   );
-        // } else {
-        return (
-          <Box
-            component={'audio'}
-            controls={true}
-            sx={{
-              'display': 'block',
-              'marginBlock': (t) => t.spacing(3),
-              'maxWidth': (t) => t.spacing(13),
-              'width': '100%',
-              '&::-webkit-media-controls-enclosure': {
-                backgroundColor: (t) => t.palette.action.active,
-                borderRadius: (t) => `${t.shape.borderRadius}px`,
-              },
-              '&::-webkit-media-controls-current-time-display': {
-                textShadow: 'none',
-              },
-              '&::-webkit-media-controls-time-remaining-display': {
-                textShadow: 'none',
-              },
-            }}
-            key={key}>
-            <source src={src} type={'audio/mpeg'} />
-            <source src={src} type={'audio/ogg'} />
-            {alt}
-          </Box>
-        );
-        // }
-      }
-      case Section.DIVIDER:
-        return <Divider />;
-      case Section.BULLET_LIST:
-        const [, isSpacedBulletBlock, bulletList] = paragraph.match(regex)!;
-        const bulletListItems = bulletList
-          .split('\n')
-          .filter((e) => e)
-          .map((item, key) => {
-            const [, value] = item.match(/^\+\s*(.*)$/)!;
-            return (
-              <ListItem key={key}>
-                <ListItemText>{emphasise(value)}</ListItemText>
-              </ListItem>
-            );
-          });
-
-        return (
-          <List disablePadding={!isSpacedBulletBlock} key={key}>
-            {bulletListItems}
-          </List>
-        );
-      case Section.HYPHEN_LIST_ITEM:
-        return (
-          <div key={key}>
-            <span>-</span>
-            <span>{emphasise(text)}</span>
-          </div>
-        );
-      case Section.NUMBERED_LIST:
-        const [, isSpacedNumberedBlock, numberedList] = paragraph.match(regex)!;
-        const numberedListItems = numberedList
-          .split('\n')
-          .filter((e) => e)
-          .map((item, key) => {
-            const [, value] = item.match(/^(?:[0-9]+[\.\)]|\+)\s*(.*)$/)!;
-            return (
-              <ListItem key={key}>
-                <ListItemText>{emphasise(value)}</ListItemText>
-              </ListItem>
-            );
-          });
-
-        return (
-          <List disablePadding={!isSpacedNumberedBlock} key={key}>
-            {numberedListItems}
-          </List>
-        );
-      case Section.BLOCKQUOTE:
-        return (
-          <Typography component={'blockquote'} key={key}>
-            {emphasise(text)}
-          </Typography>
-        );
-      case Section.TWEET: {
-        const tweetId = paragraph.match(regex)![1];
-        return <TwitterTweetEmbed tweetId={tweetId} key={key} />;
-      }
-      case Section.INSTAGRAM: {
-        const igUrl = paragraph.match(regex)![1];
-        const accessToken = `${process.env.NEXT_PUBLIC_FB_APP_ID}|${process.env.NEXT_PUBLIC_FB_APP_CLIENT}`;
-        // TODO: Chase getting Instagram embeds to work
-        return (
-          <InstagramEmbed
-            url={igUrl}
-            clientAccessToken={accessToken}
-            maxWidth={500}
-            hideCaption={false}
-            key={key}
-          />
-        );
-      }
-
-      case Section.SPOTIFY:
-        const spotifyUrl = paragraph.match(regex)![1];
-        const height = spotifyUrl.includes('podcast') ? '240' : 400;
-        // if (forEmails) {
-        //   return (
-        //     <TS.Section.Paragraph key={key}>
-        //       <TS.Emphasis.Anchor href={spotifyUrl.replace('/embed', '')}>
-        //         Listen to Spotify track.
-        //       </TS.Emphasis.Anchor>
-        //     </TS.Section.Paragraph>
-        //   );
-        // } else {
-        return (
-          <iframe
-            src={spotifyUrl}
-            height={height}
-            width={'100%'}
-            frameBorder={'0'}
-            key={key}
-          />
-        );
-      // }
-      case Section.SOUNDCLOUD:
-        const soundcloudUrl = paragraph.match(regex)![1];
-        return (
-          <iframe
-            width={'100%'}
-            height={'300'}
-            scrolling={'no'}
-            frameBorder={'no'}
-            src={
-              `https://w.soundcloud.com/player/?url=${soundcloudUrl}&color=%23ff5500&` +
-              'auto_play=false&hide_related=true&show_comments=false&show_user=true&' +
-              'show_reposts=false&show_teaser=true&visual=true'
-            }
-            key={key}></iframe>
-        );
-      default:
-        return <React.Fragment />;
+    const match = paragraph.match(regex)!;
+    if (options.forEmails) {
+      return FormatEmail[section as Section](match);
     }
+    return FormatSite[section as Section](match);
   } else {
-    return inline ? (
-      <span key={key}>{emphasise(paragraph)}</span>
-    ) : (
+    if (options.forEmails) {
+      return (
+        <MjmlText>
+          <p>{emphasise(paragraph)}</p>
+        </MjmlText>
+      );
+    }
+    return (
       <Typography variant={'body1'} mt={key ? 5 : 0} key={key}>
         {emphasise(paragraph)}
       </Typography>
@@ -253,7 +86,6 @@ export function deformatParagraph(paragraph: string, key: number): string {
       case Section.HEADING:
       case Section.SUBHEADING:
       case Section.BULLET_LIST:
-      case Section.HYPHEN_LIST_ITEM:
       case Section.NUMBERED_LIST:
         detransformedParagraph += removeEmphasisFormatting(text);
         break;
@@ -262,7 +94,6 @@ export function deformatParagraph(paragraph: string, key: number): string {
       case Section.TWEET:
       case Section.INSTAGRAM:
       case Section.SPOTIFY:
-      case Section.SOUNDCLOUD:
         detransformedParagraph = '';
         break;
       case Section.BLOCKQUOTE:

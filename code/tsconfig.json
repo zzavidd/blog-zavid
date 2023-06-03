@@ -29,7 +29,13 @@
   "exclude": ["node_modules"],
   "ts-node": {
     "compilerOptions": {
-      "module": "CommonJS"
+      "baseUrl": "./src",
+      "jsx": "react-jsx",
+      "module": "CommonJS",
+      "paths": {
+        "server/*": ["./server/*"],
+        "utils/*": ["./utils/*"]
+      }
     }
   }
 }

@@ -20,7 +20,6 @@ export function formatText(
   const formattedText = fullText
     .split(newLinesExceptNumberedListsRegex)
     .map((paragraph, key) => formatParagraph(paragraph, key, options));
-
   return formattedText;
 }
 
@@ -99,7 +98,6 @@ export function extractExcerpt(originalText: string): string {
 }
 
 export interface FormatTextOptions {
-  inline?: boolean;
   forEmails?: boolean;
 }
 

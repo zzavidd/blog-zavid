@@ -28,11 +28,21 @@ export const appRouter = router({
       .input(DiaryFindManySchema)
       .query(({ input }) => DiaryAPI.findMany(input)),
     create: procedure
-      .input(DiaryCreateOneSchema)
-      .mutation(({ input }) => DiaryAPI.create(input)),
+      .input(
+        z.object({
+          diary: DiaryCreateOneSchema,
+          isPublish: z.boolean().optional(),
+        }),
+      )
+      .mutation(({ input }) => DiaryAPI.create(input.diary, input.isPublish)),
     update: procedure
-      .input(DiaryUpdateOneSchema)
-      .mutation(({ input }) => DiaryAPI.update(input)),
+      .input(
+        z.object({
+          diary: DiaryUpdateOneSchema,
+          isPublish: z.boolean().optional(),
+        }),
+      )
+      .mutation(({ input }) => DiaryAPI.update(input.diary, input.isPublish)),
     delete: procedure
       .input(z.array(z.number()))
       .mutation(({ input }) => DiaryAPI.delete(input)),
@@ -41,13 +51,6 @@ export const appRouter = router({
         DiaryAPI.find({
           orderBy: { entryNumber: 'desc' },
           where: { status: DiaryStatus.PUBLISHED },
-        }),
-      ),
-      triple: procedure.input(z.number()).query(({ input }) =>
-        DiaryAPI.findMany({
-          where: {
-            entryNumber: { in: [input, input - 1, input + 1] },
-          },
         }),
       ),
     }),

@@ -16,7 +16,10 @@ import Layout from 'fragments/Layout';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
-const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({ id }) => {
+const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
+  id,
+  referer,
+}) => {
   const [state, setState] = useState(InitialDiaryFormState);
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -31,9 +34,7 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({ id }) => {
         enqueueSnackbar(`Successfully ${verb} '#${entryNumber}: ${title}'.`, {
           variant: 'success',
         });
-        void router.push(
-          isPublished ? `/diary/${entryNumber}` : '/admin/diary',
-        );
+        void router.push(referer ?? `/diary/${entryNumber}`);
       },
       onError: (e) => {
         enqueueSnackbar(e.message, { variant: 'error' });
@@ -59,7 +60,10 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({ id }) => {
   const submitText = isPublish ? 'Update & Publish' : 'Update';
 
   function submitEntry() {
-    updateDiaryEntry({ data: state.entry, where: { id } });
+    updateDiaryEntry({
+      diary: { data: state.entry, where: { id } },
+      isPublish,
+    });
   }
 
   function onSubmit() {
@@ -99,7 +103,7 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({ id }) => {
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryEditProps
 > = async (ctx) => {
-  const { query } = ctx;
+  const { query, req } = ctx;
   const id = Number(query.id);
 
   const helpers = getServerSideHelpers(ctx);
@@ -108,9 +112,8 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       id,
-      pathDefinition: {
-        title: 'Edit Diary Entry',
-      },
+      referer: req.headers.referer,
+      pathDefinition: { title: 'Edit Diary Entry' },
       trpcState: helpers.dehydrate(),
     },
   };
@@ -121,4 +124,5 @@ export default DiaryEntryEdit;
 
 interface DiaryEntryEditProps extends AppPageProps {
   id: number;
+  referer?: string;
 }

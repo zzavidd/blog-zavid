@@ -1,4 +1,7 @@
-import { FavoriteRounded as FavoriteRoundedIcon } from '@mui/icons-material';
+import {
+  Edit,
+  FavoriteRounded as FavoriteRoundedIcon,
+} from '@mui/icons-material';
 import type { Theme } from '@mui/material';
 import {
   Container,
@@ -13,18 +16,20 @@ import { unstable_getServerSession } from 'next-auth';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import invariant from 'tiny-invariant';
-import Logger from 'utils/logger';
 
 import Breadcrumbs from 'components/Breadcrumbs';
 import { Signature } from 'components/Image';
+import { LinkIconButton } from 'components/Link';
 import ShareBlock from 'components/ShareBlock';
 import Paragraph from 'components/Typography/Paragraph';
 import Time from 'components/Typography/Time';
+import { AdminLock } from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import MenuProvider from 'fragments/Shared/MenuProvider';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import ZString from 'utils/lib/string';
 import * as ZText from 'utils/lib/text';
+import Logger from 'utils/logger';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
@@ -32,10 +37,8 @@ import { trpc } from 'utils/trpc';
 const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   entryNumber,
 }) => {
-  const { data: diaryTriplet, error } = trpc.diary.findMany.useQuery({
-    where: {
-      entryNumber: { in: [entryNumber, entryNumber - 1, entryNumber + 1] },
-    },
+  const { data: diaryEntry, error } = trpc.diary.find.useQuery({
+    where: { entryNumber },
   });
   const isMobile = useMediaQuery<Theme>((t) => t.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
@@ -46,8 +49,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
     }
   }, [enqueueSnackbar, error]);
 
-  if (!diaryTriplet) return null;
-  const [, diaryEntry] = diaryTriplet;
+  if (!diaryEntry) return null;
 
   const title = `#${diaryEntry.entryNumber}: ${diaryEntry.title}`;
 
@@ -68,7 +70,12 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
               date={diaryEntry.date}
             />
             <Typography variant={'h2'} textAlign={isMobile ? 'left' : 'center'}>
-              {title}
+              {title}{' '}
+              <AdminLock>
+                <LinkIconButton href={`/admin/diary/edit/${diaryEntry.id}`}>
+                  <Edit color={'primary'} />
+                </LinkIconButton>
+              </AdminLock>
             </Typography>
             {diaryEntry.isFavourite ? (
               <Stack
@@ -106,7 +113,8 @@ export const getServerSideProps: GetServerSideProps<
     const entryNumber = Number(query.number);
 
     const helpers = getServerSideHelpers(ctx);
-    const [, entry] = await helpers.diary.custom.triple.fetch(entryNumber);
+    const entry = await helpers.diary.find.fetch({ where: { entryNumber } });
+    invariant(entry, 'No diary entry found.');
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
     const isAdmin =

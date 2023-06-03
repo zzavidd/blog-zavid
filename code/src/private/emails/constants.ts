@@ -1,22 +1,21 @@
 import type { HtmlToTextOptions } from 'html-to-text';
-import getConfig from 'next/config';
+// import getConfig from 'next/config';
 import nodemailer from 'nodemailer';
-
-const { serverRuntimeConfig } = getConfig();
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 import Settings from 'utils/settings';
 
+// const { serverRuntimeConfig } = getConfig();
+
 export const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
-
 export const EmailTheme: 'Light' | 'Dark' = 'Light';
-
 export const EmailStyle = {
   Color: {
     Light: {
       Primary: '#dfdfdf',
       Secondary: '#eeeeee',
       Body: '#f7f7f7',
-      Hyperlink: 'hsl(268, 100%, 50%)',
+      Hyperlink: '#7e14ff',
       Button: '#383838',
       ButtonText: '#ffffff',
       Text: '#000000',
@@ -31,7 +30,7 @@ export const EmailStyle = {
       Text: '#ffffff',
     },
   },
-  Font: 'Mulish, "Trebuchet MS", Helvetica, sans-serif',
+  Font: 'Mulish',
 };
 
 /** A map of variables used in all EJS emails */
@@ -52,22 +51,33 @@ export const HTML_TO_TEXT_OPTIONS: HtmlToTextOptions = {
   wordwrap: 80,
 };
 
+const transportOptions: SMTPTransport.Options = isProd
+  ? {
+      host: process.env['EMAIL_HOST'],
+      port: Number(process.env['EMAIL_PORT']),
+      auth: {
+        user: process.env['EMAIL_USER'],
+        pass: process.env['EMAIL_PWD'],
+      },
+    }
+  : {
+      host: process.env['ETHEREAL_HOST'],
+      port: Number(process.env['ETHEREAL_PORT']),
+      auth: {
+        user: process.env['ETHEREAL_EMAIL'],
+        pass: process.env['ETHEREAL_PWD'],
+      },
+    };
+
 /** Initialise the mail transporter */
 export const TRANSPORTER = nodemailer.createTransport({
-  host: process.env[isProd ? 'EMAIL_HOST' : 'ETHEREAL_HOST'],
-  port: parseInt(
-    process.env[isProd ? 'EMAIL_PORT' : 'ETHEREAL_PORT'] as string,
-  ),
-  auth: {
-    user: process.env[isProd ? 'EMAIL_USER' : 'ETHEREAL_EMAIL'],
-    pass: process.env[isProd ? 'EMAIL_PWD' : 'ETHEREAL_PWD'],
-  },
+  ...transportOptions,
   pool: true,
   maxConnections: 20,
   maxMessages: Infinity,
-  dkim: {
-    domainName: isProd ? 'zavidegbue.com' : 'dev.zavidegbue.com',
-    keySelector: 'default',
-    privateKey: serverRuntimeConfig.dkimPrivateKey,
-  },
+  // dkim: {
+  //   domainName: isProd ? 'zavidegbue.com' : 'dev.zavidegbue.com',
+  //   keySelector: 'default',
+  //   privateKey: serverRuntimeConfig.dkimPrivateKey,
+  // },
 });

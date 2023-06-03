@@ -56,7 +56,7 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
   const submitText = isPublish ? 'Submit & Publish' : 'Submit';
 
   function submitEntry() {
-    createDiaryEntry({ data: state.entry });
+    createDiaryEntry({ diary: { data: state.entry }, isPublish });
   }
 
   function onSubmit() {

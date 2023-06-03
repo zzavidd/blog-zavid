@@ -1,10 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
-
 import type { WishlistItem } from '@ziventi/wishlist/types';
 
 import { EmailStyle, EmailTheme } from '../constants';
-import { Anchor, Blockquote, Button, Paragraph } from '../lib/components';
-import { Body, Footer, Header, Main, SignatureImage } from '../lib/fragments';
+import { Anchor, Blockquote, Button, Paragraph } from '../lib/Components';
+import {
+  EmailBody,
+  EmailFooter,
+  Header,
+  Main,
+  SignatureImage,
+} from '../lib/Fragments';
 
 const Theme = EmailStyle.Color[EmailTheme];
 
@@ -13,7 +17,7 @@ export default function WishlistClaimEmail({
 }: WishlistEmailProps) {
   return (
     <html>
-      <Body>
+      <EmailBody>
         <Header>Confirming your claim to a wishlist item on ZAVID.</Header>
         <Main>
           <Paragraph>Hey friend,</Paragraph>
@@ -61,8 +65,8 @@ export default function WishlistClaimEmail({
           <Paragraph>Signed.</Paragraph>
           <SignatureImage />
         </Main>
-        <Footer showUnsubscribe={false} />
-      </Body>
+        <EmailFooter showUnsubscribe={false} />
+      </EmailBody>
     </html>
   );
 }

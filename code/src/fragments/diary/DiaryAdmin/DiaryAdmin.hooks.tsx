@@ -36,8 +36,11 @@ export function useDiaryTableFields(isHovered?: boolean): TableField<Diary>[] {
 
   function onFavouriteClick(e: Diary) {
     updateDiaryEntry({
-      data: { isFavourite: !e.isFavourite },
-      where: { id: e.id },
+      diary: {
+        data: { isFavourite: !e.isFavourite },
+        where: { id: e.id },
+      },
+      isPublish: false,
     });
   }
 

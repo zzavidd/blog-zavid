@@ -8,17 +8,19 @@
     "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start",
-    "tsc": "tsc --noEmit",
+    "tsc": "tsc --noEmit -p tsconfig.run.json",
     "test": "playwright test",
     "release": "../devops/scripts/release.sh",
     "eslint": "eslint --ext .ts,.tsx src/ --cache",
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
     "prettier:write": "pnpm run prettier --write",
-    "ops:ingest": "ts-node ops/ingestion"
+    "ops:ingest": "ts-node ops/ingestion",
+    "ops:publish": "ts-node -r tsconfig-paths/register ops/publishing"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@faire/mjml-react": "^3.3.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "5.0.0-alpha.131",
     "@mui/material": "^5.13.1",
@@ -36,9 +38,11 @@
     "html-to-text": "^5.1.1",
     "immutability-helper": "^3.1.1",
     "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
+    "mjml": "^4.14.1",
     "next": "^13.4.3",
     "next-auth": "^4.10.3",
-    "nodemailer": "^6.7.8",
+    "nodemailer": "^6.9.3",
     "notistack": "^3.0.1",
     "prisma-zod-generator": "^0.8.13",
     "react": "^18.2.0",
@@ -61,6 +65,8 @@
     "@playwright/test": "^1.34.3",
     "@types/html-to-text": "^5.1.2",
     "@types/js-cookie": "^3.0.3",
+    "@types/lodash": "^4.14.195",
+    "@types/mjml": "^4.7.1",
     "@types/node": "^18.7.23",
     "@types/nodemailer": "^6.4.5",
     "@types/react": "^18.2.6",
@@ -80,6 +86,7 @@
     "prisma": "^4.14.1",
     "ts-node": "^10.9.1",
     "ts-prune": "^0.10.3",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.0.4"
   }
 }

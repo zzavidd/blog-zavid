@@ -28,13 +28,11 @@ export enum Section {
   AUDIO = 'audio',
   DIVIDER = 'divider',
   BULLET_LIST = 'bullet',
-  HYPHEN_LIST_ITEM = 'hyphen',
   NUMBERED_LIST = 'numbered',
   BLOCKQUOTE = 'blockquote',
   TWEET = 'tweet',
   INSTAGRAM = 'instagram-post',
   SPOTIFY = 'spotify-track',
-  SOUNDCLOUD = 'soundcloud-track',
 }
 
 /**
@@ -103,7 +101,6 @@ export const sectionRegexMapping: Record<Section, RegExp> = {
   [Section.AUDIO]: new RegExp(/^\!\[(.*?)\]\((\S*.(?:mp3|wav|caf))\)(F?)$/),
   [Section.DIVIDER]: new RegExp(/^(\-{3}|\_{3})$/),
   [Section.BULLET_LIST]: new RegExp(/\:\:ul(b)?\n((?:\+\s*.*\n+)*)\:\:end/),
-  [Section.HYPHEN_LIST_ITEM]: new RegExp(/^\-\s*(.*?)$/),
   [Section.NUMBERED_LIST]: new RegExp(
     /\:\:ol(b)?\n((?:(?:[0-9]+[\.\)]|\+)\s*.*\n+)*)\:\:end/,
   ),
@@ -111,7 +108,6 @@ export const sectionRegexMapping: Record<Section, RegExp> = {
   [Section.TWEET]: new RegExp(/^\!\{Tweet\}\(([0-9]+)\)$/i),
   [Section.INSTAGRAM]: new RegExp(/^\!\{Insta\}\((.*?)\)$/i),
   [Section.SPOTIFY]: new RegExp(/^\!\{Spotify\}\((.*?)\)$/i),
-  [Section.SOUNDCLOUD]: new RegExp(/^\!\{Soundcloud\}\((.*?)\)$/i),
 };
 
 /** Regular expression for new lines except numbered lists. */

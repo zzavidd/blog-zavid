@@ -23,7 +23,6 @@ import {
   Typography,
 } from '@mui/material';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import React, { useContext, useRef, useState } from 'react';
 
 import { Link } from 'components/Link';
@@ -91,7 +90,6 @@ export default function Header() {
 function AuthButton() {
   const [state, setState] = useState({ isMenuOpen: false });
   const avatarRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   const session = useSession();
   const user = session.data?.user;
@@ -103,10 +101,6 @@ function AuthButton() {
 
   function onMenuClose() {
     setState({ isMenuOpen: false });
-  }
-
-  function navigateToAdminConsole() {
-    void router.push('/admin');
   }
 
   if (!user) {

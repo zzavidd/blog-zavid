@@ -17,11 +17,6 @@ declare global {
     };
   }
 
-  interface SubscriptionMapping {
-    Diary: boolean;
-    Reverie: boolean;
-  }
-
   interface TableField<T> {
     title: React.ReactNode;
     property: keyof T;

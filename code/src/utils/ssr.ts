@@ -1,7 +1,8 @@
 import { createServerSideHelpers } from '@trpc/react-query/server';
-import { GetServerSidePropsContext } from 'next';
-import { appRouter } from 'server/routers/_app';
+import type { GetServerSidePropsContext } from 'next';
 import SuperJSON from 'superjson';
+
+import { appRouter } from 'server/routers/_app';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function getServerSideHelpers(ctx: GetServerSidePropsContext) {

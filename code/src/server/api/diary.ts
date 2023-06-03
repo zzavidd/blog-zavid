@@ -1,5 +1,6 @@
 import type { Diary, Prisma } from '@prisma/client';
 
+import Emailer from 'private/emails';
 import prisma from 'server/prisma';
 
 export default class DiaryAPI {
@@ -13,12 +14,26 @@ export default class DiaryAPI {
     return prisma.diary.findFirst(args);
   }
 
-  public static create(args: Prisma.DiaryCreateArgs): Promise<Diary> {
-    return prisma.diary.create(args);
+  public static async create(
+    args: Prisma.DiaryCreateArgs,
+    isPublish = false,
+  ): Promise<Diary> {
+    const diary = await prisma.diary.create(args);
+    if (isPublish) {
+      void Emailer.notifyNewDiaryEntry(diary);
+    }
+    return diary;
   }
 
-  public static update(args: Prisma.DiaryUpdateArgs): Promise<Diary> {
-    return prisma.diary.update(args);
+  public static async update(
+    args: Prisma.DiaryUpdateArgs,
+    isPublish = false,
+  ): Promise<Diary> {
+    const diary = await prisma.diary.update(args);
+    if (isPublish) {
+      void Emailer.notifyNewDiaryEntry(diary);
+    }
+    return diary;
   }
 
   public static async delete(ids: number[]): Promise<void> {

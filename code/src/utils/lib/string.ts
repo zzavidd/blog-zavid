@@ -82,26 +82,10 @@ namespace ZString {
     list = list.filter((el) => el);
     return list.join(', ');
   };
-
-  /**
-   * Generate a random string of characters.
-   * @deprecated
-   */
-  export const generateRandomString = (length: number): string => {
-    const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  };
-
-  interface CSVToArrayOptions {
-    lowercase?: boolean;
-  }
 }
 
 export default ZString;
+
+interface CSVToArrayOptions {
+  lowercase?: boolean;
+}

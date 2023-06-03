@@ -16,6 +16,7 @@ import React, { useContext } from 'react';
 
 import { ActionDialog } from 'components/Dialog';
 import SuggestiveLinks from 'fragments/Shared/SuggestiveLinks';
+import type { SubscriptionType } from 'utils/enum';
 import { trpc } from 'utils/trpc';
 
 import { SubscriptionsContext } from './Subscriptions.context';
@@ -129,8 +130,10 @@ function Content() {
           <Typography variant={'h5'}>You are subscribed to my:</Typography>
           <FormGroup>
             {Object.entries(
-              context.subscriber
-                .subscriptions as unknown as SubscriptionMapping,
+              context.subscriber.subscriptions as Record<
+                SubscriptionType,
+                boolean
+              >,
             ).map(([type, checked]) => (
               <FormControlLabel
                 label={type}
