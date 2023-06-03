@@ -91,9 +91,9 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
             ) : null}
           </Stack>
           <Stack spacing={5}>
-            <Paragraph>{diaryEntry.content}</Paragraph>
+            <Paragraph variant={'text'}>{diaryEntry.content}</Paragraph>
             <Signature width={180} />
-            <Paragraph>{diaryEntry.footnote}</Paragraph>
+            <Paragraph variant={'text'}>{diaryEntry.footnote}</Paragraph>
           </Stack>
           <ShareBlock
             headline={'Share This Diary Entry'}

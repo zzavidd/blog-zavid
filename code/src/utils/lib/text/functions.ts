@@ -1,3 +1,4 @@
+import type { TypographyProps } from '@mui/material';
 import type React from 'react';
 
 import {
@@ -39,7 +40,8 @@ export function deformatText(
   const deformattedText = fullText
     .split('\n')
     .map(deformatParagraph)
-    .join(joinDelimiter);
+    .join(joinDelimiter)
+    .replaceAll(/\s{2,}/g, ' ');
 
   return deformattedText;
 }
@@ -99,6 +101,7 @@ export function extractExcerpt(originalText: string): string {
 
 export interface FormatTextOptions {
   forEmails?: boolean;
+  typographyVariant?: TypographyProps['variant'];
 }
 
 export interface DeformatTextOptions {

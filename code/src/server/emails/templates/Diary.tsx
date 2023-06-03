@@ -31,12 +31,11 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
           <MjmlText>
             <p>{ZDate.format(diaryEntry.date)}</p>
           </MjmlText>
-
           {ZText.formatText(diaryEntry.content, { forEmails: true })}
           <MjmlText>
             <SignatureImage />
           </MjmlText>
-          {/* {ZText.formatText(diaryEntry.footnote, { forEmails: true })} */}
+          {ZText.formatText(diaryEntry.footnote, { forEmails: true })}
         </Main>
         <EmailFooter
           showUnsubscribe={true}

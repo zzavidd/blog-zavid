@@ -27,9 +27,8 @@ export function formatParagraph(
   key: number,
   options: FormatTextOptions = {},
 ): React.ReactNode {
+  const { typographyVariant = 'text' } = options;
   if (!paragraph) return <React.Fragment />;
-
-  const emphasise = (text: string) => applyEmphasisFormatting(text);
 
   const foundSection = Object.entries(sectionRegexMapping).find(([, regex]) =>
     regex.test(paragraph),
@@ -46,13 +45,13 @@ export function formatParagraph(
     if (options.forEmails) {
       return (
         <MjmlText>
-          <p>{emphasise(paragraph)}</p>
+          <p>{applyEmphasisFormatting(paragraph)}</p>
         </MjmlText>
       );
     }
     return (
-      <Typography variant={'body1'} mt={key ? 5 : 0} key={key}>
-        {emphasise(paragraph)}
+      <Typography variant={typographyVariant} mt={key ? 5 : 0} key={key}>
+        {applyEmphasisFormatting(paragraph)}
       </Typography>
     );
   }

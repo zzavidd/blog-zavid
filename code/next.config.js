@@ -1,13 +1,6 @@
 // @ts-check
-const fs = require('fs');
 const NextBundleAnalyzer = require('@next/bundle-analyzer');
-
-const dkimPath = `${__dirname}/dkim.key`;
-
-let dkimPrivateKey = null;
-if (fs.existsSync(dkimPath)) {
-  dkimPrivateKey = fs.readFileSync(dkimPath, { encoding: 'utf8' });
-}
+const fs = require('fs');
 
 const withBundleAnalyzer = NextBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -38,7 +31,6 @@ const config = {
   output: 'standalone',
   poweredByHeader: false,
   reactStrictMode: true,
-  serverRuntimeConfig: { dkimPrivateKey },
   swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,

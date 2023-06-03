@@ -41,6 +41,7 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
                 <FavoriteRounded
                   color={'primary'}
                   sx={{
+                    ml: 2,
                     fontSize: (t) => t.spacing(7),
                     float: 'right',
                   }}
@@ -49,7 +50,11 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
             ) : null}
             <Time mb={2} variant={'body2'} date={entry.date} />
             <Typography variant={'h3'}>
-              <Typography color={'primary'} variant={'h3'} display={'inline'}>
+              <Typography
+                variant={'h3'}
+                component={'span'}
+                color={'primary'}
+                display={'inline'}>
                 Diary Entry #{entry.entryNumber}:&nbsp;
               </Typography>
               {entry.title}
@@ -57,7 +62,7 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
             <Divider sx={{ marginBlock: (t) => t.spacing(4) }} />
             <Paragraph
               variant={'body1'}
-              truncate={30}
+              truncate={25}
               moreHref={href}
               moreText={`Read #${entry.entryNumber}: ${entry.title}`}>
               {entry.content}

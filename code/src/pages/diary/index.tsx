@@ -6,11 +6,11 @@ import type { GetServerSideProps } from 'next';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 
+import Paragraph from 'components/Typography/Paragraph';
 import Layout from 'fragments/Layout';
 import DiaryEachItem, {
   DiaryEachSkeleton,
 } from 'fragments/Pages/Diary/DiaryEachItem';
-import * as ZText from 'utils/lib/text';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
@@ -56,9 +56,9 @@ function DiaryPagePreamble() {
 
   if (!page) return null;
   return (
-    <Typography variant={'body1'} textAlign={'center'}>
-      {ZText.formatText(page.content)}
-    </Typography>
+    <Paragraph variant={'body1'} textAlign={'center'}>
+      {page.content}
+    </Paragraph>
   );
 }
 

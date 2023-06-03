@@ -39,13 +39,12 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
     return (
       <React.Fragment>
         <Typography
-          variant={'body1'}
           component={'pre'}
           whiteSpace={'pre-wrap'}
-          ref={ref}
           mb={showReadMore ? 4 : 0}
+          ref={ref}
           {...preProps}>
-          {zText.formatText(text)}
+          {zText.formatText(text, { typographyVariant: props.variant })}
         </Typography>
         {showReadMore ? (
           <LinkButton
