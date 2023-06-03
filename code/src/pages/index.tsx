@@ -17,7 +17,7 @@ const HomePage: NextPageWithLayout = () => {
         <Introduction />
         <HomeLatest
           overline={'Latest Diary Entry'}
-          title={entry?.title}
+          title={`#${entry?.entryNumber}: ${entry?.title}`}
           date={entry?.date}
           content={entry?.content}
           isLoading={isEntryLoading}

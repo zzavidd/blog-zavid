@@ -43,7 +43,7 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           component={'pre'}
           whiteSpace={'pre-wrap'}
           ref={ref}
-          mb={showReadMore ? 3 : 0}
+          mb={showReadMore ? 4 : 0}
           {...preProps}>
           {zText.formatText(text)}
         </Typography>

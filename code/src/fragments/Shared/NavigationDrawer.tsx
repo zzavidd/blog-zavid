@@ -1,3 +1,4 @@
+import type { SvgIconComponent } from '@mui/icons-material';
 import {
   AccountCircleRounded,
   BookRounded,
@@ -23,15 +24,15 @@ import Settings from 'utils/settings';
 
 const pathDefinitions: PathDefinition[][] = [
   [
-    { title: 'Diary', url: '/diary', icon: <BookRounded /> },
+    { title: 'Diary', url: '/diary', Icon: BookRounded },
     // { title: 'Reveries', url: '/reveries', icon: <CloudRounded /> },
     // { title: 'Epistles', url: '/epistles', icon: <HistoryEduRounded /> },
     // { title: 'Poetry', url: '/poetry' },
     // { title: 'Musings', url: '/musings' },
   ],
   [
-    { title: 'About', url: '/about', icon: <AccountCircleRounded /> },
-    { title: 'Subscribe', url: '/subscribe', icon: <EmailIcon /> },
+    { title: 'About', url: '/about', Icon: AccountCircleRounded },
+    { title: 'Subscribe', url: '/subscribe', Icon: EmailIcon },
     // { title: 'Wishlist', url: '/wishlist', icon: <RedeemRounded /> },
   ],
 ];
@@ -72,10 +73,12 @@ export function NavigationDrawer() {
       <Stack divider={<Divider />}>
         {pathDefinitions.map((paths, key) => (
           <MenuList key={key}>
-            {paths.map(({ title, url, icon }) => (
+            {paths.map(({ title, url, Icon }) => (
               <Link href={url} color={'text.primary'} key={title}>
-                <MenuItem onClick={closeNav}>
-                  <ListItemIcon>{icon}</ListItemIcon>
+                <MenuItem onClick={closeNav} sx={{ py: 2 }}>
+                  <ListItemIcon>
+                    <Icon color={'primary'} />
+                  </ListItemIcon>
                   <ListItemText
                     primaryTypographyProps={{
                       fontFamily: (t) => t.typography.h4.fontFamily,
@@ -98,6 +101,6 @@ export function NavigationDrawer() {
 interface PathDefinition {
   title: string;
   url: string;
-  icon: React.ReactNode;
   isNew?: boolean;
+  Icon: SvgIconComponent;
 }
