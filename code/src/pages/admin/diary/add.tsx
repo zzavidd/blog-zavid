@@ -7,12 +7,12 @@ import { useEffect, useState } from 'react';
 
 import { ActionDialog } from 'components/Dialog';
 import AdminGateway from 'fragments/AdminGateway';
-import DiaryForm from 'fragments/Diary/DiaryForm/DiaryForm';
+import Layout from 'fragments/Layout';
+import DiaryForm from 'fragments/Pages/Diary/DiaryForm/DiaryForm';
 import {
   DiaryFormContext,
   InitialDiaryFormState,
-} from 'fragments/Diary/DiaryForm/DiaryForm.context';
-import Layout from 'fragments/Layout';
+} from 'fragments/Pages/Diary/DiaryForm/DiaryForm.context';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 

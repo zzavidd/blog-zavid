@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
-import SubscriberAdmin from 'fragments/Subscribe/SubscriberAdmin/SubscriberAdmin';
+import SubscriberAdmin from 'fragments/Pages/Subscribe/SubscriberAdmin/SubscriberAdmin';
 import {
   InitialSubscriberAdminState,
   SubscriberAdminContext,
-} from 'fragments/Subscribe/SubscriberAdmin/SubscriberAdmin.context';
+} from 'fragments/Pages/Subscribe/SubscriberAdmin/SubscriberAdmin.context';
 
 const SubscriberAdminPage: NextPageWithLayout = () => {
   const context = useState(InitialSubscriberAdminState);

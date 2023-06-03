@@ -3,11 +3,11 @@ import type { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 
 import Layout from 'fragments/Layout';
-import Subscriptions from 'fragments/Subscribe/Subscriptions/Subscriptions';
+import Subscriptions from 'fragments/Pages/Subscribe/Subscriptions/Subscriptions';
 import {
   InitialSubscriptionsState,
   SubscriptionsContext,
-} from 'fragments/Subscribe/Subscriptions/Subscriptions.context';
+} from 'fragments/Pages/Subscribe/Subscriptions/Subscriptions.context';
 import Logger from 'utils/logger';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
