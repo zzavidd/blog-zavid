@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import React from 'react';
 
-import Settings from 'constants/settings';
-import ZString from 'lib/string';
+import ZString from 'utils/lib/string';
+import Settings from 'utils/settings';
 
 export default function PageMetadata({
   title,

@@ -1,36 +1,21 @@
+import { Stack } from '@mui/material';
 import React from 'react';
 
-import { Body, BodyContent } from 'styles/Global.styles';
-
-import Footer from './shared/Footer';
-import Header from './shared/Header';
-import { MainNavigationBar, MobileNavigationBar } from './shared/NavigationBar';
+import Footer from './Shared/Footer';
+import Header from './Shared/Header';
+import { NavigationDrawer } from './Shared/NavigationDrawer';
 
 namespace Layout {
   export function addPartials(page: React.ReactElement) {
     return (
-      <React.Fragment>
+      <Stack minHeight={'100vh'}>
         <Header />
-        <Body>
-          <MainNavigationBar />
-          <BodyContent>{page}</BodyContent>
-        </Body>
+        <NavigationDrawer />
+        <Stack display={'grid'} flex={1}>
+          {page}
+        </Stack>
         <Footer />
-        <MobileNavigationBar />
-      </React.Fragment>
-    );
-  }
-
-  export function addHeaderOnly(page: React.ReactElement) {
-    return (
-      <React.Fragment>
-        <Header />
-        <Body>
-          <MainNavigationBar />
-          <BodyContent>{page}</BodyContent>
-        </Body>
-        <MobileNavigationBar />
-      </React.Fragment>
+      </Stack>
     );
   }
 }

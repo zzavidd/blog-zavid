@@ -1,6 +1,7 @@
-import { faShare } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext } from 'react';
+import { Share as ShareIcon } from '@mui/icons-material';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -12,22 +13,24 @@ import {
   WhatsappShareButton,
 } from 'react-share';
 
-import Contexts from 'constants/contexts';
-import FORM from 'styles/Components/Form.styles';
-import SBS from 'styles/Components/ShareBlock.styles';
+import Settings from 'utils/settings';
 
-export default function ShareBlock({ headline, ...props }: ShareProps) {
+export default function ShareBlock({ headline, message }: ShareBlockProps) {
+  const router = useRouter();
+  const url = `${Settings.DOMAIN}${router.asPath}`;
+
+  const props: SocialShareProps = { message, url };
   return (
-    <SBS.Container>
-      <FORM.Label>{headline}:</FORM.Label>
-      <SBS.ButtonGroup>
+    <Stack mt={4} spacing={2}>
+      <Typography variant={'subtitle2'}>{headline}:</Typography>
+      <Stack direction={'row'} spacing={1}>
         <ShareFacebook {...props} />
         <ShareTwitter {...props} />
         <ShareLinkedin {...props} />
         <ShareWhatsapp {...props} />
         <ShareLink {...props} />
-      </SBS.ButtonGroup>
-    </SBS.Container>
+      </Stack>
+    </Stack>
   );
 }
 
@@ -65,25 +68,30 @@ function ShareLinkedin({ message, url }: SocialShareProps) {
 }
 
 function ShareLink({ url }: SocialShareProps) {
-  const Alerts = useContext(Contexts.Alerts);
+  const { enqueueSnackbar } = useSnackbar();
 
   async function copyLink() {
     await navigator.clipboard.writeText(url);
-    Alerts.success("Copied this page's link to clipboard.");
+    enqueueSnackbar("Copied this page's link to clipboard.", {
+      variant: 'success',
+    });
   }
 
   return (
-    <SBS.ShareLinkButton onClick={copyLink}>
-      <FontAwesomeIcon icon={faShare} />
-    </SBS.ShareLinkButton>
+    <Box>
+      <IconButton onClick={copyLink} sx={{ backgroundColor: 'primary.main' }}>
+        <ShareIcon fontSize={'large'} />
+      </IconButton>
+    </Box>
   );
+}
+
+interface ShareBlockProps {
+  headline: string;
+  message: string;
 }
 
 interface SocialShareProps {
   message: string;
   url: string;
-}
-
-interface ShareProps extends SocialShareProps {
-  headline: string;
 }

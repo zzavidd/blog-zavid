@@ -1,64 +1,51 @@
+import { Container, Divider, Stack } from '@mui/material';
 import type { GetServerSideProps } from 'next';
-import useSWR from 'swr';
 
-import Settings from 'constants/settings';
-import Utils from 'constants/utils';
-import LatestDiaryEntry from 'fragments/home/HomeDiary';
-import Introduction from 'fragments/home/HomeIntroduction';
-import RandomPostsGrid from 'fragments/home/HomeRandomPosts';
-import LatestReverie from 'fragments/home/HomeReverie';
 import Layout from 'fragments/Layout';
-import SSR from 'private/ssr';
-import * as Styles from 'styles/Pages/Home.styles';
+import Introduction from 'fragments/Pages/Home/HomeIntroduction';
+import HomeLatest from 'fragments/Pages/Home/HomeLatest';
+import Settings from 'utils/settings';
+import { getServerSideHelpers } from 'utils/ssr';
+import { trpc } from 'utils/trpc';
 
-// eslint-disable-next-line react/function-component-definition
-const HomePage: NextPageWithLayout<HomeProps> = ({ pageProps }) => {
-  const { homeText, emailSubCount } = pageProps;
-
-  const { data } = useSWR<HomePageContent>('/api/home', Utils.request, {
-    revalidateIfStale: false,
-    revalidateOnReconnect: false,
-    revalidateOnFocus: false,
-  });
-
+const HomePage: NextPageWithLayout = () => {
+  const { data: entry, isLoading: isEntryLoading } =
+    trpc.diary.custom.latest.useQuery();
   return (
-    <Styles.HomePage>
-      <Styles.HomeMain>
-        <Introduction content={homeText} emailSubCount={emailSubCount} />
-        <LatestDiaryEntry entry={data?.latestDiaryEntry} />
-        <LatestReverie reverie={data?.latestReverie} />
-      </Styles.HomeMain>
-      <Styles.Aside.Container>
-        <RandomPostsGrid posts={data?.randomPosts} />
-      </Styles.Aside.Container>
-    </Styles.HomePage>
+    <Container maxWidth={'md'} sx={{ padding: (t) => t.spacing(6, 5) }}>
+      <Stack spacing={4} divider={<Divider />}>
+        <Introduction />
+        <HomeLatest
+          overline={'Latest Diary Entry'}
+          title={entry?.title}
+          date={entry?.date}
+          content={entry?.content}
+          isLoading={isEntryLoading}
+          moreText={'Read my latest diary entry'}
+          moreHref={`/diary/${entry?.entryNumber}`}
+        />
+      </Stack>
+    </Container>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  Partial<HomeProps>
-> = async () => {
-  const { homeText, emailSubCount } = JSON.parse(
-    await SSR.Home.getPreloadedProps(),
-  );
+export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
+  ctx,
+) => {
+  const helpers = getServerSideHelpers(ctx);
+  await helpers.page.find.prefetch({ where: { slug: 'home' } });
+
   return {
     props: {
       pathDefinition: {
-        title: `${Settings.SITE_TITLE}: A Galaxy Mind in a Universe World`,
+        title: `${Settings.SITE_TITLE}: ${Settings.SITE_TAGLINE}`,
         description: 'Explore the metaphysical manifestation of my mind.',
         url: '/',
       },
-      pageProps: {
-        homeText,
-        emailSubCount,
-      },
+      trpcState: helpers.dehydrate(),
     },
   };
 };
 
 HomePage.getLayout = Layout.addPartials;
 export default HomePage;
-
-interface HomeProps extends AppPageProps {
-  pageProps: HomePreloadProps;
-}

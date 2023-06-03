@@ -1,146 +1,128 @@
+import { DiaryStatus } from '@prisma/client';
+import immutate from 'immutability-helper';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import { useSnackbar } from 'notistack';
+import { useEffect, useState } from 'react';
 
-import { DiaryStatic } from 'classes/diary/DiaryStatic';
-import { Modal } from 'components/Modal';
-import Contexts from 'constants/contexts';
-import HandlerFactory from 'constants/handlers';
-import Settings from 'constants/settings';
-import Utils from 'constants/utils';
-import Validate from 'constants/validations';
+import { ActionDialog } from 'components/Dialog';
 import AdminGateway from 'fragments/AdminGateway';
-import DiaryEntryForm, { buildPayload } from 'fragments/diary/DiaryEntryForm';
 import Layout from 'fragments/Layout';
-import ZDate from 'lib/date';
-import ZString from 'lib/string';
-import SSR from 'private/ssr';
-import ModalStyle from 'styles/Components/Modal.styles';
-import { ButtonVariant } from 'styles/Variables.styles';
+import DiaryForm from 'fragments/Pages/Diary/DiaryForm/DiaryForm';
+import {
+  DiaryFormContext,
+  InitialDiaryFormState,
+} from 'fragments/Pages/Diary/DiaryForm/DiaryForm.context';
+import { getServerSideHelpers } from 'utils/ssr';
+import { trpc } from 'utils/trpc';
 
-// eslint-disable-next-line react/function-component-definition
 const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
-  pageProps,
+  id,
+  referer,
 }) => {
-  const [state, setState] = useState<DiaryEntryEditState>({
-    diaryEntry: {
-      ...pageProps.serverDiaryEntry,
-      tags: ZString.convertArrayToCsv(pageProps.serverDiaryEntry.tags),
-    },
-    isRequestPending: false,
-    isPublishModalVisible: false,
-  });
-  const dispatch = Utils.createDispatch(setState);
-
-  const Alerts = useContext(Contexts.Alerts);
+  const [state, setState] = useState(InitialDiaryFormState);
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const trpcContext = trpc.useContext();
 
-  // Determine if diary entry is being published.
-  const isPublish =
-    !DiaryStatic.isPublished(pageProps.serverDiaryEntry) &&
-    DiaryStatic.isPublished(state.diaryEntry);
+  const { mutate: updateDiaryEntry, isLoading: isUpdateLoading } =
+    trpc.diary.update.useMutation({
+      onSuccess: ({ title, status, entryNumber }) => {
+        void trpcContext.diary.findMany.refetch();
+        const isPublished = status === DiaryStatus.PUBLISHED;
+        const verb = isPublished ? 'published' : 'updated';
+        enqueueSnackbar(`Successfully ${verb} '#${entryNumber}: ${title}'.`, {
+          variant: 'success',
+        });
+        void router.push(referer ?? `/diary/${entryNumber}`);
+      },
+      onError: (e) => {
+        enqueueSnackbar(e.message, { variant: 'error' });
+      },
+    });
+  const { data: entry } = trpc.diary.find.useQuery({ where: { id } });
 
-  /** Update diary entry on server. */
-  async function updateDiaryEntry() {
-    try {
-      dispatch({ isRequestPending: true });
-      Validate.diaryEntry(state.diaryEntry);
+  useEffect(() => {
+    if (!entry) return;
+    setState((state) =>
+      immutate(state, {
+        entry: {
+          $set: {
+            ...entry,
+            tags: entry.tags ?? [],
+          },
+        },
+      }),
+    );
+  }, [entry]);
 
-      const payload = buildPayload(state.diaryEntry, isPublish, false);
-      await Utils.request('/api/diary', {
-        method: 'PUT',
-        body: JSON.stringify(payload),
-      });
-      Alerts.success(
-        `You've successfully updated the diary entry for ${ZDate.format(
-          state.diaryEntry.date!,
-        )}.`,
-      );
-      const pageUrl = `${Settings.DOMAIN}/diary/${state.diaryEntry.entryNumber}`;
-      void router.push(
-        document.referrer === pageUrl ? pageUrl : '/admin/diary',
-      );
-    } catch (e: any) {
-      Alerts.error(e.message);
-    } finally {
-      dispatch({ isRequestPending: false });
+  const isPublish = state.entry.status === DiaryStatus.PUBLISHED;
+  const submitText = isPublish ? 'Update & Publish' : 'Update';
+
+  function submitEntry() {
+    updateDiaryEntry({
+      diary: { data: state.entry, where: { id } },
+      isPublish,
+    });
+  }
+
+  function onSubmit() {
+    if (isPublish) {
+      setState((s) => ({ ...s, isPublishModalVisible: true }));
+    } else {
+      submitEntry();
     }
   }
 
-  const onSubmit = isPublish
-    ? () => dispatch({ isPublishModalVisible: true })
-    : updateDiaryEntry;
-  const onSubmitText = state.isRequestPending
-    ? 'Loading...'
-    : isPublish
-    ? 'Update & Publish'
-    : 'Update';
+  function closePublishModal() {
+    setState((s) => ({ ...s, isPublishModalVisible: false }));
+  }
 
   return (
     <AdminGateway>
-      <DiaryEntryForm
-        diaryEntry={state.diaryEntry}
-        handlers={HandlerFactory(setState, 'diaryEntry')}
-        onSubmit={onSubmit}
-        onSubmitText={onSubmitText}
-        onCancel={() => router.push('/admin/diary')}
-      />
-      <Modal
-        visible={state.isPublishModalVisible}
-        body={
-          <p>
-            By publishing this diary entry, you&#39;ll be notifying all
-            subscribers of this new release. Confirm that you want to publish.
-          </p>
-        }
-        footer={
-          <React.Fragment>
-            <ModalStyle.FooterButton
-              variant={ButtonVariant.CONFIRM}
-              onClick={updateDiaryEntry}>
-              {onSubmitText}
-            </ModalStyle.FooterButton>
-            <ModalStyle.FooterButton
-              variant={ButtonVariant.CANCEL}
-              onClick={() => dispatch({ isPublishModalVisible: false })}>
-              Cancel
-            </ModalStyle.FooterButton>
-          </React.Fragment>
-        }
-      />
+      <DiaryFormContext.Provider value={[state, setState]}>
+        <DiaryForm
+          onSubmit={onSubmit}
+          submitText={submitText}
+          isActionLoading={isUpdateLoading}
+        />
+        <ActionDialog
+          open={state.isPublishModalVisible}
+          onConfirm={submitEntry}
+          onCancel={closePublishModal}
+          confirmText={'Publish'}
+          isActionLoading={isUpdateLoading}>
+          By publishing this diary entry, you&#39;ll be notifying all
+          subscribers of this new release. Confirm that you want to publish.
+        </ActionDialog>
+      </DiaryFormContext.Provider>
     </AdminGateway>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<
   DiaryEntryEditProps
-> = async ({ query }) => {
-  const id = parseInt(query.id as string);
-  const diaryEntry = await SSR.Diary.getById(id);
+> = async (ctx) => {
+  const { query, req } = ctx;
+  const id = Number(query.id);
+
+  const helpers = getServerSideHelpers(ctx);
+  await helpers.diary.find.prefetch({ where: { id } });
+
   return {
     props: {
-      pathDefinition: {
-        title: 'Edit Diary Entry',
-      },
-      pageProps: {
-        serverDiaryEntry: JSON.parse(diaryEntry),
-      },
+      id,
+      referer: req.headers.referer,
+      pathDefinition: { title: 'Edit Diary Entry' },
+      trpcState: helpers.dehydrate(),
     },
   };
 };
 
-DiaryEntryEdit.getLayout = Layout.addHeaderOnly;
+DiaryEntryEdit.getLayout = Layout.addPartials;
 export default DiaryEntryEdit;
 
-interface DiaryEntryEditProps {
-  pathDefinition: PathDefinition;
-  pageProps: {
-    serverDiaryEntry: DiaryDAO;
-  };
-}
-
-interface DiaryEntryEditState {
-  diaryEntry: DiaryDAO;
-  isRequestPending: boolean;
-  isPublishModalVisible: boolean;
+interface DiaryEntryEditProps extends AppPageProps {
+  id: number;
+  referer?: string;
 }

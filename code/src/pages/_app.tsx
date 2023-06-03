@@ -1,42 +1,43 @@
-import { SessionProvider, useSession } from 'next-auth/react';
+import {
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+  responsiveFontSizes,
+} from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
-import React, { useEffect, useState } from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import React, { useMemo, useState } from 'react';
+import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { StyleSheetManager, ThemeProvider } from 'styled-components';
 
-import AlertBar from 'components/Alert';
-import Snackbar from 'components/Snack';
-import Contexts from 'constants/contexts';
-import type { AppState } from 'constants/reducers';
-import { AppActions, persistor, store } from 'constants/reducers';
-import Utils from 'constants/utils';
-import AdminGateway from 'fragments/AdminGateway';
 import MatomoScript from 'fragments/MatomoScript';
 import PageMetadata from 'fragments/PageMetadata';
-import CookiePrompt from 'fragments/shared/CookiePrompt';
-import { GlobalStyles } from 'styles/Global.styles';
-import { THEME } from 'styles/Variables.styles';
+import CookiePrompt from 'fragments/Shared/CookiePrompt';
+import SnackbarManager from 'fragments/SnackbarManager';
+import { darkPalette, lightPalette } from 'styles/Palette.styles';
+import { themeOptions } from 'styles/Theme.styles';
+import { NavigationContext } from 'utils/contexts';
+import { persistor, store, useAppSelector } from 'utils/reducers';
+import { trpc } from 'utils/trpc';
 
-const isDevelopmentMode = process.env.NEXT_PUBLIC_APP_ENV === 'development';
-
-export default function App(props: AppProps) {
+const App = (props: AppProps) => {
   return (
     <React.Fragment>
       <PageMetadata {...props.pageProps.pathDefinition} />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <SessionProvider session={props.pageProps.session}>
-            <StyleSheetManager disableVendorPrefixes={isDevelopmentMode}>
-              <ZAVIDApp {...props} />
-            </StyleSheetManager>
+            <ZAVIDApp {...props} />
           </SessionProvider>
         </PersistGate>
       </Provider>
     </React.Fragment>
   );
-}
+};
+
+export default trpc.withTRPC(App);
 
 /**
  * The root of the ZAVID blog.
@@ -46,160 +47,34 @@ export default function App(props: AppProps) {
  * @returns The full page including the header and footer.
  */
 function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
-  const [state, setState] = useState<ZavidAppState>({
-    alerts: [],
-    snacks: [],
-    isNavigationFocused: false,
-  });
-  const dispatch = Utils.createDispatch(setState);
+  const [isNavOpen, setNavOpen] = useState(false);
+  const mode = useAppSelector((state) => state.local.theme);
 
-  const appState = useSelector((state: AppState) => state);
-  const appDispatch = useDispatch();
-  const theme = THEME[appState.local.appTheme];
-
-  const { data: session, status } = useSession();
-  const email = session?.user?.email;
-
-  /**
-   * Sets the timeout for any displayed snacks unless the snack is defined to be
-   * indefinite.
-   */
-  useEffect(() => {
-    const index = state.snacks.findIndex(
-      ({ duration }) => typeof duration === 'number',
-    );
-    if (index === -1) return;
-
-    const duration = state.snacks[index].duration;
-    if (typeof duration === 'number') {
-      const timeout = setTimeout(() => {
-        removeSnack(index);
-      }, duration);
-
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.snacks.length]);
-
-  /**
-   * Shows snack if user is logged in.
-   */
-  useEffect(() => {
-    if (status !== 'authenticated' || appState.session.loginSnackShown) return;
-    addSnack({ message: `Signed in as ${email}.` });
-    appDispatch(AppActions.setLoginSnackShown(true));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [email, status]);
-
-  /**
-   * Adds an alert on the alert bar.
-   * @param alert The alert definition.
-   */
-  function addAlert(alert: AlertDefinition) {
-    dispatch({ alerts: [...state.alerts, alert] });
-  }
-
-  /**
-   * Removes the alert at the specified index from the list of alerts.
-   * @param index The alert to remove.
-   */
-  function removeAlert(index: number) {
-    const alerts = [...state.alerts];
-    alerts.splice(index, 1);
-    dispatch({ alerts });
-  }
-
-  /**
-   * Adds a snack to show on the snack bar.
-   * @param snack The snack definition.
-   */
-  function addSnack(snack: SnackDefinition) {
-    dispatch({ snacks: [...state.snacks, snack] });
-  }
-
-  /**
-   * Removes the snack at the specified index from the list of snacks.
-   * @param index The snack to remove.
-   */
-  function removeSnack(index: number) {
-    const snacks = [...state.snacks];
-    snacks.splice(index, 1);
-    dispatch({ snacks });
-  }
+  // Use theme for MUI.
+  const theme = useMemo(() => {
+    const palette = mode === 'light' ? lightPalette : darkPalette;
+    const options = { ...themeOptions, palette };
+    return responsiveFontSizes(createTheme(options));
+  }, [mode]);
 
   // Configure layouts for all child components;
   const getLayout = Component.getLayout ?? ((page) => page);
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
 
-  const providedContexts: ContextsProviderProps = {
-    alerts: {
-      alerts: state.alerts,
-      set: addAlert,
-      remove: removeAlert,
-      success: (message) => addAlert({ type: 'success', message }),
-      error: (message) => addAlert({ type: 'error', message }),
-      report(message: string, shouldBeExplicit?: boolean): void {
-        if (
-          process.env.NEXT_PUBLIC_APP_ENV === 'production' &&
-          !shouldBeExplicit
-        ) {
-          this.error('There was a problem. Please try again later.');
-          console.error(message);
-        } else {
-          this.error(message);
-        }
-      },
-    },
-    snacks: {
-      snacks: state.snacks,
-      add: addSnack,
-      remove: removeSnack,
-    },
-    navigation: [
-      state.isNavigationFocused,
-      (isOpen) => dispatch({ isNavigationFocused: isOpen }),
-    ],
-  };
-
   return (
-    <AdminGateway onlyBlockInStaging={true}>
-      <ContextsProvider {...providedContexts}>
-        <MatomoScript />
-        <ThemeProvider theme={theme}>
-          <GlobalStyles />
-          {ComponentWithLayout}
+    <React.Fragment>
+      <MatomoScript />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <SnackbarManager>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <NavigationContext.Provider value={[isNavOpen, setNavOpen]}>
+              {ComponentWithLayout}
+            </NavigationContext.Provider>
+          </LocalizationProvider>
           <CookiePrompt />
-          <Snackbar />
-          <AlertBar />
-        </ThemeProvider>
-      </ContextsProvider>
-    </AdminGateway>
+        </SnackbarManager>
+      </ThemeProvider>
+    </React.Fragment>
   );
-}
-
-function ContextsProvider({ children, ...props }: ContextsProviderProps) {
-  return (
-    <Contexts.Alerts.Provider value={props.alerts}>
-      <Contexts.Navigation.Provider value={props.navigation}>
-        <Contexts.Snacks.Provider value={props.snacks}>
-          {children}
-        </Contexts.Snacks.Provider>
-      </Contexts.Navigation.Provider>
-    </Contexts.Alerts.Provider>
-  );
-}
-
-interface ZavidAppState {
-  alerts: AlertDefinition[];
-  snacks: SnackDefinition[];
-  isNavigationFocused: boolean;
-}
-
-interface ContextsProviderProps extends React.PropsWithChildren {
-  alerts: Contexts.AlertsProps;
-  navigation: Contexts.NavigationProps;
-  snacks: Contexts.SnacksProps;
 }

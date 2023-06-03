@@ -1,55 +1,30 @@
+import { DiaryStatus } from '@prisma/client';
 import type { GetServerSideProps, NextPage } from 'next';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
-import { PostStatic } from 'classes/posts/PostStatic';
-import { IDiaryStatus, IPostStatus, IPostType } from 'constants/enums';
-import Settings from 'constants/settings';
-import DiaryAPI from 'private/api/diary';
-import PageAPI from 'private/api/pages';
-import PostAPI from 'private/api/posts';
+import DiaryAPI from 'server/api/diary';
+import PageAPI from 'server/api/pages';
+import Settings from 'utils/settings';
 
-// eslint-disable-next-line react/function-component-definition
 const Sitemap: NextPage = () => {
   return null;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const routes = [
-    '/',
-    '/reveries',
-    '/epistles',
-    '/diary',
-    '/search',
-    '/subscribe',
-  ];
+  const routes = ['/', '/diary', '/subscribe'];
 
-  const getPosts = PostAPI.getAll({
-    type: { include: [IPostType.REVERIE, IPostType.EPISTLE] },
-    status: {
-      include: [IPostStatus.PUBLISHED],
-    },
-  });
-  const getDiaryEntries = DiaryAPI.getAll({
-    status: { include: [IDiaryStatus.PUBLISHED] },
-  });
-  const getPages = PageAPI.getAll({ isEmbed: false });
-  const [posts, diaryEntries, pages] = await Promise.all([
-    getPosts,
-    getDiaryEntries,
-    getPages,
+  const [diaryEntries, pages] = await Promise.all([
+    DiaryAPI.findMany({
+      where: { status: DiaryStatus.PUBLISHED },
+    }),
+    PageAPI.findMany({ where: { isEmbed: false } }),
   ]);
 
-  posts.forEach((post) => {
-    if (PostStatic.isReverie(post)) {
-      routes.push(`/reveries/${post.slug}`);
-    } else if (PostStatic.isEpistle(post)) {
-      routes.push(`/epistles/${post.slug}`);
-    }
-  });
-  diaryEntries.forEach((diaryEntry) =>
-    routes.push(`/diary/${diaryEntry.entryNumber}`),
+  diaryEntries.forEach(({ entryNumber }) =>
+    routes.push(`/diary/${entryNumber}`),
   );
-  pages.forEach((page) => routes.push(`/${page.slug}`));
+  pages.forEach(({ slug }) => routes.push(`/${slug}`));
+
   Object.keys(Settings.RESOURCE_MAP).forEach((slug) =>
     routes.push(`/resources/${slug}`),
   );

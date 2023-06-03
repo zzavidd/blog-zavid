@@ -7,6 +7,9 @@ executors:
   ssh:
     docker:
       - image: arvindr226/alpine-ssh
+  playwright:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.34.3-jammy
 
 commands:
   install_dependencies:
@@ -14,24 +17,28 @@ commands:
     steps:
       - checkout
       - restore_cache:
-          name: Restore pnpm cache
+          name: "Restore pnpm cache"
           keys:
             - pnpm-packages-{{ checksum "./code/pnpm-lock.yaml" }}
       - run:
-          name: Install pnpm package manager
+          name: "Install pnpm package manager"
           command: |
             corepack enable
-            corepack prepare pnpm@8.1.0 --activate
+            corepack prepare pnpm@8.2.0 --activate
           working_directory: ./code
       - run:
-          name: Install dependencies
+          name: "Install dependencies"
           command: pnpm install
           working_directory: ./code
       - save_cache:
-          name: Save pnpm cache
+          name: "Save pnpm cache"
           key: pnpm-packages-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
             - node_modules
+      - run:
+          name: "Generate Prisma models"
+          command: pnpm prisma generate
+          working_directory: ./code
   transfer_scripts:
     description: "Transfers deployment scripts via SCP"
     parameters:
@@ -40,7 +47,7 @@ commands:
     steps:
       - checkout
       - run:
-          name: Transfer scripts
+          name: "Transfer scripts"
           command: scp -o StrictHostKeyChecking=no -r ./devops/scripts/* $SSH_USER@$SSH_ADDRESS:/home/circleci/scripts/
           no_output_timeout: 30s
       - run:
@@ -54,11 +61,11 @@ jobs:
     steps:
       - install_dependencies
       - run:
-          name: Run TypeScript checks
-          command: pnpm run tsc
+          name: "Run TypeScript checks"
+          command: pnpm run tsc:ci
           working_directory: ./code
       - run:
-          name: Run ESLint
+          name: "Run ESLint"
           command: pnpm run eslint --max-warnings 0
           working_directory: ./code
   build:
@@ -66,21 +73,25 @@ jobs:
     steps:
       - install_dependencies
       - restore_cache:
-          name: Restore build cache
+          name: "Restore build cache"
           keys:
             - next-build-{{ checksum "./code/pnpm-lock.yaml" }}
       - run:
-          name: Initialise Prisma client
-          command: pnpm prisma generate
-          working_directory: ./code
-      - run:
-          name: Build project
+          name: "Build project"
           command: pnpm run build
           working_directory: ./code
       - save_cache:
           key: next-build-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
             - code/.next/cache
+  test:
+    executor: playwright
+    steps:
+      - install_dependencies
+      - run:
+          name: "Run e2e tests"
+          command: pnpm run test
+          working_directory: ./code
   deploy_staging:
     executor: ssh
     steps:
@@ -105,10 +116,16 @@ workflows:
             branches:
               ignore:
                 - production
+      - test:
+          filters:
+            branches:
+              ignore:
+                - production
       - deploy_staging:
           requires:
             - inspect
             - build
+            - test
           filters:
             branches:
               only:

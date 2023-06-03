@@ -1,19 +1,19 @@
-import { useSession } from 'next-auth/react';
+import Cookies from 'js-cookie';
 import Script from 'next/script';
-import React from 'react';
+
+import { useIsAdmin } from 'utils/hooks';
+import Settings from 'utils/settings';
 
 export default function MatomoScript() {
-  const { data: session, status } = useSession({ required: false });
+  const isAdmin = useIsAdmin();
 
   // Only track on production.
   if (process.env.NEXT_PUBLIC_APP_ENV !== 'production') return null;
 
   // Don't track if user is admin.
-  if (
-    status === 'loading' ||
-    (status === 'authenticated' &&
-      session.user?.email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL)
-  ) {
+  const enableTracking =
+    !isAdmin && Cookies.get(Settings.COOKIE_NAME) === 'true';
+  if (!enableTracking) {
     return null;
   }
 

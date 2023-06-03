@@ -13,16 +13,29 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "sourceMap": true,
     "strict": true,
     "target": "es6",
     "tsBuildInfoFile": ".tsbuildinfo"
   },
   "include": [
     "next-env.d.ts",
+    "playwright.config.ts",
+    "ops/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "test/**/*.ts",
     "types/**/*.d.ts"
   ],
-  "exclude": ["node_modules", "ops/**/*"]
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "compilerOptions": {
+      "baseUrl": "./src",
+      "jsx": "react-jsx",
+      "module": "CommonJS",
+      "paths": {
+        "server/*": ["./server/*"],
+        "utils/*": ["./utils/*"]
+      }
+    }
+  }
 }

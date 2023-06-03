@@ -1,20 +1,31 @@
+import { DiaryStatus } from '@prisma/client';
 import type { GetServerSideProps, NextPage } from 'next';
+import invariant from 'tiny-invariant';
 
-import SSR from 'private/ssr';
+import DiaryAPI from 'server/api/diary';
 
-// eslint-disable-next-line react/function-component-definition
 const LatestDiaryEntryPage: NextPage = () => {
   return null;
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const latestDiaryEntry = JSON.parse(await SSR.Diary.getLatest()) as DiaryDAO;
-  return {
-    redirect: {
-      destination: `/diary/${latestDiaryEntry.entryNumber}`,
-      permanent: false,
-    },
-  };
+  try {
+    const entry = await DiaryAPI.find({
+      orderBy: { entryNumber: 'desc' },
+      where: { status: DiaryStatus.PUBLISHED },
+    });
+    invariant(entry, 'No diary entry found.');
+    return {
+      redirect: {
+        destination: `/diary/${entry.entryNumber}`,
+        permanent: false,
+      },
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export default LatestDiaryEntryPage;

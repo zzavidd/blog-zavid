@@ -1,7 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import React from 'react';
 
-import Settings from 'constants/settings';
+import Settings from 'utils/settings';
 
 // eslint-disable-next-line react/function-component-definition
 const Resource: NextPage<ResourceProps> = ({ href }) => {
