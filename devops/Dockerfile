@@ -1,7 +1,7 @@
 FROM node:18-slim AS builder
 
 RUN corepack enable
-RUN corepack prepare pnpm@8.1.0 --activate
+RUN corepack prepare pnpm@8.2.0 --activate
 
 RUN apt-get update -y && apt-get install -y openssl
 
@@ -22,7 +22,7 @@ FROM node:18-slim AS runner
 ARG WORKDIR
 
 RUN corepack enable
-RUN corepack prepare pnpm@8.1.0 --activate
+RUN corepack prepare pnpm@8.2.0 --activate
 
 WORKDIR /var/www/$WORKDIR/code
 
