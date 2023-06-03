@@ -1,6 +1,6 @@
 import type { Diary, Prisma } from '@prisma/client';
 
-import Emailer from 'private/emails';
+import Emailer from 'server/emails';
 import prisma from 'server/prisma';
 
 export default class DiaryAPI {

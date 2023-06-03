@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import Emailer from '../src/private/emails';
+import Emailer from '../src/server/emails';
 
 const prisma = new PrismaClient();
 
