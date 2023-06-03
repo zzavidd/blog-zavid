@@ -32,6 +32,10 @@ commands:
           key: pnpm-packages-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
             - node_modules
+       - run:
+          name: Generate Prisma models
+          command: pnpm prisma generate
+          working_directory: ./code
   transfer_scripts:
     description: "Transfers deployment scripts via SCP"
     parameters:
@@ -55,7 +59,7 @@ jobs:
       - install_dependencies
       - run:
           name: Run TypeScript checks
-          command: pnpm run tsc
+          command: pnpm run tsc:ci
           working_directory: ./code
       - run:
           name: Run ESLint
