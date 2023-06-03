@@ -74,10 +74,6 @@ jobs:
           keys:
             - next-build-{{ checksum "./code/pnpm-lock.yaml" }}
       - run:
-          name: Initialise Prisma client
-          command: pnpm prisma generate
-          working_directory: ./code
-      - run:
           name: Build project
           command: pnpm run build
           working_directory: ./code
@@ -85,6 +81,14 @@ jobs:
           key: next-build-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
             - code/.next/cache
+  test:
+    executor: node
+    steps:
+      - install_dependencies
+      - run:
+          name: Run e2e tests
+          command: pnpm run test
+          working_directory: ./code
   deploy_staging:
     executor: ssh
     steps:
@@ -109,10 +113,16 @@ workflows:
             branches:
               ignore:
                 - production
+      - test:
+          filters:
+            branches:
+              ignore:
+                - production
       - deploy_staging:
           requires:
             - inspect
             - build
+            - test
           filters:
             branches:
               only:
