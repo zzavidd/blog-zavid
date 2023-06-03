@@ -83,7 +83,7 @@ jobs:
       - save_cache:
           key: next-build-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
-            - code/.next/cache
+            - ./code/.next/cache
   test:
     executor: playwright
     steps:
@@ -92,6 +92,8 @@ jobs:
           name: "Run e2e tests"
           command: pnpm run test
           working_directory: ./code
+      - store_test_results:
+          path: ./code/test/results/
   deploy_staging:
     executor: ssh
     steps:

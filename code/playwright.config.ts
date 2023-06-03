@@ -29,11 +29,13 @@ export default defineConfig({
     timeout: 1000,
   },
   forbidOnly: !!process.env.CI,
-  // fullyParallel: true,
   outputDir: './test/results',
   preserveOutput: 'never',
   projects,
-  // reporter: 'html',
+  quiet: true,
+  reporter: process.env.CI
+    ? [['list'], ['junit', { outputFile: './test/results/results.xml' }]]
+    : [['list']],
   retries: process.env.CI ? 2 : 0,
   testDir: './test',
   timeout: 5 * 1000,
@@ -46,5 +48,5 @@ export default defineConfig({
     url: 'http://localhost:4000',
     reuseExistingServer: !process.env.CI,
   },
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
 });

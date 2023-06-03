@@ -24,3 +24,23 @@ export function createDiaryEntry(
     ...overrides,
   };
 }
+
+export function createSubscriber(
+  overrides: Partial<Prisma.SubscriberCreateInput> = {},
+): Prisma.SubscriberCreateInput {
+  const name = {
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+  };
+  return {
+    email: faker.internet.email(name),
+    firstname: name.firstName,
+    lastname: name.lastName,
+    subscriptions: {
+      Diary: faker.datatype.boolean(),
+      Reverie: faker.datatype.boolean(),
+    },
+    token: faker.string.uuid(),
+    ...overrides,
+  };
+}

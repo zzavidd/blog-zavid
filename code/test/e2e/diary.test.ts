@@ -10,16 +10,12 @@ const diary = createDiaryEntry({ entryNumber });
 
 test.describe('Diary', () => {
   [
-    { name: 'can view published page', status: DiaryStatus.PUBLISHED },
-    { name: 'can view private page', status: DiaryStatus.PRIVATE },
-    {
-      name: 'can view protected page',
-      status: DiaryStatus.PROTECTED,
-      expect404: true,
-    },
-    { name: 'can view draft page', status: DiaryStatus.DRAFT, expect404: true },
-  ].forEach(({ name, status, expect404 }) => {
-    test(name, async ({ page }) => {
+    { status: DiaryStatus.PUBLISHED },
+    { status: DiaryStatus.PRIVATE },
+    { status: DiaryStatus.PROTECTED, expect404: true },
+    { status: DiaryStatus.DRAFT, expect404: true },
+  ].forEach(({ status, expect404 }) => {
+    test(`can view ${status} page`, async ({ page }) => {
       diary.status = status;
       await prisma.diary.upsert({
         create: diary,
