@@ -1,7 +1,8 @@
 import {
+  BookRounded,
   DarkMode,
+  Email,
   LightModeOutlined as LightModeOutlinedIcon,
-  Lock as LockIcon,
   Login as LoginIcon,
   Logout as LogoutIcon,
 } from '@mui/icons-material';
@@ -47,6 +48,7 @@ export default function Header() {
 
   return (
     <AppBar
+      color={'default'}
       position={'sticky'}
       sx={{
         paddingInline: (t) => t.spacing(2),
@@ -123,19 +125,19 @@ function AuthButton() {
   const adminOnlyMenuItems = isAdmin
     ? [
         {
-          label: 'Diary',
-          icon: <LockIcon />,
+          label: 'Manage Diary',
+          Icon: BookRounded,
           href: '/admin/diary',
         },
         {
-          label: 'Subscribers',
-          icon: <LockIcon />,
+          label: 'Manage Subscribers',
+          Icon: Email,
           href: '/admin/subscribers',
         },
       ]
     : [];
   const menuItems = [
-    { label: 'Sign Out', icon: <LogoutIcon />, onClick: () => signOut() },
+    { label: 'Sign Out', Icon: LogoutIcon, onClick: () => signOut() },
   ];
   return (
     <React.Fragment>
@@ -172,14 +174,16 @@ function AuthButton() {
             <Typography variant={'body2'}>{user.email}</Typography>
           </Stack>
         </MenuItem>
-        {adminOnlyMenuItems.map(({ label, icon, href }) => (
+        {adminOnlyMenuItems.map(({ label, Icon, href }) => (
           <Link color={'inherit'} underline={'none'} href={href} key={href}>
             <MenuItem sx={menuItemSxProps}>
-              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemIcon>
+                <Icon color={'primary'} />
+              </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{
                   fontSize: 18,
-                  variant: 'h4',
+                  variant: 'h5',
                   m: 0,
                 }}>
                 {label}
@@ -188,13 +192,15 @@ function AuthButton() {
             </MenuItem>
           </Link>
         ))}
-        {menuItems.map(({ label, icon, onClick }, key) => (
+        {menuItems.map(({ label, Icon, onClick }, key) => (
           <MenuItem onClick={onClick} sx={menuItemSxProps} key={key}>
-            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemIcon>
+              <Icon color={'primary'} />
+            </ListItemIcon>
             <ListItemText
               primaryTypographyProps={{
                 fontSize: 18,
-                variant: 'h4',
+                variant: 'h5',
                 m: 0,
               }}>
               {label}

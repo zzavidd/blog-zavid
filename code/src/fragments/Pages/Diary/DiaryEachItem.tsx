@@ -49,7 +49,10 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
             ) : null}
             <Time mb={2} variant={'body2'} date={entry.date} />
             <Typography variant={'h3'}>
-              Diary Entry #{entry.entryNumber}: {entry.title}
+              <Typography color={'primary'} variant={'h3'} display={'inline'}>
+                Diary Entry #{entry.entryNumber}:&nbsp;
+              </Typography>
+              {entry.title}
             </Typography>
             <Divider sx={{ marginBlock: (t) => t.spacing(4) }} />
             <Paragraph

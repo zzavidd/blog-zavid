@@ -4,7 +4,7 @@ import { purple } from '@mui/material/colors';
 export const lightPalette: PaletteOptions = {
   mode: 'light',
   primary: {
-    main: purple['A100'],
+    main: purple['400'],
   },
   divider: 'rgba(0,0,0,0.3)',
   contrastThreshold: 4.5,

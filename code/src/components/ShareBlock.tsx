@@ -80,7 +80,7 @@ function ShareLink({ url }: SocialShareProps) {
   return (
     <Box>
       <IconButton onClick={copyLink} sx={{ backgroundColor: 'primary.main' }}>
-        <ShareIcon fontSize={'large'} />
+        <ShareIcon fontSize={'large'} sx={{ color: 'white' }} />
       </IconButton>
     </Box>
   );
