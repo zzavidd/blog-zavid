@@ -27,6 +27,7 @@ RUN corepack prepare pnpm@8.2.0 --activate
 WORKDIR /var/www/$WORKDIR/code
 
 COPY --from=builder /var/www/$WORKDIR/code/package.json .
+COPY --from=builder /var/www/$WORKDIR/code/.env.local .
 COPY --from=builder /var/www/$WORKDIR/code/pnpm-lock.yaml .
 COPY --from=builder /var/www/$WORKDIR/code/next.config.js .
 COPY --from=builder /var/www/$WORKDIR/code/.next/standalone .

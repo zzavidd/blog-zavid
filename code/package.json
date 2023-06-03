@@ -19,7 +19,8 @@
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
     "prettier:write": "pnpm run prettier --write",
     "ops:ingest": "ts-node ops/ingestion",
-    "ops:publish": "ts-node -r tsconfig-paths/register ops/publishing"
+    "ops:publish": "ts-node -r tsconfig-paths/register ops/publishing",
+    "devops:secrets": "../devops/scripts/env/upload-secrets.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
