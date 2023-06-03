@@ -7,10 +7,9 @@ executors:
   ssh:
     docker:
       - image: arvindr226/alpine-ssh
-  executors:
-   playwright:
-     docker:
-       - image: mcr.microsoft.com/playwright:v1.34.3-jammy
+  playwright:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.34.3-jammy
 
 commands:
   install_dependencies:
