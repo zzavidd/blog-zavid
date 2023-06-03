@@ -32,7 +32,7 @@ commands:
           key: pnpm-packages-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
             - node_modules
-       - run:
+      - run:
           name: Generate Prisma models
           command: pnpm prisma generate
           working_directory: ./code
