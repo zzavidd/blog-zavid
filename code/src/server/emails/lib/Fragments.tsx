@@ -64,11 +64,11 @@ export function EmailBody({ children }: React.PropsWithChildren) {
   );
 }
 
-export function Header({ children }: React.PropsWithChildren) {
+export function EmailHeader({ children }: React.PropsWithChildren) {
   return (
     <MjmlSection backgroundColor={Theme.Primary} padding={0}>
       <MjmlColumn>
-        <MjmlText color={Theme.Text} fontSize={12} padding={'16px 24px'}>
+        <MjmlText color={Theme.Text} fontSize={14} padding={'16px 24px'}>
           {children}
         </MjmlText>
       </MjmlColumn>
@@ -114,7 +114,11 @@ export function EmailFooter(props: EmailFooterProps) {
                 <td style={{ textAlign: 'center' }}>
                   <Anchor
                     href={`${Settings.DOMAIN}${url}`}
-                    style={{ color: Theme.Text, fontWeight: 600 }}>
+                    style={{
+                      color: Theme.Text,
+                      fontSize: 14,
+                      fontWeight: 600,
+                    }}>
                     {title}
                   </Anchor>
                 </td>
@@ -168,9 +172,9 @@ function EmailFooterText(props: IMjmlTextProps) {
   return (
     <MjmlText
       align={'center'}
-      fontSize={12}
-      lineHeight={18}
-      paddingBottom={8}
+      fontSize={14}
+      padding={'12px 0'}
+      lineHeight={24}
       {...props}
     />
   );

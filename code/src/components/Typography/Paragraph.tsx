@@ -1,13 +1,13 @@
 import { SendRounded } from '@mui/icons-material';
 import type { TypographyProps } from '@mui/material';
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
 
 import { LinkButton } from 'components/Link';
 import * as zText from 'utils/lib/text';
 
 const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
-  (props, ref) => {
+  function Paragraph(props, ref) {
     const {
       children,
       keepRichFormatOnTruncate,
@@ -17,6 +17,7 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
       truncate = 0,
       ...preProps
     } = props;
+    const theme = useTheme();
 
     const text = useMemo(() => {
       const result = truncate
@@ -44,7 +45,7 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           mb={showReadMore ? 4 : 0}
           ref={ref}
           {...preProps}>
-          {zText.formatText(text, { typographyVariant: props.variant })}
+          {zText.formatText(text, { theme, typographyVariant: props.variant })}
         </Typography>
         {showReadMore ? (
           <LinkButton

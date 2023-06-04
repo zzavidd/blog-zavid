@@ -1,16 +1,20 @@
 import { Mjml, MjmlText } from '@faire/mjml-react';
 import type { Diary } from '@prisma/client';
 
-import ZDate from 'utils/lib/date';
-import * as ZText from 'utils/lib/text';
 import Settings from 'utils/settings';
 
-import { Anchor, Heading as EmailTitle } from '../lib/Components';
+import {
+  Anchor,
+  EmailDate,
+  EmailDivider,
+  EmailParagraph,
+  EmailTitle,
+} from '../lib/Components';
 import {
   EmailBody,
   EmailFooter,
   EmailHead,
-  Header,
+  EmailHeader,
   Main,
   SignatureImage,
 } from '../lib/Fragments';
@@ -22,20 +26,19 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
     <Mjml>
       <EmailHead title={title} />
       <EmailBody>
-        <Header>
+        <EmailHeader>
           New diary entry on ZAVID.&nbsp;
           <Anchor href={href}>Visit on site.</Anchor>
-        </Header>
+        </EmailHeader>
         <Main>
           <EmailTitle>{diaryEntry.title}</EmailTitle>
-          <MjmlText>
-            <p>{ZDate.format(diaryEntry.date)}</p>
-          </MjmlText>
-          {ZText.formatText(diaryEntry.content, { forEmails: true })}
+          <EmailDate date={diaryEntry.date} />
+          <EmailDivider />
+          <EmailParagraph>{diaryEntry.content}</EmailParagraph>
           <MjmlText>
             <SignatureImage />
           </MjmlText>
-          {ZText.formatText(diaryEntry.footnote, { forEmails: true })}
+          <EmailParagraph>{diaryEntry.footnote}</EmailParagraph>
         </Main>
         <EmailFooter
           showUnsubscribe={true}

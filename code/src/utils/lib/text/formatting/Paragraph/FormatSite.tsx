@@ -10,26 +10,48 @@ import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 
-import { NextImage } from 'components/Image';
-
+import type { FormatTextOptions } from '../../functions';
 import { Section } from '../../regex';
 import { applyEmphasisFormatting } from '../Emphasis';
 
 const FormatSite: Record<Section, RenderValue> = {
-  [Section.HEADING]: ([, text]) => (
-    <Typography variant={'h3'} my={5}>
+  [Section.PARAGRAPH]: ([, text], key, { typographyVariant }) => (
+    <Typography variant={typographyVariant} mt={key ? 5 : 0} key={key}>
+      {applyEmphasisFormatting(text)}
+    </Typography>
+  ),
+  [Section.HEADING]: ([, text], key) => (
+    <Typography variant={'h3'} my={5} key={key}>
       {text}
     </Typography>
   ),
-  [Section.SUBHEADING]: ([, text]) => (
-    <Typography variant={'h4'}>{text}</Typography>
+  [Section.SUBHEADING]: ([, text], key) => (
+    <Typography
+      variant={'h4'}
+      fontWeight={800}
+      textTransform={'capitalize'}
+      my={5}
+      key={key}>
+      {text}
+    </Typography>
   ),
-  [Section.IMAGE]: ([, alt, src]) => (
-    <NextImage src={src} alt={alt} loading={'lazy'} />
+  [Section.IMAGE]: ([, alt, src], key, { theme }) => (
+    <img
+      src={src}
+      alt={alt}
+      loading={'lazy'}
+      style={{
+        borderRadius: `${theme?.shape.borderRadius}px`,
+        marginTop: theme?.spacing(5),
+        objectFit: 'contain',
+        width: '100%',
+      }}
+      key={key}
+    />
   ),
-  [Section.DIVIDER]: () => <Divider />,
-  [Section.BULLET_LIST]: ([, isSpacedBlock, list]) => (
-    <List disablePadding={!isSpacedBlock}>
+  [Section.DIVIDER]: (_, key) => <Divider sx={{ my: 5 }} key={key} />,
+  [Section.BULLET_LIST]: ([, isSpacedBlock, list], key) => (
+    <List disablePadding={!isSpacedBlock} key={key}>
       {list
         .split('\n')
         .filter((e) => e)
@@ -43,8 +65,8 @@ const FormatSite: Record<Section, RenderValue> = {
         })}
     </List>
   ),
-  [Section.NUMBERED_LIST]: ([, isSpacedBlock, list]) => (
-    <List disablePadding={!isSpacedBlock}>
+  [Section.NUMBERED_LIST]: ([, isSpacedBlock, list], key) => (
+    <List disablePadding={!isSpacedBlock} key={key}>
       {list
         .split('\n')
         .filter((e) => e)
@@ -58,8 +80,21 @@ const FormatSite: Record<Section, RenderValue> = {
         })}
     </List>
   ),
-  [Section.BLOCKQUOTE]: ([, text]) => (
-    <Typography component={'blockquote'}>
+  [Section.BLOCKQUOTE]: ([, text], key) => (
+    <Typography
+      component={'blockquote'}
+      sx={{
+        borderInline: (t) =>
+          `${t.spacing(1)} solid ${t.palette.text.secondary}`,
+        borderRadius: 2,
+        fontStyle: 'italic',
+        fontWeight: 800,
+        my: 5,
+        px: 5,
+        py: 4,
+        textAlign: 'center',
+      }}
+      key={key}>
       {applyEmphasisFormatting(text)}
     </Typography>
   ),
@@ -109,4 +144,8 @@ const FormatSite: Record<Section, RenderValue> = {
 
 export default FormatSite;
 
-type RenderValue = (match: RegExpMatchArray) => React.ReactNode;
+type RenderValue = (
+  match: RegExpMatchArray,
+  index: number,
+  options: FormatTextOptions,
+) => React.ReactNode;

@@ -22,6 +22,7 @@ export enum Emphasis {
  * Ordered chronologically
  */
 export enum Section {
+  PARAGRAPH = 'paragraph',
   HEADING = 'heading',
   SUBHEADING = 'subheading',
   IMAGE = 'image',
@@ -94,10 +95,13 @@ export const emphasisRegexMapping: Record<Emphasis, EmphasisRegexValue> = {
  * The regex mapping for section constants.
  * Ordered in terms of power.
  */
-export const sectionRegexMapping: Record<Section, RegExp> = {
+export const sectionRegexMapping: Record<
+  Exclude<Section, Section.PARAGRAPH>,
+  RegExp
+> = {
   [Section.HEADING]: new RegExp(/^\#\s(.*?)$/),
   [Section.SUBHEADING]: new RegExp(/^\#{2}\s(.*?)$/),
-  [Section.IMAGE]: new RegExp(/^\!\[(.*?)\]\((\S*.(?:jpe?g|png|svg))\)(F?)$/),
+  [Section.IMAGE]: new RegExp(/^\!\[(.*?)\]\((\S*.)\)(F?)$/),
   [Section.AUDIO]: new RegExp(/^\!\[(.*?)\]\((\S*.(?:mp3|wav|caf))\)(F?)$/),
   [Section.DIVIDER]: new RegExp(/^(\-{3}|\_{3})$/),
   [Section.BULLET_LIST]: new RegExp(/\:\:ul(b)?\n((?:\+\s*.*\n+)*)\:\:end/),

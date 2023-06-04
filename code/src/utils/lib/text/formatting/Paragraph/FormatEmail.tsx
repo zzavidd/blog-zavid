@@ -1,26 +1,54 @@
 import { MjmlButton, MjmlDivider, MjmlText } from '@faire/mjml-react';
 import React from 'react';
 
+import type { FormatTextOptions } from '../..';
 import { Section } from '../../regex';
 import { applyEmphasisFormatting } from '../Emphasis';
 
 const FormatEmail: Record<Section, RenderValue> = {
-  [Section.HEADING]: ([, text]) => (
-    <MjmlText>
-      <h2>{text}</h2>
-    </MjmlText>
+  [Section.PARAGRAPH]: ([, text], key) => (
+    <p key={key}>{applyEmphasisFormatting(text)}</p>
   ),
-  [Section.SUBHEADING]: ([, text]) => (
-    <MjmlText>
-      <h3>{text}</h3>
-    </MjmlText>
+  [Section.HEADING]: ([, text], key) => (
+    <h2 style={{ fontFamily: 'Calistoga' }} key={key}>
+      {text}
+    </h2>
   ),
-  [Section.IMAGE]: ([, alt, src]) => (
-    <MjmlText>
-      <img src={src} alt={alt} style={{ objectFit: 'cover', width: '100%' }} />
-    </MjmlText>
+  [Section.SUBHEADING]: ([, text], key) => (
+    <h3 style={{ fontFamily: 'Calistoga' }} key={key}>
+      {text}
+    </h3>
   ),
-  [Section.DIVIDER]: () => <MjmlDivider />,
+  [Section.IMAGE]: ([, alt, src], key) => (
+    <img
+      src={src}
+      alt={alt}
+      style={{
+        borderRadius: 8,
+        objectFit: 'contain',
+        width: '100%',
+      }}
+      key={key}
+    />
+  ),
+  [Section.BLOCKQUOTE]: ([, text], key) => (
+    <blockquote
+      key={key}
+      style={{
+        borderLeft: '6px solid rgba(0,0,0,0.6)',
+        borderRight: '6px solid rgba(0,0,0,0.6)',
+        borderRadius: 28,
+        fontStyle: 'italic',
+        fontWeight: 800,
+        lineHeight: '28px',
+        margin: '16px 0',
+        padding: '16px 24px',
+        textAlign: 'center',
+      }}>
+      {applyEmphasisFormatting(text)}
+    </blockquote>
+  ),
+  [Section.DIVIDER]: (_, key) => <MjmlDivider padding={'12px 0'} key={key} />,
   [Section.BULLET_LIST]: ([, , list]) => (
     <MjmlText>
       <ul>
@@ -47,11 +75,6 @@ const FormatEmail: Record<Section, RenderValue> = {
       </ol>
     </MjmlText>
   ),
-  [Section.BLOCKQUOTE]: ([, text]) => (
-    <MjmlText>
-      <blockquote>{applyEmphasisFormatting(text)}</blockquote>
-    </MjmlText>
-  ),
   [Section.TWEET]: ([, tweetId]) => (
     <MjmlButton href={`https://twitter.com/web/status/${tweetId}`}>
       View tweet
@@ -75,4 +98,8 @@ const FormatEmail: Record<Section, RenderValue> = {
 
 export default FormatEmail;
 
-type RenderValue = (match: RegExpMatchArray) => React.ReactNode;
+type RenderValue = (
+  match: RegExpMatchArray,
+  index: number,
+  options: FormatTextOptions,
+) => React.ReactNode;

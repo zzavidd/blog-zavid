@@ -1,12 +1,7 @@
-import { MjmlText } from '@faire/mjml-react';
-import { Typography } from '@mui/material';
 import React from 'react';
 
 import type { FormatTextOptions } from 'utils/lib/text';
-import {
-  applyEmphasisFormatting,
-  removeEmphasisFormatting,
-} from 'utils/lib/text/formatting/Emphasis';
+import { removeEmphasisFormatting } from 'utils/lib/text/formatting/Emphasis';
 import {
   Section,
   sectionRegexMapping,
@@ -25,36 +20,23 @@ import FormatSite from './Paragraph/FormatSite';
 export function formatParagraph(
   paragraph: string,
   key: number,
-  options: FormatTextOptions = {},
+  options: FormatTextOptions,
 ): React.ReactNode {
-  const { typographyVariant = 'text' } = options;
   if (!paragraph) return <React.Fragment />;
+  const Formatter = options.forEmails ? FormatEmail : FormatSite;
 
   const foundSection = Object.entries(sectionRegexMapping).find(([, regex]) =>
     regex.test(paragraph),
   );
 
   if (foundSection) {
-    const [section, regex] = foundSection!;
+    const [section, regex] = foundSection;
     const match = paragraph.match(regex)!;
-    if (options.forEmails) {
-      return FormatEmail[section as Section](match);
-    }
-    return FormatSite[section as Section](match);
-  } else {
-    if (options.forEmails) {
-      return (
-        <MjmlText>
-          <p>{applyEmphasisFormatting(paragraph)}</p>
-        </MjmlText>
-      );
-    }
-    return (
-      <Typography variant={typographyVariant} mt={key ? 5 : 0} key={key}>
-        {applyEmphasisFormatting(paragraph)}
-      </Typography>
-    );
+    return Formatter[section as Section](match, key, options);
   }
+
+  const text: RegExpMatchArray = ['', paragraph];
+  return Formatter[Section.PARAGRAPH](text, key, options);
 }
 
 /**

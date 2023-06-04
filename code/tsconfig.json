@@ -35,7 +35,9 @@
       "paths": {
         "server/*": ["./server/*"],
         "utils/*": ["./utils/*"]
-      }
-    }
+      },
+      "strict": false
+    },
+    "swc": true
   }
 }

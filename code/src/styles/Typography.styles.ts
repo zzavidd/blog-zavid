@@ -12,6 +12,7 @@ const mulish = Mulish({
   display: 'swap',
   preload: true,
   subsets: ['latin'],
+  style: ['normal', 'italic'],
   weight: ['200', '400', '500', '700', '800', '900'],
 });
 

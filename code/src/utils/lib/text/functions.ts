@@ -1,4 +1,4 @@
-import type { TypographyProps } from '@mui/material';
+import type { Theme, TypographyProps } from '@mui/material';
 import type React from 'react';
 
 import {
@@ -14,7 +14,7 @@ import { newLinesExceptNumberedListsRegex } from 'utils/lib/text/regex';
  */
 export function formatText(
   fullText: string,
-  options: FormatTextOptions = {},
+  options: FormatTextOptions,
 ): React.ReactNode {
   if (!fullText) return null;
 
@@ -101,6 +101,7 @@ export function extractExcerpt(originalText: string): string {
 
 export interface FormatTextOptions {
   forEmails?: boolean;
+  theme?: Theme;
   typographyVariant?: TypographyProps['variant'];
 }
 
