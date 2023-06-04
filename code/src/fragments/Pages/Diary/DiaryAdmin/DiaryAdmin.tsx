@@ -2,6 +2,7 @@ import {
   Add as AddIcon,
   Delete,
   Edit,
+  Email,
   MoreVert as MoreVertIcon,
 } from '@mui/icons-material';
 import {
@@ -248,6 +249,17 @@ function DiaryEachMenu() {
   const [context, setContext] = useContext(DiaryAdminContext);
   const router = useRouter();
 
+  const { mutate: notifyDiaryEntry } = trpc.diary.custom.preview.useMutation();
+
+  function onPreviewEmailClick() {
+    if (!context.selectedDiaryEntry) return;
+    notifyDiaryEntry(context.selectedDiaryEntry.id, {
+      onSuccess: (url) => {
+        window.open(url, '_blank');
+      },
+    });
+  }
+
   function openDeleteModal() {
     setContext((s) => ({ ...s, isDeleteModalVisible: true }));
   }
@@ -257,14 +269,14 @@ function DiaryEachMenu() {
   }
 
   function navigateToEdit() {
-    if (context.selectedDiaryEntry) {
-      void router.push(`/admin/diary/edit/${context.selectedDiaryEntry?.id}`);
-    }
+    if (!context.selectedDiaryEntry) return;
+    void router.push(`/admin/diary/edit/${context.selectedDiaryEntry?.id}`);
   }
 
   const menuItems = [
     { label: 'Edit', icon: <Edit />, onClick: navigateToEdit },
     { label: 'Delete', icon: <Delete />, onClick: openDeleteModal },
+    { label: 'Preview email', icon: <Email />, onClick: onPreviewEmailClick },
   ];
 
   return (

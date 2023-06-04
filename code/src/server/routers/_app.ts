@@ -53,6 +53,9 @@ export const appRouter = router({
           where: { status: DiaryStatus.PUBLISHED },
         }),
       ),
+      preview: procedure
+        .input(z.number())
+        .mutation(({ input }) => DiaryAPI.publish(input)),
     }),
   }),
   page: router({

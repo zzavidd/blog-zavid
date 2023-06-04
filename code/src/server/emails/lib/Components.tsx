@@ -38,7 +38,6 @@ export function Anchor({
       target={'_blank'}
       style={{
         color: EmailTheme.Color.Dark.Hyperlink,
-        textDecoration: 'none',
         ...props.style,
       }}>
       {children}

@@ -29,7 +29,7 @@ export default function ContextMenu() {
 
   async function copyText() {
     await navigator.clipboard.writeText(context.focusedTextContent);
-    enqueueSnackbar('Copied paragraph to clipboard.', { variant: 'info' });
+    enqueueSnackbar('Copied paragraph to clipboard.', { variant: 'success' });
     onClose();
   }
 

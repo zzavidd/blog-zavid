@@ -24,14 +24,19 @@ namespace Emailer {
   /**
    * Send an email to all subscribers of new diary entry.
    * @param diaryEntry The subject diary entry for the email.
+   * @param options The notification options.
    */
-  export function notifyNewDiaryEntry(diaryEntry: Diary): Promise<void> {
+  export function notifyNewDiaryEntry(
+    diaryEntry: Diary,
+    options: NotifyOptions = {},
+  ): Promise<string> {
     const subject = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
     return prepareEmail(
       DiaryEmail,
       { diaryEntry },
       subject,
       SubscriptionType.Diary,
+      options,
     );
   }
 }
@@ -44,26 +49,29 @@ export default Emailer;
  * @param props The template props.
  * @param subject The subject of the email.
  * @param type The subscription type expected of subscribers.
+ * @param options The notification options.
  */
 async function prepareEmail<T extends Record<string, unknown>>(
   template: React.FunctionComponent<any>,
   props: T,
   subject: string,
   type: SubscriptionType,
-): Promise<void> {
+  options: NotifyOptions,
+): Promise<string> {
   const subscribers = await SubscriberAPI.findMany({});
+  const shouldUseTestRecipient = !isProd || options.isTest;
 
   // Retrieve list of subscribers to corresponding type
-  const mailList: Subscriber[] | [TestRecipient] = isProd
-    ? subscribers.filter((subscriber) => {
+  const mailList: Subscriber[] | [TestRecipient] = shouldUseTestRecipient
+    ? [testRecipient]
+    : subscribers.filter((subscriber) => {
         const subscriptions = subscriber.subscriptions as Record<
           SubscriptionType,
           boolean
         >;
         const isSubscribed = subscriptions[type];
         return isSubscribed;
-      })
-    : [testRecipient];
+      });
 
   const promises = mailList.map((recipient) => {
     const element = React.createElement(template, {
@@ -76,11 +84,11 @@ async function prepareEmail<T extends Record<string, unknown>>(
     });
     return sendMailToAddress(recipient.email, subject, html);
   });
-  await Promise.all(promises);
-
+  const [previewUrl] = await Promise.all(promises);
   Logger.info(
     `Emails: "${subject}" email sent to ${mailList.length} subscribers.`,
   );
+  return previewUrl;
 }
 
 /**
@@ -93,7 +101,7 @@ async function sendMailToAddress(
   recipient: string,
   subject: string,
   html: string,
-): Promise<void> {
+): Promise<string> {
   const info = await TRANSPORTER.sendMail({
     from: `ZAVID <${process.env.EMAIL_USER}>`,
     to: recipient,
@@ -101,9 +109,13 @@ async function sendMailToAddress(
     html,
     text: htmlToText.fromString(html, HTML_TO_TEXT_OPTIONS),
   });
-  Logger.info(
-    `Preview URL: ${nodemailer.getTestMessageUrl(info as SentMessageInfo)}`,
-  );
+  const url = nodemailer.getTestMessageUrl(info as SentMessageInfo) || '';
+  Logger.info(`Preview URL: ${url}`);
+  return url;
+}
+
+interface NotifyOptions {
+  isTest?: boolean;
 }
 
 interface TestRecipient {
