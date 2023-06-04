@@ -21,7 +21,7 @@ const DiaryIndex: NextPageWithLayout = () => {
   return (
     <Container maxWidth={false} sx={{ padding: (t) => t.spacing(5, 3) }}>
       <Stack divider={<Divider />} spacing={{ xs: 3, md: 5 }}>
-        <Container maxWidth={'md'}>
+        <Container maxWidth={'sm'}>
           <Stack alignItems={'center'} spacing={3}>
             <Typography variant={'h2'} textTransform={'uppercase'}>
               {DIARY_HEADING}
@@ -56,7 +56,7 @@ function DiaryPagePreamble() {
 
   if (!page) return null;
   return (
-    <Paragraph variant={'body1'} textAlign={'center'}>
+    <Paragraph variant={'preamble'} textAlign={'center'}>
       {page.content}
     </Paragraph>
   );
@@ -103,8 +103,10 @@ function DiaryCollection() {
 
   if (!diaryEntries) {
     return (
-      <Stack>
-        <Typography variant={'body2'}>No diary entries found</Typography>
+      <Stack py={9}>
+        <Typography variant={'body2'} textAlign={'center'}>
+          No diary entries found.
+        </Typography>
       </Stack>
     );
   }

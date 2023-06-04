@@ -68,16 +68,22 @@ const typography: TypographyOptions = {
     fontFamily: mulish.style.fontFamily,
     fontSize: 14,
   },
-  text: {
-    fontFamily: mulish.style.fontFamily,
-    fontSize: 19,
-    lineHeight: 1.8,
-    fontWeight: 500,
-  },
   button: {
     fontWeight: 700,
   },
   overline: {},
+  preamble: {
+    fontFamily: mulish.style.fontFamily,
+    fontSize: 16,
+    lineHeight: 1.6,
+    fontWeight: 500,
+  },
+  text: {
+    fontFamily: mulish.style.fontFamily,
+    fontSize: 18,
+    lineHeight: 1.9,
+    fontWeight: 500,
+  },
 };
 
 export default typography;

@@ -111,7 +111,8 @@ function AuthButton() {
         variant={'outlined'}
         color={'secondary'}
         startIcon={<LoginIcon />}
-        onClick={() => signIn('google')}>
+        onClick={() => signIn('google')}
+        sx={{ p: 2 }}>
         Sign In
       </Button>
     );
