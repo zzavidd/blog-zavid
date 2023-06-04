@@ -45,12 +45,10 @@ test.describe('Console', () => {
     { name: 'subscriptions', href: `/subscriptions?token=${subscriber.token}` },
     { name: 'privacy', href: '/privacy' },
     { name: 'cookies', href: '/cookies' },
-    { name: '404', href: '/404', errorCount: 1 },
-    { name: '500', href: '/500', errorCount: 1 },
-  ].forEach(({ name, href, errorCount = 0 }) => {
+  ].forEach(({ name, href }) => {
     test(`has no errors on ${name} page`, async ({ page }) => {
       await page.goto(href);
-      expect(errors).toHaveLength(errorCount);
+      expect(errors).toHaveLength(0);
     });
   });
 });

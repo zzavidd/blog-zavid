@@ -6,6 +6,22 @@ const projects: Project[] = [
     name: 'chromium',
     use: { ...devices['Desktop Chrome'] },
   },
+  // {
+  //   name: 'firefox',
+  //   use: { ...devices['Desktop Firefox'] },
+  // },
+  // {
+  //   name: 'webkit',
+  //   use: { ...devices['Desktop Safari'] },
+  // },
+  // {
+  //   name: 'Mobile Chrome',
+  //   use: { ...devices['Pixel 5'] },
+  // },
+  // {
+  //   name: 'Mobile Safari',
+  //   use: { ...devices['iPhone 12'] },
+  // },
 ];
 
 export default defineConfig({
@@ -30,28 +46,5 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     url: 'http://localhost:4000',
   },
-  workers: 1,
+  workers: process.env.CI ? 7 : undefined,
 });
-
-// const projects: Project[] = [
-//   {
-//     name: 'chromium',
-//     use: { ...devices['Desktop Chrome'] },
-//   },
-// {
-//   name: 'firefox',
-//   use: { ...devices['Desktop Firefox'] },
-// },
-// {
-//   name: 'webkit',
-//   use: { ...devices['Desktop Safari'] },
-// },
-// {
-//   name: 'Mobile Chrome',
-//   use: { ...devices['Pixel 5'] },
-// },
-// {
-//   name: 'Mobile Safari',
-//   use: { ...devices['iPhone 12'] },
-// },
-// ];

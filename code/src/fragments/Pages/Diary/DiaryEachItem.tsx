@@ -49,7 +49,9 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
               </Tooltip>
             ) : null}
             <Time mb={2} variant={'body2'} date={entry.date} />
-            <Typography variant={'h3'}>
+            <Typography
+              variant={'h3'}
+              data-testid={`zb.entry.${entry.entryNumber}`}>
               <Typography
                 variant={'h3'}
                 component={'span'}
@@ -64,7 +66,8 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
               variant={'body1'}
               truncate={25}
               moreHref={href}
-              moreText={`Read #${entry.entryNumber}: ${entry.title}`}>
+              moreText={`Read #${entry.entryNumber}: ${entry.title}`}
+              readMoreDataTestId={`zb.readmore.${entry.entryNumber}`}>
               {entry.content}
             </Paragraph>
           </CardContent>

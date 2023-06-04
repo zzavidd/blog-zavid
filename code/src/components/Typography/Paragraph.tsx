@@ -7,28 +7,22 @@ import { LinkButton } from 'components/Link';
 import * as zText from 'utils/lib/text';
 
 const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
-  function Paragraph(props, ref) {
-    const {
-      children,
-      keepRichFormatOnTruncate,
-      substitutions,
-      moreHref = '#',
-      moreText,
-      truncate = 0,
-      ...preProps
-    } = props;
+  function Paragraph(
+    { children, moreHref = '#', moreText, truncate = 0, ...props },
+    ref,
+  ) {
     const theme = useTheme();
 
     const text = useMemo(() => {
       const result = truncate
         ? zText.truncateText(children as string, {
             limit: truncate,
-            keepRichFormatting: keepRichFormatOnTruncate,
+            keepRichFormatting: props.keepRichFormatOnTruncate,
           })
         : children;
 
-      if (substitutions) {
-        return zText.applySubstitutions(result, substitutions);
+      if (props.substitutions) {
+        return zText.applySubstitutions(result, props.substitutions);
       }
 
       return result;
@@ -44,13 +38,14 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           whiteSpace={'pre-wrap'}
           mb={showReadMore ? 4 : 0}
           ref={ref}
-          {...preProps}>
+          {...props}>
           {zText.formatText(text, { theme, typographyVariant: props.variant })}
         </Typography>
         {showReadMore ? (
           <LinkButton
             href={moreHref}
-            startIcon={<SendRounded fontSize={'small'} />}>
+            startIcon={<SendRounded fontSize={'small'} />}
+            data-testid={props.readMoreDataTestId}>
             {moreText}
           </LinkButton>
         ) : null}
@@ -66,6 +61,7 @@ interface ParagraphProps extends TypographyProps<'pre'> {
   keepRichFormatOnTruncate?: true;
   moreText?: string;
   moreHref?: string;
+  readMoreDataTestId?: string;
   substitutions?: Record<string, string | number>;
   truncate?: number;
 }
