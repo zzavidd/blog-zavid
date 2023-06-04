@@ -80,7 +80,7 @@ const typography: TypographyOptions = {
   },
   text: {
     fontFamily: mulish.style.fontFamily,
-    fontSize: 18,
+    fontSize: 17,
     lineHeight: 1.9,
     fontWeight: 500,
   },

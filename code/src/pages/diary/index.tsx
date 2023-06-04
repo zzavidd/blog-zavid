@@ -78,7 +78,7 @@ function DiaryCollection() {
 
   useEffect(() => {
     if (error) {
-      enqueueSnackbar(error.message, { variant: 'success' });
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
   }, [enqueueSnackbar, error]);
 
