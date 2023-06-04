@@ -1,7 +1,7 @@
 import { MjmlButton, MjmlDivider, MjmlText } from '@faire/mjml-react';
 import React from 'react';
 
-import { EmailTheme } from 'server/emails/constants';
+import EmailTheme from 'server/emails/theme';
 
 import type { FormatTextOptions } from '../..';
 import { Section } from '../../regex';

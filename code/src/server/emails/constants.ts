@@ -5,32 +5,6 @@ import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import Settings from 'utils/settings';
 
 export const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
-export const EmailTheme = {
-  Color: {
-    Light: {
-      Primary: '#dfdfdf',
-      Secondary: '#eeeeee',
-      Body: '#f7f7f7',
-      Hyperlink: '#7e14ff',
-      Button: '#383838',
-      ButtonText: '#ffffff',
-      Text: '#000000',
-    },
-    Dark: {
-      Primary: '#111111',
-      Secondary: '#202020',
-      Body: '#202020',
-      Hyperlink: 'hsl(268, 100%, 76%)',
-      Button: '#383838',
-      ButtonText: '#ffffff',
-      Text: '#ffffff',
-    },
-  },
-  Font: {
-    Title: 'Calistoga',
-    Body: 'Mulish',
-  },
-};
 
 /** A map of variables used in all EJS emails */
 export const ejsLocals = {

@@ -5,7 +5,7 @@ import React from 'react';
 import ZDate from 'utils/lib/date';
 import * as ZText from 'utils/lib/text';
 
-import { EmailTheme } from '../constants';
+import EmailTheme from '../theme';
 
 export function EmailTitle({ children, ...props }: IMjmlTextProps) {
   return (

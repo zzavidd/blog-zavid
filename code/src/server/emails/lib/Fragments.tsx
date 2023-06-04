@@ -18,7 +18,7 @@ import React from 'react';
 
 import Settings from 'utils/settings';
 
-import { EmailTheme } from '../constants';
+import EmailTheme from '../theme';
 
 import { Anchor } from './Components';
 

@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 
 import { Link } from 'components/Link';
-import { EmailTheme } from 'server/emails/constants';
+import EmailTheme from 'server/emails/theme';
 import {
   Emphasis,
   emphasisRegexMapping,
