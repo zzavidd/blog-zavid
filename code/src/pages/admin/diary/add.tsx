@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 
-import { ActionDialog } from 'components/Dialog';
 import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import DiaryForm from 'fragments/Pages/Diary/DiaryForm/DiaryForm';
@@ -52,42 +51,21 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
     );
   }, [latestEntry]);
 
-  const isPublish = state.entry.status === DiaryStatus.PUBLISHED;
-  const submitText = isPublish ? 'Submit & Publish' : 'Submit';
-
-  function submitEntry() {
+  function onSubmit(isPublish: boolean) {
     createDiaryEntry({ diary: { data: state.entry }, isPublish });
   }
 
-  function onSubmit() {
-    if (isPublish) {
-      setState((s) => ({ ...s, isPublishModalVisible: true }));
-    } else {
-      submitEntry();
-    }
-  }
-
-  function closePublishModal() {
-    setState((s) => ({ ...s, isPublishModalVisible: false }));
-  }
+  const isPublish = state.entry.status === DiaryStatus.PUBLISHED;
 
   return (
     <AdminGateway>
       <DiaryFormContext.Provider value={[state, setState]}>
         <DiaryForm
           onSubmit={onSubmit}
-          submitText={submitText}
+          submitText={'Submit'}
           isActionLoading={isCreateLoading}
+          isPublish={isPublish}
         />
-        <ActionDialog
-          open={state.isPublishModalVisible}
-          onConfirm={submitEntry}
-          onCancel={closePublishModal}
-          confirmText={'Publish'}
-          isActionLoading={isCreateLoading}>
-          By publishing this diary entry, you&#39;ll be notifying all
-          subscribers of this new release. Confirm that you want to publish.
-        </ActionDialog>
       </DiaryFormContext.Provider>
     </AdminGateway>
   );

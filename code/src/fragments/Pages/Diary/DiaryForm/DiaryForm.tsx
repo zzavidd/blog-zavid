@@ -1,4 +1,5 @@
 import {
+  ArrowDropUp,
   Check as CheckIcon,
   Favorite,
   FavoriteBorder,
@@ -6,6 +7,8 @@ import {
 import { LoadingButton } from '@mui/lab';
 import type { SelectChangeEvent, SxProps, Theme } from '@mui/material';
 import {
+  Button,
+  ButtonGroup,
   Checkbox,
   Chip,
   Container,
@@ -16,7 +19,10 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  ListItemText,
+  Menu,
   MenuItem,
+  MenuList,
   Paper,
   Select,
   Stack,
@@ -28,8 +34,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DiaryStatus } from '@prisma/client';
 import dayjs from 'dayjs';
 import immutate from 'immutability-helper';
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
+import { ActionDialog } from 'components/Dialog';
 import { LinkButton } from 'components/Link';
 
 import { DiaryFormContext } from './DiaryForm.context';
@@ -38,15 +45,37 @@ export default function DiaryForm({
   onSubmit,
   submitText,
   isActionLoading,
+  isPublish,
 }: DiaryFormProps) {
+  const [state, setState] = useState({
+    isPublishModalVisible: false,
+    isButtonMenuVisible: false,
+    selectedSubmitIndex: 0,
+  });
   const [context, setContext] = useContext(DiaryFormContext);
   const { entry } = context;
 
-  const isPublish = entry.status === DiaryStatus.PUBLISHED;
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonMenuItems = [
+    { label: `${submitText} only`, isPublish: false },
+    {
+      label: `${submitText} & Publish`,
+      isPublish: true,
+      disabled: entry.status !== DiaryStatus.PUBLISHED,
+    },
+  ];
 
   function onTextChange(e: ChangeEvent) {
     const { name, value } = e.target;
     setContext((c) => immutate(c, { entry: { [name]: { $set: value } } }));
+  }
+
+  function onStatusChange(e: SelectChangeEvent) {
+    const value = e.target.value as DiaryStatus;
+    setContext((c) => immutate(c, { entry: { status: { $set: value } } }));
+    if (value !== DiaryStatus.PUBLISHED) {
+      setState((s) => ({ ...s, selectedSubmitIndex: 0 }));
+    }
   }
 
   function onCheckboxChange(e: ChangeEvent, checked: boolean) {
@@ -60,139 +89,203 @@ export default function DiaryForm({
     );
   }
 
+  function onSubmitClick() {
+    if (buttonMenuItems[state.selectedSubmitIndex].isPublish) {
+      setState((s) => ({ ...s, isPublishModalVisible: true }));
+    } else {
+      onSubmit(false);
+    }
+  }
+
+  function onButtonMenuChange(index: number) {
+    setState((s) => ({ ...s, selectedSubmitIndex: index }));
+  }
+
+  function openButtonMenu() {
+    setState((s) => ({ ...s, isButtonMenuVisible: true }));
+  }
+
+  function closeButtonMenu() {
+    setState((s) => ({ ...s, isButtonMenuVisible: false }));
+  }
+
+  function closePublishModal() {
+    setState((s) => ({ ...s, isPublishModalVisible: false }));
+  }
+
   const stackRowProps: SxProps<Theme> = {
     direction: { xs: 'column', md: 'row' },
     spacing: 5,
   };
 
   return (
-    <Container maxWidth={false} disableGutters={true}>
-      <Container maxWidth={'xl'}>
-        <Stack mx={{ xs: 3, md: 5 }} my={5} spacing={5}>
-          <Typography variant={'h2'}>Add New Diary Entry</Typography>
-          <Stack {...stackRowProps}>
-            <Stack width={'100%'}>
-              <FormControl fullWidth={true}>
-                <TextField
-                  name={'content'}
-                  label={'Content:'}
-                  multiline={true}
-                  minRows={5}
-                  value={entry.content}
-                  onChange={onTextChange}
-                  placeholder={'Scribe your thoughts and feelings...'}
-                />
-              </FormControl>
-            </Stack>
-            <Stack spacing={5} width={'100%'}>
-              <Stack {...stackRowProps}>
+    <React.Fragment>
+      <Container maxWidth={false} disableGutters={true}>
+        <Container maxWidth={'xl'}>
+          <Stack mx={{ xs: 3, md: 5 }} my={5} spacing={6}>
+            <Typography variant={'h2'}>Add New Diary Entry</Typography>
+            <Stack {...stackRowProps}>
+              <Stack width={'100%'}>
                 <FormControl fullWidth={true}>
                   <TextField
-                    name={'title'}
-                    label={'Title:'}
-                    value={entry.title}
+                    name={'content'}
+                    label={'Content:'}
+                    multiline={true}
+                    minRows={5}
+                    value={entry.content}
                     onChange={onTextChange}
-                    placeholder={'Enter the title'}
-                  />
-                </FormControl>
-                <FormControl>
-                  <TextField
-                    name={'entryNumber'}
-                    type={'number'}
-                    label={'Entry No.:'}
-                    value={entry.entryNumber}
-                    onChange={onTextChange}
-                    placeholder={'No.'}
-                    inputProps={{
-                      inputMode: 'numeric',
-                      min: 1,
-                      pattern: '[0-9]*',
-                    }}
+                    placeholder={'Scribe your thoughts and feelings...'}
                   />
                 </FormControl>
               </Stack>
-              <FormControl fullWidth={true}>
-                <TextField
-                  name={'footnote'}
-                  label={'Footnote:'}
-                  multiline={true}
-                  minRows={3}
-                  value={entry.footnote}
-                  onChange={onTextChange}
-                  placeholder={
-                    'Add any footnotes to come after the signature...'
-                  }
-                />
-              </FormControl>
-              <Stack {...stackRowProps}>
-                <FormControl fullWidth={true}>
-                  <InputLabel>Status:</InputLabel>
-                  <Select
-                    name={'status'}
-                    label={'Status.:'}
-                    value={entry.status}
-                    onChange={onTextChange}>
-                    {Object.values(DiaryStatus).map((status) => (
-                      <MenuItem value={status} key={status}>
-                        {status}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <Fade in={isPublish}>
+              <Stack spacing={5} width={'100%'}>
+                <Stack {...stackRowProps}>
                   <FormControl fullWidth={true}>
-                    <DatePicker
-                      label={'Date Published:'}
-                      value={entry.date ? dayjs(entry.date) : undefined}
-                      onChange={onDateChange}
-                      format={'dddd DD MMMM YYYY'}
+                    <TextField
+                      name={'title'}
+                      label={'Title:'}
+                      value={entry.title}
+                      onChange={onTextChange}
+                      placeholder={'Enter the title'}
                     />
                   </FormControl>
-                </Fade>
-              </Stack>
-              <FormControlLabel
-                label={'This diary entry is a favourite.'}
-                control={
-                  <Checkbox
-                    name={'isFavourite'}
-                    checked={entry.isFavourite}
-                    onChange={onCheckboxChange}
-                    icon={<FavoriteBorder fontSize={'large'} />}
-                    checkedIcon={<Favorite fontSize={'large'} />}
-                    sx={{ mr: 1 }}
+                  <FormControl>
+                    <TextField
+                      name={'entryNumber'}
+                      type={'number'}
+                      label={'Entry No.:'}
+                      value={entry.entryNumber}
+                      onChange={onTextChange}
+                      placeholder={'No.'}
+                      inputProps={{
+                        inputMode: 'numeric',
+                        min: 1,
+                        pattern: '[0-9]*',
+                      }}
+                    />
+                  </FormControl>
+                </Stack>
+                <FormControl fullWidth={true}>
+                  <TextField
+                    name={'footnote'}
+                    label={'Footnote:'}
+                    multiline={true}
+                    minRows={3}
+                    value={entry.footnote}
+                    onChange={onTextChange}
+                    placeholder={
+                      'Add any footnotes to come after the signature...'
+                    }
                   />
-                }
-              />
-              <TagsInput />
+                </FormControl>
+                <Stack {...stackRowProps}>
+                  <FormControl fullWidth={true}>
+                    <InputLabel>Status:</InputLabel>
+                    <Select
+                      name={'status'}
+                      label={'Status.:'}
+                      value={entry.status}
+                      onChange={onStatusChange}>
+                      {Object.values(DiaryStatus).map((status) => (
+                        <MenuItem value={status} key={status}>
+                          {status}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <Fade in={isPublish}>
+                    <FormControl fullWidth={true}>
+                      <DatePicker
+                        label={'Date Published:'}
+                        value={entry.date ? dayjs(entry.date) : undefined}
+                        onChange={onDateChange}
+                        format={'dddd DD MMMM YYYY'}
+                      />
+                    </FormControl>
+                  </Fade>
+                </Stack>
+                <FormControlLabel
+                  label={'This diary entry is a favourite.'}
+                  control={
+                    <Checkbox
+                      name={'isFavourite'}
+                      checked={entry.isFavourite}
+                      onChange={onCheckboxChange}
+                      icon={<FavoriteBorder fontSize={'large'} />}
+                      checkedIcon={<Favorite fontSize={'large'} />}
+                      sx={{ mr: 1 }}
+                    />
+                  }
+                />
+                <TagsInput />
+              </Stack>
             </Stack>
+            <Divider />
           </Stack>
-          <Divider />
-        </Stack>
+        </Container>
+        <Toolbar
+          disableGutters={true}
+          component={Paper}
+          sx={{
+            backgroundColor: (t) => t.palette.background.paper,
+            bottom: 0,
+            position: 'sticky',
+          }}>
+          <Stack
+            direction={'row'}
+            justifyContent={'flex-end'}
+            spacing={3}
+            width={'100%'}
+            m={3}>
+            <LinkButton href={'/admin/diary'}>Cancel</LinkButton>
+            <ButtonGroup>
+              <LoadingButton
+                variant={'contained'}
+                onClick={onSubmitClick}
+                loading={isActionLoading}>
+                {buttonMenuItems[state.selectedSubmitIndex].label}
+              </LoadingButton>
+              <Button
+                variant={'contained'}
+                onClick={openButtonMenu}
+                ref={buttonRef}>
+                <ArrowDropUp />
+              </Button>
+            </ButtonGroup>
+          </Stack>
+        </Toolbar>
       </Container>
-      <Toolbar
-        disableGutters={true}
-        component={Paper}
-        sx={{
-          backgroundColor: (t) => t.palette.background.paper,
-          bottom: 0,
-          position: 'sticky',
-        }}>
-        <Stack
-          direction={'row'}
-          justifyContent={'flex-end'}
-          spacing={3}
-          width={'100%'}
-          m={3}>
-          <LinkButton href={'/admin/diary'}>Cancel</LinkButton>
-          <LoadingButton
-            variant={'contained'}
-            onClick={onSubmit}
-            loading={isActionLoading}>
-            {submitText}
-          </LoadingButton>
-        </Stack>
-      </Toolbar>
-    </Container>
+      <ActionDialog
+        open={state.isPublishModalVisible}
+        onConfirm={() => onSubmit(true)}
+        onCancel={closePublishModal}
+        confirmText={'Publish'}
+        isActionLoading={isActionLoading}>
+        By publishing this diary entry, you&#39;ll be notifying all subscribers
+        of this new release. Confirm that you want to publish.
+      </ActionDialog>
+      <Menu
+        open={state.isButtonMenuVisible}
+        anchorEl={buttonRef.current}
+        anchorOrigin={{ vertical: -120, horizontal: 'center' }}
+        onClick={closeButtonMenu}
+        onClose={closeButtonMenu}>
+        <MenuList autoFocusItem={true} disablePadding={true}>
+          {buttonMenuItems.map(({ label, disabled }, key) => (
+            <MenuItem
+              disabled={disabled}
+              selected={state.selectedSubmitIndex === key}
+              onClick={() => onButtonMenuChange(key)}
+              sx={{ py: 4 }}
+              key={key}>
+              <ListItemText primaryTypographyProps={{ variant: 'button' }}>
+                {label}
+              </ListItemText>
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Menu>
+    </React.Fragment>
   );
 }
 
@@ -269,9 +362,10 @@ function TagsInput() {
 }
 
 interface DiaryFormProps {
-  onSubmit: () => void;
+  onSubmit: (isPublish: boolean) => void;
   submitText: string;
   isActionLoading: boolean;
+  isPublish: boolean;
 }
 
 type ChangeEvent =

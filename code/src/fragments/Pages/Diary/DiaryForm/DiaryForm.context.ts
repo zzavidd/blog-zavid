@@ -13,7 +13,6 @@ export const InitialDiaryFormState: DiaryFormState = {
     tags: [],
   },
   tagsInput: '',
-  isPublishModalVisible: false,
 };
 
 export const DiaryFormContext = React.createContext<
@@ -22,6 +21,5 @@ export const DiaryFormContext = React.createContext<
 
 interface DiaryFormState {
   entry: Prisma.DiaryCreateInput;
-  isPublishModalVisible: boolean;
   tagsInput: string;
 }

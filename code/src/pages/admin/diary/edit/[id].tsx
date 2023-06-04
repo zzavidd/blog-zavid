@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 
-import { ActionDialog } from 'components/Dialog';
 import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
 import DiaryForm from 'fragments/Pages/Diary/DiaryForm/DiaryForm';
@@ -56,45 +55,26 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
     );
   }, [entry]);
 
-  const isPublish = state.entry.status === DiaryStatus.PUBLISHED;
-  const submitText = isPublish ? 'Update & Publish' : 'Update';
-
-  function submitEntry() {
+  function onSubmit(isPublish: boolean) {
     updateDiaryEntry({
       diary: { data: state.entry, where: { id } },
       isPublish,
     });
   }
 
-  function onSubmit() {
-    if (isPublish) {
-      setState((s) => ({ ...s, isPublishModalVisible: true }));
-    } else {
-      submitEntry();
-    }
-  }
-
-  function closePublishModal() {
-    setState((s) => ({ ...s, isPublishModalVisible: false }));
-  }
+  const isPublish =
+    state.entry.status === DiaryStatus.PUBLISHED &&
+    entry?.status !== DiaryStatus.PUBLISHED;
 
   return (
     <AdminGateway>
       <DiaryFormContext.Provider value={[state, setState]}>
         <DiaryForm
           onSubmit={onSubmit}
-          submitText={submitText}
+          submitText={'Update'}
           isActionLoading={isUpdateLoading}
+          isPublish={isPublish}
         />
-        <ActionDialog
-          open={state.isPublishModalVisible}
-          onConfirm={submitEntry}
-          onCancel={closePublishModal}
-          confirmText={'Publish'}
-          isActionLoading={isUpdateLoading}>
-          By publishing this diary entry, you&#39;ll be notifying all
-          subscribers of this new release. Confirm that you want to publish.
-        </ActionDialog>
       </DiaryFormContext.Provider>
     </AdminGateway>
   );
@@ -112,7 +92,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       id,
-      referer: req.headers.referer,
+      referer: req.headers.referer || '',
       pathDefinition: { title: 'Edit Diary Entry' },
       trpcState: helpers.dehydrate(),
     },
