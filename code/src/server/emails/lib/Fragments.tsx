@@ -18,11 +18,9 @@ import React from 'react';
 
 import Settings from 'utils/settings';
 
-import { EmailStyle, EmailTheme } from '../constants';
+import { EmailTheme } from '../constants';
 
 import { Anchor } from './Components';
-
-const Theme = EmailStyle.Color[EmailTheme];
 
 export const FOOTER_LINKS = [
   { title: 'Diary', url: '/diary' },
@@ -45,12 +43,12 @@ export function EmailHead({ title }: EmailHeadProps) {
         <MjmlText padding={0} />
       </MjmlAttributes>
       <MjmlFont
-        name={'Calistoga'}
-        href={'https://fonts.googleapis.com/css?family=Calistoga'}
+        name={EmailTheme.Font.Title}
+        href={`https://fonts.googleapis.com/css?family=${EmailTheme.Font.Title}`}
       />
       <MjmlFont
-        name={'Mulish'}
-        href={'https://fonts.googleapis.com/css?family=Mulish'}
+        name={EmailTheme.Font.Body}
+        href={`https://fonts.googleapis.com/css?family=${EmailTheme.Font.Body}`}
       />
     </MjmlHead>
   );
@@ -58,7 +56,7 @@ export function EmailHead({ title }: EmailHeadProps) {
 
 export function EmailBody({ children }: React.PropsWithChildren) {
   return (
-    <MjmlBody backgroundColor={Theme.Body} width={576}>
+    <MjmlBody backgroundColor={EmailTheme.Color.Dark.Body} width={576}>
       {children}
     </MjmlBody>
   );
@@ -66,9 +64,12 @@ export function EmailBody({ children }: React.PropsWithChildren) {
 
 export function EmailHeader({ children }: React.PropsWithChildren) {
   return (
-    <MjmlSection backgroundColor={Theme.Primary} padding={0}>
+    <MjmlSection backgroundColor={EmailTheme.Color.Dark.Primary} padding={0}>
       <MjmlColumn>
-        <MjmlText color={Theme.Text} fontSize={14} padding={'16px 24px'}>
+        <MjmlText
+          color={EmailTheme.Color.Dark.Text}
+          fontSize={14}
+          padding={'16px 24px'}>
           {children}
         </MjmlText>
       </MjmlColumn>
@@ -78,7 +79,9 @@ export function EmailHeader({ children }: React.PropsWithChildren) {
 
 export function Main({ children }: IMjmlSectionProps) {
   return (
-    <MjmlSection backgroundColor={Theme.Secondary} padding={24}>
+    <MjmlSection
+      backgroundColor={EmailTheme.Color.Light.Secondary}
+      padding={24}>
       <MjmlColumn>{children}</MjmlColumn>
     </MjmlSection>
   );
@@ -86,7 +89,9 @@ export function Main({ children }: IMjmlSectionProps) {
 
 export function EmailFooter(props: EmailFooterProps) {
   return (
-    <MjmlSection backgroundColor={Theme.Primary} textAlign={'center'}>
+    <MjmlSection
+      backgroundColor={EmailTheme.Color.Dark.Secondary}
+      textAlign={'center'}>
       <MjmlColumn width={'70%'}>
         {props.showUnsubscribe ? (
           <React.Fragment>
@@ -115,7 +120,7 @@ export function EmailFooter(props: EmailFooterProps) {
                   <Anchor
                     href={`${Settings.DOMAIN}${url}`}
                     style={{
-                      color: Theme.Text,
+                      color: EmailTheme.Color.Dark.Text,
                       fontSize: 14,
                       fontWeight: 600,
                     }}>
@@ -136,7 +141,10 @@ export function EmailFooter(props: EmailFooterProps) {
             />
           </a>
         </MjmlText>
-        <MjmlText align={'center'} padding={0}>
+        <MjmlText
+          align={'center'}
+          color={EmailTheme.Color.Dark.Text}
+          padding={0}>
           <p>{Settings.COPYRIGHT}</p>
         </MjmlText>
         <MjmlSocial mode={'horizontal'} iconSize={28} padding={0}>
@@ -172,6 +180,7 @@ function EmailFooterText(props: IMjmlTextProps) {
   return (
     <MjmlText
       align={'center'}
+      color={EmailTheme.Color.Dark.Text}
       fontSize={14}
       padding={'12px 0'}
       lineHeight={24}

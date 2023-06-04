@@ -5,13 +5,15 @@ import React from 'react';
 import ZDate from 'utils/lib/date';
 import * as ZText from 'utils/lib/text';
 
-import { EmailStyle, EmailTheme } from '../constants';
-
-const Theme = EmailStyle.Color[EmailTheme];
+import { EmailTheme } from '../constants';
 
 export function EmailTitle({ children, ...props }: IMjmlTextProps) {
   return (
-    <MjmlText {...props} fontFamily={'Calistoga'} fontSize={20} lineHeight={48}>
+    <MjmlText
+      {...props}
+      fontFamily={EmailTheme.Font.Title}
+      fontSize={20}
+      lineHeight={48}>
       <h1 style={{ margin: 0 }}>{children}</h1>
     </MjmlText>
   );
@@ -35,7 +37,7 @@ export function Anchor({
       rel={'noopener noreferrer'}
       target={'_blank'}
       style={{
-        color: Theme.Hyperlink,
+        color: EmailTheme.Color.Dark.Hyperlink,
         textDecoration: 'none',
         ...props.style,
       }}>

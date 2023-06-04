@@ -1,21 +1,23 @@
 import { MjmlButton, MjmlDivider, MjmlText } from '@faire/mjml-react';
 import React from 'react';
 
+import { EmailTheme } from 'server/emails/constants';
+
 import type { FormatTextOptions } from '../..';
 import { Section } from '../../regex';
 import { applyEmphasisFormatting } from '../Emphasis';
 
 const FormatEmail: Record<Section, RenderValue> = {
-  [Section.PARAGRAPH]: ([, text], key) => (
-    <p key={key}>{applyEmphasisFormatting(text)}</p>
+  [Section.PARAGRAPH]: ([, text], key, options) => (
+    <p key={key}>{applyEmphasisFormatting(text, options)}</p>
   ),
   [Section.HEADING]: ([, text], key) => (
-    <h2 style={{ fontFamily: 'Calistoga' }} key={key}>
+    <h2 style={{ fontFamily: EmailTheme.Font.Title }} key={key}>
       {text}
     </h2>
   ),
   [Section.SUBHEADING]: ([, text], key) => (
-    <h3 style={{ fontFamily: 'Calistoga' }} key={key}>
+    <h3 style={{ fontFamily: EmailTheme.Font.Title }} key={key}>
       {text}
     </h3>
   ),

@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
 
 import { Link } from 'components/Link';
+import { EmailTheme } from 'server/emails/constants';
 import {
   Emphasis,
   emphasisRegexMapping,
@@ -8,14 +9,19 @@ import {
 } from 'utils/lib/text/regex';
 import Logger from 'utils/logger';
 
-export function applyEmphasisFormatting(paragraph: string) {
+import type { FormatTextOptions } from '../functions';
+
+export function applyEmphasisFormatting(
+  paragraph: string,
+  options?: FormatTextOptions,
+) {
   if (!paragraph) return '';
   const combinedEmphasisRegex = getCombinedEmphasisRegex();
 
   // Split by combined regex into fragments.
   const fragments = paragraph.split(combinedEmphasisRegex).filter((e) => e);
   const formattedParagraph = fragments.map((fragment, key) => {
-    let transformation: string | JSX.Element = fragment;
+    let transformation: React.ReactNode = fragment;
 
     // Find and replace all fragments with components.
     const foundEmphasis = Object.entries(emphasisRegexMapping).find(
@@ -87,15 +93,27 @@ export function applyEmphasisFormatting(paragraph: string) {
               </Typography>
             );
             break;
-          case Emphasis.HYPERLINK:
-            const textToHyperlink = applyEmphasisFormatting(matches[1]);
+          case Emphasis.HYPERLINK: {
+            const text = applyEmphasisFormatting(matches[1]);
             const link = matches[2];
-            transformation = (
+            transformation = options?.forEmails ? (
+              <a
+                href={link}
+                rel={'noopener noreferrer'}
+                target={'_blank'}
+                style={{
+                  color: EmailTheme.Color.Light.Hyperlink,
+                }}
+                key={key}>
+                {text}
+              </a>
+            ) : (
               <Link href={link} key={key}>
-                {textToHyperlink}
+                {text}
               </Link>
             );
             break;
+          }
           case Emphasis.HIGHLIGHT:
             const highlightColor = matches[1];
             const textToHighlight = applyEmphasisFormatting(matches[2]);
