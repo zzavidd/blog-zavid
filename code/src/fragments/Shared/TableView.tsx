@@ -236,10 +236,7 @@ function TableRowEachMenu() {
     <Menu
       open={context.isMenuVisible}
       anchorEl={context.menuAnchor}
-      anchorOrigin={{
-        horizontal: 'right',
-        vertical: 'bottom',
-      }}
+      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       onClick={closeMenu}
       onClose={closeMenu}
       hideBackdrop={true}>

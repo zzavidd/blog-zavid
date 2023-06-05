@@ -6,7 +6,9 @@ import {
   DiaryFindFirstSchema,
   DiaryFindManySchema,
   DiaryUpdateOneSchema,
+  PageDeleteOneSchema,
   PageFindFirstSchema,
+  PageFindManySchema,
   SubscriberCreateOneSchema,
   SubscriberDeleteOneSchema,
   SubscriberFindFirstSchema,
@@ -59,9 +61,15 @@ export const appRouter = router({
     }),
   }),
   page: router({
+    findMany: procedure
+      .input(PageFindManySchema)
+      .query(({ input }) => PageAPI.findMany(input)),
     find: procedure
       .input(PageFindFirstSchema)
       .query(({ input }) => PageAPI.find(input)),
+    delete: procedure
+      .input(PageDeleteOneSchema)
+      .mutation(({ input }) => SubscriberAPI.delete(input)),
   }),
   subscriber: router({
     find: procedure

@@ -1,4 +1,5 @@
 import {
+  Article,
   BookRounded,
   DarkMode,
   Email,
@@ -125,15 +126,16 @@ function AuthButton() {
   const menuItemSxProps: SxProps<Theme> = { padding: (t) => t.spacing(4, 5) };
   const adminOnlyMenuItems = isAdmin
     ? [
-        {
-          label: 'Manage Diary',
-          Icon: BookRounded,
-          href: '/admin/diary',
-        },
+        { label: 'Manage Diary', Icon: BookRounded, href: '/admin/diary' },
         {
           label: 'Manage Subscribers',
           Icon: Email,
           href: '/admin/subscribers',
+        },
+        {
+          label: 'Manage Pages',
+          Icon: Article,
+          href: '/admin/pages',
         },
       ]
     : [];
