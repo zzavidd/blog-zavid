@@ -14,7 +14,6 @@ export default class AppDocument extends Document {
             name={'facebook-domain-verification'}
             content={'x5godw4ipzopqpyw778h62ucn70mfl'}
           />
-          <link rel={'icon'} href={'/favicon.png'} />
         </Head>
         <body>
           <Main />
