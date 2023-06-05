@@ -4,6 +4,7 @@ import {
   Edit as EditIcon,
   MoreVert as MoreVertIcon,
 } from '@mui/icons-material';
+import type { PaperProps } from '@mui/material';
 import {
   Container,
   IconButton,
@@ -38,7 +39,7 @@ export default function TableView<T extends { id: number }>() {
   const [context, setContext] = useTableContext<T>();
   const { addButtonHref, addButtonText, pageTitle } = context.props!;
 
-  function setSortProperty(property: keyof T) {
+  function setSortProperty(property: keyof T | null) {
     setContext((s) => {
       const order =
         s.sort.order === Prisma.SortOrder.asc
@@ -60,8 +61,8 @@ export default function TableView<T extends { id: number }>() {
           </Stack>
           <TableContainer>
             <Table>
-              <TableHead>
-                <TableRow component={Paper}>
+              <TableHead component={PaperTableHead}>
+                <TableRow>
                   {context.tableFields.map(({ title, property, align }) => {
                     const isActive = context.sort.property === property;
                     return (
@@ -87,7 +88,7 @@ export default function TableView<T extends { id: number }>() {
         </Stack>
       </Container>
       <DeleteModal />
-      <DiaryEachMenu />
+      <TableRowEachMenu />
     </React.Fragment>
   );
 }
@@ -133,8 +134,8 @@ function DiaryTableContent<T extends { id: number }>({
 
   return (
     <TableBody>
-      {entityList.map((entity) => (
-        <TableViewRow entity={entity} key={entity.id} />
+      {entityList.map((entity, i) => (
+        <TableViewRow entity={entity} index={i + 1} key={entity.id} />
       ))}
     </TableBody>
   );
@@ -145,7 +146,7 @@ function DiaryTableContent<T extends { id: number }>({
  */
 const TableViewRow = React.memo(function TableViewRow<
   T extends { id: number },
->({ entity }: TableViewRowProps<T>) {
+>({ entity, index }: TableViewRowProps<T>) {
   const [context, setContext] = useTableContext();
 
   function setHoverState(id: number | null) {
@@ -167,8 +168,8 @@ const TableViewRow = React.memo(function TableViewRow<
       onMouseEnter={() => setHoverState(entity.id)}
       onMouseLeave={() => setHoverState(null)}>
       {context.tableFields.map(({ align, property, renderValue }) => (
-        <TableCell align={align} key={property}>
-          {renderValue(entity)}
+        <TableCell align={align} key={`${property}-${index}`}>
+          {renderValue(entity, index)}
         </TableCell>
       ))}
       <TableCell align={'center'}>
@@ -206,7 +207,7 @@ function DeleteModal() {
 /**
  * The menu shown for each diary entry table row.
  */
-function DiaryEachMenu() {
+function TableRowEachMenu() {
   const [context, setContext] = useTableContext();
   const router = useRouter();
 
@@ -233,12 +234,23 @@ function DiaryEachMenu() {
     <Menu
       open={context.isMenuVisible}
       anchorEl={context.menuAnchor}
+      anchorOrigin={{
+        horizontal: 'right',
+        vertical: 'bottom',
+      }}
       onClick={closeMenu}
       onClose={closeMenu}
       hideBackdrop={true}>
-      <MenuList>
+      <MenuList disablePadding={true}>
         {menuItems.map(({ label, Icon, onClick }, key) => (
-          <MenuItem onClick={onClick} key={key}>
+          <MenuItem
+            onClick={onClick}
+            sx={{
+              maxWidth: (t) => t.spacing(12),
+              py: 3,
+              whiteSpace: 'normal',
+            }}
+            key={key}>
             <ListItemIcon>
               <Icon />
             </ListItemIcon>
@@ -251,8 +263,13 @@ function DiaryEachMenu() {
   );
 }
 
+function PaperTableHead(props: PaperProps<'thead'>) {
+  return <Paper {...props} component={TableHead} />;
+}
+
 interface TableViewRowProps<T> {
   entity: T;
+  index: number;
 }
 
 interface TableViewContentProps<T> {

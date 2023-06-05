@@ -19,7 +19,7 @@ declare global {
 
   interface TableField<T> {
     title: React.ReactNode;
-    property: keyof T;
+    property: keyof T | null;
     align?: TableCellProps['align'];
     renderValue: (entry: T, index?: number) => React.ReactNode;
   }

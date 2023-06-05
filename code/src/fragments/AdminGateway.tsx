@@ -5,7 +5,7 @@ import React from 'react';
 import { useIsAdmin } from 'utils/hooks';
 
 export default function AdminGateway({ children }: React.PropsWithChildren) {
-  useSession({
+  const session = useSession({
     required: true,
     onUnauthenticated: async () => {
       await signIn('google');
@@ -14,6 +14,10 @@ export default function AdminGateway({ children }: React.PropsWithChildren) {
 
   const router = useRouter();
   const isAdmin = useIsAdmin();
+
+  if (session.status === 'loading') {
+    return null;
+  }
 
   if (!isAdmin) {
     void router.push('/');
