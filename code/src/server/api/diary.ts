@@ -1,12 +1,27 @@
 import type { Diary, Prisma } from '@prisma/client';
 import invariant from 'tiny-invariant';
+import { z } from 'zod';
 
 import Emailer from 'server/emails';
 import prisma from 'server/prisma';
+import { truncateText } from 'utils/lib/text';
 
 export default class DiaryAPI {
-  public static findMany(args: Prisma.DiaryFindManyArgs): Promise<Diary[]> {
-    return prisma.diary.findMany(args);
+  public static async findMany(
+    params: Prisma.DiaryFindManyArgs,
+    options: DiaryFindManyOptions = {},
+  ): Promise<Diary[]> {
+    const { contentWordLimit } = options;
+    let diary = await prisma.diary.findMany(params);
+    if (contentWordLimit) {
+      diary = diary.map((entry) => {
+        entry.content = truncateText(entry.content, {
+          limit: contentWordLimit,
+        });
+        return entry;
+      });
+    }
+    return diary;
   }
 
   public static find(
@@ -47,3 +62,9 @@ export default class DiaryAPI {
     return Emailer.notifyNewDiaryEntry(diary, { isTest: true });
   }
 }
+
+export const zDiaryFindManyOptions = z
+  .object({ contentWordLimit: z.number().optional() })
+  .optional();
+
+type DiaryFindManyOptions = z.infer<typeof zDiaryFindManyOptions>;

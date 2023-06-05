@@ -64,7 +64,6 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
             <Divider sx={{ marginBlock: (t) => t.spacing(4) }} />
             <Paragraph
               variant={'body1'}
-              truncate={25}
               moreHref={href}
               moreText={`Read #${entry.entryNumber}: ${entry.title}`}
               readMoreDataTestId={`zb.readmore.${entry.entryNumber}`}>

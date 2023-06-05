@@ -15,7 +15,7 @@ import {
   SubscriberFindManySchema,
   SubscriberUpdateOneSchema,
 } from 'schemas/schemas';
-import DiaryAPI from 'server/api/diary';
+import DiaryAPI, { zDiaryFindManyOptions } from 'server/api/diary';
 import PageAPI from 'server/api/pages';
 import SubscriberAPI from 'server/api/subscribers';
 
@@ -27,8 +27,13 @@ export const appRouter = router({
       .input(DiaryFindFirstSchema)
       .query(({ input }) => DiaryAPI.find(input)),
     findMany: procedure
-      .input(DiaryFindManySchema)
-      .query(({ input }) => DiaryAPI.findMany(input)),
+      .input(
+        z.object({
+          params: DiaryFindManySchema,
+          options: zDiaryFindManyOptions,
+        }),
+      )
+      .query(({ input }) => DiaryAPI.findMany(input.params, input.options)),
     create: procedure
       .input(
         z.object({

@@ -71,8 +71,13 @@ function DiaryCollection() {
     error,
     isLoading,
   } = trpc.diary.findMany.useQuery({
-    where: { status: DiaryStatus.PUBLISHED },
-    orderBy: { entryNumber: 'desc' },
+    params: {
+      where: { status: DiaryStatus.PUBLISHED },
+      orderBy: { entryNumber: 'desc' },
+    },
+    options: {
+      contentWordLimit: 25,
+    },
   });
   const { enqueueSnackbar } = useSnackbar();
 
@@ -125,7 +130,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
 ) => {
   const helpers = getServerSideHelpers(ctx);
   const page = await helpers.page.find.fetch({
-    where: { slug: 'home' },
+    where: { slug: 'diary' },
   });
 
   return {

@@ -44,14 +44,16 @@ export default function DiaryAdmin() {
 
   const diaryTableFields = useDiaryTableFields(state.hoveredEntityId);
   const result = trpc.diary.findMany.useQuery({
-    orderBy: { [state.sort.property!]: state.sort.order },
-    select: {
-      id: true,
-      title: true,
-      status: true,
-      date: true,
-      entryNumber: true,
-      isFavourite: true,
+    params: {
+      orderBy: { [state.sort.property!]: state.sort.order },
+      select: {
+        id: true,
+        title: true,
+        status: true,
+        date: true,
+        entryNumber: true,
+        isFavourite: true,
+      },
     },
   });
 

@@ -8,7 +8,14 @@ import * as zText from 'utils/lib/text';
 
 const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
   function Paragraph(
-    { children, moreHref = '#', moreText, truncate = 0, ...props },
+    {
+      children,
+      moreHref = '#',
+      moreText,
+      truncate = 0,
+      readMoreDataTestId,
+      ...props
+    },
     ref,
   ) {
     const theme = useTheme();
@@ -45,7 +52,7 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           <LinkButton
             href={moreHref}
             startIcon={<SendRounded fontSize={'small'} />}
-            data-testid={props.readMoreDataTestId}>
+            data-testid={readMoreDataTestId}>
             {moreText}
           </LinkButton>
         ) : null}
