@@ -72,6 +72,8 @@ export default function SubscriberAdmin() {
   const context: ReactUseState<TableViewState<Subscriber>> = [
     {
       ...state,
+      addButtonHref: '/admin/subscribers/add',
+      addButtonText: 'Add subscriber',
       additionalMenuItems: [
         {
           label: 'Unsubscribe',
@@ -82,13 +84,9 @@ export default function SubscriberAdmin() {
       deleteConfirmMessage: `Are you sure you want to delete "${state.selectedEntity?.email}" from your subscribers list?`,
       editHref: `/admin/subscribers/edit/${state.selectedEntity?.id}`,
       isDeleteOpLoading,
+      noEntitiesMessage: 'No subscribers found.',
       onDeleteConfirm,
-      props: {
-        addButtonHref: '/admin/subscribers/add',
-        addButtonText: 'Add subscriber',
-        noEntitiesMessage: 'No subscribers found.',
-        pageTitle: 'List of Subscribers',
-      },
+      pageTitle: 'List of Subscribers',
       queryResult: result,
       tableFields: subscriberTableFields,
     },

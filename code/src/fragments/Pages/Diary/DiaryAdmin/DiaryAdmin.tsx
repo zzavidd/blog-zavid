@@ -88,6 +88,8 @@ export default function DiaryAdmin() {
   const context: ReactUseState<TableViewState<Diary>> = [
     {
       ...state,
+      addButtonHref: '/admin/diary/add',
+      addButtonText: 'Add entry',
       additionalMenuItems: [
         {
           label: 'Preview email',
@@ -98,13 +100,9 @@ export default function DiaryAdmin() {
       deleteConfirmMessage: `Are you sure you want to delete the diary entry #${state.selectedEntity?.entryNumber}?`,
       editHref: `/admin/diary/edit/${state.selectedEntity?.id}`,
       isDeleteOpLoading,
+      noEntitiesMessage: 'No diary entries found.',
       onDeleteConfirm,
-      props: {
-        addButtonHref: '/admin/diary/add',
-        addButtonText: 'Add entry',
-        noEntitiesMessage: 'No diary entries found.',
-        pageTitle: 'List of Diary Entries',
-      },
+      pageTitle: 'List of Diary Entries',
       queryResult: result,
       tableFields: diaryTableFields,
     },

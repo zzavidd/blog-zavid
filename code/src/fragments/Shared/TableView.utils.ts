@@ -7,16 +7,19 @@ export function createInitialTableViewState<T extends { id: number }>(
   props?: Partial<TableViewState<T>>,
 ): TableViewState<T> {
   return {
+    addButtonHref: '',
+    addButtonText: '',
     additionalMenuItems: [],
     deleteConfirmMessage: '',
     editHref: '',
+    noEntitiesMessage: '',
     hoveredEntityId: null,
     isDeleteModalVisible: false,
     isDeleteOpLoading: false,
     isMenuVisible: false,
     menuAnchor: null,
     onDeleteConfirm: () => {},
-    props: null,
+    pageTitle: '',
     queryResult: null,
     selectedEntity: null,
     sort: {
@@ -39,6 +42,8 @@ export function useTableContext<T extends { id: number }>(): ReactUseState<
 }
 
 export interface TableViewState<T extends { id: number } = any> {
+  addButtonHref: string;
+  addButtonText: string;
   additionalMenuItems: MoreMenuItem[];
   deleteConfirmMessage: string;
   editHref: string;
@@ -47,9 +52,10 @@ export interface TableViewState<T extends { id: number } = any> {
   isDeleteOpLoading: boolean;
   isMenuVisible: boolean;
   menuAnchor: HTMLButtonElement | null;
+  noEntitiesMessage: string;
   onDeleteConfirm: () => void;
+  pageTitle: string;
   queryResult: UseTRPCQueryResult<T[], unknown> | null;
-  props: TableViewProps | null;
   selectedEntity: T | null;
   sort: TableViewSortValue<T>;
   tableFields: TableField<T>[];
@@ -59,13 +65,6 @@ export interface MoreMenuItem {
   label: string;
   onClick: () => void;
   Icon: SvgIconComponent;
-}
-
-interface TableViewProps {
-  addButtonText: string;
-  addButtonHref: string;
-  noEntitiesMessage: string;
-  pageTitle: string;
 }
 
 interface TableViewSortValue<T> {

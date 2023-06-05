@@ -37,7 +37,7 @@ import { useTableContext } from './TableView.utils';
 
 export default function TableView<T extends { id: number }>() {
   const [context, setContext] = useTableContext<T>();
-  const { addButtonHref, addButtonText, pageTitle } = context.props!;
+  const { addButtonHref, addButtonText, pageTitle } = context;
 
   function setSortProperty(property: keyof T | null) {
     setContext((s) => {
@@ -125,7 +125,9 @@ function DiaryTableContent<T extends { id: number }>({
       <TableBody>
         <TableRow>
           <TableCell align={'center'} colSpan={fields.length + 1}>
-            <Typography variant={'body1'}>No diary entries found.</Typography>
+            <Typography variant={'body1'}>
+              {context.noEntitiesMessage}
+            </Typography>
           </TableCell>
         </TableRow>
       </TableBody>
