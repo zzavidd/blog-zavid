@@ -12,7 +12,6 @@ import {
   Checkbox,
   Chip,
   Container,
-  Divider,
   Fade,
   FormControl,
   FormControlLabel,
@@ -220,7 +219,6 @@ export default function DiaryForm({
                 <TagsInput />
               </Stack>
             </Stack>
-            <Divider />
           </Stack>
         </Container>
         <Toolbar
@@ -231,28 +229,31 @@ export default function DiaryForm({
             bottom: 0,
             position: 'sticky',
           }}>
-          <Stack
-            direction={'row'}
-            justifyContent={'flex-end'}
-            spacing={3}
-            width={'100%'}
-            m={3}>
-            <LinkButton href={'/admin/diary'}>Cancel</LinkButton>
-            <ButtonGroup>
-              <LoadingButton
-                variant={'contained'}
-                onClick={onSubmitClick}
-                loading={isActionLoading}>
-                {buttonMenuItems[state.selectedSubmitIndex].label}
-              </LoadingButton>
-              <Button
-                variant={'contained'}
-                onClick={openButtonMenu}
-                ref={buttonRef}>
-                <ArrowDropUp />
-              </Button>
-            </ButtonGroup>
-          </Stack>
+          <Container maxWidth={'xl'}>
+            <Stack
+              direction={'row'}
+              justifyContent={'flex-end'}
+              px={5}
+              py={4}
+              spacing={3}
+              width={'100%'}>
+              <LinkButton href={'/admin/diary'}>Cancel</LinkButton>
+              <ButtonGroup>
+                <LoadingButton
+                  variant={'contained'}
+                  onClick={onSubmitClick}
+                  loading={isActionLoading}>
+                  {buttonMenuItems[state.selectedSubmitIndex].label}
+                </LoadingButton>
+                <Button
+                  variant={'contained'}
+                  onClick={openButtonMenu}
+                  ref={buttonRef}>
+                  <ArrowDropUp />
+                </Button>
+              </ButtonGroup>
+            </Stack>
+          </Container>
         </Toolbar>
       </Container>
       <ActionDialog
