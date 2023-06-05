@@ -82,7 +82,7 @@ export default function TableView<T extends { id: number }>() {
                   <TableCell />
                 </TableRow>
               </TableHead>
-              <DiaryTableContent fields={context.tableFields} />
+              <TableContent fields={context.tableFields} />
             </Table>
           </TableContainer>
         </Stack>
@@ -93,7 +93,7 @@ export default function TableView<T extends { id: number }>() {
   );
 }
 
-function DiaryTableContent<T extends { id: number }>({
+function TableContent<T extends { id: number }>({
   fields,
 }: TableViewContentProps<T>) {
   const [context] = useTableContext<T>();
@@ -144,7 +144,7 @@ function DiaryTableContent<T extends { id: number }>({
 }
 
 /**
- * Memoised component for each diary entry table row.
+ * Memoised component for each entity table row.
  */
 const TableViewRow = React.memo(function TableViewRow<
   T extends { id: number },
@@ -184,7 +184,7 @@ const TableViewRow = React.memo(function TableViewRow<
 });
 
 /**
- * The delete modal for the diary entry.
+ * The delete modal for the entity.
  */
 function DeleteModal() {
   const [context, setContext] = useTableContext();
@@ -207,7 +207,7 @@ function DeleteModal() {
 }
 
 /**
- * The menu shown for each diary entry table row.
+ * The menu shown for each entity table row.
  */
 function TableRowEachMenu() {
   const [context, setContext] = useTableContext();
@@ -223,7 +223,7 @@ function TableRowEachMenu() {
 
   function navigateToEdit() {
     if (!context.selectedEntity) return;
-    void router.push(`/admin/diary/edit/${context.selectedEntity?.id}`);
+    void router.push(context.editHref);
   }
 
   const menuItems: MoreMenuItem[] = [
