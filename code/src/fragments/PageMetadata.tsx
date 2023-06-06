@@ -28,7 +28,8 @@ export default function PageMetadata({
         content={'initial-scale=1.0, maximum-scale=1, width=device-width'}
       />
 
-      <link rel={'icon'} href={'/favicon.png'} />
+      <link rel={'icon'} href={'/favicon.png'} type={'image/png'} />
+      <link rel={'apple-touch-icon'} href={'/favicon.png'} type={'image/png'} />
 
       {/* OpenGraph meta tags for search engine optimisation */}
       <meta property={'og:title'} content={title} />
