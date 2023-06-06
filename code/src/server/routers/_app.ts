@@ -9,6 +9,7 @@ import {
   PageDeleteOneSchema,
   PageFindFirstSchema,
   PageFindManySchema,
+  PageUpdateOneSchema,
   SubscriberCreateOneSchema,
   SubscriberDeleteOneSchema,
   SubscriberFindFirstSchema,
@@ -82,9 +83,12 @@ export const appRouter = router({
     find: procedure
       .input(PageFindFirstSchema)
       .query(({ input }) => PageAPI.find(input)),
+    update: procedure
+      .input(PageUpdateOneSchema)
+      .mutation(({ input }) => PageAPI.update(input)),
     delete: procedure
       .input(PageDeleteOneSchema)
-      .mutation(({ input }) => SubscriberAPI.delete(input)),
+      .mutation(({ input }) => PageAPI.delete(input)),
   }),
   subscriber: router({
     find: procedure

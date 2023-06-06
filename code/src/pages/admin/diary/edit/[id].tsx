@@ -1,16 +1,17 @@
 import { DiaryStatus } from '@prisma/client';
 import immutate from 'immutability-helper';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 
 import AdminGateway from 'fragments/AdminGateway';
-import Layout from 'fragments/Layout';
 import DiaryForm from 'fragments/Pages/Diary/DiaryForm/DiaryForm';
 import {
   DiaryFormContext,
   InitialDiaryFormState,
 } from 'fragments/Pages/Diary/DiaryForm/DiaryForm.context';
+import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
 const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
@@ -80,7 +81,25 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
   );
 };
 
-DiaryEntryEdit.getLayout = Layout.addPartials;
+export const getServerSideProps: GetServerSideProps<
+  DiaryEntryEditProps
+> = async (ctx) => {
+  const { query, req } = ctx;
+  const id = Number(query.id);
+
+  const helpers = getServerSideHelpers(ctx);
+  await helpers.diary.find.prefetch({ params: { where: { id } } });
+
+  return {
+    props: {
+      id,
+      referer: req.headers.referer || '',
+      pathDefinition: { title: 'Edit Diary Entry' },
+      trpcState: helpers.dehydrate(),
+    },
+  };
+};
+
 export default DiaryEntryEdit;
 
 interface DiaryEntryEditProps extends AppPageProps {
