@@ -1,6 +1,5 @@
 import { DiaryStatus } from '@prisma/client';
 import immutate from 'immutability-helper';
-import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
@@ -12,7 +11,6 @@ import {
   DiaryFormContext,
   InitialDiaryFormState,
 } from 'fragments/Pages/Diary/DiaryForm/DiaryForm.context';
-import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
 const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
@@ -39,7 +37,9 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
         enqueueSnackbar(e.message, { variant: 'error' });
       },
     });
-  const { data: entry } = trpc.diary.find.useQuery({ where: { id } });
+  const { data: entry } = trpc.diary.find.useQuery({
+    params: { where: { id } },
+  });
 
   useEffect(() => {
     if (!entry) return;
@@ -78,25 +78,6 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
       </DiaryFormContext.Provider>
     </AdminGateway>
   );
-};
-
-export const getServerSideProps: GetServerSideProps<
-  DiaryEntryEditProps
-> = async (ctx) => {
-  const { query, req } = ctx;
-  const id = Number(query.id);
-
-  const helpers = getServerSideHelpers(ctx);
-  await helpers.diary.find.prefetch({ where: { id } });
-
-  return {
-    props: {
-      id,
-      referer: req.headers.referer || '',
-      pathDefinition: { title: 'Edit Diary Entry' },
-      trpcState: helpers.dehydrate(),
-    },
-  };
 };
 
 DiaryEntryEdit.getLayout = Layout.addPartials;

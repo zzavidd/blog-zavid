@@ -47,7 +47,7 @@ export default function HomeLatest({
           <Skeleton variant={'text'} width={'60%'} />
         </Stack>
       ) : (
-        <Paragraph truncate={50} moreHref={moreHref} moreText={moreText}>
+        <Paragraph moreHref={moreHref} moreText={moreText}>
           {content}
         </Paragraph>
       )}

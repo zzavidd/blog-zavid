@@ -9,7 +9,7 @@ import { truncateText } from 'utils/lib/text';
 export default class DiaryAPI {
   public static async findMany(
     params: Prisma.DiaryFindManyArgs,
-    options: DiaryFindManyOptions = {},
+    options: DiaryFindOptions = {},
   ): Promise<Diary[]> {
     const { contentWordLimit } = options;
     let diary = await prisma.diary.findMany(params);
@@ -24,10 +24,18 @@ export default class DiaryAPI {
     return diary;
   }
 
-  public static find(
+  public static async find(
     args: Prisma.DiaryFindFirstOrThrowArgs,
+    options: DiaryFindOptions = {},
   ): Promise<Diary | null> {
-    return prisma.diary.findFirst(args);
+    const { contentWordLimit } = options;
+    const entry = await prisma.diary.findFirst(args);
+    if (entry && contentWordLimit) {
+      entry.content = truncateText(entry.content, {
+        limit: contentWordLimit,
+      });
+    }
+    return entry;
   }
 
   public static async create(
@@ -63,8 +71,8 @@ export default class DiaryAPI {
   }
 }
 
-export const zDiaryFindManyOptions = z
+export const zDiaryFindOptions = z
   .object({ contentWordLimit: z.number().optional() })
   .optional();
 
-type DiaryFindManyOptions = z.infer<typeof zDiaryFindManyOptions>;
+type DiaryFindOptions = z.infer<typeof zDiaryFindOptions>;

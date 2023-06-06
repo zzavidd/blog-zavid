@@ -15,7 +15,7 @@ import {
   SubscriberFindManySchema,
   SubscriberUpdateOneSchema,
 } from 'schemas/schemas';
-import DiaryAPI, { zDiaryFindManyOptions } from 'server/api/diary';
+import DiaryAPI, { zDiaryFindOptions } from 'server/api/diary';
 import PageAPI from 'server/api/pages';
 import SubscriberAPI from 'server/api/subscribers';
 
@@ -24,13 +24,18 @@ import { procedure, router } from '../trpc';
 export const appRouter = router({
   diary: router({
     find: procedure
-      .input(DiaryFindFirstSchema)
-      .query(({ input }) => DiaryAPI.find(input)),
+      .input(
+        z.object({
+          params: DiaryFindFirstSchema,
+          options: zDiaryFindOptions,
+        }),
+      )
+      .query(({ input }) => DiaryAPI.find(input.params, input.options)),
     findMany: procedure
       .input(
         z.object({
           params: DiaryFindManySchema,
-          options: zDiaryFindManyOptions,
+          options: zDiaryFindOptions,
         }),
       )
       .query(({ input }) => DiaryAPI.findMany(input.params, input.options)),
@@ -55,10 +60,15 @@ export const appRouter = router({
       .mutation(({ input }) => DiaryAPI.delete(input)),
     custom: router({
       latest: procedure.query(() =>
-        DiaryAPI.find({
-          orderBy: { entryNumber: 'desc' },
-          where: { status: DiaryStatus.PUBLISHED },
-        }),
+        DiaryAPI.find(
+          {
+            orderBy: { entryNumber: 'desc' },
+            where: { status: DiaryStatus.PUBLISHED },
+          },
+          {
+            contentWordLimit: 50,
+          },
+        ),
       ),
       preview: procedure
         .input(z.number())

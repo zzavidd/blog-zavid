@@ -38,7 +38,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   entryNumber,
 }) => {
   const { data: diaryEntry, error } = trpc.diary.find.useQuery({
-    where: { entryNumber },
+    params: { where: { entryNumber } },
   });
   const isMobile = useMediaQuery<Theme>((t) => t.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
@@ -113,7 +113,9 @@ export const getServerSideProps: GetServerSideProps<
     const entryNumber = Number(query.number);
 
     const helpers = getServerSideHelpers(ctx);
-    const entry = await helpers.diary.find.fetch({ where: { entryNumber } });
+    const entry = await helpers.diary.find.fetch({
+      params: { where: { entryNumber } },
+    });
     invariant(entry, 'No diary entry found.');
 
     const session = await unstable_getServerSession(req, res, nextAuthOptions);

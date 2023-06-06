@@ -38,8 +38,10 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
       },
     });
   const { data: latestEntry } = trpc.diary.find.useQuery({
-    orderBy: { entryNumber: 'desc' },
-    select: { entryNumber: true },
+    params: {
+      orderBy: { entryNumber: 'desc' },
+      select: { entryNumber: true },
+    },
   });
 
   useEffect(() => {
@@ -76,8 +78,10 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
 ) => {
   const helpers = getServerSideHelpers(ctx);
   await helpers.diary.find.prefetch({
-    orderBy: { entryNumber: 'desc' },
-    select: { entryNumber: true },
+    params: {
+      orderBy: { entryNumber: 'desc' },
+      select: { entryNumber: true },
+    },
   });
 
   return {
