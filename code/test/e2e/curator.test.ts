@@ -12,7 +12,7 @@ const params: TestDefinition[] = [
   {
     name: 'on mobile',
     skipCondition: (isMobile) => !isMobile,
-    clickOptions: { delay: 2000 },
+    clickOptions: { delay: 2500 },
   },
   {
     name: 'on desktop',
