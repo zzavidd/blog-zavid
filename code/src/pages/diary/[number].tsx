@@ -4,6 +4,7 @@ import {
 } from '@mui/icons-material';
 import type { Theme } from '@mui/material';
 import {
+  Chip,
   Container,
   Divider,
   Stack,
@@ -94,7 +95,22 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
             <Paragraph variant={'text'}>{diaryEntry.content}</Paragraph>
             <Signature width={180} />
             <Paragraph variant={'text'}>{diaryEntry.footnote}</Paragraph>
+            <Stack
+              direction={'row'}
+              spacing={2}
+              flexWrap={'wrap'}
+              useFlexGap={true}>
+              {(diaryEntry.tags as string[]).map((tag, index) => (
+                <Chip
+                  label={tag}
+                  variant={'filled'}
+                  sx={{ px: 1, py: 4 }}
+                  key={index}
+                />
+              ))}
+            </Stack>
           </Stack>
+
           <ShareBlock
             headline={'Share This Diary Entry'}
             message={`Read "${title}" on ZAVID`}
