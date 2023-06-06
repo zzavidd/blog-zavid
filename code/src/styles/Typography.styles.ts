@@ -1,14 +1,14 @@
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
 import { Calistoga, Mulish } from 'next/font/google';
 
-const calistoga = Calistoga({
+export const calistoga = Calistoga({
   display: 'swap',
   preload: true,
   subsets: ['latin'],
   weight: ['400'],
 });
 
-const mulish = Mulish({
+export const mulish = Mulish({
   display: 'swap',
   preload: true,
   subsets: ['latin'],

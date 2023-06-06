@@ -4,6 +4,11 @@ import { css } from '@mui/material';
 import Settings from 'utils/settings';
 
 const components: Components<Theme> = {
+  MuiBackdrop: {
+    defaultProps: {
+      onContextMenu: (e) => e.preventDefault(),
+    },
+  },
   MuiButton: {
     defaultProps: {
       disableElevation: true,

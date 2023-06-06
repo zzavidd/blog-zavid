@@ -100,6 +100,7 @@ export function extractExcerpt(originalText: string): string {
 }
 
 export interface FormatTextOptions {
+  dataTestId?: string;
   forEmails?: boolean;
   theme?: Theme;
   typographyVariant?: TypographyProps['variant'];

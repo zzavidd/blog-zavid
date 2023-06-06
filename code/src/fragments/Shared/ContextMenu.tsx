@@ -44,7 +44,12 @@ export default function ContextMenu() {
 
   const menuItems = [
     { label: 'Copy text', icon: <ContentCopyIcon />, onClick: copyText },
-    { label: 'Curate', icon: <ImageIcon />, onClick: curate },
+    {
+      label: 'Curate',
+      icon: <ImageIcon />,
+      onClick: curate,
+      dataTestId: 'zb.curate',
+    },
   ];
 
   return (
@@ -56,10 +61,11 @@ export default function ContextMenu() {
         anchorReference={'anchorPosition'}
         anchorPosition={context.position}>
         <MenuList disablePadding={true}>
-          {menuItems.map(({ label, icon, onClick }) => (
+          {menuItems.map(({ label, icon, onClick, dataTestId }) => (
             <MenuItem
               onClick={onClick}
               sx={{ padding: (t) => t.spacing(4, 5) }}
+              data-testid={dataTestId}
               key={label}>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText>{label}</ListItemText>

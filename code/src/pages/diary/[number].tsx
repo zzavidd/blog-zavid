@@ -92,7 +92,9 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
             ) : null}
           </Stack>
           <Stack spacing={5}>
-            <Paragraph variant={'text'}>{diaryEntry.content}</Paragraph>
+            <Paragraph variant={'text'} dataTestId={'zb.diary.content'}>
+              {diaryEntry.content}
+            </Paragraph>
             <Signature width={180} />
             <Paragraph variant={'text'}>{diaryEntry.footnote}</Paragraph>
             <Stack

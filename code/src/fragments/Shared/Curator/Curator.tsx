@@ -100,6 +100,7 @@ export default function Curator({ onClose, visible }: CuratorProps) {
               <NextImage
                 src={curatorContext.imageSource}
                 alt={menuContext.title}
+                data-testid={'zb.curator.image'}
               />
             ) : null}
           </Box>

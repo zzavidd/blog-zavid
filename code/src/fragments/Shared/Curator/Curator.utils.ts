@@ -2,6 +2,7 @@ import { useCallback, useContext, useRef } from 'react';
 import invariant from 'tiny-invariant';
 
 import { CuratorContext } from 'fragments/Shared/Curator/Curator.context';
+import { calistoga, mulish } from 'styles/Typography.styles';
 import { MenuContext } from 'utils/contexts';
 import Logger from 'utils/logger';
 import { AppTheme, FilterShape, FilterShapeOption } from 'utils/theme';
@@ -156,7 +157,7 @@ export function useCurateContent(): UseCurateContent {
       // Draw source title at top left corner if not title only.
       if (!curatorContext.isTitleOnly) {
         ctx.fillStyle = 'white';
-        ctx.font = `${SHAPE.ST_FONT_SIZE}px Calistoga`;
+        ctx.font = `${SHAPE.ST_FONT_SIZE}px ${calistoga.style.fontFamily}`;
         insertText(
           ctx,
           [menuContext.title],
@@ -167,7 +168,15 @@ export function useCurateContent(): UseCurateContent {
         );
       }
 
-      return canvas.toDataURL('image/jpeg');
+      return new Promise<string>((resolve) => {
+        canvas.toBlob((blob) => {
+          const image = new Image();
+          image.src = URL.createObjectURL(blob!);
+          image.onload = () => {
+            resolve(image.src);
+          };
+        }, 'image/jpeg');
+      });
     } catch (e) {
       return null;
     }
@@ -278,7 +287,9 @@ function getFontStyle(
 ): [string, number] {
   const { isTitleOnly, constantLineHeight } = options;
   const lineHeight = isTitleOnly ? constantLineHeight! : (7 / 4) * fontSize;
-  const fontfamily = isTitleOnly ? 'Calistoga' : 'Mulish';
+  const fontfamily = isTitleOnly
+    ? calistoga.style.fontFamily
+    : mulish.style.fontFamily;
   return [`${fontSize}px ${fontfamily}`, lineHeight];
 }
 

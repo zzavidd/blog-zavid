@@ -10,10 +10,11 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
   function Paragraph(
     {
       children,
+      dataTestId,
       moreHref = '#',
       moreText,
-      truncate = 0,
       readMoreDataTestId,
+      truncate = 0,
       ...props
     },
     ref,
@@ -44,9 +45,14 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           component={'pre'}
           whiteSpace={'pre-wrap'}
           mb={showReadMore ? 4 : 0}
+          onContextMenu={(e) => e.preventDefault()}
           ref={ref}
           {...props}>
-          {zText.formatText(text, { theme, typographyVariant: props.variant })}
+          {zText.formatText(text, {
+            dataTestId,
+            theme,
+            typographyVariant: props.variant,
+          })}
         </Typography>
         {showReadMore ? (
           <LinkButton
@@ -65,6 +71,7 @@ export default Paragraph;
 
 interface ParagraphProps extends TypographyProps<'pre'> {
   children: string;
+  dataTestId?: string;
   keepRichFormatOnTruncate?: true;
   moreText?: string;
   moreHref?: string;
