@@ -168,15 +168,7 @@ export function useCurateContent(): UseCurateContent {
         );
       }
 
-      return new Promise<string>((resolve) => {
-        canvas.toBlob((blob) => {
-          const image = new Image();
-          image.src = URL.createObjectURL(blob!);
-          image.onload = () => {
-            resolve(image.src);
-          };
-        }, 'image/jpeg');
-      });
+      return canvas.toDataURL('image/jpeg');
     } catch (e) {
       return null;
     }

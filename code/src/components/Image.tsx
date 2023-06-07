@@ -40,6 +40,7 @@ export function Signature(props: BoxProps) {
         height={309}
         src={`static/logos/signature-${oppositeTheme}`}
         alt={'Z-Signature'}
+        priority={true}
         style={{ height: '100%', width: '100%' }}
       />
     </Box>
