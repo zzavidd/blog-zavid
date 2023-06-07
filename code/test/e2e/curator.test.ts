@@ -42,7 +42,6 @@ test.describe('Curator', () => {
       test('has image', async ({ page }) => {
         await page.getByTestId('zb.diary.content.0').click(clickOptions);
         const curateButton = page.getByTestId('zb.curate');
-        await curateButton.waitFor({ state: 'visible' });
         await curateButton.click();
 
         const image = page.getByTestId('zb.curator.image');

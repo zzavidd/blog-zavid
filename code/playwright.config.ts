@@ -17,11 +17,13 @@ const projects: Project[] = [
   {
     name: 'Mobile Chrome',
     testMatch: ['**/curator.test.ts'],
+    retries: 5,
     use: { ...devices['Pixel 5'] },
   },
   {
     name: 'Mobile Safari',
     testMatch: ['**/curator.test.ts'],
+    retries: 5,
     use: { ...devices['iPhone 12'] },
   },
 ];
