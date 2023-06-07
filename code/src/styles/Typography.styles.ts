@@ -1,5 +1,8 @@
+import { createTheme } from '@mui/material';
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
 import { Calistoga, Mulish } from 'next/font/google';
+
+const { breakpoints } = createTheme();
 
 export const calistoga = Calistoga({
   display: 'swap',
@@ -28,6 +31,9 @@ const typography: TypographyOptions = {
     fontSize: 40,
     fontWeight: 700,
     lineHeight: 1.1,
+    [breakpoints.down('md')]: {
+      letterSpacing: -2,
+    },
   },
   h3: {
     fontFamily: calistoga.style.fontFamily,
