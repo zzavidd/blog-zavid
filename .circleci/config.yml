@@ -20,6 +20,7 @@ commands:
           name: "Restore pnpm cache"
           keys:
             - pnpm-packages-{{ checksum "./code/pnpm-lock.yaml" }}
+            - pnpm-packages-
       - run:
           name: "Install pnpm package manager"
           command: |
@@ -76,6 +77,7 @@ jobs:
           name: "Restore build cache"
           keys:
             - next-build-{{ checksum "./code/pnpm-lock.yaml" }}
+            - next-build-
       - run:
           name: "Build project"
           command: pnpm run build
