@@ -1,10 +1,10 @@
-import { expect, test } from '@playwright/test';
 import type { Diary } from '@prisma/client';
 import { DiaryStatus } from '@prisma/client';
 
 import { createDiaryEntry } from '../../ops/ingestion/factory';
 import prisma from '../../src/server/prisma';
 import Settings from '../../src/utils/settings';
+import { expect, test } from '../fixtures';
 
 const entryNumber = 1;
 const diary = createDiaryEntry({ entryNumber });
@@ -20,26 +20,25 @@ test.describe('Diary', () => {
       expect(latestDiaryEntry).toBeTruthy();
     });
 
-    test.beforeEach(async ({ page }) => {
-      await page.goto('/diary');
-      await page.getByTestId('zb.accept').click();
+    test.beforeEach(async ({ zPage }) => {
+      await zPage.goto('/diary');
     });
 
-    test('has correct page title', async ({ page }) => {
-      await expect(page).toHaveTitle(`Diary | ${Settings.SITE_TITLE}`);
+    test('has correct page title', async ({ zPage }) => {
+      await expect(zPage).toHaveTitle(`Diary | ${Settings.SITE_TITLE}`);
     });
 
-    test('has entries listed', async ({ page }) => {
+    test('has entries listed', async ({ zPage }) => {
       const { entryNumber, title } = latestDiaryEntry!;
-      const h2 = page.getByTestId(`zb.entry.${entryNumber}`);
+      const h2 = zPage.getByTestId(`zb.entry.${entryNumber}`);
       await expect(h2).toHaveText(`Diary Entry #${entryNumber}: ${title}`);
     });
 
-    test('can click to individual page', async ({ page }) => {
+    test('can click to individual page', async ({ zPage }) => {
       const { entryNumber, title } = latestDiaryEntry!;
-      await page.getByTestId(`zb.readmore.${entryNumber}`).click();
-      await page.waitForURL(`/diary/${entryNumber}`);
-      await expect(page).toHaveTitle(
+      await zPage.getByTestId(`zb.readmore.${entryNumber}`).click();
+      await zPage.waitForURL(`/diary/${entryNumber}`);
+      await expect(zPage).toHaveTitle(
         `Diary Entry #${entryNumber}: ${title} | ${Settings.SITE_TITLE}`,
       );
     });
@@ -52,21 +51,20 @@ test.describe('Diary', () => {
       { status: DiaryStatus.PROTECTED, expect404: true },
       { status: DiaryStatus.DRAFT, expect404: true },
     ].forEach(({ status, expect404 }) => {
-      test(`can view ${status} page`, async ({ page }) => {
+      test(`can view ${status} page`, async ({ zPage }) => {
         diary.status = status;
         await prisma.diary.upsert({
           create: diary,
           update: diary,
           where: { entryNumber },
         });
-        await page.goto('/diary/1');
-        await page.getByTestId('zb.accept').click();
+        await zPage.goto('/diary/1');
 
         const expectedTitle = expect404
           ? '404: Not Found'
           : `Diary Entry #${diary.entryNumber}: ${diary.title}`;
 
-        await expect(page).toHaveTitle(
+        await expect(zPage).toHaveTitle(
           `${expectedTitle} | ${Settings.SITE_TITLE}`,
         );
       });

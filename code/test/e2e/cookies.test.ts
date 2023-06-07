@@ -1,6 +1,5 @@
-import { expect, test } from '@playwright/test';
-
 import Settings from '../../src/utils/settings';
+import { expect, test } from '../fixtures';
 
 test.describe('Cookies', () => {
   test.beforeEach(async ({ page }) => {
@@ -8,7 +7,10 @@ test.describe('Cookies', () => {
   });
 
   test('are set to true on allow', async ({ context, page }) => {
-    await page.getByTestId('zb.accept').click();
+    const acceptButton = page.getByTestId('zb.accept');
+    await acceptButton.waitFor({ state: 'visible' });
+    await acceptButton.click();
+
     const cookies = await context.cookies();
     const cookie = cookies.find(({ name }) => name === Settings.COOKIE_NAME);
     expect(cookie).toBeDefined();
@@ -16,7 +18,10 @@ test.describe('Cookies', () => {
   });
 
   test('are set to false on deny', async ({ context, page }) => {
-    await page.getByTestId('zb.deny').click();
+    const denyButton = page.getByTestId('zb.deny');
+    await denyButton.waitFor({ state: 'visible' });
+    await denyButton.click();
+
     const cookies = await context.cookies();
     const cookie = cookies.find(({ name }) => name === Settings.COOKIE_NAME);
     expect(cookie).toBeDefined();

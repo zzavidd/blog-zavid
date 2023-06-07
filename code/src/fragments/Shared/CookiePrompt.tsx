@@ -6,15 +6,21 @@ import {
   Typography,
 } from '@mui/material';
 import Cookies from 'js-cookie';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Link } from 'components/Link';
 import Settings from 'utils/settings';
 
 export default function CookiePrompt() {
   const [state, setState] = useState({
-    isConsentShown: !Cookies.get(Settings.COOKIE_NAME),
+    isConsentShown: false,
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setState({ isConsentShown: !Cookies.get(Settings.COOKIE_NAME) });
+    }, 2000);
+  }, []);
 
   function allowCookies() {
     Cookies.set(Settings.COOKIE_NAME, 'true', { expires: 90 });

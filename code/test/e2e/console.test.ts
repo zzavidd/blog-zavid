@@ -1,5 +1,4 @@
 import type { ConsoleMessage } from '@playwright/test';
-import { expect, test } from '@playwright/test';
 import { DiaryStatus } from '@prisma/client';
 
 import {
@@ -7,6 +6,7 @@ import {
   createSubscriber,
 } from '../../ops/ingestion/factory';
 import prisma from '../../src/server/prisma';
+import { expect, test } from '../fixtures';
 
 const entryNumber = 1;
 const diary = createDiaryEntry({ entryNumber, status: DiaryStatus.PUBLISHED });
