@@ -47,7 +47,7 @@ test.describe('Curator', () => {
 
         const image = page.getByTestId('zb.curator.image');
         await expect(image).toBeVisible();
-        await expect(image).toHaveAttribute('src', /blob.*/);
+        await expect(image).toHaveAttribute('src', /data.*/);
       });
     });
   });
