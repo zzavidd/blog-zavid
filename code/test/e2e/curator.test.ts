@@ -12,7 +12,7 @@ const params: TestDefinition[] = [
   {
     name: 'on mobile',
     skipCondition: (isMobile) => !isMobile,
-    clickOptions: { delay: 2500 },
+    clickOptions: { button: 'right', delay: 2500 },
   },
   {
     name: 'on desktop',
@@ -46,6 +46,7 @@ test.describe('Curator', () => {
         await curateButton.click();
 
         const image = page.getByTestId('zb.curator.image');
+        await expect(image).toBeVisible();
         await expect(image).toHaveAttribute('src', /blob.*/);
       });
     });
