@@ -44,7 +44,7 @@ export default class DiaryAPI {
   ): Promise<Diary> {
     const diary = await prisma.diary.create(args);
     if (isPublish) {
-      void Emailer.notifyNewDiaryEntry(diary);
+      await Emailer.notifyNewDiaryEntry(diary);
     }
     return diary;
   }
@@ -55,7 +55,7 @@ export default class DiaryAPI {
   ): Promise<Diary> {
     const diary = await prisma.diary.update(args);
     if (isPublish) {
-      void Emailer.notifyNewDiaryEntry(diary);
+      await Emailer.notifyNewDiaryEntry(diary);
     }
     return diary;
   }
