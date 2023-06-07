@@ -6,8 +6,9 @@ import {
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import type { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
-import type { AppProps } from 'next/app';
+import type { AppProps as NextAppProps } from 'next/app';
 import React, { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -78,3 +79,5 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
     </React.Fragment>
   );
 }
+
+type AppProps = NextAppProps<AppPageProps & { session: Session }>;

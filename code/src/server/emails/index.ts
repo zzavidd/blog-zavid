@@ -101,6 +101,11 @@ async function sendEmail<T extends Record<string, unknown>>(
       subject: options.isTest ? 'Test Email' : subject,
       html,
       text: htmlToText.fromString(html, HTML_TO_TEXT_OPTIONS),
+      dkim: {
+        domainName: isProduction ? 'zavidegbue.com' : 'dev.zavidegbue.com',
+        keySelector: 'default',
+        privateKey: process.env.DKIM_KEY!,
+      },
     });
   });
 
