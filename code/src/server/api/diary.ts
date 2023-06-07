@@ -1,4 +1,6 @@
 import type { Diary, Prisma } from '@prisma/client';
+import nodemailer from 'nodemailer';
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import invariant from 'tiny-invariant';
 import { z } from 'zod';
 
@@ -67,7 +69,12 @@ export default class DiaryAPI {
   public static async publish(id: number): Promise<string> {
     const diary = await this.find({ where: { id } });
     invariant(diary, 'No diary entry with ID found.');
-    return Emailer.notifyNewDiaryEntry(diary, { isTest: true });
+    const [info] = await Emailer.notifyNewDiaryEntry(diary, { isTest: true });
+    return (
+      nodemailer.getTestMessageUrl(
+        info as unknown as SMTPTransport.SentMessageInfo,
+      ) || ''
+    );
   }
 }
 
