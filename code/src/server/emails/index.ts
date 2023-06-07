@@ -101,7 +101,6 @@ async function sendEmail<T extends Record<string, unknown>>(
       subject: options.isTest ? 'Test Email' : subject,
       html,
       text: htmlToText.fromString(html, HTML_TO_TEXT_OPTIONS),
-      messageId: recipient.token,
     });
   });
 
