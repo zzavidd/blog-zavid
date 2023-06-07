@@ -85,6 +85,9 @@ async function prepareEmail<T extends Record<string, unknown>>(
     return sendMailToAddress(recipient.email, subject, html);
   });
   const [previewUrl] = await Promise.all(promises);
+  if (!isProd) {
+    Logger.info(`Preview URL: ${previewUrl}`);
+  }
   Logger.info(
     `Emails: "${subject}" email sent to ${mailList.length} subscribers.`,
   );
@@ -110,7 +113,6 @@ async function sendMailToAddress(
     text: htmlToText.fromString(html, HTML_TO_TEXT_OPTIONS),
   });
   const url = nodemailer.getTestMessageUrl(info as SentMessageInfo) || '';
-  Logger.info(`Preview URL: ${url}`);
   return url;
 }
 
