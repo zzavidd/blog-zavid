@@ -30,6 +30,7 @@ COPY --from=builder /var/www/$WORKDIR/code/package.json .
 COPY --from=builder /var/www/$WORKDIR/code/.env.local .
 COPY --from=builder /var/www/$WORKDIR/code/pnpm-lock.yaml .
 COPY --from=builder /var/www/$WORKDIR/code/next.config.js .
+COPY --from=builder /var/www/$WORKDIR/code/public ./public
 COPY --from=builder /var/www/$WORKDIR/code/.next/standalone .
 COPY --from=builder /var/www/$WORKDIR/code/.next/static ./.next/static
 
