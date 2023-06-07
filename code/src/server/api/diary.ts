@@ -4,6 +4,7 @@ import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import invariant from 'tiny-invariant';
 import { z } from 'zod';
 
+import type { EmailPreviewType } from 'server/emails';
 import Emailer from 'server/emails';
 import prisma from 'server/prisma';
 import { truncateText } from 'utils/lib/text';
@@ -66,10 +67,16 @@ export default class DiaryAPI {
     await prisma.diary.deleteMany({ where: { id: { in: ids } } });
   }
 
-  public static async publish(id: number): Promise<string> {
+  public static async publish(
+    id: number,
+    previewType: EmailPreviewType,
+  ): Promise<string> {
     const diary = await this.find({ where: { id } });
     invariant(diary, 'No diary entry with ID found.');
-    const [info] = await Emailer.notifyNewDiaryEntry(diary, { isTest: true });
+    const [info] = await Emailer.notifyNewDiaryEntry(diary, {
+      isPreview: true,
+      previewType,
+    });
     return (
       nodemailer.getTestMessageUrl(
         info as unknown as SMTPTransport.SentMessageInfo,

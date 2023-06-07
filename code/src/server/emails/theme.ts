@@ -1,3 +1,6 @@
+export const TITLE_FONTS = ['Calistoga', 'Optima'];
+export const BODY_FONTS = ['Mulish', 'Helvetica', 'Roboto'];
+
 const EmailTheme = {
   Color: {
     Light: {
@@ -20,8 +23,8 @@ const EmailTheme = {
     },
   },
   Font: {
-    Title: 'Calistoga',
-    Body: 'Mulish',
+    Title: TITLE_FONTS.join(', '),
+    Body: BODY_FONTS.join(', '),
   },
 };
 

@@ -18,18 +18,17 @@ import React from 'react';
 
 import Settings from 'utils/settings';
 
-import EmailTheme from '../theme';
+import EmailTheme, { BODY_FONTS, TITLE_FONTS } from '../theme';
 
 import { Anchor } from './Components';
 
-export const FOOTER_LINKS = [
+const FOOTER_LINKS = [
   { title: 'Diary', url: '/diary' },
   // { title: 'Wishlist', url: '/wishlist' },
   { title: 'About', url: '/about' },
   { title: 'Privacy Policy', url: '/privacy' },
 ];
-
-export const FOOTER_SOCIALS = ['twitter', 'instagram', 'linkedin'];
+const FOOTER_SOCIALS = ['twitter', 'instagram', 'linkedin'];
 
 export function EmailHead({ title }: EmailHeadProps) {
   return (
@@ -37,19 +36,18 @@ export function EmailHead({ title }: EmailHeadProps) {
       <MjmlTitle>{title}</MjmlTitle>
       <MjmlPreview>{title}</MjmlPreview>
       <MjmlAttributes>
-        <MjmlAll name={'color-scheme'} content={'light dark'} />
-        <MjmlAll name={'supported-color-schemes'} content={'light dark'} />
-        <MjmlAll fontFamily={'Mulish'} />
+        <MjmlAll name={'color-scheme'} content={'light'} />
+        <MjmlAll name={'supported-color-schemes'} content={'light'} />
+        <MjmlAll fontFamily={EmailTheme.Font.Body} />
         <MjmlText padding={0} />
       </MjmlAttributes>
-      <MjmlFont
-        name={EmailTheme.Font.Title}
-        href={`https://fonts.googleapis.com/css?family=${EmailTheme.Font.Title}`}
-      />
-      <MjmlFont
-        name={EmailTheme.Font.Body}
-        href={`https://fonts.googleapis.com/css?family=${EmailTheme.Font.Body}`}
-      />
+      {TITLE_FONTS.concat(BODY_FONTS).map((font) => (
+        <MjmlFont
+          name={font}
+          href={`https://fonts.googleapis.com/css?family=${font}`}
+          key={font}
+        />
+      ))}
     </MjmlHead>
   );
 }

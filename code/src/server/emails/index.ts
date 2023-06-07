@@ -4,8 +4,8 @@ import htmlToText from 'html-to-text';
 import mjml2html from 'mjml';
 import type SMTPPool from 'nodemailer/lib/smtp-pool';
 import React from 'react';
-import invariant from 'tiny-invariant';
 import { v4 as UUIDv4 } from 'uuid';
+import { z } from 'zod';
 
 import SubscriberAPI from 'server/api/subscribers';
 import { SubscriptionType } from 'utils/enum';
@@ -18,7 +18,10 @@ import {
 } from './constants';
 import DiaryEmail from './templates/Diary';
 
-/** The email address of the recipient in development. */
+const adminRecipient: TestRecipient = {
+  email: process.env.NEXT_PUBLIC_GOOGLE_EMAIL!,
+  token: UUIDv4(),
+};
 const testRecipient: TestRecipient = {
   email: process.env.ETHEREAL_EMAIL!,
   token: UUIDv4(),
@@ -66,14 +69,12 @@ async function sendEmail<T extends Record<string, unknown>>(
 
   let mailList: Subscriber[] | [TestRecipient] = [];
 
-  if (isProduction) {
-    if (options.isTest) {
-      const recipient = subscribers.find(
-        (s) => s.email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL!,
-      );
-      invariant(recipient, 'No admin recipient found.');
-      mailList = [recipient];
-    } else {
+  if (options.isPreview) {
+    const recipient =
+      options.previewType === 'Gmail' ? adminRecipient : testRecipient;
+    mailList = [recipient];
+  } else {
+    if (isProduction) {
       mailList = subscribers.filter((subscriber) => {
         const subscriptions = subscriber.subscriptions as Record<
           SubscriptionType,
@@ -81,9 +82,9 @@ async function sendEmail<T extends Record<string, unknown>>(
         >;
         return subscriptions[type];
       });
+    } else {
+      mailList = [testRecipient];
     }
-  } else {
-    mailList = [testRecipient];
   }
 
   const promises = mailList.map((recipient) => {
@@ -98,14 +99,9 @@ async function sendEmail<T extends Record<string, unknown>>(
     return TRANSPORTER.sendMail({
       from: `ZAVID <${process.env.EMAIL_USER}>`,
       to: recipient.email,
-      subject: options.isTest ? 'Test Email' : subject,
+      subject: options.isPreview ? `(Preview) ${subject}` : subject,
       html,
       text: htmlToText.fromString(html, HTML_TO_TEXT_OPTIONS),
-      dkim: {
-        domainName: isProduction ? 'zavidegbue.com' : 'dev.zavidegbue.com',
-        keySelector: 'default',
-        privateKey: process.env.DKIM_KEY!,
-      },
     });
   });
 
@@ -116,8 +112,13 @@ async function sendEmail<T extends Record<string, unknown>>(
   return responses;
 }
 
+export const zEmailPreviewType = z.enum(['Ethereal', 'Gmail']);
+
+export type EmailPreviewType = z.infer<typeof zEmailPreviewType>;
+
 interface NotifyOptions {
-  isTest?: boolean;
+  isPreview?: boolean;
+  previewType?: EmailPreviewType;
 }
 
 interface TestRecipient {

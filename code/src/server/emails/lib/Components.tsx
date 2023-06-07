@@ -48,7 +48,7 @@ export function Anchor({
 export function EmailParagraph({ children, ...props }: EmailParagraphProps) {
   return (
     <MjmlText
-      fontFamily={'Mulish'}
+      fontFamily={EmailTheme.Font.Body}
       fontSize={16}
       lineHeight={28}
       padding={0}

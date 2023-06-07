@@ -1,5 +1,6 @@
 import {
   Article,
+  AttachEmail,
   EditNote,
   Email as EmailIcon,
   Favorite,
@@ -15,7 +16,10 @@ import { useState } from 'react';
 
 import { Link } from 'components/Link';
 import TableView from 'fragments/Shared/TableView';
-import type { TableViewState } from 'fragments/Shared/TableView.utils';
+import type {
+  MoreMenuItem,
+  TableViewState,
+} from 'fragments/Shared/TableView.utils';
 import {
   TableViewContext,
   createInitialTableViewState,
@@ -78,27 +82,52 @@ export default function DiaryAdmin() {
     }
   }
 
-  function onPreviewEmailClick() {
+  function onPreviewEtherealClick() {
     if (!state.selectedEntity) return;
-    notifyDiaryEntry(state.selectedEntity.id, {
-      onSuccess: (url) => {
-        window.open(url, '_blank');
+    notifyDiaryEntry(
+      { id: state.selectedEntity.id, type: 'Ethereal' },
+      {
+        onSuccess: (url) => {
+          window.open(url, '_blank');
+        },
       },
-    });
+    );
   }
+
+  function onPreviewGmailClick() {
+    if (!state.selectedEntity) return;
+    notifyDiaryEntry(
+      { id: state.selectedEntity.id, type: 'Gmail' },
+      {
+        onSuccess: () => {
+          enqueueSnackbar(
+            `Successfully sent ${state.selectedEntity?.title} to administrator email.`,
+            { variant: 'success' },
+          );
+        },
+      },
+    );
+  }
+
+  const additionalMenuItems: MoreMenuItem[] = [
+    {
+      label: 'Preview Ethereal',
+      Icon: EmailIcon,
+      onClick: onPreviewEtherealClick,
+    },
+    {
+      label: 'Preview Gmail',
+      Icon: AttachEmail,
+      onClick: onPreviewGmailClick,
+    },
+  ];
 
   const context: ReactUseState<TableViewState<Diary>> = [
     {
       ...state,
       addButtonHref: '/admin/diary/add',
       addButtonText: 'Add entry',
-      additionalMenuItems: [
-        {
-          label: 'Preview email',
-          Icon: EmailIcon,
-          onClick: onPreviewEmailClick,
-        },
-      ],
+      additionalMenuItems,
       deleteConfirmMessage: `Are you sure you want to delete the diary entry #${state.selectedEntity?.entryNumber}?`,
       editHref: `/admin/diary/edit/${state.selectedEntity?.id}`,
       isDeleteOpLoading,

@@ -19,6 +19,7 @@ import {
 import DiaryAPI, { zDiaryFindOptions } from 'server/api/diary';
 import PageAPI from 'server/api/pages';
 import SubscriberAPI from 'server/api/subscribers';
+import { zEmailPreviewType } from 'server/emails';
 
 import { procedure, router } from '../trpc';
 
@@ -72,8 +73,8 @@ export const appRouter = router({
         ),
       ),
       preview: procedure
-        .input(z.number())
-        .mutation(({ input }) => DiaryAPI.publish(input)),
+        .input(z.object({ id: z.number(), type: zEmailPreviewType }))
+        .mutation(({ input }) => DiaryAPI.publish(input.id, input.type)),
     }),
   }),
   page: router({
