@@ -49,6 +49,13 @@ test.describe('Diary', () => {
   });
 
   test.describe('Individual', () => {
+    test.beforeEach(async ({ page }) => {
+      await page.goto(`/diary/${entryNumber}`);
+      const acceptButton = page.getByTestId('zb.accept');
+      await acceptButton.waitFor({ state: 'visible' });
+      await acceptButton.click();
+    });
+
     [
       { status: DiaryStatus.PUBLISHED },
       { status: DiaryStatus.PRIVATE },
