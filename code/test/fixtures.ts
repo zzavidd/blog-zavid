@@ -2,7 +2,8 @@ import type { Page } from '@playwright/test';
 import { test as base } from '@playwright/test';
 
 export const test = base.extend<Fixtures>({
-  zPage: async ({ page }, use) => {
+  zPage: async ({ context }, use) => {
+    const page = await context.newPage();
     await page.goto('/');
     const acceptButton = page.getByTestId('zb.accept');
     await acceptButton.waitFor({ state: 'visible' });
