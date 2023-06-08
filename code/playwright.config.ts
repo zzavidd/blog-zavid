@@ -40,7 +40,7 @@ export default defineConfig({
     : [['list']],
   retries: process.env.CI ? 2 : 0,
   testDir: './test',
-  timeout: 10 * 1000,
+  timeout: (process.env.CI ? 20 : 10) * 1000,
   use: {
     baseURL: 'http://localhost:4000',
     trace: 'on-first-retry',
@@ -50,5 +50,5 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     url: 'http://localhost:4000',
   },
-  workers: process.env.CI ? 3 : 5,
+  workers: process.env.CI ? 4 : 5,
 });
