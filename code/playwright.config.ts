@@ -50,5 +50,5 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     url: 'http://localhost:4000',
   },
-  workers: 1,
+  workers: process.env.CI ? 1 : 3,
 });

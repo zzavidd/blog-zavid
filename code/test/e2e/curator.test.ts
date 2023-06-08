@@ -1,9 +1,9 @@
 import type { Locator } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { DiaryStatus } from '@prisma/client';
 
 import { createDiaryEntry } from '../../ops/ingestion/factory';
 import prisma from '../../src/server/prisma';
-import { expect, test } from '../fixtures';
 
 const entryNumber = 1;
 const diary = createDiaryEntry({ entryNumber, status: DiaryStatus.PUBLISHED });
@@ -30,20 +30,23 @@ test.describe('Curator', () => {
     });
   });
 
-  test.beforeEach(async ({ zPage }) => {
-    await zPage.goto(`/diary/${entryNumber}`);
+  test.beforeEach(async ({ page }) => {
+    await page.goto(`/diary/${entryNumber}`);
+    const acceptButton = page.getByTestId('zb.accept');
+    await acceptButton.waitFor({ state: 'visible' });
+    await acceptButton.click();
   });
 
   params.forEach(({ name, skipCondition, clickOptions }) => {
     test.describe(name, () => {
       test.skip(({ isMobile }) => skipCondition(isMobile));
 
-      test('has image', async ({ zPage }) => {
-        await zPage.getByTestId('zb.diary.content.0').click(clickOptions);
-        const curateButton = zPage.getByTestId('zb.curate');
+      test('has image', async ({ page }) => {
+        await page.getByTestId('zb.diary.content.0').click(clickOptions);
+        const curateButton = page.getByTestId('zb.curate');
         await curateButton.click();
 
-        const image = zPage.getByTestId('zb.curator.image');
+        const image = page.getByTestId('zb.curator.image');
         await expect(image).toBeVisible();
         await expect(image).toHaveAttribute('src', /data.*/);
       });

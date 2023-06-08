@@ -1,5 +1,6 @@
+import { expect, test } from '@playwright/test';
+
 import Settings from '../../src/utils/settings';
-import { expect, test } from '../fixtures';
 
 test.describe('Cookies', () => {
   test.beforeEach(async ({ page }) => {
