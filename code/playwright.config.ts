@@ -29,8 +29,9 @@ const projects: Project[] = [
 ];
 
 export default defineConfig({
-  expect: { timeout: 1000 },
+  expect: { timeout: 5000 },
   forbidOnly: !!process.env.CI,
+  fullyParallel: true,
   outputDir: './test/results',
   preserveOutput: 'never',
   projects,
@@ -40,7 +41,7 @@ export default defineConfig({
     : [['list']],
   retries: process.env.CI ? 2 : 0,
   testDir: './test',
-  timeout: (process.env.CI ? 20 : 10) * 1000,
+  timeout: (process.env.CI ? 30 : 15) * 1000,
   use: {
     baseURL: 'http://localhost:4000',
     trace: 'on-first-retry',
@@ -50,5 +51,5 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     url: 'http://localhost:4000',
   },
-  workers: process.env.CI ? 4 : 5,
+  workers: process.env.CI ? 4 : 7,
 });
