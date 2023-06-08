@@ -20,7 +20,7 @@ import {
 } from '../lib/Fragments';
 
 export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
-  const title = `#${diaryEntry.entryNumber}: ${diaryEntry.title}`;
+  const title = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
   const href = `${Settings.DOMAIN}/diary/${diaryEntry.entryNumber}`;
   return (
     <Mjml>
@@ -31,7 +31,7 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
           <Anchor href={href}>Visit on site.</Anchor>
         </EmailHeader>
         <Main>
-          <EmailTitle>{diaryEntry.title}</EmailTitle>
+          <EmailTitle>{title}</EmailTitle>
           <EmailDate date={diaryEntry.date} />
           <EmailDivider />
           <EmailParagraph>{diaryEntry.content}</EmailParagraph>

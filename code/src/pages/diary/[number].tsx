@@ -52,15 +52,16 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
 
   if (!diaryEntry) return null;
 
-  const title = `#${diaryEntry.entryNumber}: ${diaryEntry.title}`;
+  const halfTitle = `#${diaryEntry.entryNumber}: ${diaryEntry.title}`;
+  const fullTitle = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
 
   const links = [
     { label: 'Home', href: '/' },
     { label: 'Diary', href: '/diary' },
-    { label: title },
+    { label: halfTitle },
   ];
   return (
-    <MenuProvider title={title}>
+    <MenuProvider title={fullTitle}>
       <Container maxWidth={'sm'} sx={{ padding: (t) => t.spacing(4) }}>
         <Stack spacing={4} divider={<Divider />}>
           <Breadcrumbs links={links} />
@@ -71,7 +72,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
               date={diaryEntry.date}
             />
             <Typography variant={'h2'} textAlign={isMobile ? 'left' : 'center'}>
-              {title}{' '}
+              {fullTitle}&nbsp;
               <AdminLock>
                 <LinkIconButton href={`/admin/diary/edit/${diaryEntry.id}`}>
                   <Edit color={'primary'} />
@@ -115,7 +116,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
 
           <ShareBlock
             headline={'Share This Diary Entry'}
-            message={`Read "${title}" on ZAVID`}
+            message={`Read "${halfTitle}" on ZAVID`}
           />
         </Stack>
       </Container>
