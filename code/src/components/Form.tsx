@@ -37,6 +37,7 @@ export default function Form({
         component={Paper}
         sx={{
           backgroundColor: (t) => t.palette.background.paper,
+          borderRadius: 0,
           bottom: 0,
           position: 'sticky',
         }}>
@@ -44,18 +45,20 @@ export default function Form({
           <Stack
             direction={'row'}
             justifyContent={'space-between'}
-            px={5}
+            px={{ xs: 3, md: 5 }}
             py={4}
             width={'100%'}>
             {previewContent ? (
-              <Button onClick={togglePreview}>
+              <Button
+                onClick={togglePreview}
+                sx={{ display: { xs: 'none', md: 'block' } }}>
                 {state.isPreviewOpen ? 'Hide' : 'Show'} Preview
               </Button>
             ) : null}
             <Stack
               direction={'row'}
               spacing={3}
-              justifyContent={'flex-end'}
+              justifyContent={{ xs: 'space-between', md: 'flex-end' }}
               flexGrow={1}>
               {ToolbarActions}
             </Stack>
@@ -85,7 +88,9 @@ export default function Form({
 }
 
 export function FormRow(props: StackProps) {
-  return <Stack direction={'row'} spacing={5} {...props} />;
+  return (
+    <Stack direction={{ xs: 'column', md: 'row' }} spacing={5} {...props} />
+  );
 }
 
 interface FormProps extends React.PropsWithChildren {

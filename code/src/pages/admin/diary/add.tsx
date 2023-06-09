@@ -57,16 +57,14 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
     createDiaryEntry({ diary: { data: state.entry }, isPublish });
   }
 
-  const isPublish = state.entry.status === DiaryStatus.PUBLISHED;
-
   return (
     <AdminGateway>
       <DiaryFormContext.Provider value={[state, setState]}>
         <DiaryForm
           onSubmit={onSubmit}
           submitText={'Submit'}
+          heading={'Add New Diary Entry'}
           isActionLoading={isCreateLoading}
-          isPublish={isPublish}
         />
       </DiaryFormContext.Provider>
     </AdminGateway>

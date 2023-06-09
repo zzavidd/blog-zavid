@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 
 import AdminGateway from 'fragments/AdminGateway';
+import Layout from 'fragments/Layout';
 import DiaryForm from 'fragments/Pages/Diary/DiaryForm/DiaryForm';
 import {
   DiaryFormContext,
@@ -63,18 +64,14 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({
     });
   }
 
-  const isPublish =
-    state.entry.status === DiaryStatus.PUBLISHED &&
-    entry?.status !== DiaryStatus.PUBLISHED;
-
   return (
     <AdminGateway>
       <DiaryFormContext.Provider value={[state, setState]}>
         <DiaryForm
           onSubmit={onSubmit}
           submitText={'Update'}
+          heading={'Edit Diary Entry'}
           isActionLoading={isUpdateLoading}
-          isPublish={isPublish}
         />
       </DiaryFormContext.Provider>
     </AdminGateway>
@@ -100,6 +97,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+DiaryEntryEdit.getLayout = Layout.addPartials;
 export default DiaryEntryEdit;
 
 interface DiaryEntryEditProps extends AppPageProps {

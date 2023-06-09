@@ -41,8 +41,8 @@ import { DiaryFormContext } from './DiaryForm.context';
 export default function DiaryForm({
   onSubmit,
   submitText,
+  heading,
   isActionLoading,
-  isPublish,
 }: DiaryFormProps) {
   const [state, setState] = useState({
     isPublishModalVisible: false,
@@ -112,7 +112,7 @@ export default function DiaryForm({
 
   const FormContent = (
     <React.Fragment>
-      <Typography variant={'h2'}>Add New Diary Entry</Typography>
+      <Typography variant={'h2'}>{heading}</Typography>
       <FormRow>
         <Stack width={'100%'}>
           <FormControl fullWidth={true}>
@@ -180,7 +180,7 @@ export default function DiaryForm({
                 ))}
               </Select>
             </FormControl>
-            <Fade in={isPublish}>
+            <Fade in={entry.status === DiaryStatus.PUBLISHED}>
               <FormControl fullWidth={true}>
                 <DatePicker
                   label={'Date Published:'}
@@ -344,8 +344,8 @@ function TagsInput() {
 interface DiaryFormProps {
   onSubmit: (isPublish: boolean) => void;
   submitText: string;
+  heading: string;
   isActionLoading: boolean;
-  isPublish: boolean;
 }
 
 type ChangeEvent =
