@@ -93,10 +93,9 @@ jobs:
       - install_dependencies
       - run:
           name: "Run e2e tests"
-          command: pnpm run test
           command: |
-                    TEST=$(circleci tests glob "test/e2e/**/*.ts" | circleci tests split --split-by=timings)
-                    pnpm run test $TEST
+            TEST=$(circleci tests glob "test/e2e/**/*.ts" | circleci tests split --split-by=timings)
+            pnpm run test $TEST
           working_directory: ./code
       - store_test_results:
           path: ./code/test/results/
