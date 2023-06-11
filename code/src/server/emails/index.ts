@@ -101,7 +101,7 @@ async function sendEmail<T extends Record<string, unknown>>(
       to: recipient.email,
       subject: options.isPreview ? `(Preview) ${subject}` : subject,
       html,
-      text: htmlToText.fromString(html, HTML_TO_TEXT_OPTIONS),
+      text: htmlToText.convert(html, HTML_TO_TEXT_OPTIONS),
     });
   });
 
