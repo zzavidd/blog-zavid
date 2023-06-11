@@ -29,7 +29,7 @@ commands:
           working_directory: ./code
       - run:
           name: "Install dependencies"
-          command: pnpm install
+          command: pnpm install --frozen-lockfile
           working_directory: ./code
       - save_cache:
           name: "Save pnpm cache"

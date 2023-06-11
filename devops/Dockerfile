@@ -11,7 +11,7 @@ WORKDIR /var/www/$WORKDIR/code
 COPY ./code/pnpm-lock.yaml .
 COPY ./code/package.json .
 
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 COPY ./code ./
 
