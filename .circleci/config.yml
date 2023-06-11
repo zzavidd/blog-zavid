@@ -85,6 +85,7 @@ jobs:
       - save_cache:
           key: next-build-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
+            - ./code/node_modules
             - ./code/.next/cache
   test:
     executor: playwright
