@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { DiaryStatusSchema } from '../enums/DiaryStatus.schema';
 import { JsonNullValueInputSchema } from '../enums/JsonNullValueInput.schema';
+import { DiaryCategoryUncheckedCreateNestedManyWithoutEntriesInputObjectSchema } from './DiaryCategoryUncheckedCreateNestedManyWithoutEntriesInput.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -24,6 +25,12 @@ const Schema: z.ZodType<Prisma.DiaryUncheckedCreateInput> = z
     footnote: z.string(),
     isFavourite: z.boolean().optional(),
     tags: z.union([z.lazy(() => JsonNullValueInputSchema), jsonSchema]),
+    categories: z
+      .lazy(
+        () =>
+          DiaryCategoryUncheckedCreateNestedManyWithoutEntriesInputObjectSchema,
+      )
+      .optional(),
   })
   .strict();
 

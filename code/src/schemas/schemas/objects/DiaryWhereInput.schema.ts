@@ -6,6 +6,7 @@ import { EnumDiaryStatusFilterObjectSchema } from './EnumDiaryStatusFilter.schem
 import { DiaryStatusSchema } from '../enums/DiaryStatus.schema';
 import { BoolFilterObjectSchema } from './BoolFilter.schema';
 import { JsonFilterObjectSchema } from './JsonFilter.schema';
+import { DiaryCategoryListRelationFilterObjectSchema } from './DiaryCategoryListRelationFilter.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -57,6 +58,9 @@ const Schema: z.ZodType<Prisma.DiaryWhereInput> = z
       .union([z.lazy(() => BoolFilterObjectSchema), z.boolean()])
       .optional(),
     tags: z.lazy(() => JsonFilterObjectSchema).optional(),
+    categories: z
+      .lazy(() => DiaryCategoryListRelationFilterObjectSchema)
+      .optional(),
   })
   .strict();
 

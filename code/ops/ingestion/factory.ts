@@ -13,6 +13,7 @@ export function createDiaryEntry(
     date: faker.date.past(),
     entryNumber,
     status: status ?? faker.helpers.enumValue(DiaryStatus),
+    categories: overrides.categories,
     content: faker.lorem.paragraphs({ min: 5, max: 10 }, '\n\n'),
     footnote: faker.datatype.boolean()
       ? faker.lorem.paragraphs({ min: 1, max: 4 }, '\n\n')

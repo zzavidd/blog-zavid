@@ -6,6 +6,7 @@ generator zod {
   provider         = "prisma-zod-generator"
   output           = "./src/schemas"
   isGenerateSelect = "true"
+  isGenerateInclude = "true"
 }
 
 datasource db {
@@ -14,17 +15,26 @@ datasource db {
 }
 
 model Diary {
-  id          Int         @id @default(autoincrement()) @db.UnsignedInt
-  title       String      @db.VarChar(100)
-  date        DateTime?   @db.Date
-  content     String      @db.Text
+  id          Int             @id @default(autoincrement()) @db.UnsignedInt
+  title       String          @db.VarChar(100)
+  date        DateTime?       @db.Date
+  content     String          @db.Text
+  categories  DiaryCategory[]
   status      DiaryStatus
-  entryNumber Int         @unique(map: "entryNumber_UNIQUE") @db.UnsignedInt
-  footnote    String      @db.Text
-  isFavourite Boolean     @default(false)
+  entryNumber Int             @unique(map: "entryNumber_UNIQUE") @db.UnsignedInt
+  footnote    String          @db.Text
+  isFavourite Boolean         @default(false)
   tags        Json
 
   @@map("diary")
+}
+
+model DiaryCategory {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+  entries Diary[]
+
+  @@map("diary_categories")
 }
 
 model Page {
