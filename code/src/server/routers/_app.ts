@@ -4,7 +4,6 @@ import { z } from 'zod';
 import {
   DiaryCreateOneSchema,
   DiaryFindFirstSchema,
-  DiaryFindManySchema,
   DiaryUpdateOneSchema,
   PageDeleteOneSchema,
   PageFindFirstSchema,
@@ -36,7 +35,7 @@ export const appRouter = router({
     findMany: procedure
       .input(
         z.object({
-          params: DiaryFindManySchema,
+          params: DiaryFindFirstSchema,
           options: zDiaryFindOptions,
         }),
       )
@@ -76,6 +75,9 @@ export const appRouter = router({
         .input(z.object({ id: z.number(), type: zEmailPreviewType }))
         .mutation(({ input }) => DiaryAPI.publish(input.id, input.type)),
     }),
+  }),
+  diaryCategory: router({
+    findMany: procedure.query(() => DiaryAPI.categories()),
   }),
   page: router({
     findMany: procedure

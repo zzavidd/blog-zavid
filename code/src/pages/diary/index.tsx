@@ -72,8 +72,8 @@ function DiaryCollection() {
     isLoading,
   } = trpc.diary.findMany.useQuery({
     params: {
-      where: { status: DiaryStatus.PUBLISHED },
       orderBy: { entryNumber: 'desc' },
+      where: { status: DiaryStatus.PUBLISHED },
     },
     options: {
       contentWordLimit: 25,

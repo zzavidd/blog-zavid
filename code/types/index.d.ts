@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import type { Dispatch, SetStateAction } from 'react';
 
 declare global {
@@ -23,6 +24,10 @@ declare global {
     align?: TableCellProps['align'];
     renderValue: (entry: T, index?: number) => React.ReactNode;
   }
+
+  type DiaryWithCategories = Prisma.DiaryGetPayload<
+    Prisma.DiaryFindManyArgs & { include: Prisma.DiaryInclude }
+  >;
 
   type ReactUseState<T> = [T, Dispatch<SetStateAction<T>>];
 }

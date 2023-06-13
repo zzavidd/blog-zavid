@@ -32,7 +32,7 @@ const typography: TypographyOptions = {
     fontWeight: 700,
     lineHeight: 1.1,
     [breakpoints.down('md')]: {
-      letterSpacing: -2,
+      letterSpacing: -1.5,
     },
   },
   h3: {

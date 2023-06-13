@@ -3,9 +3,9 @@ generator client {
 }
 
 generator zod {
-  provider         = "prisma-zod-generator"
-  output           = "./src/schemas"
-  isGenerateSelect = "true"
+  provider          = "prisma-zod-generator"
+  output            = "./src/schemas"
+  isGenerateSelect  = "true"
   isGenerateInclude = "true"
 }
 
@@ -19,7 +19,7 @@ model Diary {
   title       String          @db.VarChar(100)
   date        DateTime?       @db.Date
   content     String          @db.Text
-  categories  DiaryCategory[]
+  categories  DiaryCategory[] @relation()
   status      DiaryStatus
   entryNumber Int             @unique(map: "entryNumber_UNIQUE") @db.UnsignedInt
   footnote    String          @db.Text

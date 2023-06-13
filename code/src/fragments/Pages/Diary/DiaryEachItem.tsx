@@ -1,16 +1,16 @@
-import { FavoriteRounded } from '@mui/icons-material';
+import { Circle, FavoriteRounded } from '@mui/icons-material';
 import type { SxProps, Theme } from '@mui/material';
 import {
   Card,
   CardContent,
   Divider,
   Skeleton,
+  Stack,
   Tooltip,
   Typography,
   lighten,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import type { Diary } from '@prisma/client';
 import React from 'react';
 
 import Paragraph from 'components/Typography/Paragraph';
@@ -61,11 +61,29 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
               </Typography>
               {entry.title}
             </Typography>
+            <Stack
+              direction={'row'}
+              divider={<Circle sx={{ fontSize: 4 }} />}
+              alignItems={'center'}
+              columnGap={2}
+              flexWrap={'wrap'}
+              useFlexGap={true}
+              my={2}>
+              {entry.categories?.map(({ name }, key) => (
+                <Typography
+                  variant={'overline'}
+                  fontSize={11}
+                  lineHeight={1.4}
+                  key={key}>
+                  {name}
+                </Typography>
+              ))}
+            </Stack>
             <Divider sx={{ marginBlock: (t) => t.spacing(4) }} />
             <Paragraph
               variant={'body1'}
               moreHref={href}
-              moreText={`Read #${entry.entryNumber}: ${entry.title}`}
+              moreText={`Read Diary Entry #${entry.entryNumber}`}
               readMoreDataTestId={`zb.readmore.${entry.entryNumber}`}>
               {entry.content}
             </Paragraph>
@@ -100,5 +118,5 @@ export function DiaryEachSkeleton() {
 }
 
 interface DiaryEachItemProps {
-  entry: Diary;
+  entry: DiaryWithCategories;
 }

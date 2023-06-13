@@ -1,4 +1,4 @@
-import type { Diary, Prisma } from '@prisma/client';
+import type { Diary, DiaryCategory, Prisma } from '@prisma/client';
 import nodemailer from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import invariant from 'tiny-invariant';
@@ -10,12 +10,13 @@ import prisma from 'server/prisma';
 import { truncateText } from 'utils/lib/text';
 
 export default class DiaryAPI {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   public static async findMany(
-    params: Prisma.DiaryFindManyArgs,
+    args: Prisma.DiaryFindManyArgs,
     options: DiaryFindOptions = {},
-  ): Promise<Diary[]> {
+  ) {
     const { contentWordLimit } = options;
-    let diary = await prisma.diary.findMany(params);
+    let diary = await prisma.diary.findMany(args);
     if (contentWordLimit) {
       diary = diary.map((entry) => {
         entry.content = truncateText(entry.content, {
@@ -27,12 +28,16 @@ export default class DiaryAPI {
     return diary;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   public static async find(
-    args: Prisma.DiaryFindFirstOrThrowArgs,
+    args: Prisma.DiaryFindFirstArgs,
     options: DiaryFindOptions = {},
-  ): Promise<Diary | null> {
+  ) {
     const { contentWordLimit } = options;
-    const entry = await prisma.diary.findFirst(args);
+    const entry = await prisma.diary.findFirst({
+      ...args,
+      include: { categories: true },
+    });
     if (entry && contentWordLimit) {
       entry.content = truncateText(entry.content, {
         limit: contentWordLimit,
@@ -65,6 +70,10 @@ export default class DiaryAPI {
 
   public static async delete(ids: number[]): Promise<void> {
     await prisma.diary.deleteMany({ where: { id: { in: ids } } });
+  }
+
+  public static categories(): Promise<DiaryCategory[]> {
+    return prisma.diaryCategory.findMany();
   }
 
   public static async publish(

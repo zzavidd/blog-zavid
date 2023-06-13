@@ -1,4 +1,5 @@
 import {
+  Circle,
   Edit,
   FavoriteRounded as FavoriteRoundedIcon,
 } from '@mui/icons-material';
@@ -39,7 +40,9 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   entryNumber,
 }) => {
   const { data: diaryEntry, error } = trpc.diary.find.useQuery({
-    params: { where: { entryNumber } },
+    params: {
+      where: { entryNumber },
+    },
   });
   const isMobile = useMediaQuery<Theme>((t) => t.breakpoints.down('md'));
   const { enqueueSnackbar } = useSnackbar();
@@ -50,6 +53,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
     }
   }, [enqueueSnackbar, error]);
 
+  // TODO: Skeleton
   if (!diaryEntry) return null;
 
   const halfTitle = `#${diaryEntry.entryNumber}: ${diaryEntry.title}`;
@@ -65,20 +69,40 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
       <Container maxWidth={'sm'} sx={{ padding: (t) => t.spacing(4) }}>
         <Stack spacing={4} divider={<Divider />}>
           <Breadcrumbs links={links} />
-          <Stack spacing={2}>
+          <Stack spacing={2} position={'relative'}>
+            <AdminLock>
+              <LinkIconButton
+                href={`/admin/diary/edit/${diaryEntry.id}`}
+                sx={{ position: 'absolute', top: 0, right: 0 }}>
+                <Edit color={'primary'} />
+              </LinkIconButton>
+            </AdminLock>
             <Time
               variant={'body2'}
               textAlign={isMobile ? 'left' : 'center'}
               date={diaryEntry.date}
             />
             <Typography variant={'h2'} textAlign={isMobile ? 'left' : 'center'}>
-              {fullTitle}&nbsp;
-              <AdminLock>
-                <LinkIconButton href={`/admin/diary/edit/${diaryEntry.id}`}>
-                  <Edit color={'primary'} />
-                </LinkIconButton>
-              </AdminLock>
+              {fullTitle}
             </Typography>
+            <Stack
+              direction={'row'}
+              divider={<Circle sx={{ fontSize: 4 }} />}
+              justifyContent={isMobile ? 'flex-start' : 'center'}
+              alignItems={'center'}
+              spacing={2}
+              flexWrap={'wrap'}
+              useFlexGap={true}>
+              {diaryEntry.categories?.map(({ name }, key) => (
+                <Typography
+                  variant={'overline'}
+                  lineHeight={1.2}
+                  fontSize={10}
+                  key={key}>
+                  {name}
+                </Typography>
+              ))}
+            </Stack>
             {diaryEntry.isFavourite ? (
               <Stack
                 direction={'row'}
@@ -113,7 +137,6 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
               ))}
             </Stack>
           </Stack>
-
           <ShareBlock
             headline={'Share This Diary Entry'}
             message={`Read "${halfTitle}" on ZAVID`}
