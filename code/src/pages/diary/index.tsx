@@ -77,7 +77,7 @@ function DiaryCollection() {
       where: { status: DiaryStatus.PUBLISHED },
     },
     options: {
-      contentWordLimit: 25,
+      contentWordLimit: 20,
     },
   });
   const { enqueueSnackbar } = useSnackbar();

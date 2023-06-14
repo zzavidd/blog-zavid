@@ -1,9 +1,4 @@
-import {
-  CssBaseline,
-  ThemeProvider,
-  createTheme,
-  responsiveFontSizes,
-} from '@mui/material';
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import type { Session } from 'next-auth';
@@ -55,7 +50,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const theme = useMemo(() => {
     const palette = mode === 'light' ? lightPalette : darkPalette;
     const options = { ...themeOptions, palette };
-    return responsiveFontSizes(createTheme(options));
+    return createTheme(options);
   }, [mode]);
 
   // Configure layouts for all child components;

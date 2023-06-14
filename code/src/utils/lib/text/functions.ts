@@ -103,7 +103,7 @@ export interface FormatTextOptions {
   dataTestId?: string;
   forEmails?: boolean;
   theme?: Theme;
-  typographyVariant?: TypographyProps['variant'];
+  TypographyProps?: TypographyProps<'p'>;
 }
 
 export interface DeformatTextOptions {

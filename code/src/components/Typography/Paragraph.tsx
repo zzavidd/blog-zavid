@@ -15,6 +15,8 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
       moreText,
       readMoreDataTestId,
       truncate = 0,
+      TypographyProps,
+      variant,
       ...props
     },
     ref,
@@ -51,7 +53,10 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           {zText.formatText(text, {
             dataTestId,
             theme,
-            typographyVariant: props.variant,
+            TypographyProps: {
+              variant,
+              ...TypographyProps,
+            },
           })}
         </Typography>
         {showReadMore ? (
@@ -78,4 +83,5 @@ interface ParagraphProps extends TypographyProps<'pre'> {
   readMoreDataTestId?: string;
   substitutions?: Record<string, string | number>;
   truncate?: number;
+  TypographyProps?: TypographyProps<'p'>;
 }

@@ -25,6 +25,9 @@ const typography: TypographyOptions = {
     fontFamily: calistoga.style.fontFamily,
     fontSize: 72,
     lineHeight: 1.1,
+    [breakpoints.down('md')]: {
+      fontSize: 44,
+    },
   },
   h2: {
     fontFamily: calistoga.style.fontFamily,
@@ -32,7 +35,7 @@ const typography: TypographyOptions = {
     fontWeight: 700,
     lineHeight: 1.1,
     [breakpoints.down('md')]: {
-      letterSpacing: -1.5,
+      letterSpacing: -2,
     },
   },
   h3: {
@@ -40,6 +43,9 @@ const typography: TypographyOptions = {
     fontSize: 32,
     fontWeight: 700,
     lineHeight: 1.1,
+    [breakpoints.down('md')]: {
+      letterSpacing: -1.5,
+    },
   },
   h4: {
     fontFamily: calistoga.style.fontFamily,
@@ -86,9 +92,12 @@ const typography: TypographyOptions = {
   },
   text: {
     fontFamily: mulish.style.fontFamily,
-    fontSize: 17,
+    fontSize: 19,
     lineHeight: 1.9,
     fontWeight: 500,
+    [breakpoints.down('md')]: {
+      fontSize: 16.5,
+    },
   },
 };
 

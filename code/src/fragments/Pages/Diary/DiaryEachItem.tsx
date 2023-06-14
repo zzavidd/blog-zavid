@@ -42,9 +42,9 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
                 <FavoriteRounded
                   color={'primary'}
                   sx={{
-                    ml: 2,
                     fontSize: (t) => t.spacing(7),
                     float: 'right',
+                    ml: 2,
                   }}
                 />
               </Tooltip>
@@ -68,7 +68,8 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
               variant={'body1'}
               moreHref={href}
               moreText={`Read Diary Entry #${entry.entryNumber}`}
-              readMoreDataTestId={`zb.readmore.${entry.entryNumber}`}>
+              readMoreDataTestId={`zb.readmore.${entry.entryNumber}`}
+              TypographyProps={{ fontSize: 18 }}>
               {entry.content}
             </Paragraph>
           </CardContent>
