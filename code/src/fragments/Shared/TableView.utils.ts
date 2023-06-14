@@ -7,9 +7,8 @@ export function createInitialTableViewState<T extends { id: number }>(
   props?: Partial<TableViewState<T>>,
 ): TableViewState<T> {
   return {
-    addButtonHref: '',
-    addButtonText: '',
     additionalMenuItems: [],
+    buttons: null,
     deleteConfirmMessage: '',
     editHref: '',
     noEntitiesMessage: '',
@@ -27,6 +26,7 @@ export function createInitialTableViewState<T extends { id: number }>(
       property: null,
     },
     tableFields: [],
+
     ...props,
   };
 }
@@ -42,9 +42,8 @@ export function useTableContext<T extends { id: number }>(): ReactUseState<
 }
 
 export interface TableViewState<T extends { id: number } = any> {
-  addButtonHref: string;
-  addButtonText: string;
   additionalMenuItems: MoreMenuItem[];
+  buttons: React.ReactNode;
   deleteConfirmMessage: string;
   editHref: string;
   hoveredEntityId: number | null;

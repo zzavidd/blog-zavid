@@ -1,8 +1,14 @@
-import { AttachEmail, Email as EmailIcon } from '@mui/icons-material';
+import {
+  Add,
+  AttachEmail,
+  Edit,
+  Email as EmailIcon,
+} from '@mui/icons-material';
 import type { Diary } from '@prisma/client';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
+import { LinkButton } from 'components/Link';
 import TableView from 'fragments/Shared/TableView';
 import type {
   MoreMenuItem,
@@ -108,9 +114,20 @@ export default function DiaryAdmin() {
   const context: ReactUseState<TableViewState<Diary>> = [
     {
       ...state,
-      addButtonHref: '/admin/diary/add',
-      addButtonText: 'Add entry',
       additionalMenuItems,
+      buttons: (
+        <React.Fragment>
+          <LinkButton
+            href={'/admin/diary/categories'}
+            buttonVariant={'contained'}
+            startIcon={<Edit />}>
+            Edit categories
+          </LinkButton>
+          <LinkButton href={'/admin/diary/add'} startIcon={<Add />}>
+            Add entry
+          </LinkButton>
+        </React.Fragment>
+      ),
       deleteConfirmMessage: `Are you sure you want to delete the diary entry #${state.selectedEntity?.entryNumber}?`,
       editHref: `/admin/diary/edit/${state.selectedEntity?.id}`,
       isDeleteOpLoading,
