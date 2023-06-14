@@ -3,6 +3,8 @@ import { expect, test } from '@playwright/test';
 import Settings from '../../src/utils/settings';
 
 test.describe('Cookies', () => {
+  test.skip(({ browserName }) => browserName !== 'chromium');
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });

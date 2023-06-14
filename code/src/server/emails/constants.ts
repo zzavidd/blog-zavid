@@ -16,11 +16,16 @@ export const ejsLocals = {
 
 /** The common HTML-to-text options for all emails. */
 export const HTML_TO_TEXT_OPTIONS: HtmlToTextOptions = {
-  hideLinkHrefIfSameAsText: true,
-  ignoreImage: true,
-  noLinkBrackets: true,
   preserveNewlines: true,
-  uppercaseHeadings: false,
+  selectors: [
+    {
+      selector: 'a',
+      options: { linkBrackets: false, hideLinkHrefIfSameAsText: true },
+    },
+    { selector: 'img', format: 'skip' },
+    { selector: 'h1', options: { uppercase: false } },
+    { selector: 'table', options: { uppercaseHeaderCells: false } },
+  ],
   wordwrap: 80,
 };
 

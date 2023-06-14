@@ -29,7 +29,7 @@ commands:
           working_directory: ./code
       - run:
           name: "Install dependencies"
-          command: pnpm install
+          command: pnpm install --frozen-lockfile
           working_directory: ./code
       - save_cache:
           name: "Save pnpm cache"
@@ -85,14 +85,18 @@ jobs:
       - save_cache:
           key: next-build-{{ checksum "./code/pnpm-lock.yaml" }}
           paths:
+            - ./code/node_modules
             - ./code/.next/cache
   test:
     executor: playwright
+    parallelism: 4
     steps:
       - install_dependencies
       - run:
           name: "Run e2e tests"
-          command: pnpm run test
+          command: |
+            TEST=$(circleci tests glob "test/e2e/**/*.ts" | circleci tests split --split-by=timings)
+            pnpm run test $TEST
           working_directory: ./code
       - store_test_results:
           path: ./code/test/results/
