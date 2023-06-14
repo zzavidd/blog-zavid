@@ -31,6 +31,12 @@ const components: Components<Theme> = {
     styleOverrides: (theme) => {
       const bgImage = `${Settings.CLOUDINARY_BASE_URL}/static/bg/bg-app-${theme.palette.mode}`;
       return css`
+        * {
+          transition: ${theme.transitions.create(['background-color'], {
+            duration: theme.transitions.duration.complex,
+          })};
+        }
+
         body {
           background-attachment: fixed;
           background-image: url(${bgImage});
@@ -38,7 +44,9 @@ const components: Components<Theme> = {
           background-size: cover;
           font-feature-settings: 'lnum';
           overscroll-behavior: none;
-          transition: background-image 0.8s;
+          transition: ${theme.transitions.create(['background-image'], {
+            duration: theme.transitions.duration.complex,
+          })};
         }
       `;
     },
