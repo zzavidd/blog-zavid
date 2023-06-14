@@ -46,7 +46,7 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
         <Typography
           component={'pre'}
           whiteSpace={'pre-wrap'}
-          mb={showReadMore ? 4 : 0}
+          pb={showReadMore ? 4 : 0}
           onContextMenu={(e) => e.preventDefault()}
           ref={ref}
           {...props}>
