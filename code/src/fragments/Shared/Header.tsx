@@ -1,3 +1,4 @@
+import type { SvgIconComponent } from '@mui/icons-material';
 import {
   Article,
   BookRounded,
@@ -8,7 +9,7 @@ import {
   Logout as LogoutIcon,
 } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
-import type { SxProps, Theme } from '@mui/material';
+import type { MenuItemProps } from '@mui/material';
 import {
   AppBar,
   Avatar,
@@ -123,7 +124,6 @@ function AuthButton() {
     ? user.name.split(/\s/).reduce((acc, word) => (acc += word.slice(0, 1)), '')
     : '';
 
-  const menuItemSxProps: SxProps<Theme> = { padding: (t) => t.spacing(4, 5) };
   const adminOnlyMenuItems = isAdmin
     ? [
         { label: 'Manage Diary', Icon: BookRounded, href: '/admin/diary' },
@@ -166,8 +166,8 @@ function AuthButton() {
           disableRipple={true}
           divider={true}
           sx={{
-            ...menuItemSxProps,
             'cursor': 'auto',
+            'p': 4,
             '&:hover': { backgroundColor: 'inherit' },
           }}>
           <Stack>
@@ -179,39 +179,39 @@ function AuthButton() {
         </MenuItem>
         {adminOnlyMenuItems.map(({ label, Icon, href }) => (
           <Link color={'inherit'} underline={'none'} href={href} key={href}>
-            <MenuItem sx={menuItemSxProps}>
-              <ListItemIcon>
-                <Icon color={'primary'} />
-              </ListItemIcon>
-              <ListItemText
-                primaryTypographyProps={{
-                  fontSize: 18,
-                  variant: 'h5',
-                  m: 0,
-                }}>
-                {label}
-              </ListItemText>
-              <ListItemIcon />
-            </MenuItem>
+            <HeaderMenuItem Icon={Icon}>{label}</HeaderMenuItem>
           </Link>
         ))}
         {menuItems.map(({ label, Icon, onClick }, key) => (
-          <MenuItem onClick={onClick} sx={menuItemSxProps} key={key}>
-            <ListItemIcon>
-              <Icon color={'primary'} />
-            </ListItemIcon>
-            <ListItemText
-              primaryTypographyProps={{
-                fontSize: 18,
-                variant: 'h5',
-                m: 0,
-              }}>
-              {label}
-            </ListItemText>
-            <ListItemIcon />
-          </MenuItem>
+          <HeaderMenuItem Icon={Icon} onClick={onClick} key={key}>
+            {label}
+          </HeaderMenuItem>
         ))}
       </Menu>
     </React.Fragment>
   );
+}
+
+function HeaderMenuItem({ children, Icon, ...props }: HeaderMenuItemProps) {
+  return (
+    <MenuItem sx={{ px: 4, py: 3 }} {...props}>
+      <ListItemIcon>
+        <Icon color={'primary'} />
+      </ListItemIcon>
+      <ListItemText
+        primaryTypographyProps={{
+          fontSize: 18,
+          fontWeight: 600,
+          variant: 'subtitle1',
+          m: 0,
+        }}>
+        {children}
+      </ListItemText>
+      <ListItemIcon />
+    </MenuItem>
+  );
+}
+
+interface HeaderMenuItemProps extends MenuItemProps {
+  Icon: SvgIconComponent;
 }
