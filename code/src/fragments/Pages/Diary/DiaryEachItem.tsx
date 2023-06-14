@@ -1,11 +1,10 @@
-import { Circle, FavoriteRounded } from '@mui/icons-material';
+import { FavoriteRounded } from '@mui/icons-material';
 import type { SxProps, Theme } from '@mui/material';
 import {
   Card,
   CardContent,
   Divider,
   Skeleton,
-  Stack,
   Tooltip,
   Typography,
   lighten,
@@ -15,6 +14,8 @@ import React from 'react';
 
 import Paragraph from 'components/Typography/Paragraph';
 import Time from 'components/Typography/Time';
+
+import CategoryDisplay from './CategoryDisplay';
 
 const cardProps: SxProps<Theme> = {
   'height': '100%',
@@ -61,24 +62,7 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
               </Typography>
               {entry.title}
             </Typography>
-            <Stack
-              direction={'row'}
-              divider={<Circle sx={{ fontSize: 4 }} />}
-              alignItems={'center'}
-              columnGap={2}
-              flexWrap={'wrap'}
-              useFlexGap={true}
-              my={2}>
-              {entry.categories?.map(({ name }, key) => (
-                <Typography
-                  variant={'overline'}
-                  fontSize={11}
-                  lineHeight={1.4}
-                  key={key}>
-                  {name}
-                </Typography>
-              ))}
-            </Stack>
+            <CategoryDisplay categories={entry.categories} my={3} />
             <Divider sx={{ marginBlock: (t) => t.spacing(4) }} />
             <Paragraph
               variant={'body1'}

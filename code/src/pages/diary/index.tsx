@@ -73,6 +73,7 @@ function DiaryCollection() {
   } = trpc.diary.findMany.useQuery({
     params: {
       orderBy: { entryNumber: 'desc' },
+      include: { categories: true },
       where: { status: DiaryStatus.PUBLISHED },
     },
     options: {

@@ -1,5 +1,4 @@
 import {
-  Circle,
   Edit,
   FavoriteRounded as FavoriteRoundedIcon,
 } from '@mui/icons-material';
@@ -27,6 +26,7 @@ import Paragraph from 'components/Typography/Paragraph';
 import Time from 'components/Typography/Time';
 import { AdminLock } from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
+import CategoryDisplay from 'fragments/Pages/Diary/CategoryDisplay';
 import MenuProvider from 'fragments/Shared/MenuProvider';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
 import ZString from 'utils/lib/string';
@@ -85,24 +85,11 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
             <Typography variant={'h2'} textAlign={isMobile ? 'left' : 'center'}>
               {fullTitle}
             </Typography>
-            <Stack
-              direction={'row'}
-              divider={<Circle sx={{ fontSize: 4 }} />}
-              justifyContent={isMobile ? 'flex-start' : 'center'}
-              alignItems={'center'}
-              spacing={2}
-              flexWrap={'wrap'}
-              useFlexGap={true}>
-              {diaryEntry.categories?.map(({ name }, key) => (
-                <Typography
-                  variant={'overline'}
-                  lineHeight={1.2}
-                  fontSize={10}
-                  key={key}>
-                  {name}
-                </Typography>
-              ))}
-            </Stack>
+            <CategoryDisplay
+              categories={diaryEntry.categories}
+              justifyContent={{ xs: 'flex-start', md: 'center' }}
+              py={1}
+            />
             {diaryEntry.isFavourite ? (
               <Stack
                 direction={'row'}
