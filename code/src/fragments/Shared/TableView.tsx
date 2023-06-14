@@ -52,14 +52,17 @@ export default function TableView<T extends { id: number }>() {
   return (
     <React.Fragment>
       <Container maxWidth={'xl'}>
-        <Stack m={5} spacing={5}>
-          <Stack direction={'row'} justifyContent={'space-between'}>
+        <Stack p={5} spacing={5}>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            rowGap={5}
+            justifyContent={'space-between'}>
             <Typography variant={'h2'}>{pageTitle}</Typography>
             <LinkButton href={addButtonHref} startIcon={<AddIcon />}>
               {addButtonText}
             </LinkButton>
           </Stack>
-          <TableContainer>
+          <TableContainer sx={{ overflowX: 'auto', maxWidth: '100vw' }}>
             <Table>
               <TableHead component={PaperTableHead}>
                 <TableRow>

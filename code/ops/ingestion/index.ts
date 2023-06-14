@@ -30,7 +30,7 @@ async function ingestDiaryEntries(): Promise<void> {
         .arrayElements(categories)
         .map((c) => ({ id: c.id }));
       const entry = createDiaryEntry({
-        entryNumber: i,
+        entryNumber: i + 1,
         categories: {
           connect: categoryIds,
         },
