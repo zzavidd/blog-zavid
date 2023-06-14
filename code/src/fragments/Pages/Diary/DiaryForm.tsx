@@ -36,6 +36,7 @@ import { ActionDialog } from 'components/Dialog';
 import Form, { FormRow } from 'components/Form';
 import { LinkButton } from 'components/Link';
 
+import CategoryInput from './CategoryInput';
 import { DiaryFormContext } from './DiaryForm.context';
 
 export default function DiaryForm({
@@ -83,6 +84,15 @@ export default function DiaryForm({
   function onDateChange(date: dayjs.Dayjs | null) {
     setContext((c) =>
       immutate(c, { entry: { date: { $set: date?.toDate() } } }),
+    );
+  }
+
+  function onCategoryChange(e: SelectChangeEvent<number[]>) {
+    const { value } = e.target;
+    setContext((c) =>
+      immutate(c, {
+        categories: { $set: typeof value === 'string' ? [] : value },
+      }),
     );
   }
 
@@ -154,6 +164,12 @@ export default function DiaryForm({
               />
             </FormControl>
           </FormRow>
+          <FormControl>
+            <CategoryInput
+              value={context.categories}
+              onChange={onCategoryChange}
+            />
+          </FormControl>
           <FormControl fullWidth={true}>
             <TextField
               name={'footnote'}

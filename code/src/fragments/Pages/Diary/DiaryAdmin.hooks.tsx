@@ -9,15 +9,13 @@ import {
   Lock,
   VisibilityOff,
 } from '@mui/icons-material';
-import type { SelectChangeEvent, SelectProps } from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material';
 import {
   Box,
   Chip,
   FormControl,
   IconButton,
-  MenuItem,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
 import type { Diary } from '@prisma/client';
@@ -30,6 +28,8 @@ import { Link } from 'components/Link';
 import { useDiaryCategories } from 'utils/hooks';
 import ZDate from 'utils/lib/date';
 import { trpc } from 'utils/trpc';
+
+import CategoryInput from './CategoryInput';
 
 const STATUS_ICONS = {
   [DiaryStatus.DRAFT]: EditNote,
@@ -158,44 +158,9 @@ export function useDiaryTableFields(
         if (state.entryInEdit === e.id) {
           return (
             <FormControl>
-              <TextField
+              <CategoryInput
                 value={state.editedCategories}
-                label={'Categories'}
-                select={true}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                SelectProps={
-                  {
-                    displayEmpty: true,
-                    IconComponent: () => null,
-                    multiple: true,
-                    onChange: onCategoryChange,
-                    renderValue: (selected) => (
-                      <Stack
-                        direction={'row'}
-                        flexWrap={'wrap'}
-                        spacing={2}
-                        useFlexGap={true}>
-                        {selected.map((categoryId) => {
-                          const name = diaryCategories.find(
-                            ({ id }) => id === categoryId,
-                          )?.name;
-                          return (
-                            <Chip
-                              variant={'outlined'}
-                              label={
-                                <Typography variant={'overline'}>
-                                  {name}
-                                </Typography>
-                              }
-                              key={categoryId}
-                            />
-                          );
-                        })}
-                      </Stack>
-                    ),
-                  } as Partial<SelectProps<number[]>>
-                }
+                onChange={onCategoryChange}
                 InputProps={{
                   endAdornment: (
                     <Stack direction={'row'}>
@@ -207,13 +172,8 @@ export function useDiaryTableFields(
                       </IconButton>
                     </Stack>
                   ),
-                }}>
-                {diaryCategories.map((category) => (
-                  <MenuItem value={category.id} key={category.id}>
-                    {category.name}
-                  </MenuItem>
-                ))}
-              </TextField>
+                }}
+              />
             </FormControl>
           );
         }
