@@ -1,5 +1,5 @@
 import type { ThemeOptions } from '@mui/material';
-import { createTheme, responsiveFontSizes } from '@mui/material';
+import { createTheme } from '@mui/material';
 
 import components from './Components.styles';
 import { darkPalette } from './Palette.styles';
@@ -19,4 +19,4 @@ export const themeOptions: ThemeOptions = {
 };
 
 const theme = createTheme(themeOptions);
-export default responsiveFontSizes(theme);
+export default theme;

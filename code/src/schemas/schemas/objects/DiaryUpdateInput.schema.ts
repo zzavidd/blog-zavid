@@ -6,6 +6,7 @@ import { EnumDiaryStatusFieldUpdateOperationsInputObjectSchema } from './EnumDia
 import { IntFieldUpdateOperationsInputObjectSchema } from './IntFieldUpdateOperationsInput.schema';
 import { BoolFieldUpdateOperationsInputObjectSchema } from './BoolFieldUpdateOperationsInput.schema';
 import { JsonNullValueInputSchema } from '../enums/JsonNullValueInput.schema';
+import { DiaryCategoryUpdateManyWithoutEntriesNestedInputObjectSchema } from './DiaryCategoryUpdateManyWithoutEntriesNestedInput.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -65,6 +66,9 @@ const Schema: z.ZodType<Prisma.DiaryUpdateInput> = z
       .optional(),
     tags: z
       .union([z.lazy(() => JsonNullValueInputSchema), jsonSchema])
+      .optional(),
+    categories: z
+      .lazy(() => DiaryCategoryUpdateManyWithoutEntriesNestedInputObjectSchema)
       .optional(),
   })
   .strict();

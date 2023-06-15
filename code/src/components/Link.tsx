@@ -24,11 +24,12 @@ export const Link = React.forwardRef<HTMLAnchorElement, ZavidLinkProps>(
 
 export function LinkButton({
   children,
+  buttonVariant = 'outlined',
   ...props
 }: ButtonProps & ZavidLinkProps) {
   return (
     <Button
-      variant={'outlined'}
+      variant={buttonVariant}
       {...props}
       LinkComponent={Link}
       sx={{
@@ -52,5 +53,6 @@ export function LinkIconButton({
 }
 
 interface ZavidLinkProps extends LinkProps {
+  buttonVariant?: ButtonProps['variant'];
   newTab?: boolean;
 }

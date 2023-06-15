@@ -28,6 +28,7 @@ function Content() {
   if (page) {
     return (
       <Paragraph
+        variant={'text'}
         mt={4}
         substitutions={{
           redevelopmentDate: ZDate.format(Settings.BLOG_REDEVELOPMENT_DATE),

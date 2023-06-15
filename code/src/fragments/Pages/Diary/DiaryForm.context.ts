@@ -12,6 +12,7 @@ export const InitialDiaryFormState: DiaryFormState = {
     footnote: '',
     tags: [],
   },
+  categories: [],
   tagsInput: '',
 };
 
@@ -21,5 +22,6 @@ export const DiaryFormContext = React.createContext<
 
 interface DiaryFormState {
   entry: Prisma.DiaryCreateInput;
+  categories: number[];
   tagsInput: string;
 }

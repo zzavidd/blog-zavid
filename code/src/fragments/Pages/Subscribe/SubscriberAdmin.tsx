@@ -1,4 +1,5 @@
 import {
+  Add,
   Check as CheckIcon,
   Unsubscribe as UnsubscribeIcon,
 } from '@mui/icons-material';
@@ -14,6 +15,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
+import { LinkButton } from 'components/Link';
 import TableView from 'fragments/Shared/TableView';
 import type { TableViewState } from 'fragments/Shared/TableView.utils';
 import {
@@ -72,8 +74,6 @@ export default function SubscriberAdmin() {
   const context: ReactUseState<TableViewState<Subscriber>> = [
     {
       ...state,
-      addButtonHref: '/admin/subscribers/add',
-      addButtonText: 'Add subscriber',
       additionalMenuItems: [
         {
           label: 'Unsubscribe',
@@ -81,6 +81,11 @@ export default function SubscriberAdmin() {
           onClick: navigateToUnsubscribePage,
         },
       ],
+      buttons: (
+        <LinkButton href={'/admin/subscribers/add'} startIcon={<Add />}>
+          Add subscriber
+        </LinkButton>
+      ),
       deleteConfirmMessage: `Are you sure you want to delete "${state.selectedEntity?.email}" from your subscribers list?`,
       editHref: `/admin/subscribers/edit/${state.selectedEntity?.id}`,
       isDeleteOpLoading,

@@ -1,5 +1,4 @@
 import {
-  Add as AddIcon,
   Delete as DeleteIcon,
   Edit as EditIcon,
   MoreVert as MoreVertIcon,
@@ -30,14 +29,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { ActionDialog } from 'components/Dialog';
-import { LinkButton } from 'components/Link';
 
 import type { MoreMenuItem } from './TableView.utils';
 import { useTableContext } from './TableView.utils';
 
 export default function TableView<T extends { id: number }>() {
   const [context, setContext] = useTableContext<T>();
-  const { addButtonHref, addButtonText, pageTitle } = context;
+  const { buttons, pageTitle } = context;
 
   function setSortProperty(property: keyof T | null) {
     setContext((s) => {
@@ -52,14 +50,17 @@ export default function TableView<T extends { id: number }>() {
   return (
     <React.Fragment>
       <Container maxWidth={'xl'}>
-        <Stack m={5} spacing={5}>
-          <Stack direction={'row'} justifyContent={'space-between'}>
+        <Stack p={5} spacing={5}>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            rowGap={5}
+            justifyContent={'space-between'}>
             <Typography variant={'h2'}>{pageTitle}</Typography>
-            <LinkButton href={addButtonHref} startIcon={<AddIcon />}>
-              {addButtonText}
-            </LinkButton>
+            <Stack direction={'row'} spacing={3}>
+              {buttons}
+            </Stack>
           </Stack>
-          <TableContainer>
+          <TableContainer sx={{ overflowX: 'auto', maxWidth: '100vw' }}>
             <Table>
               <TableHead component={PaperTableHead}>
                 <TableRow>

@@ -13,14 +13,32 @@ const prisma = new PrismaClient();
 })();
 
 async function ingestDiaryEntries(): Promise<void> {
-  const diary: Prisma.DiaryCreateInput[] = [];
+  const categories: Prisma.DiaryCategoryUncheckedCreateInput[] = [];
 
-  for (let i = 1; i <= 50; i++) {
-    diary.push(createDiaryEntry({ entryNumber: i }));
+  for (let i = 1; i <= 7; i++) {
+    categories.push({ id: i, name: faker.lorem.word() });
   }
 
+  await prisma.diaryCategory.deleteMany({});
   await prisma.diary.deleteMany({});
-  await prisma.diary.createMany({ data: diary });
+  await prisma.diaryCategory.createMany({ data: categories });
+
+  const promises = Array(50)
+    .fill(null)
+    .map((_, i) => {
+      const categoryIds = faker.helpers
+        .arrayElements(categories)
+        .map((c) => ({ id: c.id }));
+      const entry = createDiaryEntry({
+        entryNumber: i + 1,
+        categories: {
+          connect: categoryIds,
+        },
+      });
+      return prisma.diary.create({ data: entry });
+    });
+
+  await Promise.all(promises);
 }
 
 async function ingestSubscribers(): Promise<void> {

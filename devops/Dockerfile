@@ -16,6 +16,7 @@ RUN pnpm install --frozen-lockfile
 COPY ./code ./
 
 RUN pnpm prisma generate
+RUN pnpm prisma migrate deploy
 RUN pnpm run build
 
 FROM node:18-slim AS runner

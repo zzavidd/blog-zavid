@@ -15,12 +15,12 @@ import { Section } from '../../regex';
 import { applyEmphasisFormatting } from '../Emphasis';
 
 const FormatSite: Record<Section, RenderValue> = {
-  [Section.PARAGRAPH]: ([, text], key, { dataTestId, typographyVariant }) => (
+  [Section.PARAGRAPH]: ([, text], key, { dataTestId, TypographyProps }) => (
     <Typography
-      variant={typographyVariant}
       data-testid={dataTestId ? `${dataTestId}.${key}` : undefined}
       mt={key ? 5 : 0}
-      key={key}>
+      key={key}
+      {...TypographyProps}>
       {applyEmphasisFormatting(text)}
     </Typography>
   ),

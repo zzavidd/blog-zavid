@@ -10,12 +10,13 @@ import prisma from 'server/prisma';
 import { truncateText } from 'utils/lib/text';
 
 export default class DiaryAPI {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   public static async findMany(
-    params: Prisma.DiaryFindManyArgs,
+    args: Prisma.DiaryFindManyArgs,
     options: DiaryFindOptions = {},
-  ): Promise<Diary[]> {
+  ) {
     const { contentWordLimit } = options;
-    let diary = await prisma.diary.findMany(params);
+    let diary = await prisma.diary.findMany(args);
     if (contentWordLimit) {
       diary = diary.map((entry) => {
         entry.content = truncateText(entry.content, {
@@ -27,12 +28,16 @@ export default class DiaryAPI {
     return diary;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   public static async find(
-    args: Prisma.DiaryFindFirstOrThrowArgs,
+    args: Prisma.DiaryFindFirstArgs,
     options: DiaryFindOptions = {},
-  ): Promise<Diary | null> {
+  ) {
     const { contentWordLimit } = options;
-    const entry = await prisma.diary.findFirst(args);
+    const entry = await prisma.diary.findFirst({
+      ...args,
+      include: { categories: true },
+    });
     if (entry && contentWordLimit) {
       entry.content = truncateText(entry.content, {
         limit: contentWordLimit,

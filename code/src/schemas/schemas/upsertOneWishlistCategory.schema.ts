@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { WishlistCategorySelectObjectSchema } from './objects/WishlistCategorySelect.schema';
+import { WishlistCategoryIncludeObjectSchema } from './objects/WishlistCategoryInclude.schema';
 import { WishlistCategoryWhereUniqueInputObjectSchema } from './objects/WishlistCategoryWhereUniqueInput.schema';
 import { WishlistCategoryCreateInputObjectSchema } from './objects/WishlistCategoryCreateInput.schema';
 import { WishlistCategoryUncheckedCreateInputObjectSchema } from './objects/WishlistCategoryUncheckedCreateInput.schema';
@@ -8,6 +9,7 @@ import { WishlistCategoryUncheckedUpdateInputObjectSchema } from './objects/Wish
 
 export const WishlistCategoryUpsertSchema = z.object({
   select: WishlistCategorySelectObjectSchema.optional(),
+  include: WishlistCategoryIncludeObjectSchema.optional(),
   where: WishlistCategoryWhereUniqueInputObjectSchema,
   create: z.union([
     WishlistCategoryCreateInputObjectSchema,

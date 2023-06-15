@@ -1,20 +1,14 @@
 import {
-  Article,
+  Add,
   AttachEmail,
-  EditNote,
+  Edit,
   Email as EmailIcon,
-  Favorite,
-  FavoriteBorder,
-  Lock,
-  VisibilityOff,
 } from '@mui/icons-material';
-import { IconButton, Stack, Typography } from '@mui/material';
 import type { Diary } from '@prisma/client';
-import { DiaryStatus } from '@prisma/client';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-import { Link } from 'components/Link';
+import { LinkButton } from 'components/Link';
 import TableView from 'fragments/Shared/TableView';
 import type {
   MoreMenuItem,
@@ -24,15 +18,9 @@ import {
   TableViewContext,
   createInitialTableViewState,
 } from 'fragments/Shared/TableView.utils';
-import ZDate from 'utils/lib/date';
 import { trpc } from 'utils/trpc';
 
-const STATUS_ICONS = {
-  [DiaryStatus.DRAFT]: <EditNote />,
-  [DiaryStatus.PROTECTED]: <Lock />,
-  [DiaryStatus.PRIVATE]: <VisibilityOff />,
-  [DiaryStatus.PUBLISHED]: <Article />,
-};
+import { useDiaryTableFields } from './DiaryAdmin.hooks';
 
 const initialState = createInitialTableViewState<Diary>({
   sort: {
@@ -57,6 +45,7 @@ export default function DiaryAdmin() {
         date: true,
         entryNumber: true,
         isFavourite: true,
+        categories: true,
       },
     },
   });
@@ -125,9 +114,20 @@ export default function DiaryAdmin() {
   const context: ReactUseState<TableViewState<Diary>> = [
     {
       ...state,
-      addButtonHref: '/admin/diary/add',
-      addButtonText: 'Add entry',
       additionalMenuItems,
+      buttons: (
+        <React.Fragment>
+          <LinkButton
+            href={'/admin/diary/categories'}
+            buttonVariant={'contained'}
+            startIcon={<Edit />}>
+            Edit categories
+          </LinkButton>
+          <LinkButton href={'/admin/diary/add'} startIcon={<Add />}>
+            Add entry
+          </LinkButton>
+        </React.Fragment>
+      ),
       deleteConfirmMessage: `Are you sure you want to delete the diary entry #${state.selectedEntity?.entryNumber}?`,
       editHref: `/admin/diary/edit/${state.selectedEntity?.id}`,
       isDeleteOpLoading,
@@ -145,100 +145,4 @@ export default function DiaryAdmin() {
       <TableView />
     </TableViewContext.Provider>
   );
-}
-
-function useDiaryTableFields(
-  hoveredEntityId: number | null,
-): TableField<Diary>[] {
-  const { enqueueSnackbar } = useSnackbar();
-  const trpcContext = trpc.useContext();
-  const { mutate: updateDiaryEntry } = trpc.diary.update.useMutation({
-    onSuccess: async (entry) => {
-      await trpcContext.diary.findMany.refetch();
-      const verb = entry.isFavourite ? 'favourited' : 'unfavourited';
-      const message = `You've ${verb} diary entry #${entry.entryNumber}.`;
-      enqueueSnackbar(message, { variant: 'success' });
-    },
-  });
-
-  function onFavouriteClick(e: Diary) {
-    updateDiaryEntry({
-      diary: {
-        data: { isFavourite: !e.isFavourite },
-        where: { id: e.id },
-      },
-      isPublish: false,
-    });
-  }
-
-  return [
-    {
-      title: <Typography variant={'h6'}>#</Typography>,
-      property: 'entryNumber',
-      align: 'right',
-      renderValue: (e) => (
-        <Typography variant={'body1'}>{e.entryNumber}</Typography>
-      ),
-    },
-    {
-      title: <Typography variant={'h6'}>Title</Typography>,
-      property: 'title',
-      align: 'left',
-      renderValue: (e) => (
-        <Link
-          href={`/diary/${e.entryNumber}`}
-          variant={'body1'}
-          color={'inherit'}
-          fontWeight={400}
-          underline={'hover'}>
-          {e.title}
-        </Link>
-      ),
-    },
-    {
-      title: <Favorite fontSize={'medium'} sx={{ mx: 2 }} />,
-      property: 'isFavourite',
-      align: 'left',
-      renderValue: (e) => {
-        if (e.isFavourite) {
-          return (
-            <IconButton onClick={() => onFavouriteClick(e)}>
-              <Favorite color={'primary'} fontSize={'medium'} />
-            </IconButton>
-          );
-        }
-
-        return (
-          <IconButton
-            onClick={() => onFavouriteClick(e)}
-            sx={{
-              visibility: e.id === hoveredEntityId ? 'visible' : 'hidden',
-            }}>
-            <FavoriteBorder fontSize={'medium'} />
-          </IconButton>
-        );
-      },
-    },
-    {
-      title: <Typography variant={'h6'}>Date Published</Typography>,
-      property: 'date',
-      align: 'left',
-      renderValue: (e) => (
-        <Typography variant={'body1'}>{ZDate.format(e.date)}</Typography>
-      ),
-    },
-    {
-      title: <Typography variant={'h6'}>Status</Typography>,
-      property: 'status',
-      align: 'left',
-      renderValue: (e) => {
-        return (
-          <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            {STATUS_ICONS[e.status]}
-            <Typography variant={'body1'}>{e.status}</Typography>
-          </Stack>
-        );
-      },
-    },
-  ];
 }

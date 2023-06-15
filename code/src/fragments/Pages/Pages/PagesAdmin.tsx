@@ -1,10 +1,10 @@
-import { Article as ArticleIcon } from '@mui/icons-material';
+import { Add, Article as ArticleIcon } from '@mui/icons-material';
 import { Typography } from '@mui/material';
 import type { Page } from '@prisma/client';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
-import { Link } from 'components/Link';
+import { Link, LinkButton } from 'components/Link';
 import TableView from 'fragments/Shared/TableView';
 import type { TableViewState } from 'fragments/Shared/TableView.utils';
 import {
@@ -56,8 +56,11 @@ export default function PageAdmin() {
   const context: ReactUseState<TableViewState<Page>> = [
     {
       ...state,
-      addButtonHref: '/admin/pages/add',
-      addButtonText: 'Add page',
+      buttons: (
+        <LinkButton href={'/admin/pages/add'} startIcon={<Add />}>
+          Add page
+        </LinkButton>
+      ),
       deleteConfirmMessage: `Are you sure you want to delete the "${state.selectedEntity?.title}" page?`,
       editHref: `/admin/pages/edit/${state.selectedEntity?.id}`,
       isDeleteOpLoading,

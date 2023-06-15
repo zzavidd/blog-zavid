@@ -7,11 +7,12 @@ import { useEffect, useState } from 'react';
 
 import AdminGateway from 'fragments/AdminGateway';
 import Layout from 'fragments/Layout';
-import DiaryForm from 'fragments/Pages/Diary/DiaryForm/DiaryForm';
+import DiaryForm from 'fragments/Pages/Diary/DiaryForm';
 import {
   DiaryFormContext,
   InitialDiaryFormState,
-} from 'fragments/Pages/Diary/DiaryForm/DiaryForm.context';
+} from 'fragments/Pages/Diary/DiaryForm.context';
+import { useDiaryCategories } from 'utils/hooks';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
@@ -20,6 +21,7 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const trpcContext = trpc.useContext();
+  const { data: diaryCategories = [] } = useDiaryCategories();
 
   const { mutate: createDiaryEntry, isLoading: isCreateLoading } =
     trpc.diary.create.useMutation({
@@ -54,7 +56,19 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
   }, [latestEntry]);
 
   function onSubmit(isPublish: boolean) {
-    createDiaryEntry({ diary: { data: state.entry }, isPublish });
+    createDiaryEntry({
+      diary: {
+        data: {
+          ...state.entry,
+          categories: {
+            connect: diaryCategories
+              .filter(({ id }) => state.categories.includes(id))
+              .map(({ id }) => ({ id })),
+          },
+        },
+      },
+      isPublish,
+    });
   }
 
   return (

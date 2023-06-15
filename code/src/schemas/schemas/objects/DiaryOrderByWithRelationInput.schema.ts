@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
+import { DiaryCategoryOrderByRelationAggregateInputObjectSchema } from './DiaryCategoryOrderByRelationAggregateInput.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -14,6 +15,9 @@ const Schema: z.ZodType<Prisma.DiaryOrderByWithRelationInput> = z
     footnote: z.lazy(() => SortOrderSchema).optional(),
     isFavourite: z.lazy(() => SortOrderSchema).optional(),
     tags: z.lazy(() => SortOrderSchema).optional(),
+    categories: z
+      .lazy(() => DiaryCategoryOrderByRelationAggregateInputObjectSchema)
+      .optional(),
   })
   .strict();
 

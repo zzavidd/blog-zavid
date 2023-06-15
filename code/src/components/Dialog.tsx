@@ -23,7 +23,7 @@ export function ActionDialog({
   return (
     <Dialog {...props} maxWidth={'sm'} fullWidth={true}>
       <DialogContent sx={{ padding: (t) => t.spacing(5, 4, 5, 5) }}>
-        <Typography variant={'body1'}> {children}</Typography>
+        <Typography variant={'body1'}>{children}</Typography>
       </DialogContent>
       <DialogActions sx={{ padding: (t) => t.spacing(4, 5, 5, 5) }}>
         <Button variant={'outlined'} onClick={onCancel} sx={buttonSx}>
@@ -43,10 +43,10 @@ export function ActionDialog({
 }
 
 interface ActionDialogProps extends DialogProps {
-  confirmText?: string;
-  cancelText?: string;
   onConfirm: () => void;
   onCancel: () => void;
+  confirmText?: string;
+  cancelText?: string;
   isActionDestructive?: boolean;
   isActionLoading?: boolean;
 }

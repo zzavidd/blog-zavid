@@ -10,11 +10,12 @@ import {
   lighten,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import type { Diary } from '@prisma/client';
 import React from 'react';
 
 import Paragraph from 'components/Typography/Paragraph';
 import Time from 'components/Typography/Time';
+
+import CategoryDisplay from './CategoryDisplay';
 
 const cardProps: SxProps<Theme> = {
   'height': '100%',
@@ -41,9 +42,9 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
                 <FavoriteRounded
                   color={'primary'}
                   sx={{
-                    ml: 2,
                     fontSize: (t) => t.spacing(7),
                     float: 'right',
+                    ml: 2,
                   }}
                 />
               </Tooltip>
@@ -61,12 +62,14 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
               </Typography>
               {entry.title}
             </Typography>
+            <CategoryDisplay categories={entry.categories} my={3} />
             <Divider sx={{ marginBlock: (t) => t.spacing(4) }} />
             <Paragraph
               variant={'body1'}
               moreHref={href}
-              moreText={`Read #${entry.entryNumber}: ${entry.title}`}
-              readMoreDataTestId={`zb.readmore.${entry.entryNumber}`}>
+              moreText={`Read Diary Entry #${entry.entryNumber}`}
+              readMoreDataTestId={`zb.readmore.${entry.entryNumber}`}
+              TypographyProps={{ fontSize: 18 }}>
               {entry.content}
             </Paragraph>
           </CardContent>
@@ -100,5 +103,5 @@ export function DiaryEachSkeleton() {
 }
 
 interface DiaryEachItemProps {
-  entry: Diary;
+  entry: DiaryWithCategories;
 }
