@@ -1,4 +1,4 @@
-FROM node:lts-slim AS builder
+FROM node:18-slim AS builder
 
 RUN corepack enable
 RUN corepack prepare pnpm@8.2.0 --activate
@@ -6,8 +6,8 @@ RUN corepack prepare pnpm@8.2.0 --activate
 RUN apt-get update -y && apt-get install -y openssl
 
 ARG WORKDIR
-
 WORKDIR /var/www/$WORKDIR/code
+
 COPY ./code/pnpm-lock.yaml .
 COPY ./code/package.json .
 
@@ -19,9 +19,11 @@ RUN pnpm prisma generate
 RUN pnpm prisma migrate deploy
 RUN pnpm run build
 
-FROM node:18-alpine AS runner
-ARG WORKDIR
+FROM node:18-slim AS runner
 
+RUN apt-get update -y && apt-get install -y openssl
+
+ARG WORKDIR
 WORKDIR /var/www/$WORKDIR/code
 
 COPY --from=builder /var/www/$WORKDIR/code/package.json .
