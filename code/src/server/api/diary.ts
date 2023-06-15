@@ -1,4 +1,4 @@
-import type { Diary, DiaryCategory, Prisma } from '@prisma/client';
+import type { Diary, Prisma } from '@prisma/client';
 import nodemailer from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import invariant from 'tiny-invariant';
@@ -70,10 +70,6 @@ export default class DiaryAPI {
 
   public static async delete(ids: number[]): Promise<void> {
     await prisma.diary.deleteMany({ where: { id: { in: ids } } });
-  }
-
-  public static categories(): Promise<DiaryCategory[]> {
-    return prisma.diaryCategory.findMany();
   }
 
   public static async publish(

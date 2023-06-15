@@ -2,6 +2,9 @@ import { DiaryStatus } from '@prisma/client';
 import { z } from 'zod';
 
 import {
+  DiaryCategoryCreateOneSchema,
+  DiaryCategoryDeleteOneSchema,
+  DiaryCategoryUpdateOneSchema,
   DiaryCreateOneSchema,
   DiaryFindFirstSchema,
   DiaryUpdateOneSchema,
@@ -16,6 +19,7 @@ import {
   SubscriberUpdateOneSchema,
 } from 'schemas/schemas';
 import DiaryAPI, { zDiaryFindOptions } from 'server/api/diary';
+import DiaryCategoryAPI from 'server/api/diaryCategory';
 import PageAPI from 'server/api/pages';
 import SubscriberAPI from 'server/api/subscribers';
 import { zEmailPreviewType } from 'server/emails';
@@ -77,7 +81,16 @@ export const appRouter = router({
     }),
   }),
   diaryCategory: router({
-    findMany: procedure.query(() => DiaryAPI.categories()),
+    findMany: procedure.query(() => DiaryCategoryAPI.findMany()),
+    create: procedure
+      .input(DiaryCategoryCreateOneSchema)
+      .mutation(({ input }) => DiaryCategoryAPI.create(input)),
+    update: procedure
+      .input(DiaryCategoryUpdateOneSchema)
+      .mutation(({ input }) => DiaryCategoryAPI.update(input)),
+    delete: procedure
+      .input(DiaryCategoryDeleteOneSchema)
+      .mutation(({ input }) => DiaryCategoryAPI.delete(input)),
   }),
   page: router({
     findMany: procedure
