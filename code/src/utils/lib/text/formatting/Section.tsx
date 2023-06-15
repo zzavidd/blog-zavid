@@ -8,8 +8,8 @@ import {
   strayRegexToOmit,
 } from 'utils/lib/text/regex';
 
-import FormatEmail from './Paragraph/FormatEmail';
-import FormatSite from './Paragraph/FormatSite';
+import FormatEmail from './Format/BlockFormatEmail';
+import FormatSite from './Format/BlockFormatSite';
 
 /**
  * Formats a paragraph of text.
