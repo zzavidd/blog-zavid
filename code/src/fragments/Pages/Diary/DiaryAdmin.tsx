@@ -90,7 +90,7 @@ export default function DiaryAdmin() {
       {
         onSuccess: () => {
           enqueueSnackbar(
-            `Successfully sent ${state.selectedEntity?.title} to administrator email.`,
+            `Successfully sent "${state.selectedEntity?.title}" to administrator email.`,
             { variant: 'success' },
           );
         },

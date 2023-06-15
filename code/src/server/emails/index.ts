@@ -1,8 +1,9 @@
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml';
 import type { Diary, Subscriber } from '@prisma/client';
-import htmlToText from 'html-to-text';
+import { convert } from 'html-to-text';
 import mjml2html from 'mjml';
-import type SMTPPool from 'nodemailer/lib/smtp-pool';
+import nodemailer from 'nodemailer';
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import React from 'react';
 import { v4 as UUIDv4 } from 'uuid';
 import { z } from 'zod';
@@ -13,7 +14,8 @@ import Logger from 'utils/logger';
 
 import {
   HTML_TO_TEXT_OPTIONS,
-  isProd as isProduction,
+  isProduction,
+  prodTransportOptions,
   TRANSPORTER,
 } from './constants';
 import DiaryEmail from './templates/Diary';
@@ -36,7 +38,7 @@ namespace Emailer {
   export function notifyNewDiaryEntry(
     diaryEntry: Diary,
     options: NotifyOptions = {},
-  ): Promise<SMTPPool.SentMessageInfo[]> {
+  ): Promise<SMTPTransport.SentMessageInfo[]> {
     const subject = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
     return sendEmail(
       DiaryEmail,
@@ -64,7 +66,7 @@ async function sendEmail<T extends Record<string, unknown>>(
   subject: string,
   type: SubscriptionType,
   options: NotifyOptions,
-): Promise<SMTPPool.SentMessageInfo[]> {
+): Promise<SMTPTransport.SentMessageInfo[]> {
   const subscribers = await SubscriberAPI.findMany({});
 
   let mailList: Subscriber[] | [TestRecipient] = [];
@@ -96,12 +98,17 @@ async function sendEmail<T extends Record<string, unknown>>(
     errors.forEach((e) => {
       Logger.error(e.formattedMessage);
     });
-    return TRANSPORTER.sendMail({
+
+    const transporter =
+      options.isPreview && options.previewType === 'Gmail'
+        ? nodemailer.createTransport(prodTransportOptions)
+        : TRANSPORTER;
+    return transporter.sendMail({
       from: `ZAVID <${process.env.EMAIL_USER}>`,
       to: recipient.email,
       subject: options.isPreview ? `(Preview) ${subject}` : subject,
       html,
-      text: htmlToText.convert(html, HTML_TO_TEXT_OPTIONS),
+      text: convert(html, HTML_TO_TEXT_OPTIONS),
     });
   });
 

@@ -1,5 +1,5 @@
 import { Mjml, MjmlText } from '@faire/mjml-react';
-import type { Diary } from '@prisma/client';
+import React from 'react';
 
 import Settings from 'utils/settings';
 
@@ -31,8 +31,18 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
           <Anchor href={href}>Visit on site.</Anchor>
         </EmailHeader>
         <Main>
-          <EmailTitle>{title}</EmailTitle>
           <EmailDate date={diaryEntry.date} />
+          <EmailTitle>{title}</EmailTitle>
+          <MjmlText fontSize={12}>
+            <p style={{ margin: '10px 0' }}>
+              {diaryEntry.categories?.map(({ id, name }, key) => (
+                <React.Fragment key={id}>
+                  {key ? <span style={{ margin: '0 5px' }}>•</span> : null}
+                  <span>{name.toUpperCase()}</span>
+                </React.Fragment>
+              ))}
+            </p>
+          </MjmlText>
           <EmailDivider />
           <EmailParagraph>{diaryEntry.content}</EmailParagraph>
           <MjmlText>
@@ -51,6 +61,6 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
 }
 
 interface DiaryEmailProps {
-  diaryEntry: Diary;
+  diaryEntry: DiaryWithCategories;
   token: string;
 }

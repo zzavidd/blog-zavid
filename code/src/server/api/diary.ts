@@ -1,6 +1,5 @@
 import type { Diary, Prisma } from '@prisma/client';
 import nodemailer from 'nodemailer';
-import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import invariant from 'tiny-invariant';
 import { z } from 'zod';
 
@@ -82,11 +81,7 @@ export default class DiaryAPI {
       isPreview: true,
       previewType,
     });
-    return (
-      nodemailer.getTestMessageUrl(
-        info as unknown as SMTPTransport.SentMessageInfo,
-      ) || ''
-    );
+    return nodemailer.getTestMessageUrl(info) || '';
   }
 }
 
