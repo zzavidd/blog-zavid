@@ -1,4 +1,4 @@
-FROM node:18-slim AS builder
+FROM node:lts-slim AS builder
 
 RUN corepack enable
 RUN corepack prepare pnpm@8.2.0 --activate
@@ -19,11 +19,8 @@ RUN pnpm prisma generate
 RUN pnpm prisma migrate deploy
 RUN pnpm run build
 
-FROM node:18-slim AS runner
+FROM node:18-alpine AS runner
 ARG WORKDIR
-
-RUN corepack enable
-RUN corepack prepare pnpm@8.2.0 --activate
 
 WORKDIR /var/www/$WORKDIR/code
 
