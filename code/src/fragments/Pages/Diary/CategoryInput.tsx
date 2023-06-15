@@ -25,6 +25,12 @@ export default function CategoryInput({
         {
           displayEmpty: false,
           IconComponent: () => null,
+          MenuProps: {
+            anchorOrigin: {
+              horizontal: 'right',
+              vertical: 'top',
+            },
+          },
           multiple: true,
           onChange,
           renderValue: (selected) => (
@@ -54,7 +60,10 @@ export default function CategoryInput({
       }
       {...props}>
       {diaryCategories.map((category) => (
-        <MenuItem value={category.id} key={category.id}>
+        <MenuItem
+          value={category.id}
+          sx={{ py: { xs: 2, md: 3 } }}
+          key={category.id}>
           {category.name}
         </MenuItem>
       ))}

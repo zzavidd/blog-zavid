@@ -15,6 +15,7 @@ import {
   Chip,
   FormControl,
   IconButton,
+  InputAdornment,
   Stack,
   Typography,
 } from '@mui/material';
@@ -157,20 +158,22 @@ export function useDiaryTableFields(
       renderValue: (e) => {
         if (state.entryInEdit === e.id) {
           return (
-            <FormControl>
+            <FormControl sx={{ width: (t) => t.spacing(12) }}>
               <CategoryInput
                 value={state.editedCategories}
                 onChange={onCategoryChange}
                 InputProps={{
                   endAdornment: (
-                    <Stack direction={'row'}>
-                      <IconButton onClick={() => onCategoriesSave(e.id)}>
-                        <CheckIcon color={'primary'} />
-                      </IconButton>
-                      <IconButton onClick={cancelCategoryEdit}>
-                        <CloseIcon color={'primary'} />
-                      </IconButton>
-                    </Stack>
+                    <InputAdornment position={'end'}>
+                      <Stack direction={'row'}>
+                        <IconButton onClick={() => onCategoriesSave(e.id)}>
+                          <CheckIcon color={'primary'} fontSize={'small'} />
+                        </IconButton>
+                        <IconButton onClick={cancelCategoryEdit}>
+                          <CloseIcon color={'primary'} fontSize={'small'} />
+                        </IconButton>
+                      </Stack>
+                    </InputAdornment>
                   ),
                 }}
               />
