@@ -1,7 +1,3 @@
-import { Typography } from '@mui/material';
-
-import { Link } from 'components/Link';
-import EmailTheme from 'server/emails/theme';
 import {
   Emphasis,
   emphasisRegexMapping,
@@ -11,12 +7,16 @@ import Logger from 'utils/logger';
 
 import type { FormatTextOptions } from '../functions';
 
+import InlineFormatEmail from './Format/InlineFormatEmail';
+import InlineFormatSite from './Format/InlineFormatSite';
+
 export function applyEmphasisFormatting(
   paragraph: string,
-  options?: FormatTextOptions,
+  options: FormatTextOptions = {},
 ) {
   if (!paragraph) return '';
   const combinedEmphasisRegex = getCombinedEmphasisRegex();
+  const Formatter = options.forEmails ? InlineFormatEmail : InlineFormatSite;
 
   // Split by combined regex into fragments.
   const fragments = paragraph.split(combinedEmphasisRegex).filter((e) => e);
@@ -30,146 +30,8 @@ export function applyEmphasisFormatting(
 
     if (foundEmphasis) {
       const [emphasis, { pure: regex }] = foundEmphasis;
-      const matches = fragment.match(regex);
-      if (!matches) return;
-
-      try {
-        switch (emphasis) {
-          case Emphasis.CUSTOM:
-            const textToCustomise = matches[1];
-            transformation = (
-              <Typography key={key} display={'inline'}>
-                {textToCustomise}
-              </Typography>
-            );
-            break;
-          case Emphasis.BOLDITALIC:
-            const textToBoldItalize = applyEmphasisFormatting(matches[1]);
-            transformation = (
-              <Typography
-                fontWeight={'bold'}
-                fontStyle={'italic'}
-                display={'inline'}
-                key={key}>
-                {textToBoldItalize}
-              </Typography>
-            );
-            break;
-          case Emphasis.ITALIC:
-            const textToItalize = applyEmphasisFormatting(matches[1]);
-            transformation = (
-              <Typography fontStyle={'italic'} display={'inline'} key={key}>
-                {textToItalize}
-              </Typography>
-            );
-            break;
-          case Emphasis.BOLD:
-            const textToBold = applyEmphasisFormatting(matches[1]);
-            transformation = (
-              <Typography fontWeight={'bold'} display={'inline'} key={key}>
-                {textToBold}
-              </Typography>
-            );
-            break;
-          case Emphasis.UNDERLINE:
-            const textToUnderline = applyEmphasisFormatting(matches[1]);
-            transformation = (
-              <Typography
-                sx={{ textDecoration: 'underline' }}
-                display={'inline'}
-                key={key}>
-                {textToUnderline}
-              </Typography>
-            );
-            break;
-          case Emphasis.STRIKETHROUGH:
-            const textToStrikethrough = applyEmphasisFormatting(matches[1]);
-            transformation = (
-              <Typography
-                sx={{ textDecoration: 'line-through' }}
-                display={'inline'}
-                key={key}>
-                {textToStrikethrough}
-              </Typography>
-            );
-            break;
-          case Emphasis.HYPERLINK: {
-            const text = applyEmphasisFormatting(matches[1]);
-            const link = matches[2];
-            transformation = options?.forEmails ? (
-              <a
-                href={link}
-                rel={'noopener noreferrer'}
-                target={'_blank'}
-                style={{
-                  color: EmailTheme.Color.Light.Hyperlink,
-                }}
-                key={key}>
-                {text}
-              </a>
-            ) : (
-              <Link href={link} key={key}>
-                {text}
-              </Link>
-            );
-            break;
-          }
-          case Emphasis.HIGHLIGHT:
-            const highlightColor = matches[1];
-            const textToHighlight = applyEmphasisFormatting(matches[2]);
-            transformation = (
-              <Typography
-                sx={{
-                  backgroundColor: highlightColor,
-                  borderRadius: (t) => `${t.shape.borderRadius}px`,
-                  padding: (t) => t.spacing(1),
-                }}
-                display={'inline'}
-                key={key}>
-                {textToHighlight}
-              </Typography>
-            );
-            break;
-          case Emphasis.COLOR:
-            const color = matches[1];
-            const textToColor = applyEmphasisFormatting(matches[2]);
-            transformation = (
-              <Typography sx={{ color }} display={'inline'} key={key}>
-                {textToColor}
-              </Typography>
-            );
-            break;
-          case Emphasis.SUPERSCRIPT:
-            const textToSuper = applyEmphasisFormatting(matches[1]);
-            transformation = (
-              <Typography
-                sx={{ verticalAlign: 'super' }}
-                display={'inline'}
-                key={key}>
-                {textToSuper}
-              </Typography>
-            );
-            break;
-          case Emphasis.SUBSCRIPT:
-            const textToSub = applyEmphasisFormatting(matches[1]);
-            transformation = (
-              <Typography
-                sx={{ verticalAlign: 'sub' }}
-                display={'inline'}
-                key={key}>
-                {textToSub}
-              </Typography>
-            );
-            break;
-          case Emphasis.ESCAPE:
-            transformation = matches[1];
-            break;
-          default:
-            break;
-        }
-      } catch (e: any) {
-        throw new Error(e);
-      }
+      const match = fragment.match(regex)!;
+      transformation = Formatter[emphasis as Emphasis](match, key);
     }
 
     return transformation;
