@@ -78,7 +78,7 @@ export default function Header() {
               ) : (
                 <Tooltip title={'Switch to light mode'}>
                   <IconButton onClick={toggleTheme} size={'large'}>
-                    <DarkMode color={'secondary'} />
+                    <DarkMode color={'primary'} />
                   </IconButton>
                 </Tooltip>
               )}
@@ -111,7 +111,7 @@ function AuthButton() {
     return (
       <Button
         variant={'outlined'}
-        color={'secondary'}
+        color={'primary'}
         startIcon={<LoginIcon />}
         onClick={() => signIn('google')}
         sx={{ p: 2 }}>
@@ -149,8 +149,8 @@ function AuthButton() {
           src={user.image!}
           ref={avatarRef}
           sx={{
-            backgroundColor: 'secondary.main',
-            border: (t) => `1px solid ${t.palette.secondary.main}`,
+            backgroundColor: 'primary.main',
+            border: (t) => `1px solid ${t.palette.primary.main}`,
           }}>
           {initials}
         </Avatar>

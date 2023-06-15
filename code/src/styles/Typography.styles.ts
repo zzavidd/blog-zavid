@@ -35,6 +35,7 @@ const typography: TypographyOptions = {
     fontWeight: 700,
     lineHeight: 1.1,
     [breakpoints.down('md')]: {
+      fontSize: 30,
       letterSpacing: -2,
     },
   },
@@ -44,6 +45,7 @@ const typography: TypographyOptions = {
     fontWeight: 700,
     lineHeight: 1.1,
     [breakpoints.down('md')]: {
+      fontSize: 28,
       letterSpacing: -1.5,
     },
   },
@@ -69,6 +71,9 @@ const typography: TypographyOptions = {
   subtitle2: {
     fontFamily: calistoga.style.fontFamily,
     fontWeight: 700,
+    [breakpoints.down('md')]: {
+      letterSpacing: -1,
+    },
   },
   body1: {
     fontFamily: mulish.style.fontFamily,

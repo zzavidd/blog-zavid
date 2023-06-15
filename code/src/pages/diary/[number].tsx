@@ -82,13 +82,13 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
               textAlign={isMobile ? 'left' : 'center'}
               date={diaryEntry.date}
             />
-            <Typography variant={'h2'} textAlign={isMobile ? 'left' : 'center'}>
+            <Typography variant={'h2'} textAlign={{ xs: 'left', sm: 'center' }}>
               {fullTitle}
             </Typography>
             <CategoryDisplay
               categories={diaryEntry.categories}
               justifyContent={{ xs: 'flex-start', md: 'center' }}
-              py={1}
+              py={{ xs: 0, md: 1 }}
             />
             {diaryEntry.isFavourite ? (
               <Stack

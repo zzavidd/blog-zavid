@@ -19,7 +19,9 @@ const DIARY_HEADING = "Zavid's Diary";
 
 const DiaryIndex: NextPageWithLayout = () => {
   return (
-    <Container maxWidth={false} sx={{ padding: (t) => t.spacing(5, 3) }}>
+    <Container
+      maxWidth={false}
+      sx={{ overflow: 'hidden', padding: (t) => t.spacing(5, 3) }}>
       <Stack divider={<Divider />} spacing={{ xs: 3, md: 5 }}>
         <Container maxWidth={'sm'}>
           <Stack alignItems={'center'} spacing={3}>
