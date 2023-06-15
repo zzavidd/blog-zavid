@@ -1,4 +1,4 @@
-export const TITLE_FONTS = ['Calistoga', 'Optima'];
+export const TITLE_FONTS = ['Calistoga', 'Google Sans', 'Verdana'];
 export const BODY_FONTS = ['Mulish', 'Helvetica', 'Roboto'];
 
 const EmailTheme = {

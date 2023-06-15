@@ -36,8 +36,8 @@ export function EmailHead({ title }: EmailHeadProps) {
       <MjmlTitle>{title}</MjmlTitle>
       <MjmlPreview>{title}</MjmlPreview>
       <MjmlAttributes>
-        <MjmlAll name={'color-scheme'} content={'light'} />
-        <MjmlAll name={'supported-color-schemes'} content={'light'} />
+        <MjmlAll name={'color-scheme'} content={'light,dark'} />
+        <MjmlAll name={'supported-color-schemes'} content={'light,dark'} />
         <MjmlAll fontFamily={EmailTheme.Font.Body} />
         <MjmlText padding={0} />
       </MjmlAttributes>

@@ -12,8 +12,9 @@ export function EmailTitle({ children, ...props }: IMjmlTextProps) {
     <MjmlText
       {...props}
       fontFamily={EmailTheme.Font.Title}
-      fontSize={20}
-      lineHeight={48}>
+      fontSize={16}
+      letterSpacing={-1}
+      lineHeight={40}>
       <h1 style={{ margin: 0 }}>{children}</h1>
     </MjmlText>
   );
