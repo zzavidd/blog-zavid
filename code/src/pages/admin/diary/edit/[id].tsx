@@ -39,7 +39,10 @@ const DiaryEntryEdit: NextPageWithLayout<DiaryEntryEditProps> = ({ id }) => {
       },
     });
   const { data: entry } = trpc.diary.find.useQuery({
-    params: { where: { id } },
+    params: {
+      include: { categories: true },
+      where: { id },
+    },
   });
 
   useEffect(() => {
@@ -96,7 +99,12 @@ export const getServerSideProps: GetServerSideProps<
   const id = Number(query.id);
 
   const helpers = getServerSideHelpers(ctx);
-  await helpers.diary.find.prefetch({ params: { where: { id } } });
+  await helpers.diary.find.prefetch({
+    params: {
+      include: { categories: true },
+      where: { id },
+    },
+  });
 
   return {
     props: {

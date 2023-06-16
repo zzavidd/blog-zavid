@@ -41,6 +41,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
 }) => {
   const { data: diaryEntry, error } = trpc.diary.find.useQuery({
     params: {
+      include: { categories: true },
       where: { entryNumber },
     },
   });

@@ -33,10 +33,9 @@ export default class DiaryAPI {
     options: DiaryFindOptions = {},
   ) {
     const { contentWordLimit } = options;
-    const entry = await prisma.diary.findFirst({
-      ...args,
-      include: { categories: true },
-    });
+    const entry = (await prisma.diary.findFirst(
+      args,
+    )) as DiaryWithCategories | null;
     if (entry && contentWordLimit) {
       entry.content = truncateText(entry.content, {
         limit: contentWordLimit,
