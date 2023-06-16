@@ -1,7 +1,6 @@
 import type { HtmlToTextOptions } from 'html-to-text';
 import nodemailer from 'nodemailer';
 import type SMTPPool from 'nodemailer/lib/smtp-pool';
-import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export const isProduction = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
@@ -20,7 +19,10 @@ export const HTML_TO_TEXT_OPTIONS: HtmlToTextOptions = {
   wordwrap: 80,
 };
 
-const sharedTransportOptions: Partial<SMTPPool.Options> = {
+const sharedTransportOptions: Pick<
+  SMTPPool.Options,
+  'pool' | 'maxConnections' | 'maxMessages' | 'dkim'
+> = {
   pool: true,
   maxConnections: 20,
   maxMessages: Infinity,
@@ -31,7 +33,7 @@ const sharedTransportOptions: Partial<SMTPPool.Options> = {
   },
 };
 
-export const prodTransportOptions: SMTPTransport.Options = {
+export const prodTransportOptions: SMTPPool.Options = {
   host: process.env['EMAIL_HOST'],
   port: Number(process.env['EMAIL_PORT']),
   auth: {
@@ -41,7 +43,7 @@ export const prodTransportOptions: SMTPTransport.Options = {
   ...sharedTransportOptions,
 };
 
-const devTransportOptions: SMTPTransport.Options = {
+const devTransportOptions: SMTPPool.Options = {
   host: process.env['ETHEREAL_HOST'],
   port: Number(process.env['ETHEREAL_PORT']),
   auth: {
@@ -56,7 +58,4 @@ const transportOptions = isProduction
   : devTransportOptions;
 
 /** Initialise the mail transporter */
-export const TRANSPORTER = nodemailer.createTransport({
-  ...transportOptions,
-  ...sharedTransportOptions,
-});
+export const TRANSPORTER = nodemailer.createTransport(transportOptions);
