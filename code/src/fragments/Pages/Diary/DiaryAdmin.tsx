@@ -4,7 +4,6 @@ import {
   Edit,
   Email as EmailIcon,
 } from '@mui/icons-material';
-import type { Diary } from '@prisma/client';
 import { useSnackbar } from 'notistack';
 import React, { useState } from 'react';
 
@@ -22,7 +21,7 @@ import { trpc } from 'utils/trpc';
 
 import { useDiaryTableFields } from './DiaryAdmin.hooks';
 
-const initialState = createInitialTableViewState<Diary>({
+const initialState = createInitialTableViewState<DiaryWithCategories>({
   sort: {
     order: 'desc',
     property: 'entryNumber',
@@ -111,7 +110,7 @@ export default function DiaryAdmin() {
     },
   ];
 
-  const context: ReactUseState<TableViewState<Diary>> = [
+  const context: ReactUseState<TableViewState<DiaryWithCategories>> = [
     {
       ...state,
       additionalMenuItems,

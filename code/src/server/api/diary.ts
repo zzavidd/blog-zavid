@@ -15,7 +15,7 @@ export default class DiaryAPI {
     options: DiaryFindOptions = {},
   ) {
     const { contentWordLimit } = options;
-    let diary = await prisma.diary.findMany(args);
+    let diary = (await prisma.diary.findMany(args)) as DiaryWithCategories[];
     if (contentWordLimit) {
       diary = diary.map((entry) => {
         entry.content = truncateText(entry.content, {
