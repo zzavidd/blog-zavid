@@ -41,7 +41,7 @@ const typography: TypographyOptions = {
   },
   h3: {
     fontFamily: calistoga.style.fontFamily,
-    fontSize: 32,
+    fontSize: 30,
     fontWeight: 700,
     lineHeight: 1.1,
     [breakpoints.down('md')]: {
