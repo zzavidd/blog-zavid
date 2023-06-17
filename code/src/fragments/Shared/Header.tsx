@@ -36,7 +36,7 @@ import { AppActions, useAppDispatch, useAppSelector } from 'utils/reducers';
 export default function Header() {
   const [isNavOpen, setNavOpen] = useContext(NavigationContext);
   const dispatch = useAppDispatch();
-  const currentTheme = useAppSelector((state) => state.local.theme);
+  const currentTheme = useAppSelector((state) => state.theme);
   const isLightTheme = currentTheme === 'light';
 
   function openNav() {

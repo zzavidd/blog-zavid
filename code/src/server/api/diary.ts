@@ -13,7 +13,7 @@ export default class DiaryAPI {
   public static async findMany(
     args: Prisma.DiaryFindManyArgs,
     options: DiaryFindOptions = {},
-  ) {
+  ): Promise<DiaryWithCategories[]> {
     const { contentWordLimit } = options;
     let diary = (await prisma.diary.findMany(args)) as DiaryWithCategories[];
     if (contentWordLimit) {
@@ -31,7 +31,7 @@ export default class DiaryAPI {
   public static async find(
     args: Prisma.DiaryFindFirstArgs,
     options: DiaryFindOptions = {},
-  ) {
+  ): Promise<DiaryWithCategories | null> {
     const { contentWordLimit } = options;
     const entry = (await prisma.diary.findFirst(
       args,

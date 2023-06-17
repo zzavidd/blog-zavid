@@ -62,10 +62,24 @@ const components: Components<Theme> = {
       `,
     },
   },
+  MuiListItemText: {
+    defaultProps: {
+      sx: {
+        pr: 5,
+      },
+    },
+  },
   MuiMenu: {
     styleOverrides: {
       list: {
         padding: 0,
+      },
+    },
+  },
+  MuiMenuItem: {
+    defaultProps: {
+      sx: {
+        py: 4,
       },
     },
   },

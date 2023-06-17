@@ -44,7 +44,7 @@ export default trpc.withTRPC(App);
  */
 function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const [isNavOpen, setNavOpen] = useState(false);
-  const mode = useAppSelector((state) => state.local.theme);
+  const mode = useAppSelector((state) => state.theme);
 
   // Use theme for MUI.
   const theme = useMemo(() => {
