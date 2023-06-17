@@ -67,9 +67,13 @@ export default function DiaryToolbar() {
     dispatch(
       AppActions.setDiarySieve({
         filter: {
-          categories: {
-            some: { id: { in: { $set: ids.length ? ids : undefined } } },
-          },
+          categories: ids.length
+            ? {
+                $set: { some: { id: { in: ids } } },
+              }
+            : {
+                $unset: ['some'],
+              },
         },
       }),
     );
@@ -202,11 +206,13 @@ export default function DiaryToolbar() {
   );
 }
 
-function useSelectedCategoryIds() {
+function useSelectedCategoryIds(): number[] {
   const { filter } = useAppSelector((state) => state.diary);
-  const intFilter = (filter.categories?.some?.id || {}) as Prisma.IntFilter;
-  const selectedCategoryIds = (intFilter.in as number[]) || [];
-  return selectedCategoryIds;
+  if (!filter.categories || !filter.categories.some) return [];
+  const intFilter = filter.categories.some.id as Prisma.IntFilter;
+
+  if (!intFilter) return [];
+  return (intFilter.in as number[]) || [];
 }
 
 interface SortMenuOption {
