@@ -43,7 +43,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
     </Typography>
   ),
   [Emphasis.HYPERLINK]: ([, text, link], key) => (
-    <Link href={link} key={key}>
+    <Link href={link} fontWeight={800} key={key}>
       {text}
     </Link>
   ),
