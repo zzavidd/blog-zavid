@@ -1,5 +1,3 @@
-import type { DiaryCategory } from '@prisma/client';
-import type { UseTRPCQueryResult } from '@trpc/react-query/shared';
 import { useSession } from 'next-auth/react';
 
 import { trpc } from './trpc';
@@ -10,9 +8,6 @@ export function useIsAdmin(): boolean {
   return user?.email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL;
 }
 
-export function useDiaryCategories(): UseTRPCQueryResult<
-  DiaryCategory[],
-  unknown
-> {
+export function useDiaryCategories() {
   return trpc.diaryCategory.findMany.useQuery();
 }

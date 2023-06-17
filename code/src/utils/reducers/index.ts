@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import type { PaletteMode } from '@mui/material';
+import type { Prisma } from '@prisma/client';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import type { TypedUseSelectorHook } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,27 +18,37 @@ import localStorage from 'redux-persist/lib/storage';
 
 import * as reducers from './functions';
 
-const initialState: StoreState = {
+const initialState: AppState = {
   theme: 'dark',
+  diary: {
+    sort: { entryNumber: 'desc' },
+    filter: {
+      categories: {
+        some: {
+          id: {
+            in: undefined,
+          },
+        },
+      },
+    },
+  },
 };
 
 const slice = createSlice({
   name: 'local',
-  initialState: initialState,
+  initialState,
   reducers,
 });
 
 export const store = configureStore({
-  reducer: {
-    local: persistReducer(
-      {
-        key: 'local',
-        version: 1,
-        storage: localStorage,
-      },
-      slice.reducer,
-    ),
-  },
+  reducer: persistReducer(
+    {
+      key: 'local',
+      version: 1,
+      storage: localStorage,
+    },
+    slice.reducer,
+  ),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -52,9 +63,12 @@ export const AppActions = { ...slice.actions };
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
-export interface StoreState {
+export interface AppState {
   theme: PaletteMode;
+  diary: {
+    sort: Prisma.DiaryOrderByWithRelationInput;
+    filter: Prisma.DiaryWhereInput;
+  };
 }
 
-export type AppState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+type AppDispatch = typeof store.dispatch;
