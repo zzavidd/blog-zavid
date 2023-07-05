@@ -65,8 +65,13 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
     { label: 'Diary', href: '/diary' },
     { label: halfTitle },
   ];
+  const pageCuratorInfo: PageCuratorInfo = {
+    title: fullTitle,
+    date: diaryEntry.date!,
+    categories: diaryEntry.categories.map(({ name }) => name),
+  };
   return (
-    <MenuProvider title={fullTitle}>
+    <MenuProvider info={pageCuratorInfo}>
       <Container maxWidth={'sm'} sx={{ padding: (t) => t.spacing(4) }}>
         <Stack spacing={4} divider={<Divider />}>
           <Breadcrumbs links={links} />

@@ -7,8 +7,8 @@ import { MenuContext } from 'utils/contexts';
 
 import ContextMenu from './ContextMenu';
 
-export default function MenuProvider({ title, children }: MenuProviderProps) {
-  const context = useContextMenuEvents(title);
+export default function MenuProvider({ info, children }: MenuProviderProps) {
+  const context = useContextMenuEvents(info);
   return (
     <MenuContext.Provider value={context}>
       {children}
@@ -19,15 +19,15 @@ export default function MenuProvider({ title, children }: MenuProviderProps) {
 
 /**
  * Custom hook for setting the context menu events.
- * @param title The title of the page for the curate prompt.
+ * @param info The info of the page for the curate prompt.
  * @returns The menu state.
  */
-function useContextMenuEvents(title: string): MenuContextProps {
+function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
   const [state, setState] = useState<MenuContextState>({
     contextMenuVisible: false,
     focusedTextContent: '',
     position: { left: 0, top: 0 },
-    title,
+    info,
   });
   const isDesktopAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('lg'));
 
@@ -82,5 +82,5 @@ function useContextMenuEvents(title: string): MenuContextProps {
 }
 
 interface MenuProviderProps extends React.PropsWithChildren {
-  title: string;
+  info: PageCuratorInfo;
 }

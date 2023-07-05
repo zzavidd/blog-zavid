@@ -99,7 +99,7 @@ export default function Curator({ onClose, visible }: CuratorProps) {
             {curatorContext.imageSource ? (
               <NextImage
                 src={curatorContext.imageSource}
-                alt={menuContext.title}
+                alt={menuContext.info.title}
                 loader={() => curatorContext.imageSource}
                 data-testid={'zb.curator.image'}
               />

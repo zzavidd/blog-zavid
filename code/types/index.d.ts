@@ -18,6 +18,12 @@ declare global {
     };
   }
 
+  interface PageCuratorInfo {
+    title: string;
+    date: Date;
+    categories: string[];
+  }
+
   interface TableField<T> {
     title: React.ReactNode;
     property: keyof T | null;

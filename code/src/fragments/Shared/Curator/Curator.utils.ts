@@ -4,6 +4,7 @@ import invariant from 'tiny-invariant';
 import { CuratorContext } from 'fragments/Shared/Curator/Curator.context';
 import { calistoga, mulish } from 'styles/Typography.styles';
 import { MenuContext } from 'utils/contexts';
+import ZDate from 'utils/lib/date';
 import Logger from 'utils/logger';
 import { AppTheme, FilterShape, FilterShapeOption } from 'utils/theme';
 
@@ -50,6 +51,8 @@ const Constants = {
   common: {
     TITLE_FONT_SIZE: 80,
     TITLE_LINE_HEIGHT: 100,
+    DATE_FONT_SIZE: 30,
+    DATE_LINE_HEIGHT: 45,
   },
 };
 
@@ -77,53 +80,83 @@ export function useCurateContent(): UseCurateContent {
         ...Constants[curatorContext.filterShape],
         ...Constants.common,
       };
-      const text: string[] = [];
+      const textBlocks: TextBlock[] = [];
 
       if (curatorContext.isTitleOnly) {
-        text.push(menuContext.title);
+        textBlocks.push({
+          fontFamily: mulish.style.fontFamily,
+          fontSize: SHAPE.DATE_FONT_SIZE,
+          lineHeight: SHAPE.DATE_LINE_HEIGHT,
+          text: ZDate.format(menuContext.info.date),
+        });
+        textBlocks.push({
+          fontFamily: calistoga.style.fontFamily,
+          fontSize: SHAPE.TITLE_FONT_SIZE,
+          lineHeight: SHAPE.TITLE_LINE_HEIGHT,
+          text: menuContext.info.title,
+        });
       } else {
         content.firstChild?.childNodes.forEach((value) => {
-          text.push(value.textContent!);
+          textBlocks.push({
+            fontFamily: mulish.style.fontFamily,
+            fontSize: SHAPE.INITIAL_FONT_SIZE,
+            lineHeight: SHAPE.ST_LINE_HEIGHT * (7 / 4),
+            text: value.textContent!,
+          });
         });
       }
-
-      const fontStyleOptions = {
-        isTitleOnly: curatorContext.isTitleOnly,
-        constantLineHeight: SHAPE.TITLE_LINE_HEIGHT,
-      };
 
       const bgImage = new Image();
       await new Promise((resolve) => {
         bgImage.onload = resolve;
         bgImage.src = `/images/filters/${curatorContext.filterShape}-${curatorContext.filterTheme}.jpg`;
       });
-
-      const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + text.length;
-
-      let fontSize = curatorContext.isTitleOnly
-        ? SHAPE.TITLE_FONT_SIZE
-        : SHAPE.INITIAL_FONT_SIZE;
-      let [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
-
       canvas.width = bgImage.width;
       canvas.height = bgImage.height;
 
-      const rectWidth = canvas.width - SHAPE.RECT_PADDING_X;
-      const maxTextWidth = rectWidth - SHAPE.TEXT_PADDING_X * 2;
+      const LINE_LIMIT = SHAPE.INITIAL_LINE_LIMIT + textBlocks.length;
+      const RECT_WIDTH = canvas.width - SHAPE.RECT_PADDING_X;
+      const MAX_TEXT_WIDTH = RECT_WIDTH - SHAPE.TEXT_PADDING_X * 2;
 
       // Draft text on canvas to determine text height.
       // Do until number of lines is less than or equal to limit.
       let textHeight = 0;
       let numOfLines = 0;
-      do {
-        if (fontSize < SHAPE.INITIAL_FONT_SIZE * (2 / 3)) break;
+      let startOffset = 0;
+      const adjustedTextBlocks = textBlocks.map((textBlock) => {
+        const {
+          fontFamily,
+          fontSize: initialFontSize,
+          lineHeight,
+          text,
+        } = textBlock;
+        let fontSize = initialFontSize;
+        const top = startOffset;
 
-        [fontStyle, lineHeight] = getFontStyle(fontSize, fontStyleOptions);
-        ctx.font = fontStyle;
-        textHeight = insertText(ctx, text, 0, 0, maxTextWidth, lineHeight);
-        numOfLines = textHeight / lineHeight;
-        fontSize -= 2;
-      } while (numOfLines > LINE_LIMIT);
+        do {
+          if (fontSize < initialFontSize * (2 / 3)) break;
+
+          const fontStyle = `${fontSize}px ${fontFamily}`;
+          ctx.font = fontStyle;
+          textHeight += insertText(
+            ctx,
+            [text],
+            0,
+            startOffset,
+            MAX_TEXT_WIDTH,
+            lineHeight,
+          );
+          numOfLines = textHeight / lineHeight;
+          fontSize -= 2;
+          startOffset += textHeight + lineHeight;
+        } while (numOfLines > LINE_LIMIT);
+
+        return {
+          ...textBlock,
+          fontSize,
+          top,
+        };
+      });
 
       // Draw background image.
       ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
@@ -132,27 +165,38 @@ export function useCurateContent(): UseCurateContent {
       const extraYShift =
         Math.ceil(numOfLines) === LINE_LIMIT ? SHAPE.EXTRA_Y_SHIFT : 0;
 
-      const startRectX = canvas.width / 2 - rectWidth / 2;
+      const giveExtraPaddingY =
+        curatorContext.isTitleOnly &&
+        !FilterShape.isTall(curatorContext.filterShape);
+
+      const startRectX = canvas.width / 2 - RECT_WIDTH / 2;
       const startRectY = canvas.height / 2 - rectHeight / 2 - extraYShift;
       const startTextX = startRectX + SHAPE.TEXT_PADDING_X;
       const startTextY =
-        startRectY +
-        SHAPE.TEXT_PADDING_Y +
-        (curatorContext.isTitleOnly &&
-        !FilterShape.isTall(curatorContext.filterShape)
-          ? 30
-          : 0);
+        startRectY + SHAPE.TEXT_PADDING_Y + (giveExtraPaddingY ? 30 : 0);
       const isLightTheme = curatorContext.contentTheme === AppTheme.LIGHT;
 
       // Draw bounding box for text.
       ctx.fillStyle = isLightTheme
-        ? 'rgba(255,255,255,0.85)'
+        ? 'rgba(255,255,255,0.75)'
         : 'rgba(0,0,0,0.8)';
-      ctx.fillRect(startRectX, startRectY, rectWidth, rectHeight);
+      ctx.fillRect(startRectX, startRectY, RECT_WIDTH, rectHeight);
 
       // Insert text into bounding box.
       ctx.fillStyle = isLightTheme ? 'black' : 'white';
-      insertText(ctx, text, startTextX, startTextY, maxTextWidth, lineHeight);
+      adjustedTextBlocks.forEach(
+        ({ fontFamily, fontSize, lineHeight, top, text }) => {
+          ctx.font = `${fontSize}px ${fontFamily}`;
+          insertText(
+            ctx,
+            [text],
+            startTextX,
+            startTextY + top,
+            MAX_TEXT_WIDTH,
+            lineHeight,
+          );
+        },
+      );
 
       // Draw source title at top left corner if not title only.
       if (!curatorContext.isTitleOnly) {
@@ -160,7 +204,7 @@ export function useCurateContent(): UseCurateContent {
         ctx.font = `${SHAPE.ST_FONT_SIZE}px ${calistoga.style.fontFamily}`;
         insertText(
           ctx,
-          [menuContext.title],
+          [menuContext.info.title],
           SHAPE.ST_START_X,
           SHAPE.ST_START_Y,
           canvas.width * (4 / 7),
@@ -170,6 +214,7 @@ export function useCurateContent(): UseCurateContent {
 
       return canvas.toDataURL('image/jpeg');
     } catch (e) {
+      console.error(e);
       return null;
     }
   }, [
@@ -177,7 +222,7 @@ export function useCurateContent(): UseCurateContent {
     curatorContext.filterShape,
     curatorContext.filterTheme,
     curatorContext.isTitleOnly,
-    menuContext.title,
+    menuContext.info,
   ]);
 
   return { canvasRef, textRef, curateContent };
@@ -208,7 +253,7 @@ export async function downloadImage(imageUrl: string): Promise<void> {
 /**
  * Draws the text onto the canvas, wrapping long lines.
  * @param ctx The cavnvas context.
- * @param paragraphs The text to be inserted.
+ * @param textBlocks The text to be inserted.
  * @param x The x-coordinate of the text's start point.
  * @param y The y-coordinate of the text's start point.
  * @param maxWidth The maximum width of the text box.
@@ -268,30 +313,18 @@ function insertText(
   return textHeight;
 }
 
-/**
- * Generate the font style from a specified font size.
- * @param fontSize The size of the font.
- * @param options The font style options.
- */
-function getFontStyle(
-  fontSize: number,
-  options: FontStyleOptions,
-): [string, number] {
-  const { isTitleOnly, constantLineHeight } = options;
-  const lineHeight = isTitleOnly ? constantLineHeight! : (7 / 4) * fontSize;
-  const fontfamily = isTitleOnly
-    ? calistoga.style.fontFamily
-    : mulish.style.fontFamily;
-  return [`${fontSize}px ${fontfamily}`, lineHeight];
-}
-
 interface FontStyleOptions {
-  isTitleOnly?: boolean;
-  constantLineHeight?: number;
+  fontFamily: string;
+  fontSize: number;
+  lineHeight: number;
 }
 
 interface UseCurateContent {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   textRef: React.RefObject<HTMLPreElement>;
   curateContent: () => Promise<string | null>;
+}
+
+interface TextBlock extends FontStyleOptions {
+  text: string;
 }
