@@ -18,6 +18,7 @@ const FormatSite: Record<Section, RenderValue> = {
   [Section.PARAGRAPH]: ([, text], key, { dataTestId, TypographyProps }) => (
     <Typography
       data-testid={dataTestId ? `${dataTestId}.${key}` : undefined}
+      data-text={text}
       mt={key ? 5 : 0}
       key={key}
       {...TypographyProps}>

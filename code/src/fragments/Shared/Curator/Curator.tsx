@@ -12,6 +12,7 @@ import html2canvas from 'html2canvas';
 import React, { useContext, useEffect, useRef } from 'react';
 
 import { NextImage } from 'components/Image';
+import Paragraph from 'components/Typography/Paragraph';
 import CategoryDisplay from 'fragments/Pages/Diary/CategoryDisplay';
 import { MenuContext } from 'utils/contexts';
 import ZDate from 'utils/lib/date';
@@ -50,7 +51,7 @@ export default function Curator({ onClose, visible }: CuratorProps) {
       const imageSource = canvas.toDataURL('image/jpeg');
       setCuratorContext((c) => ({ ...c, imageSource }));
     })();
-  }, [bgImage, setCuratorContext, visible]);
+  }, [bgImage, curatorContext.contentTheme, setCuratorContext, visible]);
 
   return (
     <Dialog open={visible} fullWidth={true} maxWidth={'xs'} keepMounted={true}>
@@ -112,27 +113,39 @@ function Preview({ elementRef }: PreviewProps) {
         <Stack
           bgcolor={textBackgroundColor}
           borderRadius={0.8}
-          m={'3rem'}
-          p={'2rem'}>
-          <Typography color={textColor} fontSize={20}>
-            {ZDate.format(menuContext.info.date)}
-          </Typography>
-          <Typography
-            variant={'h3'}
-            color={textColor}
-            fontSize={66}
-            mt={'0.5rem'}
-            mb={'1rem'}>
-            {menuContext.info.title}
-          </Typography>
-          {menuContext.info.categories.length ? (
-            <CategoryDisplay
-              color={textColor}
-              fontSize={20}
-              categories={menuContext.info.categories}
-              mt={1}
-            />
-          ) : null}
+          m={'5rem'}
+          p={'2.5rem'}>
+          {curatorContext.isTitleOnly ? (
+            <React.Fragment>
+              <Typography color={textColor} fontSize={28}>
+                {ZDate.format(menuContext.info.date)}
+              </Typography>
+              <Typography
+                variant={'h3'}
+                color={textColor}
+                fontSize={70}
+                mt={'0.5rem'}
+                mb={'1rem'}>
+                {menuContext.info.title}
+              </Typography>
+              {menuContext.info.categories.length ? (
+                <CategoryDisplay
+                  color={textColor}
+                  fontSize={24}
+                  categories={menuContext.info.categories}
+                  mt={1}
+                />
+              ) : null}
+            </React.Fragment>
+          ) : (
+            <Paragraph
+              TypographyProps={{
+                color: textColor,
+                fontSize: 44,
+              }}>
+              {menuContext.focusedTextContent!}
+            </Paragraph>
+          )}
         </Stack>
       </Stack>
     </Stack>

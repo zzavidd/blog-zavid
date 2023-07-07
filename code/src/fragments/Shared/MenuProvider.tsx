@@ -2,8 +2,8 @@ import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 
-import type { MenuContextProps, MenuContextState } from 'utils/contexts';
-import { MenuContext } from 'utils/contexts';
+import type { MenuContextProps } from 'utils/contexts';
+import { InitialMenuState, MenuContext } from 'utils/contexts';
 
 import ContextMenu from './ContextMenu';
 
@@ -23,23 +23,21 @@ export default function MenuProvider({ info, children }: MenuProviderProps) {
  * @returns The menu state.
  */
 function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
-  const [state, setState] = useState<MenuContextState>({
-    contextMenuVisible: false,
-    focusedTextContent: '',
-    position: { left: 0, top: 0 },
-    info,
-  });
+  const [state, setState] = useState({ ...InitialMenuState, info });
   const isDesktopAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('lg'));
 
   const openContextMenu = useCallback((e: MouseEvent | TouchEvent) => {
     const left = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
     const top = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
 
-    const { innerText } = e.target as HTMLParagraphElement;
+    const dataText = (e.target as HTMLParagraphElement).getAttribute(
+      'data-text',
+    )!;
+
     setState((s) => ({
       ...s,
       contextMenuVisible: true,
-      focusedTextContent: innerText,
+      focusedTextContent: dataText,
       position: { left, top },
     }));
 
