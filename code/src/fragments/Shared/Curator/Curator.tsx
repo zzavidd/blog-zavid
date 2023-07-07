@@ -88,6 +88,12 @@ function Preview({ elementRef }: PreviewProps) {
   const [curatorContext] = useContext(CuratorContext);
   const bgImage = useBackgroundImage();
 
+  const isLightTheme = curatorContext.contentTheme === 'light';
+  const textBackgroundColor = isLightTheme
+    ? 'rgba(255,255,255,0.75)'
+    : 'rgba(0,0,0,0.8)';
+  const textColor = isLightTheme ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,1)';
+
   return (
     <Stack
       sx={{
@@ -103,15 +109,25 @@ function Preview({ elementRef }: PreviewProps) {
         height={'100%'}
         width={'100%'}
         ref={elementRef}>
-        <Stack bgcolor={'black'} borderRadius={0.8} m={'3rem'} p={'2rem'}>
-          <Typography fontSize={20}>
+        <Stack
+          bgcolor={textBackgroundColor}
+          borderRadius={0.8}
+          m={'3rem'}
+          p={'2rem'}>
+          <Typography color={textColor} fontSize={20}>
             {ZDate.format(menuContext.info.date)}
           </Typography>
-          <Typography variant={'h3'} fontSize={66} mt={'0.5rem'} mb={'1rem'}>
+          <Typography
+            variant={'h3'}
+            color={textColor}
+            fontSize={66}
+            mt={'0.5rem'}
+            mb={'1rem'}>
             {menuContext.info.title}
           </Typography>
           {menuContext.info.categories.length ? (
             <CategoryDisplay
+              color={textColor}
               fontSize={20}
               categories={menuContext.info.categories}
               mt={1}
