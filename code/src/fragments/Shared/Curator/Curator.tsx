@@ -9,13 +9,14 @@ import {
   Typography,
 } from '@mui/material';
 import html2canvas from 'html2canvas';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useMemo, useRef } from 'react';
 
 import { NextImage } from 'components/Image';
 import Paragraph from 'components/Typography/Paragraph';
 import CategoryDisplay from 'fragments/Pages/Diary/CategoryDisplay';
 import { MenuContext } from 'utils/contexts';
 import ZDate from 'utils/lib/date';
+import * as zText from 'utils/lib/text';
 
 import { CuratorContext } from './Curator.context';
 import { useBackgroundImage } from './Curator.utils';
@@ -95,6 +96,16 @@ function Preview({ elementRef }: PreviewProps) {
     : 'rgba(0,0,0,0.8)';
   const textColor = isLightTheme ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,1)';
 
+  const fontSize = useMemo(() => {
+    const size = 44;
+    const textLength = zText.deformatText(
+      menuContext.focusedTextContent,
+    ).length;
+    const excess = textLength - 350;
+    if (excess <= 0) return size;
+    return size - Math.ceil((excess / 40) * 3);
+  }, [menuContext.focusedTextContent]);
+
   return (
     <Stack
       sx={{
@@ -141,7 +152,7 @@ function Preview({ elementRef }: PreviewProps) {
             <Paragraph
               TypographyProps={{
                 color: textColor,
-                fontSize: 44,
+                fontSize,
               }}>
               {menuContext.focusedTextContent!}
             </Paragraph>
