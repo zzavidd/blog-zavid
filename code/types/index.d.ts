@@ -21,7 +21,7 @@ declare global {
   interface PageCuratorInfo {
     title: string;
     date: Date;
-    categories: string[];
+    categories: DiaryCategory[];
   }
 
   interface TableField<T> {

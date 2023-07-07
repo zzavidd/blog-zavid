@@ -68,7 +68,7 @@ const DiaryEntryPage: NextPageWithLayout<DiaryEntryPageProps> = ({
   const pageCuratorInfo: PageCuratorInfo = {
     title: fullTitle,
     date: diaryEntry.date!,
-    categories: diaryEntry.categories.map(({ name }) => name),
+    categories: diaryEntry.categories,
   };
   return (
     <MenuProvider info={pageCuratorInfo}>
