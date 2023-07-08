@@ -1,4 +1,6 @@
-import { Link, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+
+import { Link } from 'components/Link';
 
 import { Emphasis } from '../../regex';
 import { applyEmphasisFormatting } from '../Emphasis';

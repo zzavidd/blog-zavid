@@ -1,3 +1,4 @@
+import type { Theme } from '@mui/material';
 import {
   Box,
   Button,
@@ -6,9 +7,12 @@ import {
   DialogContent,
   Divider,
   Stack,
+  ThemeProvider,
   Typography,
+  createTheme,
 } from '@mui/material';
 import html2canvas from 'html2canvas';
+import immutate from 'immutability-helper';
 import React, { useContext, useEffect, useMemo, useRef } from 'react';
 
 import { NextImage } from 'components/Image';
@@ -17,6 +21,7 @@ import CategoryDisplay from 'fragments/Pages/Diary/CategoryDisplay';
 import { MenuContext } from 'utils/contexts';
 import ZDate from 'utils/lib/date';
 import * as zText from 'utils/lib/text';
+import { FilterShapeOption } from 'utils/theme';
 
 import { CuratorContext } from './Curator.context';
 import { useBackgroundImage } from './Curator.utils';
@@ -52,7 +57,13 @@ export default function Curator({ onClose, visible }: CuratorProps) {
       const imageSource = canvas.toDataURL('image/jpeg');
       setCuratorContext((c) => ({ ...c, imageSource }));
     })();
-  }, [bgImage, curatorContext.contentTheme, setCuratorContext, visible]);
+  }, [
+    bgImage,
+    curatorContext.contentTheme,
+    curatorContext.isTitleOnly,
+    setCuratorContext,
+    visible,
+  ]);
 
   return (
     <Dialog open={visible} fullWidth={true} maxWidth={'xs'} keepMounted={true}>
@@ -91,75 +102,92 @@ function Preview({ elementRef }: PreviewProps) {
   const bgImage = useBackgroundImage();
 
   const isLightTheme = curatorContext.contentTheme === 'light';
+  const isTallShape = curatorContext.filterShape === FilterShapeOption.TALL;
+
   const textBackgroundColor = isLightTheme
     ? 'rgba(255,255,255,0.75)'
     : 'rgba(0,0,0,0.8)';
   const textColor = isLightTheme ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,1)';
 
   const fontSize = useMemo(() => {
-    const size = 44;
+    const size = isTallShape ? 48 : 44;
     const textLength = zText.deformatText(
       menuContext.focusedTextContent,
     ).length;
-    const excess = textLength - 350;
+    const textLengthLimit = isTallShape ? 550 : 300;
+    const excess = textLength - textLengthLimit;
     if (excess <= 0) return size;
     return size - Math.ceil((excess / 40) * 3);
-  }, [menuContext.focusedTextContent]);
+  }, [isTallShape, menuContext.focusedTextContent]);
+
+  function alterTheme(theme: Theme) {
+    return createTheme(
+      immutate(theme, {
+        palette: { mode: { $set: curatorContext.contentTheme } },
+      }),
+    );
+  }
 
   return (
-    <Stack
-      sx={{
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'contain',
-        backgroundImage: `url(/images/filters/${curatorContext.filterShape}-${curatorContext.filterTheme}.jpg)`,
-        height: bgImage?.height,
-        width: bgImage?.width,
-      }}>
+    <ThemeProvider theme={alterTheme}>
       <Stack
-        justifyContent={'center'}
-        alignContent={'center'}
-        height={'100%'}
-        width={'100%'}
-        ref={elementRef}>
+        sx={{
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'contain',
+          backgroundImage: `url(/images/filters/${curatorContext.filterShape}-${curatorContext.filterTheme}.jpg)`,
+          height: bgImage?.height,
+          width: bgImage?.width,
+          position: 'fixed',
+          left: '100vw',
+          top: '100vh',
+        }}>
         <Stack
-          bgcolor={textBackgroundColor}
-          borderRadius={0.8}
-          m={'5rem'}
-          p={'2.5rem'}>
-          {curatorContext.isTitleOnly ? (
-            <React.Fragment>
-              <Typography color={textColor} fontSize={28}>
-                {ZDate.format(menuContext.info.date)}
-              </Typography>
-              <Typography
-                variant={'h3'}
-                color={textColor}
-                fontSize={70}
-                mt={'0.5rem'}
-                mb={'1rem'}>
-                {menuContext.info.title}
-              </Typography>
-              {menuContext.info.categories.length ? (
-                <CategoryDisplay
+          justifyContent={'center'}
+          alignContent={'center'}
+          height={'100%'}
+          width={'100%'}
+          ref={elementRef}>
+          <Stack
+            bgcolor={textBackgroundColor}
+            borderRadius={1}
+            m={isTallShape ? '6rem' : '5rem'}
+            p={isTallShape ? '3rem' : '2.5rem'}>
+            {curatorContext.isTitleOnly ? (
+              <React.Fragment>
+                <Typography color={textColor} fontSize={isTallShape ? 36 : 28}>
+                  {ZDate.format(menuContext.info.date)}
+                </Typography>
+                <Typography
+                  variant={'h3'}
                   color={textColor}
-                  fontSize={24}
-                  categories={menuContext.info.categories}
-                  mt={1}
-                />
-              ) : null}
-            </React.Fragment>
-          ) : (
-            <Paragraph
-              TypographyProps={{
-                color: textColor,
-                fontSize,
-              }}>
-              {menuContext.focusedTextContent!}
-            </Paragraph>
-          )}
+                  fontSize={isTallShape ? 82 : 70}
+                  mt={isTallShape ? '1rem' : '0.5rem'}
+                  mb={isTallShape ? '2rem' : '1rem'}>
+                  {menuContext.info.title}
+                </Typography>
+                {menuContext.info.categories.length ? (
+                  <CategoryDisplay
+                    color={textColor}
+                    fontSize={isTallShape ? 32 : 24}
+                    categories={menuContext.info.categories}
+                    mt={1}
+                  />
+                ) : null}
+              </React.Fragment>
+            ) : (
+              <Paragraph
+                TypographyProps={{
+                  color: textColor,
+                  fontSize,
+                  lineHeight: isTallShape ? 1.9 : 1.8,
+                }}>
+                {menuContext.focusedTextContent!}
+              </Paragraph>
+            )}
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
+    </ThemeProvider>
   );
 }
 

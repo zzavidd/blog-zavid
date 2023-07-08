@@ -3,6 +3,8 @@ import { css } from '@mui/material';
 
 import Settings from 'utils/settings';
 
+import { darkPalette, lightPalette } from './Palette.styles';
+
 const components: Components<Theme> = {
   MuiBackdrop: {
     defaultProps: {
@@ -67,6 +69,17 @@ const components: Components<Theme> = {
       sx: {
         pr: 5,
       },
+    },
+  },
+  // [INFO]: Have to explicitly state for the sake of nested ThemeProviders.
+  MuiLink: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        color:
+          theme.palette.mode === 'light'
+            ? lightPalette.primary.main
+            : darkPalette.primary.main,
+      }),
     },
   },
   MuiMenu: {
