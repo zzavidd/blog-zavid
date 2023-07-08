@@ -18,6 +18,7 @@ import React, { useContext, useEffect, useMemo, useRef } from 'react';
 import { NextImage } from 'components/Image';
 import Paragraph from 'components/Typography/Paragraph';
 import CategoryDisplay from 'fragments/Pages/Diary/CategoryDisplay';
+import { calistoga } from 'styles/Typography.styles';
 import { MenuContext } from 'utils/contexts';
 import ZDate from 'utils/lib/date';
 import * as zText from 'utils/lib/text';
@@ -158,8 +159,10 @@ function Preview({ elementRef }: PreviewProps) {
                   {ZDate.format(menuContext.info.date)}
                 </Typography>
                 <Typography
-                  variant={'h3'}
                   color={textColor}
+                  fontFamily={calistoga.style.fontFamily}
+                  fontWeight={700}
+                  lineHeight={1.1}
                   fontSize={isTallShape ? 82 : 70}
                   mt={isTallShape ? '1rem' : '0.5rem'}
                   mb={isTallShape ? '2rem' : '1rem'}>
