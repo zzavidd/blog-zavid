@@ -46,7 +46,6 @@ const typography: TypographyOptions = {
     lineHeight: 1.1,
     [breakpoints.down('md')]: {
       fontSize: 28,
-      fontWeight: 600,
       letterSpacing: -1.5,
     },
   },

@@ -53,8 +53,8 @@ export default function Curator({ onClose, visible }: CuratorProps) {
         backgroundColor: null,
         scale: 1,
         canvas: existingCanvas,
-        height: bgImage.height / 2,
-        width: bgImage.width / 2,
+        height: bgImage.height,
+        width: bgImage.width,
       });
       const imageSource = canvas.toDataURL('image/jpeg');
       setCuratorContext((c) => ({ ...c, imageSource }));

@@ -49,8 +49,10 @@ function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     const onParagraphMouseDown = (e: MouseEvent | TouchEvent) => {
-      timeout = setTimeout(() => openContextMenu(e), 1000);
-      e.preventDefault();
+      timeout = setTimeout(() => {
+        openContextMenu(e);
+        e.preventDefault();
+      }, 1000);
     };
     const onParagraphMouseUp = () => clearTimeout(timeout);
 
