@@ -5,6 +5,7 @@ import type { DiaryCategory } from '@prisma/client';
 
 export default function CategoryDisplay({
   categories = [],
+  fontSize = 11,
   ...props
 }: CategoryDisplayProps) {
   return (
@@ -17,7 +18,11 @@ export default function CategoryDisplay({
       useFlexGap={true}
       {...props}>
       {categories.map(({ name }, key) => (
-        <Typography variant={'overline'} lineHeight={1} fontSize={11} key={key}>
+        <Typography
+          variant={'overline'}
+          lineHeight={1}
+          fontSize={fontSize}
+          key={key}>
           {name}
         </Typography>
       ))}

@@ -2,13 +2,13 @@ import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 
-import type { MenuContextProps, MenuContextState } from 'utils/contexts';
-import { MenuContext } from 'utils/contexts';
+import type { MenuContextProps } from 'utils/contexts';
+import { InitialMenuState, MenuContext } from 'utils/contexts';
 
 import ContextMenu from './ContextMenu';
 
-export default function MenuProvider({ title, children }: MenuProviderProps) {
-  const context = useContextMenuEvents(title);
+export default function MenuProvider({ info, children }: MenuProviderProps) {
+  const context = useContextMenuEvents(info);
   return (
     <MenuContext.Provider value={context}>
       {children}
@@ -19,27 +19,25 @@ export default function MenuProvider({ title, children }: MenuProviderProps) {
 
 /**
  * Custom hook for setting the context menu events.
- * @param title The title of the page for the curate prompt.
+ * @param info The info of the page for the curate prompt.
  * @returns The menu state.
  */
-function useContextMenuEvents(title: string): MenuContextProps {
-  const [state, setState] = useState<MenuContextState>({
-    contextMenuVisible: false,
-    focusedTextContent: '',
-    position: { left: 0, top: 0 },
-    title,
-  });
+function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
+  const [state, setState] = useState({ ...InitialMenuState, info });
   const isDesktopAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('lg'));
 
   const openContextMenu = useCallback((e: MouseEvent | TouchEvent) => {
     const left = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
     const top = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
 
-    const { innerText } = e.target as HTMLParagraphElement;
+    const dataText = (e.target as HTMLParagraphElement).getAttribute(
+      'data-text',
+    )!;
+
     setState((s) => ({
       ...s,
       contextMenuVisible: true,
-      focusedTextContent: innerText,
+      focusedTextContent: dataText,
       position: { left, top },
     }));
 
@@ -52,6 +50,7 @@ function useContextMenuEvents(title: string): MenuContextProps {
     let timeout: NodeJS.Timeout;
     const onParagraphMouseDown = (e: MouseEvent | TouchEvent) => {
       timeout = setTimeout(() => openContextMenu(e), 1000);
+      e.preventDefault();
     };
     const onParagraphMouseUp = () => clearTimeout(timeout);
 
@@ -82,5 +81,5 @@ function useContextMenuEvents(title: string): MenuContextProps {
 }
 
 interface MenuProviderProps extends React.PropsWithChildren {
-  title: string;
+  info: PageCuratorInfo;
 }

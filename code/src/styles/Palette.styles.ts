@@ -1,16 +1,16 @@
-import type { PaletteOptions } from '@mui/material';
+import { PaletteOptions } from '@mui/material';
 import { purple } from '@mui/material/colors';
 
-export const lightPalette: PaletteOptions = {
+export const lightPalette = {
   mode: 'light',
   primary: {
     main: purple['400'],
   },
   divider: 'rgba(0,0,0,0.3)',
   contrastThreshold: 4.5,
-};
+} satisfies PaletteOptions;
 
-export const darkPalette: PaletteOptions = {
+export const darkPalette = {
   mode: 'dark',
   primary: {
     main: purple['A100'],
@@ -20,4 +20,4 @@ export const darkPalette: PaletteOptions = {
   },
   divider: 'rgba(255,255,255,0.3)',
   contrastThreshold: 4.5,
-};
+} satisfies PaletteOptions;

@@ -40,9 +40,8 @@ export default function CategoryInput({
               spacing={2}
               useFlexGap={true}>
               {selected.map((categoryId) => {
-                const name = diaryCategories.find(
-                  ({ id }) => id === categoryId,
-                )?.name;
+                const name = diaryCategories.find(({ id }) => id === categoryId)
+                  ?.name;
                 return (
                   <Chip
                     variant={'outlined'}

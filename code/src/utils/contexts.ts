@@ -6,13 +6,19 @@ export const NavigationContext = React.createContext<NavigationContextProps>([
   () => {},
 ]);
 
-export const MenuContext = React.createContext<MenuContextProps>([
-  {
-    contextMenuVisible: false,
-    focusedTextContent: '',
-    position: { left: 0, top: 0 },
+export const InitialMenuState: MenuContextState = {
+  contextMenuVisible: false,
+  focusedTextContent: '',
+  position: { left: 0, top: 0 },
+  info: {
     title: '',
+    date: new Date(),
+    categories: [],
   },
+};
+
+export const MenuContext = React.createContext<MenuContextProps>([
+  InitialMenuState,
   () => {},
 ]);
 
@@ -20,7 +26,7 @@ export interface MenuContextState {
   contextMenuVisible: boolean;
   focusedTextContent: string;
   position: PopoverPosition;
-  title: string;
+  info: PageCuratorInfo;
 }
 
 export type NavigationContextProps = ReactUseState<boolean>;
