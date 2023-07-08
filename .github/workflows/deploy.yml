@@ -43,6 +43,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate Prisma models
+        run: pnpm prisma generate
+
       - name: Run TypeScript checks
         run: pnpm run tsc:ci
 
