@@ -11,7 +11,7 @@ export default function CategoryDisplay({
   return (
     <Stack
       direction={'row'}
-      divider={<Circle sx={{ fontSize: 4 }} />}
+      divider={<Circle sx={{ fontSize: Number(fontSize) * (4 / 11) }} />}
       alignItems={'center'}
       spacing={2}
       flexWrap={'wrap'}
