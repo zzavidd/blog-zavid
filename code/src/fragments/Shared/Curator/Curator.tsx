@@ -18,13 +18,14 @@ import React, { useContext, useEffect, useMemo, useRef } from 'react';
 import { NextImage } from 'components/Image';
 import Paragraph from 'components/Typography/Paragraph';
 import CategoryDisplay from 'fragments/Pages/Diary/CategoryDisplay';
+import { calistoga } from 'styles/Typography.styles';
 import { MenuContext } from 'utils/contexts';
 import ZDate from 'utils/lib/date';
 import * as zText from 'utils/lib/text';
 import { FilterShapeOption } from 'utils/theme';
 
 import { CuratorContext } from './Curator.context';
-import { useBackgroundImage } from './Curator.utils';
+import { DIMENSIONS, useBackgroundImage } from './Curator.utils';
 import CuratorControls from './CuratorControls';
 
 export default function Curator({ onClose, visible }: CuratorProps) {
@@ -50,9 +51,10 @@ export default function Curator({ onClose, visible }: CuratorProps) {
 
       const canvas = await html2canvas(element, {
         backgroundColor: null,
+        scale: 1,
         canvas: existingCanvas,
-        height: bgImage.height,
-        width: bgImage.width,
+        height: bgImage.height / 2,
+        width: bgImage.width / 2,
       });
       const imageSource = canvas.toDataURL('image/jpeg');
       setCuratorContext((c) => ({ ...c, imageSource }));
@@ -128,6 +130,8 @@ function Preview({ elementRef }: PreviewProps) {
     );
   }
 
+  const Sizes = DIMENSIONS[curatorContext.filterShape];
+
   return (
     <ThemeProvider theme={alterTheme}>
       <Stack
@@ -150,26 +154,29 @@ function Preview({ elementRef }: PreviewProps) {
           <Stack
             bgcolor={textBackgroundColor}
             borderRadius={1}
-            m={isTallShape ? '6rem' : '5rem'}
-            p={isTallShape ? '3rem' : '2.5rem'}>
+            m={Sizes.CONTAINER_MARGIN}
+            p={Sizes.CONTAINER_PADDING}>
             {curatorContext.isTitleOnly ? (
               <React.Fragment>
-                <Typography color={textColor} fontSize={isTallShape ? 36 : 28}>
+                <Typography color={textColor} fontSize={Sizes.FONT_SIZE_DATE}>
                   {ZDate.format(menuContext.info.date)}
                 </Typography>
                 <Typography
-                  variant={'h3'}
                   color={textColor}
-                  fontSize={isTallShape ? 82 : 70}
-                  mt={isTallShape ? '1rem' : '0.5rem'}
-                  mb={isTallShape ? '2rem' : '1rem'}>
+                  fontFamily={calistoga.style.fontFamily}
+                  fontWeight={{ xs: 500, md: 700 }}
+                  lineHeight={1.1}
+                  fontSize={Sizes.FONT_SIZE_TITLE}
+                  mt={Sizes.TITLE_MARGIN_TOP}
+                  mb={Sizes.TITLE_MARGIN_BOTTOM}>
                   {menuContext.info.title}
                 </Typography>
                 {menuContext.info.categories.length ? (
                   <CategoryDisplay
                     color={textColor}
-                    fontSize={isTallShape ? 32 : 24}
+                    fontSize={Sizes.FONT_SIZE_CATEGORY}
                     categories={menuContext.info.categories}
+                    spacing={4}
                     mt={1}
                   />
                 ) : null}
@@ -185,6 +192,19 @@ function Preview({ elementRef }: PreviewProps) {
               </Paragraph>
             )}
           </Stack>
+          {curatorContext.isTitleOnly ? null : (
+            <Typography
+              fontFamily={calistoga.style.fontFamily}
+              fontWeight={{ xs: 500, md: 700 }}
+              lineHeight={1.2}
+              fontSize={Sizes.FONT_SIZE_TITLE_CORNER}
+              position={'absolute'}
+              maxWidth={(t) => t.spacing(15)}
+              top={(t) => t.spacing(6)}
+              left={(t) => t.spacing(6)}>
+              {menuContext.info.title}
+            </Typography>
+          )}
         </Stack>
       </Stack>
     </ThemeProvider>
