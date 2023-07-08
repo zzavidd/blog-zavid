@@ -1,6 +1,7 @@
 import { Mjml, MjmlText } from '@faire/mjml-react';
 import React from 'react';
 
+import * as zText from 'utils/lib/text';
 import Settings from 'utils/settings';
 
 import {
@@ -24,7 +25,10 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
   const href = `${Settings.DOMAIN}/diary/${diaryEntry.entryNumber}`;
   return (
     <Mjml>
-      <EmailHead title={title} />
+      <EmailHead
+        title={title}
+        preview={zText.extractExcerpt(diaryEntry.content)}
+      />
       <EmailBody>
         <EmailHeader>
           New diary entry on ZAVID.&nbsp;

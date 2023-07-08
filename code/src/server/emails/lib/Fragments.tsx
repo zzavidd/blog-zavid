@@ -30,11 +30,11 @@ const FOOTER_LINKS = [
 ];
 const FOOTER_SOCIALS = ['twitter', 'instagram', 'linkedin'];
 
-export function EmailHead({ title }: EmailHeadProps) {
+export function EmailHead({ title, preview }: EmailHeadProps) {
   return (
     <MjmlHead>
       <MjmlTitle>{title}</MjmlTitle>
-      <MjmlPreview>{title}</MjmlPreview>
+      <MjmlPreview>{preview}</MjmlPreview>
       <MjmlAttributes>
         <MjmlAll name={'color-scheme'} content={'light,dark'} />
         <MjmlAll name={'supported-color-schemes'} content={'light,dark'} />
@@ -189,6 +189,7 @@ function EmailFooterText(props: IMjmlTextProps) {
 
 interface EmailHeadProps {
   title: string;
+  preview: string;
 }
 
 interface EmailFooterProps extends IMjmlSectionProps {
