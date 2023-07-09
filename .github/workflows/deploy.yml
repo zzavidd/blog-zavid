@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Install dependencies"
-        uses: ./.github/workflows/install.yml
+        uses: ./.github/actions/install.yml
       - name: "Run TypeScript checks"
         run: pnpm run tsc:ci
       - name: "Run ESLint"
