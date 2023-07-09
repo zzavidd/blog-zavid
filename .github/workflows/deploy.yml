@@ -2,12 +2,11 @@ name: Deploy ZAVID Blog
 
 on: push
 
-defaults:
-  run:
-    working-directory: code
-
 jobs:
   install:
+    defaults:
+      run:
+        working-directory: code
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
