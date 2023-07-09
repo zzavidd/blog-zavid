@@ -5,8 +5,9 @@ on: push
 jobs:
   inspect:
     runs-on: ubuntu-latest
-    uses: ./.github/workflows/install.yml
     steps:
+      - name: "Install dependencies"
+        uses: ./.github/workflows/install.yml
       - name: "Run TypeScript checks"
         run: pnpm run tsc:ci
       - name: "Run ESLint"
