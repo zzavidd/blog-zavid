@@ -6,6 +6,8 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
+      - name: "Show dir"
+        run: ls
       - name: "Install dependencies"
         uses: ./.github/actions/install
       - name: "Run TypeScript checks"
