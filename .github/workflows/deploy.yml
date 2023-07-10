@@ -12,5 +12,7 @@ jobs:
         uses: ./.github/actions/install
       - name: "Run TypeScript checks"
         run: pnpm run tsc:ci
+        working-directory: code
       - name: "Run ESLint"
         run: pnpm run eslint --max-warnings 0
+        working-directory: code
