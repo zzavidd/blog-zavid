@@ -1,5 +1,8 @@
 runs:
   using: composite
+   defaults:
+    run:
+      working-directory: code
   steps:
     - name: "Install Node.js"
       uses: actions/setup-node@v3
