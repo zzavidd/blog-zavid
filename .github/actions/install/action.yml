@@ -1,8 +1,5 @@
 runs:
   using: composite
-   defaults:
-    run:
-      working-directory: code
   steps:
     - name: "Install Node.js"
       uses: actions/setup-node@v3
@@ -26,7 +23,9 @@ runs:
 
     - name: "Install dependencies"
       run: pnpm install
+      working-directory: code
       shell: bash
     - name: "Generate Prisma models"
       run: pnpm prisma generate
+      working-directory: code
       shell: bash
