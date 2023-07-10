@@ -6,8 +6,8 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: "Show dir"
-        run: ls
+      - name: "Checkout"
+        uses: actions/checkout@v3
       - name: "Install dependencies"
         uses: ./.github/actions/install
       - name: "Run TypeScript checks"
