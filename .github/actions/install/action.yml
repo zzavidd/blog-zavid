@@ -3,10 +3,8 @@ runs:
   steps:
     - name: "Install Node.js"
       uses: actions/setup-node@v3
-      shell: bash
     - name: "Install pnpm"
       uses: pnpm/action-setup@v2
-      shell: bash
       with:
         run_install: false
         version: 8.2.0
@@ -17,7 +15,6 @@ runs:
         echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
     - name: "Setup pnpm cache"
       uses: actions/cache@v3
-      shell: bash
       with:
         path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
