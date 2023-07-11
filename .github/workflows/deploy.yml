@@ -53,7 +53,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/install
       - name: "Install test browsers"
-        run: npx playwright install --with-deps
+        run: pnpm playwright install --with-deps
       - name: "Run e2e tests"
         run: pnpm run test
         working-directory: code
