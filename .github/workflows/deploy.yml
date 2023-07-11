@@ -46,12 +46,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/install
+      - name: "Install test browsers"
+        run: npx playwright install --with-deps
       - name: "Run e2e tests"
         run: pnpm run test
         working-directory: code
-      - uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Playwright Test Report
-          path: ${{ github.workspace }}/code/test/results/results.xml
-          reporter: jest-junit
+      # - uses: dorny/test-reporter@v1
+      #   if: always()
+      #   with:
+      #     name: Playwright Test Report
+      #     path: ${{ github.workspace }}/code/test/results/results.xml
+      #     reporter: jest-junit
