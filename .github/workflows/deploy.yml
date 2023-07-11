@@ -19,15 +19,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/install
-      - name: "Build project"
-        run: pnpm run build
-        working-directory: code
       - name: "Cache Next.js build"
         uses: actions/cache@v3
         with:
           path: ${{ github.workspace }}/code/.next/cache
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
           restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+      - name: "Build project"
+        run: pnpm run build
+        working-directory: code
+      
   test:
     runs-on: ubuntu-latest
     steps:
@@ -36,9 +37,9 @@ jobs:
       - name: "Run e2e tests"
         run: pnpm run test
         working-directory: code
-      - uses: dorny/test-reporter@v1.6.0
+      - uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: test-report
+          name: Playwright Test Report
           path: ${{ github.workspace }}/code/test/results/results.xml
           reporter: jest-junit
