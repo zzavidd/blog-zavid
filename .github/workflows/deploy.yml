@@ -10,15 +10,19 @@ jobs:
       - uses: ./.github/actions/install
       - name: "Cache TypeScript build info"
         uses: actions/cache@v3
+        id: tscache
         with:
           path: ${{ github.workspace }}/code/.tsbuildinfo
           key: ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
-          restore-keys: ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}
+          restore-keys:
+            - ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}
       - name: "Run TypeScript checks"
         run: pnpm run tsc:ci
         working-directory: code
+        if: steps.tscache.outputs.cache-hit != 'true'
       - name: "Cache ESLint results"
         uses: actions/cache@v3
+        id: eslintcache
         with:
           path: ${{ github.workspace }}/code/.eslintcache
           key: ${{ runner.os }}-eslint-${{ hashFiles('**/.eslintrc.js') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
@@ -26,6 +30,7 @@ jobs:
       - name: "Run ESLint"
         run: pnpm run eslint --max-warnings 0
         working-directory: code
+        if: steps.eslintcache.outputs.cache-hit != 'true'
   build:
     runs-on: ubuntu-latest
     steps:
@@ -33,6 +38,7 @@ jobs:
       - uses: ./.github/actions/install
       - name: "Cache Next.js build"
         uses: actions/cache@v3
+        id: nextjscache
         with:
           path: ${{ github.workspace }}/code/.next/cache
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
@@ -40,6 +46,7 @@ jobs:
       - name: "Build project"
         run: pnpm run build
         working-directory: code
+        if: steps.nextjscache.outputs.cache-hit != 'true'
       
   test:
     runs-on: ubuntu-latest
