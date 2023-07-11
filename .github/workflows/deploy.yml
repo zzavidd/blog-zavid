@@ -14,8 +14,7 @@ jobs:
         with:
           path: ${{ github.workspace }}/code/.tsbuildinfo
           key: ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
-          restore-keys:
-            - ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}
+          restore-keys: ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}
       - name: "Run TypeScript checks"
         run: pnpm run tsc:ci
         working-directory: code
