@@ -36,9 +36,9 @@ jobs:
       - name: "Run e2e tests"
         run: pnpm run test
         working-directory: code
-      - uses: actions/upload-artifact@v3
+      - uses: dorny/test-reporter@v1.6.0
         if: always()
         with:
           name: test-report
           path: ${{ github.workspace }}/code/test/results/results.xml
-          retention-days: 30
+          reporter: jest-junit
