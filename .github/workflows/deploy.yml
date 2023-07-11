@@ -36,3 +36,9 @@ jobs:
       - name: "Run e2e tests"
         run: pnpm run test
         working-directory: code
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-report
+          path: ${{ github.workspace }}/code/test/results.xml
+          retention-days: 30
