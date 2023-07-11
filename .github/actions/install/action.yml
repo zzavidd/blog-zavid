@@ -24,6 +24,8 @@ runs:
     - name: "Install dependencies"
       run: pnpm install
       shell: bash
+      working-directory: code
     - name: "Generate Prisma models"
       run: pnpm prisma generate
       shell: bash
+      working-directory: code
