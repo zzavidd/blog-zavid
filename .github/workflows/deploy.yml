@@ -51,9 +51,8 @@ jobs:
       - name: "Run e2e tests"
         run: pnpm run test
         working-directory: code
-      # - uses: dorny/test-reporter@v1
-      #   if: always()
-      #   with:
-      #     name: Playwright Test Report
-      #     path: ${{ github.workspace }}/code/test/results/results.xml
-      #     reporter: jest-junit
+      - name: "Publish test report"
+        uses: mikepenz/action-junit-report@v3.7.8
+        if: always()
+        with:
+          report_paths: ${{ github.workspace }}/code/test/results/results.xml

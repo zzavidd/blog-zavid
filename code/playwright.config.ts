@@ -11,8 +11,7 @@ export default defineConfig({
   projects,
   quiet: true,
   reporter: process.env.CI
-    ? // ? [['list'], ['junit', { outputFile: './test/results/results.xml' }]]
-      [['list'], ['github']]
+    ? [['list'], ['junit', { outputFile: './test/results/results.xml' }]]
     : [['list']],
   retries: process.env.CI ? 2 : 0,
   testDir: './test',
