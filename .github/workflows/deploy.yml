@@ -54,6 +54,7 @@ jobs:
       - uses: ./.github/actions/install
       - name: "Install test browsers"
         run: pnpm playwright install --with-deps
+        working-directory: code
       - name: "Run e2e tests"
         run: pnpm run test
         working-directory: code
