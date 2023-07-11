@@ -24,10 +24,10 @@ jobs:
         working-directory: code
       - name: "Cache Next.js build"
         uses: actions/cache@v3
-        path: ${{ github.workspace }}/code/.next/cache
-        key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
-        restore-keys: |
-          ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+        with:
+          path: ${{ github.workspace }}/code/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
   test:
     runs-on: ubuntu-latest
     steps:
