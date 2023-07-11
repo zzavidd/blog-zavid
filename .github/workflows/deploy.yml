@@ -13,7 +13,7 @@ jobs:
         id: tscache
         with:
           path: ${{ github.workspace }}/code/.tsbuildinfo
-          key: ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          key: ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}
           restore-keys: ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}
       - name: "Run TypeScript checks"
         run: pnpm run tsc:ci
@@ -24,7 +24,7 @@ jobs:
         id: eslintcache
         with:
           path: ${{ github.workspace }}/code/.eslintcache
-          key: ${{ runner.os }}-eslint-${{ hashFiles('**/.eslintrc.js') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          key: ${{ runner.os }}-eslint-${{ hashFiles('**/.eslintrc.js') }}
           restore-keys: ${{ runner.os }}-eslint-${{ hashFiles('**/.eslintrc.js') }}
       - name: "Run ESLint"
         run: pnpm run eslint --max-warnings 0
@@ -57,8 +57,8 @@ jobs:
       - name: "Run e2e tests"
         run: pnpm run test
         working-directory: code
-      - name: "Publish test report"
-        uses: mikepenz/action-junit-report@v3.7.8
-        if: always()
-        with:
-          report_paths: ${{ github.workspace }}/code/test/results/results.xml
+      # - name: "Publish test report"
+      #   uses: mikepenz/action-junit-report@v3.7.8
+      #   if: always()
+      #   with:
+      #     report_paths: ${{ github.workspace }}/code/test/results/results.xml
