@@ -8,9 +8,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/install
+      - name: "Cache TypeScript build info"
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/code/.tsbuildinfo
+          key: ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          restore-keys: ${{ runner.os }}-typescript-${{ hashFiles('**/tsconfig.json') }}
       - name: "Run TypeScript checks"
         run: pnpm run tsc:ci
         working-directory: code
+      - name: "Cache ESLint results"
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/code/.eslintcache
+          key: ${{ runner.os }}-eslint-${{ hashFiles('**/.eslintrc.js') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          restore-keys: ${{ runner.os }}-eslint-${{ hashFiles('**/.eslintrc.js') }}
       - name: "Run ESLint"
         run: pnpm run eslint --max-warnings 0
         working-directory: code
