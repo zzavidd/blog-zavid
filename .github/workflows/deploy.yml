@@ -57,6 +57,8 @@ jobs:
       - name: "Run e2e tests"
         run: pnpm run test
         working-directory: code
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       # - name: "Publish test report"
       #   uses: mikepenz/action-junit-report@v3.7.8
       #   if: always()
