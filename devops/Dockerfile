@@ -6,7 +6,7 @@ RUN apt-get update -y && apt-get install -y openssl
 ARG WORKDIR
 WORKDIR /var/www/$WORKDIR/code
 
-COPY ./code/package.json ./code/pnpm-lock.yaml ./code/schema.prisma .
+COPY ./code/package.json ./code/pnpm-lock.yaml ./code/schema.prisma ./
 
 RUN pnpm install --frozen-lockfile
 
