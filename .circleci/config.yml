@@ -153,10 +153,10 @@ workflows:
             - inspect
             - build
             - test
-          filters:
-            branches:
-              only:
-                - main
+          # filters:
+          #   branches:
+          #     only:
+          #       - main
       - deploy_prod:
           filters:
             branches:
