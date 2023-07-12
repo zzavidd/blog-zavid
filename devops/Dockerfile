@@ -1,15 +1,12 @@
 FROM node:18-slim AS builder
 
-RUN corepack enable
-RUN corepack prepare pnpm@8.2.0 --activate
-
+RUN corepack enable && corepack prepare pnpm@8.2.0 --activate
 RUN apt-get update -y && apt-get install -y openssl
 
 ARG WORKDIR
 WORKDIR /var/www/$WORKDIR/code
 
-COPY ./code/pnpm-lock.yaml .
-COPY ./code/package.json .
+COPY ./code/package.json ./code/pnpm-lock.yaml ./code/schema.prisma .
 
 RUN pnpm install --frozen-lockfile
 
@@ -17,7 +14,7 @@ COPY ./code ./
 
 RUN pnpm prisma generate
 RUN pnpm prisma migrate deploy
-RUN pnpm run build
+RUN --mount=type=cache,target=./code/.next/cache pnpm run build
 
 FROM node:18-slim AS runner
 
