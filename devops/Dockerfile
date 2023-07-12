@@ -8,7 +8,7 @@ WORKDIR /var/www/$WORKDIR/code
 
 COPY ./code/package.json ./code/pnpm-lock.yaml ./code/schema.prisma ./
 
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,target=./code/node_modules pnpm install --frozen-lockfile
 
 COPY ./code ./
 
