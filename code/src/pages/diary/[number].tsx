@@ -185,6 +185,7 @@ export const getServerSideProps: GetServerSideProps<
     const entryNumber = Number(query.number);
 
     const helpers = getServerSideHelpers(ctx);
+
     const entry = await helpers.diary.find.fetch({
       params: { where: { entryNumber } },
     });
@@ -202,6 +203,13 @@ export const getServerSideProps: GetServerSideProps<
     if (entry.status !== DiaryStatus.PUBLISHED) {
       res.setHeader('X-Robots-Tag', 'noindex');
     }
+
+    await helpers.diary.find.prefetch({
+      params: {
+        include: { categories: true },
+        where: { entryNumber },
+      },
+    });
 
     return {
       props: {

@@ -34,6 +34,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
 ) => {
   const helpers = getServerSideHelpers(ctx);
   await helpers.page.find.prefetch({ where: { slug: 'home' } });
+  await helpers.diary.custom.latest.prefetch();
 
   return {
     props: {

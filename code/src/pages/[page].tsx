@@ -36,8 +36,12 @@ export const getServerSideProps: GetServerSideProps<DynamicPageProps> = async (
   try {
     const slug = ctx.query.page as string;
     const helpers = getServerSideHelpers(ctx);
-    const page = await helpers.page.find.fetch({ where: { slug } });
+    const params = { where: { slug } };
+
+    const page = await helpers.page.find.fetch(params);
     invariant(page, 'No page found.');
+
+    await helpers.page.find.prefetch(params);
     return {
       props: {
         slug,
@@ -46,6 +50,7 @@ export const getServerSideProps: GetServerSideProps<DynamicPageProps> = async (
           description: ZText.extractExcerpt(page.content!),
           url: `/${slug}`,
         },
+        trpcState: helpers.dehydrate(),
       },
     };
   } catch (e) {

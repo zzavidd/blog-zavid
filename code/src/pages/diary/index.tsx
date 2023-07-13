@@ -13,9 +13,10 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
   ctx,
 ) => {
   const helpers = getServerSideHelpers(ctx);
-  const page = await helpers.page.find.fetch({
-    where: { slug: 'diary' },
-  });
+  const params = { where: { slug: 'diary' } };
+
+  const page = await helpers.page.find.fetch(params);
+  await helpers.page.find.prefetch(params);
 
   return {
     props: {
