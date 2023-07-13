@@ -52,7 +52,7 @@ test.describe('Diary', () => {
 
   test.describe('Individual', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto(`/diary/${entryNumber}`);
+      await page.goto('/');
       const acceptButton = page.getByTestId('zb.accept');
       await acceptButton.waitFor({ state: 'visible' });
       await acceptButton.click();
@@ -71,7 +71,7 @@ test.describe('Diary', () => {
           update: diary,
           where: { entryNumber },
         });
-        await page.goto('/diary/1');
+        await page.goto(`/diary/${entryNumber}`);
 
         const expectedTitle = expect404
           ? '404: Not Found'
