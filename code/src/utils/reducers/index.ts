@@ -22,15 +22,7 @@ const initialState: AppState = {
   theme: 'dark',
   diary: {
     sort: { entryNumber: 'desc' },
-    filter: {
-      categories: {
-        some: {
-          id: {
-            in: undefined,
-          },
-        },
-      },
-    },
+    filter: { categories: {} },
   },
 };
 
