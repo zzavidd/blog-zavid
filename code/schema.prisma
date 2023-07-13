@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl"]
 }
 
@@ -60,7 +60,7 @@ model Post {
   status        PostStatus
   slug          String?    @db.Text
   excerpt       String     @db.Text
-  type          String?    @db.VarChar(45)
+  type          PostType
   typeId        Int?
   createTime    DateTime?  @default(now()) @db.DateTime(0)
   domainId      Int?       @db.UnsignedInt
@@ -129,6 +129,15 @@ enum DiaryStatus {
   PROTECTED
   PRIVATE
   PUBLISHED
+}
+
+enum PostType {
+  REVERIE
+  EPISTLE
+  POEM
+  MUSING
+  ADDENDUM
+  PASSAGE
 }
 
 enum PostStatus {

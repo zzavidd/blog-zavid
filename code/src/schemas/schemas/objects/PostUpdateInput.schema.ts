@@ -4,6 +4,8 @@ import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './Nullab
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { PostStatusSchema } from '../enums/PostStatus.schema';
 import { EnumPostStatusFieldUpdateOperationsInputObjectSchema } from './EnumPostStatusFieldUpdateOperationsInput.schema';
+import { PostTypeSchema } from '../enums/PostType.schema';
+import { EnumPostTypeFieldUpdateOperationsInputObjectSchema } from './EnumPostTypeFieldUpdateOperationsInput.schema';
 import { NullableIntFieldUpdateOperationsInputObjectSchema } from './NullableIntFieldUpdateOperationsInput.schema';
 
 import type { Prisma } from '@prisma/client';
@@ -64,11 +66,10 @@ const Schema: z.ZodType<Prisma.PostUpdateInput> = z
       .optional(),
     type: z
       .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema),
+        z.lazy(() => PostTypeSchema),
+        z.lazy(() => EnumPostTypeFieldUpdateOperationsInputObjectSchema),
       ])
-      .optional()
-      .nullable(),
+      .optional(),
     typeId: z
       .union([
         z.number(),

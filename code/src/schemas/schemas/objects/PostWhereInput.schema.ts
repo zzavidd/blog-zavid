@@ -5,6 +5,8 @@ import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.sch
 import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 import { EnumPostStatusFilterObjectSchema } from './EnumPostStatusFilter.schema';
 import { PostStatusSchema } from '../enums/PostStatus.schema';
+import { EnumPostTypeFilterObjectSchema } from './EnumPostTypeFilter.schema';
+import { PostTypeSchema } from '../enums/PostType.schema';
 import { IntNullableFilterObjectSchema } from './IntNullableFilter.schema';
 
 import type { Prisma } from '@prisma/client';
@@ -63,9 +65,11 @@ const Schema: z.ZodType<Prisma.PostWhereInput> = z
       .union([z.lazy(() => StringFilterObjectSchema), z.string()])
       .optional(),
     type: z
-      .union([z.lazy(() => StringNullableFilterObjectSchema), z.string()])
-      .optional()
-      .nullable(),
+      .union([
+        z.lazy(() => EnumPostTypeFilterObjectSchema),
+        z.lazy(() => PostTypeSchema),
+      ])
+      .optional(),
     typeId: z
       .union([z.lazy(() => IntNullableFilterObjectSchema), z.number()])
       .optional()
