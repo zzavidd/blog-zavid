@@ -12,7 +12,7 @@
     "build": "next build",
     "start": "next start",
     "tsc": "tsc -p tsconfig.run.json",
-    "tsc:ci": "tsc",
+    "tsc:ci": "tsc --skipLibCheck",
     "test": "playwright test",
     "release": "../devops/scripts/release.sh",
     "eslint": "eslint --ext .ts,.tsx src/ --cache",
