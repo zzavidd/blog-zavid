@@ -1,22 +1,13 @@
-import {
-  ArrowDropUp,
-  Check as CheckIcon,
-  Favorite,
-  FavoriteBorder,
-} from '@mui/icons-material';
+import { ArrowDropUp } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import type { SelectChangeEvent } from '@mui/material';
 import {
   Button,
   ButtonGroup,
-  Checkbox,
-  Chip,
   Fade,
   FormControl,
-  FormControlLabel,
-  IconButton,
-  InputAdornment,
   InputLabel,
+  Link,
   ListItemText,
   Menu,
   MenuItem,
@@ -27,7 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { DiaryStatus } from '@prisma/client';
+import { PostStatus, PostType } from '@prisma/client';
 import dayjs from 'dayjs';
 import immutate from 'immutability-helper';
 import React, { useContext, useRef, useState } from 'react';
@@ -35,23 +26,23 @@ import React, { useContext, useRef, useState } from 'react';
 import { ActionDialog } from 'components/Dialog';
 import Form, { FormRow } from 'components/Form';
 import { LinkButton } from 'components/Link';
+import ZString from 'utils/lib/string';
 
-import CategoryInput from './CategoryInput';
-import { DiaryFormContext } from './DiaryForm.context';
+import { PostFormContext } from './PostForm.context';
 
-export default function DiaryForm({
+export default function PostForm({
   onSubmit,
   submitText,
   heading,
   isActionLoading,
-}: DiaryFormProps) {
+}: PostsFormProps) {
   const [state, setState] = useState({
     isPublishModalVisible: false,
     isButtonMenuVisible: false,
     selectedSubmitIndex: 0,
   });
-  const [context, setContext] = useContext(DiaryFormContext);
-  const { entry } = context;
+  const [context, setContext] = useContext(PostFormContext);
+  const { post } = context;
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const buttonMenuItems = [
@@ -59,40 +50,38 @@ export default function DiaryForm({
     {
       label: `${submitText} & Publish`,
       isPublish: true,
-      disabled: entry.status !== DiaryStatus.PUBLISHED,
+      disabled: post.status !== PostStatus.PUBLISHED,
     },
   ];
 
   function onTextChange(e: ChangeEvent) {
     const { name, value } = e.target;
-    setContext((c) => immutate(c, { entry: { [name]: { $set: value } } }));
+    setContext((c) => immutate(c, { post: { [name]: { $set: value } } }));
+  }
+
+  function onTitleChange(e: ChangeEvent) {
+    const { value } = e.target;
+    setContext((c) =>
+      immutate(c, {
+        post: {
+          title: { $set: value },
+          slug: { $set: ZString.createSlug(value) },
+        },
+      }),
+    );
   }
 
   function onStatusChange(e: SelectChangeEvent) {
-    const value = e.target.value as DiaryStatus;
-    setContext((c) => immutate(c, { entry: { status: { $set: value } } }));
-    if (value !== DiaryStatus.PUBLISHED) {
+    const value = e.target.value as PostStatus;
+    setContext((c) => immutate(c, { post: { status: { $set: value } } }));
+    if (value !== PostStatus.PUBLISHED) {
       setState((s) => ({ ...s, selectedSubmitIndex: 0 }));
     }
   }
 
-  function onCheckboxChange(e: ChangeEvent, checked: boolean) {
-    const { name } = e.target;
-    setContext((c) => immutate(c, { entry: { [name]: { $set: checked } } }));
-  }
-
   function onDateChange(date: dayjs.Dayjs | null) {
     setContext((c) =>
-      immutate(c, { entry: { date: { $set: date?.toDate() } } }),
-    );
-  }
-
-  function onCategoryChange(e: SelectChangeEvent<number[]>) {
-    const { value } = e.target;
-    setContext((c) =>
-      immutate(c, {
-        categories: { $set: typeof value === 'string' ? [] : value },
-      }),
+      immutate(c, { post: { datePublished: { $set: date?.toDate() } } }),
     );
   }
 
@@ -131,29 +120,43 @@ export default function DiaryForm({
               label={'Content:'}
               multiline={true}
               minRows={5}
-              value={entry.content}
+              value={post.content}
               onChange={onTextChange}
               placeholder={'Scribe your thoughts and feelings...'}
             />
           </FormControl>
         </Stack>
         <Stack spacing={5} width={'100%'}>
+          <FormControl fullWidth={true}>
+            <TextField
+              name={'title'}
+              label={'Title:'}
+              value={post.title}
+              onChange={onTitleChange}
+              placeholder={'Enter the title'}
+            />
+          </FormControl>
           <FormRow>
             <FormControl fullWidth={true}>
-              <TextField
-                name={'title'}
-                label={'Title:'}
-                value={entry.title}
-                onChange={onTextChange}
-                placeholder={'Enter the title'}
-              />
+              <InputLabel>Type:</InputLabel>
+              <Select
+                name={'type'}
+                label={'Type.:'}
+                value={post.type}
+                onChange={onTextChange}>
+                {Object.values(PostType).map((type) => (
+                  <MenuItem value={type} key={type}>
+                    {type}
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
             <FormControl>
               <TextField
-                name={'entryNumber'}
+                name={'typeId'}
                 type={'number'}
-                label={'Entry No.:'}
-                value={entry.entryNumber}
+                label={'Type ID.:'}
+                value={post.typeId ?? undefined}
                 onChange={onTextChange}
                 placeholder={'No.'}
                 inputProps={{
@@ -164,21 +167,17 @@ export default function DiaryForm({
               />
             </FormControl>
           </FormRow>
-          <FormControl>
-            <CategoryInput
-              value={context.categories}
-              onChange={onCategoryChange}
-            />
-          </FormControl>
           <FormControl fullWidth={true}>
             <TextField
-              name={'footnote'}
-              label={'Footnote:'}
+              name={'excerpt'}
+              label={'Excerpt:'}
               multiline={true}
-              minRows={3}
-              value={entry.footnote}
+              rows={2}
+              value={post.excerpt}
               onChange={onTextChange}
-              placeholder={'Add any footnotes to come after the signature...'}
+              placeholder={
+                'Add the excerpt shown as a preview on link cards...'
+              }
             />
           </FormControl>
           <FormRow>
@@ -187,40 +186,49 @@ export default function DiaryForm({
               <Select
                 name={'status'}
                 label={'Status.:'}
-                value={entry.status}
+                value={post.status}
                 onChange={onStatusChange}>
-                {Object.values(DiaryStatus).map((status) => (
+                {Object.values(PostStatus).map((status) => (
                   <MenuItem value={status} key={status}>
                     {status}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            <Fade in={entry.status === DiaryStatus.PUBLISHED}>
+            <Fade in={post.status !== PostStatus.DRAFT}>
               <FormControl fullWidth={true}>
                 <DatePicker
                   label={'Date Published:'}
-                  value={entry.date ? dayjs(entry.date) : null}
+                  value={post.datePublished ? dayjs(post.datePublished) : null}
                   onChange={onDateChange}
                   format={'dddd DD MMMM YYYY'}
+                  slotProps={{
+                    textField: {
+                      helperText: post.datePublished ? (
+                        <Link
+                          href={'#'}
+                          color={'inherit'}
+                          underline={'hover'}
+                          onClick={() => onDateChange(null)}>
+                          Clear date
+                        </Link>
+                      ) : null,
+                    },
+                  }}
                 />
               </FormControl>
             </Fade>
           </FormRow>
-          <FormControlLabel
-            label={'This diary entry is a favourite.'}
-            control={
-              <Checkbox
-                name={'isFavourite'}
-                checked={entry.isFavourite}
-                onChange={onCheckboxChange}
-                icon={<FavoriteBorder fontSize={'large'} />}
-                checkedIcon={<Favorite fontSize={'large'} />}
-                sx={{ mr: 1 }}
-              />
-            }
-          />
-          <TagsInput />
+          <FormControl fullWidth={true}>
+            <TextField
+              name={'slug'}
+              label={'Slug:'}
+              value={post.slug}
+              onChange={onTextChange}
+              placeholder={'Enter the title'}
+              disabled={true}
+            />
+          </FormControl>
         </Stack>
       </FormRow>
     </React.Fragment>
@@ -228,7 +236,7 @@ export default function DiaryForm({
 
   const ToolbarActions = (
     <React.Fragment>
-      <LinkButton href={'/admin/diary'}>Cancel</LinkButton>
+      <LinkButton href={'/admin/posts'}>Cancel</LinkButton>
       <ButtonGroup>
         <LoadingButton
           variant={'contained'}
@@ -248,8 +256,8 @@ export default function DiaryForm({
       <Form
         Content={FormContent}
         ToolbarActions={ToolbarActions}
-        previewContent={entry.content}
-        previewTitle={entry.title}
+        previewContent={post.content}
+        previewTitle={post.title}
       />
       <ActionDialog
         open={state.isPublishModalVisible}
@@ -257,8 +265,8 @@ export default function DiaryForm({
         onCancel={closePublishModal}
         confirmText={'Publish'}
         isActionLoading={isActionLoading}>
-        By publishing this diary entry, you&#39;ll be notifying all subscribers
-        of this new release. Confirm that you want to publish.
+        By publishing this post, you&#39;ll be notifying all subscribers of this
+        new release. Confirm that you want to publish.
       </ActionDialog>
       <Menu
         open={state.isButtonMenuVisible}
@@ -285,79 +293,7 @@ export default function DiaryForm({
   );
 }
 
-function TagsInput() {
-  const [context, setContext] = useContext(DiaryFormContext);
-  const textFieldRef = useRef<HTMLInputElement>(null);
-
-  function onChange(e: ChangeEvent) {
-    setContext((c) => immutate(c, { tagsInput: { $set: e.target.value } }));
-  }
-
-  function onEnterKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter' && context.tagsInput.length) {
-      onConfirm();
-    }
-  }
-
-  function onConfirm() {
-    setContext((c) =>
-      immutate(c, {
-        entry: { tags: { $push: [context.tagsInput] } },
-        tagsInput: { $set: '' },
-      }),
-    );
-    textFieldRef.current?.focus();
-  }
-
-  function onChipDelete(index: number) {
-    setContext((c) =>
-      immutate(c, {
-        entry: { tags: { $splice: [[index, 1]] } },
-      }),
-    );
-  }
-
-  const tagsList = (context.entry.tags ?? []) as string[];
-  return (
-    <Stack spacing={3}>
-      <FormControl fullWidth={true}>
-        <TextField
-          name={'tags'}
-          label={'Tags:'}
-          value={context.tagsInput}
-          onChange={onChange}
-          onKeyDown={onEnterKeyPress}
-          placeholder={'Add tags to index the entry...'}
-          ref={textFieldRef}
-          InputProps={{
-            endAdornment: (
-              <Fade in={!!context.tagsInput.length}>
-                <InputAdornment position={'end'}>
-                  <IconButton onClick={onConfirm}>
-                    <CheckIcon />
-                  </IconButton>
-                </InputAdornment>
-              </Fade>
-            ),
-          }}
-        />
-      </FormControl>
-      <Stack direction={'row'} flexWrap={'wrap'} spacing={2} useFlexGap={true}>
-        {tagsList.map((tag, index) => (
-          <Chip
-            label={tag}
-            variant={'outlined'}
-            onDelete={() => onChipDelete(index)}
-            sx={{ px: 1, py: 4 }}
-            key={index}
-          />
-        ))}
-      </Stack>
-    </Stack>
-  );
-}
-
-interface DiaryFormProps {
+interface PostsFormProps {
   onSubmit: (isPublish: boolean) => void;
   submitText: string;
   heading: string;

@@ -17,11 +17,11 @@ import { useState } from 'react';
 
 import { LinkButton } from 'components/Link';
 import TableView from 'fragments/Shared/TableView';
-import type { TableViewState } from 'fragments/Shared/TableView.utils';
+import type { TableViewState } from 'fragments/Shared/TableView.context';
 import {
   TableViewContext,
   createInitialTableViewState,
-} from 'fragments/Shared/TableView.utils';
+} from 'fragments/Shared/TableView.context';
 import ZDate from 'utils/lib/date';
 import { trpc } from 'utils/trpc';
 

@@ -12,11 +12,11 @@ import TableView from 'fragments/Shared/TableView';
 import type {
   MoreMenuItem,
   TableViewState,
-} from 'fragments/Shared/TableView.utils';
+} from 'fragments/Shared/TableView.context';
 import {
   TableViewContext,
   createInitialTableViewState,
-} from 'fragments/Shared/TableView.utils';
+} from 'fragments/Shared/TableView.context';
 import { trpc } from 'utils/trpc';
 
 import { useDiaryTableFields } from './DiaryAdmin.hooks';

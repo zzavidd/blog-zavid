@@ -1,4 +1,5 @@
 import { DiaryStatus } from '@prisma/client';
+import type { inferRouterInputs } from '@trpc/server';
 import { z } from 'zod';
 
 import {
@@ -7,6 +8,7 @@ import {
   DiaryCategoryUpdateOneSchema,
   DiaryCreateOneSchema,
   DiaryFindFirstSchema,
+  DiaryFindManySchema,
   DiaryUpdateOneSchema,
   PageDeleteOneSchema,
   PageFindFirstSchema,
@@ -18,13 +20,16 @@ import {
   SubscriberFindManySchema,
   SubscriberUpdateOneSchema,
 } from 'schemas/schemas';
-import DiaryAPI, { zDiaryFindOptions } from 'server/api/diary';
+import DiaryAPI from 'server/api/diary';
 import DiaryCategoryAPI from 'server/api/diaryCategory';
 import PageAPI from 'server/api/pages';
 import SubscriberAPI from 'server/api/subscribers';
 import { zEmailPreviewType } from 'server/emails';
+import { zFindOptions } from 'utils/validators';
 
 import { procedure, router } from '../trpc';
+
+import postRouter from './post.router';
 
 export const appRouter = router({
   diary: router({
@@ -32,15 +37,15 @@ export const appRouter = router({
       .input(
         z.object({
           params: DiaryFindFirstSchema,
-          options: zDiaryFindOptions,
+          options: zFindOptions,
         }),
       )
       .query(({ input }) => DiaryAPI.find(input.params, input.options)),
     findMany: procedure
       .input(
         z.object({
-          params: DiaryFindFirstSchema,
-          options: zDiaryFindOptions,
+          params: DiaryFindManySchema,
+          options: zFindOptions,
         }),
       )
       .query(({ input }) => DiaryAPI.findMany(input.params, input.options)),
@@ -106,6 +111,7 @@ export const appRouter = router({
       .input(PageDeleteOneSchema)
       .mutation(({ input }) => PageAPI.delete(input)),
   }),
+  post: postRouter,
   subscriber: router({
     find: procedure
       .input(SubscriberFindFirstSchema)
@@ -126,3 +132,4 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+export type RouterInput = inferRouterInputs<AppRouter>;

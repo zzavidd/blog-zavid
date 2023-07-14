@@ -1,25 +1,38 @@
-import type { ConsoleMessage } from '@playwright/test';
+import { faker } from '@faker-js/faker/locale/en_GB';
 import { expect, test } from '@playwright/test';
-import { DiaryStatus } from '@prisma/client';
+import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
 
 import {
   createDiaryEntry,
+  createPost,
   createSubscriber,
 } from '../../ops/ingestion/factory';
 import prisma from '../../src/server/prisma';
 
 const entryNumber = 1;
+const slug = faker.lorem.slug();
+
 const diary = createDiaryEntry({ entryNumber, status: DiaryStatus.PUBLISHED });
+const passage = createPost({
+  type: PostType.PASSAGE,
+  status: PostStatus.PRIVATE,
+  slug,
+});
 const subscriber = createSubscriber();
 
 test.describe('Console', () => {
-  const errors: ConsoleMessage[] = [];
+  const errors: string[] = [];
 
   test.beforeAll(async () => {
     await prisma.diary.upsert({
       create: diary,
       update: diary,
       where: { entryNumber },
+    });
+    await prisma.post.upsert({
+      create: passage,
+      update: passage,
+      where: { id: 1 },
     });
     await prisma.subscriber.upsert({
       create: subscriber,
@@ -31,7 +44,7 @@ test.describe('Console', () => {
   test.beforeEach(({ page }) => {
     page.on('console', (message) => {
       if (message.type() === 'error') {
-        errors.push(message);
+        errors.push(message.text());
       }
     });
   });
@@ -39,7 +52,8 @@ test.describe('Console', () => {
   [
     { name: 'home', href: '/' },
     { name: 'diary index', href: '/diary' },
-    { name: 'diary entry', href: '/diary/1' },
+    { name: 'diary entry', href: `/diary/${entryNumber}` },
+    { name: 'passage', href: `/passages/${slug}` },
     { name: 'about', href: '/about' },
     { name: 'subscribe', href: '/subscribe' },
     { name: 'subscriptions', href: `/subscriptions?token=${subscriber.token}` },

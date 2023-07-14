@@ -5,6 +5,8 @@ import { DateTimeNullableWithAggregatesFilterObjectSchema } from './DateTimeNull
 import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema';
 import { EnumPostStatusWithAggregatesFilterObjectSchema } from './EnumPostStatusWithAggregatesFilter.schema';
 import { PostStatusSchema } from '../enums/PostStatus.schema';
+import { EnumPostTypeWithAggregatesFilterObjectSchema } from './EnumPostTypeWithAggregatesFilter.schema';
+import { PostTypeSchema } from '../enums/PostType.schema';
 import { IntNullableWithAggregatesFilterObjectSchema } from './IntNullableWithAggregatesFilter.schema';
 
 import type { Prisma } from '@prisma/client';
@@ -75,11 +77,10 @@ const Schema: z.ZodType<Prisma.PostScalarWhereWithAggregatesInput> = z
       .optional(),
     type: z
       .union([
-        z.lazy(() => StringNullableWithAggregatesFilterObjectSchema),
-        z.string(),
+        z.lazy(() => EnumPostTypeWithAggregatesFilterObjectSchema),
+        z.lazy(() => PostTypeSchema),
       ])
-      .optional()
-      .nullable(),
+      .optional(),
     typeId: z
       .union([
         z.lazy(() => IntNullableWithAggregatesFilterObjectSchema),

@@ -1,7 +1,6 @@
 import type { Diary, Prisma } from '@prisma/client';
 import nodemailer from 'nodemailer';
 import invariant from 'tiny-invariant';
-import { z } from 'zod';
 
 import type { EmailPreviewType } from 'server/emails';
 import Emailer from 'server/emails';
@@ -9,10 +8,9 @@ import prisma from 'server/prisma';
 import { truncateText } from 'utils/lib/text';
 
 export default class DiaryAPI {
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   public static async findMany(
     args: Prisma.DiaryFindManyArgs,
-    options: DiaryFindOptions = {},
+    options: FindOptions = {},
   ): Promise<DiaryWithCategories[]> {
     const { contentWordLimit } = options;
     let diary = (await prisma.diary.findMany(args)) as DiaryWithCategories[];
@@ -27,10 +25,9 @@ export default class DiaryAPI {
     return diary;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   public static async find(
     args: Prisma.DiaryFindFirstArgs,
-    options: DiaryFindOptions = {},
+    options: FindOptions = {},
   ): Promise<DiaryWithCategories | null> {
     const { contentWordLimit } = options;
     const entry = (await prisma.diary.findFirst(
@@ -83,9 +80,3 @@ export default class DiaryAPI {
     return nodemailer.getTestMessageUrl(info) || '';
   }
 }
-
-export const zDiaryFindOptions = z
-  .object({ contentWordLimit: z.number().optional() })
-  .optional();
-
-type DiaryFindOptions = z.infer<typeof zDiaryFindOptions>;

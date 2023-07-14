@@ -1,11 +1,19 @@
+import type { TableCellProps } from '@mui/material';
 import type { Diary, DiaryCategory } from '@prisma/client';
 import type { Dispatch, SetStateAction } from 'react';
+import type { z } from 'zod';
+
+import type { RouterInput } from 'server/routers/_app.router';
+import type { zFindOptions } from 'utils/validators';
 
 declare global {
   interface AppPageProps {
     pathDefinition: PathDefinition;
     pageProps?: Record<string, unknown>;
   }
+
+  type FindOptions = z.infer<typeof zFindOptions>;
+  type PostFindInput = RouterInput['post']['find'];
 
   interface PathDefinition {
     title: string;

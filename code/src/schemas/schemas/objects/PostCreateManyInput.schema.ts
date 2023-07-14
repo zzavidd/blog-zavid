@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { PostStatusSchema } from '../enums/PostStatus.schema';
+import { PostTypeSchema } from '../enums/PostType.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -14,7 +15,7 @@ const Schema: z.ZodType<Prisma.PostCreateManyInput> = z
     status: z.lazy(() => PostStatusSchema),
     slug: z.string().optional().nullable(),
     excerpt: z.string(),
-    type: z.string().optional().nullable(),
+    type: z.lazy(() => PostTypeSchema),
     typeId: z.number().optional().nullable(),
     createTime: z.coerce.date().optional().nullable(),
     domainId: z.number().optional().nullable(),
