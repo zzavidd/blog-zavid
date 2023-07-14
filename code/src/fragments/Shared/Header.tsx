@@ -1,5 +1,6 @@
 import type { SvgIconComponent } from '@mui/icons-material';
 import {
+  AllInbox,
   Article,
   BookRounded,
   DarkMode,
@@ -127,6 +128,7 @@ function AuthButton() {
   const adminOnlyMenuItems = isAdmin
     ? [
         { label: 'Manage Diary', Icon: BookRounded, href: '/admin/diary' },
+        { label: 'Manage Posts', Icon: AllInbox, href: '/admin/posts' },
         {
           label: 'Manage Subscribers',
           Icon: Email,

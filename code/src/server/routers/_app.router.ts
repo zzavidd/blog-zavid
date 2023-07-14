@@ -8,6 +8,7 @@ import {
   DiaryCategoryUpdateOneSchema,
   DiaryCreateOneSchema,
   DiaryFindFirstSchema,
+  DiaryFindManySchema,
   DiaryUpdateOneSchema,
   PageDeleteOneSchema,
   PageFindFirstSchema,
@@ -43,7 +44,7 @@ export const appRouter = router({
     findMany: procedure
       .input(
         z.object({
-          params: DiaryFindFirstSchema,
+          params: DiaryFindManySchema,
           options: zFindOptions,
         }),
       )

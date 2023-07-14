@@ -30,8 +30,8 @@ import React from 'react';
 
 import { ActionDialog } from 'components/Dialog';
 
-import type { MoreMenuItem } from './TableView.utils';
-import { useTableContext } from './TableView.utils';
+import type { MoreMenuItem } from './TableView.context';
+import { useTableContext } from './TableView.context';
 
 export default function TableView<T extends { id: number }>() {
   const [context, setContext] = useTableContext<T>();
