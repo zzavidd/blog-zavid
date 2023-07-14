@@ -32,6 +32,7 @@ export function createPost(
   const {
     status = faker.helpers.enumValue(PostStatus),
     type = faker.helpers.enumValue(PostType),
+    slug,
   } = overrides;
   const title = ZString.toTitleCase(faker.lorem.words({ min: 1, max: 5 }));
   const content = faker.lorem.paragraphs({ min: 5, max: 10 }, '\n\n');
@@ -46,7 +47,7 @@ export function createPost(
         : status,
     content,
     excerpt: faker.lorem.sentence(),
-    slug: ZString.createSlug(title),
+    slug: slug ?? ZString.createSlug(title),
     ...overrides,
   };
 }
