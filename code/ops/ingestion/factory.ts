@@ -1,10 +1,8 @@
 import { faker } from '@faker-js/faker/locale/en_GB';
 import type { Prisma } from '@prisma/client';
 import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
-import slugify from 'slugify';
 
 import ZString from 'utils/lib/string';
-import { extractExcerpt } from 'utils/lib/text';
 
 export function createDiaryEntry(
   overrides: Partial<Prisma.DiaryCreateInput> = {},
@@ -47,13 +45,8 @@ export function createPost(
         ? PostStatus.PRIVATE
         : status,
     content,
-    excerpt: extractExcerpt(content),
-    slug: slugify(title, {
-      lower: true,
-      locale: 'en',
-      remove: new RegExp(/\b(a|an|and|the|but|or|so)\b/g),
-      strict: true,
-    }),
+    excerpt: faker.lorem.sentence(),
+    slug: ZString.createSlug(title),
     ...overrides,
   };
 }

@@ -7,7 +7,6 @@ import Layout from 'fragments/Layout';
 import type { PassagePageProps } from 'fragments/Pages/Posts/Passage';
 import Passage from 'fragments/Pages/Posts/Passage';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
-import type { RouterInput } from 'server/routers/_app.router';
 import Logger from 'utils/logger';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
@@ -24,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<PassagePageProps> = async (
     const slug = String(query.slug);
 
     const helpers = getServerSideHelpers(ctx);
-    const params: RouterInput['post']['find'] = {
+    const params: PostFindInput = {
       params: { where: { slug, type: PostType.PASSAGE } },
     };
 

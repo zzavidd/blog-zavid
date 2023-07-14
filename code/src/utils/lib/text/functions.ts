@@ -94,8 +94,8 @@ export function truncateText(
  */
 export function extractExcerpt(originalText: string): string {
   if (!originalText) return '';
-  const deformattedText = deformatText(originalText);
-  const [excerpt] = deformattedText.split(/\n|\s{2,}/).filter((e) => e);
+  const [paragraph] = originalText.split(/\n|\s{2,}/).filter((e) => e);
+  const excerpt = deformatText(paragraph);
   return excerpt;
 }
 

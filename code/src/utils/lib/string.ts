@@ -1,3 +1,5 @@
+import slugify from 'slugify';
+
 namespace ZString {
   export function capitalise(text: string): string {
     if (!text) return text;
@@ -14,6 +16,14 @@ namespace ZString {
 
     return sentence.join(' ');
   };
+
+  export function createSlug(value = ''): string {
+    return slugify(value, {
+      lower: true,
+      locale: 'en',
+      strict: true,
+    });
+  }
 
   export const toPunctuatedList = (
     items: string[],

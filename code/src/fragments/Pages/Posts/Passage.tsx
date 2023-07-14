@@ -18,7 +18,6 @@ import Time from 'components/Typography/Time';
 import { AdminLock } from 'fragments/AdminGateway';
 import MenuProvider from 'fragments/Shared/MenuProvider';
 import PagePlaceholder from 'fragments/Shared/Placeholders/PagePlaceholder';
-import type { RouterInput } from 'server/routers/_app.router';
 import { trpc } from 'utils/trpc';
 
 export default function Passage({ params }: PassagePageProps) {
@@ -75,6 +74,6 @@ export default function Passage({ params }: PassagePageProps) {
 }
 
 export interface PassagePageProps extends AppPageProps {
-  params: RouterInput['post']['find'];
+  params: PostFindInput;
   slug: string;
 }

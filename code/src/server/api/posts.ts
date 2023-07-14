@@ -35,6 +35,17 @@ export default class PostAPI {
     return entry;
   }
 
+  public static async update(
+    args: Prisma.PostUpdateArgs,
+    isPublish = false,
+  ): Promise<Post> {
+    const post = await prisma.post.update(args);
+    if (isPublish) {
+      //   void Emailer.notifyNewDiaryEntry(diary);
+    }
+    return post;
+  }
+
   public static async delete(ids: number[]): Promise<void> {
     await prisma.post.deleteMany({ where: { id: { in: ids } } });
   }
