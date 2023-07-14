@@ -5,3 +5,7 @@ export const zSubscribeForm = z.object({
   firstname: z.string().optional(),
   lastname: z.string().optional(),
 });
+
+export const zFindOptions = z
+  .object({ contentWordLimit: z.number().optional() })
+  .optional();

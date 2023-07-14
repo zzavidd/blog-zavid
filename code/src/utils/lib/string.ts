@@ -24,32 +24,6 @@ namespace ZString {
     return str;
   };
 
-  export const constructCleanSlug = (...input: string[]): string => {
-    return input
-      .join(' ')
-      .toLowerCase() // Turn to lowercase
-      .replace('é', 'e') // Replace accents
-      .replace(/[^a-zA-Z 0-9]+/g, ' ') // Remove all non-alphanumeric characters
-      .replace(/\b(a|an|and|the|but|or|so)\b/g, '') // Remove stopwords
-      .trim() // Trim remnant whitespace
-      .replace(/\s+/g, '-'); // Replace spaces with dashes
-  };
-
-  export const constructSimpleNameSlug = (name: string): string => {
-    const array = name.split(/[\W_]+/);
-
-    for (let i = 0; i < array.length; i++) {
-      if (i < 1) continue;
-      array[i] = array[i].substring(0, 1);
-    }
-
-    const slug = array.join();
-
-    return slug
-      .toLowerCase() // Turn to lowercase
-      .replace(/[^a-zA-Z 0-9]+/g, ''); // Remove all non-alphanumeric characters
-  };
-
   export const convertCsvToArray = (
     words: string | string[],
     options: CSVToArrayOptions = {},

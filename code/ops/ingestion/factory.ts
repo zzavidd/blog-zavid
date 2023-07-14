@@ -1,8 +1,10 @@
 import { faker } from '@faker-js/faker/locale/en_GB';
 import type { Prisma } from '@prisma/client';
-import { DiaryStatus } from '@prisma/client';
+import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
+import slugify from 'slugify';
 
-import ZString from '../../src/utils/lib/string';
+import ZString from 'utils/lib/string';
+import { extractExcerpt } from 'utils/lib/text';
 
 export function createDiaryEntry(
   overrides: Partial<Prisma.DiaryCreateInput> = {},
@@ -22,6 +24,36 @@ export function createDiaryEntry(
     tags: Array(faker.number.int({ max: 12 }))
       .fill(null)
       .map(() => faker.lorem.word()),
+    ...overrides,
+  };
+}
+
+export function createPost(
+  overrides: Partial<Prisma.PostCreateInput> = {},
+): Prisma.PostCreateInput {
+  const {
+    status = faker.helpers.enumValue(PostStatus),
+    type = faker.helpers.enumValue(PostType),
+  } = overrides;
+  const title = ZString.toTitleCase(faker.lorem.words({ min: 1, max: 5 }));
+  const content = faker.lorem.paragraphs({ min: 5, max: 10 }, '\n\n');
+
+  return {
+    title,
+    type,
+    datePublished: faker.date.past(),
+    status:
+      status === PostStatus.PUBLISHED && type === PostType.PASSAGE
+        ? PostStatus.PRIVATE
+        : status,
+    content,
+    excerpt: extractExcerpt(content),
+    slug: slugify(title, {
+      lower: true,
+      locale: 'en',
+      remove: new RegExp(/\b(a|an|and|the|but|or|so)\b/g),
+      strict: true,
+    }),
     ...overrides,
   };
 }

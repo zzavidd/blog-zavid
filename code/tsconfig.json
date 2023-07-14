@@ -12,7 +12,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "strict": true,
     "target": "es6",
     "tsBuildInfoFile": ".tsbuildinfo"
@@ -36,6 +36,7 @@
         "server/*": ["./server/*"],
         "utils/*": ["./utils/*"]
       },
+      "skipLibCheck": true,
       "strict": false
     },
     "swc": true

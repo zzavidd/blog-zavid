@@ -2,7 +2,7 @@ import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 import SuperJSON from 'superjson';
 
-import type { AppRouter } from '../server/routers/_app';
+import type { AppRouter } from '../server/routers/_app.router';
 
 export const trpc = createTRPCNext<AppRouter>({
   config: () => ({

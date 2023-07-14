@@ -1,15 +1,16 @@
 import { faker } from '@faker-js/faker/locale/en_GB';
 import type { Prisma } from '@prisma/client';
-import { PrismaClient } from '@prisma/client';
+import { PostType, PrismaClient } from '@prisma/client';
 
-import { createDiaryEntry, createSubscriber } from './factory';
+import { createDiaryEntry, createPost, createSubscriber } from './factory';
 
 const prisma = new PrismaClient();
 
 (async () => {
   await ingestDiaryEntries();
-  await ingestSubscribers();
   await ingestPages();
+  await ingestPosts();
+  await ingestSubscribers();
 })();
 
 async function ingestDiaryEntries(): Promise<void> {
@@ -39,6 +40,17 @@ async function ingestDiaryEntries(): Promise<void> {
     });
 
   await Promise.all(promises);
+}
+
+async function ingestPosts(): Promise<void> {
+  const posts: Prisma.PostCreateInput[] = [];
+
+  for (let i = 1; i <= 5; i++) {
+    posts.push(createPost({ type: PostType.PASSAGE }));
+  }
+
+  await prisma.post.deleteMany({});
+  await prisma.post.createMany({ data: posts });
 }
 
 async function ingestSubscribers(): Promise<void> {
