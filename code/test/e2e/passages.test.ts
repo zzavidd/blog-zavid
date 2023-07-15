@@ -6,10 +6,11 @@ import { createPost } from '../../ops/ingestion/factory';
 import prisma from '../../src/server/prisma';
 import Settings from '../../src/utils/settings';
 
+const id = 1;
 const slug = faker.lorem.slug();
 const passage = createPost({
-  type: PostType.PASSAGE,
   slug,
+  type: PostType.PASSAGE,
 });
 
 test.describe('Passage', () => {
@@ -29,11 +30,11 @@ test.describe('Passage', () => {
       { status: PostStatus.DRAFT, expect404: true },
     ].forEach(({ status, expect404 }) => {
       test(`can view ${status} page`, async ({ page }) => {
-        passage.status = status;
+        const payload = { ...passage, id, status };
         await prisma.post.upsert({
-          create: passage,
-          update: passage,
-          where: { id: 1 },
+          create: payload,
+          update: payload,
+          where: { id },
         });
         await page.goto(`/passages/${slug}`);
 
