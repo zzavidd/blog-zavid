@@ -9,6 +9,7 @@ import Settings from '../../src/utils/settings';
 const entryNumber = 1;
 const diary = createDiaryEntry({ entryNumber });
 
+test.describe.configure({ mode: 'parallel' });
 test.describe('Diary', () => {
   test.skip(({ browserName }) => browserName !== 'chromium');
 
@@ -25,9 +26,7 @@ test.describe('Diary', () => {
 
     test.beforeEach(async ({ page }) => {
       await page.goto('/diary');
-      const acceptButton = page.getByTestId('zb.accept');
-      await acceptButton.waitFor({ state: 'visible' });
-      await acceptButton.click();
+      await page.getByTestId('zb.accept').click();
     });
 
     test('has correct page title', async ({ page }) => {
@@ -37,7 +36,7 @@ test.describe('Diary', () => {
     test('has entries listed', async ({ page }) => {
       const { entryNumber, title } = latestDiaryEntry!;
       const h2 = page.getByTestId(`zb.entry.${entryNumber}`);
-      await expect(h2).toHaveText(`Diary Entry #${entryNumber}: ${title}`);
+      await expect(h2).toHaveText(`Diary Entry #${entryNumber}:${title}`);
     });
 
     test('can click to individual page', async ({ page }) => {
@@ -51,11 +50,10 @@ test.describe('Diary', () => {
   });
 
   test.describe('Individual', () => {
+    test.describe.configure({ mode: 'serial' });
     test.beforeEach(async ({ page }) => {
       await page.goto('/');
-      const acceptButton = page.getByTestId('zb.accept');
-      await acceptButton.waitFor({ state: 'visible' });
-      await acceptButton.click();
+      await page.getByTestId('zb.accept').click();
     });
 
     [

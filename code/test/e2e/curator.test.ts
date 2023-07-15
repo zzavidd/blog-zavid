@@ -21,6 +21,7 @@ const params: TestDefinition[] = [
   },
 ];
 
+test.describe.configure({ mode: 'parallel' });
 test.describe('Curator', () => {
   test.beforeAll(async () => {
     await prisma.diary.upsert({
@@ -32,9 +33,7 @@ test.describe('Curator', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto(`/diary/${entryNumber}`);
-    const acceptButton = page.getByTestId('zb.accept');
-    await acceptButton.waitFor({ state: 'visible' });
-    await acceptButton.click();
+    await page.getByTestId('zb.accept').click();
   });
 
   params.forEach(({ name, skipCondition, clickOptions }) => {
@@ -43,8 +42,7 @@ test.describe('Curator', () => {
 
       test('has image', async ({ page }) => {
         await page.getByTestId('zb.diary.content.0').click(clickOptions);
-        const curateButton = page.getByTestId('zb.curate');
-        await curateButton.click();
+        await page.getByTestId('zb.curate').click();
 
         const image = page.getByTestId('zb.curator.image');
         await expect(image).toBeVisible();

@@ -123,6 +123,8 @@ function DiaryNavigation({ previousParams, nextParams }: DiaryEntryPageProps) {
     lineHeight: 1.4,
   };
 
+  if (!previous && !next) return null;
+
   return (
     <Stack direction={'row'} justifyContent={'space-between'} spacing={4}>
       {previous ? (

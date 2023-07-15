@@ -24,7 +24,13 @@ export const getServerSideProps: GetServerSideProps<
     const { query, req, res } = ctx;
     const entryNumber = Number(query.number);
     const params: DiaryFindInput = {
-      params: { include: { categories: true }, where: { entryNumber } },
+      params: {
+        include: { categories: true },
+        where: {
+          entryNumber,
+          status: { notIn: [DiaryStatus.DRAFT] },
+        },
+      },
     };
 
     const createNavigatorParams = (entryNumber: number): DiaryFindInput => ({

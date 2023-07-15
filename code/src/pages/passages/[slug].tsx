@@ -24,7 +24,15 @@ export const getServerSideProps: GetServerSideProps<PassagePageProps> = async (
 
     const helpers = getServerSideHelpers(ctx);
     const params: PostFindInput = {
-      params: { where: { slug, type: PostType.PASSAGE } },
+      params: {
+        where: {
+          slug,
+          type: PostType.PASSAGE,
+          status: {
+            in: [PostStatus.PROTECTED, PostStatus.PRIVATE],
+          },
+        },
+      },
     };
 
     const passage = await helpers.post.find.fetch(params);

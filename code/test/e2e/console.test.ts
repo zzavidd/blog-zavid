@@ -20,6 +20,7 @@ const passage = createPost({
 });
 const subscriber = createSubscriber();
 
+test.describe.configure({ mode: 'parallel' });
 test.describe('Console', () => {
   const errors: string[] = [];
 

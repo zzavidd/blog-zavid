@@ -16,11 +16,10 @@ test.describe('Passage', () => {
   test.skip(({ browserName }) => browserName !== 'chromium');
 
   test.describe('Individual', () => {
+    test.describe.configure({ mode: 'serial' });
     test.beforeEach(async ({ page }) => {
       await page.goto('/');
-      const acceptButton = page.getByTestId('zb.accept');
-      await acceptButton.waitFor({ state: 'visible' });
-      await acceptButton.click();
+      await page.getByTestId('zb.accept').click();
     });
 
     [

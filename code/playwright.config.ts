@@ -5,7 +5,6 @@ import projects from './test/projects';
 export default defineConfig({
   expect: { timeout: 5000 },
   forbidOnly: !!process.env.CI,
-  fullyParallel: true,
   outputDir: './test/results',
   preserveOutput: 'never',
   projects,

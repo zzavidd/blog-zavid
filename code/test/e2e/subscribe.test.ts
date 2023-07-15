@@ -14,13 +14,12 @@ const subscriber = {
   lastname: name.lastName,
 };
 
+test.describe.configure({ mode: 'parallel' });
 test.describe('Subscribe', () => {
   test.describe('via page form', () => {
     test.beforeEach(async ({ page }) => {
       await page.goto('/subscribe');
-      const acceptButton = page.getByTestId('zb.accept');
-      await acceptButton.waitFor({ state: 'visible' });
-      await acceptButton.click();
+      await page.getByTestId('zb.accept').click();
     });
 
     test('has correct page title', async ({ page }) => {
@@ -60,9 +59,7 @@ test.describe('Subscribe', () => {
   test.describe('via Quick Subscribe', () => {
     test.beforeEach(async ({ page }) => {
       await page.goto('/');
-      const acceptButton = page.getByTestId('zb.accept');
-      await acceptButton.waitFor({ state: 'visible' });
-      await acceptButton.click();
+      await page.getByTestId('zb.accept').click();
     });
 
     test('with correct email', async ({ page }) => {

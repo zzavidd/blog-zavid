@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker/locale/en_GB';
 import type { Prisma } from '@prisma/client';
-import { PostType, PrismaClient } from '@prisma/client';
+import { PostType } from '@prisma/client';
+
+import prisma from 'server/prisma';
 
 import { createDiaryEntry, createPost, createSubscriber } from './factory';
-
-const prisma = new PrismaClient();
 
 (async () => {
   await ingestDiaryEntries();
