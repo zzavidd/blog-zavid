@@ -44,7 +44,7 @@ export default function Passage({ params }: PassagePageProps) {
       <Container maxWidth={'sm'} sx={{ padding: (t) => t.spacing(4) }}>
         <Stack spacing={4} divider={<Divider />}>
           <Breadcrumbs links={links} />
-          <Stack spacing={2} position={'relative'}>
+          <Stack spacing={2} position={'relative'} useFlexGap={true}>
             <AdminLock>
               <LinkIconButton
                 href={`/admin/posts/edit/${passage.id}`}
@@ -52,14 +52,14 @@ export default function Passage({ params }: PassagePageProps) {
                 <Edit color={'primary'} />
               </LinkIconButton>
             </AdminLock>
+            <Typography variant={'h2'} textAlign={{ xs: 'left', sm: 'center' }}>
+              {passage.title}
+            </Typography>
             <Time
               variant={'body2'}
               textAlign={isMobile ? 'left' : 'center'}
               date={passage.datePublished}
             />
-            <Typography variant={'h2'} textAlign={{ xs: 'left', sm: 'center' }}>
-              {passage.title}
-            </Typography>
           </Stack>
           <Stack spacing={5}>
             <Paragraph variant={'text'} dataTestId={'zb.passages.content'}>

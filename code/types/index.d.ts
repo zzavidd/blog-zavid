@@ -14,6 +14,7 @@ declare global {
 
   type FindOptions = z.infer<typeof zFindOptions>;
   type PostFindInput = RouterInput['post']['find'];
+  type DiaryFindInput = RouterInput['diary']['find'];
 
   interface PathDefinition {
     title: string;
