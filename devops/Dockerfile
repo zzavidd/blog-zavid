@@ -6,15 +6,17 @@ RUN apt-get update -y && apt-get install -y openssl
 ARG WORKDIR
 WORKDIR /var/www/$WORKDIR/code
 
-COPY ./code/package.json ./code/pnpm-lock.yaml ./code/schema.prisma ./
+COPY ./code/pnpm-lock.yaml ./
 
-RUN --mount=type=cache,target=./code/node_modules pnpm install --frozen-lockfile
+RUN pnpm fetch
 
 COPY ./code ./
 
+RUN pnpm install --offline
+
 RUN pnpm prisma generate
 RUN pnpm prisma migrate deploy
-RUN --mount=type=cache,target=./code/.next/cache pnpm run build
+RUN pnpm run build
 
 FROM node:18-slim AS runner
 
