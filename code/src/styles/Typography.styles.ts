@@ -43,7 +43,7 @@ const typography: TypographyOptions = {
     fontFamily: calistoga.style.fontFamily,
     fontSize: 26,
     fontWeight: 700,
-    lineHeight: 1.1,
+    lineHeight: 1.2,
     [breakpoints.down('md')]: {
       fontSize: 24,
       letterSpacing: -1,

@@ -1,22 +1,38 @@
-import type { BreadcrumbsProps as MuiBreadcrumbsProps } from '@mui/material';
+import type {
+  LinkProps,
+  BreadcrumbsProps as MuiBreadcrumbsProps,
+} from '@mui/material';
 import { Breadcrumbs as MuiBreadcrumbs, Typography } from '@mui/material';
 
 import { Link } from './Link';
 
 export default function Breadcrumbs({ links, ...props }: BreadcrumbsProps) {
+  const linkProps: LinkProps = {
+    variant: 'caption',
+    fontSize: { xs: 11, md: 12 },
+    fontWeight: 800,
+    lineHeight: 1,
+  };
   return (
-    <MuiBreadcrumbs {...props}>
+    <MuiBreadcrumbs
+      separator={
+        <Typography variant={'caption'} mt={1}>
+          /
+        </Typography>
+      }
+      sx={{ lineHeight: 0.2 }}
+      {...props}>
       {links.map(({ label, href }, key) => {
         if (href) {
           return (
-            <Link href={href} underline={'hover'} variant={'caption'} key={key}>
+            <Link href={href} underline={'hover'} {...linkProps} key={key}>
               {label}
             </Link>
           );
         }
 
         return (
-          <Typography variant={'caption'} fontWeight={700} key={key}>
+          <Typography {...linkProps} key={key}>
             {label}
           </Typography>
         );

@@ -1,3 +1,4 @@
+import type { TypographyProps } from '@mui/material';
 import {
   Box,
   Divider,
@@ -85,7 +86,7 @@ const FormatSite: Record<Section, RenderValue> = {
         })}
     </List>
   ),
-  [Section.BLOCKQUOTE]: ([, text], key) => (
+  [Section.BLOCKQUOTE]: ([, text], key, { TypographyProps }) => (
     <Typography
       component={'blockquote'}
       sx={{
@@ -99,7 +100,8 @@ const FormatSite: Record<Section, RenderValue> = {
         py: 4,
         textAlign: 'center',
       }}
-      key={key}>
+      key={key}
+      {...(TypographyProps as TypographyProps<'blockquote'>)}>
       {applyEmphasisFormatting(text)}
     </Typography>
   ),

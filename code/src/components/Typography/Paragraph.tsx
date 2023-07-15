@@ -64,6 +64,7 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           <LinkButton
             href={moreHref}
             startIcon={<SendRounded fontSize={'small'} />}
+            sx={{ fontSize: { xs: 12 } }}
             data-testid={readMoreDataTestId}>
             {moreText}
           </LinkButton>

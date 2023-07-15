@@ -5,6 +5,7 @@ import {
   FilterList,
   Sort,
 } from '@mui/icons-material';
+import type { TypographyProps } from '@mui/material';
 import {
   Badge,
   Button,
@@ -92,6 +93,8 @@ export default function DiaryToolbar() {
     { label: 'Oldest first', value: 'asc' },
   ];
 
+  const fontSize: TypographyProps['fontSize'] = { xs: 12, md: 14 };
+
   return (
     <Paper
       square={true}
@@ -111,6 +114,7 @@ export default function DiaryToolbar() {
             onClick={() => toggleSortMenu(true)}
             color={sort.entryNumber === 'asc' ? 'primary' : 'inherit'}
             startIcon={<Sort />}
+            sx={{ fontSize }}
             ref={sortButtonRef}>
             Sort
           </Button>
@@ -118,6 +122,7 @@ export default function DiaryToolbar() {
             onClick={() => toggleFilterMenu(true)}
             color={selectedCategoryIds.length ? 'primary' : 'inherit'}
             startIcon={<FilterList />}
+            sx={{ fontSize }}
             ref={filterButtonRef}>
             <Badge
               badgeContent={selectedCategoryIds.length}
@@ -135,6 +140,7 @@ export default function DiaryToolbar() {
             label={
               <Typography
                 color={filter.isFavourite ? 'primary' : 'inherit'}
+                fontSize={fontSize}
                 variant={'button'}>
                 Favourites?
               </Typography>

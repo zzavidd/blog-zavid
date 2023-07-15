@@ -35,6 +35,7 @@ export function LinkButton({
       sx={{
         padding: (t) => t.spacing(3, 5),
         width: props.fullWidth ? undefined : 'fit-content',
+        ...props.sx,
       }}>
       {children}
     </Button>

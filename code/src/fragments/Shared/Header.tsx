@@ -115,7 +115,10 @@ function AuthButton() {
         color={'primary'}
         startIcon={<LoginIcon />}
         onClick={() => signIn('google')}
-        sx={{ p: 2 }}>
+        sx={{
+          fontSize: { xs: 12, md: 14 },
+          p: { xs: 1, md: 2 },
+        }}>
         Sign In
       </Button>
     );

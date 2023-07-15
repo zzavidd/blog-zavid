@@ -27,6 +27,18 @@ export const getServerSideProps: GetServerSideProps<
       params: { include: { categories: true }, where: { entryNumber } },
     };
 
+    const createNavigatorParams = (entryNumber: number): DiaryFindInput => ({
+      params: {
+        where: {
+          entryNumber,
+          status: { in: [DiaryStatus.PRIVATE, DiaryStatus.PUBLISHED] },
+        },
+        select: { title: true, entryNumber: true },
+      },
+    });
+    const previousParams = createNavigatorParams(entryNumber - 1);
+    const nextParams = createNavigatorParams(entryNumber + 1);
+
     const helpers = getServerSideHelpers(ctx);
 
     const entry = await helpers.diary.find.fetch({
@@ -48,10 +60,14 @@ export const getServerSideProps: GetServerSideProps<
     }
 
     await helpers.diary.find.prefetch(params);
+    await helpers.diary.find.prefetch(previousParams);
+    await helpers.diary.find.prefetch(nextParams);
 
     return {
       props: {
         params,
+        previousParams,
+        nextParams,
         pathDefinition: {
           title: `Diary Entry #${entry.entryNumber}: ${entry.title} | ${Settings.SITE_TITLE}`,
           description: ZText.extractExcerpt(entry.content),

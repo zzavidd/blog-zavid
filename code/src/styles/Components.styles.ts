@@ -11,6 +11,18 @@ const components: Components<Theme> = {
       onContextMenu: (e) => e.preventDefault(),
     },
   },
+  MuiBreadcrumbs: {
+    styleOverrides: {
+      root: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignContent: 'center',
+      },
+      ol: {
+        justifyContent: 'center',
+      },
+    },
+  },
   MuiButton: {
     defaultProps: {
       disableElevation: true,

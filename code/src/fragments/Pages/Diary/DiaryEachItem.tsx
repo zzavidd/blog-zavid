@@ -20,7 +20,7 @@ import CategoryDisplay from './CategoryDisplay';
 
 const cardProps: SxProps<Theme> = {
   'height': '100%',
-  'padding': (t) => t.spacing(4),
+  'p': { xs: 2, md: 3 },
   'transition': (t) =>
     t.transitions.create('all', {
       duration: t.transitions.duration.standard,
@@ -52,8 +52,8 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
                 variant={'h3'}
                 component={'span'}
                 color={'primary'}
-                display={'inline'}>
-                Diary Entry #{entry.entryNumber}:&nbsp;
+                display={'block'}>
+                Diary Entry #{entry.entryNumber}:
               </Typography>
               {entry.title}
             </Typography>
