@@ -1,5 +1,5 @@
 import { HistoryEduRounded } from '@mui/icons-material';
-import { Box, Skeleton, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import React from 'react';
 
 import Paragraph from 'components/Typography/Paragraph';
@@ -8,10 +8,10 @@ import Time from 'components/Typography/Time';
 export default function HomeLatest({
   content = '',
   date,
-  isLoading,
   moreHref,
   moreText,
   overline,
+  pretitle,
   title,
 }: HomeLatestProps) {
   const t = useTheme();
@@ -21,52 +21,46 @@ export default function HomeLatest({
       <Box>
         <HistoryEduRounded
           sx={{
+            color: { xs: 'primary.light', md: 'primary.main' },
             float: { xs: 'right', md: 'left' },
-            fontSize: (t) => t.spacing(10),
+            fontSize: { xs: t.spacing(9), md: t.spacing(10) },
             marginTop: { xs: 0, md: -3 },
             mr: 2,
           }}
         />
-
         <Typography variant={'overline'}>{overline}</Typography>
-        {isLoading ? (
-          <React.Fragment>
-            <Skeleton
-              variant={'text'}
-              height={t.spacing(7)}
-              width={t.spacing(13)}
-            />
-            <Skeleton variant={'text'} width={t.spacing(11)} />
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <Typography variant={'h3'}>{title}</Typography>
-            <Time variant={'subtitle1'} date={date!} />
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          <Typography variant={'h3'}>
+            <Typography
+              variant={'h3'}
+              component={'span'}
+              color={'primary'}
+              display={'inline'}
+              mr={2}>
+              {pretitle}
+            </Typography>
+            {title}
+          </Typography>
+          <Time
+            variant={'subtitle1'}
+            date={date!}
+            fontSize={{ xs: 14, md: 16 }}
+          />
+        </React.Fragment>
       </Box>
-      {isLoading ? (
-        <Stack>
-          <Skeleton variant={'text'} />
-          <Skeleton variant={'text'} />
-          <Skeleton variant={'text'} />
-          <Skeleton variant={'text'} width={'60%'} />
-        </Stack>
-      ) : (
-        <Paragraph variant={'text'} moreHref={moreHref} moreText={moreText}>
-          {content}
-        </Paragraph>
-      )}
+      <Paragraph variant={'text'} moreHref={moreHref} moreText={moreText}>
+        {content}
+      </Paragraph>
     </Stack>
   );
 }
 
 interface HomeLatestProps {
-  content?: string;
-  date?: Date | null;
-  isLoading: boolean;
-  moreHref?: string;
+  content: string;
+  date: Date | null;
+  moreHref: string;
   moreText: string;
   overline: string;
-  title?: string;
+  pretitle: string;
+  title: string;
 }

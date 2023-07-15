@@ -1,12 +1,13 @@
 import type { GetServerSideProps } from 'next';
 
 import Layout from 'fragments/Layout';
+import type { DiaryIndexProps } from 'fragments/Pages/Diary/Index/DiaryIndex';
 import DiaryIndex from 'fragments/Pages/Diary/Index/DiaryIndex';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 
-const DiaryIndexPage: NextPageWithLayout = () => {
-  return <DiaryIndex />;
+const DiaryIndexPage: NextPageWithLayout<DiaryIndexProps> = (props) => {
+  return <DiaryIndex {...props} />;
 };
 
 export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
@@ -20,6 +21,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
 
   return {
     props: {
+      params,
       pathDefinition: {
         title: `Diary | ${Settings.SITE_TITLE}`,
         description: page?.excerpt,

@@ -83,9 +83,10 @@ export default function DiarySingle({ params }: DiaryEntryPageProps) {
                 direction={'row'}
                 alignItems={'center'}
                 spacing={1}
-                justifyContent={isMobile ? 'flex-start' : 'center'}>
+                justifyContent={isMobile ? 'flex-start' : 'center'}
+                mt={{ xs: 2, md: 0 }}>
                 <FavoriteRoundedIcon color={'primary'} fontSize={'small'} />
-                <Typography variant={'body2'}>
+                <Typography variant={'body2'} fontSize={{ xs: 12, md: 14 }}>
                   This diary entry is a personal Zavid favourite.
                 </Typography>
               </Stack>

@@ -41,12 +41,12 @@ const typography: TypographyOptions = {
   },
   h3: {
     fontFamily: calistoga.style.fontFamily,
-    fontSize: 30,
+    fontSize: 26,
     fontWeight: 700,
     lineHeight: 1.1,
     [breakpoints.down('md')]: {
-      fontSize: 28,
-      letterSpacing: -1.5,
+      fontSize: 24,
+      letterSpacing: -1,
     },
   },
   h4: {
@@ -92,16 +92,20 @@ const typography: TypographyOptions = {
   preamble: {
     fontFamily: mulish.style.fontFamily,
     fontSize: 16,
-    lineHeight: 1.6,
+    lineHeight: 1.9,
     fontWeight: 500,
+    [breakpoints.down('md')]: {
+      fontSize: 15,
+      lineHeight: 1.6,
+    },
   },
   text: {
     fontFamily: mulish.style.fontFamily,
     fontSize: 19,
-    lineHeight: 1.9,
+    lineHeight: 1.8,
     fontWeight: 500,
     [breakpoints.down('md')]: {
-      fontSize: 16.5,
+      fontSize: 16,
     },
   },
 };

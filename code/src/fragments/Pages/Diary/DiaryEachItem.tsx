@@ -8,6 +8,7 @@ import {
   Tooltip,
   Typography,
   lighten,
+  useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
@@ -37,19 +38,13 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
       <Grid xs={1}>
         <Card sx={cardProps}>
           <CardContent>
-            {entry.isFavourite ? (
-              <Tooltip title={'This is a personal Zavid favourite.'}>
-                <FavoriteRounded
-                  color={'primary'}
-                  sx={{
-                    fontSize: (t) => t.spacing(7),
-                    float: 'right',
-                    ml: 2,
-                  }}
-                />
-              </Tooltip>
-            ) : null}
-            <Time mb={2} variant={'body2'} date={entry.date} />
+            {entry.isFavourite ? <FavoriteSymbol /> : null}
+            <Time
+              mb={2}
+              variant={'body2'}
+              date={entry.date}
+              fontSize={{ xs: 12, md: 14 }}
+            />
             <Typography
               variant={'h3'}
               data-testid={`zb.entry.${entry.entryNumber}`}>
@@ -69,7 +64,7 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
               moreHref={href}
               moreText={`Read Diary Entry #${entry.entryNumber}`}
               readMoreDataTestId={`zb.readmore.${entry.entryNumber}`}
-              TypographyProps={{ fontSize: 18 }}>
+              TypographyProps={{ fontSize: { xs: 16, md: 18 } }}>
               {entry.content}
             </Paragraph>
           </CardContent>
@@ -99,6 +94,22 @@ export function DiaryEachSkeleton() {
         </CardContent>
       </Card>
     </Grid>
+  );
+}
+
+function FavoriteSymbol() {
+  const t = useTheme();
+  return (
+    <Tooltip title={'This is a personal Zavid favourite.'}>
+      <FavoriteRounded
+        color={'primary'}
+        sx={{
+          fontSize: { xs: t.spacing(6), md: t.spacing(7) },
+          float: 'right',
+          ml: 2,
+        }}
+      />
+    </Tooltip>
   );
 }
 

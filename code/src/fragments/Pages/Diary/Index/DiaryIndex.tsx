@@ -1,4 +1,4 @@
-import { Container, Skeleton, Stack, Typography } from '@mui/material';
+import { Container, Stack, Typography } from '@mui/material';
 import type { Grid2Props } from '@mui/material/Unstable_Grid2';
 import Grid from '@mui/material/Unstable_Grid2';
 import { DiaryStatus } from '@prisma/client';
@@ -15,7 +15,7 @@ import DiaryToolbar from './DiaryToolbar';
 
 const DIARY_HEADING = "Zavid's Diary";
 
-export default function DiaryIndex() {
+export default function DiaryIndex(props: DiaryIndexProps) {
   return (
     <Container
       maxWidth={false}
@@ -27,7 +27,7 @@ export default function DiaryIndex() {
             <Typography variant={'h2'} textTransform={'uppercase'}>
               {DIARY_HEADING}
             </Typography>
-            <DiaryPagePreamble />
+            <DiaryPagePreamble {...props} />
           </Stack>
         </Container>
         <DiaryToolbar />
@@ -108,26 +108,16 @@ export function DiaryCollection() {
 /**
  * The preamble for the diary page.
  */
-export function DiaryPagePreamble() {
-  const { data: page, isLoading } = trpc.page.find.useQuery({
-    where: { slug: 'diary' },
-  });
-
-  if (isLoading) {
-    return (
-      <Stack alignItems={'center'} width={'100%'}>
-        <Skeleton variant={'text'} width={'100%'} />
-        <Skeleton variant={'text'} width={'100%'} />
-        <Skeleton variant={'text'} width={'100%'} />
-        <Skeleton variant={'text'} width={'80%'} />
-      </Stack>
-    );
-  }
-
+export function DiaryPagePreamble({ params }: DiaryIndexProps) {
+  const { data: page } = trpc.page.find.useQuery(params);
   if (!page) return null;
   return (
     <Paragraph variant={'preamble'} textAlign={'center'}>
       {page.content}
     </Paragraph>
   );
+}
+
+export interface DiaryIndexProps {
+  params: PageFindInput;
 }

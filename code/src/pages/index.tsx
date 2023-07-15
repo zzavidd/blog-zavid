@@ -9,18 +9,19 @@ import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
 const HomePage: NextPageWithLayout = () => {
-  const { data: entry, isLoading: isEntryLoading } =
-    trpc.diary.custom.latest.useQuery();
+  const { data: entry } = trpc.diary.custom.latest.useQuery();
+
+  if (!entry) return null;
   return (
     <Container maxWidth={'md'} sx={{ padding: (t) => t.spacing(6, 5) }}>
-      <Stack spacing={4} divider={<Divider />}>
+      <Stack spacing={{ xs: 5, md: 4 }} divider={<Divider />}>
         <Introduction />
         <HomeLatest
           overline={'Latest Diary Entry'}
-          title={`#${entry?.entryNumber}: ${entry?.title}`}
-          date={entry?.date}
-          content={entry?.content}
-          isLoading={isEntryLoading}
+          pretitle={`Diary Entry #${entry.entryNumber}:`}
+          title={entry.title}
+          date={entry.date}
+          content={entry.content}
           moreText={'Read my latest diary entry'}
           moreHref={`/diary/${entry?.entryNumber}`}
         />

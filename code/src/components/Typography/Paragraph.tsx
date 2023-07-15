@@ -44,6 +44,7 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
     return (
       <React.Fragment>
         <Typography
+          variant={variant}
           component={'pre'}
           whiteSpace={'pre-wrap'}
           pb={showReadMore ? 4 : 0}
