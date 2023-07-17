@@ -2,7 +2,7 @@ name: backup-prod-database
 
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '0 9 * * 1,4'
   workflow_dispatch:
 
 env:
