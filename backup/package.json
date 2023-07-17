@@ -4,8 +4,7 @@
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
     "start": "ts-node src/main",
-    "tsc": "tsc",
-    "prepare": "husky install"
+    "tsc": "tsc"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.370.0",
