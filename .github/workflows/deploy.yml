@@ -1,4 +1,4 @@
-name: Deploy ZAVID Blog
+name: backup-prod-database
 
 on:
   schedule:
