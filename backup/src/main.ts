@@ -36,7 +36,6 @@ await mysqldump({
     database: ENV.MYSQL_DB,
   },
   dumpToFile: FILE,
-  compressFile: true,
 });
 
 logger.log(`Uploading '${FILE}'...`);
