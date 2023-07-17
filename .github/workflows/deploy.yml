@@ -5,6 +5,17 @@ on:
     - cron: '0 9 * * *'
   workflow_dispatch:
 
+env:
+  APP_KEY_ID: ${{ secrets.APP_KEY_ID }}
+  APP_KEY_VALUE: ${{ secrets.APP_KEY_VALUE }}
+  BUCKET_ENDPOINT: ${{ secrets.BUCKET_ENDPOINT }}
+  BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+  BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
+  MYSQL_USER: ${{ secrets.MYSQL_USER }}
+  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+  MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+  MYSQL_DB: ${{ secrets.MYSQL_DB }}
+
 jobs:
   backup:
     runs-on: ubuntu-latest
