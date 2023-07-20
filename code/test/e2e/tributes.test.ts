@@ -13,7 +13,7 @@ const tribute = createPost({
   type: PostType.ADDENDUM,
 });
 
-test.describe('Tribute', () => {
+test.describe('Tributes', () => {
   test.skip(({ browserName }) => browserName !== 'chromium');
 
   test.describe('Individual', () => {

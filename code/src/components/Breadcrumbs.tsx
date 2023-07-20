@@ -22,7 +22,10 @@ export default function Breadcrumbs({ links, ...props }: BreadcrumbsProps) {
       }
       sx={{ lineHeight: 0.2 }}
       {...props}>
-      {links.map(({ label, href }, key) => {
+      {links.map((segment, key) => {
+        if (!segment) return null;
+
+        const { label, href } = segment;
         if (href) {
           return (
             <Link href={href} underline={'hover'} {...linkProps} key={key}>
@@ -47,5 +50,5 @@ export interface BreadcrumbLink {
 }
 
 interface BreadcrumbsProps extends MuiBreadcrumbsProps {
-  links: BreadcrumbLink[];
+  links: (BreadcrumbLink | null)[];
 }

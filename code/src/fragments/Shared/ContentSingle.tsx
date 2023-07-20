@@ -66,7 +66,7 @@ export default function ContentSingle({
 }
 
 interface ContentSingleProps {
-  breadcrumbLinks: BreadcrumbLink[];
+  breadcrumbLinks: (BreadcrumbLink | null)[];
   content: string;
   contentDate: Date | null;
   contentTitle: string;

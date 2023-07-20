@@ -36,6 +36,20 @@ export const getServerSideProps: GetServerSideProps<TributePageProps> = async (
     const tribute = await helpers.post.find.fetch(params);
     invariant(tribute, 'No tribute found.');
 
+    const domain = await helpers.post.find.fetch({
+      params: {
+        where: {
+          id: tribute.domainId ?? undefined,
+          status: { notIn: [PostStatus.DRAFT] },
+        },
+        select: {
+          title: true,
+          type: true,
+          slug: true,
+        },
+      },
+    });
+
     const session = await unstable_getServerSession(req, res, nextAuthOptions);
     const isAdmin =
       session && session.user?.email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL;
@@ -49,11 +63,12 @@ export const getServerSideProps: GetServerSideProps<TributePageProps> = async (
     return {
       props: {
         params,
+        domain,
         slug,
         pathDefinition: {
           title: `${tribute.title} | ${Settings.SITE_TITLE}`,
           description: tribute.excerpt,
-          url: `/addenda/${tribute.slug}`,
+          url: `/tributes/${tribute.slug}`,
         },
         trpcState: helpers.dehydrate(),
       },
