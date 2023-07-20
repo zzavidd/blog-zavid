@@ -30,8 +30,8 @@ declare global {
 
   interface PageCuratorInfo {
     title: string;
-    date: Date;
-    categories: DiaryCategory[];
+    date: Date | null;
+    categories?: DiaryCategory[];
   }
 
   interface TableField<T> {

@@ -41,9 +41,11 @@ export default function Breadcrumbs({ links, ...props }: BreadcrumbsProps) {
   );
 }
 
+export interface BreadcrumbLink {
+  label: string;
+  href?: string;
+}
+
 interface BreadcrumbsProps extends MuiBreadcrumbsProps {
-  links: {
-    label: string;
-    href?: string;
-  }[];
+  links: BreadcrumbLink[];
 }

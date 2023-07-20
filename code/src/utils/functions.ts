@@ -7,12 +7,10 @@ const DOMAINS = {
   [PostType.POEM]: { collection: 'poetry' },
   [PostType.MUSING]: { collection: 'musings' },
   [PostType.PASSAGE]: { collection: 'passages' },
+  [PostType.ADDENDUM]: { collection: 'tributes' },
 };
 
 export function getDomainFromPostType(post: Post): string {
-  if (post.type === PostType.ADDENDUM) {
-    return '';
-  }
   return DOMAINS[post.type].collection;
 }
 
