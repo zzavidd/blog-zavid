@@ -131,7 +131,7 @@ function Preview({ elementRef }: PreviewProps) {
   }
 
   const Sizes = DIMENSIONS[curatorContext.filterShape];
-
+  const { title, date, categories = [] } = menuContext.info;
   return (
     <ThemeProvider theme={alterTheme}>
       <Stack
@@ -159,7 +159,7 @@ function Preview({ elementRef }: PreviewProps) {
             {curatorContext.isTitleOnly ? (
               <React.Fragment>
                 <Typography color={textColor} fontSize={Sizes.FONT_SIZE_DATE}>
-                  {ZDate.format(menuContext.info.date)}
+                  {ZDate.format(date)}
                 </Typography>
                 <Typography
                   color={textColor}
@@ -169,13 +169,13 @@ function Preview({ elementRef }: PreviewProps) {
                   fontSize={Sizes.FONT_SIZE_TITLE}
                   mt={Sizes.TITLE_MARGIN_TOP}
                   mb={Sizes.TITLE_MARGIN_BOTTOM}>
-                  {menuContext.info.title}
+                  {title}
                 </Typography>
-                {menuContext.info.categories.length ? (
+                {categories.length ? (
                   <CategoryDisplay
                     color={textColor}
                     fontSize={Sizes.FONT_SIZE_CATEGORY}
-                    categories={menuContext.info.categories}
+                    categories={categories}
                     spacing={4}
                     mt={1}
                   />
@@ -202,7 +202,7 @@ function Preview({ elementRef }: PreviewProps) {
               maxWidth={(t) => t.spacing(15)}
               top={(t) => t.spacing(6)}
               left={(t) => t.spacing(6)}>
-              {menuContext.info.title}
+              {title}
             </Typography>
           )}
         </Stack>

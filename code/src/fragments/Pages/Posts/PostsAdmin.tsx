@@ -116,7 +116,7 @@ export default function PostsAdmin() {
           </LinkButton>
         </React.Fragment>
       ),
-      deleteConfirmMessage: `Are you sure you want to delete the post '#${state.selectedEntity?.title}'?`,
+      deleteConfirmMessage: `Are you sure you want to delete the post '${state.selectedEntity?.title}'?`,
       editHref: `/admin/posts/edit/${state.selectedEntity?.id}`,
       isDeleteOpLoading,
       noEntitiesMessage: 'No posts found.',

@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react';
 
 export function NextImage(props: NextImageProps) {
   const [state, setState] = useState({
-    height: 0,
-    width: 0,
+    height: props.height ?? 0,
+    width: props.width ?? 0,
   });
 
   useEffect(() => {
@@ -24,7 +24,12 @@ export function NextImage(props: NextImageProps) {
       {...props}
       {...state}
       placeholder={props.blurDataURL ? 'blur' : 'empty'}
-      style={{ height: '100%', objectFit: 'contain', width: '100%' }}
+      style={{
+        height: '100%',
+        objectFit: 'contain',
+        width: '100%',
+        ...props.style,
+      }}
     />
   );
 }

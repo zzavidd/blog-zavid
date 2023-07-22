@@ -41,7 +41,7 @@ test.describe('Curator', () => {
       test.skip(({ isMobile }) => skipCondition(isMobile));
 
       test('has image', async ({ page }) => {
-        await page.getByTestId('zb.diary.content.0').click(clickOptions);
+        await page.getByTestId('zb.content.0').click(clickOptions);
         await page.getByTestId('zb.curate').click();
 
         const image = page.getByTestId('zb.curator.image');

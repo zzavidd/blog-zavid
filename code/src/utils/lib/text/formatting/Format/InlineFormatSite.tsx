@@ -56,9 +56,24 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
     </Typography>
   ),
   [Emphasis.HYPERLINK]: ([, text, link], key) => (
-    <Link href={link} fontWeight={800} fontSize={'inherit'} key={key}>
-      {text}
+    <Link
+      href={link}
+      fontWeight={800}
+      fontSize={'inherit'}
+      sx={{ textDecorationColor: 'inherit' }}
+      key={key}>
+      {applyEmphasisFormatting(text)}
     </Link>
+  ),
+  [Emphasis.COLOR]: ([, color, text], key) => (
+    <Typography
+      sx={{ color }}
+      display={'inline'}
+      fontWeight={'inherit'}
+      fontSize={'inherit'}
+      key={key}>
+      {applyEmphasisFormatting(text)}
+    </Typography>
   ),
   [Emphasis.HIGHLIGHT]: ([, highlightColor, text], key) => (
     <Typography
@@ -68,15 +83,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
         padding: (t) => t.spacing(1),
       }}
       display={'inline'}
-      fontSize={'inherit'}
-      key={key}>
-      {applyEmphasisFormatting(text)}
-    </Typography>
-  ),
-  [Emphasis.COLOR]: ([, color, text], key) => (
-    <Typography
-      sx={{ color }}
-      display={'inline'}
+      fontWeight={'inherit'}
       fontSize={'inherit'}
       key={key}>
       {applyEmphasisFormatting(text)}
