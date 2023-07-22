@@ -72,14 +72,20 @@ const FormatSite: Record<Section, RenderValue> = {
     </List>
   ),
   [Section.NUMBERED_LIST]: ([, isSpacedBlock, list], key) => (
-    <List disablePadding={!isSpacedBlock} key={key}>
+    <List sx={{ listStyle: 'decimal', marginInlineStart: 6 }} key={key}>
       {list
         .split('\n')
         .filter((e) => e)
         .map((item, key) => {
           const [, value] = item.match(/^(?:[0-9]+[\.\)]|\+)\s*(.*)$/)!;
           return (
-            <ListItem key={key}>
+            <ListItem
+              disablePadding={!isSpacedBlock}
+              sx={{
+                display: 'list-item',
+                paddingInlineStart: 2,
+              }}
+              key={key}>
               <ListItemText>{applyEmphasisFormatting(value)}</ListItemText>
             </ListItem>
           );

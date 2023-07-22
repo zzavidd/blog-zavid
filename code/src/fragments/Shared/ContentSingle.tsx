@@ -3,7 +3,7 @@ import { Container, Divider, Stack, Typography } from '@mui/material';
 
 import type { BreadcrumbLink } from 'components/Breadcrumbs';
 import Breadcrumbs from 'components/Breadcrumbs';
-import { Signature } from 'components/Image';
+import { NextImage, Signature } from 'components/Image';
 import { LinkIconButton } from 'components/Link';
 import Paragraph from 'components/Typography/Paragraph';
 import Time from 'components/Typography/Time';
@@ -19,6 +19,7 @@ export default function ContentSingle({
   curatorInfo,
   dateFirst,
   editHref,
+  image,
   Navigation,
   TitleExtras,
   ContentExtras,
@@ -52,6 +53,15 @@ export default function ContentSingle({
             {TitleExtras}
           </Stack>
           <Stack spacing={5}>
+            {image ? (
+              <NextImage
+                src={image}
+                alt={contentTitle}
+                style={{ borderRadius: 12, objectFit: 'cover' }}
+                height={720}
+                width={1080}
+              />
+            ) : null}
             <Paragraph variant={'text'} dataTestId={'zb.content'}>
               {content}
             </Paragraph>
@@ -73,6 +83,7 @@ interface ContentSingleProps {
   curatorInfo: PageCuratorInfo;
   editHref: string;
   dateFirst?: boolean;
+  image?: string | null;
   Navigation?: React.ReactNode;
   TitleExtras?: React.ReactNode;
   ContentExtras?: React.ReactNode;
