@@ -16,7 +16,7 @@
     "test": "playwright test -c ./test/playwright.config.ts",
     "test:prod": "playwright test -c ./test/playwright.prod.ts",
     "release": "../devops/scripts/release.sh",
-    "eslint": "eslint --ext .ts,.tsx src/ --cache",
+    "eslint": "eslint --ext .ts,.tsx . --cache",
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
     "prettier:write": "pnpm run prettier --write",
     "ops:ingest": "ts-node -r tsconfig-paths/register ops/ingestion",
