@@ -20,7 +20,10 @@ export default class ContentReporter implements Reporter {
     }
   }
 
-  public onEnd(): void {
-    logger.info('Finished.');
+  public onTestEnd(_: TestCase, result: TestResult): void {
+    console.info();
+    result.errors.forEach(({ message }) => {
+      logger.error(message);
+    });
   }
 }

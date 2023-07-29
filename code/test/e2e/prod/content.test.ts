@@ -19,7 +19,7 @@ test.describe.configure({ timeout: 60 * 1000 });
 test.describe('Content', () => {
   test.skip(({ browserName }) => browserName !== 'chromium');
 
-  test('Check pages', async ({ page }) => {
+  test('check page links', async ({ page }) => {
     const entries = await prisma.diary.findMany({
       select: {
         entryNumber: true,
