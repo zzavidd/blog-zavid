@@ -1,15 +1,28 @@
-namespace Logger {
-  export function info(message: any): void {
-    console.info(`${format(message)} [INFO]`);
-  }
+import 'colors';
 
-  export function error(message: any): void {
-    console.error(`${format(message)} [ERROR]`);
-  }
-}
+const logger = {
+  info(message: any): void {
+    const prefix = `[INFO ${time()}]`.green;
+    console.info(`${prefix}: ${message}`);
+  },
+  debug(message: any): void {
+    const prefix = `[DEBUG ${time()}]`.cyan;
+    console.info(`${prefix}: ${message}`);
+  },
+  warn(message: any): void {
+    const prefix = `[WARN ${time()}]`.yellow;
+    console.warn(`${prefix}: ${message}`);
+  },
+  error(message: any): void {
+    const prefix = `[ERROR ${time()}]`.red;
+    console.info(`${prefix}: ${message}`);
+  },
+};
 
-function format(message: any): string {
-  const timestamp = new Intl.DateTimeFormat('en-CA', {
+export default logger;
+
+function time(): string {
+  return new Intl.DateTimeFormat('en-CA', {
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric',
@@ -19,7 +32,4 @@ function format(message: any): string {
     hour12: false,
     timeZone: 'Europe/London',
   }).format(new Date());
-  return `${timestamp} - ${message}`;
 }
-
-export default Logger;
