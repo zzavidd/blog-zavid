@@ -1,19 +1,21 @@
 import { defineConfig } from '@playwright/test';
 
-import projects from './test/projects';
+import { testProjects } from './utils/projects';
 
 export default defineConfig({
   expect: { timeout: 5000 },
   forbidOnly: !!process.env.CI,
-  outputDir: './test/results',
+  globalSetup: require.resolve('./utils/setup'),
+  outputDir: './results',
   preserveOutput: 'never',
-  projects,
+  projects: testProjects,
   quiet: true,
   reporter: process.env.CI
-    ? [['list'], ['junit', { outputFile: './test/results/results.xml' }]]
-    : [['list']],
+    ? [['list'], ['junit', { outputFile: './results/results.xml' }]]
+    : 'list',
+  reportSlowTests: null,
   retries: process.env.CI ? 2 : 0,
-  testDir: './test',
+  testIgnore: '**/prod/**',
   timeout: (process.env.CI ? 30 : 15) * 1000,
   use: {
     baseURL: 'http://localhost:4000',
