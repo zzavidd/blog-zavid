@@ -4,8 +4,8 @@ cd code || exit 1
 
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 if [[ "$BRANCH" == "production" ]]; then
-  echo 'Skipping pre-push hooks for production';
-  exit 0;
+  echo 'Skipping pre-commit hooks for production'
+  exit 0
 fi
 
 pnpm run eslint --max-warnings 0 || exit 1
