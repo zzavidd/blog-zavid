@@ -50,7 +50,7 @@ export default function PostsAdmin() {
       onSuccess: () => {
         void trpcContext.post.findMany.refetch();
         const { title } = state.selectedEntity!;
-        const message = `You've deleted post entry #${title}.`;
+        const message = `You've deleted post '${title}'.`;
         enqueueSnackbar(message, { variant: 'success' });
         setState((s) => ({ ...s, isDeleteModalVisible: false }));
       },

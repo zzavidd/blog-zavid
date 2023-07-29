@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import {
+  PostCreateOneSchema,
   PostFindFirstSchema,
   PostFindManySchema,
   PostUpdateOneSchema,
@@ -26,6 +27,14 @@ const postRouter = router({
       }),
     )
     .query(({ input }) => PostAPI.find(input.params, input.options)),
+  create: procedure
+    .input(
+      z.object({
+        post: PostCreateOneSchema,
+        isPublish: z.boolean().optional(),
+      }),
+    )
+    .mutation(({ input }) => PostAPI.create(input.post, input.isPublish)),
   update: procedure
     .input(
       z.object({

@@ -38,7 +38,7 @@ test.describe('Console', () => {
     await prisma.subscriber.upsert({
       create: subscriber,
       update: subscriber,
-      where: { id: 1 },
+      where: { email: subscriber.email },
     });
   });
 
