@@ -2,13 +2,13 @@ import { faker } from '@faker-js/faker/locale/en_GB';
 import { expect, test } from '@playwright/test';
 import { PostStatus, PostType } from '@prisma/client';
 
-import { createPostProse } from '../../ops/ingestion/factory';
+import { createPost } from '../../ops/ingestion/factory';
 import prisma from '../../src/server/prisma';
 import Settings from '../../src/utils/settings';
 
 const id = 1;
 const slug = faker.lorem.slug();
-const tribute = createPostProse({
+const tribute = createPost({
   slug,
   type: PostType.ADDENDUM,
 });
