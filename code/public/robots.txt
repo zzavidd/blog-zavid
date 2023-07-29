@@ -1,10 +1,7 @@
 User-agent: *
 Disallow: /admin/
 Disallow: /api/
-Disallow: /auth
-Disallow: /search
 Disallow: /subscriptions/
-Disallow: /privacy
 
 Sitemap: https://zavidegbue.com/sitemap.xml
 Sitemap: https://www.zavidegbue.com/sitemap.xml
