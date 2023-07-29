@@ -16,7 +16,7 @@ import { useDiaryCategories } from 'utils/hooks';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
-const DiaryEntryAdd: NextPageWithLayout = () => {
+const DiaryEntryAdd: NextPageWithLayout<DiaryAddProps> = ({ params }) => {
   const [state, setState] = useState(InitialDiaryFormState);
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -39,12 +39,7 @@ const DiaryEntryAdd: NextPageWithLayout = () => {
         enqueueSnackbar(e.message, { variant: 'error' });
       },
     });
-  const { data: latestEntry } = trpc.diary.find.useQuery({
-    params: {
-      orderBy: { entryNumber: 'desc' },
-      select: { entryNumber: true },
-    },
-  });
+  const { data: latestEntry } = trpc.diary.find.useQuery(params);
 
   useEffect(() => {
     if (!latestEntry) return;
@@ -89,15 +84,17 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
   ctx,
 ) => {
   const helpers = getServerSideHelpers(ctx);
-  await helpers.diary.find.prefetch({
+  const params: DiaryFindInput = {
     params: {
       orderBy: { entryNumber: 'desc' },
       select: { entryNumber: true },
     },
-  });
+  };
+  await helpers.diary.find.prefetch(params);
 
   return {
     props: {
+      params,
       pathDefinition: {
         title: 'Add New Diary Entry',
       },
@@ -107,3 +104,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
 
 DiaryEntryAdd.getLayout = Layout.addPartials;
 export default DiaryEntryAdd;
+
+interface DiaryAddProps extends AppPageProps {
+  params: DiaryFindInput;
+}

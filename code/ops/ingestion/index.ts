@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker/locale/en_GB';
 import type { Prisma } from '@prisma/client';
-import { PostType } from '@prisma/client';
+import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
 
 import prisma from 'server/prisma';
 
@@ -16,7 +16,7 @@ import { createDiaryEntry, createPost, createSubscriber } from './factory';
 async function ingestDiaryEntries(): Promise<void> {
   const categories: Prisma.DiaryCategoryUncheckedCreateInput[] = [];
 
-  for (let i = 1; i <= 7; i++) {
+  for (let i = 1; i <= 5; i++) {
     categories.push({ id: i, name: faker.lorem.word() });
   }
 
@@ -32,6 +32,7 @@ async function ingestDiaryEntries(): Promise<void> {
         .map((c) => ({ id: c.id }));
       const entry = createDiaryEntry({
         entryNumber: i + 1,
+        status: DiaryStatus.PUBLISHED,
         categories: {
           connect: categoryIds,
         },
@@ -45,8 +46,26 @@ async function ingestDiaryEntries(): Promise<void> {
 async function ingestPosts(): Promise<void> {
   const posts: Prisma.PostCreateInput[] = [];
 
+  for (let i = 1; i <= 10; i++) {
+    posts.push(
+      createPost({
+        status: PostStatus.PUBLISHED,
+        type: PostType.REVERIE,
+        typeId: i,
+      }),
+    );
+    posts.push(
+      createPost(
+        { status: PostStatus.PUBLISHED, type: PostType.MUSING, typeId: i },
+        'poem',
+      ),
+    );
+  }
+
   for (let i = 1; i <= 5; i++) {
-    posts.push(createPost({ type: PostType.PASSAGE }));
+    posts.push(
+      createPost({ status: PostStatus.PRIVATE, type: PostType.PASSAGE }),
+    );
   }
 
   await prisma.post.deleteMany({});

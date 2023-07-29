@@ -79,9 +79,13 @@ export default function PostForm({
     }
   }
 
-  function onDateChange(date: dayjs.Dayjs | null) {
+  function onDateChange(value: dayjs.Dayjs | null) {
+    // Sets value to 12th hour to prevent any unwanted date mishaps.
+    const date = value?.set('hour', 12).toDate();
     setContext((c) =>
-      immutate(c, { post: { datePublished: { $set: date?.toDate() } } }),
+      immutate(c, {
+        post: { datePublished: { $set: date } },
+      }),
     );
   }
 

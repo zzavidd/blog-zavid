@@ -28,6 +28,7 @@ export function createDiaryEntry(
 
 export function createPost(
   overrides: Partial<Prisma.PostCreateInput> = {},
+  contentType: 'poem' | 'prose' = 'prose',
 ): Prisma.PostCreateInput {
   const {
     status = faker.helpers.enumValue(PostStatus),
@@ -35,7 +36,13 @@ export function createPost(
     slug,
   } = overrides;
   const title = ZString.toTitleCase(faker.lorem.words({ min: 1, max: 5 }));
-  const content = faker.lorem.paragraphs({ min: 5, max: 10 }, '\n\n');
+  const content =
+    contentType === 'prose'
+      ? faker.lorem.paragraphs({ min: 5, max: 10 }, '\n\n')
+      : Array(faker.number.int({ max: 12 }))
+          .fill(null)
+          .map(() => faker.lorem.lines({ min: 4, max: 8 }))
+          .join('\n\n');
 
   return {
     title,

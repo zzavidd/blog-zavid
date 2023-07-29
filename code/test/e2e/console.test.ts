@@ -4,7 +4,7 @@ import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
 
 import {
   createDiaryEntry,
-  createPost,
+  createPostProse,
   createSubscriber,
 } from '../../ops/ingestion/factory';
 import prisma from '../../src/server/prisma';
@@ -13,7 +13,7 @@ const entryNumber = 1;
 const slug = faker.lorem.slug();
 
 const diary = createDiaryEntry({ entryNumber, status: DiaryStatus.PUBLISHED });
-const passage = createPost({
+const passage = createPostProse({
   type: PostType.PASSAGE,
   status: PostStatus.PRIVATE,
   slug,

@@ -7,7 +7,7 @@ export const InitialPostFormState: PostFormState = {
     title: '',
     datePublished: undefined,
     status: PostStatus.DRAFT,
-    type: PostType.PASSAGE,
+    type: PostType.REVERIE,
     content: '',
     excerpt: '',
     slug: '',

@@ -2,18 +2,15 @@ import { faker } from '@faker-js/faker/locale/en_GB';
 import { expect, test } from '@playwright/test';
 import { PostStatus, PostType } from '@prisma/client';
 
-import { createPostProse } from '../../ops/ingestion/factory';
+import { createPost } from '../../ops/ingestion/factory';
 import prisma from '../../src/server/prisma';
 import Settings from '../../src/utils/settings';
 
 const id = 1;
 const slug = faker.lorem.slug();
-const tribute = createPostProse({
-  slug,
-  type: PostType.ADDENDUM,
-});
+const passage = createPost({ slug, type: PostType.MUSING }, 'poem');
 
-test.describe('Tributes', () => {
+test.describe('Musing', () => {
   test.skip(({ browserName }) => browserName !== 'chromium');
 
   test.describe('Individual', () => {
@@ -24,21 +21,21 @@ test.describe('Tributes', () => {
     });
 
     [
-      { status: PostStatus.PUBLISHED, expect404: true },
+      { status: PostStatus.PUBLISHED },
       { status: PostStatus.PRIVATE },
       { status: PostStatus.PROTECTED, expect404: true },
       { status: PostStatus.DRAFT, expect404: true },
     ].forEach(({ status, expect404 }) => {
       test(`can view ${status} page`, async ({ page }) => {
-        const payload = { ...tribute, id, status };
+        const payload = { ...passage, id, status };
         await prisma.post.upsert({
           create: payload,
           update: payload,
           where: { id },
         });
-        await page.goto(`/tributes/${slug}`);
+        await page.goto(`/musings/${slug}`);
 
-        const expectedTitle = expect404 ? '404: Not Found' : tribute.title;
+        const expectedTitle = expect404 ? '404: Not Found' : passage.title;
         await expect(page).toHaveTitle(
           `${expectedTitle} | ${Settings.SITE_TITLE}`,
         );

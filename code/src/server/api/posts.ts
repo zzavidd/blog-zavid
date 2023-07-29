@@ -35,6 +35,17 @@ export default class PostAPI {
     return entry;
   }
 
+  public static async create(
+    args: Prisma.PostCreateArgs,
+    isPublish = false,
+  ): Promise<Post> {
+    const post = await prisma.post.create(args);
+    if (isPublish) {
+      //   void Emailer.notifyNewDiaryEntry(diary);
+    }
+    return post;
+  }
+
   public static async update(
     args: Prisma.PostUpdateArgs,
     isPublish = false,
