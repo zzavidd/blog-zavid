@@ -34,7 +34,7 @@ namespace ZDate {
     return parts.join('');
   }
 
-  export function formatISO(date?: Date | string): string {
+  export function formatISO(date?: Date | string | null): string {
     if (!date) return '';
     return new Intl.DateTimeFormat('sv-SE').format(new Date(date));
   }
