@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import { PostStatus, PostType } from '@prisma/client';
 import type { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
@@ -7,6 +8,7 @@ import Layout from 'fragments/Layout';
 import type { MusingPageProps } from 'fragments/Pages/Posts/Musing';
 import Musing from 'fragments/Pages/Posts/Musing';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
+import ZDate from 'utils/lib/date';
 import Logger from 'utils/logger';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
@@ -27,10 +29,8 @@ export const getServerSideProps: GetServerSideProps<MusingPageProps> = async (
       params: {
         where: {
           slug,
+          status: { notIn: [PostStatus.DRAFT] },
           type: PostType.MUSING,
-          status: {
-            notIn: [PostStatus.DRAFT],
-          },
         },
       },
     };
@@ -47,11 +47,40 @@ export const getServerSideProps: GetServerSideProps<MusingPageProps> = async (
     const isVisibleToAdmin = isAdmin && musing.status === PostStatus.PROTECTED;
     invariant(isVisibleToAll || isVisibleToAdmin, 'No musing found.');
 
+    const createNavigatorParams = (
+      op: keyof Prisma.DateTimeNullableFilter,
+    ): PostFindInput => ({
+      params: {
+        select: { title: true, typeId: true, slug: true },
+        orderBy: {
+          datePublished: op === 'gt' ? 'asc' : 'desc',
+        },
+        where: {
+          datePublished: { [op]: ZDate.formatISO(musing.datePublished) },
+          status: { in: [PostStatus.PRIVATE, PostStatus.PUBLISHED] },
+          type: PostType.MUSING,
+        },
+      },
+    });
+    const previousParams = createNavigatorParams('lt');
+    const nextParams = createNavigatorParams('gt');
+    const indexParams: IndexInput = { id: musing.id, type: musing.type };
+
     await helpers.post.find.prefetch(params);
+    await helpers.post.find.prefetch(previousParams);
+    await helpers.post.find.prefetch(nextParams);
+    await helpers.post.index.prefetch({ id: musing.id, type: musing.type });
+
+    if (musing.status !== PostStatus.PUBLISHED) {
+      res.setHeader('X-Robots-Tag', 'noindex');
+    }
 
     return {
       props: {
         params,
+        previousParams,
+        nextParams,
+        indexParams,
         slug,
         pathDefinition: {
           title: `${musing.title} | ${Settings.SITE_TITLE}`,

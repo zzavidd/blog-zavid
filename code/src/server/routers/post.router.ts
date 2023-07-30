@@ -1,3 +1,4 @@
+import { PostType } from '@prisma/client';
 import { z } from 'zod';
 
 import {
@@ -46,6 +47,14 @@ const postRouter = router({
   delete: procedure
     .input(z.array(z.number()))
     .mutation(({ input }) => PostAPI.delete(input)),
+  index: procedure
+    .input(
+      z.object({
+        id: z.number(),
+        type: z.nativeEnum(PostType),
+      }),
+    )
+    .query(({ input }) => PostAPI.index(input.id, input.type)),
 });
 
 export default postRouter;

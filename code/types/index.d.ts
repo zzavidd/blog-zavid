@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { z } from 'zod';
 
 import type { RouterInput } from 'server/routers/_app.router';
-import type { zFindOptions } from 'utils/validators';
+import type { zFindOptions, zIndexInput } from 'utils/validators';
 
 declare global {
   interface AppPageProps {
@@ -16,6 +16,7 @@ declare global {
   type PostFindInput = RouterInput['post']['find'];
   type DiaryFindInput = RouterInput['diary']['find'];
   type PageFindInput = RouterInput['page']['find'];
+  type IndexInput = z.infer<typeof zIndexInput>;
 
   interface PathDefinition {
     title: string;

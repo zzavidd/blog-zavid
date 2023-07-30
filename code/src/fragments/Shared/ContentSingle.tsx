@@ -1,10 +1,11 @@
-import { Edit } from '@mui/icons-material';
+import { ChevronLeft, ChevronRight, Edit } from '@mui/icons-material';
+import type { LinkProps } from '@mui/material';
 import { Container, Divider, Stack, Typography } from '@mui/material';
 
 import type { BreadcrumbLink } from 'components/Breadcrumbs';
 import Breadcrumbs from 'components/Breadcrumbs';
 import { NextImage, Signature } from 'components/Image';
-import { LinkIconButton } from 'components/Link';
+import { Link, LinkIconButton } from 'components/Link';
 import Paragraph from 'components/Typography/Paragraph';
 import Time from 'components/Typography/Time';
 import { AdminLock } from 'fragments/AdminGateway';
@@ -20,7 +21,7 @@ export default function ContentSingle({
   dateFirst,
   editHref,
   image,
-  Navigation,
+  NavigationProps,
   TitleExtras,
   ContentExtras,
   PageExtras,
@@ -31,7 +32,9 @@ export default function ContentSingle({
         <Stack spacing={4} divider={<Divider />}>
           <Stack alignContent={'center'} spacing={4}>
             <Breadcrumbs links={breadcrumbLinks} />
-            {Navigation}
+            {NavigationProps ? (
+              <ContentNavigation {...NavigationProps} />
+            ) : null}
           </Stack>
           <Stack spacing={2} position={'relative'} useFlexGap={true}>
             <AdminLock>
@@ -75,6 +78,54 @@ export default function ContentSingle({
   );
 }
 
+export function ContentNavigation({ previous, next }: ContentNavigationProps) {
+  const linkProps: LinkProps = {
+    color: 'inherit',
+    fontSize: { xs: 11, md: 12 },
+    fontWeight: 500,
+    lineHeight: 1.4,
+  };
+
+  if (!previous && !next) return null;
+
+  return (
+    <Stack direction={'row'} justifyContent={'space-between'} spacing={4}>
+      {previous ? (
+        <Stack direction={'row'} alignItems={'center'} spacing={1} flex={1}>
+          <ChevronLeft />
+          <Link href={previous.href} {...linkProps}>
+            <Typography {...linkProps} color={'primary'} fontWeight={900}>
+              {previous.headline}:
+            </Typography>
+            {previous.subline}
+          </Link>
+        </Stack>
+      ) : null}
+      {next ? (
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          justifyContent={'flex-end'}
+          spacing={1}
+          flex={1}>
+          <Link href={next.href} {...linkProps} textAlign={'right'}>
+            <Typography {...linkProps} color={'primary'} fontWeight={900}>
+              {next.headline}:
+            </Typography>
+            {next.subline}
+          </Link>
+          <ChevronRight />
+        </Stack>
+      ) : null}
+    </Stack>
+  );
+}
+
+export interface ContentNavigationProps {
+  previous: NavInfo | null;
+  next: NavInfo | null;
+}
+
 interface ContentSingleProps {
   breadcrumbLinks: (BreadcrumbLink | null)[];
   content: string;
@@ -84,8 +135,14 @@ interface ContentSingleProps {
   editHref: string;
   dateFirst?: boolean;
   image?: string | null;
-  Navigation?: React.ReactNode;
+  NavigationProps?: ContentNavigationProps;
   TitleExtras?: React.ReactNode;
   ContentExtras?: React.ReactNode;
   PageExtras?: React.ReactNode;
+}
+
+export interface NavInfo {
+  headline: string;
+  subline: string;
+  href: string;
 }

@@ -1,24 +1,31 @@
-import {
-  ChevronLeft,
-  ChevronRight,
-  FavoriteRounded,
-} from '@mui/icons-material';
-import type { LinkProps } from '@mui/material';
+import { FavoriteRounded } from '@mui/icons-material';
 import { Chip, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import type { BreadcrumbLink } from 'components/Breadcrumbs';
-import { Link } from 'components/Link';
 import ShareBlock from 'components/ShareBlock';
 import Paragraph from 'components/Typography/Paragraph';
 import CategoryDisplay from 'fragments/Pages/Diary/CategoryDisplay';
-import ContentSingle from 'fragments/Shared/ContentSingle';
+import type {
+  ContentNavigationProps,
+  NavInfo,
+} from 'fragments/Shared/ContentSingle';
+import ContentSingle, {
+  ContentNavigation,
+} from 'fragments/Shared/ContentSingle';
 import PagePlaceholder from 'fragments/Shared/Placeholders/PagePlaceholder';
 import { DiaryTitleFormat, formatDiaryEntryTitle } from 'utils/functions';
 import { trpc } from 'utils/trpc';
 
-export default function DiarySingle(props: DiaryEntryPageProps) {
-  const { data: diaryEntry } = trpc.diary.find.useQuery(props.params);
+export default function DiarySingle({
+  params,
+  previousParams,
+  nextParams,
+}: DiaryEntryPageProps) {
+  const { data: diaryEntry } = trpc.diary.find.useQuery(params);
+  const { data: previous } = trpc.diary.find.useQuery(previousParams);
+  const { data: next } = trpc.diary.find.useQuery(nextParams);
+
   if (!diaryEntry) return <PagePlaceholder />;
 
   const halfTitle = formatDiaryEntryTitle(diaryEntry, DiaryTitleFormat.Partial);
@@ -58,10 +65,15 @@ export default function DiarySingle(props: DiaryEntryPageProps) {
     </React.Fragment>
   );
 
+  const NavigationProps: ContentNavigationProps = {
+    previous: createNavigationInfo(previous),
+    next: createNavigationInfo(next),
+  };
+
   const ContextExtras = (
     <React.Fragment>
       <Paragraph variant={'text'}>{diaryEntry.footnote}</Paragraph>
-      <DiaryNavigation {...props} />
+      <ContentNavigation {...NavigationProps} />
       <Stack direction={'row'} spacing={2} flexWrap={'wrap'} useFlexGap={true}>
         {(diaryEntry.tags as string[]).map((tag, index) => (
           <Chip
@@ -91,7 +103,7 @@ export default function DiarySingle(props: DiaryEntryPageProps) {
       curatorInfo={pageCuratorInfo}
       dateFirst={true}
       editHref={`/admin/diary/edit/${diaryEntry.id}`}
-      Navigation={<DiaryNavigation {...props} />}
+      NavigationProps={NavigationProps}
       TitleExtras={TitleExtras}
       ContentExtras={ContextExtras}
       PageExtras={PageExtras}
@@ -99,53 +111,16 @@ export default function DiarySingle(props: DiaryEntryPageProps) {
   );
 }
 
-function DiaryNavigation({ previousParams, nextParams }: DiaryEntryPageProps) {
-  const { data: previous } = trpc.diary.find.useQuery(previousParams);
-  const { data: next } = trpc.diary.find.useQuery(nextParams);
-
-  const linkProps: LinkProps = {
-    color: 'inherit',
-    fontSize: { xs: 11, md: 12 },
-    fontWeight: 500,
-    lineHeight: 1.4,
-  };
-
-  if (!previous && !next) return null;
-
-  return (
-    <Stack direction={'row'} justifyContent={'space-between'} spacing={4}>
-      {previous ? (
-        <Stack direction={'row'} alignItems={'center'} spacing={1} flex={1}>
-          <ChevronLeft />
-          <Link href={`/diary/${previous.entryNumber}`} {...linkProps}>
-            <Typography {...linkProps} color={'primary'} fontWeight={900}>
-              Diary Entry #{previous.entryNumber}:
-            </Typography>
-            {previous.title}
-          </Link>
-        </Stack>
-      ) : null}
-      {next ? (
-        <Stack
-          direction={'row'}
-          alignItems={'center'}
-          justifyContent={'flex-end'}
-          spacing={1}
-          flex={1}>
-          <Link
-            href={`/diary/${next.entryNumber}`}
-            {...linkProps}
-            textAlign={'right'}>
-            <Typography {...linkProps} color={'primary'} fontWeight={900}>
-              Diary Entry #{next.entryNumber}:
-            </Typography>
-            {next.title}
-          </Link>
-          <ChevronRight />
-        </Stack>
-      ) : null}
-    </Stack>
-  );
+function createNavigationInfo(
+  entity?: DiaryWithCategories | null,
+): NavInfo | null {
+  return entity
+    ? {
+        headline: `Diary Entry #${entity.entryNumber}`,
+        subline: entity.title,
+        href: `/diary/${entity.entryNumber}`,
+      }
+    : null;
 }
 
 export interface DiaryEntryPageProps extends AppPageProps {

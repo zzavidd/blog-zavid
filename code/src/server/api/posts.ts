@@ -1,4 +1,5 @@
-import type { Post, Prisma } from '@prisma/client';
+import type { PostType } from '@prisma/client';
+import { PostStatus, type Post, type Prisma } from '@prisma/client';
 
 import prisma from 'server/prisma';
 import { truncateText } from 'utils/lib/text';
@@ -59,5 +60,18 @@ export default class PostAPI {
 
   public static async delete(ids: number[]): Promise<void> {
     await prisma.post.deleteMany({ where: { id: { in: ids } } });
+  }
+
+  public static async index(id: number, type: PostType): Promise<number> {
+    const posts = await prisma.post.findMany({
+      where: {
+        status: { in: [PostStatus.PRIVATE, PostStatus.PUBLISHED] },
+        type,
+      },
+      orderBy: {
+        datePublished: 'asc',
+      },
+    });
+    return posts.findIndex((p) => p.id === id) + 1;
   }
 }

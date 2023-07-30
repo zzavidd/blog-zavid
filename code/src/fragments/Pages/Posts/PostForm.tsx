@@ -155,21 +155,23 @@ export default function PostForm({
                 ))}
               </Select>
             </FormControl>
-            <FormControl>
-              <TextField
-                name={'typeId'}
-                type={'number'}
-                label={'Type ID.:'}
-                value={post.typeId ?? undefined}
-                onChange={onTextChange}
-                placeholder={'No.'}
-                inputProps={{
-                  inputMode: 'numeric',
-                  min: 1,
-                  pattern: '[0-9]*',
-                }}
-              />
-            </FormControl>
+            <Fade in={post.type === PostType.EPISTLE}>
+              <FormControl>
+                <TextField
+                  name={'typeId'}
+                  type={'number'}
+                  label={'Type ID.:'}
+                  value={post.typeId ?? null}
+                  onChange={onTextChange}
+                  placeholder={'No.'}
+                  inputProps={{
+                    inputMode: 'numeric',
+                    min: 1,
+                    pattern: '[0-9]*',
+                  }}
+                />
+              </FormControl>
+            </Fade>
           </FormRow>
           <FormControl fullWidth={true}>
             <TextField
