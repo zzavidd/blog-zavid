@@ -8,6 +8,7 @@ import {
   PostUpdateOneSchema,
 } from 'schemas/schemas';
 import PostAPI from 'server/api/posts';
+import { zEmailPreviewType } from 'server/emails';
 import { procedure, router } from 'server/trpc';
 import { zFindOptions } from 'utils/validators';
 
@@ -55,6 +56,11 @@ const postRouter = router({
       }),
     )
     .query(({ input }) => PostAPI.index(input.id, input.type)),
+  custom: router({
+    preview: procedure
+      .input(z.object({ id: z.number(), type: zEmailPreviewType }))
+      .mutation(({ input }) => PostAPI.publish(input.id, input.type)),
+  }),
 });
 
 export default postRouter;

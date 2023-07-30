@@ -89,6 +89,7 @@ export function EmailFooter(props: EmailFooterProps) {
   return (
     <MjmlSection
       backgroundColor={EmailTheme.Color.Dark.Secondary}
+      padding={24}
       textAlign={'center'}>
       <MjmlColumn width={'70%'}>
         {props.showUnsubscribe ? (
@@ -179,9 +180,9 @@ function EmailFooterText(props: IMjmlTextProps) {
     <MjmlText
       align={'center'}
       color={EmailTheme.Color.Dark.Text}
-      fontSize={14}
+      fontSize={12}
       padding={'12px 0'}
-      lineHeight={24}
+      lineHeight={18}
       {...props}
     />
   );

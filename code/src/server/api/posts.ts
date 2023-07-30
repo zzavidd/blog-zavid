@@ -1,6 +1,10 @@
 import type { PostType } from '@prisma/client';
 import { PostStatus, type Post, type Prisma } from '@prisma/client';
+import nodemailer from 'nodemailer';
+import invariant from 'tiny-invariant';
 
+import type { EmailPreviewType } from 'server/emails';
+import Emailer from 'server/emails';
 import prisma from 'server/prisma';
 import { truncateText } from 'utils/lib/text';
 
@@ -42,7 +46,7 @@ export default class PostAPI {
   ): Promise<Post> {
     const post = await prisma.post.create(args);
     if (isPublish) {
-      //   void Emailer.notifyNewDiaryEntry(diary);
+      void Emailer.notifyNewPost(post);
     }
     return post;
   }
@@ -53,13 +57,26 @@ export default class PostAPI {
   ): Promise<Post> {
     const post = await prisma.post.update(args);
     if (isPublish) {
-      //   void Emailer.notifyNewDiaryEntry(diary);
+      void Emailer.notifyNewPost(post);
     }
     return post;
   }
 
   public static async delete(ids: number[]): Promise<void> {
     await prisma.post.deleteMany({ where: { id: { in: ids } } });
+  }
+
+  public static async publish(
+    id: number,
+    previewType: EmailPreviewType,
+  ): Promise<string> {
+    const post = await this.find({ where: { id } });
+    invariant(post, 'No post with ID found.');
+    const [info] = await Emailer.notifyNewPost(post, {
+      isPreview: true,
+      previewType,
+    });
+    return nodemailer.getTestMessageUrl(info) || '';
   }
 
   public static async index(id: number, type: PostType): Promise<number> {

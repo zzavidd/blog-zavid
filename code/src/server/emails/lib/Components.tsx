@@ -12,9 +12,9 @@ export function EmailTitle({ children, ...props }: IMjmlTextProps) {
     <MjmlText
       {...props}
       fontFamily={EmailTheme.Font.Title}
-      fontSize={16}
-      letterSpacing={-1}
-      lineHeight={40}>
+      fontSize={14}
+      letterSpacing={-1.5}
+      lineHeight={32}>
       <h1 style={{ margin: 0 }}>{children}</h1>
     </MjmlText>
   );
@@ -51,7 +51,7 @@ export function EmailParagraph({ children, ...props }: EmailParagraphProps) {
     <MjmlText
       fontFamily={EmailTheme.Font.Body}
       fontSize={16}
-      lineHeight={28}
+      lineHeight={24}
       padding={0}
       {...props}>
       {ZText.formatText(children, { forEmails: true })}

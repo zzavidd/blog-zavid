@@ -1,5 +1,6 @@
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml';
-import type { Diary, Subscriber } from '@prisma/client';
+import { capitalize } from '@mui/material';
+import type { Diary, Post, Subscriber } from '@prisma/client';
 import { convert } from 'html-to-text';
 import mjml2html from 'mjml';
 import nodemailer from 'nodemailer';
@@ -8,8 +9,10 @@ import React from 'react';
 import { v4 as UUIDv4 } from 'uuid';
 import { z } from 'zod';
 
+import PostAPI from 'server/api/posts';
 import SubscriberAPI from 'server/api/subscribers';
 import { SubscriptionType } from 'utils/enum';
+import { DOMAINS } from 'utils/functions';
 import Logger from 'utils/logger';
 
 import {
@@ -19,6 +22,7 @@ import {
   TRANSPORTER,
 } from './constants';
 import DiaryEmail from './templates/Diary';
+import PostEmail from './templates/Post';
 
 const adminRecipient: TestRecipient = {
   email: process.env.NEXT_PUBLIC_GOOGLE_EMAIL!,
@@ -44,7 +48,28 @@ namespace Emailer {
       DiaryEmail,
       { diaryEntry },
       subject,
-      SubscriptionType.Diary,
+      SubscriptionType.DIARY,
+      options,
+    );
+  }
+
+  /**
+   * Send an email to all subscribers of new post.
+   * @param post The post for the email.
+   * @param options The notification options.
+   */
+  export async function notifyNewPost(
+    post: Post,
+    options: NotifyOptions = {},
+  ): Promise<SMTPTransport.SentMessageInfo[]> {
+    const { singular: type } = DOMAINS[post.type];
+    const index = await PostAPI.index(post.id, post.type);
+    const subject = `${capitalize(type)} #${index}: ${post.title}`;
+    return sendEmail(
+      PostEmail,
+      { post, index },
+      subject,
+      SubscriptionType[post.type as keyof typeof SubscriptionType],
       options,
     );
   }

@@ -9,7 +9,9 @@ import { applyEmphasisFormatting } from '../Emphasis';
 
 const FormatEmail: Record<Section, RenderValue> = {
   [Section.PARAGRAPH]: ([, text], key, options) => (
-    <p key={key}>{applyEmphasisFormatting(text, options)}</p>
+    <p style={{ marginBottom: 24, whiteSpace: 'pre-wrap' }} key={key}>
+      {applyEmphasisFormatting(text, options)}
+    </p>
   ),
   [Section.HEADING]: ([, text], key) => (
     <h2 style={{ fontFamily: EmailTheme.Font.Title }} key={key}>

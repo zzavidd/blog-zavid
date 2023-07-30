@@ -49,7 +49,8 @@ export default function PostForm({
     { label: `${submitText} only`, isPublish: false },
     {
       label: `${submitText} & Publish`,
-      isPublish: true,
+      isPublish:
+        post.type !== PostType.PASSAGE && post.type !== PostType.ADDENDUM,
       disabled: post.status !== PostStatus.PUBLISHED,
     },
   ];

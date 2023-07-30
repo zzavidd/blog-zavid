@@ -1,13 +1,13 @@
 import type { Diary, Post } from '@prisma/client';
 import { PostType } from '@prisma/client';
 
-const DOMAINS = {
-  [PostType.REVERIE]: { collection: 'reveries' },
-  [PostType.EPISTLE]: { collection: 'epistles' },
-  [PostType.POEM]: { collection: 'poetry' },
-  [PostType.MUSING]: { collection: 'musings' },
-  [PostType.PASSAGE]: { collection: 'passages' },
-  [PostType.ADDENDUM]: { collection: 'tributes' },
+export const DOMAINS = {
+  [PostType.REVERIE]: { collection: 'reveries', singular: 'reverie' },
+  [PostType.EPISTLE]: { collection: 'epistles', singular: 'epistle' },
+  [PostType.POEM]: { collection: 'poetry', singular: 'poem' },
+  [PostType.MUSING]: { collection: 'musings', singular: 'musing' },
+  [PostType.PASSAGE]: { collection: 'passages', singular: 'passage' },
+  [PostType.ADDENDUM]: { collection: 'tributes', singular: 'tribute' },
 };
 
 export function getDomainFromPostType(post: Post): string {

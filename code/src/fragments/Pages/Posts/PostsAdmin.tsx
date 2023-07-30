@@ -44,7 +44,7 @@ export default function PostsAdmin() {
     },
   });
 
-  // const { mutate: notifyPost } = trpc.posts.custom.preview.useMutation();
+  const { mutate: notifyPost } = trpc.post.custom.preview.useMutation();
   const { mutate: deletePost, isLoading: isDeleteOpLoading } =
     trpc.post.delete.useMutation({
       onSuccess: () => {
@@ -67,29 +67,29 @@ export default function PostsAdmin() {
 
   function onPreviewEtherealClick() {
     if (!state.selectedEntity) return;
-    // notifyPost(
-    //   { id: state.selectedEntity.id, type: 'Ethereal' },
-    //   {
-    //     onSuccess: (url) => {
-    //       window.open(url, '_blank');
-    //     },
-    //   },
-    // );
+    notifyPost(
+      { id: state.selectedEntity.id, type: 'Ethereal' },
+      {
+        onSuccess: (url) => {
+          window.open(url, '_blank');
+        },
+      },
+    );
   }
 
   function onPreviewGmailClick() {
     if (!state.selectedEntity) return;
-    // notifyPost(
-    //   { id: state.selectedEntity.id, type: 'Gmail' },
-    //   {
-    //     onSuccess: () => {
-    //       enqueueSnackbar(
-    //         `Successfully sent "${state.selectedEntity?.title}" to administrator email.`,
-    //         { variant: 'success' },
-    //       );
-    //     },
-    //   },
-    // );
+    notifyPost(
+      { id: state.selectedEntity.id, type: 'Gmail' },
+      {
+        onSuccess: () => {
+          enqueueSnackbar(
+            `Successfully sent "${state.selectedEntity?.title}" to administrator email.`,
+            { variant: 'success' },
+          );
+        },
+      },
+    );
   }
 
   const additionalMenuItems: MoreMenuItem[] = [
