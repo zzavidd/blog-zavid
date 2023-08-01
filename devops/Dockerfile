@@ -8,7 +8,7 @@ WORKDIR /var/www/$WORKDIR/code
 
 COPY ./code/pnpm-lock.yaml ./
 
-RUN pnpm fetch
+RUN pnpm fetch --prod
 
 COPY ./code ./
 
