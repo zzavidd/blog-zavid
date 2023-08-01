@@ -53,7 +53,7 @@ export default function Musing({
         <Typography
           fontSize={13}
           fontWeight={900}
-          textAlign={'center'}
+          textAlign={{xs: 'left', md: 'center'}}
           lineHeight={0.5}
           order={-1}>
           Musing #{index}:
