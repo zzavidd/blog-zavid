@@ -21,8 +21,8 @@ import {
   prodTransportOptions,
   TRANSPORTER,
 } from './constants';
-import DiaryEmail from './templates/Diary';
-import PostEmail from './templates/Post';
+import DiaryEmail from './templates/DiaryEmail';
+import PostEmail from './templates/PostEmail';
 
 const adminRecipient: TestRecipient = {
   email: process.env.NEXT_PUBLIC_GOOGLE_EMAIL!,

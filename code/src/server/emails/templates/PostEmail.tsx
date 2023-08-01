@@ -4,7 +4,6 @@ import type { Post } from '@prisma/client';
 
 import { SubscriptionType } from 'utils/enum';
 import { DOMAINS } from 'utils/functions';
-import * as zText from 'utils/lib/text';
 import Settings from 'utils/settings';
 
 import {
@@ -24,20 +23,20 @@ import {
 } from '../lib/Fragments';
 
 export default function PostEmail({ post, index, token }: PostEmailProps) {
-  const { singular: type, collection: domain } = DOMAINS[post.type];
-  const title = `${capitalize(type)} #${index}: ${post.title}`;
+  const { singular, collection: domain } = DOMAINS[post.type];
+  const title = `${capitalize(singular)} #${index}: ${post.title}`;
   const href = `${Settings.DOMAIN}/${domain}/${post.slug}`;
 
   const contentType =
     Object.values(SubscriptionType)[
-      Object.keys(SubscriptionType).indexOf(type)
+      Object.keys(SubscriptionType).indexOf(post.type)
     ];
   return (
     <Mjml>
-      <EmailHead title={title} preview={zText.extractExcerpt(post.content)} />
+      <EmailHead title={title} preview={post.excerpt} />
       <EmailBody>
         <EmailHeader>
-          New {type} on ZAVID.&nbsp;
+          New {singular} on ZAVID.&nbsp;
           <Anchor href={href}>Visit on site.</Anchor>
         </EmailHeader>
         <Main>

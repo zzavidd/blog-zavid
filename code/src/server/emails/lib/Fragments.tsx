@@ -35,7 +35,17 @@ export function EmailHead({ title, preview }: EmailHeadProps) {
   return (
     <MjmlHead>
       <MjmlTitle>{title}</MjmlTitle>
-      <MjmlPreview>{preview}</MjmlPreview>
+      <MjmlPreview>
+        {preview}
+        {Array(100)
+          .fill(null)
+          .map((_, i) => (
+            <React.Fragment key={i}>
+              &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847;
+              &#847;
+            </React.Fragment>
+          ))}
+      </MjmlPreview>
       <MjmlAttributes>
         <MjmlAll name={'color-scheme'} content={'light,dark'} />
         <MjmlAll name={'supported-color-schemes'} content={'light,dark'} />
@@ -101,12 +111,12 @@ export function EmailFooter({
           <React.Fragment>
             <EmailFooterText>
               You are receiving this email because you are subscribed to
-              my&nbsp;{contentType}. You can&nbsp;
+              my&nbsp;{contentType}. You can manage your&nbsp;
               <Anchor
                 href={`${Settings.DOMAIN}/subscriptions?token=${unsubscribeToken}`}>
-                manage your subscription preferences here
+                subscription preferences
               </Anchor>
-              .
+              &nbsp;to change or unsubscribe.
             </EmailFooterText>
           </React.Fragment>
         ) : null}
@@ -119,8 +129,9 @@ export function EmailFooter({
                     href={`${Settings.DOMAIN}${url}`}
                     style={{
                       color: EmailTheme.Color.Dark.Text,
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: 600,
+                      textDecoration: 'none',
                     }}>
                     {title}
                   </Anchor>
