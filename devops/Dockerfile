@@ -12,7 +12,7 @@ RUN pnpm fetch --prod
 
 COPY ./code ./
 
-RUN pnpm install --offline
+RUN pnpm install --prod --offline
 
 RUN pnpm prisma generate
 RUN pnpm prisma migrate deploy
