@@ -139,14 +139,14 @@ jobs:
 workflows:
   inspect_test_deploy:
     jobs:
-      # - inspect: *no_production
-      # - build: *no_production
-      # - test: *no_production
+      - inspect: *no_production
+      - build: *no_production
+      - test: *no_production
       - deploy_staging:
-          # requires:
-          #   - inspect
-          #   - build
-          #   - test
+          requires:
+            - inspect
+            - build
+            - test
           filters:
             branches:
               only:
