@@ -1,6 +1,7 @@
 import { Mjml, MjmlText } from '@faire/mjml-react';
 import React from 'react';
 
+import { SubscriptionType } from 'utils/enum';
 import * as zText from 'utils/lib/text';
 import Settings from 'utils/settings';
 
@@ -55,9 +56,9 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
           <EmailParagraph>{diaryEntry.footnote}</EmailParagraph>
         </Main>
         <EmailFooter
+          contentType={SubscriptionType.DIARY}
           showUnsubscribe={true}
           unsubscribeToken={token}
-          url={href}
         />
       </EmailBody>
     </Mjml>

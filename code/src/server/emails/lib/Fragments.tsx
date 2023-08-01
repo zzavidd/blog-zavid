@@ -16,6 +16,7 @@ import {
 } from '@faire/mjml-react';
 import React from 'react';
 
+import type { SubscriptionType } from 'utils/enum';
 import Settings from 'utils/settings';
 
 import EmailTheme, { BODY_FONTS, TITLE_FONTS } from '../theme';
@@ -85,29 +86,27 @@ export function Main({ children }: IMjmlSectionProps) {
   );
 }
 
-export function EmailFooter(props: EmailFooterProps) {
+export function EmailFooter({
+  contentType,
+  showUnsubscribe,
+  unsubscribeToken,
+}: EmailFooterProps) {
   return (
     <MjmlSection
       backgroundColor={EmailTheme.Color.Dark.Secondary}
       padding={24}
       textAlign={'center'}>
       <MjmlColumn width={'70%'}>
-        {props.showUnsubscribe ? (
+        {showUnsubscribe ? (
           <React.Fragment>
             <EmailFooterText>
-              You are receiving this email because you subscribed to my mailing
-              list. If you want to change your subscription preferences or
-              unsubscribe,&nbsp;
+              You are receiving this email because you are subscribed to
+              my&nbsp;{contentType}. You can&nbsp;
               <Anchor
-                href={`${Settings.DOMAIN}/subscriptions?token=${props.unsubscribeToken}`}>
-                click here
+                href={`${Settings.DOMAIN}/subscriptions?token=${unsubscribeToken}`}>
+                manage your subscription preferences here
               </Anchor>
               .
-            </EmailFooterText>
-            <EmailFooterText>
-              Got an issue with the link? Copy and paste this URL into your
-              browser:&nbsp;
-              <Anchor href={props.url}>{props.url}</Anchor>
             </EmailFooterText>
           </React.Fragment>
         ) : null}
@@ -194,7 +193,7 @@ interface EmailHeadProps {
 }
 
 interface EmailFooterProps extends IMjmlSectionProps {
+  contentType: SubscriptionType;
   showUnsubscribe: boolean;
   unsubscribeToken?: string;
-  url?: string;
 }

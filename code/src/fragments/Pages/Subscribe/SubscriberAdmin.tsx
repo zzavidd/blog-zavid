@@ -76,7 +76,7 @@ export default function SubscriberAdmin() {
       ...state,
       additionalMenuItems: [
         {
-          label: 'Unsubscribe',
+          label: 'Manage Subscriptions',
           Icon: UnsubscribeIcon,
           onClick: navigateToUnsubscribePage,
         },

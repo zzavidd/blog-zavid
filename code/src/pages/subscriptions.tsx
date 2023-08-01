@@ -8,6 +8,7 @@ import {
   InitialSubscriptionsState,
   SubscriptionsContext,
 } from 'fragments/Pages/Subscribe/Subscriptions/Subscriptions.context';
+import { SubscriptionType } from 'utils/enum';
 import Logger from 'utils/logger';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
@@ -24,10 +25,21 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
   useEffect(() => {
     if (!subscriber) return;
 
+    const subscriptions = Object.values(SubscriptionType).reduce(
+      (acc, type) => {
+        acc[type] =
+          (subscriber.subscriptions as Record<SubscriptionType, boolean>)[
+            type
+          ] ?? false;
+        return acc;
+      },
+      {} as Record<SubscriptionType, boolean>,
+    );
+
     setState((s) =>
       immutate(s, {
         subscriber: {
-          $set: { ...subscriber, subscriptions: subscriber.subscriptions! },
+          $set: { ...subscriber, subscriptions },
         },
       }),
     );
