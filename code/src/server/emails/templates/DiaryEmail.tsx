@@ -1,7 +1,9 @@
 import { Mjml, MjmlText } from '@faire/mjml-react';
+import type { Diary } from '@prisma/client';
 import React from 'react';
 
 import { SubscriptionType } from 'utils/enum';
+import { createDiaryNavigationInfo } from 'utils/functions';
 import * as zText from 'utils/lib/text';
 import Settings from 'utils/settings';
 
@@ -17,13 +19,25 @@ import {
   EmailFooter,
   EmailHead,
   EmailHeader,
+  EmailNavigation,
   Main,
   SignatureImage,
 } from '../lib/Fragments';
 
-export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
+export default function DiaryEmail({
+  diaryEntry,
+  previous,
+  next,
+  token,
+}: DiaryEmailProps) {
   const title = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
   const href = `${Settings.DOMAIN}/diary/${diaryEntry.entryNumber}`;
+
+  const navigationProps: ContentNavigationProps = {
+    previous: createDiaryNavigationInfo(previous),
+    next: createDiaryNavigationInfo(next),
+  };
+
   return (
     <Mjml>
       <EmailHead
@@ -54,6 +68,7 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
             <SignatureImage />
           </MjmlText>
           <EmailParagraph>{diaryEntry.footnote}</EmailParagraph>
+          <EmailNavigation {...navigationProps} />
         </Main>
         <EmailFooter
           contentType={SubscriptionType.DIARY}
@@ -67,5 +82,7 @@ export default function DiaryEmail({ diaryEntry, token }: DiaryEmailProps) {
 
 interface DiaryEmailProps {
   diaryEntry: DiaryWithCategories;
+  previous: Diary;
+  next: Diary;
   token: string;
 }

@@ -9,10 +9,15 @@ import React from 'react';
 import { v4 as UUIDv4 } from 'uuid';
 import { z } from 'zod';
 
+import DiaryAPI from 'server/api/diary';
 import PostAPI from 'server/api/posts';
 import SubscriberAPI from 'server/api/subscribers';
 import { SubscriptionType } from 'utils/enum';
-import { DOMAINS } from 'utils/functions';
+import {
+  createDiaryNavigatorParams,
+  createPostNavigatorParams,
+  DOMAINS,
+} from 'utils/functions';
 import Logger from 'utils/logger';
 
 import {
@@ -39,14 +44,20 @@ namespace Emailer {
    * @param diaryEntry The subject diary entry for the email.
    * @param options The notification options.
    */
-  export function notifyNewDiaryEntry(
+  export async function notifyNewDiaryEntry(
     diaryEntry: Diary,
     options: NotifyOptions = {},
   ): Promise<SMTPTransport.SentMessageInfo[]> {
     const subject = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
+
+    const getDiaryNavigation = (number: number): Promise<Diary | null> =>
+      DiaryAPI.find(createDiaryNavigatorParams(number).params);
+    const previous = await getDiaryNavigation(diaryEntry.entryNumber - 1);
+    const next = await getDiaryNavigation(diaryEntry.entryNumber + 1);
+
     return sendEmail(
       DiaryEmail,
-      { diaryEntry },
+      { diaryEntry, previous, next },
       subject,
       SubscriptionType.DIARY,
       options,
@@ -65,9 +76,15 @@ namespace Emailer {
     const { singular: type } = DOMAINS[post.type];
     const index = await PostAPI.index(post.id, post.type);
     const subject = `${capitalize(type)} #${index}: ${post.title}`;
+
+    const getPostNavigation = (op: DateOp): Promise<Post | null> =>
+      PostAPI.find(createPostNavigatorParams(post, op).params);
+    const previous = await getPostNavigation('lt');
+    const next = await getPostNavigation('gt');
+
     return sendEmail(
       PostEmail,
-      { post, index },
+      { post, previous, next, index },
       subject,
       SubscriptionType[post.type as keyof typeof SubscriptionType],
       options,

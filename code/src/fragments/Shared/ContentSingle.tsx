@@ -121,11 +121,6 @@ export function ContentNavigation({ previous, next }: ContentNavigationProps) {
   );
 }
 
-export interface ContentNavigationProps {
-  previous: NavInfo | null;
-  next: NavInfo | null;
-}
-
 interface ContentSingleProps {
   breadcrumbLinks: (BreadcrumbLink | null)[];
   content: string;
@@ -139,10 +134,4 @@ interface ContentSingleProps {
   TitleExtras?: React.ReactNode;
   ContentExtras?: React.ReactNode;
   PageExtras?: React.ReactNode;
-}
-
-export interface NavInfo {
-  headline: string;
-  subline: string;
-  href: string;
 }

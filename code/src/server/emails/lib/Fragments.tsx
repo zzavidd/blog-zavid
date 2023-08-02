@@ -174,6 +174,57 @@ export function EmailFooter({
   );
 }
 
+export function EmailNavigation({ previous, next }: ContentNavigationProps) {
+  return (
+    <MjmlTable align={'center'} padding={0}>
+      <tr>
+        {[previous, next].map((entry, i) => {
+          const isLeft = i === 0;
+          const textAlign = isLeft ? 'left' : 'right';
+          // eslint-disable-next-line react/function-component-definition
+          const Chevron = () =>
+            isLeft ? <span>&lt;</span> : <span>&gt;</span>;
+          const children: JSX.Element[] = [
+            <td
+              key={i}
+              style={{
+                textAlign,
+                width: 18,
+              }}>
+              {entry ? <Chevron /> : null}
+            </td>,
+            <td style={{ maxWidth: 110, textAlign }} key={i}>
+              {entry ? (
+                <Anchor
+                  href={`${Settings.DOMAIN}${entry.href}`}
+                  style={{
+                    color: 'inherit',
+                    lineHeight: '10px',
+                    textDecoration: 'none',
+                  }}>
+                  <span
+                    style={{
+                      color: EmailTheme.Color.Light.Hyperlink,
+                    }}>
+                    {entry.headline}
+                  </span>
+                  <br />
+                  {entry.subline}
+                </Anchor>
+              ) : null}
+            </td>,
+          ];
+          return (
+            <React.Fragment key={i}>
+              {isLeft ? children : children.reverse()}
+            </React.Fragment>
+          );
+        })}
+      </tr>
+    </MjmlTable>
+  );
+}
+
 export function SignatureImage() {
   return (
     <img

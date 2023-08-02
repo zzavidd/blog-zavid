@@ -3,7 +3,7 @@ import { capitalize } from '@mui/material';
 import type { Post } from '@prisma/client';
 
 import { SubscriptionType } from 'utils/enum';
-import { DOMAINS } from 'utils/functions';
+import { DOMAINS, createPostNavigationInfo } from 'utils/functions';
 import Settings from 'utils/settings';
 
 import {
@@ -18,11 +18,18 @@ import {
   EmailFooter,
   EmailHead,
   EmailHeader,
+  EmailNavigation,
   Main,
   SignatureImage,
 } from '../lib/Fragments';
 
-export default function PostEmail({ post, index, token }: PostEmailProps) {
+export default function PostEmail({
+  post,
+  previous,
+  next,
+  index,
+  token,
+}: PostEmailProps) {
   const { singular, collection: domain } = DOMAINS[post.type];
   const title = `${capitalize(singular)} #${index}: ${post.title}`;
   const href = `${Settings.DOMAIN}/${domain}/${post.slug}`;
@@ -31,6 +38,11 @@ export default function PostEmail({ post, index, token }: PostEmailProps) {
     Object.values(SubscriptionType)[
       Object.keys(SubscriptionType).indexOf(post.type)
     ];
+
+  const navigationProps: ContentNavigationProps = {
+    previous: createPostNavigationInfo(previous, index - 1),
+    next: createPostNavigationInfo(next, index + 1),
+  };
   return (
     <Mjml>
       <EmailHead title={title} preview={post.excerpt} />
@@ -47,6 +59,7 @@ export default function PostEmail({ post, index, token }: PostEmailProps) {
           <MjmlText>
             <SignatureImage />
           </MjmlText>
+          <EmailNavigation {...navigationProps} />
         </Main>
         <EmailFooter
           showUnsubscribe={true}
@@ -60,6 +73,8 @@ export default function PostEmail({ post, index, token }: PostEmailProps) {
 
 interface PostEmailProps {
   post: Post;
+  previous: Post;
+  next: Post;
   index: number;
   token: string;
 }

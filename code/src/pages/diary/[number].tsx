@@ -7,6 +7,7 @@ import Layout from 'fragments/Layout';
 import type { DiaryEntryPageProps } from 'fragments/Pages/Diary/DiarySingle';
 import DiarySingle from 'fragments/Pages/Diary/DiarySingle';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
+import { createDiaryNavigatorParams } from 'utils/functions';
 import ZString from 'utils/lib/string';
 import * as ZText from 'utils/lib/text';
 import Logger from 'utils/logger';
@@ -33,17 +34,8 @@ export const getServerSideProps: GetServerSideProps<
       },
     };
 
-    const createNavigatorParams = (entryNumber: number): DiaryFindInput => ({
-      params: {
-        where: {
-          entryNumber,
-          status: { in: [DiaryStatus.PRIVATE, DiaryStatus.PUBLISHED] },
-        },
-        select: { title: true, entryNumber: true },
-      },
-    });
-    const previousParams = createNavigatorParams(entryNumber - 1);
-    const nextParams = createNavigatorParams(entryNumber + 1);
+    const previousParams = createDiaryNavigatorParams(entryNumber - 1);
+    const nextParams = createDiaryNavigatorParams(entryNumber + 1);
 
     const helpers = getServerSideHelpers(ctx);
 

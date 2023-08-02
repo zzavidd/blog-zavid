@@ -1,5 +1,5 @@
 import type { TableCellProps } from '@mui/material';
-import type { Diary, DiaryCategory } from '@prisma/client';
+import type { Diary, DiaryCategory, Prisma } from '@prisma/client';
 import type { Dispatch, SetStateAction } from 'react';
 import type { z } from 'zod';
 
@@ -17,6 +17,17 @@ declare global {
   type DiaryFindInput = RouterInput['diary']['find'];
   type PageFindInput = RouterInput['page']['find'];
   type IndexInput = z.infer<typeof zIndexInput>;
+
+  interface ContentNavigationProps {
+    previous: NavInfo | null;
+    next: NavInfo | null;
+  }
+
+  interface NavInfo {
+    headline: string;
+    subline: string;
+    href: string;
+  }
 
   interface PathDefinition {
     title: string;
@@ -45,6 +56,8 @@ declare global {
   type DiaryWithCategories = Diary & {
     categories: DiaryCategory[];
   };
+
+  type DateOp = keyof Pick<Prisma.DateTimeNullableFilter, 'gt' | 'lt'>;
 
   type ReactUseState<T> = [T, Dispatch<SetStateAction<T>>];
 }

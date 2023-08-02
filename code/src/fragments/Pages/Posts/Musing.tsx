@@ -1,14 +1,10 @@
 import { Typography } from '@mui/material';
-import type { Post } from '@prisma/client';
 
-import type {
-  ContentNavigationProps,
-  NavInfo,
-} from 'fragments/Shared/ContentSingle';
 import ContentSingle, {
   ContentNavigation,
 } from 'fragments/Shared/ContentSingle';
 import PagePlaceholder from 'fragments/Shared/Placeholders/PagePlaceholder';
+import { createPostNavigationInfo } from 'utils/functions';
 import { trpc } from 'utils/trpc';
 
 export default function Musing({
@@ -35,8 +31,8 @@ export default function Musing({
   };
 
   const NavigationProps: ContentNavigationProps = {
-    previous: createNavigationInfo(previous, index - 1),
-    next: createNavigationInfo(next, index + 1),
+    previous: createPostNavigationInfo(previous, index - 1),
+    next: createPostNavigationInfo(next, index + 1),
   };
 
   return (
@@ -53,7 +49,7 @@ export default function Musing({
         <Typography
           fontSize={13}
           fontWeight={900}
-          textAlign={{xs: 'left', md: 'center'}}
+          textAlign={{ xs: 'left', md: 'center' }}
           lineHeight={0.5}
           order={-1}>
           Musing #{index}:
@@ -61,19 +57,6 @@ export default function Musing({
       }
     />
   );
-}
-
-function createNavigationInfo(
-  post: Post | null | undefined,
-  index: number,
-): NavInfo | null {
-  return post
-    ? {
-        headline: `Musing #${index}`,
-        subline: post.title,
-        href: `/musings/${post.slug}`,
-      }
-    : null;
 }
 
 export interface MusingPageProps extends AppPageProps {

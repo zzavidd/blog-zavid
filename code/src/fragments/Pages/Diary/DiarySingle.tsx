@@ -6,15 +6,15 @@ import type { BreadcrumbLink } from 'components/Breadcrumbs';
 import ShareBlock from 'components/ShareBlock';
 import Paragraph from 'components/Typography/Paragraph';
 import CategoryDisplay from 'fragments/Pages/Diary/CategoryDisplay';
-import type {
-  ContentNavigationProps,
-  NavInfo,
-} from 'fragments/Shared/ContentSingle';
 import ContentSingle, {
   ContentNavigation,
 } from 'fragments/Shared/ContentSingle';
 import PagePlaceholder from 'fragments/Shared/Placeholders/PagePlaceholder';
-import { DiaryTitleFormat, formatDiaryEntryTitle } from 'utils/functions';
+import {
+  DiaryTitleFormat,
+  createDiaryNavigationInfo,
+  formatDiaryEntryTitle,
+} from 'utils/functions';
 import { trpc } from 'utils/trpc';
 
 export default function DiarySingle({
@@ -66,8 +66,8 @@ export default function DiarySingle({
   );
 
   const NavigationProps: ContentNavigationProps = {
-    previous: createNavigationInfo(previous),
-    next: createNavigationInfo(next),
+    previous: createDiaryNavigationInfo(previous),
+    next: createDiaryNavigationInfo(next),
   };
 
   const ContextExtras = (
@@ -109,18 +109,6 @@ export default function DiarySingle({
       PageExtras={PageExtras}
     />
   );
-}
-
-function createNavigationInfo(
-  entity?: DiaryWithCategories | null,
-): NavInfo | null {
-  return entity
-    ? {
-        headline: `Diary Entry #${entity.entryNumber}`,
-        subline: entity.title,
-        href: `/diary/${entity.entryNumber}`,
-      }
-    : null;
 }
 
 export interface DiaryEntryPageProps extends AppPageProps {
