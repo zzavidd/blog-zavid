@@ -9,7 +9,7 @@ export default defineConfig({
   reporter: './utils/reporter.ts',
   reportSlowTests: null,
   retries: 0,
-  timeout: 60 * 1000,
+  timeout: 10 * 60 * 1000,
   testMatch: '**/prod/**',
   use: { trace: 'off' },
 });

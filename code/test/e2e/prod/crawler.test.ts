@@ -16,7 +16,7 @@ const prisma = new PrismaClient({
 test.use({ baseURL: 'https://zavidegbue.com' });
 test.describe.configure({ timeout: 60 * 1000 });
 
-test.describe('Content', () => {
+test.describe('Crawler', () => {
   test.skip(({ browserName }) => browserName !== 'chromium');
 
   test('Check pages', async ({ page }) => {
