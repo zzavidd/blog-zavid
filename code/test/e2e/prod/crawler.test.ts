@@ -1,8 +1,9 @@
+import { capitalize } from '@mui/material';
 import { expect, test } from '@playwright/test';
 import type { Diary } from '@prisma/client';
-import { DiaryStatus, PrismaClient } from '@prisma/client';
+import { DiaryStatus, PostType, PrismaClient } from '@prisma/client';
 
-import { formatDiaryEntryTitle } from 'utils/functions';
+import { DOMAINS, formatDiaryEntryTitle } from 'utils/functions';
 import Settings from 'utils/settings';
 
 const prisma = new PrismaClient({
@@ -19,8 +20,9 @@ test.describe.configure({ timeout: 60 * 1000 });
 test.describe('Crawler', () => {
   test.skip(({ browserName }) => browserName !== 'chromium');
 
-  test('Check pages', async ({ page }) => {
+  test('crawl diary entries', async ({ page }) => {
     const entries = await prisma.diary.findMany({
+      orderBy: { entryNumber: 'asc' },
       select: {
         entryNumber: true,
         title: true,
@@ -50,5 +52,45 @@ test.describe('Crawler', () => {
         }
       });
     }
+  });
+
+  test.describe('crawl posts', () => {
+    Object.values(PostType).forEach((type) => {
+      const { singular, collection } = DOMAINS[type];
+
+      test(collection, async ({ page }) => {
+        const posts = await prisma.post.findMany({
+          orderBy: { datePublished: 'asc' },
+          select: { title: true, slug: true },
+          where: { status: DiaryStatus.PUBLISHED, type },
+        });
+
+        let index = 0;
+
+        for await (const post of posts) {
+          index++;
+          const title = `${capitalize(singular)} #${index}: ${post.title}`;
+          await test.step(title, async () => {
+            await page.goto(`/${collection}/${post.title}`);
+            await expect(page).toHaveTitle(`${title} | ${Settings.SITE_TITLE}`);
+
+            for await (const link of await page.locator('pre a').all()) {
+              const text = await link.textContent();
+              const href = await link.getAttribute('href');
+              expect(text).toBeTruthy();
+              expect(href).toBeTruthy();
+
+              const message = `Text '${text}' with URL '${href}' failed to navigate.\nSee ${page.url()}.`;
+              try {
+                const response = await page.request.get(href!);
+                expect.soft(response.ok(), { message }).toBe(true);
+              } catch (e) {
+                expect.soft(false, { message }).toBe(true);
+              }
+            }
+          });
+        }
+      });
+    });
   });
 });
