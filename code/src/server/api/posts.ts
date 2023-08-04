@@ -91,4 +91,38 @@ export default class PostAPI {
     });
     return posts.findIndex((p) => p.id === id) + 1;
   }
+
+  public static async countTypes(): Promise<Record<PostType, number>> {
+    const typesByCount = await prisma.post.groupBy({
+      by: ['type'],
+      _count: {
+        type: true,
+      },
+    });
+
+    return typesByCount.reduce(
+      (acc, a) => {
+        acc[a.type] = a._count.type;
+        return acc;
+      },
+      {} as Record<PostType, number>,
+    );
+  }
+
+  public static async countStatuses(): Promise<Record<PostStatus, number>> {
+    const statusesByCount = await prisma.post.groupBy({
+      by: ['status'],
+      _count: {
+        status: true,
+      },
+    });
+
+    return statusesByCount.reduce(
+      (acc, a) => {
+        acc[a.status] = a._count.status;
+        return acc;
+      },
+      {} as Record<PostStatus, number>,
+    );
+  }
 }

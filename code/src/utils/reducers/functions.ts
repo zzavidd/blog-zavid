@@ -18,3 +18,10 @@ export function setDiarySieve(
 ): AppState {
   return immutate(state, { diary: action.payload });
 }
+
+export function setPostAdminSieve(
+  state: AppState,
+  action: PayloadAction<Spec<AppState['postAdmin']>>,
+): AppState {
+  return immutate(state, { postAdmin: action.payload });
+}

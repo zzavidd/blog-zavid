@@ -13,9 +13,11 @@ import {
   TableViewContext,
   createInitialTableViewState,
 } from 'fragments/Shared/TableView.context';
+import { useAppSelector } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
 import { usePostsTableFields } from './PostsAdmin.hooks';
+import PostsAdminToolbar from './PostsAdminToolbar';
 
 const initialState = createInitialTableViewState<Post>({
   sort: {
@@ -26,6 +28,7 @@ const initialState = createInitialTableViewState<Post>({
 
 export default function PostsAdmin() {
   const [state, setState] = useState(initialState);
+  const { filter } = useAppSelector((state) => state.postAdmin);
   const trpcContext = trpc.useContext();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -33,6 +36,7 @@ export default function PostsAdmin() {
   const result = trpc.post.findMany.useQuery({
     params: {
       orderBy: { [state.sort.property!]: state.sort.order },
+      where: filter,
       select: {
         id: true,
         title: true,
@@ -97,6 +101,7 @@ export default function PostsAdmin() {
       label: 'Preview Ethereal',
       Icon: EmailIcon,
       onClick: onPreviewEtherealClick,
+      disabled: process.env.NEXT_PUBLIC_APP_ENV === 'production',
     },
     {
       label: 'Preview Gmail',
@@ -131,6 +136,7 @@ export default function PostsAdmin() {
   return (
     <TableViewContext.Provider value={context}>
       <TableView />
+      <PostsAdminToolbar />
     </TableViewContext.Provider>
   );
 }

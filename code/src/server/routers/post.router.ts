@@ -56,6 +56,10 @@ const postRouter = router({
       }),
     )
     .query(({ input }) => PostAPI.index(input.id, input.type)),
+  count: router({
+    status: procedure.query(() => PostAPI.countStatuses()),
+    type: procedure.query(() => PostAPI.countTypes()),
+  }),
   custom: router({
     preview: procedure
       .input(z.object({ id: z.number(), type: zEmailPreviewType }))

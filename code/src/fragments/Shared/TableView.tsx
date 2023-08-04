@@ -33,11 +33,11 @@ import { ActionDialog } from 'components/Dialog';
 import type { MoreMenuItem } from './TableView.context';
 import { useTableContext } from './TableView.context';
 
-export default function TableView<T extends { id: number }>() {
-  const [context, setContext] = useTableContext<T>();
+export default function TableView<TEntity extends { id: number }>() {
+  const [context, setContext] = useTableContext<TEntity>();
   const { buttons, pageTitle } = context;
 
-  function setSortProperty(property: keyof T | null) {
+  function setSortProperty(property: keyof TEntity | null) {
     setContext((s) => {
       const order =
         s.sort.order === Prisma.SortOrder.asc
@@ -94,10 +94,10 @@ export default function TableView<T extends { id: number }>() {
   );
 }
 
-function TableContent<T extends { id: number }>({
+function TableContent<TEntity extends { id: number }>({
   fields,
-}: TableViewContentProps<T>) {
-  const [context] = useTableContext<T>();
+}: TableViewContentProps<TEntity>) {
+  const [context] = useTableContext<TEntity>();
   const { data: entityList, isLoading } = context.queryResult!;
 
   if (isLoading) {
@@ -242,9 +242,10 @@ function TableRowEachMenu() {
       onClose={closeMenu}
       hideBackdrop={true}>
       <MenuList disablePadding={true}>
-        {menuItems.map(({ label, Icon, onClick }, key) => (
+        {menuItems.map(({ label, Icon, onClick, disabled }, key) => (
           <MenuItem
             onClick={onClick}
+            disabled={disabled}
             sx={{
               maxWidth: (t) => t.spacing(12),
               py: 3,

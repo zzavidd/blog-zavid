@@ -24,6 +24,13 @@ const initialState: AppState = {
     sort: { entryNumber: 'desc' },
     filter: { categories: {} },
   },
+  postAdmin: {
+    sort: { createTime: 'desc' },
+    filter: {
+      status: undefined,
+      type: undefined,
+    },
+  },
 };
 
 const slice = createSlice({
@@ -60,6 +67,10 @@ export interface AppState {
   diary: {
     sort: Prisma.DiaryOrderByWithRelationInput;
     filter: Prisma.DiaryWhereInput;
+  };
+  postAdmin: {
+    sort: Prisma.PostOrderByWithRelationInput;
+    filter: Prisma.PostWhereInput;
   };
 }
 
