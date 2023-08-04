@@ -12,8 +12,7 @@ export const DIMENSIONS = {
     FONT_SIZE_DATE: 36,
     FONT_SIZE_TITLE: 82,
     FONT_SIZE_TITLE_CORNER: 40,
-    TITLE_MARGIN_TOP: '1rem',
-    TITLE_MARGIN_BOTTOM: '2rem',
+    TITLE_MARGIN_Y: '1rem',
   },
   [FilterShapeOption.SQUARE]: {
     CONTAINER_MARGIN: '3rem',
@@ -23,8 +22,7 @@ export const DIMENSIONS = {
     FONT_SIZE_DATE: 28,
     FONT_SIZE_TITLE: 70,
     FONT_SIZE_TITLE_CORNER: 36,
-    TITLE_MARGIN_TOP: '0.5rem',
-    TITLE_MARGIN_BOTTOM: '1rem',
+    TITLE_MARGIN_Y: '0.5rem',
   },
   [FilterShapeOption.WIDE]: {
     CONTAINER_MARGIN: '3rem',
@@ -33,8 +31,7 @@ export const DIMENSIONS = {
     FONT_SIZE_DATE: 28,
     FONT_SIZE_TITLE: 70,
     FONT_SIZE_TITLE_CORNER: 36,
-    TITLE_MARGIN_TOP: '0.5rem',
-    TITLE_MARGIN_BOTTOM: '1rem',
+    TITLE_MARGIN_Y: '0.5rem',
   },
 };
 

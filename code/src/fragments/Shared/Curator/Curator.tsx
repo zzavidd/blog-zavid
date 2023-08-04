@@ -167,8 +167,7 @@ function Preview({ elementRef }: PreviewProps) {
                   fontWeight={{ xs: 500, md: 700 }}
                   lineHeight={1.1}
                   fontSize={Sizes.FONT_SIZE_TITLE}
-                  mt={Sizes.TITLE_MARGIN_TOP}
-                  mb={Sizes.TITLE_MARGIN_BOTTOM}>
+                  my={Sizes.TITLE_MARGIN_Y}>
                   {title}
                 </Typography>
                 {categories.length ? (
@@ -177,7 +176,7 @@ function Preview({ elementRef }: PreviewProps) {
                     fontSize={Sizes.FONT_SIZE_CATEGORY}
                     categories={categories}
                     spacing={4}
-                    mt={1}
+                    mt={4}
                   />
                 ) : null}
               </React.Fragment>
