@@ -14,6 +14,7 @@ import { useSnackbar } from 'notistack';
 import React, { useContext } from 'react';
 
 import SuggestiveLinks from 'fragments/Shared/SuggestiveLinks';
+import { SubscriptionType } from 'utils/enum';
 import { trpc } from 'utils/trpc';
 import { zSubscribeForm } from 'utils/validators';
 
@@ -141,22 +142,26 @@ function Form() {
         <Stack>
           <Typography variant={'h5'}>Subscribe to:</Typography>
           <FormGroup>
-            {Object.entries(context.subscriber.subscriptions).map(
-              ([type, checked]) => (
+            {Object.values(SubscriptionType).map((type) => {
+              const subscriptions = context.subscriber.subscriptions as Record<
+                SubscriptionType,
+                boolean
+              >;
+              return (
                 <FormControlLabel
                   label={type}
                   control={
                     <Checkbox
                       name={type}
-                      checked={checked}
+                      checked={subscriptions[type]}
                       onChange={onSubscriptionChange}
                       sx={{ ml: 2, mr: 1 }}
                     />
                   }
                   key={type}
                 />
-              ),
-            )}
+              );
+            })}
           </FormGroup>
         </Stack>
         <Stack direction={'row'} spacing={4}>
