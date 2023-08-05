@@ -25,7 +25,7 @@ export default function AnnounceEmail({
         <EmailHeader>You&#39;ve got a direct message from Zavid.</EmailHeader>
         <Main>
           <EmailParagraph>
-            {embedSubscriber(announcement.content, recipient.firstname)}
+            {embedSubscriber(announcement, recipient.firstname)}
           </EmailParagraph>
           <MjmlText>
             <SignatureImage />

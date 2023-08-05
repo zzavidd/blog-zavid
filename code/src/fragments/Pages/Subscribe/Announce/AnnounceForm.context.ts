@@ -5,6 +5,7 @@ export const InitialAnnounceFormState: AnnounceFormState = {
     content: '',
     subject: '',
     preview: '',
+    endearment: '',
   },
 };
 

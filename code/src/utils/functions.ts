@@ -21,11 +21,13 @@ export function getDomainFromPostType(post: Post): string {
 }
 
 export function embedSubscriber(
-  content: string,
+  announcement: SubscriberAnnouncement,
   recipientName: string | null,
-  endearment = 'subscriber',
 ): string {
-  return content.replaceAll('{subscriber}', recipientName ?? endearment);
+  return announcement.content.replaceAll(
+    '{subscriber}',
+    recipientName ?? announcement.endearment ?? 'subscriber',
+  );
 }
 
 export function formatDiaryEntryTitle(

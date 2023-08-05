@@ -8,9 +8,16 @@ export const zSubscribeForm = z.object({
 });
 
 export const zSubscriberAnnouncement = z.object({
-  content: z.string().nonempty(),
-  subject: z.string().nonempty(),
-  preview: z.string().nonempty(),
+  content: z
+    .string()
+    .nonempty({ message: 'Please enter the announcement content.' }),
+  subject: z
+    .string()
+    .nonempty({ message: 'Please enter the announcement subject.' }),
+  preview: z
+    .string()
+    .nonempty({ message: 'Please enter the announcement preview.' }),
+  endearment: z.string(),
 });
 
 export const zFindOptions = z

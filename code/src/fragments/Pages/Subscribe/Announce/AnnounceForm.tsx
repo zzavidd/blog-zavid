@@ -37,7 +37,7 @@ export default function AnnounceForm() {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
 
-  const { mutateAsync: announce, isLoading: isAnnounceLoading } =
+  const { mutate: announce, isLoading: isAnnounceLoading } =
     trpc.subscriber.announce.useMutation({
       onError: (e) => {
         enqueueSnackbar(e.message, { variant: 'error' });
@@ -56,26 +56,43 @@ export default function AnnounceForm() {
     },
     {
       label: 'Send test (Ethereal)',
-      onSubmit: async () => {
-        const url = await announce({
-          announcement: context.announcement,
-          options: { isPreview: true, previewType: 'Ethereal' },
-        });
-        enqueueSnackbar(
-          'Successfully sent off announcement to all subscribers.',
-          { variant: 'success' },
+      onSubmit: () => {
+        announce(
+          {
+            announcement: context.announcement,
+            options: { isPreview: true, previewType: 'Ethereal' },
+          },
+          {
+            onSuccess: (url) => {
+              enqueueSnackbar('Test announcement send to Ethereal email.', {
+                variant: 'success',
+              });
+              window.open(url, '_blank');
+            },
+          },
         );
-        window.open(url, '_blank');
       },
       disabled: process.env.NEXT_PUBLIC_APP_ENV === 'production',
     },
     {
       label: 'Send test (Gmail)',
-      onSubmit: async () => {
-        await announce({
-          announcement: context.announcement,
-          options: { isPreview: true, previewType: 'Gmail' },
-        });
+      onSubmit: () => {
+        announce(
+          {
+            announcement: context.announcement,
+            options: { isPreview: true, previewType: 'Gmail' },
+          },
+          {
+            onSuccess: () => {
+              enqueueSnackbar(
+                'Test announcement send to administrator email.',
+                {
+                  variant: 'success',
+                },
+              );
+            },
+          },
+        );
       },
     },
     {
@@ -97,12 +114,21 @@ export default function AnnounceForm() {
     buttonMenuItems[state.selectedSubmitIndex].onSubmit();
   }
 
-  async function onSubmitConfirm() {
-    await announce({
-      announcement: context.announcement,
-      options: { isPreview: false },
-    });
-    void router.push('/admin/subscribers');
+  function onSubmitConfirm() {
+    announce(
+      {
+        announcement: context.announcement,
+        options: { isPreview: false },
+      },
+      {
+        onSuccess: () => {
+          enqueueSnackbar('Successfully announced to all subscribers.', {
+            variant: 'success',
+          });
+          void router.push('/admin/subscribers');
+        },
+      },
+    );
   }
 
   function onButtonMenuChange(index: number) {
@@ -161,6 +187,15 @@ export default function AnnounceForm() {
               }
             />
           </FormControl>
+          <FormControl fullWidth={true}>
+            <TextField
+              name={'endearment'}
+              label={'Endearment:'}
+              value={announcement.endearment}
+              onChange={onTextChange}
+              placeholder={'Enter an endearment for nameless subscribers'}
+            />
+          </FormControl>
         </Stack>
       </FormRow>
     </React.Fragment>
@@ -188,7 +223,7 @@ export default function AnnounceForm() {
       <Form
         Content={FormContent}
         ToolbarActions={ToolbarActions}
-        previewContent={embedSubscriber(announcement.content, 'Ozioma')}
+        previewContent={embedSubscriber(announcement, 'Ozioma')}
         previewTitle={announcement.subject}
       />
       <ActionDialog
