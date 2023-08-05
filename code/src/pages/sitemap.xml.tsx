@@ -5,7 +5,7 @@ import { SitemapStream, streamToPromise } from 'sitemap';
 import DiaryAPI from 'server/api/diary';
 import PageAPI from 'server/api/pages';
 import PostAPI from 'server/api/posts';
-import { getDomainFromPostType } from 'utils/functions';
+import { DOMAINS } from 'utils/functions';
 import Settings from 'utils/settings';
 
 const Sitemap: NextPage = () => {
@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       select: { datePublished: true, slug: true, type: true },
       where: {
         status: PostStatus.PUBLISHED,
-        type: { in: [PostType.REVERIE, PostType.MUSING] },
+        type: { notIn: [PostType.PASSAGE] },
       },
     }),
     PageAPI.findMany({
@@ -31,7 +31,6 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     }),
   ]);
   const resources = Object.keys(Settings.RESOURCE_MAP);
-
   const lastDiaryEntryDate = diaryEntries.at(-1)?.date;
 
   const routes = [
@@ -59,7 +58,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     }),
   );
   posts.forEach((post) => {
-    const domain = getDomainFromPostType(post);
+    const domain = DOMAINS[post.type].collection;
     routes.push({
       url: `/${domain}/${post.slug}`,
       priority: 0.7,
