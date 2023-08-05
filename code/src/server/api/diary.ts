@@ -2,7 +2,6 @@ import type { Diary, Prisma } from '@prisma/client';
 import nodemailer from 'nodemailer';
 import invariant from 'tiny-invariant';
 
-import type { EmailPreviewType } from 'server/emails';
 import Emailer from 'server/emails';
 import prisma from 'server/prisma';
 import { truncateText } from 'utils/lib/text';
