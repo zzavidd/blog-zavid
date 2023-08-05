@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker/locale/en_GB';
 import type { Prisma } from '@prisma/client';
 import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
 
+import { SubscriptionType } from 'utils/enum';
 import ZString from 'utils/lib/string';
 
 export function createDiaryEntry(
@@ -66,14 +67,15 @@ export function createSubscriber(
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
   };
+  const subscriptions = {} as SubscriptionMap;
+  Object.values(SubscriptionType).forEach((type) => {
+    subscriptions[type] = faker.datatype.boolean();
+  });
   return {
     email: faker.internet.email(name),
     firstname: name.firstName,
     lastname: name.lastName,
-    subscriptions: {
-      Diary: faker.datatype.boolean(),
-      Reverie: faker.datatype.boolean(),
-    },
+    subscriptions,
     token: faker.string.uuid(),
     ...overrides,
   };

@@ -25,3 +25,10 @@ export function setPostAdminSieve(
 ): AppState {
   return immutate(state, { postAdmin: action.payload });
 }
+
+export function saveAnnouncementDraft(
+  state: AppState,
+  action: PayloadAction<SubscriberAnnouncement>,
+): void {
+  state.subscribers.announcement = [action.payload];
+}

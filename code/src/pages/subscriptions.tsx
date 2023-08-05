@@ -25,16 +25,11 @@ const SubscriptionPreferences: NextPageWithLayout<SubscriptionsProps> = ({
   useEffect(() => {
     if (!subscriber) return;
 
-    const subscriptions = Object.values(SubscriptionType).reduce(
-      (acc, type) => {
-        acc[type] =
-          (subscriber.subscriptions as Record<SubscriptionType, boolean>)[
-            type
-          ] ?? false;
-        return acc;
-      },
-      {} as Record<SubscriptionType, boolean>,
-    );
+    const subscriptions = {} as SubscriptionMap;
+    Object.values(SubscriptionType).forEach((type) => {
+      subscriptions[type] =
+        (subscriber.subscriptions as SubscriptionMap)[type] ?? false;
+    });
 
     setState((s) =>
       immutate(s, {

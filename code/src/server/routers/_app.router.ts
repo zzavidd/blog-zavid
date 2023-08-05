@@ -14,22 +14,16 @@ import {
   PageFindFirstSchema,
   PageFindManySchema,
   PageUpdateOneSchema,
-  SubscriberCreateOneSchema,
-  SubscriberDeleteOneSchema,
-  SubscriberFindFirstSchema,
-  SubscriberFindManySchema,
-  SubscriberUpdateOneSchema,
 } from 'schemas/schemas';
 import DiaryAPI from 'server/api/diary';
 import DiaryCategoryAPI from 'server/api/diaryCategory';
 import PageAPI from 'server/api/pages';
-import SubscriberAPI from 'server/api/subscribers';
-import { zEmailPreviewType } from 'server/emails';
-import { zFindOptions } from 'utils/validators';
+import { zEmailPreviewType, zFindOptions } from 'utils/validators';
 
 import { procedure, router } from '../trpc';
 
 import postRouter from './post.router';
+import subscriberRouter from './subscriber.router';
 
 export const appRouter = router({
   diary: router({
@@ -112,23 +106,7 @@ export const appRouter = router({
       .mutation(({ input }) => PageAPI.delete(input)),
   }),
   post: postRouter,
-  subscriber: router({
-    find: procedure
-      .input(SubscriberFindFirstSchema)
-      .query(({ input }) => SubscriberAPI.find(input)),
-    findMany: procedure
-      .input(SubscriberFindManySchema)
-      .query(({ input }) => SubscriberAPI.findMany(input)),
-    create: procedure
-      .input(SubscriberCreateOneSchema)
-      .mutation(({ input }) => SubscriberAPI.create(input)),
-    update: procedure
-      .input(SubscriberUpdateOneSchema)
-      .mutation(({ input }) => SubscriberAPI.update(input)),
-    delete: procedure
-      .input(SubscriberDeleteOneSchema)
-      .mutation(({ input }) => SubscriberAPI.delete(input)),
-  }),
+  subscriber: subscriberRouter,
 });
 
 export type AppRouter = typeof appRouter;

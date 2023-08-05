@@ -3,7 +3,6 @@ import { PostStatus, type Post, type Prisma } from '@prisma/client';
 import nodemailer from 'nodemailer';
 import invariant from 'tiny-invariant';
 
-import type { EmailPreviewType } from 'server/emails';
 import Emailer from 'server/emails';
 import prisma from 'server/prisma';
 import { truncateText } from 'utils/lib/text';
@@ -85,9 +84,7 @@ export default class PostAPI {
         status: { in: [PostStatus.PRIVATE, PostStatus.PUBLISHED] },
         type,
       },
-      orderBy: {
-        datePublished: 'asc',
-      },
+      orderBy: { datePublished: 'asc' },
     });
     return posts.findIndex((p) => p.id === id) + 1;
   }
@@ -95,9 +92,7 @@ export default class PostAPI {
   public static async countTypes(): Promise<Record<PostType, number>> {
     const typesByCount = await prisma.post.groupBy({
       by: ['type'],
-      _count: {
-        type: true,
-      },
+      _count: { type: true },
     });
 
     return typesByCount.reduce(
@@ -112,9 +107,7 @@ export default class PostAPI {
   public static async countStatuses(): Promise<Record<PostStatus, number>> {
     const statusesByCount = await prisma.post.groupBy({
       by: ['status'],
-      _count: {
-        status: true,
-      },
+      _count: { status: true },
     });
 
     return statusesByCount.reduce(

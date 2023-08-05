@@ -1,6 +1,6 @@
 import { Mjml, MjmlText } from '@faire/mjml-react';
 import { capitalize } from '@mui/material';
-import type { Post } from '@prisma/client';
+import type { Post, Subscriber } from '@prisma/client';
 
 import { SubscriptionType } from 'utils/enum';
 import { DOMAINS, createPostNavigationInfo } from 'utils/functions';
@@ -28,7 +28,7 @@ export default function PostEmail({
   previous,
   next,
   index,
-  token,
+  recipient,
 }: PostEmailProps) {
   const { singular, collection: domain } = DOMAINS[post.type];
   const title = `${capitalize(singular)} #${index}: ${post.title}`;
@@ -63,7 +63,7 @@ export default function PostEmail({
         </Main>
         <EmailFooter
           showUnsubscribe={true}
-          unsubscribeToken={token}
+          unsubscribeToken={recipient.token}
           contentType={contentType}
         />
       </EmailBody>
@@ -76,5 +76,5 @@ interface PostEmailProps {
   previous: Post;
   next: Post;
   index: number;
-  token: string;
+  recipient: Subscriber;
 }

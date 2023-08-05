@@ -7,9 +7,22 @@ export const zSubscribeForm = z.object({
   lastname: z.string().optional(),
 });
 
+export const zSubscriberAnnouncement = z.object({
+  content: z.string().nonempty(),
+  subject: z.string().nonempty(),
+  preview: z.string().nonempty(),
+});
+
 export const zFindOptions = z
   .object({ contentWordLimit: z.number().optional() })
   .optional();
+
+export const zEmailPreviewType = z.enum(['Ethereal', 'Gmail']).optional();
+
+export const zNotifyOptions = z.object({
+  isPreview: z.boolean().optional(),
+  previewType: zEmailPreviewType,
+});
 
 export const zIndexInput = z.object({
   id: z.number(),

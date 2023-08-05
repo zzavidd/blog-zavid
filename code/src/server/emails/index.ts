@@ -7,7 +7,6 @@ import nodemailer from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import React from 'react';
 import { v4 as UUIDv4 } from 'uuid';
-import { z } from 'zod';
 
 import DiaryAPI from 'server/api/diary';
 import PostAPI from 'server/api/posts';
@@ -18,7 +17,7 @@ import {
   createPostNavigatorParams,
   DOMAINS,
 } from 'utils/functions';
-import Logger from 'utils/logger';
+import logger from 'utils/logger';
 
 import {
   HTML_TO_TEXT_OPTIONS,
@@ -26,14 +25,19 @@ import {
   prodTransportOptions,
   TRANSPORTER,
 } from './constants';
+import AnnounceEmail from './templates/AnnounceEmail';
 import DiaryEmail from './templates/DiaryEmail';
 import PostEmail from './templates/PostEmail';
 
 const adminRecipient: TestRecipient = {
+  firstname: 'Zavid',
+  lastname: 'Egbue',
   email: process.env.NEXT_PUBLIC_GOOGLE_EMAIL!,
   token: UUIDv4(),
 };
 const testRecipient: TestRecipient = {
+  firstname: 'Ozioma',
+  lastname: 'Zuluchi',
   email: process.env.ETHEREAL_EMAIL!,
   token: UUIDv4(),
 };
@@ -90,6 +94,24 @@ namespace Emailer {
       options,
     );
   }
+
+  /**
+   * Send an email to all subscribers of new announcement.
+   * @param announcement The annoucement for the email.
+   * @param options The notification options.
+   */
+  export function notifyNewAnnouncement(
+    announcement: SubscriberAnnouncement,
+    options: NotifyOptions = {},
+  ): Promise<SMTPTransport.SentMessageInfo[]> {
+    return sendEmail(
+      AnnounceEmail,
+      { announcement },
+      announcement.subject,
+      SubscriptionType.ANNOUNCEMENT,
+      options,
+    );
+  }
 }
 
 export default Emailer;
@@ -134,11 +156,11 @@ async function sendEmail<T extends Record<string, unknown>>(
   const promises = mailList.map((recipient) => {
     const element = React.createElement(template, {
       ...props,
-      token: recipient.token,
+      recipient,
     });
     const { html, errors } = mjml2html(renderToMjml(element));
     errors.forEach((e) => {
-      Logger.error(e.formattedMessage);
+      logger.error(e.formattedMessage);
     });
 
     const transporter =
@@ -155,22 +177,18 @@ async function sendEmail<T extends Record<string, unknown>>(
   });
 
   const responses = await Promise.all(promises);
-  Logger.info(
+  logger.info(
     `Emails: "${subject}" email sent to ${mailList.length} subscribers.`,
   );
   return responses;
 }
-
-export const zEmailPreviewType = z.enum(['Ethereal', 'Gmail']);
-
-export type EmailPreviewType = z.infer<typeof zEmailPreviewType>;
 
 interface NotifyOptions {
   isPreview?: boolean;
   previewType?: EmailPreviewType;
 }
 
-interface TestRecipient {
-  email: string;
-  token: string;
-}
+type TestRecipient = Pick<
+  Subscriber,
+  'firstname' | 'lastname' | 'email' | 'token'
+>;

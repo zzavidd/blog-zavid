@@ -1,5 +1,5 @@
 import { Mjml, MjmlText } from '@faire/mjml-react';
-import type { Diary } from '@prisma/client';
+import type { Diary, Subscriber } from '@prisma/client';
 import React from 'react';
 
 import { SubscriptionType } from 'utils/enum';
@@ -28,7 +28,7 @@ export default function DiaryEmail({
   diaryEntry,
   previous,
   next,
-  token,
+  recipient,
 }: DiaryEmailProps) {
   const title = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
   const href = `${Settings.DOMAIN}/diary/${diaryEntry.entryNumber}`;
@@ -73,7 +73,7 @@ export default function DiaryEmail({
         <EmailFooter
           contentType={SubscriptionType.DIARY}
           showUnsubscribe={true}
-          unsubscribeToken={token}
+          unsubscribeToken={recipient.token}
         />
       </EmailBody>
     </Mjml>
@@ -82,7 +82,7 @@ export default function DiaryEmail({
 
 interface DiaryEmailProps {
   diaryEntry: DiaryWithCategories;
+  recipient: Subscriber;
   previous: Diary;
   next: Diary;
-  token: string;
 }

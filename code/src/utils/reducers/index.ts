@@ -31,6 +31,9 @@ const initialState: AppState = {
       type: undefined,
     },
   },
+  subscribers: {
+    announcement: [],
+  },
 };
 
 const slice = createSlice({
@@ -71,6 +74,9 @@ export interface AppState {
   postAdmin: {
     sort: Prisma.PostOrderByWithRelationInput;
     filter: Prisma.PostWhereInput;
+  };
+  subscribers: {
+    announcement: SubscriberAnnouncement[];
   };
 }
 
