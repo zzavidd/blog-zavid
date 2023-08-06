@@ -1,10 +1,17 @@
-import type { TableCellProps } from '@mui/material';
+import type { SelectChangeEvent, TableCellProps } from '@mui/material';
 import type { Diary, DiaryCategory, Prisma } from '@prisma/client';
 import type { Dispatch, SetStateAction } from 'react';
 import type { z } from 'zod';
 
 import type { RouterInput } from 'server/routers/_app.router';
-import type { zFindOptions, zIndexInput } from 'utils/validators';
+import type { SubscriptionType } from 'utils/enum';
+import type {
+  zEmailPreviewType,
+  zFindOptions,
+  zIndexInput,
+  zNotifyOptions,
+  zSubscriberAnnouncement,
+} from 'utils/validators';
 
 declare global {
   interface AppPageProps {
@@ -12,6 +19,9 @@ declare global {
     pageProps?: Record<string, unknown>;
   }
 
+  type SubscriberAnnouncement = z.infer<typeof zSubscriberAnnouncement>;
+  type NotifyOptions = z.infer<typeof zNotifyOptions>;
+  type EmailPreviewType = z.infer<typeof zEmailPreviewType>;
   type FindOptions = z.infer<typeof zFindOptions>;
   type PostFindInput = RouterInput['post']['find'];
   type DiaryFindInput = RouterInput['diary']['find'];
@@ -53,11 +63,11 @@ declare global {
     renderValue: (entry: T, index?: number) => React.ReactNode;
   }
 
-  type DiaryWithCategories = Diary & {
-    categories: DiaryCategory[];
-  };
-
+  type ChangeEvent =
+    | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    | SelectChangeEvent;
+  type DiaryWithCategories = Diary & { categories: DiaryCategory[] };
   type DateOp = keyof Pick<Prisma.DateTimeNullableFilter, 'gt' | 'lt'>;
-
   type ReactUseState<T> = [T, Dispatch<SetStateAction<T>>];
+  type SubscriptionMap = Record<SubscriptionType, boolean>;
 }

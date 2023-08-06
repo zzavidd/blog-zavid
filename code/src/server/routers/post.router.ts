@@ -8,9 +8,8 @@ import {
   PostUpdateOneSchema,
 } from 'schemas/schemas';
 import PostAPI from 'server/api/posts';
-import { zEmailPreviewType } from 'server/emails';
 import { procedure, router } from 'server/trpc';
-import { zFindOptions } from 'utils/validators';
+import { zEmailPreviewType, zFindOptions } from 'utils/validators';
 
 const postRouter = router({
   findMany: procedure

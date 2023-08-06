@@ -1,7 +1,9 @@
 import type { Prisma, Subscriber } from '@prisma/client';
-import ImmutabilityHelper from 'immutability-helper';
+import immutate from 'immutability-helper';
+import nodemailer from 'nodemailer';
 import { v4 as UUIDv4 } from 'uuid';
 
+import Emailer from 'server/emails';
 import prisma from 'server/prisma';
 
 export default class SubscriberAPI {
@@ -19,9 +21,7 @@ export default class SubscriberAPI {
 
   public static create(args: Prisma.SubscriberCreateArgs): Promise<Subscriber> {
     return prisma.subscriber.create(
-      ImmutabilityHelper(args, {
-        data: { token: { $set: UUIDv4() } },
-      }),
+      immutate(args, { data: { token: { $set: UUIDv4() } } }),
     );
   }
 
@@ -31,5 +31,13 @@ export default class SubscriberAPI {
 
   public static async delete(args: Prisma.SubscriberDeleteArgs): Promise<void> {
     await prisma.subscriber.delete(args);
+  }
+
+  public static async announce(
+    announcement: SubscriberAnnouncement,
+    options: NotifyOptions,
+  ): Promise<string> {
+    const [info] = await Emailer.notifyNewAnnouncement(announcement, options);
+    return nodemailer.getTestMessageUrl(info) || '';
   }
 }

@@ -13,8 +13,21 @@ export const DOMAINS = {
   [PostType.ADDENDUM]: { collection: 'tributes', singular: 'tribute' },
 };
 
+/**
+ * @deprecated
+ */
 export function getDomainFromPostType(post: Post): string {
   return DOMAINS[post.type].collection;
+}
+
+export function embedSubscriber(
+  announcement: SubscriberAnnouncement,
+  recipientName: string | null,
+): string {
+  return announcement.content.replaceAll(
+    '{subscriber}',
+    recipientName ?? announcement.endearment ?? 'subscriber',
+  );
 }
 
 export function formatDiaryEntryTitle(

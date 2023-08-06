@@ -98,6 +98,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       pathDefinition: {
         title: 'Add New Diary Entry',
       },
+      trpcState: helpers.dehydrate(),
     },
   };
 };

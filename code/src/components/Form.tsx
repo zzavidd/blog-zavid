@@ -26,20 +26,48 @@ export default function Form({
   }
 
   return (
-    <Container maxWidth={false} disableGutters={true}>
-      <Container maxWidth={'xl'}>
-        <Stack mx={{ xs: 3, md: 5 }} my={5} spacing={6}>
-          {Content}
-        </Stack>
+    <React.Fragment>
+      <Container maxWidth={false} disableGutters={true}>
+        <Container maxWidth={'xl'}>
+          <Stack mx={{ xs: 3, md: 5 }} my={5} spacing={6}>
+            {Content}
+          </Stack>
+        </Container>
+        {previewContent ? (
+          <Drawer
+            open={state.isPreviewOpen}
+            variant={'persistent'}
+            anchor={'right'}
+            hideBackdrop={true}
+            PaperProps={{
+              sx: {
+                minWidth: (t) => t.spacing(14),
+                maxWidth: (t) => t.spacing(15),
+              },
+            }}>
+            <Toolbar />
+            <Stack m={5}>
+              {previewTitle ? (
+                <Typography variant={'h2'} mb={5}>
+                  {previewTitle}
+                </Typography>
+              ) : null}
+              <Paragraph>{previewContent}</Paragraph>
+            </Stack>
+          </Drawer>
+        ) : null}
       </Container>
       <Toolbar
         disableGutters={true}
         component={Paper}
         sx={{
+          alignSelf: 'flex-end',
           backgroundColor: (t) => t.palette.background.paper,
           borderRadius: 0,
           bottom: 0,
+          height: 'fit-content',
           position: 'sticky',
+          top: 'auto',
         }}>
         <Container maxWidth={'xl'}>
           <Stack
@@ -65,25 +93,7 @@ export default function Form({
           </Stack>
         </Container>
       </Toolbar>
-      {previewContent ? (
-        <Drawer
-          open={state.isPreviewOpen}
-          variant={'persistent'}
-          anchor={'right'}
-          hideBackdrop={true}
-          PaperProps={{ sx: { maxWidth: '50%' } }}>
-          <Toolbar />
-          <Stack m={5}>
-            {previewTitle ? (
-              <Typography variant={'h2'} mb={5}>
-                {previewTitle}
-              </Typography>
-            ) : null}
-            <Paragraph>{previewContent}</Paragraph>
-          </Stack>
-        </Drawer>
-      ) : null}
-    </Container>
+    </React.Fragment>
   );
 }
 

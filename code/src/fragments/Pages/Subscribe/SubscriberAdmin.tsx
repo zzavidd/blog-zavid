@@ -1,5 +1,6 @@
 import {
   Add,
+  Campaign,
   Check as CheckIcon,
   Unsubscribe as UnsubscribeIcon,
 } from '@mui/icons-material';
@@ -13,7 +14,7 @@ import {
 import type { Prisma, Subscriber } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { LinkButton } from 'components/Link';
 import TableView from 'fragments/Shared/TableView';
@@ -82,9 +83,17 @@ export default function SubscriberAdmin() {
         },
       ],
       buttons: (
-        <LinkButton href={'/admin/subscribers/add'} startIcon={<Add />}>
-          Add subscriber
-        </LinkButton>
+        <React.Fragment>
+          <LinkButton
+            href={'/admin/subscribers/announce'}
+            buttonVariant={'contained'}
+            startIcon={<Campaign />}>
+            Announce
+          </LinkButton>
+          <LinkButton href={'/admin/subscribers/add'} startIcon={<Add />}>
+            Add subscriber
+          </LinkButton>
+        </React.Fragment>
       ),
       deleteConfirmMessage: `Are you sure you want to delete "${state.selectedEntity?.email}" from your subscribers list?`,
       editHref: `/admin/subscribers/edit/${state.selectedEntity?.id}`,
