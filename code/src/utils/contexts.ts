@@ -14,6 +14,7 @@ export const InitialMenuState: MenuContextState = {
     title: '',
     date: new Date(),
     categories: [],
+    entity: '',
   },
 };
 

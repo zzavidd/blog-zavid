@@ -1,3 +1,4 @@
+import { FavoriteRounded } from '@mui/icons-material';
 import type { Theme } from '@mui/material';
 import {
   Box,
@@ -131,7 +132,13 @@ function Preview({ elementRef }: PreviewProps) {
   }
 
   const Sizes = DIMENSIONS[curatorContext.filterShape];
-  const { title, date, categories = [] } = menuContext.info;
+  const {
+    title,
+    date,
+    categories = [],
+    isFavourite,
+    entity,
+  } = menuContext.info;
   return (
     <ThemeProvider theme={alterTheme}>
       <Stack
@@ -178,6 +185,20 @@ function Preview({ elementRef }: PreviewProps) {
                     spacing={4}
                     mt={4}
                   />
+                ) : null}
+                {isFavourite ? (
+                  <Stack
+                    direction={'row'}
+                    alignItems={'center'}
+                    spacing={2}
+                    mt={5}>
+                    <FavoriteRounded color={'primary'} sx={{ fontSize: 40 }} />
+                    <Typography
+                      variant={'body2'}
+                      fontSize={Sizes.FONT_SIZE_CATEGORY}>
+                      This {entity} is a personal Zavid favourite.
+                    </Typography>
+                  </Stack>
                 ) : null}
               </React.Fragment>
             ) : (

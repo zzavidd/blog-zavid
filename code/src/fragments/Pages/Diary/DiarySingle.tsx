@@ -40,6 +40,8 @@ export default function DiarySingle({
     title: fullTitle,
     date: diaryEntry.date,
     categories: diaryEntry.categories,
+    isFavourite: diaryEntry.isFavourite,
+    entity: 'diary entry',
   };
 
   const TitleExtras = (

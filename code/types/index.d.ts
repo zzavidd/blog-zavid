@@ -54,6 +54,8 @@ declare global {
     title: string;
     date: Date | null;
     categories?: DiaryCategory[];
+    isFavourite?: boolean;
+    entity: string;
   }
 
   interface TableField<T> {
