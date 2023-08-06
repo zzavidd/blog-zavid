@@ -11,6 +11,7 @@ export default function Passage({ params }: PassagePageProps) {
   const pageCuratorInfo: PageCuratorInfo = {
     title: passage.title,
     date: passage.datePublished,
+    entity: 'passage',
   };
   return (
     <ContentSingle

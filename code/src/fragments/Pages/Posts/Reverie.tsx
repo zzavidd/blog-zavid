@@ -15,6 +15,7 @@ export default function Reverie({ params }: ReveriePageProps) {
   const pageCuratorInfo: PageCuratorInfo = {
     title: reverie.title,
     date: reverie.datePublished,
+    entity: 'reverie',
   };
   return (
     <ContentSingle

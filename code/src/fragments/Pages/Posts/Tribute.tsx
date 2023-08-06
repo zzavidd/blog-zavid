@@ -23,6 +23,7 @@ export default function Tribute({ params, domain }: TributePageProps) {
   const pageCuratorInfo: PageCuratorInfo = {
     title: tribute.title,
     date: tribute.datePublished,
+    entity: 'tribute',
   };
   return (
     <ContentSingle

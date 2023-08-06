@@ -28,6 +28,7 @@ export default function Musing({
   const pageCuratorInfo: PageCuratorInfo = {
     title: `Musing #${index}: ${musing.title}`,
     date: musing.datePublished,
+    entity: 'musing',
   };
 
   const NavigationProps: ContentNavigationProps = {
