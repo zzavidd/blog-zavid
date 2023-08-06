@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
       params,
       pathDefinition: {
         title: `Diary | ${Settings.SITE_TITLE}`,
-        description: page?.excerpt,
+        description: page?.excerpt ?? '',
         url: '/diary',
       },
       trpcState: helpers.dehydrate(),

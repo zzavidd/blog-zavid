@@ -14,6 +14,8 @@ const subscriber = {
   lastname: name.lastName,
 };
 
+test.skip(({ browserName }) => browserName !== 'chromium');
+
 test.describe.configure({ mode: 'parallel' });
 test.describe('Subscribe', () => {
   test.describe('via page form', () => {

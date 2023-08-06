@@ -3,8 +3,8 @@ import type { Diary } from '@prisma/client';
 import { DiaryStatus } from '@prisma/client';
 
 import { createDiaryEntry } from '../../ops/ingestion/factory';
-import prisma from '../../src/server/prisma';
 import Settings from '../../src/utils/settings';
+import prisma from '../utils/prisma';
 
 const entryNumber = 1;
 const diary = createDiaryEntry({ entryNumber });

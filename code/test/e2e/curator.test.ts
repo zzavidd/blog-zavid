@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 import { DiaryStatus } from '@prisma/client';
 
 import { createDiaryEntry } from '../../ops/ingestion/factory';
-import prisma from '../../src/server/prisma';
+import prisma from '../utils/prisma';
 
 const entryNumber = 1;
 const diary = createDiaryEntry({ entryNumber, status: DiaryStatus.PUBLISHED });

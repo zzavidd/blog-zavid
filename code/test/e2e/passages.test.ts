@@ -3,8 +3,8 @@ import { expect, test } from '@playwright/test';
 import { PostStatus, PostType } from '@prisma/client';
 
 import { createPost } from '../../ops/ingestion/factory';
-import prisma from '../../src/server/prisma';
 import Settings from '../../src/utils/settings';
+import prisma from '../utils/prisma';
 
 const id = 1;
 const slug = faker.lorem.slug();
