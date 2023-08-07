@@ -6,11 +6,13 @@ RUN apt-get update -y && apt-get install -y openssl
 ARG WORKDIR
 WORKDIR /var/www/$WORKDIR/code
 
-COPY ./code/pnpm-lock.yaml ./
+COPY ./code/package.json ./code/pnpm-lock.yaml ./
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm fetch
 
 COPY ./code ./
+
+RUN pnpm install --offline
 
 RUN pnpm prisma generate
 RUN pnpm prisma migrate deploy
