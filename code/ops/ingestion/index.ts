@@ -24,7 +24,7 @@ async function ingestDiaryEntries(): Promise<void> {
   await prisma.diary.deleteMany({});
   await prisma.diaryCategory.createMany({ data: categories });
 
-  const promises = Array(50)
+  const queries = Array(50)
     .fill(null)
     .map((_, i) => {
       const categoryIds = faker.helpers
@@ -39,8 +39,7 @@ async function ingestDiaryEntries(): Promise<void> {
       });
       return prisma.diary.create({ data: entry });
     });
-
-  await Promise.all(promises);
+  await prisma.$transaction(queries);
 }
 
 async function ingestPosts(): Promise<void> {
