@@ -22,7 +22,9 @@ export default function AnnounceEmail({
     <Mjml>
       <EmailHead title={announcement.subject} preview={announcement.preview} />
       <EmailBody>
-        <EmailHeader>You&#39;ve got a direct message from Zavid.</EmailHeader>
+        <EmailHeader>
+          This is a subscriber-only exclusive from ZAVID.
+        </EmailHeader>
         <Main>
           <EmailParagraph>
             {embedSubscriber(announcement, recipient.firstname)}

@@ -8,11 +8,9 @@ WORKDIR /var/www/$WORKDIR/code
 
 COPY ./code/pnpm-lock.yaml ./
 
-RUN pnpm fetch
+RUN pnpm install --frozen-lockfile
 
 COPY ./code ./
-
-RUN pnpm install --offline
 
 RUN pnpm prisma generate
 RUN pnpm prisma migrate deploy
