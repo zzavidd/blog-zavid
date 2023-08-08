@@ -22,6 +22,7 @@ import { zEmailPreviewType, zFindOptions } from 'utils/validators';
 
 import { procedure, router } from '../trpc';
 
+import exclusiveRouter from './exclusive.router';
 import postRouter from './post.router';
 import subscriberRouter from './subscriber.router';
 
@@ -105,6 +106,7 @@ export const appRouter = router({
       .input(PageDeleteOneSchema)
       .mutation(({ input }) => PageAPI.delete(input)),
   }),
+  exclusive: exclusiveRouter,
   post: postRouter,
   subscriber: subscriberRouter,
 });

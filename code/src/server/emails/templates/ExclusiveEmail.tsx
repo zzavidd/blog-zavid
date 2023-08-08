@@ -1,5 +1,5 @@
 import { Mjml, MjmlText } from '@faire/mjml-react';
-import type { Subscriber } from '@prisma/client';
+import type { Exclusive, Subscriber } from '@prisma/client';
 
 import { SubscriptionType } from 'utils/enum';
 import { embedSubscriber } from 'utils/functions';
@@ -14,20 +14,20 @@ import {
   SignatureImage,
 } from '../lib/Fragments';
 
-export default function AnnounceEmail({
-  announcement,
+export default function ExclusiveEmail({
+  exclusive,
   recipient,
-}: AnnounceEmailProps) {
+}: ExclusiveEmailProps) {
   return (
     <Mjml>
-      <EmailHead title={announcement.subject} preview={announcement.preview} />
+      <EmailHead title={exclusive.subject} preview={exclusive.preview} />
       <EmailBody>
         <EmailHeader>
           This is a subscriber-only exclusive from ZAVID.
         </EmailHeader>
         <Main>
           <EmailParagraph>
-            {embedSubscriber(announcement, recipient.firstname)}
+            {embedSubscriber(exclusive, recipient.firstname)}
           </EmailParagraph>
           <MjmlText>
             <SignatureImage />
@@ -36,14 +36,14 @@ export default function AnnounceEmail({
         <EmailFooter
           showUnsubscribe={true}
           unsubscribeToken={recipient.token}
-          contentType={SubscriptionType.ANNOUNCEMENT}
+          contentType={SubscriptionType.EXCLUSIVE}
         />
       </EmailBody>
     </Mjml>
   );
 }
 
-interface AnnounceEmailProps {
-  announcement: SubscriberAnnouncement;
+interface ExclusiveEmailProps {
+  exclusive: Exclusive;
   recipient: Subscriber;
 }

@@ -138,6 +138,11 @@ function AuthButton() {
           href: '/admin/subscribers',
         },
         {
+          label: 'Manage Exclusives',
+          Icon: AllInbox,
+          href: '/admin/exclusives',
+        },
+        {
           label: 'Manage Pages',
           Icon: Article,
           href: '/admin/pages',

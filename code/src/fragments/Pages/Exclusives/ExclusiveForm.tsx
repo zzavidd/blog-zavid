@@ -21,50 +21,54 @@ import { ActionDialog } from 'components/Dialog';
 import Form, { FormRow } from 'components/Form';
 import { LinkButton } from 'components/Link';
 import { embedSubscriber } from 'utils/functions';
-import { AppActions, useAppDispatch } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
-import { AnnounceFormContext } from './AnnounceForm.context';
+import { ExclusiveFormContext } from './ExclusiveForm.context';
 
-export default function AnnounceForm() {
+export default function ExclusiveForm() {
   const [state, setState] = useState({
     isPublishModalVisible: false,
     isButtonMenuVisible: false,
     selectedSubmitIndex: 0,
   });
-  const [context, setContext] = useContext(AnnounceFormContext);
+  const [context, setContext] = useContext(ExclusiveFormContext);
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const dispatch = useAppDispatch();
 
-  const { mutate: announce, isLoading: isAnnounceLoading } =
-    trpc.subscriber.announce.useMutation({
+  const { mutate: createExclusive, isLoading: isCreateLoading } =
+    trpc.exclusive.create.useMutation({
       onError: (e) => {
         enqueueSnackbar(e.message, { variant: 'error' });
       },
     });
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const { announcement } = context;
+  const { exclusive } = context;
   const buttonMenuItems: ButtonMenuItem[] = [
     {
       label: 'Save draft',
       onSubmit: () => {
-        dispatch(AppActions.saveAnnouncementDraft(context.announcement));
-        enqueueSnackbar('Saved announcement draft.', { variant: 'success' });
+        createExclusive(
+          { exclusive: { data: context.exclusive }, isPublish: false },
+          {
+            onSuccess: () => {
+              enqueueSnackbar('Saved exclusive draft.', { variant: 'success' });
+            },
+          },
+        );
       },
     },
     {
       label: 'Send test (Ethereal)',
       onSubmit: () => {
-        announce(
+        exclusive(
           {
-            announcement: context.announcement,
+            exclusive: context.exclusive,
             options: { isPreview: true, previewType: 'Ethereal' },
           },
           {
             onSuccess: (url) => {
-              enqueueSnackbar('Test announcement send to Ethereal email.', {
+              enqueueSnackbar('Test exclusive send to Ethereal email.', {
                 variant: 'success',
               });
               window.open(url, '_blank');
@@ -77,19 +81,16 @@ export default function AnnounceForm() {
     {
       label: 'Send test (Gmail)',
       onSubmit: () => {
-        announce(
+        exclusive(
           {
-            announcement: context.announcement,
+            exclusive: context.exclusive,
             options: { isPreview: true, previewType: 'Gmail' },
           },
           {
             onSuccess: () => {
-              enqueueSnackbar(
-                'Test announcement send to administrator email.',
-                {
-                  variant: 'success',
-                },
-              );
+              enqueueSnackbar('Test exclusive send to administrator email.', {
+                variant: 'success',
+              });
             },
           },
         );
@@ -105,9 +106,7 @@ export default function AnnounceForm() {
 
   function onTextChange(e: ChangeEvent) {
     const { name, value } = e.target;
-    setContext((c) =>
-      immutate(c, { announcement: { [name]: { $set: value } } }),
-    );
+    setContext((c) => immutate(c, { exclusive: { [name]: { $set: value } } }));
   }
 
   function onSubmitClick() {
@@ -115,14 +114,14 @@ export default function AnnounceForm() {
   }
 
   function onSubmitConfirm() {
-    announce(
+    createExclusive(
       {
-        announcement: context.announcement,
-        options: { isPreview: false },
+        exclusive: { data: context.exclusive },
+        isPublish: true,
       },
       {
         onSuccess: () => {
-          enqueueSnackbar('Successfully announced to all subscribers.', {
+          enqueueSnackbar('Sent exclusive to all subscribers.', {
             variant: 'success',
           });
           void router.push('/admin/subscribers');
@@ -149,7 +148,7 @@ export default function AnnounceForm() {
 
   const FormContent = (
     <React.Fragment>
-      <Typography variant={'h2'}>Send Announcement</Typography>
+      <Typography variant={'h2'}>Send Exclusive</Typography>
       <FormRow>
         <Stack width={'100%'}>
           <FormControl fullWidth={true}>
@@ -158,9 +157,9 @@ export default function AnnounceForm() {
               label={'Content:'}
               multiline={true}
               minRows={5}
-              value={announcement.content}
+              value={exclusive.content}
               onChange={onTextChange}
-              placeholder={'Scribe your announcement to your subscribers...'}
+              placeholder={'Scribe your exclusive to your subscribers...'}
             />
           </FormControl>
         </Stack>
@@ -169,7 +168,7 @@ export default function AnnounceForm() {
             <TextField
               name={'subject'}
               label={'Subject:'}
-              value={announcement.subject}
+              value={exclusive.subject}
               onChange={onTextChange}
               placeholder={'Enter the subject'}
             />
@@ -180,7 +179,7 @@ export default function AnnounceForm() {
               label={'Preview:'}
               multiline={true}
               minRows={3}
-              value={announcement.preview}
+              value={exclusive.preview}
               onChange={onTextChange}
               placeholder={
                 'Add the preview text to show on the email notification...'
@@ -191,7 +190,7 @@ export default function AnnounceForm() {
             <TextField
               name={'endearment'}
               label={'Endearment:'}
-              value={announcement.endearment}
+              value={exclusive.endearment}
               onChange={onTextChange}
               placeholder={'Enter an endearment for nameless subscribers'}
             />
@@ -208,7 +207,7 @@ export default function AnnounceForm() {
         <LoadingButton
           variant={'contained'}
           onClick={onSubmitClick}
-          loading={isAnnounceLoading}>
+          loading={isCreateLoading}>
           {buttonMenuItems[state.selectedSubmitIndex].label}
         </LoadingButton>
         <Button variant={'contained'} onClick={openButtonMenu} ref={buttonRef}>
@@ -223,16 +222,16 @@ export default function AnnounceForm() {
       <Form
         Content={FormContent}
         ToolbarActions={ToolbarActions}
-        previewContent={embedSubscriber(announcement, 'Ozioma')}
-        previewTitle={announcement.subject}
+        previewContent={embedSubscriber(exclusive, 'Ozioma')}
+        previewTitle={exclusive.subject}
       />
       <ActionDialog
         open={state.isPublishModalVisible}
         onConfirm={onSubmitConfirm}
         onCancel={closePublishModal}
-        confirmText={'Send announcement'}
-        isActionLoading={isAnnounceLoading}>
-        By sending this announcement, you&#39;ll be notifying all subscribers.
+        confirmText={'Send exclusive'}
+        isActionLoading={isCreateLoading}>
+        By sending this exclusive, you&#39;ll be notifying all subscribers.
         Confirm that you want to send out this announcment.
       </ActionDialog>
       <Menu

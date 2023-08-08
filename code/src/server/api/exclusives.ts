@@ -1,0 +1,57 @@
+import type { Exclusive, Prisma } from '@prisma/client';
+import nodemailer from 'nodemailer';
+import invariant from 'tiny-invariant';
+
+import Emailer from 'server/emails';
+import prisma from 'server/prisma';
+
+export default class ExclusiveAPI {
+  public static findMany(args: Prisma.ExclusiveArgs): Promise<Exclusive[]> {
+    return prisma.exclusive.findMany(args);
+  }
+
+  public static find(
+    args: Prisma.ExclusiveFindFirstArgs,
+  ): Promise<Exclusive | null> {
+    return prisma.exclusive.findFirst(args);
+  }
+
+  public static async create(
+    args: Prisma.ExclusiveCreateArgs,
+    isPublish?: boolean,
+  ): Promise<Exclusive> {
+    const exclusive = await prisma.exclusive.create(args);
+    if (isPublish) {
+      void Emailer.notifyExclusive(exclusive);
+    }
+    return exclusive;
+  }
+
+  public static async update(
+    args: Prisma.ExclusiveUpdateArgs,
+    isPublish?: boolean,
+  ): Promise<Exclusive> {
+    const exclusive = await prisma.exclusive.update(args);
+    if (isPublish) {
+      void Emailer.notifyExclusive(exclusive);
+    }
+    return exclusive;
+  }
+
+  public static async delete(args: Prisma.ExclusiveDeleteArgs): Promise<void> {
+    await prisma.exclusive.delete(args);
+  }
+
+  public static async publish(
+    id: number,
+    previewType: EmailPreviewType,
+  ): Promise<string> {
+    const exclusive = await this.find({ where: { id } });
+    invariant(exclusive, 'No exclusive with ID found.');
+    const [info] = await Emailer.notifyExclusive(exclusive, {
+      isPreview: true,
+      previewType,
+    });
+    return nodemailer.getTestMessageUrl(info) || '';
+  }
+}

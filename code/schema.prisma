@@ -30,6 +30,14 @@ model Diary {
   @@map("diary")
 }
 
+model DiaryCategory {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+  entries Diary[]
+
+  @@map("diary_categories")
+}
+
 model Exclusive {
   id         Int             @id @default(autoincrement()) @db.UnsignedInt
   subject    String          @db.VarChar(128)
@@ -40,14 +48,6 @@ model Exclusive {
   status     ExclusiveStatus
 
   @@map("exclusives")
-}
-
-model DiaryCategory {
-  id      Int     @id @default(autoincrement())
-  name    String  @unique
-  entries Diary[]
-
-  @@map("diary_categories")
 }
 
 model Page {

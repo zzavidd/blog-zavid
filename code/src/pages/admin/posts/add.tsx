@@ -60,7 +60,7 @@ export const getStaticProps: GetStaticProps<AppPageProps> = () => {
   return {
     props: {
       pathDefinition: {
-        title: 'Add New Posts Entry',
+        title: 'Add New Post',
       },
     },
   };

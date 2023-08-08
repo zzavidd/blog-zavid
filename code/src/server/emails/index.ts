@@ -1,6 +1,6 @@
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml';
 import { capitalize } from '@mui/material';
-import type { Diary, Post, Subscriber } from '@prisma/client';
+import type { Diary, Exclusive, Post, Subscriber } from '@prisma/client';
 import { convert } from 'html-to-text';
 import mjml2html from 'mjml';
 import nodemailer from 'nodemailer';
@@ -25,8 +25,8 @@ import {
   prodTransportOptions,
   TRANSPORTER,
 } from './constants';
-import AnnounceEmail from './templates/AnnounceEmail';
 import DiaryEmail from './templates/DiaryEmail';
+import AnnounceEmail from './templates/ExclusiveEmail';
 import PostEmail from './templates/PostEmail';
 
 const adminRecipient: TestRecipient = {
@@ -97,18 +97,18 @@ namespace Emailer {
 
   /**
    * Send an email to all subscribers of new announcement.
-   * @param announcement The annoucement for the email.
+   * @param exclusive The annoucement for the email.
    * @param options The notification options.
    */
-  export function notifyNewAnnouncement(
-    announcement: SubscriberAnnouncement,
+  export function notifyExclusive(
+    exclusive: Exclusive,
     options: NotifyOptions = {},
   ): Promise<SMTPTransport.SentMessageInfo[]> {
     return sendEmail(
       AnnounceEmail,
-      { announcement },
-      announcement.subject,
-      SubscriptionType.ANNOUNCEMENT,
+      { exclusive },
+      exclusive.subject,
+      SubscriptionType.EXCLUSIVE,
       options,
     );
   }
