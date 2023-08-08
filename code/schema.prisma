@@ -30,6 +30,18 @@ model Diary {
   @@map("diary")
 }
 
+model Exclusive {
+  id         Int             @id @default(autoincrement()) @db.UnsignedInt
+  subject    String          @db.VarChar(128)
+  content    String          @db.Text
+  preview    String          @db.Text
+  endearment String          @db.VarChar(64)
+  date       DateTime?       @db.Date
+  status     ExclusiveStatus
+
+  @@map("exclusives")
+}
+
 model DiaryCategory {
   id      Int     @id @default(autoincrement())
   name    String  @unique
@@ -128,6 +140,11 @@ enum DiaryStatus {
   DRAFT
   PROTECTED
   PRIVATE
+  PUBLISHED
+}
+
+enum ExclusiveStatus {
+  DRAFT
   PUBLISHED
 }
 
