@@ -4,10 +4,16 @@ import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
 
 import prisma from 'server/prisma';
 
-import { createDiaryEntry, createPost, createSubscriber } from './factory';
+import {
+  createDiaryEntry,
+  createExclusive,
+  createPost,
+  createSubscriber,
+} from './factory';
 
 (async () => {
   await ingestDiaryEntries();
+  await ingestExclusives();
   await ingestPages();
   await ingestPosts();
   await ingestSubscribers();
@@ -24,7 +30,7 @@ async function ingestDiaryEntries(): Promise<void> {
   await prisma.diary.deleteMany({});
   await prisma.diaryCategory.createMany({ data: categories });
 
-  const promises = Array(50)
+  const queries = Array(50)
     .fill(null)
     .map((_, i) => {
       const categoryIds = faker.helpers
@@ -39,8 +45,18 @@ async function ingestDiaryEntries(): Promise<void> {
       });
       return prisma.diary.create({ data: entry });
     });
+  await prisma.$transaction(queries);
+}
 
-  await Promise.all(promises);
+async function ingestExclusives(): Promise<void> {
+  const exclusives: Prisma.ExclusiveCreateInput[] = [];
+
+  for (let i = 1; i <= 5; i++) {
+    exclusives.push(createExclusive());
+  }
+
+  await prisma.exclusive.deleteMany({});
+  await prisma.exclusive.createMany({ data: exclusives });
 }
 
 async function ingestPosts(): Promise<void> {

@@ -1,17 +1,24 @@
 import { ArrowDropUp } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
+import { DatePicker, LoadingButton } from '@mui/lab';
+import type { SelectChangeEvent } from '@mui/material';
 import {
   Button,
   ButtonGroup,
+  Fade,
   FormControl,
+  InputLabel,
+  Link,
   ListItemText,
   Menu,
   MenuItem,
   MenuList,
+  Select,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
+import { ExclusiveStatus } from '@prisma/client';
+import dayjs from 'dayjs';
 import immutate from 'immutability-helper';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -21,111 +28,86 @@ import { ActionDialog } from 'components/Dialog';
 import Form, { FormRow } from 'components/Form';
 import { LinkButton } from 'components/Link';
 import { embedSubscriber } from 'utils/functions';
-import { AppActions, useAppDispatch } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
-import { AnnounceFormContext } from './AnnounceForm.context';
+import { ExclusiveFormContext } from './ExclusiveForm.context';
 
-export default function AnnounceForm() {
+export default function ExclusiveForm({
+  onSubmit,
+  submitText,
+  heading,
+  isActionLoading,
+}: PostsFormProps) {
   const [state, setState] = useState({
     isPublishModalVisible: false,
     isButtonMenuVisible: false,
     selectedSubmitIndex: 0,
   });
-  const [context, setContext] = useContext(AnnounceFormContext);
+  const [context, setContext] = useContext(ExclusiveFormContext);
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const dispatch = useAppDispatch();
 
-  const { mutate: announce, isLoading: isAnnounceLoading } =
-    trpc.subscriber.announce.useMutation({
+  const { mutate: createExclusive, isLoading: isCreateLoading } =
+    trpc.exclusive.create.useMutation({
       onError: (e) => {
         enqueueSnackbar(e.message, { variant: 'error' });
       },
     });
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { exclusive } = context;
 
-  const { announcement } = context;
-  const buttonMenuItems: ButtonMenuItem[] = [
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonMenuItems = [
+    { label: `${submitText} only`, isPublish: false },
     {
-      label: 'Save draft',
-      onSubmit: () => {
-        dispatch(AppActions.saveAnnouncementDraft(context.announcement));
-        enqueueSnackbar('Saved announcement draft.', { variant: 'success' });
-      },
-    },
-    {
-      label: 'Send test (Ethereal)',
-      onSubmit: () => {
-        announce(
-          {
-            announcement: context.announcement,
-            options: { isPreview: true, previewType: 'Ethereal' },
-          },
-          {
-            onSuccess: (url) => {
-              enqueueSnackbar('Test announcement send to Ethereal email.', {
-                variant: 'success',
-              });
-              window.open(url, '_blank');
-            },
-          },
-        );
-      },
-      disabled: process.env.NEXT_PUBLIC_APP_ENV === 'production',
-    },
-    {
-      label: 'Send test (Gmail)',
-      onSubmit: () => {
-        announce(
-          {
-            announcement: context.announcement,
-            options: { isPreview: true, previewType: 'Gmail' },
-          },
-          {
-            onSuccess: () => {
-              enqueueSnackbar(
-                'Test announcement send to administrator email.',
-                {
-                  variant: 'success',
-                },
-              );
-            },
-          },
-        );
-      },
-    },
-    {
-      label: 'Send',
-      onSubmit: () => {
-        setState((s) => ({ ...s, isPublishModalVisible: true }));
-      },
+      label: `${submitText} & Send`,
+      isPublish: true,
+      disabled: exclusive.status !== ExclusiveStatus.PUBLISHED,
     },
   ];
 
   function onTextChange(e: ChangeEvent) {
     const { name, value } = e.target;
+    setContext((c) => immutate(c, { exclusive: { [name]: { $set: value } } }));
+  }
+
+  function onStatusChange(e: SelectChangeEvent) {
+    const value = e.target.value as ExclusiveStatus;
+    setContext((c) => immutate(c, { exclusive: { status: { $set: value } } }));
+    if (value !== ExclusiveStatus.PUBLISHED) {
+      setState((s) => ({ ...s, selectedSubmitIndex: 0 }));
+    }
+  }
+
+  function onDateChange(value: dayjs.Dayjs | null) {
+    // Sets value to 12th hour to prevent any unwanted date mishaps.
+    const date = value?.set('hour', 12).toDate();
     setContext((c) =>
-      immutate(c, { announcement: { [name]: { $set: value } } }),
+      immutate(c, {
+        exclusive: { date: { $set: date } },
+      }),
     );
   }
 
   function onSubmitClick() {
-    buttonMenuItems[state.selectedSubmitIndex].onSubmit();
+    if (buttonMenuItems[state.selectedSubmitIndex].isPublish) {
+      setState((s) => ({ ...s, isPublishModalVisible: true }));
+    } else {
+      onSubmit(false);
+    }
   }
 
   function onSubmitConfirm() {
-    announce(
+    createExclusive(
       {
-        announcement: context.announcement,
-        options: { isPreview: false },
+        exclusive: { data: context.exclusive },
+        isPublish: true,
       },
       {
         onSuccess: () => {
-          enqueueSnackbar('Successfully announced to all subscribers.', {
+          enqueueSnackbar('Sent exclusive to all subscribers.', {
             variant: 'success',
           });
-          void router.push('/admin/subscribers');
+          void router.push('/admin/exclusives');
         },
       },
     );
@@ -149,7 +131,7 @@ export default function AnnounceForm() {
 
   const FormContent = (
     <React.Fragment>
-      <Typography variant={'h2'}>Send Announcement</Typography>
+      <Typography variant={'h2'}>{heading}</Typography>
       <FormRow>
         <Stack width={'100%'}>
           <FormControl fullWidth={true}>
@@ -158,9 +140,9 @@ export default function AnnounceForm() {
               label={'Content:'}
               multiline={true}
               minRows={5}
-              value={announcement.content}
+              value={exclusive.content}
               onChange={onTextChange}
-              placeholder={'Scribe your announcement to your subscribers...'}
+              placeholder={'Scribe your exclusive to your subscribers...'}
             />
           </FormControl>
         </Stack>
@@ -169,7 +151,7 @@ export default function AnnounceForm() {
             <TextField
               name={'subject'}
               label={'Subject:'}
-              value={announcement.subject}
+              value={exclusive.subject}
               onChange={onTextChange}
               placeholder={'Enter the subject'}
             />
@@ -180,7 +162,7 @@ export default function AnnounceForm() {
               label={'Preview:'}
               multiline={true}
               minRows={3}
-              value={announcement.preview}
+              value={exclusive.preview}
               onChange={onTextChange}
               placeholder={
                 'Add the preview text to show on the email notification...'
@@ -191,11 +173,50 @@ export default function AnnounceForm() {
             <TextField
               name={'endearment'}
               label={'Endearment:'}
-              value={announcement.endearment}
+              value={exclusive.endearment}
               onChange={onTextChange}
               placeholder={'Enter an endearment for nameless subscribers'}
             />
           </FormControl>
+          <FormRow>
+            <FormControl fullWidth={true}>
+              <InputLabel>Status:</InputLabel>
+              <Select
+                name={'status'}
+                label={'Status.:'}
+                value={exclusive.status}
+                onChange={onStatusChange}>
+                {Object.values(ExclusiveStatus).map((status) => (
+                  <MenuItem value={status} key={status}>
+                    {status}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Fade in={exclusive.status !== ExclusiveStatus.DRAFT}>
+              <FormControl fullWidth={true}>
+                <DatePicker
+                  label={'Date Published:'}
+                  value={exclusive.date ? dayjs(exclusive.date) : null}
+                  onChange={onDateChange}
+                  format={'dddd DD MMMM YYYY'}
+                  slotProps={{
+                    textField: {
+                      helperText: exclusive.date ? (
+                        <Link
+                          href={'#'}
+                          color={'inherit'}
+                          underline={'hover'}
+                          onClick={() => onDateChange(null)}>
+                          Clear date
+                        </Link>
+                      ) : null,
+                    },
+                  }}
+                />
+              </FormControl>
+            </Fade>
+          </FormRow>
         </Stack>
       </FormRow>
     </React.Fragment>
@@ -203,12 +224,12 @@ export default function AnnounceForm() {
 
   const ToolbarActions = (
     <React.Fragment>
-      <LinkButton href={'/admin/subscribers'}>Cancel</LinkButton>
+      <LinkButton href={'/admin/exclusives'}>Cancel</LinkButton>
       <ButtonGroup>
         <LoadingButton
           variant={'contained'}
           onClick={onSubmitClick}
-          loading={isAnnounceLoading}>
+          loading={isActionLoading}>
           {buttonMenuItems[state.selectedSubmitIndex].label}
         </LoadingButton>
         <Button variant={'contained'} onClick={openButtonMenu} ref={buttonRef}>
@@ -223,16 +244,16 @@ export default function AnnounceForm() {
       <Form
         Content={FormContent}
         ToolbarActions={ToolbarActions}
-        previewContent={embedSubscriber(announcement, 'Ozioma')}
-        previewTitle={announcement.subject}
+        previewContent={embedSubscriber(exclusive, 'Ozioma')}
+        previewTitle={exclusive.subject}
       />
       <ActionDialog
         open={state.isPublishModalVisible}
         onConfirm={onSubmitConfirm}
         onCancel={closePublishModal}
-        confirmText={'Send announcement'}
-        isActionLoading={isAnnounceLoading}>
-        By sending this announcement, you&#39;ll be notifying all subscribers.
+        confirmText={'Send exclusive'}
+        isActionLoading={isCreateLoading}>
+        By sending this exclusive, you&#39;ll be notifying all subscribers.
         Confirm that you want to send out this announcment.
       </ActionDialog>
       <Menu
@@ -260,8 +281,9 @@ export default function AnnounceForm() {
   );
 }
 
-interface ButtonMenuItem {
-  label: string;
-  onSubmit: () => void;
-  disabled?: boolean;
+interface PostsFormProps {
+  onSubmit: (isPublish: boolean) => void;
+  submitText: string;
+  heading: string;
+  isActionLoading: boolean;
 }

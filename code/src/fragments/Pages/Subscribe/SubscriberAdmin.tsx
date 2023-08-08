@@ -85,10 +85,10 @@ export default function SubscriberAdmin() {
       buttons: (
         <React.Fragment>
           <LinkButton
-            href={'/admin/subscribers/announce'}
+            href={'/admin/exclusives/add'}
             buttonVariant={'contained'}
             startIcon={<Campaign />}>
-            Announce
+            Send Exclusive
           </LinkButton>
           <LinkButton href={'/admin/subscribers/add'} startIcon={<Add />}>
             Add subscriber

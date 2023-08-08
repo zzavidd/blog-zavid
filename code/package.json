@@ -20,6 +20,7 @@
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json,html}\"",
     "prettier:write": "pnpm run prettier --write",
     "ops:ingest": "ts-node -r tsconfig-paths/register ops/ingestion",
+    "ops:manipulate": "ts-node -r tsconfig-paths/register ops/manipulation",
     "devops:secrets": "../devops/scripts/env/upload-secrets.sh"
   },
   "dependencies": {
