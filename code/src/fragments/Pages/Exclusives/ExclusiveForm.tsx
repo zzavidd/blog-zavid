@@ -131,7 +131,7 @@ export default function ExclusiveForm({
 
   const FormContent = (
     <React.Fragment>
-      <Typography variant={'h2'}>Send Exclusive</Typography>
+      <Typography variant={'h2'}>{heading}</Typography>
       <FormRow>
         <Stack width={'100%'}>
           <FormControl fullWidth={true}>
@@ -229,7 +229,7 @@ export default function ExclusiveForm({
         <LoadingButton
           variant={'contained'}
           onClick={onSubmitClick}
-          loading={isCreateLoading}>
+          loading={isActionLoading}>
           {buttonMenuItems[state.selectedSubmitIndex].label}
         </LoadingButton>
         <Button variant={'contained'} onClick={openButtonMenu} ref={buttonRef}>
