@@ -1,5 +1,5 @@
 export enum SubscriptionType {
-  ANNOUNCEMENT = 'Exclusives',
+  EXCLUSIVE = 'Exclusives',
   DIARY = 'Diary',
   REVERIE = 'Reveries',
   MUSING = 'Musings',

@@ -306,7 +306,3 @@ interface PostsFormProps {
   heading: string;
   isActionLoading: boolean;
 }
-
-type ChangeEvent =
-  | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  | SelectChangeEvent;

@@ -1,5 +1,3 @@
-import { z } from 'zod';
-
 import {
   SubscriberCreateOneSchema,
   SubscriberDeleteOneSchema,
@@ -9,7 +7,6 @@ import {
 } from 'schemas/schemas';
 import SubscriberAPI from 'server/api/subscribers';
 import { procedure, router } from 'server/trpc';
-import { zNotifyOptions, zSubscriberAnnouncement } from 'utils/validators';
 
 const subscriberRouter = router({
   find: procedure
@@ -27,16 +24,6 @@ const subscriberRouter = router({
   delete: procedure
     .input(SubscriberDeleteOneSchema)
     .mutation(({ input }) => SubscriberAPI.delete(input)),
-  announce: procedure
-    .input(
-      z.object({
-        announcement: zSubscriberAnnouncement,
-        options: zNotifyOptions,
-      }),
-    )
-    .mutation(({ input }) =>
-      SubscriberAPI.announce(input.announcement, input.options),
-    ),
 });
 
 export default subscriberRouter;
