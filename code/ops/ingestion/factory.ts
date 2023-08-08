@@ -1,6 +1,11 @@
 import { faker } from '@faker-js/faker/locale/en_GB';
 import type { Prisma } from '@prisma/client';
-import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
+import {
+  DiaryStatus,
+  ExclusiveStatus,
+  PostStatus,
+  PostType,
+} from '@prisma/client';
 
 import { SubscriptionType } from 'utils/enum';
 import ZString from 'utils/lib/string';
@@ -24,6 +29,20 @@ export function createDiaryEntry(
       .fill(null)
       .map(() => faker.lorem.word()),
     ...overrides,
+  };
+}
+
+export function createExclusive(
+  overrides: Partial<Prisma.ExclusiveCreateInput> = {},
+): Prisma.ExclusiveCreateInput {
+  const { status } = overrides;
+  return {
+    subject: ZString.toTitleCase(faker.lorem.words({ min: 1, max: 5 })),
+    preview: faker.lorem.sentences(2),
+    content: faker.lorem.paragraphs({ min: 5, max: 10 }, '\n\n'),
+    date: faker.date.past(),
+    endearment: '',
+    status: status ?? faker.helpers.enumValue(ExclusiveStatus),
   };
 }
 

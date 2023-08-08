@@ -26,6 +26,7 @@ declare global {
   type PostFindInput = RouterInput['post']['find'];
   type DiaryFindInput = RouterInput['diary']['find'];
   type PageFindInput = RouterInput['page']['find'];
+  type ExclusiveFindInput = RouterInput['exclusive']['find'];
   type IndexInput = z.infer<typeof zIndexInput>;
 
   interface ContentNavigationProps {

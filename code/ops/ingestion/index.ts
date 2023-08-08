@@ -4,10 +4,16 @@ import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
 
 import prisma from 'server/prisma';
 
-import { createDiaryEntry, createPost, createSubscriber } from './factory';
+import {
+  createDiaryEntry,
+  createExclusive,
+  createPost,
+  createSubscriber,
+} from './factory';
 
 (async () => {
   await ingestDiaryEntries();
+  await ingestExclusives();
   await ingestPages();
   await ingestPosts();
   await ingestSubscribers();
@@ -40,6 +46,17 @@ async function ingestDiaryEntries(): Promise<void> {
       return prisma.diary.create({ data: entry });
     });
   await prisma.$transaction(queries);
+}
+
+async function ingestExclusives(): Promise<void> {
+  const exclusives: Prisma.ExclusiveCreateInput[] = [];
+
+  for (let i = 1; i <= 5; i++) {
+    exclusives.push(createExclusive());
+  }
+
+  await prisma.exclusive.deleteMany({});
+  await prisma.exclusive.createMany({ data: exclusives });
 }
 
 async function ingestPosts(): Promise<void> {
