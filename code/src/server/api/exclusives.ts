@@ -18,7 +18,7 @@ export default class ExclusiveAPI {
 
   public static async create(
     args: Prisma.ExclusiveCreateArgs,
-    isPublish?: boolean,
+    isPublish = false,
   ): Promise<Exclusive> {
     const exclusive = await prisma.exclusive.create(args);
     if (isPublish) {
@@ -29,7 +29,7 @@ export default class ExclusiveAPI {
 
   public static async update(
     args: Prisma.ExclusiveUpdateArgs,
-    isPublish?: boolean,
+    isPublish = false,
   ): Promise<Exclusive> {
     const exclusive = await prisma.exclusive.update(args);
     if (isPublish) {

@@ -20,15 +20,12 @@ import {
 import { ExclusiveStatus } from '@prisma/client';
 import dayjs from 'dayjs';
 import immutate from 'immutability-helper';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
 import React, { useContext, useRef, useState } from 'react';
 
 import { ActionDialog } from 'components/Dialog';
 import Form, { FormRow } from 'components/Form';
 import { LinkButton } from 'components/Link';
 import { embedSubscriber } from 'utils/functions';
-import { trpc } from 'utils/trpc';
 
 import { ExclusiveFormContext } from './ExclusiveForm.context';
 
@@ -44,15 +41,6 @@ export default function ExclusiveForm({
     selectedSubmitIndex: 0,
   });
   const [context, setContext] = useContext(ExclusiveFormContext);
-  const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
-
-  const { mutate: createExclusive, isLoading: isCreateLoading } =
-    trpc.exclusive.create.useMutation({
-      onError: (e) => {
-        enqueueSnackbar(e.message, { variant: 'error' });
-      },
-    });
   const { exclusive } = context;
 
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -94,23 +82,6 @@ export default function ExclusiveForm({
     } else {
       onSubmit(false);
     }
-  }
-
-  function onSubmitConfirm() {
-    createExclusive(
-      {
-        exclusive: { data: context.exclusive },
-        isPublish: true,
-      },
-      {
-        onSuccess: () => {
-          enqueueSnackbar('Sent exclusive to all subscribers.', {
-            variant: 'success',
-          });
-          void router.push('/admin/exclusives');
-        },
-      },
-    );
   }
 
   function onButtonMenuChange(index: number) {
@@ -249,10 +220,10 @@ export default function ExclusiveForm({
       />
       <ActionDialog
         open={state.isPublishModalVisible}
-        onConfirm={onSubmitConfirm}
+        onConfirm={() => onSubmit(true)}
         onCancel={closePublishModal}
         confirmText={'Send exclusive'}
-        isActionLoading={isCreateLoading}>
+        isActionLoading={isActionLoading}>
         By sending this exclusive, you&#39;ll be notifying all subscribers.
         Confirm that you want to send out this announcment.
       </ActionDialog>

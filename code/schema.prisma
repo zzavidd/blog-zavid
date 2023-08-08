@@ -16,7 +16,7 @@ datasource db {
 }
 
 model Diary {
-  id          Int             @id @default(autoincrement()) @db.UnsignedInt
+  id          Int             @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   title       String          @db.VarChar(100)
   date        DateTime?       @db.Date
   content     String          @db.Text
@@ -39,7 +39,7 @@ model DiaryCategory {
 }
 
 model Exclusive {
-  id         Int             @id @default(autoincrement()) @db.UnsignedInt
+  id         Int             @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   subject    String          @db.VarChar(128)
   content    String          @db.Text
   preview    String          @db.Text
@@ -63,7 +63,7 @@ model Page {
 }
 
 model Post {
-  id            Int        @id @default(autoincrement()) @db.UnsignedInt
+  id            Int        @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   title         String     @db.Text
   datePublished DateTime?  @db.Date
   content       String     @db.LongText
@@ -94,7 +94,7 @@ model Subscriber {
 }
 
 model WishlistItem {
-  id           Int                @id @default(autoincrement()) @db.UnsignedInt
+  id           Int                @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   name         String
   price        Float
   quantity     Int
@@ -114,7 +114,7 @@ model WishlistItem {
 }
 
 model WishlistCategory {
-  id           Int            @id @default(autoincrement())
+  id           Int            @id @unique(map: "id_UNIQUE") @default(autoincrement())
   name         String         @unique
   WishlistItem WishlistItem[]
 
