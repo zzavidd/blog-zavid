@@ -3,6 +3,7 @@ import { Stack, Typography } from '@mui/material';
 import type { Exclusive } from '@prisma/client';
 import { ExclusiveStatus } from '@prisma/client';
 
+import { Link } from 'components/Link';
 import ZDate from 'utils/lib/date';
 
 const STATUS_ICONS = {
@@ -25,9 +26,22 @@ export function useExclusivesTableFields(): TableField<Exclusive>[] {
       title: <Typography variant={'h6'}>Title</Typography>,
       property: 'subject',
       align: 'left',
-      renderValue: (e) => (
-        <Typography variant={'body1'}>{e.subject}</Typography>
-      ),
+      renderValue: (p) => {
+        if (p.status === ExclusiveStatus.PUBLISHED) {
+          return (
+            <Link
+              href={`/exclusives/${p.slug}`}
+              variant={'body1'}
+              color={'inherit'}
+              fontWeight={400}
+              underline={'hover'}>
+              {p.subject}
+            </Link>
+          );
+        }
+
+        return <Typography variant={'body1'}>{p.subject}</Typography>;
+      },
     },
     {
       title: <Typography variant={'h6'}>Preview</Typography>,

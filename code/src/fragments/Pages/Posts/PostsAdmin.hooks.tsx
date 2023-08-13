@@ -4,7 +4,7 @@ import type { Post } from '@prisma/client';
 import { PostStatus } from '@prisma/client';
 
 import { Link } from 'components/Link';
-import { getDomainFromPostType } from 'utils/functions';
+import { DOMAINS } from 'utils/functions';
 import ZDate from 'utils/lib/date';
 
 const STATUS_ICONS = {
@@ -30,7 +30,7 @@ export function usePostsTableFields(): TableField<Post>[] {
       property: 'title',
       align: 'left',
       renderValue: (p) => {
-        const domain = getDomainFromPostType(p);
+        const domain = DOMAINS[p.type].collection;
         return (
           <Link
             href={`/${domain}/${p.slug}`}

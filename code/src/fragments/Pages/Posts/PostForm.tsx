@@ -232,7 +232,7 @@ export default function PostForm({
               label={'Slug:'}
               value={post.slug}
               onChange={onTextChange}
-              placeholder={'Enter the title'}
+              placeholder={'Enter the slug'}
               disabled={true}
             />
           </FormControl>

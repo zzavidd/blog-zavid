@@ -4,6 +4,7 @@ import { StringFilterObjectSchema } from './StringFilter.schema';
 import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
 import { EnumExclusiveStatusFilterObjectSchema } from './EnumExclusiveStatusFilter.schema';
 import { ExclusiveStatusSchema } from '../enums/ExclusiveStatus.schema';
+import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -51,6 +52,10 @@ const Schema: z.ZodType<Prisma.ExclusiveWhereInput> = z
         z.lazy(() => ExclusiveStatusSchema),
       ])
       .optional(),
+    slug: z
+      .union([z.lazy(() => StringNullableFilterObjectSchema), z.string()])
+      .optional()
+      .nullable(),
   })
   .strict();
 

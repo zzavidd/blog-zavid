@@ -1,4 +1,4 @@
-import type { Exclusive, Prisma } from '@prisma/client';
+import { ExclusiveStatus, type Exclusive, type Prisma } from '@prisma/client';
 import nodemailer from 'nodemailer';
 import invariant from 'tiny-invariant';
 
@@ -42,16 +42,21 @@ export default class ExclusiveAPI {
     await prisma.exclusive.delete(args);
   }
 
+  public static async index(id: number): Promise<number> {
+    const exclusives = await prisma.exclusive.findMany({
+      where: { status: ExclusiveStatus.PUBLISHED },
+      orderBy: { date: 'asc' },
+    });
+    return exclusives.findIndex((p) => p.id === id) + 1;
+  }
+
   public static async publish(
     id: number,
-    previewType: EmailPreviewType,
+    options: NotifyOptions,
   ): Promise<string> {
     const exclusive = await this.find({ where: { id } });
     invariant(exclusive, 'No exclusive with ID found.');
-    const [info] = await Emailer.notifyExclusive(exclusive, {
-      isPreview: true,
-      previewType,
-    });
+    const [info] = await Emailer.notifyExclusive(exclusive, options);
     return nodemailer.getTestMessageUrl(info) || '';
   }
 }

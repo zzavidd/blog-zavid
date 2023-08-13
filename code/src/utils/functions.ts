@@ -1,6 +1,11 @@
 import { capitalize } from '@mui/material';
-import type { Diary, Post } from '@prisma/client';
-import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
+import type { Diary, Exclusive, Post, Prisma } from '@prisma/client';
+import {
+  DiaryStatus,
+  ExclusiveStatus,
+  PostStatus,
+  PostType,
+} from '@prisma/client';
 
 import ZDate from './lib/date';
 
@@ -21,12 +26,12 @@ export function getDomainFromPostType(post: Post): string {
 }
 
 export function embedSubscriber(
-  announcement: SubscriberAnnouncement,
-  recipientName: string | null,
+  exclusive: Exclusive | Prisma.ExclusiveCreateInput,
+  recipientName?: string | null,
 ): string {
-  return announcement.content.replaceAll(
+  return exclusive.content.replaceAll(
     '{subscriber}',
-    recipientName ?? announcement.endearment ?? 'subscriber',
+    recipientName || exclusive.endearment || 'subscriber',
   );
 }
 
@@ -66,6 +71,19 @@ export function createPostNavigationInfo(
   };
 }
 
+export function createExclusiveNavigationInfo(
+  exclusive: Exclusive | null | undefined,
+  index: number,
+): NavInfo | null {
+  if (!exclusive) return null;
+
+  return {
+    headline: `Exclusive #${index}`,
+    subline: exclusive.subject,
+    href: `/exclusives/${exclusive.slug}`,
+  };
+}
+
 export function createDiaryNavigatorParams(
   entryNumber: number,
 ): DiaryFindInput {
@@ -96,6 +114,21 @@ export function createPostNavigatorParams(
         status: { in: [PostStatus.PRIVATE, PostStatus.PUBLISHED] },
         type: post.type,
       },
+    },
+  };
+}
+
+export function createExclusiveNavigatorParams(
+  exclusive: Exclusive,
+  op: DateOp,
+  safe = false,
+): ExclusiveFindInput {
+  return {
+    select: { subject: true, slug: true },
+    orderBy: { date: op === 'gt' ? 'asc' : 'desc' },
+    where: {
+      date: { [op]: safe ? ZDate.formatISO(exclusive.date) : exclusive.date },
+      status: ExclusiveStatus.PUBLISHED,
     },
   };
 }

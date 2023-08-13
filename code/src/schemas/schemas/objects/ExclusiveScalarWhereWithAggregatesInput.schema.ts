@@ -4,6 +4,7 @@ import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFi
 import { DateTimeNullableWithAggregatesFilterObjectSchema } from './DateTimeNullableWithAggregatesFilter.schema';
 import { EnumExclusiveStatusWithAggregatesFilterObjectSchema } from './EnumExclusiveStatusWithAggregatesFilter.schema';
 import { ExclusiveStatusSchema } from '../enums/ExclusiveStatus.schema';
+import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -57,6 +58,13 @@ const Schema: z.ZodType<Prisma.ExclusiveScalarWhereWithAggregatesInput> = z
         z.lazy(() => ExclusiveStatusSchema),
       ])
       .optional(),
+    slug: z
+      .union([
+        z.lazy(() => StringNullableWithAggregatesFilterObjectSchema),
+        z.string(),
+      ])
+      .optional()
+      .nullable(),
   })
   .strict();
 

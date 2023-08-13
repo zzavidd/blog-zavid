@@ -1,5 +1,5 @@
 import { ArrowDropUp } from '@mui/icons-material';
-import { DatePicker, LoadingButton } from '@mui/lab';
+import { LoadingButton } from '@mui/lab';
 import type { SelectChangeEvent } from '@mui/material';
 import {
   Button,
@@ -17,6 +17,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
 import { ExclusiveStatus } from '@prisma/client';
 import dayjs from 'dayjs';
 import immutate from 'immutability-helper';
@@ -26,6 +27,7 @@ import { ActionDialog } from 'components/Dialog';
 import Form, { FormRow } from 'components/Form';
 import { LinkButton } from 'components/Link';
 import { embedSubscriber } from 'utils/functions';
+import ZString from 'utils/lib/string';
 
 import { ExclusiveFormContext } from './ExclusiveForm.context';
 
@@ -56,6 +58,18 @@ export default function ExclusiveForm({
   function onTextChange(e: ChangeEvent) {
     const { name, value } = e.target;
     setContext((c) => immutate(c, { exclusive: { [name]: { $set: value } } }));
+  }
+
+  function onSubjectChange(e: ChangeEvent) {
+    const { value } = e.target;
+    setContext((c) =>
+      immutate(c, {
+        exclusive: {
+          subject: { $set: value },
+          slug: { $set: ZString.createSlug(value) },
+        },
+      }),
+    );
   }
 
   function onStatusChange(e: SelectChangeEvent) {
@@ -123,7 +137,7 @@ export default function ExclusiveForm({
               name={'subject'}
               label={'Subject:'}
               value={exclusive.subject}
-              onChange={onTextChange}
+              onChange={onSubjectChange}
               placeholder={'Enter the subject'}
             />
           </FormControl>
@@ -188,6 +202,15 @@ export default function ExclusiveForm({
               </FormControl>
             </Fade>
           </FormRow>
+          <FormControl fullWidth={true}>
+            <TextField
+              name={'slug'}
+              label={'Slug:'}
+              value={exclusive.slug}
+              placeholder={'Enter the slug'}
+              disabled={true}
+            />
+          </FormControl>
         </Stack>
       </FormRow>
     </React.Fragment>

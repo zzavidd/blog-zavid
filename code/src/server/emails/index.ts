@@ -131,7 +131,9 @@ async function sendEmail<T extends Record<string, unknown>>(
   type: SubscriptionType,
   options: NotifyOptions,
 ): Promise<SMTPTransport.SentMessageInfo[]> {
-  const subscribers = await SubscriberAPI.findMany({});
+  const subscribers = await SubscriberAPI.findMany(
+    options.recipients ? { where: { id: { in: options.recipients } } } : {},
+  );
 
   let mailList: Subscriber[] | [TestRecipient] = [];
 
@@ -178,14 +180,9 @@ async function sendEmail<T extends Record<string, unknown>>(
 
   const responses = await Promise.all(promises);
   logger.info(
-    `Emails: "${subject}" email sent to ${mailList.length} subscribers.`,
+    `Emails: "${subject}" email sent to ${mailList.length} subscriber(s).`,
   );
   return responses;
-}
-
-interface NotifyOptions {
-  isPreview?: boolean;
-  previewType?: EmailPreviewType;
 }
 
 type TestRecipient = Pick<
