@@ -11,6 +11,7 @@ const Schema: z.ZodType<Prisma.ExclusiveSelect> = z
     endearment: z.boolean().optional(),
     date: z.boolean().optional(),
     status: z.boolean().optional(),
+    slug: z.boolean().optional(),
   })
   .strict();
 

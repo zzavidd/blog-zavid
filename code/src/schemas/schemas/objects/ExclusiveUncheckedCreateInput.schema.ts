@@ -12,6 +12,7 @@ const Schema: z.ZodType<Prisma.ExclusiveUncheckedCreateInput> = z
     endearment: z.string(),
     date: z.coerce.date().optional().nullable(),
     status: z.lazy(() => ExclusiveStatusSchema),
+    slug: z.string().optional().nullable(),
   })
   .strict();
 

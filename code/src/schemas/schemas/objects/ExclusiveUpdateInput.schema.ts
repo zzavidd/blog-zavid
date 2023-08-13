@@ -3,6 +3,7 @@ import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdat
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { ExclusiveStatusSchema } from '../enums/ExclusiveStatus.schema';
 import { EnumExclusiveStatusFieldUpdateOperationsInputObjectSchema } from './EnumExclusiveStatusFieldUpdateOperationsInput.schema';
+import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 
 import type { Prisma } from '@prisma/client';
 
@@ -45,6 +46,13 @@ const Schema: z.ZodType<Prisma.ExclusiveUpdateInput> = z
         z.lazy(() => EnumExclusiveStatusFieldUpdateOperationsInputObjectSchema),
       ])
       .optional(),
+    slug: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema),
+      ])
+      .optional()
+      .nullable(),
   })
   .strict();
 

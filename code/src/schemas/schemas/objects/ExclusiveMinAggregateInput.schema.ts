@@ -11,6 +11,7 @@ const Schema: z.ZodType<Prisma.ExclusiveMinAggregateInputType> = z
     endearment: z.literal(true).optional(),
     date: z.literal(true).optional(),
     status: z.literal(true).optional(),
+    slug: z.literal(true).optional(),
   })
   .strict();
 

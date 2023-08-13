@@ -40,12 +40,13 @@ model DiaryCategory {
 
 model Exclusive {
   id         Int             @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
-  subject    String          @db.VarChar(128)
+  subject    String          @db.VarChar(96)
   content    String          @db.Text
   preview    String          @db.Text
-  endearment String          @db.VarChar(64)
+  endearment String          @db.VarChar(24)
   date       DateTime?       @db.Date
   status     ExclusiveStatus
+  slug       String?         @db.VarChar(96)
 
   @@map("exclusives")
 }

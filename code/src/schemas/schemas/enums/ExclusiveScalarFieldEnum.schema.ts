@@ -8,4 +8,5 @@ export const ExclusiveScalarFieldEnumSchema = z.enum([
   'endearment',
   'date',
   'status',
+  'slug',
 ]);
