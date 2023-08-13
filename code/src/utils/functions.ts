@@ -1,5 +1,5 @@
 import { capitalize } from '@mui/material';
-import type { Diary, Exclusive, Post } from '@prisma/client';
+import type { Diary, Exclusive, Post, Prisma } from '@prisma/client';
 import {
   DiaryStatus,
   ExclusiveStatus,
@@ -26,7 +26,7 @@ export function getDomainFromPostType(post: Post): string {
 }
 
 export function embedSubscriber(
-  exclusive: Exclusive,
+  exclusive: Exclusive | Prisma.ExclusiveCreateInput,
   recipientName?: string | null,
 ): string {
   return exclusive.content.replaceAll(
