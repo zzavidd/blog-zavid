@@ -41,6 +41,9 @@ const exclusiveRouter = router({
   delete: procedure
     .input(ExclusiveDeleteOneSchema)
     .mutation(({ input }) => ExclusiveAPI.delete(input)),
+  index: procedure
+    .input(z.number())
+    .query(({ input }) => ExclusiveAPI.index(input)),
   publish: procedure
     .input(z.object({ id: z.number(), type: zEmailPreviewType }))
     .mutation(({ input }) => ExclusiveAPI.publish(input.id, input.type)),

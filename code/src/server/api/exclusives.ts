@@ -1,4 +1,4 @@
-import type { Exclusive, Prisma } from '@prisma/client';
+import { ExclusiveStatus, type Exclusive, type Prisma } from '@prisma/client';
 import nodemailer from 'nodemailer';
 import invariant from 'tiny-invariant';
 
@@ -40,6 +40,14 @@ export default class ExclusiveAPI {
 
   public static async delete(args: Prisma.ExclusiveDeleteArgs): Promise<void> {
     await prisma.exclusive.delete(args);
+  }
+
+  public static async index(id: number): Promise<number> {
+    const exclusives = await prisma.exclusive.findMany({
+      where: { status: ExclusiveStatus.PUBLISHED },
+      orderBy: { date: 'asc' },
+    });
+    return exclusives.findIndex((p) => p.id === id) + 1;
   }
 
   public static async publish(

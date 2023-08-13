@@ -38,6 +38,7 @@ export default function ExclusivesAdmin() {
       preview: true,
       date: true,
       status: true,
+      slug: true,
     },
   });
 

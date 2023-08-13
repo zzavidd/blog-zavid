@@ -10,6 +10,7 @@ export const InitialExclusiveFormState: ExclusiveFormState = {
     endearment: '',
     date: new Date(),
     status: ExclusiveStatus.DRAFT,
+    slug: '',
   },
 };
 

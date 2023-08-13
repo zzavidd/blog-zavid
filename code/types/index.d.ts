@@ -10,7 +10,6 @@ import type {
   zFindOptions,
   zIndexInput,
   zNotifyOptions,
-  zSubscriberAnnouncement,
 } from 'utils/validators';
 
 declare global {
@@ -19,7 +18,6 @@ declare global {
     pageProps?: Record<string, unknown>;
   }
 
-  type SubscriberAnnouncement = z.infer<typeof zSubscriberAnnouncement>;
   type NotifyOptions = z.infer<typeof zNotifyOptions>;
   type EmailPreviewType = z.infer<typeof zEmailPreviewType>;
   type FindOptions = z.infer<typeof zFindOptions>;
