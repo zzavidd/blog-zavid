@@ -52,14 +52,11 @@ export default class ExclusiveAPI {
 
   public static async publish(
     id: number,
-    previewType: EmailPreviewType,
+    options: NotifyOptions,
   ): Promise<string> {
     const exclusive = await this.find({ where: { id } });
     invariant(exclusive, 'No exclusive with ID found.');
-    const [info] = await Emailer.notifyExclusive(exclusive, {
-      isPreview: true,
-      previewType,
-    });
+    const [info] = await Emailer.notifyExclusive(exclusive, options);
     return nodemailer.getTestMessageUrl(info) || '';
   }
 }

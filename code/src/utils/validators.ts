@@ -16,6 +16,7 @@ export const zEmailPreviewType = z.enum(['Ethereal', 'Gmail']).optional();
 export const zNotifyOptions = z.object({
   isPreview: z.boolean().optional(),
   previewType: zEmailPreviewType,
+  recipients: z.number().array().optional(),
 });
 
 export const zIndexInput = z.object({

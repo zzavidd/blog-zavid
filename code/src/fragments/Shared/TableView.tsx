@@ -255,7 +255,7 @@ function TableRowEachMenu() {
             <ListItemIcon>
               <Icon />
             </ListItemIcon>
-            <ListItemText>{label}</ListItemText>
+            <ListItemText sx={{ fontSize: 'auto' }}>{label}</ListItemText>
             <ListItemIcon />
           </MenuItem>
         ))}
