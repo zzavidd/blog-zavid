@@ -35,14 +35,16 @@ export function createDiaryEntry(
 export function createExclusive(
   overrides: Partial<Prisma.ExclusiveCreateInput> = {},
 ): Prisma.ExclusiveCreateInput {
-  const { status } = overrides;
+  const { status, slug } = overrides;
+  const subject = ZString.toTitleCase(faker.lorem.words({ min: 1, max: 5 }));
   return {
-    subject: ZString.toTitleCase(faker.lorem.words({ min: 1, max: 5 })),
+    subject,
     preview: faker.lorem.sentences(2),
     content: faker.lorem.paragraphs({ min: 5, max: 10 }, '\n\n'),
     date: faker.date.past(),
     endearment: '',
     status: status ?? faker.helpers.enumValue(ExclusiveStatus),
+    slug: slug ?? ZString.createSlug(subject),
   };
 }
 
