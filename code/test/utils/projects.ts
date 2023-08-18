@@ -8,10 +8,12 @@ export const testProjects: Project[] = [
   },
   {
     name: 'firefox',
+    testMatch: ['**/curator.test.ts'],
     use: devices['Desktop Firefox'],
   },
   {
     name: 'webkit',
+    testMatch: ['**/curator.test.ts'],
     use: devices['Desktop Safari'],
   },
   {

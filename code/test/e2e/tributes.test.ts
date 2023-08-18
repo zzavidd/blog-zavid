@@ -14,8 +14,6 @@ const tribute = createPost({
 });
 
 test.describe('Tributes', () => {
-  test.skip(({ browserName }) => browserName !== 'chromium');
-
   test.describe('Individual', () => {
     test.describe.configure({ mode: 'serial' });
     test.beforeEach(async ({ page }) => {

@@ -2,6 +2,8 @@ import 'dotenv/config';
 
 import logger from 'utils/logger';
 
+import { createDefaultPages } from '../../ops/ingestion/functions';
+
 import prisma from './prisma';
 
 export default async function globalSetup(): Promise<void> {
@@ -31,4 +33,7 @@ async function clearDatabase(): Promise<void> {
   await prisma.$executeRaw`TRUNCATE wishlist;`;
   await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 1;`;
   logger.info('Database cleared.');
+
+  const pages = createDefaultPages();
+  await prisma.page.createMany({ data: pages });
 }

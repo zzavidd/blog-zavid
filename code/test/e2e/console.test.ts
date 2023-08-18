@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker/locale/en_GB';
 import { expect, test } from '@playwright/test';
 import { DiaryStatus, PostStatus, PostType } from '@prisma/client';
 
@@ -11,61 +10,27 @@ import {
 } from '../../ops/ingestion/factory';
 import prisma from '../utils/prisma';
 
-const entryNumber = 1;
-const slug = faker.lorem.slug();
-
-const diary = createDiaryEntry({ entryNumber, status: DiaryStatus.PUBLISHED });
-const musing = createPost({
-  type: PostType.MUSING,
-  status: PostStatus.PUBLISHED,
-  slug,
-});
-const reverie = createPost({
-  type: PostType.REVERIE,
-  status: PostStatus.PUBLISHED,
-  slug,
-});
-const passage = createPost({
-  type: PostType.PASSAGE,
-  status: PostStatus.PRIVATE,
-  slug,
-});
-
 const subscriber = createSubscriber();
+const TEST_PARAMS: TestParam[] = [
+  { name: 'home', createHref: () => '/' },
+  { name: 'diary index', createHref: () => '/diary' },
+  { name: 'diary entry', createHref: createDiaryHref },
+  { name: 'musing', createHref: createMusingHref },
+  { name: 'passage', createHref: createPassageHref },
+  { name: 'reverie', createHref: createReverieHref },
+  { name: 'about', createHref: () => '/about' },
+  { name: 'subscribe', createHref: () => '/subscribe' },
+  { name: 'subscriptions', createHref: createSubscrptionHref },
+  { name: 'privacy', createHref: () => '/privacy' },
+  { name: 'cookies', createHref: () => '/cookies' },
+];
 
 test.describe.configure({ mode: 'parallel' });
 test.describe('Console', () => {
   const errors: string[] = [];
 
-  test.beforeAll(async () => {
-    await prisma.diary.upsert({
-      create: diary,
-      update: diary,
-      where: { entryNumber },
-    });
-    await prisma.post.upsert({
-      create: musing,
-      update: musing,
-      where: { id: 1 },
-    });
-    await prisma.post.upsert({
-      create: passage,
-      update: passage,
-      where: { id: 2 },
-    });
-    await prisma.post.upsert({
-      create: reverie,
-      update: reverie,
-      where: { id: 3 },
-    });
-    await prisma.subscriber.upsert({
-      create: subscriber,
-      update: subscriber,
-      where: { email: subscriber.email },
-    });
-  });
-
   test.beforeEach(({ page }) => {
+    errors.length = 0;
     page.on('console', (message) => {
       if (message.type() === 'error') {
         errors.push(message.text());
@@ -73,20 +38,9 @@ test.describe('Console', () => {
     });
   });
 
-  [
-    { name: 'home', href: '/' },
-    { name: 'diary index', href: '/diary' },
-    { name: 'diary entry', href: `/diary/${entryNumber}` },
-    { name: 'musing', href: `/musings/${slug}` },
-    { name: 'passage', href: `/passages/${slug}` },
-    { name: 'reverie', href: `/reveries/${slug}` },
-    { name: 'about', href: '/about' },
-    { name: 'subscribe', href: '/subscribe' },
-    { name: 'subscriptions', href: `/subscriptions?token=${subscriber.token}` },
-    { name: 'privacy', href: '/privacy' },
-    { name: 'cookies', href: '/cookies' },
-  ].forEach(({ name, href }) => {
+  TEST_PARAMS.forEach(({ name, createHref }) => {
     test(`has no errors on ${name} page`, async ({ page }) => {
+      const href = await createHref();
       await page.goto(href);
       await expect(page).not.toHaveTitle(
         `404: Not Found | ${Settings.SITE_TITLE}`,
@@ -95,3 +49,54 @@ test.describe('Console', () => {
     });
   });
 });
+
+async function createDiaryHref(): Promise<string> {
+  const entryNumber = 1;
+  const diary = createDiaryEntry({
+    entryNumber,
+    status: DiaryStatus.PUBLISHED,
+  });
+  await prisma.diary.upsert({
+    create: diary,
+    update: diary,
+    where: { entryNumber },
+  });
+  return `/diary/${entryNumber}`;
+}
+
+async function createMusingHref(): Promise<string> {
+  let musing = createPost({
+    type: PostType.MUSING,
+    status: PostStatus.PUBLISHED,
+  });
+  musing = await prisma.post.create({ data: musing });
+  return `/musings/${musing.slug}`;
+}
+
+async function createPassageHref(): Promise<string> {
+  let passage = createPost({
+    type: PostType.PASSAGE,
+    status: PostStatus.PRIVATE,
+  });
+  passage = await prisma.post.create({ data: passage });
+  return `/passages/${passage.slug}`;
+}
+
+async function createReverieHref(): Promise<string> {
+  let reverie = createPost({
+    type: PostType.REVERIE,
+    status: PostStatus.PUBLISHED,
+  });
+  reverie = await prisma.post.create({ data: reverie });
+  return `/reveries/${reverie.slug}`;
+}
+
+async function createSubscrptionHref(): Promise<string> {
+  await prisma.subscriber.create({ data: subscriber });
+  return `/subscriptions?token=${subscriber.token}`;
+}
+
+interface TestParam {
+  name: string;
+  createHref: () => Promise<string> | string;
+}

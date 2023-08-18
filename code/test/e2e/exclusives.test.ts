@@ -11,8 +11,6 @@ const slug = faker.lorem.slug();
 const exclusive = createExclusive({ slug });
 
 test.describe('Exclusive', () => {
-  test.skip(({ browserName }) => browserName !== 'chromium');
-
   test.describe('Individual', () => {
     test.describe.configure({ mode: 'serial' });
     test.beforeEach(async ({ page }) => {

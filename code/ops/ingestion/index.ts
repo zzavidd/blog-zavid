@@ -10,6 +10,7 @@ import {
   createPost,
   createSubscriber,
 } from './factory';
+import { createDefaultPages } from './functions';
 
 (async () => {
   await ingestDiaryEntries();
@@ -59,6 +60,12 @@ async function ingestExclusives(): Promise<void> {
   await prisma.exclusive.createMany({ data: exclusives });
 }
 
+async function ingestPages(): Promise<void> {
+  const pages = createDefaultPages();
+  await prisma.page.deleteMany({});
+  await prisma.page.createMany({ data: pages });
+}
+
 async function ingestPosts(): Promise<void> {
   const posts: Prisma.PostCreateInput[] = [];
 
@@ -97,52 +104,4 @@ async function ingestSubscribers(): Promise<void> {
 
   await prisma.subscriber.deleteMany({});
   await prisma.subscriber.createMany({ data: subscribers });
-}
-
-async function ingestPages(): Promise<void> {
-  const pages: Prisma.PageCreateInput[] = [
-    {
-      title: 'Home',
-      content: faker.lorem.paragraphs(5, '\n\n'),
-      excerpt: faker.lorem.sentence(),
-      slug: 'home',
-      isEmbed: true,
-      lastModified: new Date(),
-    },
-    {
-      title: 'Diary',
-      content: faker.lorem.paragraph(),
-      excerpt: faker.lorem.sentence(),
-      slug: 'diary',
-      isEmbed: true,
-      lastModified: new Date(),
-    },
-    {
-      title: 'About Zavid',
-      content: faker.lorem.paragraphs(15, '\n\n'),
-      excerpt: faker.lorem.sentence(),
-      slug: 'about',
-      isEmbed: false,
-      lastModified: new Date(),
-    },
-    {
-      title: 'Privacy Policy',
-      content: faker.lorem.paragraphs(8, '\n\n'),
-      excerpt: faker.lorem.sentence(),
-      slug: 'privacy',
-      isEmbed: false,
-      lastModified: new Date(),
-    },
-    {
-      title: 'Cookie Policy',
-      content: faker.lorem.paragraphs(8, '\n\n'),
-      excerpt: faker.lorem.sentence(),
-      slug: 'cookies',
-      isEmbed: false,
-      lastModified: new Date(),
-    },
-  ];
-
-  await prisma.page.deleteMany({});
-  await prisma.page.createMany({ data: pages });
 }

@@ -11,8 +11,6 @@ const diary = createDiaryEntry({ entryNumber });
 
 test.describe.configure({ mode: 'parallel' });
 test.describe('Diary', () => {
-  test.skip(({ browserName }) => browserName !== 'chromium');
-
   test.describe('Index', () => {
     let latestDiaryEntry: Diary | null;
 
