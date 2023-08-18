@@ -14,8 +14,6 @@ const passage = createPost({
 });
 
 test.describe('Passage', () => {
-  test.skip(({ browserName }) => browserName !== 'chromium');
-
   test.describe('Individual', () => {
     test.describe.configure({ mode: 'serial' });
     test.beforeEach(async ({ page }) => {

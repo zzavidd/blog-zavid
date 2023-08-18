@@ -9,7 +9,7 @@ import prisma from '../utils/prisma';
 const entryNumber = 1;
 const diary = createDiaryEntry({ entryNumber });
 
-test.describe.configure({ mode: 'parallel' });
+test.describe.configure({ mode: 'serial' });
 test.describe('Diary', () => {
   test.describe('Index', () => {
     let latestDiaryEntry: Diary | null;
