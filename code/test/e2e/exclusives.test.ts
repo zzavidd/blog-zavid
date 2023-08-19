@@ -6,6 +6,8 @@ import Settings from '../../src/utils/settings';
 import prisma from '../utils/prisma';
 
 test.describe('Exclusive', () => {
+  test.describe.configure({ mode: 'parallel' });
+
   test.describe('Individual', () => {
     test.beforeEach(async ({ page }) => {
       await page.goto('/');

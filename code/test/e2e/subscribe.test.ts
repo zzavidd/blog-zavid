@@ -14,8 +14,9 @@ const subscriber = {
   lastname: name.lastName,
 };
 
-test.describe.configure({ mode: 'parallel' });
 test.describe('Subscribe', () => {
+  test.describe.configure({ mode: 'parallel' });
+
   test.describe('via page form', () => {
     test.beforeEach(async ({ page }) => {
       await page.goto('/subscribe');

@@ -8,6 +8,7 @@ import {
   createPost,
   createSubscriber,
 } from '../../ops/ingestion/factory';
+import { DIARY_ENTRY_NUMBERS } from '../utils/constants';
 import prisma from '../utils/prisma';
 
 const subscriber = createSubscriber();
@@ -25,8 +26,9 @@ const TEST_PARAMS: TestParam[] = [
   { name: 'cookies', createHref: () => '/cookies' },
 ];
 
-test.describe.configure({ mode: 'parallel' });
 test.describe('Console', () => {
+  test.describe.configure({ mode: 'parallel' });
+
   const errors: string[] = [];
 
   test.beforeEach(({ page }) => {
@@ -51,7 +53,10 @@ test.describe('Console', () => {
 });
 
 async function createDiaryHref(): Promise<string> {
-  const diary = createDiaryEntry({ status: DiaryStatus.PUBLISHED });
+  const diary = createDiaryEntry({
+    entryNumber: DIARY_ENTRY_NUMBERS.CONSOLE,
+    status: DiaryStatus.PUBLISHED,
+  });
   await prisma.diary.create({ data: diary });
   return `/diary/${diary.entryNumber}`;
 }

@@ -21,8 +21,9 @@ const params: TestDefinition[] = [
   },
 ];
 
-test.describe.configure({ mode: 'parallel' });
 test.describe('Curator', () => {
+  test.describe.configure({ mode: 'parallel' });
+
   test.beforeAll(async () => {
     await prisma.diary.upsert({
       create: diary,

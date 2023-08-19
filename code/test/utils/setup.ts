@@ -9,6 +9,9 @@ import prisma from './prisma';
 export default async function globalSetup(): Promise<void> {
   verifyDatabaseIsTest();
   await clearDatabase();
+
+  const pages = createDefaultPages();
+  await prisma.page.createMany({ data: pages });
 }
 
 function verifyDatabaseIsTest(): void {
@@ -33,7 +36,4 @@ async function clearDatabase(): Promise<void> {
   await prisma.$executeRaw`TRUNCATE wishlist;`;
   await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 1;`;
   logger.info('Database cleared.');
-
-  const pages = createDefaultPages();
-  await prisma.page.createMany({ data: pages });
 }
