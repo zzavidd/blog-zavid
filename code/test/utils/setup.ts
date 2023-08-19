@@ -1,17 +1,28 @@
+import { DiaryStatus } from '@prisma/client';
 import 'dotenv/config';
 
 import logger from 'utils/logger';
 
+import { createDiaryEntry } from '../../ops/ingestion/factory';
 import { createDefaultPages } from '../../ops/ingestion/functions';
 
+import { DIARY_ENTRY_NUMBERS } from './constants';
 import prisma from './prisma';
 
 export default async function globalSetup(): Promise<void> {
   verifyDatabaseIsTest();
   await clearDatabase();
 
+  // For console tests.
   const pages = createDefaultPages();
   await prisma.page.createMany({ data: pages });
+
+  // For curator tests.
+  const diary = createDiaryEntry({
+    entryNumber: DIARY_ENTRY_NUMBERS.CURATOR,
+    status: DiaryStatus.PUBLISHED,
+  });
+  await prisma.diary.create({ data: diary });
 }
 
 function verifyDatabaseIsTest(): void {
