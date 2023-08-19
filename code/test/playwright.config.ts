@@ -5,6 +5,7 @@ import { testProjects } from './utils/projects';
 export default defineConfig({
   expect: { timeout: 5000 },
   forbidOnly: !!process.env.CI,
+  globalSetup: require.resolve('./utils/setup'),
   outputDir: './results',
   preserveOutput: 'never',
   projects: testProjects,
