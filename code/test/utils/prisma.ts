@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
 const prisma = new PrismaClient({
   datasources: {
     db: {
@@ -8,7 +7,5 @@ const prisma = new PrismaClient({
     },
   },
 });
-
-globalForPrisma.prisma = prisma;
 
 export default prisma;
