@@ -14,6 +14,8 @@ export default async function globalSetup(): Promise<void> {
   await clearDatabase();
 
   // For console tests.
+
+  await prisma.$executeRaw`TRUNCATE pages;`;
   const pages = createDefaultPages();
   await prisma.page.createMany({ data: pages });
 
