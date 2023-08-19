@@ -22,7 +22,7 @@ test.describe('Diary', () => {
       });
       if (!latestDiaryEntry) {
         const diary = createDiaryEntry({
-          entryNumber: DIARY_ENTRY_NUMBERS.LATEST_DIARY,
+          entryNumber: DIARY_ENTRY_NUMBERS.DIARY_LATEST,
           status: DiaryStatus.PUBLISHED,
         });
         latestDiaryEntry = await prisma.diary.create({ data: diary });
@@ -65,21 +65,21 @@ test.describe('Diary', () => {
     [
       {
         status: DiaryStatus.DRAFT,
-        entryNumber: DIARY_ENTRY_NUMBERS.STATUS_DRAFT,
+        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_DRAFT,
         expect404: true,
       },
       {
         status: DiaryStatus.PROTECTED,
-        entryNumber: DIARY_ENTRY_NUMBERS.STATUS_PROTECTED,
+        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_PROTECTED,
         expect404: true,
       },
       {
         status: DiaryStatus.PRIVATE,
-        entryNumber: DIARY_ENTRY_NUMBERS.STATUS_PRIVATE,
+        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_PRIVATE,
       },
       {
         status: DiaryStatus.PUBLISHED,
-        entryNumber: DIARY_ENTRY_NUMBERS.STATUS_PUBLISHED,
+        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_PUBLISHED,
       },
     ].forEach(({ status, entryNumber, expect404 }) => {
       test(`can view ${status} page`, async ({ page }) => {
