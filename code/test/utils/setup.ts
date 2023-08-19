@@ -11,11 +11,20 @@ import prisma from './prisma';
 
 export default async function globalSetup(): Promise<void> {
   verifyDatabaseIsTest();
-  await clearDatabase();
+
+  logger.info('Clearing database...');
+  await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 0;`;
+  await prisma.$executeRaw`TRUNCATE diary_categories;`;
+  await prisma.$executeRaw`TRUNCATE diary;`;
+  await prisma.$executeRaw`TRUNCATE pages;`;
+  await prisma.$executeRaw`TRUNCATE posts;`;
+  await prisma.$executeRaw`TRUNCATE subscribers;`;
+  await prisma.$executeRaw`TRUNCATE wishlist_categories;`;
+  await prisma.$executeRaw`TRUNCATE wishlist;`;
+  await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 1;`;
+  logger.info('Database cleared.');
 
   // For console tests.
-
-  await prisma.$executeRaw`TRUNCATE pages;`;
   const pages = createDefaultPages();
   await prisma.page.createMany({ data: pages });
 
@@ -35,18 +44,4 @@ function verifyDatabaseIsTest(): void {
     );
     process.exit(0);
   }
-}
-
-async function clearDatabase(): Promise<void> {
-  logger.info('Clearing database...');
-  await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 0;`;
-  await prisma.$executeRaw`TRUNCATE diary_categories;`;
-  await prisma.$executeRaw`TRUNCATE diary;`;
-  await prisma.$executeRaw`TRUNCATE pages;`;
-  await prisma.$executeRaw`TRUNCATE posts;`;
-  await prisma.$executeRaw`TRUNCATE subscribers;`;
-  await prisma.$executeRaw`TRUNCATE wishlist_categories;`;
-  await prisma.$executeRaw`TRUNCATE wishlist;`;
-  await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 1;`;
-  logger.info('Database cleared.');
 }
