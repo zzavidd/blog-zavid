@@ -11,7 +11,6 @@ import {
 import { DIARY_ENTRY_NUMBERS } from '../utils/constants';
 import prisma from '../utils/prisma';
 
-const subscriber = createSubscriber();
 const TEST_PARAMS: TestParam[] = [
   { name: 'home', createHref: () => '/' },
   { name: 'diary index', createHref: () => '/diary' },
@@ -62,33 +61,34 @@ async function createDiaryHref(): Promise<string> {
 }
 
 async function createMusingHref(): Promise<string> {
-  let musing = createPost({
+  const data = createPost({
     type: PostType.MUSING,
     status: PostStatus.PUBLISHED,
   });
-  musing = await prisma.post.create({ data: musing });
+  const musing = await prisma.post.create({ data });
   return `/musings/${musing.slug}`;
 }
 
 async function createPassageHref(): Promise<string> {
-  let passage = createPost({
+  const data = createPost({
     type: PostType.PASSAGE,
     status: PostStatus.PRIVATE,
   });
-  passage = await prisma.post.create({ data: passage });
+  const passage = await prisma.post.create({ data });
   return `/passages/${passage.slug}`;
 }
 
 async function createReverieHref(): Promise<string> {
-  let reverie = createPost({
+  const data = createPost({
     type: PostType.REVERIE,
     status: PostStatus.PUBLISHED,
   });
-  reverie = await prisma.post.create({ data: reverie });
+  const reverie = await prisma.post.create({ data });
   return `/reveries/${reverie.slug}`;
 }
 
 async function createSubscrptionHref(): Promise<string> {
+  const subscriber = createSubscriber();
   await prisma.subscriber.create({ data: subscriber });
   return `/subscriptions?token=${subscriber.token}`;
 }
