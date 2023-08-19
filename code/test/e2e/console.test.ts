@@ -51,17 +51,9 @@ test.describe('Console', () => {
 });
 
 async function createDiaryHref(): Promise<string> {
-  const entryNumber = 1;
-  const diary = createDiaryEntry({
-    entryNumber,
-    status: DiaryStatus.PUBLISHED,
-  });
-  await prisma.diary.upsert({
-    create: diary,
-    update: diary,
-    where: { entryNumber },
-  });
-  return `/diary/${entryNumber}`;
+  const diary = createDiaryEntry({ status: DiaryStatus.PUBLISHED });
+  await prisma.diary.create({ data: diary });
+  return `/diary/${diary.entryNumber}`;
 }
 
 async function createMusingHref(): Promise<string> {

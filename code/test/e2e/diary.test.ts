@@ -6,9 +6,6 @@ import { createDiaryEntry } from '../../ops/ingestion/factory';
 import Settings from '../../src/utils/settings';
 import prisma from '../utils/prisma';
 
-const entryNumber = 1;
-const diary = createDiaryEntry({ entryNumber });
-
 test.describe.configure({ mode: 'serial' });
 test.describe('Diary', () => {
   test.describe('Index', () => {
@@ -61,13 +58,9 @@ test.describe('Diary', () => {
       { status: DiaryStatus.DRAFT, expect404: true },
     ].forEach(({ status, expect404 }) => {
       test(`can view ${status} page`, async ({ page }) => {
-        diary.status = status;
-        await prisma.diary.upsert({
-          create: diary,
-          update: diary,
-          where: { entryNumber },
-        });
-        await page.goto(`/diary/${entryNumber}`);
+        const diary = createDiaryEntry({ status });
+        await prisma.diary.create({ data: diary });
+        await page.goto(`/diary/${diary.entryNumber}`);
 
         const expectedTitle = expect404
           ? '404: Not Found'

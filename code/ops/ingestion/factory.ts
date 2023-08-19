@@ -17,7 +17,7 @@ export function createDiaryEntry(
   return {
     title: ZString.toTitleCase(faker.lorem.words({ min: 1, max: 5 })),
     date: faker.date.past(),
-    entryNumber,
+    entryNumber: entryNumber ?? faker.number.int(),
     status: status ?? faker.helpers.enumValue(DiaryStatus),
     categories: overrides.categories,
     content: faker.lorem.paragraphs({ min: 5, max: 10 }, '\n\n'),
