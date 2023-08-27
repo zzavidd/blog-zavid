@@ -22,7 +22,11 @@ export default async function globalSetup(): Promise<void> {
     entryNumber: DIARY_ENTRY_NUMBERS.CURATOR,
     status: DiaryStatus.PUBLISHED,
   });
-  await prisma.diary.create({ data: diary });
+  await prisma.diary.upsert({
+    create: diary,
+    update: diary,
+    where: { entryNumber: diary.entryNumber },
+  });
 }
 
 function verifyDatabaseIsTest(): void {
