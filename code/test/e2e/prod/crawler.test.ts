@@ -9,7 +9,7 @@ import Settings from 'utils/settings';
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: process.env.DATABASE_URL?.replace('test', ''),
+      url: process.env.DATABASE_TEST_URL?.replace('_test', ''),
     },
   },
 });

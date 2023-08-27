@@ -1,11 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { PostStatus, PostType } from '@prisma/client';
+import { PostStatus } from '@prisma/client';
 
-import { createPost } from '../../ops/ingestion/factory';
-import prisma from '../../src/server/prisma';
+import { createExclusive } from '../../ops/ingestion/factory';
 import Settings from '../../src/utils/settings';
+import prisma from '../utils/prisma';
 
-test.describe('Tributes', () => {
+test.describe('Exclusive', () => {
   test.describe.configure({ mode: 'parallel' });
 
   test.describe('Individual', () => {
@@ -15,17 +15,15 @@ test.describe('Tributes', () => {
     });
 
     [
-      { status: PostStatus.PUBLISHED, expect404: true },
-      { status: PostStatus.PRIVATE },
-      { status: PostStatus.PROTECTED, expect404: true },
+      { status: PostStatus.PUBLISHED },
       { status: PostStatus.DRAFT, expect404: true },
     ].forEach(({ status, expect404 }) => {
       test(`can view ${status} page`, async ({ page }) => {
-        const tribute = createPost({ status, type: PostType.ADDENDUM });
-        await prisma.post.create({ data: tribute });
-        await page.goto(`/tributes/${tribute.slug}`);
+        const payload = createExclusive({ status });
+        const exclusive = await prisma.exclusive.create({ data: payload });
+        await page.goto(`/exclusives/${exclusive.slug}`);
 
-        const expectedTitle = expect404 ? '404: Not Found' : tribute.title;
+        const expectedTitle = expect404 ? '404: Not Found' : exclusive.subject;
         await expect(page).toHaveTitle(
           `${expectedTitle} | ${Settings.SITE_TITLE}`,
         );

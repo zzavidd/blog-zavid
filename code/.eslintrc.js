@@ -23,6 +23,12 @@ module.exports = {
   },
   overrides: [
     {
+      files: ['*.test.ts'],
+      rules: {
+        'no-empty-pattern': 'off',
+      },
+    },
+    {
       files: ['**/pages/**/*.tsx'],
       rules: {
         'react/function-component-definition': 'off',

@@ -4,8 +4,6 @@ import Settings from '../../src/utils/settings';
 
 test.describe.configure({ mode: 'parallel' });
 test.describe('Cookies', () => {
-  test.skip(({ browserName }) => browserName !== 'chromium');
-
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });

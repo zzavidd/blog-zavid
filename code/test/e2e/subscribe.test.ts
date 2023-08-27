@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker/locale/en_GB';
 import { expect, test } from '@playwright/test';
 
-import SubscriberAPI from '../../src/server/api/subscribers';
 import Settings from '../../src/utils/settings';
 
 const name = {
@@ -14,8 +13,9 @@ const subscriber = {
   lastname: name.lastName,
 };
 
-test.describe.configure({ mode: 'parallel' });
 test.describe('Subscribe', () => {
+  test.describe.configure({ mode: 'parallel' });
+
   test.describe('via page form', () => {
     test.beforeEach(async ({ page }) => {
       await page.goto('/subscribe');
@@ -36,7 +36,6 @@ test.describe('Subscribe', () => {
       await page.getByTestId('zb.submit').click();
 
       await expect(text).toHaveText(/Thank you/);
-      await SubscriberAPI.delete({ where: { email: subscriber.email } });
     });
 
     [
@@ -68,7 +67,6 @@ test.describe('Subscribe', () => {
 
       const alert = page.getByTestId('zb.alert.success');
       await expect(alert).toBeVisible();
-      await SubscriberAPI.delete({ where: { email: subscriber.email } });
     });
 
     [

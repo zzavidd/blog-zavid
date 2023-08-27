@@ -1,12 +1,7 @@
 import type { Locator } from '@playwright/test';
 import { expect, test } from '@playwright/test';
-import { DiaryStatus } from '@prisma/client';
 
-import { createDiaryEntry } from '../../ops/ingestion/factory';
-import prisma from '../../src/server/prisma';
-
-const entryNumber = 1;
-const diary = createDiaryEntry({ entryNumber, status: DiaryStatus.PUBLISHED });
+import { DIARY_ENTRY_NUMBERS } from '../utils/constants';
 
 const params: TestDefinition[] = [
   {
@@ -21,18 +16,11 @@ const params: TestDefinition[] = [
   },
 ];
 
-test.describe.configure({ mode: 'parallel' });
 test.describe('Curator', () => {
-  test.beforeAll(async () => {
-    await prisma.diary.upsert({
-      create: diary,
-      update: diary,
-      where: { entryNumber },
-    });
-  });
+  test.describe.configure({ mode: 'parallel' });
 
   test.beforeEach(async ({ page }) => {
-    await page.goto(`/diary/${entryNumber}`);
+    await page.goto(`/diary/${DIARY_ENTRY_NUMBERS.CURATOR}`);
     await page.getByTestId('zb.accept').click();
   });
 

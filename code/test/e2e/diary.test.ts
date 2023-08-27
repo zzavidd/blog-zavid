@@ -3,17 +3,16 @@ import type { Diary } from '@prisma/client';
 import { DiaryStatus } from '@prisma/client';
 
 import { createDiaryEntry } from '../../ops/ingestion/factory';
-import prisma from '../../src/server/prisma';
 import Settings from '../../src/utils/settings';
+import { DIARY_ENTRY_NUMBERS } from '../utils/constants';
+import prisma from '../utils/prisma';
 
-const entryNumber = 1;
-const diary = createDiaryEntry({ entryNumber });
-
-test.describe.configure({ mode: 'parallel' });
 test.describe('Diary', () => {
-  test.skip(({ browserName }) => browserName !== 'chromium');
+  test.describe.configure({ mode: 'parallel' });
 
   test.describe('Index', () => {
+    test.describe.configure({ mode: 'serial' });
+
     let latestDiaryEntry: Diary | null;
 
     test.beforeAll(async () => {
@@ -21,7 +20,13 @@ test.describe('Diary', () => {
         orderBy: { entryNumber: 'desc' },
         where: { status: DiaryStatus.PUBLISHED },
       });
-      expect(latestDiaryEntry).toBeTruthy();
+      if (!latestDiaryEntry) {
+        const diary = createDiaryEntry({
+          entryNumber: DIARY_ENTRY_NUMBERS.DIARY_LATEST,
+          status: DiaryStatus.PUBLISHED,
+        });
+        latestDiaryEntry = await prisma.diary.create({ data: diary });
+      }
     });
 
     test.beforeEach(async ({ page }) => {
@@ -50,26 +55,37 @@ test.describe('Diary', () => {
   });
 
   test.describe('Individual', () => {
-    test.describe.configure({ mode: 'serial' });
+    test.describe.configure({ mode: 'parallel' });
+
     test.beforeEach(async ({ page }) => {
       await page.goto('/');
       await page.getByTestId('zb.accept').click();
     });
 
     [
-      { status: DiaryStatus.PUBLISHED },
-      { status: DiaryStatus.PRIVATE },
-      { status: DiaryStatus.PROTECTED, expect404: true },
-      { status: DiaryStatus.DRAFT, expect404: true },
-    ].forEach(({ status, expect404 }) => {
+      {
+        status: DiaryStatus.DRAFT,
+        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_DRAFT,
+        expect404: true,
+      },
+      {
+        status: DiaryStatus.PROTECTED,
+        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_PROTECTED,
+        expect404: true,
+      },
+      {
+        status: DiaryStatus.PRIVATE,
+        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_PRIVATE,
+      },
+      {
+        status: DiaryStatus.PUBLISHED,
+        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_PUBLISHED,
+      },
+    ].forEach(({ status, entryNumber, expect404 }) => {
       test(`can view ${status} page`, async ({ page }) => {
-        diary.status = status;
-        await prisma.diary.upsert({
-          create: diary,
-          update: diary,
-          where: { entryNumber },
-        });
-        await page.goto(`/diary/${entryNumber}`);
+        const diary = createDiaryEntry({ entryNumber, status });
+        await prisma.diary.create({ data: diary });
+        await page.goto(`/diary/${diary.entryNumber}`);
 
         const expectedTitle = expect404
           ? '404: Not Found'

@@ -16,6 +16,7 @@ export default defineConfig({
   reportSlowTests: null,
   retries: process.env.CI ? 2 : 0,
   testIgnore: '**/prod/**',
+  testDir: '.',
   timeout: (process.env.CI ? 30 : 15) * 1000,
   use: {
     baseURL: 'http://localhost:4000',
@@ -26,5 +27,5 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     url: 'http://localhost:4000',
   },
-  workers: process.env.CI ? 4 : 7,
+  workers: process.env.CI ? 4 : undefined,
 });
