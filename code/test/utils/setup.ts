@@ -13,6 +13,8 @@ export default async function globalSetup(): Promise<void> {
   verifyDatabaseIsTest();
   await clearDatabase();
 
+  console.log(await prisma.page.findMany());
+
   // For console tests.
   const pages = createDefaultPages();
   await prisma.page.createMany({ data: pages });
