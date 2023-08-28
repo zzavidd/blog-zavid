@@ -177,15 +177,13 @@ function Preview({ elementRef }: PreviewProps) {
                   my={Sizes.TITLE_MARGIN_Y}>
                   {title}
                 </Typography>
-                {categories.length ? (
-                  <CategoryDisplay
-                    color={textColor}
-                    fontSize={Sizes.FONT_SIZE_CATEGORY}
-                    categories={categories}
-                    spacing={4}
-                    mt={4}
-                  />
-                ) : null}
+                <CategoryDisplay
+                  color={textColor}
+                  fontSize={Sizes.FONT_SIZE_CATEGORY}
+                  categories={categories}
+                  spacing={4}
+                  mt={4}
+                />
                 {isFavourite ? (
                   <Stack
                     direction={'row'}
@@ -195,6 +193,7 @@ function Preview({ elementRef }: PreviewProps) {
                     <FavoriteRounded color={'primary'} sx={{ fontSize: 40 }} />
                     <Typography
                       variant={'body2'}
+                      color={textColor}
                       fontSize={Sizes.FONT_SIZE_CATEGORY}>
                       This {entity} is a personal Zavid favourite.
                     </Typography>
