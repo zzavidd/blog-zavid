@@ -8,6 +8,7 @@ export default function CategoryDisplay({
   fontSize = 11,
   ...props
 }: CategoryDisplayProps) {
+  if (!categories.length) return null;
   return (
     <Stack
       direction={'row'}
