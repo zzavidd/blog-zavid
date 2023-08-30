@@ -88,7 +88,6 @@ const typography: TypographyOptions = {
   button: {
     fontWeight: 700,
   },
-  overline: {},
   preamble: {
     fontFamily: mulish.style.fontFamily,
     fontSize: 16,
