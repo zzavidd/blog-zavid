@@ -50,19 +50,19 @@ export const EXPERIENCE: Experience[] = [
         label: 'Graph Designer',
         role: 'Prototyping',
         description:
-          'Built a full-fledged prototype on top of the ReGraph SDK for building charts and designing themes using GUI built using Next.js in just 7 days.',
+          'Within 7 days, built a full-fledged no-code solution on top of the ReGraph SDK using a Next.js-built GUI, enabling developers build demo charts and design themes in less than 10% of the average time.',
       },
       {
         label: 'SVG Service',
         role: 'Prototyping',
         description:
-          'Built a service which takes JSON input and produces a semi-interactive SVG chart using Puppeteer and ReGraph on a network of three app servers.',
+          'Built a service which produces semi-interactive SVG chart using Puppeteer and ReGraph on a network of microservices, inspiring a new customer base seeking lower-priced accessible charts.',
       },
       {
         label: 'Node Customisation Showcases',
         role: 'Prototyping',
         description:
-          'Within a sprint, produced a series of six visually-appealing demonstrable ReGraph visualisations for the Marketing team to showcase unreleased features to a conference of customers, with direct feedback from the CEO.',
+          'Within a sprint, produced a series of 6 visually-appealing demonstrable ReGraph visualisations for the Marketing team to showcase unreleased features to a conference of 68 customers, driving significant interest for pending releases.',
       },
       {
         label: 'Automated Secrets Rotation',
@@ -74,13 +74,13 @@ export const EXPERIENCE: Experience[] = [
         label: 'Security Audit',
         role: 'DevSecOps',
         description:
-          'Alongside CTO, addressed a series of website and SDK security vulnerabilities in response to pen testing including the examination and upgrade of vulnerable dependencies across all products, patching username enumeration and instating missing HTTP security headers.',
+          'Addressed 100+ site and SDK security vulnerabilities in response to pen testing including the examination of vulnerable dependencies across all products, patching username enumeration and instating relevant HTTP security headers, improving the security benchmark by 14%.',
       },
       {
         label: 'WebDriver Overhaul',
         role: 'KeyLines',
         description:
-          'Refactored and improved the entire KeyLines WebDriver test suite to use TypeScript and asynchronous WebDriver operations in order to unblock the necessary upgrade to greater versions of Node.js. (@wdio/sync breaks for all versions of Node greater than 16).',
+          'Refactored the suite of 98 KeyLines WebDriver tests to use TypeScript and asynchronous WebDriver operations in order to unblock the necessary upgrade to greater versions of Node.js for security purposes. (@wdio/sync breaks for all versions of Node greater than 16).',
       },
     ],
   },
@@ -96,12 +96,12 @@ export const EXPERIENCE: Experience[] = [
       {
         label: 'i2 Connect Enablement',
         description:
-          'Developed, documented and recorded live tutorials for the usage of the i2 Connect SDK for Java, Node.js and Python to support customers interfacing with i2 Analyze.',
+          'Developed, documented and recorded live tutorials for the usage of the i2 Connect SDK for Java, Node.js and Python to support 40+ customers interfacing with i2 Analyze.',
       },
       {
         label: 'AskMissParks UI',
         description:
-          'Designed and built the user interface (and engineered prompts) for "AskMissParks", the Watson-powered chatbot for IBM\'s BAME Network.',
+          'Designed and built the user interface (and engineered prompts) for "AskMissParks", the Watson-powered chatbot used by IBM\'s BAME Network of 400+ members and allies.',
       },
     ],
   },
@@ -112,12 +112,12 @@ export const EXPERIENCE: Experience[] = [
     employment: 'Self-employed',
     location: null,
     description:
-      'Facilitated discussions and debates on topics centred around and beyond the Black community at university campuses, local schools and external organisations. Singlehandedly designed and developed related applications. Highlights include:',
+      'Leading a team of 29 volunteers to facilitate 100+ discussions and debates on topics centred around and beyond the Black community at university campuses, secondary schools and with external organisations. Highlights include:',
     highlights: [
       {
         label: 'Web Application',
         description:
-          'Designed and built the web application used for adding, updating and deleting session reviews, candidate tributes, team member profiles and the exhaustive bank of categorised debate topics.',
+          'Designed and built the web application used for adding, updating and deleting session reviews, candidate tributes, team member profiles and the exhaustive bank of 215+ categorised debate topics.',
       },
       {
         label: 'Mobile Application',
