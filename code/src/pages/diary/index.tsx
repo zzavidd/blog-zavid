@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async (
   return {
     props: {
       params,
-      searchTerm: String(ctx.query.search) ?? '',
+      searchTerm: (ctx.query.search as string) ?? '',
       pathDefinition: {
         title: `Diary | ${Settings.SITE_TITLE}`,
         description: page?.excerpt ?? '',
