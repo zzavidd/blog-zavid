@@ -28,6 +28,7 @@ model Diary {
   isFavourite Boolean         @default(false)
   tags        Json
 
+  @@fulltext([title, content, footnote])
   @@map("diary")
 }
 
