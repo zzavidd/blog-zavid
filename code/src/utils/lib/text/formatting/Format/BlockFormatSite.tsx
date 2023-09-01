@@ -20,8 +20,16 @@ const FormatSite: Record<Section, RenderValue> = {
     <Typography
       data-testid={dataTestId ? `${dataTestId}.${key}` : undefined}
       data-text={text}
+      borderRadius={1}
       mt={key ? 5 : 0}
       key={key}
+      sx={{
+        ...TypographyProps?.sx,
+        transition: (t) =>
+          t.transitions.create(['padding'], {
+            duration: t.transitions.duration.shorter,
+          }),
+      }}
       {...TypographyProps}>
       {applyEmphasisFormatting(text)}
     </Typography>

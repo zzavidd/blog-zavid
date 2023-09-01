@@ -8,6 +8,7 @@ export const NavigationContext = React.createContext<NavigationContextProps>([
 
 export const InitialMenuState: MenuContextState = {
   contextMenuVisible: false,
+  focusedElement: null,
   focusedTextContent: '',
   position: { left: 0, top: 0 },
   info: {
@@ -25,6 +26,7 @@ export const MenuContext = React.createContext<MenuContextProps>([
 
 export interface MenuContextState {
   contextMenuVisible: boolean;
+  focusedElement: HTMLParagraphElement | null;
   focusedTextContent: string;
   position: PopoverPosition;
   info: PageCuratorInfo;

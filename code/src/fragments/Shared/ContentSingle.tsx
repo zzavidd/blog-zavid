@@ -10,7 +10,7 @@ import Paragraph from 'components/Typography/Paragraph';
 import Time from 'components/Typography/Time';
 import { AdminLock } from 'fragments/AdminGateway';
 
-import MenuProvider from './MenuProvider';
+import MenuProvider from './ContextMenu/MenuProvider';
 
 export default function ContentSingle({
   breadcrumbLinks,

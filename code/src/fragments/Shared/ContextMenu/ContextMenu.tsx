@@ -2,33 +2,36 @@ import {
   ContentCopy as ContentCopyIcon,
   Image as ImageIcon,
 } from '@mui/icons-material';
+import type { Theme } from '@mui/material';
 import {
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
   MenuList,
+  useMediaQuery,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React, { useContext, useState } from 'react';
 
 import { MenuContext } from 'utils/contexts';
 
-import Curator from './Curator/Curator';
+import Curator from '../Curator/Curator';
 import {
   CuratorContext,
   InitialCuratorContextState,
-} from './Curator/Curator.context';
+} from '../Curator/Curator.context';
 
 export default function ContextMenu() {
   const [state, setState] = useState({ curatorVisible: false });
   const [curatorState, setCuratorState] = useState(InitialCuratorContextState);
 
   const [context, setContext] = useContext(MenuContext);
+  const isDesktopAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('lg'));
   const { enqueueSnackbar } = useSnackbar();
 
   async function copyText() {
-    await navigator.clipboard.writeText(context.focusedTextContent);
+    await navigator.clipboard?.writeText(context.focusedTextContent);
     enqueueSnackbar('Copied paragraph to clipboard.', { variant: 'success' });
     onClose();
   }
@@ -40,6 +43,16 @@ export default function ContextMenu() {
 
   function onClose() {
     setContext((s) => ({ ...s, contextMenuVisible: false }));
+
+    const paragraphs = document.querySelectorAll<HTMLParagraphElement>('pre p');
+    paragraphs.forEach((p) => {
+      if (context.contextMenuVisible) {
+        styleParagraph(p, {
+          backgroundColor: 'transparent',
+          padding: '0',
+        });
+      }
+    });
   }
 
   const menuItems = [
@@ -58,8 +71,11 @@ export default function ContextMenu() {
         open={context.contextMenuVisible}
         onClose={onClose}
         elevation={2}
-        anchorReference={'anchorPosition'}
-        anchorPosition={context.position}>
+        anchorEl={context.focusedElement}
+        anchorReference={isDesktopAbove ? 'anchorPosition' : 'anchorEl'}
+        anchorPosition={context.position}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        sx={{ userSelect: 'none' }}>
         <MenuList disablePadding={true}>
           {menuItems.map(({ label, icon, onClick, dataTestId }) => (
             <MenuItem
@@ -82,4 +98,14 @@ export default function ContextMenu() {
       </CuratorContext.Provider>
     </React.Fragment>
   );
+}
+
+export function styleParagraph(
+  p: EventTarget | null,
+  styles: React.CSSProperties,
+) {
+  if (!p) return;
+  Object.entries(styles).forEach(([key, value]) => {
+    (p as HTMLParagraphElement).style[key as any] = value;
+  });
 }

@@ -1,11 +1,11 @@
 import type { Theme } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
+import { alpha, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 
 import type { MenuContextProps } from 'utils/contexts';
 import { InitialMenuState, MenuContext } from 'utils/contexts';
 
-import ContextMenu from './ContextMenu';
+import ContextMenu, { styleParagraph } from './ContextMenu';
 
 export default function MenuProvider({ info, children }: MenuProviderProps) {
   const context = useContextMenuEvents(info);
@@ -24,6 +24,7 @@ export default function MenuProvider({ info, children }: MenuProviderProps) {
  */
 function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
   const [state, setState] = useState({ ...InitialMenuState, info });
+  const theme = useTheme();
   const isDesktopAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('lg'));
 
   const openContextMenu = useCallback((e: MouseEvent | TouchEvent) => {
@@ -47,14 +48,39 @@ function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
   }, []);
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
+    let menuTimeout: NodeJS.Timeout;
+    let highlightTimeout: NodeJS.Timeout;
+
     const onParagraphMouseDown = (e: MouseEvent | TouchEvent) => {
-      timeout = setTimeout(() => {
+      highlightTimeout = setTimeout(() => {
+        const { mode, primary } = theme.palette;
+        const highlightColor = mode === 'light' ? primary.light : primary.dark;
+        styleParagraph(e.target, {
+          backgroundColor: alpha(highlightColor, 0.6),
+          padding: '1em',
+        });
+      }, 500);
+
+      menuTimeout = setTimeout(() => {
+        setState((s) => ({
+          ...s,
+          focusedElement: e.target as HTMLParagraphElement,
+        }));
         openContextMenu(e);
         e.preventDefault();
       }, 1000);
     };
-    const onParagraphMouseUp = () => clearTimeout(timeout);
+
+    const onParagraphMouseUp = (e: MouseEvent | TouchEvent) => {
+      if (highlightTimeout) {
+        styleParagraph(e.target, {
+          backgroundColor: 'transparent',
+          padding: '0',
+        });
+      }
+      clearTimeout(menuTimeout);
+      clearTimeout(highlightTimeout);
+    };
 
     const paragraphs = document.querySelectorAll<HTMLParagraphElement>('pre p');
     paragraphs.forEach((p) => {
@@ -66,7 +92,6 @@ function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
       }
       p.addEventListener('touchstart', onParagraphMouseDown);
       p.addEventListener('touchend', onParagraphMouseUp);
-      p.style.userSelect = 'none';
     });
     return () => {
       paragraphs.forEach((p) => {
@@ -77,7 +102,7 @@ function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
         p.removeEventListener('touchend', onParagraphMouseUp);
       });
     };
-  }, [isDesktopAbove, openContextMenu, state.contextMenuVisible]);
+  }, [isDesktopAbove, openContextMenu, state.contextMenuVisible, theme]);
 
   return [state, setState];
 }

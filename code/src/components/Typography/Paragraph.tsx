@@ -50,6 +50,7 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           pb={showReadMore ? 4 : 0}
           onContextMenu={(e) => e.preventDefault()}
           ref={ref}
+          sx={{ ...props.sx, userSelect: 'none' }}
           {...props}>
           {zText.formatText(text, {
             dataTestId,
