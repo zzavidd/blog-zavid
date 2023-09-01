@@ -5,7 +5,7 @@ import Paragraph from 'components/Typography/Paragraph';
 import { trpc } from 'utils/trpc';
 
 import DiaryCollection from './DiaryCollection';
-import { DiaryIndexContext } from './DiaryIndex.context';
+import { DiaryIndexContext } from './DiaryIndex.utils';
 import DiarySearch from './DiarySearch';
 import DiaryToolbar from './DiaryToolbar';
 
@@ -52,5 +52,5 @@ export function DiaryPagePreamble() {
 
 export interface DiaryIndexProps {
   params: PageFindInput;
-  searchTerm?: string;
+  searchTerm: string;
 }

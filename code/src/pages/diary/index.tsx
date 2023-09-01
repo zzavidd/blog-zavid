@@ -1,13 +1,40 @@
 import type { GetServerSideProps } from 'next';
+import { useEffect } from 'react';
 
 import Layout from 'fragments/Layout';
 import type { DiaryIndexProps } from 'fragments/Pages/Diary/Index/DiaryIndex';
 import DiaryIndex from 'fragments/Pages/Diary/Index/DiaryIndex';
-import { DiaryIndexContext } from 'fragments/Pages/Diary/Index/DiaryIndex.context';
+import {
+  DiaryIndexContext,
+  SortOption,
+  useSortMenuOptions,
+} from 'fragments/Pages/Diary/Index/DiaryIndex.utils';
+import { AppActions, useAppDispatch, useAppSelector } from 'utils/reducers';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 
 const DiaryIndexPage: NextPageWithLayout<DiaryIndexProps> = (props) => {
+  const { sort } = useAppSelector((state) => state.diary);
+  const dispatch = useAppDispatch();
+  const sortMenuOptions = useSortMenuOptions(props.searchTerm);
+
+  useEffect(() => {
+    if (props.searchTerm) {
+      dispatch(
+        AppActions.setDiarySieve({
+          sort: { $set: sortMenuOptions[SortOption.RELEVANT].value },
+        }),
+      );
+    } else if (sort._relevance) {
+      dispatch(
+        AppActions.setDiarySieve({
+          sort: { $set: sortMenuOptions[SortOption.NEWEST].value },
+        }),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.searchTerm]);
+
   return (
     <DiaryIndexContext.Provider value={props}>
       <DiaryIndex />

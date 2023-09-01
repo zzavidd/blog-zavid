@@ -12,7 +12,7 @@ import { trpc } from 'utils/trpc';
 
 import DiaryEachItem, { DiaryEachSkeleton } from '../DiaryEachItem';
 
-import { DiaryIndexContext } from './DiaryIndex.context';
+import { DiaryIndexContext } from './DiaryIndex.utils';
 
 export default function DiaryCollection() {
   const { searchTerm } = useContext(DiaryIndexContext);
@@ -69,15 +69,6 @@ function useDiaryEntries(searchTerm?: string) {
 
   if (searchTerm) {
     params = immutate(params, {
-      orderBy: {
-        $set: {
-          _relevance: {
-            fields: ['title', 'content', 'footnote'],
-            search: searchTerm,
-            sort: 'asc',
-          },
-        },
-      },
       where: (where) => ({
         ...where,
         OR: [
