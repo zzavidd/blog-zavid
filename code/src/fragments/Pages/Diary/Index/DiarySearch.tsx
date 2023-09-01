@@ -1,17 +1,10 @@
 import { Close, Search } from '@mui/icons-material';
-import type { Theme } from '@mui/material';
-import {
-  Button,
-  InputAdornment,
-  TextField,
-  useMediaQuery,
-} from '@mui/material';
+import { Button, InputAdornment, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 export default function DiarySearch() {
   const [state, setState] = useState({ searchTerm: '' });
-  const isDesktopAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('lg'));
 
   const router = useRouter();
 
@@ -41,10 +34,12 @@ export default function DiarySearch() {
       placeholder={'Search the diary...'}
       onKeyDown={onKeyDown}
       sx={{
-        maxWidth: (t) => t.spacing(isDesktopAbove ? 13 : 12),
+        maxWidth: (t) => t.spacing(13),
+        p: 1,
         width: '100%',
       }}
       InputProps={{
+        style: { fontSize: 16 },
         startAdornment: (
           <InputAdornment position={'start'}>
             <Search color={'disabled'} />
@@ -57,7 +52,14 @@ export default function DiarySearch() {
                 <Close onClick={clearSearch} color={'primary'} />
               ) : null}
             </InputAdornment>
-            <Button onClick={searchDiary}>Search</Button>
+            <Button
+              onClick={searchDiary}
+              sx={{
+                fontSize: { xs: 11, md: 14 },
+                minWidth: { xs: 0, md: 'auto' },
+              }}>
+              Search
+            </Button>
           </React.Fragment>
         ),
       }}

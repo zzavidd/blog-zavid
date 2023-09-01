@@ -19,13 +19,11 @@ export default function DiaryIndex() {
       sx={{ overflow: 'hidden' }}>
       <Stack>
         <Container maxWidth={'sm'}>
-          <Stack alignItems={'center'} rowGap={4} px={3} py={5}>
-            <Stack alignItems={'center'} rowGap={3}>
-              <Typography variant={'h2'} textTransform={'uppercase'}>
-                {DIARY_HEADING}
-              </Typography>
-              <DiaryPagePreamble />
-            </Stack>
+          <Stack alignItems={'center'} rowGap={3} px={3} py={5}>
+            <Typography variant={'h2'} textTransform={'uppercase'}>
+              {DIARY_HEADING}
+            </Typography>
+            <DiaryPagePreamble />
             <DiarySearch />
           </Stack>
         </Container>
