@@ -72,7 +72,7 @@ export default function DiarySingle({
     next: createDiaryNavigationInfo(next),
   };
 
-  const ContextExtras = (
+  const ContentExtras = (
     <React.Fragment>
       <Paragraph variant={'text'}>{diaryEntry.footnote}</Paragraph>
       <ContentNavigation {...NavigationProps} />
@@ -107,7 +107,7 @@ export default function DiarySingle({
       editHref={`/admin/diary/edit/${diaryEntry.id}`}
       NavigationProps={NavigationProps}
       TitleExtras={TitleExtras}
-      ContentExtras={ContextExtras}
+      ContentExtras={ContentExtras}
       PageExtras={PageExtras}
     />
   );

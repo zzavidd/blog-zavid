@@ -1,6 +1,9 @@
 import { Typography } from '@mui/material';
+import React from 'react';
 
-import ContentSingle from 'fragments/Shared/ContentSingle';
+import ContentSingle, {
+  ContentNavigation,
+} from 'fragments/Shared/ContentSingle';
 import PagePlaceholder from 'fragments/Shared/Placeholders/PagePlaceholder';
 import {
   createExclusiveNavigationInfo,
@@ -36,6 +39,24 @@ export default function Exclusive({
     previous: createExclusiveNavigationInfo(previous, index - 1),
     next: createExclusiveNavigationInfo(next, index + 1),
   };
+
+  const TitleExtras = (
+    <Typography
+      fontSize={13}
+      fontWeight={900}
+      textAlign={{ xs: 'left', md: 'center' }}
+      lineHeight={0.5}
+      order={-1}>
+      Exclusive #{index}:
+    </Typography>
+  );
+
+  const ContentExtras = (
+    <React.Fragment>
+      <ContentNavigation {...NavigationProps} />
+    </React.Fragment>
+  );
+
   return (
     <ContentSingle
       breadcrumbLinks={links}
@@ -45,16 +66,8 @@ export default function Exclusive({
       curatorInfo={pageCuratorInfo}
       editHref={`/admin/exclusives/edit/${exclusive.id}`}
       NavigationProps={NavigationProps}
-      TitleExtras={
-        <Typography
-          fontSize={13}
-          fontWeight={900}
-          textAlign={{ xs: 'left', md: 'center' }}
-          lineHeight={0.5}
-          order={-1}>
-          Exclusive #{index}:
-        </Typography>
-      }
+      TitleExtras={TitleExtras}
+      ContentExtras={ContentExtras}
     />
   );
 }
