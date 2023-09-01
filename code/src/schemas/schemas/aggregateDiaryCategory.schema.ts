@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DiaryCategoryOrderByWithRelationInputObjectSchema } from './objects/DiaryCategoryOrderByWithRelationInput.schema';
+import { DiaryCategoryOrderByWithRelationAndSearchRelevanceInputObjectSchema } from './objects/DiaryCategoryOrderByWithRelationAndSearchRelevanceInput.schema';
 import { DiaryCategoryWhereInputObjectSchema } from './objects/DiaryCategoryWhereInput.schema';
 import { DiaryCategoryWhereUniqueInputObjectSchema } from './objects/DiaryCategoryWhereUniqueInput.schema';
 import { DiaryCategoryCountAggregateInputObjectSchema } from './objects/DiaryCategoryCountAggregateInput.schema';
@@ -11,8 +11,8 @@ import { DiaryCategorySumAggregateInputObjectSchema } from './objects/DiaryCateg
 export const DiaryCategoryAggregateSchema = z.object({
   orderBy: z
     .union([
-      DiaryCategoryOrderByWithRelationInputObjectSchema,
-      DiaryCategoryOrderByWithRelationInputObjectSchema.array(),
+      DiaryCategoryOrderByWithRelationAndSearchRelevanceInputObjectSchema,
+      DiaryCategoryOrderByWithRelationAndSearchRelevanceInputObjectSchema.array(),
     ])
     .optional(),
   where: DiaryCategoryWhereInputObjectSchema.optional(),

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PostOrderByWithRelationInputObjectSchema } from './objects/PostOrderByWithRelationInput.schema';
+import { PostOrderByWithRelationAndSearchRelevanceInputObjectSchema } from './objects/PostOrderByWithRelationAndSearchRelevanceInput.schema';
 import { PostWhereInputObjectSchema } from './objects/PostWhereInput.schema';
 import { PostWhereUniqueInputObjectSchema } from './objects/PostWhereUniqueInput.schema';
 import { PostCountAggregateInputObjectSchema } from './objects/PostCountAggregateInput.schema';
@@ -11,8 +11,8 @@ import { PostSumAggregateInputObjectSchema } from './objects/PostSumAggregateInp
 export const PostAggregateSchema = z.object({
   orderBy: z
     .union([
-      PostOrderByWithRelationInputObjectSchema,
-      PostOrderByWithRelationInputObjectSchema.array(),
+      PostOrderByWithRelationAndSearchRelevanceInputObjectSchema,
+      PostOrderByWithRelationAndSearchRelevanceInputObjectSchema.array(),
     ])
     .optional(),
   where: PostWhereInputObjectSchema.optional(),

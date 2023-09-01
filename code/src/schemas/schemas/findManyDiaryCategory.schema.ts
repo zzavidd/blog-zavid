@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { DiaryCategorySelectObjectSchema } from './objects/DiaryCategorySelect.schema';
 import { DiaryCategoryIncludeObjectSchema } from './objects/DiaryCategoryInclude.schema';
-import { DiaryCategoryOrderByWithRelationInputObjectSchema } from './objects/DiaryCategoryOrderByWithRelationInput.schema';
+import { DiaryCategoryOrderByWithRelationAndSearchRelevanceInputObjectSchema } from './objects/DiaryCategoryOrderByWithRelationAndSearchRelevanceInput.schema';
 import { DiaryCategoryWhereInputObjectSchema } from './objects/DiaryCategoryWhereInput.schema';
 import { DiaryCategoryWhereUniqueInputObjectSchema } from './objects/DiaryCategoryWhereUniqueInput.schema';
 import { DiaryCategoryScalarFieldEnumSchema } from './enums/DiaryCategoryScalarFieldEnum.schema';
@@ -11,8 +11,8 @@ export const DiaryCategoryFindManySchema = z.object({
   include: z.lazy(() => DiaryCategoryIncludeObjectSchema.optional()),
   orderBy: z
     .union([
-      DiaryCategoryOrderByWithRelationInputObjectSchema,
-      DiaryCategoryOrderByWithRelationInputObjectSchema.array(),
+      DiaryCategoryOrderByWithRelationAndSearchRelevanceInputObjectSchema,
+      DiaryCategoryOrderByWithRelationAndSearchRelevanceInputObjectSchema.array(),
     ])
     .optional(),
   where: DiaryCategoryWhereInputObjectSchema.optional(),

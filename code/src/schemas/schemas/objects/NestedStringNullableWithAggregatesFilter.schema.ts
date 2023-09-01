@@ -16,6 +16,7 @@ const Schema: z.ZodType<Prisma.NestedStringNullableWithAggregatesFilter> = z
     contains: z.string().optional(),
     startsWith: z.string().optional(),
     endsWith: z.string().optional(),
+    search: z.string().optional(),
     not: z
       .union([
         z.string(),

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { WishlistItemOrderByWithRelationInputObjectSchema } from './objects/WishlistItemOrderByWithRelationInput.schema';
+import { WishlistItemOrderByWithRelationAndSearchRelevanceInputObjectSchema } from './objects/WishlistItemOrderByWithRelationAndSearchRelevanceInput.schema';
 import { WishlistItemWhereInputObjectSchema } from './objects/WishlistItemWhereInput.schema';
 import { WishlistItemWhereUniqueInputObjectSchema } from './objects/WishlistItemWhereUniqueInput.schema';
 import { WishlistItemCountAggregateInputObjectSchema } from './objects/WishlistItemCountAggregateInput.schema';
@@ -11,8 +11,8 @@ import { WishlistItemSumAggregateInputObjectSchema } from './objects/WishlistIte
 export const WishlistItemAggregateSchema = z.object({
   orderBy: z
     .union([
-      WishlistItemOrderByWithRelationInputObjectSchema,
-      WishlistItemOrderByWithRelationInputObjectSchema.array(),
+      WishlistItemOrderByWithRelationAndSearchRelevanceInputObjectSchema,
+      WishlistItemOrderByWithRelationAndSearchRelevanceInputObjectSchema.array(),
     ])
     .optional(),
   where: WishlistItemWhereInputObjectSchema.optional(),
