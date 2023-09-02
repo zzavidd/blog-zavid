@@ -114,7 +114,7 @@ jobs:
             - ./code/.next/cache
   test:
     executor: playwright
-    parallelism: 4
+    parallelism: 1
     steps:
       - install_dependencies
       - run:
