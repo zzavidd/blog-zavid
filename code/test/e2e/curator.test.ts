@@ -19,12 +19,10 @@ const params: TestDefinition[] = [
 ];
 
 test.describe('Curator', () => {
-  let entryNumber = 0;
+  let entryNumber: number;
 
   test.beforeAll(async () => {
-    const diary = createDiaryEntry({
-      status: DiaryStatus.PUBLISHED,
-    });
+    const diary = createDiaryEntry({ status: DiaryStatus.PUBLISHED });
     await prisma.diary.create({ data: diary });
     entryNumber = diary.entryNumber;
   });
