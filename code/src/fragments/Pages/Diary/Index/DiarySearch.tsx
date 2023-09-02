@@ -32,7 +32,7 @@ export default function DiarySearch() {
     const { searchTerm } = state;
     await router.push(
       searchTerm
-        ? `/diary?search=${searchTerm.replace(/[^\w\s]/g, '')}`
+        ? `/diary?search=${searchTerm.replace(/[^\w\s'-]/g, '')}`
         : '/diary',
     );
     setState((s) => ({ ...s, isSearchLoading: false }));

@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack';
 import { useContext, useEffect } from 'react';
 
 import { DiaryFindManySchema } from 'schemas/schemas';
+import { normaliseText } from 'utils/lib/text';
 import { useAppSelector } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
@@ -17,30 +18,8 @@ import { DiaryIndexContext } from './DiaryIndex.utils';
 export default function DiaryCollection() {
   const { searchTerm } = useContext(DiaryIndexContext);
   const { data: diaryEntries, isLoading } = useDiaryEntries(searchTerm);
-  const theme = useTheme();
 
-  useEffect(() => {
-    if (isLoading || !searchTerm) return;
-
-    const highlightColor = alpha(theme.palette.primary.main, 0.5);
-    const highlightStyle = `background-color:${highlightColor};border-radius:4px;font-size:90%;padding:0.2rem`;
-    const paragraphs =
-      document.querySelectorAll<HTMLParagraphElement>('pre p, span.title');
-    paragraphs.forEach((p) => {
-      const text = p.textContent!;
-      p.style.display = 'inline-table';
-      p.innerHTML = text
-        .split(new RegExp(`(${searchTerm})`, 'i'))
-        .map((word) => {
-          if (word.toLowerCase().includes(searchTerm.toLowerCase())) {
-            return `<span style="${highlightStyle}">${word}</span>`;
-          }
-          return word.trim();
-        })
-        .join(' ');
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, searchTerm]);
+  useHighlightSearchTerms();
 
   const gridProps: Grid2Props = {
     columns: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 },
@@ -121,4 +100,46 @@ function useDiaryEntries(searchTerm?: string) {
   }, [enqueueSnackbar, error]);
 
   return result;
+}
+
+function useHighlightSearchTerms() {
+  const { searchTerm } = useContext(DiaryIndexContext);
+  const { isLoading } = useDiaryEntries(searchTerm);
+  const theme = useTheme();
+
+  useEffect(() => {
+    if (isLoading || !searchTerm) return;
+
+    const highlightColor = alpha(theme.palette.primary.main, 0.5);
+    const highlightStyle = `background-color:${highlightColor};border-radius:4px;font-size:90%;padding:0.2rem`;
+    const paragraphs =
+      document.querySelectorAll<HTMLParagraphElement>('pre p, span.title');
+    paragraphs.forEach((p) => {
+      const text = p.textContent!;
+
+      const targetIndex = normaliseText(text, true).indexOf(
+        normaliseText(searchTerm, true),
+      );
+      if (targetIndex < 0) return;
+
+      const exactTerm = text.substring(
+        targetIndex,
+        targetIndex + searchTerm.length,
+      );
+
+      p.innerHTML = text
+        .split(new RegExp(`(${exactTerm})`, 'i'))
+        .map((phrase) => {
+          const a = normaliseText(phrase, true);
+          const b = normaliseText(searchTerm, true);
+          if (a.includes(b)) {
+            return `<span style="${highlightStyle}">${phrase}</span>`;
+          }
+          return phrase.trim();
+        })
+        .join(' ');
+      p.style.display = 'inline-table';
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, searchTerm]);
 }

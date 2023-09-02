@@ -83,13 +83,21 @@ export function truncateText(
     text = deformatText(originalText);
   }
 
-  const words = text.split(' ');
   let truncatedText = '';
   let startIndex = 0;
   let endIndex = limit;
+  let words = [];
 
   if (searchTerm) {
-    const targetIndex = words
+    const splitWords = (string: string): string[] => {
+      return string
+        .split(new RegExp(`(${searchTerm})`, 'i'))
+        .flatMap((word) => {
+          if (word === searchTerm) return word;
+          return word.split(/\s/).filter((e) => e);
+        });
+    };
+    const targetIndex = splitWords(normaliseText(text))
       .map((w) => w.toLowerCase())
       .indexOf(searchTerm.toLowerCase());
     startIndex = Math.max(0, targetIndex - limit / 2);
@@ -97,6 +105,9 @@ export function truncateText(
       text.length - 1,
       targetIndex + (limit - (targetIndex - startIndex)),
     );
+    words = splitWords(text);
+  } else {
+    words = text.split(/\s/);
   }
 
   truncatedText = words.slice(startIndex, endIndex + 1).join(' ');
@@ -123,6 +134,14 @@ export function extractExcerpt(originalText: string): string {
   const [paragraph] = originalText.split(/\n|\s{2,}/).filter((e) => e);
   const excerpt = deformatText(paragraph);
   return excerpt;
+}
+
+export function normaliseText(text: string, lowercase?: boolean): string {
+  let normalised = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  if (lowercase) {
+    normalised = normalised.toLowerCase();
+  }
+  return normalised;
 }
 
 export interface FormatTextOptions {
