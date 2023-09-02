@@ -1,16 +1,44 @@
+import type { Prisma } from '@prisma/client';
 import type { GetServerSideProps } from 'next';
+import { useEffect } from 'react';
 
 import Layout from 'fragments/Layout';
 import type { DiaryIndexProps } from 'fragments/Pages/Diary/Index/DiaryIndex';
 import DiaryIndex from 'fragments/Pages/Diary/Index/DiaryIndex';
+import {
+  DiaryIndexContext,
+  SortOption,
+  useSortMenuOptions,
+} from 'fragments/Pages/Diary/Index/DiaryIndex.utils';
+import { AppActions, useAppDispatch, useAppSelector } from 'utils/reducers';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 
 const DiaryIndexPage: NextPageWithLayout<DiaryIndexProps> = (props) => {
-  return <DiaryIndex {...props} />;
+  const { sort } = useAppSelector((state) => state.diary);
+  const dispatch = useAppDispatch();
+  const sortMenuOptions = useSortMenuOptions(props.searchTerm);
+
+  useEffect(() => {
+    const value: Prisma.DiaryOrderByWithRelationAndSearchRelevanceInput =
+      props.searchTerm
+        ? sortMenuOptions[SortOption.RELEVANT].value
+        : sort._relevance
+        ? sortMenuOptions[SortOption.NEWEST].value
+        : sort;
+    dispatch(AppActions.setDiarySieve({ sort: { $set: value } }));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.searchTerm]);
+
+  return (
+    <DiaryIndexContext.Provider value={props}>
+      <DiaryIndex />
+    </DiaryIndexContext.Provider>
+  );
 };
 
-export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
+export const getServerSideProps: GetServerSideProps<DiaryIndexProps> = async (
   ctx,
 ) => {
   const helpers = getServerSideHelpers(ctx);
@@ -22,6 +50,7 @@ export const getServerSideProps: GetServerSideProps<AppPageProps> = async (
   return {
     props: {
       params,
+      searchTerm: (ctx.query.search as string) ?? '',
       pathDefinition: {
         title: `Diary | ${Settings.SITE_TITLE}`,
         description: page?.excerpt ?? '',

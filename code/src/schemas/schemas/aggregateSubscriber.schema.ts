@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { SubscriberOrderByWithRelationInputObjectSchema } from './objects/SubscriberOrderByWithRelationInput.schema';
+import { SubscriberOrderByWithRelationAndSearchRelevanceInputObjectSchema } from './objects/SubscriberOrderByWithRelationAndSearchRelevanceInput.schema';
 import { SubscriberWhereInputObjectSchema } from './objects/SubscriberWhereInput.schema';
 import { SubscriberWhereUniqueInputObjectSchema } from './objects/SubscriberWhereUniqueInput.schema';
 import { SubscriberCountAggregateInputObjectSchema } from './objects/SubscriberCountAggregateInput.schema';
@@ -11,8 +11,8 @@ import { SubscriberSumAggregateInputObjectSchema } from './objects/SubscriberSum
 export const SubscriberAggregateSchema = z.object({
   orderBy: z
     .union([
-      SubscriberOrderByWithRelationInputObjectSchema,
-      SubscriberOrderByWithRelationInputObjectSchema.array(),
+      SubscriberOrderByWithRelationAndSearchRelevanceInputObjectSchema,
+      SubscriberOrderByWithRelationAndSearchRelevanceInputObjectSchema.array(),
     ])
     .optional(),
   where: SubscriberWhereInputObjectSchema.optional(),

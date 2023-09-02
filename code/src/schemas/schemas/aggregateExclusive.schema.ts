@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ExclusiveOrderByWithRelationInputObjectSchema } from './objects/ExclusiveOrderByWithRelationInput.schema';
+import { ExclusiveOrderByWithRelationAndSearchRelevanceInputObjectSchema } from './objects/ExclusiveOrderByWithRelationAndSearchRelevanceInput.schema';
 import { ExclusiveWhereInputObjectSchema } from './objects/ExclusiveWhereInput.schema';
 import { ExclusiveWhereUniqueInputObjectSchema } from './objects/ExclusiveWhereUniqueInput.schema';
 import { ExclusiveCountAggregateInputObjectSchema } from './objects/ExclusiveCountAggregateInput.schema';
@@ -11,8 +11,8 @@ import { ExclusiveSumAggregateInputObjectSchema } from './objects/ExclusiveSumAg
 export const ExclusiveAggregateSchema = z.object({
   orderBy: z
     .union([
-      ExclusiveOrderByWithRelationInputObjectSchema,
-      ExclusiveOrderByWithRelationInputObjectSchema.array(),
+      ExclusiveOrderByWithRelationAndSearchRelevanceInputObjectSchema,
+      ExclusiveOrderByWithRelationAndSearchRelevanceInputObjectSchema.array(),
     ])
     .optional(),
   where: ExclusiveWhereInputObjectSchema.optional(),

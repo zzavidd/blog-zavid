@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ExclusiveSelectObjectSchema } from './objects/ExclusiveSelect.schema';
-import { ExclusiveOrderByWithRelationInputObjectSchema } from './objects/ExclusiveOrderByWithRelationInput.schema';
+import { ExclusiveOrderByWithRelationAndSearchRelevanceInputObjectSchema } from './objects/ExclusiveOrderByWithRelationAndSearchRelevanceInput.schema';
 import { ExclusiveWhereInputObjectSchema } from './objects/ExclusiveWhereInput.schema';
 import { ExclusiveWhereUniqueInputObjectSchema } from './objects/ExclusiveWhereUniqueInput.schema';
 import { ExclusiveScalarFieldEnumSchema } from './enums/ExclusiveScalarFieldEnum.schema';
@@ -9,8 +9,8 @@ export const ExclusiveFindFirstSchema = z.object({
   select: ExclusiveSelectObjectSchema.optional(),
   orderBy: z
     .union([
-      ExclusiveOrderByWithRelationInputObjectSchema,
-      ExclusiveOrderByWithRelationInputObjectSchema.array(),
+      ExclusiveOrderByWithRelationAndSearchRelevanceInputObjectSchema,
+      ExclusiveOrderByWithRelationAndSearchRelevanceInputObjectSchema.array(),
     ])
     .optional(),
   where: ExclusiveWhereInputObjectSchema.optional(),

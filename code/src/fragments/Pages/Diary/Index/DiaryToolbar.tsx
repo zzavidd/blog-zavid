@@ -23,10 +23,12 @@ import {
   lighten,
 } from '@mui/material';
 import type { Prisma } from '@prisma/client';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 
 import { useDiaryCategories } from 'utils/hooks';
 import { AppActions, useAppDispatch, useAppSelector } from 'utils/reducers';
+
+import { DiaryIndexContext, useSortMenuOptions } from './DiaryIndex.utils';
 
 export default function DiaryToolbar() {
   const [state, setState] = useState({
@@ -35,11 +37,14 @@ export default function DiaryToolbar() {
   });
   const { filter, sort } = useAppSelector((state) => state.diary);
   const dispatch = useAppDispatch();
-  const { data: categories = [] } = useDiaryCategories();
-  const selectedCategoryIds = useSelectedCategoryIds();
+  const { searchTerm } = useContext(DiaryIndexContext);
 
   const sortButtonRef = useRef<HTMLButtonElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
+
+  const { data: categories = [] } = useDiaryCategories();
+  const sortMenuOptions = useSortMenuOptions(searchTerm);
+  const selectedCategoryIds = useSelectedCategoryIds();
 
   function onFavouriteToggle(_: React.ChangeEvent, checked: boolean) {
     dispatch(
@@ -49,12 +54,10 @@ export default function DiaryToolbar() {
     );
   }
 
-  function onSortChange(value: Prisma.SortOrder) {
-    dispatch(
-      AppActions.setDiarySieve({
-        sort: { entryNumber: { $set: value } },
-      }),
-    );
+  function onSortChange(
+    value: Prisma.DiaryOrderByWithRelationAndSearchRelevanceInput,
+  ) {
+    dispatch(AppActions.setDiarySieve({ sort: { $set: value } }));
   }
 
   function onFilterChange(id: number) {
@@ -87,11 +90,6 @@ export default function DiaryToolbar() {
   function toggleFilterMenu(open: boolean) {
     setState((s) => ({ ...s, isFilterMenuOpen: open }));
   }
-
-  const sortMenuOptions: SortMenuOption[] = [
-    { label: 'Newest first', value: 'desc' },
-    { label: 'Oldest first', value: 'asc' },
-  ];
 
   const fontSize: TypographyProps['fontSize'] = { xs: 12, md: 14 };
 
@@ -162,19 +160,21 @@ export default function DiaryToolbar() {
         anchorEl={sortButtonRef.current}
         onClick={() => toggleSortMenu(false)}
         onClose={() => toggleSortMenu(false)}>
-        {sortMenuOptions.map(({ label, value }, key) => {
-          const selected = sort.entryNumber === value;
-          return (
-            <MenuItem
-              onClick={() => onSortChange(value)}
-              selected={selected}
-              sx={{ py: 4 }}
-              key={key}>
-              <ListItemIcon>{selected ? <Check /> : null}</ListItemIcon>
-              <ListItemText>{label}</ListItemText>
-            </MenuItem>
-          );
-        })}
+        {Object.values(sortMenuOptions).map(
+          ({ label, value, selected, hideOption }, key) => {
+            if (hideOption) return null;
+            return (
+              <MenuItem
+                onClick={() => onSortChange(value)}
+                selected={selected}
+                sx={{ py: 4 }}
+                key={key}>
+                <ListItemIcon>{selected ? <Check /> : null}</ListItemIcon>
+                <ListItemText>{label}</ListItemText>
+              </MenuItem>
+            );
+          },
+        )}
       </Menu>
       <Menu
         open={state.isFilterMenuOpen}
@@ -219,9 +219,4 @@ function useSelectedCategoryIds(): number[] {
 
   if (!intFilter) return [];
   return (intFilter.in as number[]) || [];
-}
-
-interface SortMenuOption {
-  label: string;
-  value: Prisma.SortOrder;
 }

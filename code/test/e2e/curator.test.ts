@@ -1,7 +1,10 @@
 import type { Locator } from '@playwright/test';
 import { expect, test } from '@playwright/test';
+import { DiaryStatus } from '@prisma/client';
 
+import { createDiaryEntry } from '../../ops/ingestion/factory';
 import { DIARY_ENTRY_NUMBERS } from '../utils/constants';
+import prisma from '../utils/prisma';
 
 const params: TestDefinition[] = [
   {
@@ -17,7 +20,17 @@ const params: TestDefinition[] = [
 ];
 
 test.describe('Curator', () => {
-  test.describe.configure({ mode: 'parallel' });
+  test.beforeAll(async () => {
+    const diary = createDiaryEntry({
+      entryNumber: DIARY_ENTRY_NUMBERS.CURATOR,
+      status: DiaryStatus.PUBLISHED,
+    });
+    await prisma.diary.upsert({
+      create: diary,
+      update: diary,
+      where: { entryNumber: diary.entryNumber },
+    });
+  });
 
   test.beforeEach(async ({ page }) => {
     await page.goto(`/diary/${DIARY_ENTRY_NUMBERS.CURATOR}`);

@@ -76,16 +76,42 @@ export function truncateText(
 ): string {
   if (!originalText) return '';
 
-  const { limit = 45, keepRichFormatting = false } = options;
+  const { limit = 45, keepRichFormatting = false, searchTerm } = options;
 
   let text = originalText;
   if (!keepRichFormatting) {
     text = deformatText(originalText);
   }
-  const truncatedText = text.split(' ').slice(0, limit).join(' ');
-  if (truncatedText.length <= limit) return originalText;
 
-  return `${truncatedText}....`;
+  const words = text.split(' ');
+  let truncatedText = '';
+  let startIndex = 0;
+  let endIndex = limit;
+
+  if (searchTerm) {
+    const targetIndex = words
+      .map((w) => w.toLowerCase())
+      .indexOf(searchTerm.toLowerCase());
+    startIndex = Math.max(0, targetIndex - limit / 2);
+    endIndex = Math.min(
+      text.length - 1,
+      targetIndex + (limit - (targetIndex - startIndex)),
+    );
+  }
+
+  truncatedText = words.slice(startIndex, endIndex + 1).join(' ');
+  if (startIndex > 0) {
+    truncatedText = `...${truncatedText}`;
+  }
+  if (endIndex < words.length - 1) {
+    truncatedText = `${truncatedText}...`;
+  }
+
+  if (truncatedText.length <= limit) {
+    return originalText;
+  }
+
+  return truncatedText;
 }
 
 /**
@@ -112,6 +138,7 @@ export interface DeformatTextOptions {
 
 export interface TruncateOptions {
   limit?: number;
+  searchTerm?: string;
   keepRichFormatting?: boolean;
 }
 

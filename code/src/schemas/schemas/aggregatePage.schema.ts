@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PageOrderByWithRelationInputObjectSchema } from './objects/PageOrderByWithRelationInput.schema';
+import { PageOrderByWithRelationAndSearchRelevanceInputObjectSchema } from './objects/PageOrderByWithRelationAndSearchRelevanceInput.schema';
 import { PageWhereInputObjectSchema } from './objects/PageWhereInput.schema';
 import { PageWhereUniqueInputObjectSchema } from './objects/PageWhereUniqueInput.schema';
 import { PageCountAggregateInputObjectSchema } from './objects/PageCountAggregateInput.schema';
@@ -11,8 +11,8 @@ import { PageSumAggregateInputObjectSchema } from './objects/PageSumAggregateInp
 export const PageAggregateSchema = z.object({
   orderBy: z
     .union([
-      PageOrderByWithRelationInputObjectSchema,
-      PageOrderByWithRelationInputObjectSchema.array(),
+      PageOrderByWithRelationAndSearchRelevanceInputObjectSchema,
+      PageOrderByWithRelationAndSearchRelevanceInputObjectSchema.array(),
     ])
     .optional(),
   where: PageWhereInputObjectSchema.optional(),

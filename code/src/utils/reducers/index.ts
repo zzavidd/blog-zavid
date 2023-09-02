@@ -65,11 +65,11 @@ export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 export interface AppState {
   theme: PaletteMode;
   diary: {
-    sort: Prisma.DiaryOrderByWithRelationInput;
+    sort: Prisma.DiaryOrderByWithRelationAndSearchRelevanceInput;
     filter: Prisma.DiaryWhereInput;
   };
   postAdmin: {
-    sort: Prisma.PostOrderByWithRelationInput;
+    sort: Prisma.PostOrderByWithRelationAndSearchRelevanceInput;
     filter: Prisma.PostWhereInput;
   };
 }

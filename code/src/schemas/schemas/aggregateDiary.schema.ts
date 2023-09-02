@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DiaryOrderByWithRelationInputObjectSchema } from './objects/DiaryOrderByWithRelationInput.schema';
+import { DiaryOrderByWithRelationAndSearchRelevanceInputObjectSchema } from './objects/DiaryOrderByWithRelationAndSearchRelevanceInput.schema';
 import { DiaryWhereInputObjectSchema } from './objects/DiaryWhereInput.schema';
 import { DiaryWhereUniqueInputObjectSchema } from './objects/DiaryWhereUniqueInput.schema';
 import { DiaryCountAggregateInputObjectSchema } from './objects/DiaryCountAggregateInput.schema';
@@ -11,8 +11,8 @@ import { DiarySumAggregateInputObjectSchema } from './objects/DiarySumAggregateI
 export const DiaryAggregateSchema = z.object({
   orderBy: z
     .union([
-      DiaryOrderByWithRelationInputObjectSchema,
-      DiaryOrderByWithRelationInputObjectSchema.array(),
+      DiaryOrderByWithRelationAndSearchRelevanceInputObjectSchema,
+      DiaryOrderByWithRelationAndSearchRelevanceInputObjectSchema.array(),
     ])
     .optional(),
   where: DiaryWhereInputObjectSchema.optional(),
