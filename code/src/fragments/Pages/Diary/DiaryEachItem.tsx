@@ -31,7 +31,7 @@ const cardProps: SxProps<Theme> = {
 };
 
 const DiaryEachItem = React.memo<DiaryEachItemProps>(
-  function DiaryEachItem({ entry }) {
+  function DiaryEachItem({ entry, searchTerm }) {
     const href = `/diary/${entry.entryNumber}`;
 
     return (
@@ -55,7 +55,13 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
                 display={'block'}>
                 Diary Entry #{entry.entryNumber}:
               </Typography>
-              {entry.title}
+              <Typography
+                variant={'h3'}
+                component={'span'}
+                display={'inline'}
+                className={'title'}>
+                {entry.title}
+              </Typography>
             </Typography>
             <CategoryDisplay categories={entry.categories} my={3} />
             <Divider sx={{ marginBlock: (t) => t.spacing(4) }} />
@@ -65,7 +71,9 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
               moreText={`Read Diary Entry #${entry.entryNumber}`}
               readMoreDataTestId={`zb.readmore.${entry.entryNumber}`}
               TypographyProps={{ fontSize: { xs: 16, md: 18 } }}>
-              {entry.content}
+              {entry.content.includes(searchTerm) || !entry.footnote
+                ? entry.content
+                : entry.footnote}
             </Paragraph>
           </CardContent>
         </Card>
@@ -115,4 +123,5 @@ function FavoriteSymbol() {
 
 interface DiaryEachItemProps {
   entry: DiaryWithCategories;
+  searchTerm: string;
 }

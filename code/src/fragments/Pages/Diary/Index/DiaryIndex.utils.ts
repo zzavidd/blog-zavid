@@ -28,7 +28,7 @@ export function useSortMenuOptions(
         _relevance: {
           fields: ['title', 'content', 'footnote'],
           search: searchTerm,
-          sort: 'asc',
+          sort: 'desc',
         },
       },
       selected: !!sort._relevance,

@@ -8,7 +8,10 @@ export const zSubscribeForm = z.object({
 });
 
 export const zFindOptions = z
-  .object({ contentWordLimit: z.number().optional() })
+  .object({
+    contentWordLimit: z.number().optional(),
+    searchTerm: z.string().optional(),
+  })
   .optional();
 
 export const zEmailPreviewType = z.enum(['Ethereal', 'Gmail']).optional();

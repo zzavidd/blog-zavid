@@ -1,10 +1,19 @@
-import { Close, Search } from '@mui/icons-material';
-import { Button, InputAdornment, TextField } from '@mui/material';
+import { Search } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
+import { InputAdornment, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { DiaryIndexContext } from './DiaryIndex.utils';
 
 export default function DiarySearch() {
-  const [state, setState] = useState({ searchTerm: '' });
+  const { searchTerm } = useContext(DiaryIndexContext);
+  const [state, setState] = useState({
+    searchTerm,
+    isSearchLoading: false,
+    isClearLoading: false,
+  });
+  const isLoading = state.isSearchLoading || state.isClearLoading;
 
   const router = useRouter();
 
@@ -12,18 +21,22 @@ export default function DiarySearch() {
     setState((s) => ({ ...s, searchTerm: e.target.value }));
   }
 
-  function clearSearch() {
-    setState((s) => ({ ...s, searchTerm: '' }));
+  async function clearSearch() {
+    setState((s) => ({ ...s, isClearLoading: true }));
+    await router.push('/diary');
+    setState((s) => ({ ...s, isClearLoading: false, searchTerm: '' }));
   }
 
-  function searchDiary() {
+  async function searchDiary() {
+    setState((s) => ({ ...s, isSearchLoading: true }));
     const { searchTerm } = state;
-    void router.push(searchTerm ? `/diary?search=${searchTerm}` : '/diary');
+    await router.push(searchTerm ? `/diary?search=${searchTerm}` : '/diary');
+    setState((s) => ({ ...s, isSearchLoading: false }));
   }
 
-  function onKeyDown(e: React.KeyboardEvent) {
+  async function onKeyDown(e: React.KeyboardEvent) {
     if (e.key === 'Enter') {
-      searchDiary();
+      await searchDiary();
     }
   }
 
@@ -38,6 +51,20 @@ export default function DiarySearch() {
         p: 1,
         width: '100%',
       }}
+      FormHelperTextProps={{
+        sx: { mt: 2, mx: 0 },
+      }}
+      helperText={
+        searchTerm ? (
+          <LoadingButton
+            onClick={clearSearch}
+            loading={state.isClearLoading}
+            disabled={isLoading}
+            sx={{ fontSize: 10, p: 0 }}>
+            Clear search
+          </LoadingButton>
+        ) : null
+      }
       InputProps={{
         style: { fontSize: 16 },
         startAdornment: (
@@ -46,21 +73,16 @@ export default function DiarySearch() {
           </InputAdornment>
         ),
         endAdornment: (
-          <React.Fragment>
-            <InputAdornment position={'end'}>
-              {state.searchTerm ? (
-                <Close onClick={clearSearch} color={'primary'} />
-              ) : null}
-            </InputAdornment>
-            <Button
-              onClick={searchDiary}
-              sx={{
-                fontSize: { xs: 11, md: 14 },
-                minWidth: { xs: 0, md: 'auto' },
-              }}>
-              Search
-            </Button>
-          </React.Fragment>
+          <LoadingButton
+            onClick={searchDiary}
+            loading={state.isSearchLoading}
+            disabled={isLoading}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              minWidth: { xs: 0, md: 'auto' },
+            }}>
+            Search
+          </LoadingButton>
         ),
       }}
     />

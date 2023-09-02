@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client';
 import type { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 
@@ -19,19 +20,14 @@ const DiaryIndexPage: NextPageWithLayout<DiaryIndexProps> = (props) => {
   const sortMenuOptions = useSortMenuOptions(props.searchTerm);
 
   useEffect(() => {
-    if (props.searchTerm) {
-      dispatch(
-        AppActions.setDiarySieve({
-          sort: { $set: sortMenuOptions[SortOption.RELEVANT].value },
-        }),
-      );
-    } else if (sort._relevance) {
-      dispatch(
-        AppActions.setDiarySieve({
-          sort: { $set: sortMenuOptions[SortOption.NEWEST].value },
-        }),
-      );
-    }
+    const value: Prisma.DiaryOrderByWithRelationAndSearchRelevanceInput =
+      props.searchTerm
+        ? sortMenuOptions[SortOption.RELEVANT].value
+        : sort._relevance
+        ? sortMenuOptions[SortOption.NEWEST].value
+        : sort;
+    dispatch(AppActions.setDiarySieve({ sort: { $set: value } }));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.searchTerm]);
 

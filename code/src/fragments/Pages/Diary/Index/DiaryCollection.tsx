@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, alpha, useTheme } from '@mui/material';
 import type { Grid2Props } from '@mui/material/Unstable_Grid2';
 import Grid from '@mui/material/Unstable_Grid2';
 import { DiaryStatus } from '@prisma/client';
@@ -17,6 +17,30 @@ import { DiaryIndexContext } from './DiaryIndex.utils';
 export default function DiaryCollection() {
   const { searchTerm } = useContext(DiaryIndexContext);
   const { data: diaryEntries, isLoading } = useDiaryEntries(searchTerm);
+  const theme = useTheme();
+
+  useEffect(() => {
+    if (isLoading || !searchTerm) return;
+
+    const highlightColor = alpha(theme.palette.primary.main, 0.5);
+    const highlightStyle = `background-color:${highlightColor};border-radius:4px;font-size:90%;padding:0.2rem`;
+    const paragraphs =
+      document.querySelectorAll<HTMLParagraphElement>('pre p, span.title');
+    paragraphs.forEach((p) => {
+      const text = p.textContent!;
+      p.style.display = 'inline-table';
+      p.innerHTML = text
+        .split(new RegExp(`(${searchTerm})`, 'i'))
+        .map((word) => {
+          if (word.toLowerCase().includes(searchTerm.toLowerCase())) {
+            return `<span style="${highlightStyle}">${word}</span>`;
+          }
+          return word.trim();
+        })
+        .join(' ');
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, searchTerm]);
 
   const gridProps: Grid2Props = {
     columns: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 },
@@ -51,7 +75,7 @@ export default function DiaryCollection() {
   return (
     <Grid {...gridProps}>
       {diaryEntries.map((entry) => (
-        <DiaryEachItem entry={entry} key={entry.id} />
+        <DiaryEachItem entry={entry} searchTerm={searchTerm} key={entry.id} />
       ))}
     </Grid>
   );
@@ -68,15 +92,14 @@ function useDiaryEntries(searchTerm?: string) {
   });
 
   if (searchTerm) {
+    const query = `"${searchTerm}"`;
     params = immutate(params, {
       where: (where) => ({
         ...where,
         OR: [
-          {
-            title: { search: searchTerm },
-          },
-          { content: { search: searchTerm } },
-          { footnote: { search: searchTerm } },
+          { title: { search: query } },
+          { content: { search: query } },
+          { footnote: { search: query } },
           { tags: { array_contains: searchTerm } },
         ],
       }),
@@ -87,6 +110,7 @@ function useDiaryEntries(searchTerm?: string) {
     params,
     options: {
       contentWordLimit: 20,
+      searchTerm,
     },
   });
 

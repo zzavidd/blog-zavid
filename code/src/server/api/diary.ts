@@ -11,12 +11,17 @@ export default class DiaryAPI {
     args: Prisma.DiaryFindManyArgs,
     options: FindOptions = {},
   ): Promise<DiaryWithCategories[]> {
-    const { contentWordLimit } = options;
+    const { contentWordLimit, searchTerm } = options;
     let diary = (await prisma.diary.findMany(args)) as DiaryWithCategories[];
     if (contentWordLimit) {
       diary = diary.map((entry) => {
         entry.content = truncateText(entry.content, {
           limit: contentWordLimit,
+          searchTerm,
+        });
+        entry.footnote = truncateText(entry.footnote, {
+          limit: contentWordLimit,
+          searchTerm,
         });
         return entry;
       });
