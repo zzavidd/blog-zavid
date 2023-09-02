@@ -3,30 +3,44 @@ import { devices } from '@playwright/test';
 
 export const testProjects: Project[] = [
   {
+    name: 'setup',
+    testMatch: ['test/utils/setup.ts'],
+  },
+  {
+    name: 'unit',
+    testMatch: ['unit/**'],
+  },
+  {
     name: 'chromium',
     use: devices['Desktop Chrome'],
+    testMatch: ['e2e/**'],
+    dependencies: ['setup'],
   },
   {
     name: 'firefox',
-    testMatch: ['**/curator.test.ts'],
     use: devices['Desktop Firefox'],
+    testMatch: ['e2e/curator.test.ts'],
+    dependencies: ['setup'],
   },
   {
     name: 'webkit',
-    testMatch: ['**/curator.test.ts'],
+    testMatch: ['e2e/curator.test.ts'],
     use: devices['Desktop Safari'],
+    dependencies: ['setup'],
   },
   {
     name: 'Mobile Chrome',
-    testMatch: ['**/curator.test.ts'],
-    retries: process.env.CI ? 2 : 0,
     use: devices['Pixel 5'],
+    testMatch: ['e2e/curator.test.ts'],
+    dependencies: ['setup'],
+    retries: process.env.CI ? 2 : 0,
   },
   {
     name: 'Mobile Safari',
-    testMatch: ['**/curator.test.ts'],
-    retries: process.env.CI ? 2 : 0,
     use: devices['iPhone 12'],
+    testMatch: ['e2e/curator.test.ts'],
+    dependencies: ['setup'],
+    retries: process.env.CI ? 2 : 0,
   },
 ];
 

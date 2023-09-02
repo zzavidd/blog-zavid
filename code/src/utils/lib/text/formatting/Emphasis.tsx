@@ -92,8 +92,7 @@ export function removeEmphasisFormatting(paragraph: string): string {
     .filter((e) => e)
     .join(' ')
     .replace(/\s{2,}/g, ' ')
-    .replace(/\s\./g, '.')
-    .replace(/\s+\,/g, ',');
+    .replace(/\s([.,;:!?])/g, '$1');
 
   // 1. Split by regex and replace with deformatted values.
   // 2. Remove blank values.

@@ -135,9 +135,9 @@ function useHighlightSearchTerms() {
           if (a.includes(b)) {
             return `<span style="${highlightStyle}">${phrase}</span>`;
           }
-          return phrase.trim();
+          return /^\B/.test(phrase.trim()) ? phrase.trimStart() : phrase;
         })
-        .join(' ');
+        .join('');
       p.style.display = 'inline-table';
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

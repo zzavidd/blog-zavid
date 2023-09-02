@@ -1,3 +1,4 @@
+import { expect, test as setup } from '@playwright/test';
 import 'dotenv/config';
 
 import logger from 'utils/logger';
@@ -6,23 +7,22 @@ import { createDefaultPages } from '../../ops/ingestion/functions';
 
 import prisma from './prisma';
 
-export default async function globalSetup(): Promise<void> {
+setup('Setup', async () => {
   verifyDatabaseIsTest();
   await clearDatabase();
 
   // For console tests.
   const pages = createDefaultPages();
   await prisma.page.createMany({ data: pages, skipDuplicates: true });
-}
+});
 
 function verifyDatabaseIsTest(): void {
   const url = process.env.DATABASE_TEST_URL;
-  if (!url || !url.endsWith('_test')) {
-    logger.warn(
-      'Failsafe triggered: erroneously using non-development database.',
-    );
-    process.exit(0);
-  }
+
+  expect(url).toBeDefined();
+  expect(url!.endsWith('_test'), {
+    message: 'Failsafe triggered: erroneously using non-development database.',
+  }).toBe(true);
 }
 
 async function clearDatabase(): Promise<void> {
