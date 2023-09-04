@@ -95,7 +95,7 @@ function Form() {
       <Stack mx={{ xs: 4, md: 5 }} my={5} spacing={5}>
         <Stack spacing={3}>
           <Typography variant={'h2'}>Subscribe to Zavid</Typography>
-          <Typography variant={'body1'}>
+          <Typography variant={'text'}>
             You know what they say: first come, first served. Be among the first
             notified when a new post or diary entry drops.
           </Typography>
@@ -108,9 +108,7 @@ function Form() {
             onChange={onTextChange}
             required={true}
             placeholder={'Enter your email address...'}
-            inputProps={{
-              'data-testid': 'zb.email',
-            }}
+            inputProps={{ 'data-testid': 'zb.email' }}
           />
         </FormControl>
         <Stack direction={'row'} spacing={5}>
@@ -133,9 +131,7 @@ function Form() {
               label={'Last Name:'}
               onChange={onTextChange}
               placeholder={'Enter your last name...'}
-              inputProps={{
-                'data-testid': 'zb.lastname',
-              }}
+              inputProps={{ 'data-testid': 'zb.lastname' }}
             />
           </FormControl>
         </Stack>

@@ -10,8 +10,8 @@ import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 import { trpc } from 'utils/trpc';
 
-const DynamicPage: NextPageWithLayout<DynamicPageProps> = ({ slug }) => {
-  const { data: page } = trpc.page.find.useQuery({ where: { slug } });
+const DynamicPage: NextPageWithLayout<DynamicPageProps> = ({ params }) => {
+  const { data: page } = trpc.page.find.useQuery(params);
   if (!page) return null;
 
   const substitutions = {
@@ -24,7 +24,9 @@ const DynamicPage: NextPageWithLayout<DynamicPageProps> = ({ slug }) => {
     <Container maxWidth={'sm'}>
       <Stack m={5} spacing={5}>
         <Typography variant={'h2'}>{page.title}</Typography>
-        <Paragraph substitutions={substitutions}>{page.content}</Paragraph>
+        <Paragraph variant={'text'} substitutions={substitutions}>
+          {page.content}
+        </Paragraph>
       </Stack>
     </Container>
   );
@@ -44,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<DynamicPageProps> = async (
     await helpers.page.find.prefetch(params);
     return {
       props: {
-        slug,
+        params,
         pathDefinition: {
           title: `${page.title} | ${Settings.SITE_TITLE}`,
           description: ZText.extractExcerpt(page.content!),
@@ -64,5 +66,5 @@ DynamicPage.getLayout = Layout.addPartials;
 export default DynamicPage;
 
 interface DynamicPageProps extends AppPageProps {
-  slug: string;
+  params: PageFindInput;
 }
