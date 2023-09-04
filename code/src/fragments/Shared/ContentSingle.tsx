@@ -44,7 +44,7 @@ export default function ContentSingle({
                 <Edit color={'primary'} />
               </LinkIconButton>
             </AdminLock>
-            <Typography variant={'h2'} textAlign={{ xs: 'left', sm: 'center' }}>
+            <Typography variant={'h2'} textAlign={{ xs: 'left', md: 'center' }}>
               {contentTitle}
             </Typography>
             <Time

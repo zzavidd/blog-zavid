@@ -8,6 +8,7 @@ export const calistoga = Calistoga({
   display: 'swap',
   preload: true,
   subsets: ['latin'],
+  style: ['normal'],
   weight: ['400'],
 });
 
@@ -36,7 +37,6 @@ const typography: TypographyOptions = {
     lineHeight: 1.1,
     [breakpoints.down('md')]: {
       fontSize: 30,
-      letterSpacing: -2,
     },
   },
   h3: {
@@ -46,7 +46,6 @@ const typography: TypographyOptions = {
     lineHeight: 1.2,
     [breakpoints.down('md')]: {
       fontSize: 24,
-      letterSpacing: -1,
     },
   },
   h4: {
@@ -71,9 +70,6 @@ const typography: TypographyOptions = {
   subtitle2: {
     fontFamily: calistoga.style.fontFamily,
     fontWeight: 700,
-    [breakpoints.down('md')]: {
-      letterSpacing: -1,
-    },
   },
   body1: {
     fontFamily: mulish.style.fontFamily,
