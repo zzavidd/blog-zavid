@@ -4,7 +4,6 @@ import { DiaryStatus } from '@prisma/client';
 
 import { createDiaryEntry } from '../../ops/ingestion/factory';
 import Settings from '../../src/utils/settings';
-import { DIARY_ENTRY_NUMBERS } from '../utils/constants';
 import prisma from '../utils/prisma';
 
 test.describe('Diary', () => {
@@ -22,7 +21,7 @@ test.describe('Diary', () => {
       });
       if (!latestDiaryEntry) {
         const diary = createDiaryEntry({
-          entryNumber: DIARY_ENTRY_NUMBERS.DIARY_LATEST,
+          entryNumber: 2 ** 11,
           status: DiaryStatus.PUBLISHED,
         });
         latestDiaryEntry = await prisma.diary.create({ data: diary });
@@ -63,27 +62,13 @@ test.describe('Diary', () => {
     });
 
     [
-      {
-        status: DiaryStatus.DRAFT,
-        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_DRAFT,
-        expect404: true,
-      },
-      {
-        status: DiaryStatus.PROTECTED,
-        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_PROTECTED,
-        expect404: true,
-      },
-      {
-        status: DiaryStatus.PRIVATE,
-        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_PRIVATE,
-      },
-      {
-        status: DiaryStatus.PUBLISHED,
-        entryNumber: DIARY_ENTRY_NUMBERS.DIARY_STATUS_PUBLISHED,
-      },
-    ].forEach(({ status, entryNumber, expect404 }) => {
+      { status: DiaryStatus.DRAFT, expect404: true },
+      { status: DiaryStatus.PROTECTED, expect404: true },
+      { status: DiaryStatus.PRIVATE },
+      { status: DiaryStatus.PUBLISHED },
+    ].forEach(({ status, expect404 }) => {
       test(`can view ${status} page`, async ({ page }) => {
-        const diary = createDiaryEntry({ entryNumber, status });
+        const diary = createDiaryEntry({ status });
         await prisma.diary.create({ data: diary });
         await page.goto(`/diary/${diary.entryNumber}`);
 

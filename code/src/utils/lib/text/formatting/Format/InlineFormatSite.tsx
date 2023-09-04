@@ -11,6 +11,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
   ),
   [Emphasis.BOLDITALIC]: ([, text], key) => (
     <Typography
+      component={'span'}
       fontWeight={900}
       fontStyle={'italic'}
       display={'inline'}
@@ -21,6 +22,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
   ),
   [Emphasis.ITALIC]: ([, text], key) => (
     <Typography
+      component={'span'}
       fontStyle={'italic'}
       display={'inline'}
       fontSize={'inherit'}
@@ -30,6 +32,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
   ),
   [Emphasis.BOLD]: ([, text], key) => (
     <Typography
+      component={'span'}
       fontWeight={900}
       display={'inline'}
       fontSize={'inherit'}
@@ -39,6 +42,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
   ),
   [Emphasis.UNDERLINE]: ([, text], key) => (
     <Typography
+      component={'span'}
       sx={{ textDecoration: 'underline' }}
       display={'inline'}
       fontSize={'inherit'}
@@ -48,6 +52,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
   ),
   [Emphasis.STRIKETHROUGH]: ([, text], key) => (
     <Typography
+      component={'span'}
       sx={{ textDecoration: 'line-through' }}
       display={'inline'}
       fontSize={'inherit'}
@@ -67,6 +72,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
   ),
   [Emphasis.COLOR]: ([, color, text], key) => (
     <Typography
+      component={'span'}
       sx={{ color }}
       display={'inline'}
       fontWeight={'inherit'}
@@ -77,6 +83,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
   ),
   [Emphasis.HIGHLIGHT]: ([, highlightColor, text], key) => (
     <Typography
+      component={'span'}
       sx={{
         backgroundColor: highlightColor,
         borderRadius: (t) => `${t.shape.borderRadius}px`,
@@ -91,6 +98,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
   ),
   [Emphasis.SUPERSCRIPT]: ([, text], key) => (
     <Typography
+      component={'span'}
       sx={{ verticalAlign: 'super' }}
       display={'inline'}
       fontSize={'inherit'}
@@ -100,6 +108,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
   ),
   [Emphasis.SUBSCRIPT]: ([, text], key) => (
     <Typography
+      component={'span'}
       sx={{ verticalAlign: 'sub' }}
       display={'inline'}
       fontSize={'inherit'}

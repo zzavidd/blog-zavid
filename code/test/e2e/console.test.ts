@@ -8,7 +8,6 @@ import {
   createPost,
   createSubscriber,
 } from '../../ops/ingestion/factory';
-import { DIARY_ENTRY_NUMBERS } from '../utils/constants';
 import prisma from '../utils/prisma';
 
 const TEST_PARAMS: TestParam[] = [
@@ -52,10 +51,7 @@ test.describe('Console', () => {
 });
 
 async function createDiaryHref(): Promise<string> {
-  const diary = createDiaryEntry({
-    entryNumber: DIARY_ENTRY_NUMBERS.CONSOLE,
-    status: DiaryStatus.PUBLISHED,
-  });
+  const diary = createDiaryEntry({ status: DiaryStatus.PUBLISHED });
   await prisma.diary.create({ data: diary });
   return `/diary/${diary.entryNumber}`;
 }

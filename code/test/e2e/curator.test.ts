@@ -19,6 +19,8 @@ const params: TestDefinition[] = [
 ];
 
 test.describe('Curator', () => {
+  test.describe.configure({ mode: 'parallel' });
+
   let entryNumber: number;
 
   test.beforeAll(async () => {

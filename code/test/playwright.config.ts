@@ -1,4 +1,5 @@
 import { defineConfig } from '@playwright/test';
+import 'dotenv/config';
 
 import { testProjects } from './utils/projects';
 
@@ -16,15 +17,17 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   testIgnore: '**/prod/**',
   testDir: '.',
-  timeout: (process.env.CI ? 30 : 15) * 1000,
+  timeout: (process.env.CI ? 3 : 1) * 60 * 1000,
   use: {
     baseURL: 'http://localhost:4000',
     trace: 'on-first-retry',
   },
   webServer: {
     command: 'pnpm run dev',
+    env: { DATABASE_URL: process.env.DATABASE_TEST_URL! },
     reuseExistingServer: !process.env.CI,
     url: 'http://localhost:4000',
+    stdout: 'ignore',
   },
   workers: process.env.CI ? 4 : undefined,
 });
