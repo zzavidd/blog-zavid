@@ -15,9 +15,9 @@ export default defineConfig({
     : 'list',
   reportSlowTests: null,
   retries: process.env.CI ? 2 : 0,
-  testIgnore: '**/prod/**',
+  testMatch: 'e2e/**',
   testDir: '.',
-  timeout: (process.env.CI ? 3 : 1) * 60 * 1000,
+  timeout: 60 * 1000,
   use: {
     baseURL: 'http://localhost:4000',
     trace: 'on-first-retry',
