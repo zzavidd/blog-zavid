@@ -22,7 +22,7 @@ commands:
     description: "Installs all project dependencies."
     steps:
       - checkout
-      - run: apt add unzip
+      - run: apk add unzip
       - run: curl -fsSL https://bun.sh/install | bash
       - restore_cache:
           name: "Restore Bun cache"
