@@ -48,7 +48,7 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           component={'pre'}
           whiteSpace={'pre-wrap'}
           pb={showReadMore ? 4 : 0}
-          onContextMenu={(e) => e.preventDefault()}
+          onContextMenu={(e: any) => e.preventDefault()}
           ref={ref}
           sx={{ ...props.sx, userSelect: 'none' }}
           {...props}>

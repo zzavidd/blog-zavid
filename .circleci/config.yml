@@ -101,7 +101,7 @@ jobs:
             - next-build-
       - run:
           name: "Build project"
-          command: pnpm run build
+          command: bun run build
           working_directory: ./code
       - save_cache:
           key: next-build-{{ checksum "./code/bun.lockb" }}

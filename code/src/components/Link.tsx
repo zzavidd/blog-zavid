@@ -14,7 +14,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, ZavidLinkProps>(
         underline={'hover'}
         {...props}
         {...extraProps}
-        component={NextLink}
+        component={NextLink as React.ElementType}
         ref={ref}>
         {children}
       </MuiLink>
