@@ -1,8 +1,6 @@
 import type { Components, Theme } from '@mui/material';
 import { css } from '@mui/material';
 
-import Settings from 'utils/settings';
-
 import { darkPalette, lightPalette } from './Palette.styles';
 
 const components: Components<Theme> = {
@@ -42,28 +40,24 @@ const components: Components<Theme> = {
     },
   },
   MuiCssBaseline: {
-    styleOverrides: (theme) => {
-      const bgImage = `${Settings.CLOUDINARY_BASE_URL}/static/bg/bg-app-${theme.palette.mode}`;
-      return css`
-        * {
-          transition: ${theme.transitions.create(['background-color'], {
-            duration: theme.transitions.duration.complex,
-          })};
-        }
+    styleOverrides: (theme) => css`
+      * {
+        transition: ${theme.transitions.create(['background-color'], {
+          duration: theme.transitions.duration.complex,
+        })};
+      }
 
-        body {
-          background-attachment: fixed;
-          background-image: url(${bgImage});
-          background-repeat: no-repeat;
-          background-size: cover;
-          font-feature-settings: 'lnum';
-          overscroll-behavior: none;
-          transition: ${theme.transitions.create(['background-image'], {
-            duration: theme.transitions.duration.complex,
-          })};
-        }
-      `;
-    },
+      body {
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        font-feature-settings: 'lnum';
+        overscroll-behavior: none;
+        transition: ${theme.transitions.create(['background-color'], {
+          duration: theme.transitions.duration.complex,
+        })};
+      }
+    `,
   },
   MuiFormControlLabel: {
     styleOverrides: {
