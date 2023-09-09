@@ -9,7 +9,7 @@ no_production: &no_production
 executors:
   node:
     docker:
-      - image: node:18.17.1-alpine
+      - image: node:18.17.1-slim
   ssh:
     docker:
       - image: arvindr226/alpine-ssh
@@ -22,7 +22,7 @@ commands:
     description: "Installs all project dependencies."
     steps:
       - checkout
-      - run: apk add curl bash
+      # - run: apk add curl bash
       - run: curl -fsSL https://bun.sh/install | bash
       - run: export BUN_INSTALL="$HOME/.bun"
       - run: export PATH="$BUN_INSTALL/bin:$PATH"
