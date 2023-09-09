@@ -1,0 +1,14 @@
+#!/bin/bash
+
+## Skip if CI
+[ -n "$CI" ] && exit 0
+
+## Skip if production branch
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+if [[ "$BRANCH" == "production" ]]; then
+  echo 'Skipping pre-push hooks for production.'
+  exit 0
+fi
+
+cd code
+bun run eslint --max-warnings 0 || exit 1

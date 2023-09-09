@@ -2,7 +2,8 @@ import { Search } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { InputAdornment, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import type React from 'react';
+import { useContext, useState } from 'react';
 
 import { DiaryIndexContext } from './DiaryIndex.utils';
 

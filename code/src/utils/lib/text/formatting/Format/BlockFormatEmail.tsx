@@ -1,5 +1,5 @@
 import { MjmlButton, MjmlDivider, MjmlText } from '@faire/mjml-react';
-import React from 'react';
+import type React from 'react';
 
 import EmailTheme from 'server/emails/theme';
 

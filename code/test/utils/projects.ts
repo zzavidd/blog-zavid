@@ -7,10 +7,6 @@ export const testProjects: Project[] = [
     testMatch: ['test/utils/setup.ts'],
   },
   {
-    name: 'unit',
-    testMatch: ['unit/**'],
-  },
-  {
     name: 'chromium',
     use: devices['Desktop Chrome'],
     testMatch: ['e2e/**'],

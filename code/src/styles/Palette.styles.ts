@@ -1,4 +1,4 @@
-import { PaletteOptions } from '@mui/material';
+import type { PaletteOptions } from '@mui/material';
 import { purple } from '@mui/material/colors';
 
 export const lightPalette = {

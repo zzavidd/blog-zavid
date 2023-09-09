@@ -9,42 +9,37 @@ no_production: &no_production
 executors:
   node:
     docker:
-      - image: node:18
+      - image: node:18.17.1-slim
   ssh:
     docker:
       - image: arvindr226/alpine-ssh
   playwright:
     docker:
-      - image: mcr.microsoft.com/playwright:v1.34.3-jammy
+      - image: mcr.microsoft.com/playwright:v1.37.1-jammy
 
 commands:
   install_dependencies:
     description: "Installs all project dependencies."
     steps:
       - checkout
-      - run:
-          name: "Install pnpm package manager"
-          command: |
-            corepack enable
-            corepack prepare pnpm@8.2.0 --activate
-          working_directory: ./code
+      - run: npm i -g bun
       - restore_cache:
-          name: "Restore pnpm cache"
+          name: "Restore Bun cache"
           keys:
-            - pnpm-packages-{{ checksum "./code/pnpm-lock.yaml" }}
-            - pnpm-packages-
+            - bun-packages-{{ checksum "./code/bun.lockb" }}
+            - bun-packages-
       - run:
           name: "Install dependencies"
-          command: pnpm install --frozen-lockfile
+          command: bun install --frozen-lockfile
           working_directory: ./code
       - save_cache:
-          name: "Save pnpm cache"
-          key: pnpm-packages-{{ checksum "./code/pnpm-lock.yaml" }}
+          name: "Save Bun cache"
+          key: bun-packages-{{ checksum "./code/bun.lockb" }}
           paths:
             - ./code/node_modules
       - run:
           name: "Generate Prisma models"
-          command: pnpm prisma generate
+          command: bun prisma generate
           working_directory: ./code
   transfer_scripts:
     description: "Transfers deployment scripts via SCP"
@@ -74,7 +69,7 @@ jobs:
             - tscache-
       - run:
           name: "Run TypeScript checks"
-          command: pnpm run tsc:ci
+          command: bun run tsc:ci
           working_directory: ./code
       - save_cache:
           name: "Save TypeScript build info"
@@ -88,7 +83,7 @@ jobs:
             - eslintcache-
       - run:
           name: "Run ESLint"
-          command: pnpm run eslint --max-warnings 0
+          command: bun run eslint --max-warnings 0
           working_directory: ./code
       - save_cache:
           name: "Save ESLint cache"
@@ -99,17 +94,18 @@ jobs:
     executor: node
     steps:
       - install_dependencies
+      - run: apt-get update -y && apt-get install -y openssl
       - restore_cache:
           name: "Restore build cache"
           keys:
-            - next-build-{{ checksum "./code/pnpm-lock.yaml" }}
+            - next-build-{{ checksum "./code/bun.lockb" }}
             - next-build-
       - run:
           name: "Build project"
-          command: pnpm run build
+          command: bun run build
           working_directory: ./code
       - save_cache:
-          key: next-build-{{ checksum "./code/pnpm-lock.yaml" }}
+          key: next-build-{{ checksum "./code/bun.lockb" }}
           paths:
             - ./code/.next/cache
   test:
@@ -118,10 +114,14 @@ jobs:
     steps:
       - install_dependencies
       - run:
+          name: "Run unit tests"
+          command: bun test unit
+          working_directory: ./code
+      - run:
           name: "Run e2e tests"
           command: |
             TEST_FILES=$(circleci tests glob "test/e2e/**/*.ts")
-            echo "$TEST_FILES" | circleci tests run --command="xargs pnpm run test" --verbose --split-by=timings
+            echo "$TEST_FILES" | circleci tests run --command="xargs bun run test" --verbose --split-by=timings
           working_directory: ./code
       - store_test_results:
           path: ./code/test/results/

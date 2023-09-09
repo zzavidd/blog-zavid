@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import React from 'react';
+import type React from 'react';
 
 import Footer from './Shared/Footer';
 import Header from './Shared/Header';
