@@ -4,6 +4,7 @@ ARG WORKDIR
 WORKDIR /var/www/$WORKDIR/code
 
 RUN npm i -g bun
+RUN apt-get update -y && apt-get install -y openssl
 
 COPY ./code/package.json ./code/bun.lockb ./
 
@@ -19,6 +20,8 @@ FROM node:18.17.1-slim AS runner
 
 ARG WORKDIR
 WORKDIR /var/www/$WORKDIR/code
+
+RUN apt-get update -y && apt-get install -y openssl
 
 COPY --from=builder /var/www/$WORKDIR/code/public ./public
 COPY --from=builder /var/www/$WORKDIR/code/.next/standalone .
