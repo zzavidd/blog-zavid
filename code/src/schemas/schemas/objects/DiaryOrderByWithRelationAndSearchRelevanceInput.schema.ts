@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
+import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
 import { DiaryCategoryOrderByRelationAggregateInputObjectSchema } from './DiaryCategoryOrderByRelationAggregateInput.schema';
 import { DiaryOrderByRelevanceInputObjectSchema } from './DiaryOrderByRelevanceInput.schema';
 
@@ -10,7 +11,12 @@ const Schema: z.ZodType<Prisma.DiaryOrderByWithRelationAndSearchRelevanceInput> 
     .object({
       id: z.lazy(() => SortOrderSchema).optional(),
       title: z.lazy(() => SortOrderSchema).optional(),
-      date: z.lazy(() => SortOrderSchema).optional(),
+      date: z
+        .union([
+          z.lazy(() => SortOrderSchema),
+          z.lazy(() => SortOrderInputObjectSchema),
+        ])
+        .optional(),
       content: z.lazy(() => SortOrderSchema).optional(),
       status: z.lazy(() => SortOrderSchema).optional(),
       entryNumber: z.lazy(() => SortOrderSchema).optional(),

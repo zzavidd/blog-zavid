@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
+import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
 import { DiaryCountOrderByAggregateInputObjectSchema } from './DiaryCountOrderByAggregateInput.schema';
 import { DiaryAvgOrderByAggregateInputObjectSchema } from './DiaryAvgOrderByAggregateInput.schema';
 import { DiaryMaxOrderByAggregateInputObjectSchema } from './DiaryMaxOrderByAggregateInput.schema';
@@ -12,7 +13,12 @@ const Schema: z.ZodType<Prisma.DiaryOrderByWithAggregationInput> = z
   .object({
     id: z.lazy(() => SortOrderSchema).optional(),
     title: z.lazy(() => SortOrderSchema).optional(),
-    date: z.lazy(() => SortOrderSchema).optional(),
+    date: z
+      .union([
+        z.lazy(() => SortOrderSchema),
+        z.lazy(() => SortOrderInputObjectSchema),
+      ])
+      .optional(),
     content: z.lazy(() => SortOrderSchema).optional(),
     status: z.lazy(() => SortOrderSchema).optional(),
     entryNumber: z.lazy(() => SortOrderSchema).optional(),
