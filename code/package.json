@@ -20,7 +20,8 @@
     "prettier:write": "pnpm run prettier --write",
     "ops:ingest": "ts-node -r tsconfig-paths/register ops/ingestion",
     "ops:manipulate": "ts-node -r tsconfig-paths/register ops/manipulation",
-    "devops:secrets": "../devops/scripts/env/upload-secrets.sh"
+    "devops:secrets": "../devops/scripts/env/upload-secrets.sh",
+    "prepare": "cd .. && husky install"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
@@ -78,8 +79,8 @@
     "@types/mjml": "^4.7.1",
     "@types/node": "^18.7.23",
     "@types/nodemailer": "^6.4.5",
-    "@types/react": "^18.2.6",
     "@types/react-dom": "^18.0.6",
+    "@types/react": "^18.2.6",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
@@ -92,8 +93,9 @@
     "eslint-plugin-better-styled-components": "^1.1.2",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-no-only-tests": "^3.1.0",
-    "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react": "^7.30.1",
+    "husky": "^8.0.0",
     "prettier": "3.0.0",
     "prisma": "^4.14.1",
     "ts-node": "^10.9.1",

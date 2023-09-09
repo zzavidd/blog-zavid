@@ -4,7 +4,7 @@ cd code || exit 1
 
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 if [[ "$BRANCH" == "production" ]]; then
-  echo 'Skipping pre-push hooks for production'
+  echo 'Skipping pre-push hooks for production.'
   exit 0
 fi
 
@@ -14,5 +14,4 @@ FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
 [ -z "$FILES" ] && exit 0
 echo "$FILES" | xargs bun run prettier:write --ignore-unknown
 echo "$FILES" | xargs git add
-echo "$FILES" | xargs git commit -m "Run Prettier"
 exit 0
