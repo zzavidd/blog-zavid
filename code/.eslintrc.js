@@ -17,9 +17,15 @@ module.exports = {
     },
   },
   rules: {
+    'no-only-tests/no-only-tests': 'warn',
     'react/react-in-jsx-scope': 'off',
     'quotes': ['warn', 'single', { avoidEscape: true }],
-    'no-only-tests/no-only-tests': 'warn',
+    'spaced-comment': 'off',
+    '@typescript-eslint/consistent-type-imports': [
+      'warn',
+      { fixStyle: 'inline-type-imports' },
+    ],
+    'import/no-unresolved': ['error', { ignore: ['bun:test'] }],
   },
   overrides: [
     {

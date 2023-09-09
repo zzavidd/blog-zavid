@@ -1,11 +1,10 @@
 {
   "name": "blog-zavid",
+  "license": "MIT",
+  "version": "1.0.0",
   "prettier": "@zzavidd/prettier-config",
   "prisma": {
     "schema": "./schema.prisma"
-  },
-  "engines": {
-    "pnpm": "8.2.0"
   },
   "scripts": {
     "dev": "next dev -p 4000",
@@ -72,7 +71,6 @@
     "@faker-js/faker": "^8.0.1",
     "@next/bundle-analyzer": "^13.4.3",
     "@playwright/test": "^1.34.3",
-    "@swc/core": "^1.3.62",
     "@types/colors": "^1.2.1",
     "@types/eslint": "^8.40.0",
     "@types/html-to-text": "^9.0.1",
@@ -88,7 +86,6 @@
     "@zzavidd/eslint-config": "^1.4.8",
     "@zzavidd/prettier-config": "^1.4.8",
     "bun-types": "^1.0.1",
-    "dotenv": "^16.3.1",
     "eslint": "^8.20.0",
     "eslint-config-next": "^12.3.1",
     "eslint-import-resolver-typescript": "^3.5.5",
@@ -100,7 +97,6 @@
     "prettier": "3.0.0",
     "prisma": "^4.14.1",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.0.4"
+    "tsconfig-paths": "^4.2.0"
   }
 }
