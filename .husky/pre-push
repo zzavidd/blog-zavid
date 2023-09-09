@@ -11,9 +11,4 @@ if [[ "$BRANCH" == "production" ]]; then
 fi
 
 cd code
-
-FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
-[ -z "$FILES" ] && exit 0
-echo "$FILES" | xargs bun run prettier:write --ignore-unknown
-echo "$FILES" | xargs git add
-exit 0
+bun run eslint --max-warnings 0 || exit 1
