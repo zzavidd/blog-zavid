@@ -1,3 +1,6 @@
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+
 import { LoadingButton } from '@mui/lab';
 import {
   Checkbox,
@@ -11,7 +14,8 @@ import {
 } from '@mui/material';
 import immutate from 'immutability-helper';
 import { useSnackbar } from 'notistack';
-import React, { useContext } from 'react';
+import type React from 'react';
+import { useContext } from 'react';
 
 import SuggestiveLinks from 'fragments/Shared/SuggestiveLinks';
 import { SubscriptionType } from 'utils/enum';

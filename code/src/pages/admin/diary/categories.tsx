@@ -19,7 +19,8 @@ import {
 import type { DiaryCategory } from '@prisma/client';
 import type { GetServerSideProps } from 'next';
 import { useSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import invariant from 'tiny-invariant';
 
 import { ActionDialog } from 'components/Dialog';

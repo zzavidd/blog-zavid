@@ -1,6 +1,6 @@
 import type { IMjmlTextProps } from '@faire/mjml-react';
 import { MjmlDivider, MjmlText } from '@faire/mjml-react';
-import React from 'react';
+import type React from 'react';
 
 import ZDate from 'utils/lib/date';
 import * as ZText from 'utils/lib/text';

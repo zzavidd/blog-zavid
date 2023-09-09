@@ -1,5 +1,9 @@
-import type { PostType } from '@prisma/client';
-import { PostStatus, type Post, type Prisma } from '@prisma/client';
+import {
+  PostStatus,
+  type Post,
+  type PostType,
+  type Prisma,
+} from '@prisma/client';
 import nodemailer from 'nodemailer';
 import invariant from 'tiny-invariant';
 
