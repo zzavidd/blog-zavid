@@ -104,7 +104,7 @@ export default function DiaryToolbar() {
       <Toolbar>
         <Stack
           direction={'row'}
-          justifyContent={{ xs: 'space-between', md: 'flex-end' }}
+          justifyContent={{ xs: 'space-between', sm: 'flex-end' }}
           spacing={4}
           width={'100%'}
           mx={3}>
@@ -140,7 +140,7 @@ export default function DiaryToolbar() {
                 color={filter.isFavourite ? 'primary' : 'inherit'}
                 fontSize={fontSize}
                 variant={'button'}>
-                Favourites?
+                Favourites
               </Typography>
             }
             control={
@@ -180,8 +180,15 @@ export default function DiaryToolbar() {
         open={state.isFilterMenuOpen}
         anchorEl={filterButtonRef.current}
         onClose={() => toggleFilterMenu(false)}
-        disableScrollLock={true}
-        sx={{ maxHeight: (t) => t.spacing(13) }}>
+        sx={{ maxHeight: (t) => t.spacing(14) }}>
+        <MenuItem
+          selected={false}
+          divider={true}
+          sx={{ m: 0, pointerEvents: 'none' }}>
+          <Typography variant={'overline'}>
+            {categories.length} categories
+          </Typography>
+        </MenuItem>
         {categories.map(({ id, name, _count }) => {
           const checked = selectedCategoryIds.includes(id);
           const entryCount = `${_count.entries} entries`;

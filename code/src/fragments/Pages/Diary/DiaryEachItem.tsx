@@ -8,7 +8,6 @@ import {
   Tooltip,
   Typography,
   lighten,
-  useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
@@ -106,13 +105,12 @@ export function DiaryEachSkeleton() {
 }
 
 function FavoriteSymbol() {
-  const t = useTheme();
   return (
     <Tooltip title={'This is a personal Zavid favourite.'}>
       <FavoriteRounded
-        color={'primary'}
+        color={'error'}
         sx={{
-          fontSize: { xs: t.spacing(6), md: t.spacing(7) },
+          fontSize: (t) => t.spacing(6),
           float: 'right',
           ml: 2,
         }}

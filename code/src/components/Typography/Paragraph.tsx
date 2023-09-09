@@ -1,9 +1,9 @@
 import { SendRounded } from '@mui/icons-material';
 import type { TypographyProps } from '@mui/material';
-import { Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
 
-import { LinkButton } from 'components/Link';
+import { Link } from 'components/Link';
 import * as zText from 'utils/lib/text';
 
 const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
@@ -62,13 +62,15 @@ const Paragraph = React.forwardRef<HTMLPreElement, ParagraphProps>(
           })}
         </Typography>
         {showReadMore ? (
-          <LinkButton
-            href={moreHref}
-            startIcon={<SendRounded fontSize={'small'} />}
-            sx={{ fontSize: { xs: 12 } }}
-            data-testid={readMoreDataTestId}>
-            {moreText}
-          </LinkButton>
+          <Stack direction={'row'} alignItems={'center'} columnGap={1}>
+            <SendRounded color={'primary'} fontSize={'small'} />
+            <Link
+              href={moreHref}
+              sx={{ fontSize: 14 }}
+              data-testid={readMoreDataTestId}>
+              {moreText}
+            </Link>
+          </Stack>
         ) : null}
       </React.Fragment>
     );

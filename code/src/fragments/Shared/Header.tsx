@@ -52,6 +52,7 @@ export default function Header() {
   return (
     <AppBar
       color={'default'}
+      elevation={1}
       position={'sticky'}
       sx={{
         paddingInline: (t) => t.spacing(2),
