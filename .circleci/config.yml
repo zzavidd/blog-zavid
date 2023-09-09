@@ -94,6 +94,7 @@ jobs:
     executor: node
     steps:
       - install_dependencies
+      - run: apt-get update -y && apt-get install -y openssl
       - restore_cache:
           name: "Restore build cache"
           keys:
