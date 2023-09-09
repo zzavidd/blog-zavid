@@ -12,6 +12,7 @@ import {
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
 
+import { Link } from 'components/Link';
 import Paragraph from 'components/Typography/Paragraph';
 import Time from 'components/Typography/Time';
 
@@ -47,13 +48,13 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
             <Typography
               variant={'h3'}
               data-testid={`zb.entry.${entry.entryNumber}`}>
-              <Typography
+              <Link
+                href={href}
                 variant={'h3'}
-                component={'span'}
                 color={'primary'}
                 display={'block'}>
                 Diary Entry #{entry.entryNumber}:
-              </Typography>
+              </Link>
               <Typography
                 variant={'h3'}
                 component={'span'}
