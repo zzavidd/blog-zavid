@@ -24,6 +24,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'bun run dev',
+    cwd: '..',
     env: { DATABASE_URL: process.env.DATABASE_TEST_URL! },
     reuseExistingServer: !process.env.CI,
     url: 'http://localhost:4000',
