@@ -23,7 +23,7 @@ commands:
     steps:
       - checkout
       - run: apk add curl bash
-      - run: curl -fsSL https://bun.sh/install | bash
+      - run: npm i -g bun
       - restore_cache:
           name: "Restore Bun cache"
           keys:
