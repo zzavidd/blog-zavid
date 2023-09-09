@@ -15,7 +15,6 @@ export default defineConfig({
     : 'list',
   reportSlowTests: null,
   retries: process.env.CI ? 2 : 0,
-  testMatch: 'e2e/**',
   testDir: '.',
   timeout: 60 * 1000,
   use: {

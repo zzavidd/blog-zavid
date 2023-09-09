@@ -39,11 +39,3 @@ export const testProjects: Project[] = [
     retries: process.env.CI ? 2 : 0,
   },
 ];
-
-export const prodProjects: Project[] = [
-  {
-    name: 'production',
-    use: devices['Desktop Chrome'],
-    testMatch: ['**/prod/**'],
-  },
-];
