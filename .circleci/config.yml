@@ -15,7 +15,7 @@ executors:
       - image: arvindr226/alpine-ssh
   playwright:
     docker:
-      - image: mcr.microsoft.com/playwright:v1.34.3-jammy
+      - image: mcr.microsoft.com/playwright:v1.37.1-jammy
 
 commands:
   install_dependencies:
