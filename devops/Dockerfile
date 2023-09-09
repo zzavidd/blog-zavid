@@ -1,24 +1,24 @@
 FROM node:18-slim AS builder
 
-RUN corepack enable && corepack prepare pnpm@8.2.0 --activate
-RUN apt-get update -y && apt-get install -y openssl
+RUN curl -fsSL https://bun.sh/install | bash
+# RUN apt-get update -y && apt-get install -y openssl
 
 ARG WORKDIR
 WORKDIR /var/www/$WORKDIR/code
 
-COPY ./code/package.json ./code/pnpm-lock.yaml ./
+COPY ./code/package.json ./code/bun.lockb ./
 
-RUN pnpm install --frozen-lockfile
+RUN bun install --frozen-lockfile
 
 COPY ./code ./
 
-RUN pnpm prisma generate
-RUN pnpm prisma migrate deploy
-RUN pnpm run build
+RUN bun prisma generate
+RUN bun prisma migrate deploy
+RUN bun run build
 
 FROM node:18-slim AS runner
 
-RUN apt-get update -y && apt-get install -y openssl
+# RUN apt-get update -y && apt-get install -y openssl
 
 ARG WORKDIR
 WORKDIR /var/www/$WORKDIR/code
