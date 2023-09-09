@@ -1,6 +1,7 @@
 #!/bin/bash
 
-cd code || exit 1
+## Skip if CI
+[ -n "$CI" ] && exit 0
 
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 if [[ "$BRANCH" == "production" ]]; then
@@ -8,6 +9,7 @@ if [[ "$BRANCH" == "production" ]]; then
   exit 0
 fi
 
+cd code
 bun run eslint --max-warnings 0 || exit 1
 
 FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
