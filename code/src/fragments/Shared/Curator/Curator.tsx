@@ -213,12 +213,13 @@ function Preview({ elementRef }: PreviewProps) {
           </Stack>
           {curatorContext.isTitleOnly ? null : (
             <Typography
+              color={(t) => t.palette.common.white}
               fontFamily={calistoga.style.fontFamily}
               fontWeight={{ xs: 500, md: 700 }}
-              lineHeight={1.2}
               fontSize={Sizes.FONT_SIZE_TITLE_CORNER}
-              position={'absolute'}
+              lineHeight={1.2}
               maxWidth={(t) => t.spacing(15)}
+              position={'absolute'}
               top={(t) => t.spacing(6)}
               left={(t) => t.spacing(6)}>
               {title}
