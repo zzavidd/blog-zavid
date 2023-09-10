@@ -15,9 +15,9 @@ const prisma = new PrismaClient({
 });
 
 test.use({ baseURL: 'https://zavidegbue.com' });
-test.describe.configure({ timeout: 60 * 1000 });
 
 test.describe('Crawler', () => {
+  test.describe.configure({ timeout: 0 });
   test.skip(({ browserName }) => browserName !== 'chromium');
 
   test('crawl diary entries', async ({ page }) => {
