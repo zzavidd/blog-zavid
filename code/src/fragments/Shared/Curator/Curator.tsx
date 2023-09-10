@@ -190,7 +190,7 @@ function Preview({ elementRef }: PreviewProps) {
                     alignItems={'center'}
                     spacing={2}
                     mt={5}>
-                    <FavoriteRounded color={'primary'} sx={{ fontSize: 40 }} />
+                    <FavoriteRounded color={'error'} sx={{ fontSize: 40 }} />
                     <Typography
                       variant={'body2'}
                       color={textColor}

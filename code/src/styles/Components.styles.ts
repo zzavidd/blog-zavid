@@ -48,9 +48,7 @@ const components: Components<Theme> = {
       }
 
       body {
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        background-size: cover;
+        background-color: ${theme.palette.background.paper};
         font-feature-settings: 'lnum';
         overscroll-behavior: none;
         transition: ${theme.transitions.create(['background-color'], {
