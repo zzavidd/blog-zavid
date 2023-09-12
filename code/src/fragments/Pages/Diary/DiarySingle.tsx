@@ -1,5 +1,6 @@
 import { FavoriteRounded } from '@mui/icons-material';
 import { Chip, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { BreadcrumbLink } from 'components/Breadcrumbs';
@@ -25,6 +26,7 @@ export default function DiarySingle({
   const { data: diaryEntry } = trpc.diary.find.useQuery(params);
   const { data: previous } = trpc.diary.find.useQuery(previousParams);
   const { data: next } = trpc.diary.find.useQuery(nextParams);
+  const router = useRouter();
 
   if (!diaryEntry) return <PagePlaceholder />;
 
@@ -82,6 +84,7 @@ export default function DiarySingle({
             label={tag}
             variant={'filled'}
             sx={{ px: 1, py: 4 }}
+            onClick={() => router.push(`/diary?search=${tag}`)}
             key={index}
           />
         ))}

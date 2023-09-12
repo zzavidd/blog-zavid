@@ -1,19 +1,13 @@
 import { Stack, Typography, alpha, useTheme } from '@mui/material';
 import type { Grid2Props } from '@mui/material/Unstable_Grid2';
 import Grid from '@mui/material/Unstable_Grid2';
-import { DiaryStatus } from '@prisma/client';
-import immutate from 'immutability-helper';
-import { useSnackbar } from 'notistack';
 import { useContext, useEffect } from 'react';
 
-import { DiaryFindManySchema } from 'schemas/schemas';
 import { normaliseText } from 'utils/lib/text';
-import { useAppSelector } from 'utils/reducers';
-import { trpc } from 'utils/trpc';
 
 import DiaryEachItem, { DiaryEachSkeleton } from '../DiaryEachItem';
 
-import { DiaryIndexContext } from './DiaryIndex.utils';
+import { DiaryIndexContext, useDiaryEntries } from './DiaryIndex.utils';
 
 export default function DiaryCollection() {
   const { searchTerm } = useContext(DiaryIndexContext);
@@ -58,48 +52,6 @@ export default function DiaryCollection() {
       ))}
     </Grid>
   );
-}
-
-function useDiaryEntries(searchTerm?: string) {
-  const { enqueueSnackbar } = useSnackbar();
-  const { filter, sort } = useAppSelector((state) => state.diary);
-
-  let params = DiaryFindManySchema.parse({
-    orderBy: sort,
-    include: { categories: true },
-    where: { ...filter, status: DiaryStatus.PUBLISHED },
-  });
-
-  if (searchTerm) {
-    const query = `"${searchTerm}"`;
-    params = immutate(params, {
-      where: (where) => ({
-        ...where,
-        OR: [
-          { title: { search: query } },
-          { content: { search: query } },
-          { footnote: { search: query } },
-          { tags: { array_contains: searchTerm } },
-        ],
-      }),
-    });
-  }
-
-  const { error, ...result } = trpc.diary.findMany.useQuery({
-    params,
-    options: {
-      contentWordLimit: 20,
-      searchTerm,
-    },
-  });
-
-  useEffect(() => {
-    if (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
-    }
-  }, [enqueueSnackbar, error]);
-
-  return result;
 }
 
 function useHighlightSearchTerms() {

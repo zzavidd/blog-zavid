@@ -1,11 +1,11 @@
 import { Search } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { InputAdornment, TextField } from '@mui/material';
+import { InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import { DiaryIndexContext } from './DiaryIndex.utils';
+import { DiaryIndexContext, useDiaryEntries } from './DiaryIndex.utils';
 
 export default function DiarySearch() {
   const { searchTerm } = useContext(DiaryIndexContext);
@@ -14,9 +14,14 @@ export default function DiarySearch() {
     isSearchLoading: false,
     isClearLoading: false,
   });
+  const { data: diaryEntries = [] } = useDiaryEntries(searchTerm);
   const isLoading = state.isSearchLoading || state.isClearLoading;
 
   const router = useRouter();
+
+  useEffect(() => {
+    setState((s) => ({ ...s, searchTerm: router.query.search as string }));
+  }, [router]);
 
   function onTextChange(e: React.ChangeEvent<HTMLInputElement>) {
     setState((s) => ({ ...s, searchTerm: e.target.value }));
@@ -51,24 +56,25 @@ export default function DiarySearch() {
       onChange={onTextChange}
       placeholder={'Search the diary...'}
       onKeyDown={onKeyDown}
-      sx={{
-        maxWidth: (t) => t.spacing(13),
-        p: 1,
-        width: '100%',
-      }}
-      FormHelperTextProps={{
-        sx: { mt: 2, mx: 0 },
-      }}
+      sx={{ maxWidth: (t) => t.spacing(13), p: 1, width: '100%' }}
+      FormHelperTextProps={{ sx: { mt: 2, mx: 0 } }}
       helperText={
-        searchTerm ? (
+        <Stack direction={'row'} justifyContent={'space-between'}>
           <LoadingButton
             onClick={clearSearch}
             loading={state.isClearLoading}
             disabled={isLoading}
-            sx={{ fontSize: 10, p: 0 }}>
+            sx={{
+              fontSize: 10,
+              p: 0,
+              visibility: searchTerm ? 'visible' : 'hidden',
+            }}>
             Clear search
           </LoadingButton>
-        ) : null
+          <Typography variant={'caption'} mr={2}>
+            {diaryEntries.length} result{diaryEntries.length === 1 ? '' : 's'}
+          </Typography>
+        </Stack>
       }
       InputProps={{
         style: { fontSize: 16 },

@@ -3,13 +3,16 @@ import type { SxProps, Theme } from '@mui/material';
 import {
   Card,
   CardContent,
+  Chip,
   Divider,
   Skeleton,
+  Stack,
   Tooltip,
   Typography,
   lighten,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import { Link } from 'components/Link';
@@ -33,6 +36,7 @@ const cardProps: SxProps<Theme> = {
 const DiaryEachItem = React.memo<DiaryEachItemProps>(
   function DiaryEachItem({ entry, searchTerm }) {
     const href = `/diary/${entry.entryNumber}`;
+    const router = useRouter();
 
     return (
       <Grid xs={1}>
@@ -75,6 +79,28 @@ const DiaryEachItem = React.memo<DiaryEachItemProps>(
                 ? entry.content
                 : entry.footnote}
             </Paragraph>
+            <Stack
+              direction={'row'}
+              spacing={2}
+              flexWrap={'wrap'}
+              pt={5}
+              useFlexGap={true}>
+              {searchTerm
+                ? (entry.tags as string[]).map((tag, index) => {
+                    const isMatch = tag.split(/\s/).includes(searchTerm);
+                    return (
+                      <Chip
+                        label={tag}
+                        color={isMatch ? 'primary' : 'default'}
+                        variant={isMatch ? 'filled' : 'outlined'}
+                        onClick={() => router.push(`/diary?search=${tag}`)}
+                        sx={{ fontSize: 12 }}
+                        key={index}
+                      />
+                    );
+                  })
+                : null}
+            </Stack>
           </CardContent>
         </Card>
       </Grid>
