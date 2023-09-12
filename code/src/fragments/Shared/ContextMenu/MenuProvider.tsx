@@ -99,7 +99,7 @@ export function useLongPressTip() {
  * @returns The menu state.
  */
 function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
-  const [state, setState] = useState({ ...InitialMenuState, info });
+  const [state, setState] = useState(InitialMenuState);
   const theme = useTheme();
   const isDesktopAbove = useMediaQuery<Theme>((t) => t.breakpoints.up('lg'));
 
@@ -122,6 +122,10 @@ function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
       e.preventDefault();
     }
   }, []);
+
+  useEffect(() => {
+    setState((s) => ({ ...s, info }));
+  }, [info]);
 
   useEffect(() => {
     let menuTimeout: NodeJS.Timeout;

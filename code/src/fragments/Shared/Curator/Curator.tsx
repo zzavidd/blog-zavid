@@ -107,11 +107,6 @@ function Preview({ elementRef }: PreviewProps) {
   const isLightTheme = curatorContext.contentTheme === 'light';
   const isTallShape = curatorContext.filterShape === FilterShapeOption.TALL;
 
-  const textBackgroundColor = isLightTheme
-    ? 'rgba(255,255,255,0.75)'
-    : 'rgba(0,0,0,0.8)';
-  const textColor = isLightTheme ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,1)';
-
   const fontSize = useMemo(() => {
     const size = isTallShape ? 48 : 44;
     const textLength = zText.deformatText(
@@ -139,6 +134,10 @@ function Preview({ elementRef }: PreviewProps) {
     isFavourite,
     entity,
   } = menuContext.info;
+  const textBackgroundColor = isLightTheme
+    ? 'rgba(255,255,255,0.75)'
+    : 'rgba(0,0,0,0.8)';
+  const textColor = isLightTheme ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,1)';
   return (
     <ThemeProvider theme={alterTheme}>
       <Stack
