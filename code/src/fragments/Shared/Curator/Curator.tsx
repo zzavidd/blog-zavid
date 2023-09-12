@@ -112,10 +112,13 @@ function Preview({ elementRef }: PreviewProps) {
     const textLength = zText.deformatText(
       menuContext.focusedTextContent,
     ).length;
-    const textLengthLimit = isTallShape ? 550 : 300;
+    const textLengthLimit = isTallShape ? 550 : 330;
+
     const excess = textLength - textLengthLimit;
-    if (excess <= 0) return size;
-    return size - Math.ceil((excess / 40) * 3);
+    if (excess <= 0) {
+      return size;
+    }
+    return size - (excess / 40) * 1.6;
   }, [isTallShape, menuContext.focusedTextContent]);
 
   function alterTheme(theme: Theme) {
@@ -138,6 +141,7 @@ function Preview({ elementRef }: PreviewProps) {
     ? 'rgba(255,255,255,0.75)'
     : 'rgba(0,0,0,0.8)';
   const textColor = isLightTheme ? 'rgba(0,0,0,0.95)' : 'rgba(255,255,255,1)';
+  const fontWeight = curatorContext.contentTheme === 'dark' ? 400 : 500;
   return (
     <ThemeProvider theme={alterTheme}>
       <Stack
@@ -203,6 +207,7 @@ function Preview({ elementRef }: PreviewProps) {
               <Paragraph
                 TypographyProps={{
                   color: textColor,
+                  fontWeight,
                   fontSize,
                   lineHeight: isTallShape ? 1.9 : 1.8,
                 }}>
