@@ -65,14 +65,23 @@ const FormatSite: Record<Section, RenderValue> = {
   ),
   [Section.DIVIDER]: (_, key) => <Divider sx={{ my: 5 }} key={key} />,
   [Section.BULLET_LIST]: ([, isSpacedBlock, list], key) => (
-    <List disablePadding={!isSpacedBlock} key={key}>
+    <List
+      sx={{ listStyle: 'disc', marginInlineStart: 5 }}
+      disablePadding={!isSpacedBlock}
+      key={key}>
       {list
         .split('\n')
         .filter((e) => e)
         .map((item, key) => {
           const [, value] = item.match(/^\+\s*(.*)$/)!;
           return (
-            <ListItem key={key}>
+            <ListItem
+              disablePadding={!isSpacedBlock}
+              sx={{
+                display: 'list-item',
+                paddingInlineStart: 2,
+              }}
+              key={key}>
               <ListItemText>{applyEmphasisFormatting(value)}</ListItemText>
             </ListItem>
           );

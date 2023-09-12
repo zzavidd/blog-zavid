@@ -101,7 +101,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
       component={'span'}
       sx={{ verticalAlign: 'super' }}
       display={'inline'}
-      fontSize={'inherit'}
+      fontSize={'70%'}
       key={key}>
       {text}
     </Typography>
@@ -111,7 +111,7 @@ const InlineFormatSite: Record<Emphasis, RenderValue> = {
       component={'span'}
       sx={{ verticalAlign: 'sub' }}
       display={'inline'}
-      fontSize={'inherit'}
+      fontSize={'70%'}
       key={key}>
       {text}
     </Typography>
