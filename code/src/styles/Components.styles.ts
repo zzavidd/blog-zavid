@@ -4,6 +4,16 @@ import { css } from '@mui/material';
 import { darkPalette, lightPalette } from './Palette.styles';
 
 const components: Components<Theme> = {
+  MuiAlert: {
+    styleOverrides: {
+      root: ({ ownerState, theme }) => {
+        const color = theme.palette[ownerState.severity!][theme.palette.mode];
+        return {
+          border: `1.5px solid ${color}`,
+        };
+      },
+    },
+  },
   MuiBackdrop: {
     defaultProps: {
       onContextMenu: (e) => e.preventDefault(),

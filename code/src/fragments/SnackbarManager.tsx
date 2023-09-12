@@ -28,7 +28,7 @@ const Snack = React.forwardRef<HTMLDivElement, CustomContentProps>(
   ({ message, variant }, ref) => {
     return (
       <Alert
-        variant={'filled'}
+        variant={'standard'}
         severity={variant as AlertColor}
         ref={ref}
         data-testid={`zb.alert.${variant}`}>
