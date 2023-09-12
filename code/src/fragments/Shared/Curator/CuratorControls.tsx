@@ -1,4 +1,4 @@
-import type { SelectChangeEvent } from '@mui/material';
+import type { SelectChangeEvent, SxProps } from '@mui/material';
 import {
   Checkbox,
   Divider,
@@ -54,6 +54,9 @@ export default function CuratorControls() {
     setCuratorContext((c) => ({ ...c, isTitleOnly: e.target.checked }));
   }
 
+  const selectSxProps: SxProps = { sx: { fontSize: 16 } };
+  const menuItemSxProps: SxProps = { sx: { fontSize: 16, py: 4 } };
+
   return (
     <React.Fragment>
       <Typography variant={'caption'}>
@@ -85,26 +88,28 @@ export default function CuratorControls() {
         </Stack>
         <Stack direction={'row'} justifyContent={'space-between'} spacing={4}>
           <FormControl fullWidth={true}>
-            <InputLabel>Colour</InputLabel>
+            <InputLabel {...selectSxProps}>Colour</InputLabel>
             <Select
               label={'Colour'}
               value={curatorContext.filterTheme}
-              onChange={toggleFilterTheme}>
+              onChange={toggleFilterTheme}
+              {...selectSxProps}>
               {FilterTheme.OPTIONS.map((colour) => (
-                <MenuItem value={colour} key={colour}>
+                <MenuItem {...menuItemSxProps} value={colour} key={colour}>
                   {ZString.toTitleCase(colour)}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
           <FormControl fullWidth={true}>
-            <InputLabel>Shape</InputLabel>
+            <InputLabel {...selectSxProps}>Shape</InputLabel>
             <Select
               label={'Shape'}
               value={curatorContext.filterShape}
-              onChange={toggleFilterShape}>
+              onChange={toggleFilterShape}
+              {...selectSxProps}>
               {FilterShape.OPTIONS.map((shape) => (
-                <MenuItem value={shape} key={shape}>
+                <MenuItem {...menuItemSxProps} value={shape} key={shape}>
                   {ZString.toTitleCase(shape)}
                 </MenuItem>
               ))}
