@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import type React from 'react';
-import InstagramEmbed from 'react-instagram-embed';
+import { InstagramEmbed } from 'react-social-media-embed';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 
 import type { FormatTextOptions } from '../../functions';
@@ -132,14 +132,9 @@ const FormatSite: Record<Section, RenderValue> = {
     <TwitterTweetEmbed tweetId={tweetId} key={key} />
   ),
   [Section.INSTAGRAM]: ([, igUrl], key) => (
-    // TODO: Chase getting Instagram embeds to work
-    <InstagramEmbed
-      url={igUrl}
-      clientAccessToken={`${process.env.NEXT_PUBLIC_FB_APP_ID}|${process.env.NEXT_PUBLIC_FB_APP_CLIENT}`}
-      maxWidth={500}
-      hideCaption={false}
-      key={key}
-    />
+    <Box mt={3} key={key}>
+      <InstagramEmbed url={igUrl} width={328} />
+    </Box>
   ),
   [Section.SPOTIFY]: ([, url], key) => (
     <iframe
