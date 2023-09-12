@@ -1,13 +1,27 @@
+import { Close, TipsAndUpdates } from '@mui/icons-material';
 import type { Theme } from '@mui/material';
-import { alpha, useMediaQuery, useTheme } from '@mui/material';
+import {
+  IconButton,
+  Stack,
+  Typography,
+  alpha,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import dayjs from 'dayjs';
+import { useSnackbar } from 'notistack';
 import { useCallback, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 import type { MenuContextProps } from 'utils/contexts';
 import { InitialMenuState, MenuContext } from 'utils/contexts';
+import Settings from 'utils/settings';
 
 import ContextMenu, { styleParagraph } from './ContextMenu';
 
 export default function MenuProvider({ info, children }: MenuProviderProps) {
+  useLongPressTip();
+
   const context = useContextMenuEvents(info);
   return (
     <MenuContext.Provider value={context}>
@@ -15,6 +29,68 @@ export default function MenuProvider({ info, children }: MenuProviderProps) {
       <ContextMenu />
     </MenuContext.Provider>
   );
+}
+
+export function useLongPressTip() {
+  const [cookies, setCookie] = useCookies([
+    Settings.COOKIES.CONSENT,
+    Settings.COOKIES.TIP,
+  ]);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const isConsented = cookies[Settings.COOKIES.CONSENT];
+  const isTipDismissed = cookies[Settings.COOKIES.TIP];
+
+  function dismissTip() {
+    const date = dayjs().add(1, 'day').toDate();
+    setCookie(Settings.COOKIES.TIP, true, { expires: date });
+    closeSnackbar();
+  }
+
+  useEffect(() => {
+    if (isConsented === undefined || isTipDismissed) {
+      return;
+    }
+
+    setTimeout(() => {
+      enqueueSnackbar({
+        message: (
+          <Stack
+            direction={'row'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+            columnGap={2}>
+            <Stack
+              direction={'row'}
+              alignItems={{ xs: 'flex-start' }}
+              columnGap={2}>
+              <TipsAndUpdates fontSize={'small'} sx={{ mt: '2px' }} />
+              <span>
+                <Typography
+                  display={'inline'}
+                  fontSize={'inherit'}
+                  fontWeight={800}>
+                  Tip:
+                </Typography>
+                &nbsp;Long press on a paragraph to curate it.
+              </span>
+            </Stack>
+            <IconButton onClick={dismissTip}>
+              <Close
+                fontSize={'small'}
+                sx={{
+                  color: (t) => t.palette.common.white,
+                }}
+              />
+            </IconButton>
+          </Stack>
+        ),
+        variant: 'default',
+        onExit: dismissTip,
+      });
+    }, 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConsented, isTipDismissed]);
 }
 
 /**
@@ -59,7 +135,7 @@ function useContextMenuEvents(info: PageCuratorInfo): MenuContextProps {
           backgroundColor: alpha(highlightColor, 0.6),
           padding: '1em',
         });
-      }, 500);
+      }, 850);
 
       menuTimeout = setTimeout(() => {
         setState((s) => ({

@@ -1,18 +1,19 @@
-import Cookies from 'js-cookie';
 import Script from 'next/script';
+import { useCookies } from 'react-cookie';
 
 import { useIsAdmin } from 'utils/hooks';
 import Settings from 'utils/settings';
 
 export default function MatomoScript() {
   const isAdmin = useIsAdmin();
+  const [cookies] = useCookies([Settings.COOKIES.CONSENT]);
 
   // Only track on production.
   if (process.env.NEXT_PUBLIC_APP_ENV !== 'production') return null;
 
   // Don't track if user is admin.
   const enableTracking =
-    !isAdmin && Cookies.get(Settings.COOKIE_NAME) === 'true';
+    !isAdmin && cookies[Settings.COOKIES.CONSENT] === 'true';
   if (!enableTracking) {
     return null;
   }

@@ -5,30 +5,33 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import Cookies from 'js-cookie';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 import { Link } from 'components/Link';
 import Settings from 'utils/settings';
 
 export default function CookiePrompt() {
-  const [state, setState] = useState({
-    isConsentShown: false,
-  });
+  const [state, setState] = useState({ isConsentShown: false });
+  const [cookies, setCookie] = useCookies([Settings.COOKIES.CONSENT]);
 
   useEffect(() => {
     setTimeout(() => {
-      setState({ isConsentShown: !Cookies.get(Settings.COOKIE_NAME) });
+      setState({ isConsentShown: !cookies[Settings.COOKIES.CONSENT] });
     }, 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function allowCookies() {
-    Cookies.set(Settings.COOKIE_NAME, 'true', { expires: 90 });
+    const expires = dayjs().add(90, 'days').toDate();
+    setCookie(Settings.COOKIES.CONSENT, 'true', { expires });
     setState({ isConsentShown: false });
   }
 
   function denyCookies() {
-    Cookies.set(Settings.COOKIE_NAME, 'false', { expires: 30 });
+    const expires = dayjs().add(30, 'days').toDate();
+    setCookie(Settings.COOKIES.CONSENT, 'false', { expires });
     setState({ isConsentShown: false });
   }
 

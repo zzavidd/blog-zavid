@@ -10,7 +10,6 @@ export default function SnackbarManager({ children }: React.PropsWithChildren) {
       anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       autoHideDuration={6000}
       Components={{
-        default: Snack,
         success: Snack,
         warning: Snack,
         error: Snack,
@@ -18,7 +17,8 @@ export default function SnackbarManager({ children }: React.PropsWithChildren) {
       }}
       maxSnack={2}
       preventDuplicate={true}
-      TransitionComponent={Fade}>
+      TransitionComponent={Fade}
+      transitionDuration={500}>
       {children}
     </SnackbarProvider>
   );

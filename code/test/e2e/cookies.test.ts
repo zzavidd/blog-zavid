@@ -13,7 +13,9 @@ test.describe('Cookies', () => {
     await page.getByTestId('zb.accept').click();
 
     const cookies = await context.cookies();
-    const cookie = cookies.find(({ name }) => name === Settings.COOKIE_NAME);
+    const cookie = cookies.find(
+      ({ name }) => name === Settings.COOKIES.CONSENT,
+    );
     expect(cookie).toBeDefined();
     expect(cookie?.value).toBe('true');
   });
@@ -22,7 +24,9 @@ test.describe('Cookies', () => {
     await page.getByTestId('zb.deny').click();
 
     const cookies = await context.cookies();
-    const cookie = cookies.find(({ name }) => name === Settings.COOKIE_NAME);
+    const cookie = cookies.find(
+      ({ name }) => name === Settings.COOKIES.CONSENT,
+    );
     expect(cookie).toBeDefined();
     expect(cookie?.value).toBe('false');
   });
