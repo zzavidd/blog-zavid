@@ -28,7 +28,10 @@ export default function DiarySearch() {
   const theme = useTheme();
 
   useEffect(() => {
-    setState((s) => ({ ...s, searchTerm: router.query.search as string }));
+    setState((s) => ({
+      ...s,
+      searchTerm: (router.query.search as string) || '',
+    }));
   }, [router]);
 
   function onTextChange(e: React.ChangeEvent<HTMLInputElement>) {
