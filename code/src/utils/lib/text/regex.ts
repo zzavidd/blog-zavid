@@ -101,8 +101,8 @@ export const sectionRegexMapping: Record<
 > = {
   [Section.HEADING]: new RegExp(/^\#\s(.*?)$/),
   [Section.SUBHEADING]: new RegExp(/^\#{2}\s(.*?)$/),
-  [Section.IMAGE]: new RegExp(/^\!\[(.*?)\]\((\S*.)\)(F?)$/),
   [Section.AUDIO]: new RegExp(/^\!\[(.*?)\]\((\S*.(?:mp3|wav|caf))\)(F?)$/),
+  [Section.IMAGE]: new RegExp(/^\!\[(.*?)\]\((\S*.)\)(F?)$/),
   [Section.DIVIDER]: new RegExp(/^(\-{3}|\_{3})$/),
   [Section.BULLET_LIST]: new RegExp(/\:\:ul(b)?\n((?:\+\s*.*\n+)*)\:\:end/),
   [Section.NUMBERED_LIST]: new RegExp(

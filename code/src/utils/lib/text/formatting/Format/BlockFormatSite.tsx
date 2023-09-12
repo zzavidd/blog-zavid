@@ -72,7 +72,7 @@ const FormatSite: Record<Section, RenderValue> = {
       {list
         .split('\n')
         .filter((e) => e)
-        .map((item, key) => {
+        .map((item, index) => {
           const [, value] = item.match(/^\+\s*(.*)$/)!;
           return (
             <ListItem
@@ -81,7 +81,7 @@ const FormatSite: Record<Section, RenderValue> = {
                 display: 'list-item',
                 paddingInlineStart: 2,
               }}
-              key={key}>
+              key={index}>
               <ListItemText>{applyEmphasisFormatting(value)}</ListItemText>
             </ListItem>
           );
@@ -93,7 +93,7 @@ const FormatSite: Record<Section, RenderValue> = {
       {list
         .split('\n')
         .filter((e) => e)
-        .map((item, key) => {
+        .map((item, index) => {
           const [, value] = item.match(/^(?:[0-9]+[\.\)]|\+)\s*(.*)$/)!;
           return (
             <ListItem
@@ -102,7 +102,7 @@ const FormatSite: Record<Section, RenderValue> = {
                 display: 'list-item',
                 paddingInlineStart: 2,
               }}
-              key={key}>
+              key={index}>
               <ListItemText>{applyEmphasisFormatting(value)}</ListItemText>
             </ListItem>
           );
@@ -128,31 +128,36 @@ const FormatSite: Record<Section, RenderValue> = {
       {applyEmphasisFormatting(text)}
     </Typography>
   ),
-  [Section.TWEET]: ([, tweetId]) => <TwitterTweetEmbed tweetId={tweetId} />,
-  [Section.INSTAGRAM]: ([, igUrl]) => (
+  [Section.TWEET]: ([, tweetId], key) => (
+    <TwitterTweetEmbed tweetId={tweetId} key={key} />
+  ),
+  [Section.INSTAGRAM]: ([, igUrl], key) => (
     // TODO: Chase getting Instagram embeds to work
     <InstagramEmbed
       url={igUrl}
       clientAccessToken={`${process.env.NEXT_PUBLIC_FB_APP_ID}|${process.env.NEXT_PUBLIC_FB_APP_CLIENT}`}
       maxWidth={500}
       hideCaption={false}
+      key={key}
     />
   ),
-  [Section.SPOTIFY]: ([, url]) => (
+  [Section.SPOTIFY]: ([, url], key) => (
     <iframe
       src={url}
       height={url.includes('podcast') ? 240 : 400}
-      style={{ marginTop: '1em' }}
+      style={{ border: 0, marginTop: '1em' }}
       width={'100%'}
+      key={key}
     />
   ),
-  [Section.AUDIO]: ([, alt, src]) => (
+  [Section.AUDIO]: ([, alt, src], key) => (
     <Box
       component={'audio'}
       controls={true}
       sx={{
         'display': 'block',
         'marginBlock': (t) => t.spacing(3),
+        'marginInline': 'auto',
         'maxWidth': (t) => t.spacing(13),
         'width': '100%',
         '&::-webkit-media-controls-enclosure': {
@@ -165,7 +170,8 @@ const FormatSite: Record<Section, RenderValue> = {
         '&::-webkit-media-controls-time-remaining-display': {
           textShadow: 'none',
         },
-      }}>
+      }}
+      key={key}>
       <source src={src} type={'audio/mpeg'} />
       <source src={src} type={'audio/ogg'} />
       {alt}
