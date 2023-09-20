@@ -20,6 +20,9 @@ const config = {
     loaderFile: './image-optimiser.js',
   },
   modularizeImports: {
+    'devicons-react': {
+      transform: 'devicons-react/lib/icons/{{member}}',
+    },
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',
     },
