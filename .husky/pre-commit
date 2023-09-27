@@ -10,8 +10,6 @@ if [[ "$BRANCH" == "production" ]]; then
   exit 0
 fi
 
-cd code
-
 FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
 [ -z "$FILES" ] && exit 0
 echo "$FILES" | xargs bun run prettier --write --ignore-unknown

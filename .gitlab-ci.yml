@@ -3,9 +3,9 @@ default:
   cache:
     - key:
         files:
-          - code/bun.lockb
+          - bun.lockb
       paths:
-        - code/node_modules
+        - node_modules
 
 .install_dependencies:
   - npm i -g bun@1.0.3
