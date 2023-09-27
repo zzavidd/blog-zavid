@@ -1,0 +1,21 @@
+default:
+  image: node:18.17.1-slim
+  cache:
+    - key:
+        files:
+          - code/bun.lockb
+      paths:
+        - code/node_modules
+
+.install_dependencies:
+  - npm i -g bun@1.0.3
+  - bun install --frozen-lockfile
+  - bun prisma generate
+
+stages:
+  - inspect
+
+inspect:
+  script:
+    - !reference [.install_dependencies]
+    - bun run tsc:ci
