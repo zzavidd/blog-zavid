@@ -6,7 +6,7 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - uses: zzavidd/blog-zavid
+      - uses: zzavidd/blog-zavid@bd2c2249f7f1e57531baee0b8efea35915a2a384
       - name: 'Run TypeScript checks'
         run: bun run tsc:ci
   test:
