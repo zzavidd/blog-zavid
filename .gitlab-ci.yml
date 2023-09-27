@@ -6,6 +6,17 @@ default:
           - bun.lockb
       paths:
         - node_modules
+        - .next/cache
+    - key:
+        files:
+          - tsconfig.json
+      paths:
+        - .tsbuildinfo
+    - key:
+        files:
+          - .eslintrc.js
+      paths:
+        - .eslintcache
 
 .install_dependencies:
   - npm i -g bun@1.0.3
@@ -13,9 +24,28 @@ default:
   - bun prisma generate
 
 stages:
-  - inspect
+  - evaluate
 
 inspect:
+  stage: evaluate
+  before_script: !reference [.install_dependencies]
   script:
-    - !reference [.install_dependencies]
     - bun run tsc:ci
+
+build:
+  stage: evaluate
+  before_script: !reference [.install_dependencies]
+  script:
+    - bun run build
+
+test:unit:
+  stage: evaluate
+  before_script: !reference [.install_dependencies]
+  script:
+    - bun run test:unit
+
+test:e2e:
+  stage: evaluate
+  before_script: !reference [.install_dependencies]
+  script:
+    - bun run test
