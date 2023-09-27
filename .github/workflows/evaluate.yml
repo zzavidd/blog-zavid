@@ -15,6 +15,7 @@ jobs:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
       - run: bun install --frozen-lockfile
+        if: steps.bun-cache.outputs.cache-hit != 'true'
       - run: bun prisma generate
       - run: bun run tsc:ci
 
@@ -30,6 +31,7 @@ jobs:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
       - run: bun install --frozen-lockfile
+        if: steps.bun-cache.outputs.cache-hit != 'true'
       - run: bun prisma generate
       - run: bun run build
 
@@ -45,6 +47,7 @@ jobs:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
       - run: bun install --frozen-lockfile
+        if: steps.bun-cache.outputs.cache-hit != 'true'
       - run: bun test unit
 
   test-e2e:
@@ -59,5 +62,6 @@ jobs:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
       - run: bun install --frozen-lockfile
+        if: steps.bun-cache.outputs.cache-hit != 'true'
       - run: bunx playwright install --with-deps
       - run: bun run test
