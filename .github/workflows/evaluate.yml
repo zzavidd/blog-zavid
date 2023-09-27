@@ -10,12 +10,11 @@ jobs:
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
       - uses: actions/cache@v3
-        id: bun-cache
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
+          key: bun-cache-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
-        if: steps.bun-cache.outputs.cache-hit != 'true'
       - run: bun prisma generate
       - run: bun run tsc:ci
 
@@ -26,12 +25,11 @@ jobs:
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
       - uses: actions/cache@v3
-        id: bun-cache
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
+          key: bun-cache-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
-        if: steps.bun-cache.outputs.cache-hit != 'true'
       - run: bun prisma generate
       - run: bun run build
 
@@ -42,12 +40,11 @@ jobs:
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
       - uses: actions/cache@v3
-        id: bun-cache
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
+          key: bun-cache-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
-        if: steps.bun-cache.outputs.cache-hit != 'true'
       - run: bun test unit
 
   test-e2e:
@@ -57,11 +54,10 @@ jobs:
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
       - uses: actions/cache@v3
-        id: bun-cache
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
+          key: bun-cache-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
-        if: steps.bun-cache.outputs.cache-hit != 'true'
       - run: bunx playwright install --with-deps
       - run: bun run test
