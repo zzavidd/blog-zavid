@@ -9,7 +9,7 @@ export default defineConfig({
       use: devices['Desktop Chrome'],
     },
   ],
-  reporter: './utils/reporter.ts',
+  reporter: 'list',
   reportSlowTests: null,
   retries: 0,
   timeout: 10 * 60 * 1000,

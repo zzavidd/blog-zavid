@@ -78,10 +78,10 @@ function FooterLinks() {
   return (
     <Stack>
       <Typography variant={'h4'}>INFORMATION</Typography>
-      <Stack spacing={1}>
+      <Stack rowGap={2}>
         {FOOTER_LINKS.map(({ name, url }, key) => {
           return (
-            <Link color={'text.primary'} variant={'body2'} href={url} key={key}>
+            <Link href={url} color={'text.primary'} fontSize={16} key={key}>
               {name}
             </Link>
           );
