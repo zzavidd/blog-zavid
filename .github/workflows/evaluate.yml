@@ -6,12 +6,36 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - uses: zzavidd/blog-zavid@bd2c2249f7f1e57531baee0b8efea35915a2a384
-      - name: 'Run TypeScript checks'
-        run: bun run tsc:ci
-  test:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install --frozen-lockfile
+      - run: bun prisma generate
+      - run: bun run tsc:ci
+
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: zzavidd/blog-zavid@bd2c2249f7f1e57531baee0b8efea35915a2a384
-      - name: 'Run unit tests'
-        run: bun run test:unit
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install --frozen-lockfile
+      - run: bun prisma generate
+      - run: bun run build
+
+  test-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
+      - run: bun run test:unit
+
+  test-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install --frozen-lockfile
+      - run: bun run test:e2e
