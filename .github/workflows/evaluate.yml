@@ -6,12 +6,12 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/blog-zavid
+      - uses: zzavidd/blog-zavid
       - name: 'Run TypeScript checks'
         run: bun run tsc:ci
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/blog-zavid
+      - uses: zzavidd/blog-zavid
       - name: 'Run unit tests'
         run: bun run test:unit
