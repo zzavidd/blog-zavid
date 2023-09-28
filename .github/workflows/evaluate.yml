@@ -16,6 +16,21 @@ jobs:
           restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
       - run: bun prisma generate
+      - uses: actions/cache@v3
+        with:
+          path: .tsbuildinfo
+          key:
+            tscache-${{ hashFiles('tsconfig.json') }}-${{
+            hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
+          restore-keys: tscache-${{ hashFiles('tsconfig.json') }}-
+      - run: bun run tsc:ci
+      - uses: actions/cache@v3
+        with:
+          path: .eslintcache
+          key:
+            eslintcache-${{ hashFiles('.eslintrc.js') }}-${{
+            hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
+          restore-keys: eslintcache-${{ hashFiles('.eslintrc.js') }}-
       - run: bun run tsc:ci
 
   build:
