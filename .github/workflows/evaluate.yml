@@ -51,6 +51,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun prisma generate
       - uses: actions/cache@v3
+        id: next-cache
         with:
           path: .next/cache
           key:
@@ -58,6 +59,7 @@ jobs:
             hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
           restore-keys: next-cache-${{ hashFiles('bun.lockb') }}-
       - run: bun run build
+        if: steps.next-cache.outputs.cache-hit != 'true'
 
   test-unit:
     runs-on: ubuntu-latest
@@ -89,5 +91,14 @@ jobs:
           restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
       - run: bun prisma generate
+      - run:
+          PLAYWRIGHT_VERSION=$(npm ls @playwright/test | grep @playwright | sed
+          's/.*@//')
+      - uses: actions/cache@v3
+        id: cache-playwright-browsers
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
       - run: bunx playwright install --with-deps
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
       - run: bun run test --shard ${{ matrix.shard }}
