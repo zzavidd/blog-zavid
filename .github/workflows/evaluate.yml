@@ -3,6 +3,7 @@ name: inspect-build-test
 on: push
 
 env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
   DATABASE_TEST_URL: ${{ secrets.DATABASE_TEST_URL }}
 
 jobs:
