@@ -9,7 +9,7 @@ export default defineConfig({
   outputDir: './results',
   preserveOutput: 'never',
   projects: testProjects,
-  quiet: true,
+  // quiet: true,
   reporter: process.env.CI
     ? [['list'], ['junit', { outputFile: './results/results.xml' }]]
     : 'list',
@@ -27,7 +27,7 @@ export default defineConfig({
     env: { DATABASE_URL: process.env.DATABASE_TEST_URL! },
     reuseExistingServer: !process.env.CI,
     url: 'http://localhost:4000',
-    timeout: 15 * 1000,
+    // timeout: 15 * 1000,
     stdout: 'ignore',
   },
   workers: process.env.CI ? 4 : undefined,
