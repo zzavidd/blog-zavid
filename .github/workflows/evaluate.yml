@@ -5,6 +5,7 @@ on: push
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   DATABASE_TEST_URL: ${{ secrets.DATABASE_TEST_URL }}
+  PLAYWRIGHT_VERSION: 1.37.1
 
 jobs:
   inspect:
@@ -91,9 +92,6 @@ jobs:
           restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
       - run: bun prisma generate
-      - run:
-          export PLAYWRIGHT_VERSION=$(npm ls @playwright/test | grep @playwright
-          | sed 's/.*@//')
       - uses: actions/cache@v3
         id: cache-playwright-browsers
         with:
