@@ -121,13 +121,7 @@ jobs:
           restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
       - run: bun prisma generate
-      - uses: actions/cache@v3
-        id: playwright-browsers-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
       - run: bunx playwright install --with-deps
-        if: steps.playwright-browsers-cache.outputs.cache-hit != 'true'
       - run: bun run test --shard ${{ matrix.shard }}
 
   # deploy-staging:
