@@ -135,4 +135,5 @@ jobs:
           host: ${{ secrets.SSH_HOST}}
           username: ${{ secrets.SSH_USER}}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: ./scripts/deploy.staging.sh
+          # script: ./scripts/deploy.staging.sh
+          script: echo "this works"
