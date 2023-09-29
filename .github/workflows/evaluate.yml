@@ -107,6 +107,7 @@ jobs:
     needs: get-changes
     if: ${{ needs.get-changes.outputs.test == 'true' }}
     strategy:
+      fail-fast: false
       matrix:
         shard: [1/4, 2/4, 3/4, 4/4]
     steps:
@@ -127,12 +128,6 @@ jobs:
           key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
       - run: bunx playwright install --with-deps
         if: steps.playwright-browsers-cache.outputs.cache-hit != 'true'
-      - uses: dorny/paths-filter@v2
-        id: test-dependents
-        with:
-          filters: |
-            src:
-              - 'src/**'
       - run: bun run test --shard ${{ matrix.shard }}
 
   # deploy-staging:
