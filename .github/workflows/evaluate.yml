@@ -6,7 +6,8 @@ env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   DATABASE_TEST_URL: ${{ secrets.DATABASE_TEST_URL }}
   PLAYWRIGHT_VERSION: 1.37.1
-  SSH_USER:
+  SSH_HOST: ${{ secrets.SSH_HOST }}
+  SSH_USER: ${{ secrets.SSH_USER }}
 
 jobs:
   # changes:
