@@ -1,4 +1,4 @@
-name: inspect-build-test
+name: Web App CI/CD
 
 on: push
 
@@ -8,121 +8,128 @@ env:
   PLAYWRIGHT_VERSION: 1.37.1
 
 jobs:
-  get-changes:
+  # changes:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     src: ${{ steps.filter.outputs.src }}
+  #     test: ${{ steps.filter.outputs.test }}
+  #     any: ${{ steps.filter.outputs.any }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: dorny/paths-filter@v2
+  #       id: filter
+  #       with:
+  #         filters: |
+  #           src:
+  #             - 'src/**/*.ts'
+  #             - 'src/**/*.tsx'
+  #           test:
+  #             - 'test/**/*.ts'
+  #           any:
+  #             - '**/*.ts'
+
+  # inspect:
+  #   runs-on: ubuntu-latest
+  #   needs: changes
+  #   if: ${{ needs.changes.outputs.any == 'true' }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #     - uses: oven-sh/setup-bun@v1
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: ~/.bun/install/cache
+  #         key: bun-cache-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: bun-cache-
+  #     - run: bun install --frozen-lockfile
+  #     - run: bun prisma generate
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: .tsbuildinfo
+  #         key:
+  #           tscache-${{ hashFiles('tsconfig.json') }}-${{
+  #           hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
+  #         restore-keys: tscache-${{ hashFiles('tsconfig.json') }}-
+  #     - run: bun run tsc:ci
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: .eslintcache
+  #         key:
+  #           eslintcache-${{ hashFiles('.eslintrc.js') }}-${{
+  #           hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
+  #         restore-keys: eslintcache-${{ hashFiles('.eslintrc.js') }}-
+  #     - run: bun run tsc:ci
+
+  # build:
+  #   runs-on: ubuntu-latest
+  #   needs: changes
+  #   if: ${{ needs.changes.outputs.src == 'true' }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #     - uses: oven-sh/setup-bun@v1
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: ~/.bun/install/cache
+  #         key: bun-cache-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: bun-cache-
+  #     - run: bun install --frozen-lockfile
+  #     - run: bun prisma generate
+  #     - uses: actions/cache@v3
+  #       id: next-cache
+  #       with:
+  #         path: .next/cache
+  #         key:
+  #           next-cache-${{ hashFiles('bun.lockb') }}-${{
+  #           hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
+  #         restore-keys: next-cache-${{ hashFiles('bun.lockb') }}-
+  #     - run: bun run build
+  #       if: steps.next-cache.outputs.cache-hit != 'true'
+
+  # test-unit:
+  #   runs-on: ubuntu-latest
+  #   needs: changes
+  #   if: ${{ needs.changes.outputs.test == 'true' }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #     - uses: oven-sh/setup-bun@v1
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: ~/.bun/install/cache
+  #         key: bun-cache-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: bun-cache-
+  #     - run: bun install --frozen-lockfile
+  #     - run: bun test unit
+
+  # test-e2e:
+  #   runs-on: ubuntu-latest
+  #   needs: changes
+  #   if: ${{ needs.changes.outputs.test == 'true' }}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       shard: [1/4, 2/4, 3/4, 4/4]
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #     - uses: oven-sh/setup-bun@v1
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: ~/.bun/install/cache
+  #         key: bun-cache-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: bun-cache-
+  #     - run: bun install --frozen-lockfile
+  #     - run: bun prisma generate
+  #     - run: bunx playwright install --with-deps
+  #     - run: bun run test --shard ${{ matrix.shard }}
+
+  deploy-staging:
     runs-on: ubuntu-latest
-    outputs:
-      src: ${{ steps.filter.outputs.src }}
-      test: ${{ steps.filter.outputs.test }}
-      any: ${{ steps.filter.outputs.any }}
+    # needs: [inspect, build, test-unit, test-e2e]
+    # if: ${{ github.ref_name == 'main' }}
     steps:
       - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            src:
-              - 'src/**/*.ts'
-              - 'src/**/*.tsx'
-            test:
-              - 'test/**/*.ts'
-            any:
-              - '**/*.ts'
-
-  inspect:
-    runs-on: ubuntu-latest
-    needs: get-changes
-    if: ${{ needs.get-changes.outputs.any == 'true' }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - uses: oven-sh/setup-bun@v1
-      - uses: actions/cache@v3
-        with:
-          path: ~/.bun/install/cache
-          key: bun-cache-${{ hashFiles('bun.lockb') }}
-          restore-keys: bun-cache-
-      - run: bun install --frozen-lockfile
-      - run: bun prisma generate
-      - uses: actions/cache@v3
-        with:
-          path: .tsbuildinfo
-          key:
-            tscache-${{ hashFiles('tsconfig.json') }}-${{
-            hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
-          restore-keys: tscache-${{ hashFiles('tsconfig.json') }}-
-      - run: bun run tsc:ci
-      - uses: actions/cache@v3
-        with:
-          path: .eslintcache
-          key:
-            eslintcache-${{ hashFiles('.eslintrc.js') }}-${{
-            hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
-          restore-keys: eslintcache-${{ hashFiles('.eslintrc.js') }}-
-      - run: bun run tsc:ci
-
-  build:
-    runs-on: ubuntu-latest
-    needs: get-changes
-    if: ${{ needs.get-changes.outputs.src == 'true' }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - uses: oven-sh/setup-bun@v1
-      - uses: actions/cache@v3
-        with:
-          path: ~/.bun/install/cache
-          key: bun-cache-${{ hashFiles('bun.lockb') }}
-          restore-keys: bun-cache-
-      - run: bun install --frozen-lockfile
-      - run: bun prisma generate
-      - uses: actions/cache@v3
-        id: next-cache
-        with:
-          path: .next/cache
-          key:
-            next-cache-${{ hashFiles('bun.lockb') }}-${{
-            hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
-          restore-keys: next-cache-${{ hashFiles('bun.lockb') }}-
-      - run: bun run build
-        if: steps.next-cache.outputs.cache-hit != 'true'
-
-  test-unit:
-    runs-on: ubuntu-latest
-    needs: get-changes
-    if: ${{ needs.get-changes.outputs.test == 'true' }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - uses: oven-sh/setup-bun@v1
-      - uses: actions/cache@v3
-        with:
-          path: ~/.bun/install/cache
-          key: bun-cache-${{ hashFiles('bun.lockb') }}
-          restore-keys: bun-cache-
-      - run: bun install --frozen-lockfile
-      - run: bun test unit
-
-  test-e2e:
-    runs-on: ubuntu-latest
-    needs: get-changes
-    if: ${{ needs.get-changes.outputs.test == 'true' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [1/4, 2/4, 3/4, 4/4]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - uses: oven-sh/setup-bun@v1
-      - uses: actions/cache@v3
-        with:
-          path: ~/.bun/install/cache
-          key: bun-cache-${{ hashFiles('bun.lockb') }}
-          restore-keys: bun-cache-
-      - run: bun install --frozen-lockfile
-      - run: bun prisma generate
-      - run: bunx playwright install --with-deps
-      - run: bun run test --shard ${{ matrix.shard }}
-
-  # deploy-staging:
-  #   runs-on:
+      - run:
+          ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS
+          "./scripts/deploy.staging.sh"
