@@ -6,6 +6,7 @@ env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   DATABASE_TEST_URL: ${{ secrets.DATABASE_TEST_URL }}
   PLAYWRIGHT_VERSION: 1.37.1
+  SSH_USER:
 
 jobs:
   # changes:
@@ -131,5 +132,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run:
-          ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS
+          ssh -o StrictHostKeyChecking=no -v "${SSH_USER}@${SSH_HOST}"
           "./scripts/deploy.staging.sh"
