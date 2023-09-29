@@ -8,8 +8,29 @@ env:
   PLAYWRIGHT_VERSION: 1.37.1
 
 jobs:
+  get-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+      test: ${{ steps.filter.outputs.test }}
+      any: ${{ steps.filter.outputs.any }}
+    steps:
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**/*.ts'
+              - 'src/**/*.tsx'
+            test:
+              - 'test/**/*.ts'
+            any:
+              - '**/*.ts'
+
   inspect:
     runs-on: ubuntu-latest
+    needs: get-changes
+    if: ${{ needs.get-changes.outputs.any == 'true' }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -40,6 +61,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    needs: get-changes
+    if: ${{ needs.get-changes.outputs.src == 'true' }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -64,6 +87,8 @@ jobs:
 
   test-unit:
     runs-on: ubuntu-latest
+    needs: get-changes
+    if: ${{ needs.get-changes.outputs.test == 'true' }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -78,6 +103,8 @@ jobs:
 
   test-e2e:
     runs-on: ubuntu-latest
+    needs: get-changes
+    if: ${{ needs.get-changes.outputs.test == 'true' }}
     strategy:
       matrix:
         shard: [1/4, 2/4, 3/4, 4/4]
@@ -93,12 +120,18 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun prisma generate
       - uses: actions/cache@v3
-        id: cache-playwright-browsers
+        id: playwright-browsers-cache
         with:
           path: ~/.cache/ms-playwright
           key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
       - run: bunx playwright install --with-deps
-        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        if: steps.playwright-browsers-cache.outputs.cache-hit != 'true'
+      - uses: dorny/paths-filter@v2
+        id: test-dependents
+        with:
+          filters: |
+            src:
+              - 'src/**'
       - run: bun run test --shard ${{ matrix.shard }}
 
   # deploy-staging:
