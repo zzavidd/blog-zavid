@@ -1,0 +1,17 @@
+{
+  "name": "backup-script",
+  "type": "module",
+  "module": "src/main.ts",
+  "scripts": {
+    "start": "bun run src/main.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.370.0",
+    "log4js": "^6.9.1",
+    "mysqldump": "^3.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6",
+    "bun-types": "latest"
+  }
+}

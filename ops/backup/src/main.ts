@@ -1,7 +1,7 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import 'dotenv/config';
 import fs from 'fs';
 import mysqldump from 'mysqldump';
+
 import logger from './logger';
 
 const DATE = getCurrentDate();
