@@ -8,9 +8,6 @@ const withBundleAnalyzer = NextBundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 const config = {
-  compiler: {
-    styledComponents: true,
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },
