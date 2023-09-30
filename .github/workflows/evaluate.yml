@@ -136,7 +136,7 @@ jobs:
           host: ${{ secrets.SSH_HOST}}
           username: ${{ secrets.SSH_USER}}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: /var/www/dev.zavid/scripts/deploy.staging.sh
+          script: /var/www/dev.zavid/devops/scripts/deploy.staging.sh
 
   deploy-production:
     runs-on: ubuntu-latest
@@ -148,4 +148,4 @@ jobs:
           host: ${{ secrets.SSH_HOST}}
           username: ${{ secrets.SSH_USER}}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: /var/www/zavid/scripts/deploy.production.sh
+          script: /var/www/zavid/devops/scripts/deploy.production.sh
