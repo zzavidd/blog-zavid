@@ -1,11 +1,9 @@
 name: 'Ops: Backup Production Database'
 
-# on:
-#   schedule:
-#     - cron: '0 9 * * 1,4'
-#   workflow_dispatch:
-
-on: push
+on:
+  schedule:
+    - cron: '0 9 * * 1,4'
+  workflow_dispatch:
 
 env:
   APP_KEY_ID: ${{ secrets.APP_KEY_ID }}
