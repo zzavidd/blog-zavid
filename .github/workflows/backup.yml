@@ -24,8 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          sparse-checkout: |
-            ops/backup
+          sparse-checkout: ops/backup
+          sparse-checkout-cone-mode: false
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
       - run: bun install --frozen-lockfile
