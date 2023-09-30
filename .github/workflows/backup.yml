@@ -28,6 +28,6 @@ jobs:
           sparse-checkout-cone-mode: false
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
-      - run: bun install --frozen-lockfile
       - run: ls
+      - run: bun install --frozen-lockfile
       # - run: bun run start
