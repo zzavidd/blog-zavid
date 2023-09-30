@@ -8,20 +8,18 @@ const prisma = new PrismaClient({
   },
 });
 
-(async () => {
-  const subscribers = await prisma.subscriber.findMany();
-  const queries = subscribers.map((subscriber) => {
-    const subscriptions = subscriber.subscriptions as SubscriptionMap;
-    return prisma.subscriber.update({
-      data: {
-        subscriptions: {
-          ...subscriptions,
-          Exclusives: subscriptions.Diary,
-        },
+const subscribers = await prisma.subscriber.findMany();
+const queries = subscribers.map((subscriber) => {
+  const subscriptions = subscriber.subscriptions as SubscriptionMap;
+  return prisma.subscriber.update({
+    data: {
+      subscriptions: {
+        ...subscriptions,
+        Exclusives: subscriptions.Diary,
       },
-      where: { id: subscriber.id },
-    });
+    },
+    where: { id: subscriber.id },
   });
+});
 
-  await prisma.$transaction(queries);
-})();
+await prisma.$transaction(queries);

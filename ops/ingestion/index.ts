@@ -12,13 +12,11 @@ import {
 } from './factory';
 import { createDefaultPages } from './functions';
 
-(async () => {
-  await ingestDiaryEntries();
-  await ingestExclusives();
-  await ingestPages();
-  await ingestPosts();
-  await ingestSubscribers();
-})();
+await ingestDiaryEntries();
+await ingestExclusives();
+await ingestPages();
+await ingestPosts();
+await ingestSubscribers();
 
 async function ingestDiaryEntries(): Promise<void> {
   const categories: Prisma.DiaryCategoryUncheckedCreateInput[] = [];

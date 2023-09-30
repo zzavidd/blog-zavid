@@ -27,19 +27,5 @@
     "test/**/*.ts",
     "types/**/*.d.ts"
   ],
-  "exclude": ["node_modules"],
-  "ts-node": {
-    "compilerOptions": {
-      "baseUrl": "./src",
-      "jsx": "react-jsx",
-      "module": "CommonJS",
-      "paths": {
-        "server/*": ["./server/*"],
-        "utils/*": ["./utils/*"]
-      },
-      "skipLibCheck": true,
-      "strict": false
-    },
-    "swc": true
-  }
+  "exclude": ["ops/backup/**/*.ts", "node_modules"]
 }
