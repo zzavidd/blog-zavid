@@ -127,7 +127,7 @@ jobs:
     needs: [inspect, build, test-unit, test-e2e]
     if:
       always() && github.ref_name == 'main' && !contains(needs.*.result,
-      'failure') && !contains(needs.*.result, 'skipped')
+      'failure') && !contains(needs.*.result, 'cancelled')
     steps:
       - uses: actions/checkout@v3
       - uses: appleboy/ssh-action@v1.0.0
