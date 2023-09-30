@@ -14,7 +14,6 @@ jobs:
     outputs:
       src: ${{ steps.filter.outputs.src }}
       test: ${{ steps.filter.outputs.test }}
-      any: ${{ steps.filter.outputs.any }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -26,13 +25,11 @@ jobs:
               - 'src/**/*.tsx'
             test:
               - 'test/**/*.ts'
-            any:
-              - '**/*.ts'
 
   inspect:
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.any == 'true'
+    if: needs.changes.outputs.* == 'true'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
