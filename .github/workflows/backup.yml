@@ -1,4 +1,4 @@
-name: backup-prod-database
+name: 'Ops: Backup Production Database'
 
 on:
   schedule:
@@ -20,19 +20,19 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v3
-      - name: "Install Node.js"
+      - name: 'Install Node.js'
         uses: actions/setup-node@v3
-      - name: "Install pnpm"
+      - name: 'Install pnpm'
         uses: pnpm/action-setup@v2
         with:
           run_install: false
           version: 8.2.0
-      - name: "Install dependencies"
+      - name: 'Install dependencies'
         run: pnpm install
         working-directory: ./backup
         shell: bash
-      - name: "Run backup"
+      - name: 'Run backup'
         run: pnpm run start
         working-directory: ./backup

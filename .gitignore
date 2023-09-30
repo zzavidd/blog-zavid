@@ -3,10 +3,11 @@
 **/dist/
 
 **/*.env*
-**/*.key
 **/credentials
 **/.eslintcache
 **/.tsbuildinfo
+
+**/schemas/**
 
 **/.husky/_
 

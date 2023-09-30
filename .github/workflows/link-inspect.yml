@@ -1,8 +1,8 @@
-name: link-inspector
+name: 'Ops: Link Inspection'
 
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '0 9 * * 1'
   workflow_dispatch:
 
 env:
@@ -12,19 +12,19 @@ jobs:
   crawl:
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v3
-      - name: "Install Node.js"
+      - name: 'Install Node.js'
         uses: actions/setup-node@v3
-      - name: "Install pnpm"
+      - name: 'Install pnpm'
         uses: pnpm/action-setup@v2
         with:
           run_install: false
           version: 8.2.0
-      - name: "Install dependencies"
+      - name: 'Install dependencies'
         run: pnpm install
         working-directory: ./code
         shell: bash
-      - name: "Run crawler"
+      - name: 'Run crawler'
         run: pnpm run test:prod
         working-directory: ./code

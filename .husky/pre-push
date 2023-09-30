@@ -10,5 +10,4 @@ if [[ "$BRANCH" == "production" ]]; then
   exit 0
 fi
 
-cd code
 bun run eslint --max-warnings 0 || exit 1
