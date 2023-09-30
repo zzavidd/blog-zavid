@@ -44,17 +44,13 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: .tsbuildinfo
-          key:
-            tscache-${{ hashFiles('tsconfig.json') }}-${{
-            hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
+          key: tscache-${{ hashFiles('tsconfig.json') }}-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
           restore-keys: tscache-${{ hashFiles('tsconfig.json') }}-
       - run: bun run tsc:ci
       - uses: actions/cache@v3
         with:
           path: .eslintcache
-          key:
-            eslintcache-${{ hashFiles('.eslintrc.js') }}-${{
-            hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
+          key: eslintcache-${{ hashFiles('.eslintrc.js') }}-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
           restore-keys: eslintcache-${{ hashFiles('.eslintrc.js') }}-
       - run: bun run tsc:ci
 
@@ -77,9 +73,7 @@ jobs:
         id: next-cache
         with:
           path: .next/cache
-          key:
-            next-cache-${{ hashFiles('bun.lockb') }}-${{
-            hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
+          key: next-cache-${{ hashFiles('bun.lockb') }}-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
           restore-keys: next-cache-${{ hashFiles('bun.lockb') }}-
       - run: bun run build
         if: steps.next-cache.outputs.cache-hit != 'true'
@@ -124,10 +118,8 @@ jobs:
 
   deploy-staging:
     runs-on: ubuntu-latest
-    needs: [inspect, build, test-unit, test-e2e]
-    if:
-      always() && github.ref_name == 'main' && !contains(needs.*.result,
-      'failure') && !contains(needs.*.result, 'cancelled')
+    needs: [changes, inspect, build, test-unit, test-e2e]
+    if: always() && github.ref_name == 'main' && needs.changes.outputs.src == 'true' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     steps:
       - uses: actions/checkout@v3
       - uses: appleboy/ssh-action@v1.0.0

@@ -19,20 +19,15 @@ env:
 jobs:
   backup:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ops/backup
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-      - name: 'Install Node.js'
-        uses: actions/setup-node@v3
-      - name: 'Install pnpm'
-        uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v3
         with:
-          run_install: false
-          version: 8.2.0
-      - name: 'Install dependencies'
-        run: pnpm install
-        working-directory: ./backup
-        shell: bash
-      - name: 'Run backup'
-        run: pnpm run start
-        working-directory: ./backup
+          sparse-checkout: ops/backup
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install --frozen-lockfile
+      - run: bun run start
