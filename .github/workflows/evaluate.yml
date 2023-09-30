@@ -10,7 +10,7 @@ env:
 jobs:
   changes:
     runs-on: ubuntu-latest
-    if: github.ref_name != 'production'
+    if: github.ref_name == 'main'
     outputs:
       src: ${{ steps.filter.outputs.src }}
       test: ${{ steps.filter.outputs.test }}
