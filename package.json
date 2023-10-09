@@ -15,7 +15,7 @@
     "test": "playwright test -c ./test/playwright.e2e.ts",
     "test:sanity": "playwright test -c ./test/playwright.sanity.ts",
     "eslint": "eslint --ext .ts,.tsx . --cache",
-    "release": "../devops/scripts/release.sh",
+    "release": "./release.sh",
     "devops:secrets": "../devops/scripts/env/upload-secrets.sh",
     "prepare": "husky install"
   },
