@@ -1,4 +1,4 @@
-import { MjmlButton, MjmlDivider, MjmlText } from '@faire/mjml-react';
+import { MjmlButton, MjmlText } from '@faire/mjml-react';
 import type React from 'react';
 
 import EmailTheme from 'server/emails/theme';
@@ -9,7 +9,9 @@ import { applyEmphasisFormatting } from '../Emphasis';
 
 const FormatEmail: Record<Section, RenderValue> = {
   [Section.PARAGRAPH]: ([, text], key, options) => (
-    <p style={{ marginBottom: 24, whiteSpace: 'pre-wrap' }} key={key}>
+    <p
+      style={{ lineHeight: 1.9, marginBottom: 28, whiteSpace: 'pre-wrap' }}
+      key={key}>
       {applyEmphasisFormatting(text, options)}
     </p>
   ),
@@ -39,20 +41,24 @@ const FormatEmail: Record<Section, RenderValue> = {
     <blockquote
       key={key}
       style={{
-        borderLeft: '6px solid rgba(0,0,0,0.6)',
-        borderRight: '6px solid rgba(0,0,0,0.6)',
-        borderRadius: 28,
-        fontStyle: 'italic',
-        fontWeight: 800,
+        backgroundColor: 'rgba(0,0,0,0.05)',
+        borderLeft: '6px solid rgba(0,0,0,0.4)',
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+        fontSize: '90%',
         lineHeight: '28px',
         margin: '16px 0',
-        padding: '16px 24px',
-        textAlign: 'center',
+        padding: '16px 20px 18px',
       }}>
       {applyEmphasisFormatting(text)}
     </blockquote>
   ),
-  [Section.DIVIDER]: (_, key) => <MjmlDivider padding={'12px 0'} key={key} />,
+  [Section.DIVIDER]: (_, key) => (
+    <hr
+      style={{ border: '1px solid rgba(0,0,0,0.4)', margin: '1.4em 0' }}
+      key={key}
+    />
+  ),
   [Section.BULLET_LIST]: ([, , list]) => (
     <MjmlText>
       <ul>

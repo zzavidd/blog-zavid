@@ -1,4 +1,3 @@
-import type { TypographyProps } from '@mui/material';
 import {
   Box,
   Divider,
@@ -6,6 +5,7 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  alpha,
 } from '@mui/material';
 import type React from 'react';
 import { InstagramEmbed } from 'react-social-media-embed';
@@ -63,7 +63,9 @@ const FormatSite: Record<Section, RenderValue> = {
       key={key}
     />
   ),
-  [Section.DIVIDER]: (_, key) => <Divider sx={{ my: 5 }} key={key} />,
+  [Section.DIVIDER]: (_, key) => (
+    <Divider sx={{ borderWidth: '1px', my: 5 }} key={key} />
+  ),
   [Section.BULLET_LIST]: ([, isSpacedBlock, list], key) => (
     <List
       sx={{ listStyle: 'disc', marginInlineStart: 5 }}
@@ -112,19 +114,22 @@ const FormatSite: Record<Section, RenderValue> = {
   [Section.BLOCKQUOTE]: ([, text], key, { TypographyProps }) => (
     <Typography
       component={'blockquote'}
+      {...TypographyProps}
       sx={{
-        borderInline: (t) =>
-          `${t.spacing(1)} solid ${t.palette.text.secondary}`,
-        borderRadius: 2,
-        fontStyle: 'italic',
-        fontWeight: 800,
-        my: 5,
-        px: 5,
-        py: 4,
-        textAlign: 'center',
+        backgroundColor: (t) =>
+          alpha(t.palette.divider, t.palette.mode === 'light' ? 0.05 : 0.125),
+        borderLeft: (t) => `5px solid ${t.palette.text.secondary}`,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+        color: (t) => t.palette.text.secondary,
+        fontSize: { xs: '85%', md: '90%' },
+        my: { xs: 5, md: 6 },
+        px: 4,
+        pt: 4,
+        pb: 4,
+        ...TypographyProps?.sx,
       }}
-      key={key}
-      {...(TypographyProps as TypographyProps<'blockquote'>)}>
+      key={key}>
       {applyEmphasisFormatting(text)}
     </Typography>
   ),
