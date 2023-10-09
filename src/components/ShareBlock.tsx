@@ -34,7 +34,7 @@ export default function ShareBlock({ headline, message }: ShareBlockProps) {
   );
 }
 
-function ShareFacebook({ message, url }: SocialShareProps) {
+function ShareFacebook({ message, url = '' }: SocialShareProps) {
   return (
     <FacebookShareButton quote={message} url={url}>
       <FacebookIcon size={50} round={true} />
