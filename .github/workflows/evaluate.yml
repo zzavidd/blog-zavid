@@ -11,24 +11,24 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref_name != 'production'
     outputs:
+      srctest: ${{ steps.filter.outputs.srctest }}
       src: ${{ steps.filter.outputs.src }}
-      test: ${{ steps.filter.outputs.test }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
           filters: |
+            srctest:
+              - src/**/*.{ts,tsx}
+              - test/**/*.ts
             src:
-              - 'src/**/*.ts'
-              - 'src/**/*.tsx'
-            test:
-              - 'test/**/*.ts'
+              - src/**/*.{ts,tsx}
 
   inspect:
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.src == 'true' || needs.changes.outputs.test == 'true'
+    if: needs.changes.outputs.srctest == 'true'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -80,7 +80,7 @@ jobs:
   test-unit:
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.test == 'true'
+    if: needs.changes.outputs.srctest == 'true'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -96,7 +96,7 @@ jobs:
   test-e2e:
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.test == 'true'
+    if: needs.changes.outputs.srctest == 'true'
     strategy:
       fail-fast: false
       matrix:
