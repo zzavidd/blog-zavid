@@ -5,31 +5,45 @@ on: push
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   DATABASE_TEST_URL: ${{ secrets.DATABASE_TEST_URL }}
-  PLAYWRIGHT_VERSION: 1.37.1
 
 jobs:
   changes:
     runs-on: ubuntu-latest
     if: github.ref_name != 'production'
     outputs:
-      src: ${{ steps.filter.outputs.src }}
-      test: ${{ steps.filter.outputs.test }}
+      inspect: ${{ steps.filter.outputs.inspect }}
+      build: ${{ steps.filter.outputs.build }}
+      test-unit: ${{ steps.filter.outputs.test-unit }}
+      test-e2e: ${{ steps.filter.outputs.test-unit }}
+      deploy-staging: ${{ steps.filter.outputs.deploy-staging }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
           filters: |
-            src:
-              - 'src/**/*.ts'
-              - 'src/**/*.tsx'
-            test:
-              - 'test/**/*.ts'
+            inspect:
+              - "src/**/*.{ts,tsx}"
+              - "test/**/*.ts"
+              - "tsconfig.json"
+              - ".eslintrc.js"
+            build:
+              - "src/**/*.{ts,tsx}"
+              - "next.config.js"
+            test-unit:
+              - "src/utils/lib/**/*"
+              - "test/unit/**/*"
+            test-e2e:
+              - "src/**/*.{ts,tsx}"
+              - "test/e2e/**/*"
+              - "**/playwright.e2e.ts"
+            deploy-staging:
+              - "src/**/*.{ts,tsx}"
 
   inspect:
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.* == 'true'
+    if: needs.changes.outputs.inspect == 'true'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -52,12 +66,12 @@ jobs:
           path: .eslintcache
           key: eslintcache-${{ hashFiles('.eslintrc.js') }}-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
           restore-keys: eslintcache-${{ hashFiles('.eslintrc.js') }}-
-      - run: bun run tsc:ci
+      - run: bun run eslint
 
   build:
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.src == 'true'
+    if: needs.changes.outputs.build == 'true'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -81,7 +95,7 @@ jobs:
   test-unit:
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.test == 'true'
+    if: needs.changes.outputs.test-unit == 'true'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -97,7 +111,7 @@ jobs:
   test-e2e:
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.test == 'true'
+    if: needs.changes.outputs.test-e2e == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -119,7 +133,7 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     needs: [changes, inspect, build, test-unit, test-e2e]
-    if: always() && github.ref_name == 'main' && needs.changes.outputs.src == 'true' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
+    if: always() && github.ref_name == 'main' && needs.changes.outputs.deploy-staging == 'true' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     steps:
       - uses: actions/checkout@v3
       - uses: appleboy/ssh-action@v1.0.0
