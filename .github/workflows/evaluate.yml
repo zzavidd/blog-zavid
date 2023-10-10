@@ -23,22 +23,22 @@ jobs:
         with:
           filters: |
             inspect:
-              - src/**/*.{ts,tsx}
-              - test/**/*.ts
-              - tsconfig.json
-              - .eslintrc.js
+              - "src/**/*.{ts,tsx}"
+              - "test/**/*.ts"
+              - "tsconfig.json"
+              - ".eslintrc.js"
             build:
-              - src/**/*.{ts,tsx}
-              - next.config.js
+              - "src/**/*.{ts,tsx}"
+              - "next.config.js"
             test-unit:
-              - src/utils/lib/**/*
-              - test/unit/**/*
+              - "src/utils/lib/**/*"
+              - "test/unit/**/*"
             test-e2e:
-              - src/**/*.{ts,tsx}
-              - test/e2e/**/*
+              - "src/**/*.{ts,tsx}"
+              - "test/e2e/**/*"
               - "**/playwright.e2e.ts"
             deploy-staging:
-              - src/**/*.{ts,tsx}
+              - "src/**/*.{ts,tsx}"
 
   inspect:
     runs-on: ubuntu-latest
