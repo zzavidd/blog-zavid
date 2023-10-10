@@ -12,14 +12,13 @@ export default function MatomoScript() {
   if (process.env.NEXT_PUBLIC_APP_ENV !== 'production') return null;
 
   // Don't track if user is admin.
-  const enableTracking =
-    !isAdmin && cookies[Settings.COOKIES.CONSENT] === 'true';
+  const enableTracking = !isAdmin && cookies[Settings.COOKIES.CONSENT];
   if (!enableTracking) {
     return null;
   }
 
   return (
-    <Script id={'matomo'} strategy={'afterInteractive'}>
+    <Script id={'matomo'}>
       {`
         var _paq = window._paq = window._paq || [];
         /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
