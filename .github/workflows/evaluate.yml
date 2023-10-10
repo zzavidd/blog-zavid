@@ -28,7 +28,7 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.* == 'true'
+    if: needs.changes.outputs.src == 'true' || needs.changes.outputs.test == 'true'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
