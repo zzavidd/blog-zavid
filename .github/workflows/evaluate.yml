@@ -5,7 +5,6 @@ on: push
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   DATABASE_TEST_URL: ${{ secrets.DATABASE_TEST_URL }}
-  PLAYWRIGHT_VERSION: 1.37.1
 
 jobs:
   changes:
