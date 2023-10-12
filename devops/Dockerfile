@@ -3,7 +3,7 @@ FROM node:18.17.1-slim AS builder
 ARG WORKDIR
 WORKDIR /var/www/$WORKDIR
 
-RUN npm i -g bun
+RUN npm i -g bun@1.0.4
 RUN apt-get update -y && apt-get install -y openssl
 
 COPY package.json bun.lockb ./

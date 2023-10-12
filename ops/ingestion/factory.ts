@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client';
 import {
   DiaryStatus,
   ExclusiveStatus,
+  MoodTimeOfDay,
   PostStatus,
   PostType,
 } from '@prisma/client';
@@ -45,6 +46,17 @@ export function createExclusive(
     endearment: '',
     status: status ?? faker.helpers.enumValue(ExclusiveStatus),
     slug: slug ?? ZString.createSlug(subject),
+  };
+}
+
+export function createMood(
+  overrides: Partial<Prisma.MoodCreateInput> = {},
+): Prisma.MoodCreateInput {
+  return {
+    date: overrides.date || faker.date.past(),
+    timeOfDay: overrides.timeOfDay || faker.helpers.enumValue(MoodTimeOfDay),
+    value: faker.number.int({ min: 0, max: 10 }),
+    reason: faker.datatype.boolean() ? faker.lorem.sentence() : '',
   };
 }
 
