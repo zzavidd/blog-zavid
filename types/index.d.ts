@@ -24,6 +24,7 @@ declare global {
   type PostFindInput = RouterInput['post']['find'];
   type DiaryFindInput = RouterInput['diary']['find'];
   type PageFindInput = RouterInput['page']['find'];
+  type MoodFindManyInput = RouterInput['mood']['findMany'];
   type ExclusiveFindInput = RouterInput['exclusive']['find'];
   type IndexInput = z.infer<typeof zIndexInput>;
 

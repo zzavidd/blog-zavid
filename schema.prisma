@@ -53,6 +53,14 @@ model Exclusive {
   @@map("exclusives")
 }
 
+model Mood {
+  id        Int           @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  date      DateTime      @db.Date
+  timeOfDay MoodTimeOfDay
+  value     Int
+  reason    String        @db.Text
+}
+
 model Page {
   id           Int      @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   title        String   @db.VarChar(45)
@@ -149,6 +157,11 @@ enum DiaryStatus {
 enum ExclusiveStatus {
   DRAFT
   PUBLISHED
+}
+
+enum MoodTimeOfDay {
+  MORNING
+  EVENING
 }
 
 enum PostType {

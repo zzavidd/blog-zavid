@@ -57,6 +57,19 @@ const components: Components<Theme> = {
         })};
       }
 
+      *::-webkit-scrollbar {
+        width: 0.5em;
+      }
+
+      *::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+      }
+
+      *::-webkit-scrollbar-thumb {
+        background-color: ${theme.palette.primary.dark};
+        border-radius: ${theme.shape.borderRadius}px;
+      }
+
       body {
         background-color: ${theme.palette.background.paper};
         font-feature-settings: 'lnum';
