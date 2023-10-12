@@ -7,7 +7,7 @@ import {
   PostType,
 } from '@prisma/client';
 
-import ZDate from './lib/date';
+import ZDate from '../lib/date';
 
 export const DOMAINS = {
   [PostType.REVERIE]: { collection: 'reveries', singular: 'reverie' },
