@@ -21,4 +21,6 @@ jobs:
           key: bun-cache-${{ hashFiles('bun.lockb') }}
           restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
+      - run: bun prisma generate
+      - run: bunx playwright install --with-deps chromium
       - run: bun run test:sanity hyperlinks
