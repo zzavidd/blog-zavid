@@ -14,7 +14,7 @@ jobs:
       inspect: ${{ steps.filter.outputs.inspect }}
       build: ${{ steps.filter.outputs.build }}
       test-unit: ${{ steps.filter.outputs.test-unit }}
-      test-e2e: ${{ steps.filter.outputs.test-unit }}
+      test-e2e: ${{ steps.filter.outputs.test-e2e }}
       deploy-staging: ${{ steps.filter.outputs.deploy-staging }}
     steps:
       - uses: actions/checkout@v3
