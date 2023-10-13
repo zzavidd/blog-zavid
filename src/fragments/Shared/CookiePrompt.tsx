@@ -18,7 +18,9 @@ export default function CookiePrompt() {
 
   useEffect(() => {
     setTimeout(() => {
-      setState({ isConsentShown: !cookies[Settings.COOKIES.CONSENT] });
+      setState({
+        isConsentShown: cookies[Settings.COOKIES.CONSENT] === undefined,
+      });
     }, 2000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
