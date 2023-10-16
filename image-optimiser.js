@@ -1,7 +1,10 @@
-// Demo: https://res.cloudinary.com/demo/image/upload/w_300,c_limit,q_auto/turtles.jpg
 export default function cloudinaryLoader({ src, width, quality }) {
-  const params = ['f_auto', 'c_limit', `w_${width}`, `q_${quality || 'auto'}`];
-  return `https://res.cloudinary.com/zavid/image/upload/${params.join(
-    ',',
-  )}/${src}`;
+  if (src.startsWith('https://')) return src;
+  const params = [
+    'f_auto',
+    'c_limit',
+    `w_${width}`,
+    `q_${quality || 'auto'}`,
+  ].join(',');
+  return `https://res.cloudinary.com/zavid/image/upload/${params}/${src}`;
 }

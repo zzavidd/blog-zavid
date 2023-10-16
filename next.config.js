@@ -12,7 +12,10 @@ const config = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['res.cloudinary.com'],
+    domains:
+      process.env.NEXT_PUBLIC_APP_ENV === 'production'
+        ? ['res.cloudinary.com']
+        : ['res.cloudinary.com', 'loremflickr.com'],
     loader: 'custom',
     loaderFile: './image-optimiser.js',
   },

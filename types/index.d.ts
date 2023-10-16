@@ -18,6 +18,14 @@ declare global {
     pageProps?: Record<string, unknown>;
   }
 
+  interface PostSingleProps extends AppPageProps {
+    params: PostFindInput;
+    previousParams: PostFindInput;
+    nextParams: PostFindInput;
+    indexParams: IndexInput;
+    slug: string;
+  }
+
   type NotifyOptions = z.infer<typeof zNotifyOptions>;
   type EmailPreviewType = z.infer<typeof zEmailPreviewType>;
   type FindOptions = z.infer<typeof zFindOptions>;

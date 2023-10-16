@@ -3,7 +3,7 @@ set -e
 
 BRANCH="production"
 
-if [[ $(git ls-files --exclude-standard --others) ]]; then
+if [[ $(git status -s) ]]; then
   echo "Your working tree is not clean."
   exit 1
 fi

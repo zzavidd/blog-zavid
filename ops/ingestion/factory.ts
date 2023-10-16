@@ -82,6 +82,7 @@ export function createPost(
     title,
     type,
     datePublished: faker.date.past(),
+    image: faker.image.urlLoremFlickr({ width: 1280, height: 720 }),
     status:
       status === PostStatus.PUBLISHED && type === PostType.PASSAGE
         ? PostStatus.PRIVATE

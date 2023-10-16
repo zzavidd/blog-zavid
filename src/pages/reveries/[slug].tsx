@@ -1,21 +1,21 @@
 import { PostStatus, PostType } from '@prisma/client';
 import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import invariant from 'tiny-invariant';
 
 import Layout from 'fragments/Layout';
-import type { ReveriePageProps } from 'fragments/Pages/Posts/Reverie';
-import Reverie from 'fragments/Pages/Posts/Reverie';
+import PostSingle from 'fragments/Pages/Posts/PostSingle';
 import { nextAuthOptions } from 'pages/api/auth/[...nextauth]';
+import { createPostNavigatorParams } from 'utils/functions';
 import Logger from 'utils/logger';
 import Settings from 'utils/settings';
 import { getServerSideHelpers } from 'utils/ssr';
 
-const ReveriePage: NextPageWithLayout<ReveriePageProps> = (props) => {
-  return <Reverie {...props} />;
+const ReveriePage: NextPageWithLayout<PostSingleProps> = (props) => {
+  return <PostSingle {...props} />;
 };
 
-export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async (
+export const getServerSideProps: GetServerSideProps<PostSingleProps> = async (
   ctx,
 ) => {
   try {
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async (
     const reverie = await helpers.post.find.fetch(params);
     invariant(reverie, 'No reverie found.');
 
-    const session = await unstable_getServerSession(req, res, nextAuthOptions);
+    const session = await getServerSession(req, res, nextAuthOptions);
     const isAdmin =
       session && session.user?.email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL;
     const isVisibleToAll =
@@ -47,15 +47,28 @@ export const getServerSideProps: GetServerSideProps<ReveriePageProps> = async (
     const isVisibleToAdmin = isAdmin && reverie.status === PostStatus.PROTECTED;
     invariant(isVisibleToAll || isVisibleToAdmin, 'No reverie found.');
 
-    res.setHeader('X-Robots-Tag', 'noindex');
-    await helpers.post.find.prefetch(params);
+    // TODO: More dynamic way to restrict posts at will
+    if (reverie.title.toLowerCase().includes('appreciation')) {
+      res.setHeader('X-Robots-Tag', 'noindex');
+    }
+
+    const previousParams = createPostNavigatorParams(reverie, 'lt', true);
+    const nextParams = createPostNavigatorParams(reverie, 'gt', true);
+    const indexParams: IndexInput = { id: reverie.id, type: reverie.type };
+
+    await helpers.post.find.prefetch(previousParams);
+    await helpers.post.find.prefetch(nextParams);
+    const index = await helpers.post.index.fetch(indexParams);
 
     return {
       props: {
         params,
+        previousParams,
+        nextParams,
+        indexParams,
         slug,
         pathDefinition: {
-          title: `${reverie.title} | ${Settings.SITE_TITLE}`,
+          title: `Reverie #${index}: ${reverie.title} | ${Settings.SITE_TITLE}`,
           description: reverie.excerpt,
           url: `/reveries/${reverie.slug}`,
         },

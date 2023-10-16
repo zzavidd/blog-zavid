@@ -8,18 +8,26 @@ const prisma = new PrismaClient({
   },
 });
 
-const subscribers = await prisma.subscriber.findMany();
-const queries = subscribers.map((subscriber) => {
-  const subscriptions = subscriber.subscriptions as SubscriptionMap;
-  return prisma.subscriber.update({
-    data: {
-      subscriptions: {
-        ...subscriptions,
-        Exclusives: subscriptions.Diary,
-      },
-    },
-    where: { id: subscriber.id },
-  });
+const diaryEntries = await prisma.diary.findMany({
+  where: {
+    OR: [
+      { content: { contains: '/reveries/21-appreciation-day/' } },
+      { content: { contains: '/reveries/appreciation-day-part-2/' } },
+      { content: { contains: '/reveries/appreciation-day-iii/' } },
+    ],
+  },
 });
+// const queries = diaryEntries.map(({ id, content }) => {
+//   return prisma.diary.update({
+//     data: {
+//       content: content
+//         .replaceAll('/reveries/21-appreciation-day/', '/tributes/')
+//         .replaceAll('/reveries/appreciation-day-part-2/', '/tributes/')
+//         .replaceAll('/reveries/appreciation-day-iii/', '/tributes/'),
+//     },
+//     where: { id },
+//   });
+// });
 
-await prisma.$transaction(queries);
+// await prisma.$transaction(queries);
+console.log(diaryEntries);

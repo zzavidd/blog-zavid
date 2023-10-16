@@ -100,15 +100,13 @@ async function ingestPosts(): Promise<void> {
 
   for (let i = 1; i <= 10; i++) {
     posts.push(
-      createPost({
-        status: PostStatus.PUBLISHED,
-        type: PostType.REVERIE,
-        typeId: i,
-      }),
-    );
-    posts.push(
+      createPost({ status: PostStatus.PUBLISHED, type: PostType.REVERIE }),
       createPost(
-        { status: PostStatus.PUBLISHED, type: PostType.MUSING, typeId: i },
+        { status: PostStatus.PUBLISHED, type: PostType.EPISTLE },
+        'poem',
+      ),
+      createPost(
+        { status: PostStatus.PUBLISHED, type: PostType.MUSING },
         'poem',
       ),
     );
