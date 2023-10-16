@@ -30,5 +30,4 @@ const diaryEntries = await prisma.diary.findMany({
 // });
 
 // await prisma.$transaction(queries);
-
-console.log(diaryEntries);
+console.info(diaryEntries);
