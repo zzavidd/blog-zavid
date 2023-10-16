@@ -37,4 +37,4 @@ services:
     ports:
       - '8500:80'
     volumes:
-      - matomo:/var/www/html
+      - /var/www/analytics.zavid/matomo:/var/www/html
