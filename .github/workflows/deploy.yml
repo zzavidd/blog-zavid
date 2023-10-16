@@ -144,7 +144,12 @@ jobs:
           host: ${{ secrets.SSH_HOST}}
           username: ${{ secrets.SSH_USER}}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: /var/www/dev.zavid/devops/scripts/deploy.sh main dev.zavid staging
+          script: |
+            cd /var/www/dev.zavid
+            git checkout main
+            git fetch origin main
+            git reset --hard origin/main
+            docker-compose up -d --build staging
 
   deploy-production:
     runs-on: ubuntu-latest
@@ -156,4 +161,9 @@ jobs:
           host: ${{ secrets.SSH_HOST}}
           username: ${{ secrets.SSH_USER}}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: /var/www/zavid/devops/scripts/deploy.sh production zavid production
+          script: |
+            cd /var/www/zavid
+            git checkout production
+            git fetch origin production
+            git reset --hard origin/production
+            docker-compose up -d --build production
