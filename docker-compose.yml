@@ -32,7 +32,7 @@ services:
       - /var/www/dev.zavid/.next/cache
 
   analytics:
-    image: matomo
+    image: matomo:4.15.1
     container_name: matomo_analytics
     ports:
       - '8500:80'
