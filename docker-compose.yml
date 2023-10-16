@@ -5,8 +5,7 @@ services:
     image: zavid_dev
     container_name: zavid_blog_staging
     build:
-      context: ..
-      dockerfile: ./devops/Dockerfile
+      context: .
       args:
         WORKDIR: dev.zavid
     environment:
@@ -21,8 +20,7 @@ services:
     image: zavid
     container_name: zavid_blog_production
     build:
-      context: ..
-      dockerfile: ./devops/Dockerfile
+      context: .
       args:
         WORKDIR: zavid
     environment:

@@ -3,7 +3,7 @@
 set -e
 
 THIS_DIR=$(dirname "$0")
-CODE_DIR="$THIS_DIR/../../.."
+CODE_DIR="$THIS_DIR/../.."
 
 source "$THIS_DIR/credentials"
 
@@ -21,7 +21,7 @@ for ((i = 0; i < ${#environments[@]}; i++)); do
 
   cat "$CODE_DIR/.env" >"$tmp_file"
   echo >>"$tmp_file"
-  cat "$THIS_DIR/$environment/.env.local" >>"$tmp_file"
+  cat "$THIS_DIR/.env.$environment" >>"$tmp_file"
   scp "$tmp_file" "$SSH_USER"@"$SSH_ADDRESS":"$target_directory"
   rm -rf "$tmp_file"
 done
