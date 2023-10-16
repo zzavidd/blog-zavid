@@ -1,6 +1,6 @@
 import { PostStatus, PostType } from '@prisma/client';
 import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import invariant from 'tiny-invariant';
 
 import Layout from 'fragments/Layout';
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps<TributePageProps> = async (
       },
     });
 
-    const session = await unstable_getServerSession(req, res, nextAuthOptions);
+    const session = await getServerSession(req, res, nextAuthOptions);
     const isAdmin =
       session && session.user?.email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL;
     const isVisibleToAll = tribute.status === PostStatus.PRIVATE;

@@ -3,15 +3,15 @@ import { PostStatus, PostType } from '@prisma/client';
 
 import { createPost } from '../../ops/ingestion/factory';
 import Settings from '../../src/utils/settings';
+import { setConsentCookies } from '../utils/functions';
 import prisma from '../utils/prisma';
 
 test.describe('Passage', () => {
   test.describe.configure({ mode: 'parallel' });
 
   test.describe('Individual', () => {
-    test.beforeEach(async ({ page }) => {
-      await page.goto('/');
-      await page.getByTestId('zb.accept').click();
+    test.beforeEach(async ({ baseURL, context }) => {
+      await setConsentCookies(context, baseURL);
     });
 
     [
@@ -25,10 +25,10 @@ test.describe('Passage', () => {
         await prisma.post.create({ data: passage });
         await page.goto(`/passages/${passage.slug}`);
 
-        const expectedTitle = expect404 ? '404: Not Found' : passage.title;
-        await expect(page).toHaveTitle(
-          `${expectedTitle} | ${Settings.SITE_TITLE}`,
-        );
+        const expectedTitle = expect404
+          ? '404: Not Found'
+          : `${passage.title}  | ${Settings.SITE_TITLE}`;
+        await expect(page).toHaveTitle(expectedTitle);
       });
     });
   });

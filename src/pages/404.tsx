@@ -3,7 +3,6 @@ import type { GetStaticProps } from 'next';
 
 import Layout from 'fragments/Layout';
 import SuggestiveLinks from 'fragments/Shared/SuggestiveLinks';
-import Settings from 'utils/settings';
 
 const Custom404Page: NextPageWithLayout = () => {
   return (
@@ -26,7 +25,7 @@ export const getStaticProps: GetStaticProps<AppPageProps> = () => {
   return {
     props: {
       pathDefinition: {
-        title: `404: Not Found | ${Settings.SITE_TITLE}`,
+        title: '404: Not Found',
       },
     },
   };

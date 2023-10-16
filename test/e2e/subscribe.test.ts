@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker/locale/en_GB';
 import { expect, test } from '@playwright/test';
 
 import Settings from '../../src/utils/settings';
+import { setConsentCookies } from '../utils/functions';
 
 const name = {
   firstName: faker.person.firstName(),
@@ -17,9 +18,9 @@ test.describe('Subscribe', () => {
   test.describe.configure({ mode: 'parallel' });
 
   test.describe('via page form', () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ baseURL, context, page }) => {
+      await setConsentCookies(context, baseURL);
       await page.goto('/subscribe');
-      await page.getByTestId('zb.accept').click();
     });
 
     test('has correct page title', async ({ page }) => {
@@ -56,9 +57,9 @@ test.describe('Subscribe', () => {
   });
 
   test.describe('via Quick Subscribe', () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ baseURL, context, page }) => {
+      await setConsentCookies(context, baseURL);
       await page.goto('/');
-      await page.getByTestId('zb.accept').click();
     });
 
     test('with correct email', async ({ page }) => {

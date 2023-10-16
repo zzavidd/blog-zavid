@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 import { DiaryStatus } from '@prisma/client';
 
 import { createDiaryEntry } from '../../ops/ingestion/factory';
+import { setConsentCookies } from '../utils/functions';
 import prisma from '../utils/prisma';
 
 const params: TestDefinition[] = [
@@ -29,9 +30,9 @@ test.describe('Curator', () => {
     entryNumber = diary.entryNumber;
   });
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ baseURL, context, page }) => {
+    await setConsentCookies(context, baseURL);
     await page.goto(`/diary/${entryNumber}`);
-    await page.getByTestId('zb.accept').click();
   });
 
   params.forEach(({ name, skipCondition, clickOptions }) => {

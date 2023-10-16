@@ -4,6 +4,7 @@ import { DiaryStatus } from '@prisma/client';
 
 import { createDiaryEntry } from '../../ops/ingestion/factory';
 import Settings from '../../src/utils/settings';
+import { setConsentCookies } from '../utils/functions';
 import prisma from '../utils/prisma';
 
 test.describe('Diary', () => {
@@ -28,9 +29,9 @@ test.describe('Diary', () => {
       }
     });
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ baseURL, context, page }) => {
+      await setConsentCookies(context, baseURL);
       await page.goto('/diary');
-      await page.getByTestId('zb.accept').click();
     });
 
     test('has correct page title', async ({ page }) => {
@@ -56,9 +57,8 @@ test.describe('Diary', () => {
   test.describe('Individual', () => {
     test.describe.configure({ mode: 'parallel' });
 
-    test.beforeEach(async ({ page }) => {
-      await page.goto('/');
-      await page.getByTestId('zb.accept').click();
+    test.beforeEach(async ({ baseURL, context }) => {
+      await setConsentCookies(context, baseURL);
     });
 
     [
@@ -74,11 +74,9 @@ test.describe('Diary', () => {
 
         const expectedTitle = expect404
           ? '404: Not Found'
-          : `Diary Entry #${diary.entryNumber}: ${diary.title}`;
+          : `Diary Entry #${diary.entryNumber}: ${diary.title} | ${Settings.SITE_TITLE}`;
 
-        await expect(page).toHaveTitle(
-          `${expectedTitle} | ${Settings.SITE_TITLE}`,
-        );
+        await expect(page).toHaveTitle(expectedTitle);
       });
     });
   });
