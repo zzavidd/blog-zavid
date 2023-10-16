@@ -35,10 +35,13 @@ jobs:
               - "test/unit/**/*"
             test-e2e:
               - "src/**/*.{ts,tsx}"
-              - "test/e2e/**/*"
+              - "test/e2e/**/*.ts"
               - "**/playwright.e2e.ts"
             deploy-staging:
+              - "devops/**/*"
               - "src/**/*.{ts,tsx}"
+              - "Dockerfile"
+              - "docker-compose.yml"
 
   inspect:
     runs-on: ubuntu-latest
