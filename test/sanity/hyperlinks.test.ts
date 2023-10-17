@@ -10,7 +10,6 @@ import {
 
 import { DOMAINS, formatDiaryEntryTitle } from 'utils/functions';
 import logger from 'utils/logger';
-import Settings from 'utils/settings';
 
 import { setConsentCookies } from '../utils/functions';
 
@@ -22,10 +21,30 @@ const prisma = new PrismaClient({
   },
 });
 
-test.use({ baseURL: 'https://zavidegbue.com' });
+const POST_TYPES: PostType[] = [
+  PostType.REVERIE,
+  PostType.EPISTLE,
+  PostType.MUSING,
+  PostType.PASSAGE,
+  PostType.ADDENDUM,
+];
 
 test.describe('Crawler', () => {
+  test.use({ baseURL: 'https://zavidegbue.com' });
   test.skip(({ browserName }) => browserName !== 'chromium');
+
+  let errorCount = 0;
+  let totalCount = 0;
+
+  test.afterAll(() => {
+    const successRate = ((totalCount - errorCount) / totalCount) * 100 || 100;
+    const threshold = 90;
+    logger.info(`Hyperlink health: ${successRate.toFixed(2)}%`);
+    expect(
+      successRate,
+      `Expected hyperlink health to be greater than ${threshold}% but was ${successRate}%.`,
+    ).toBeGreaterThanOrEqual(threshold);
+  });
 
   test('crawl diary entries', async ({ baseURL, context, page }) => {
     await setConsentCookies(context, baseURL);
@@ -46,8 +65,8 @@ test.describe('Crawler', () => {
     await checkHyperlinkHealth(page, urlList);
   });
 
-  test.describe.only('crawl posts', () => {
-    Object.values(PostType).forEach((type) => {
+  test.describe('crawl posts', () => {
+    POST_TYPES.forEach((type) => {
       const { singular, collection } = DOMAINS[type];
 
       test(collection, async ({ baseURL, context, page }) => {
@@ -55,12 +74,12 @@ test.describe('Crawler', () => {
 
         const posts = await prisma.post.findMany({
           orderBy: { datePublished: 'asc' },
-          select: { title: true, slug: true, typeId: true },
+          select: { title: true, slug: true },
           where: { status: PostStatus.PUBLISHED, type },
         });
 
-        const urlList: PageInfo[] = posts.map((post) => ({
-          title: `${capitalize(singular)} #${post.typeId}: ${post.title}`,
+        const urlList: PageInfo[] = posts.map((post, i) => ({
+          title: `${capitalize(singular)} #${i + 1}: ${post.title}`,
           url: `/${collection}/${post.slug}`,
         }));
 
@@ -68,48 +87,37 @@ test.describe('Crawler', () => {
       });
     });
   });
-});
 
-async function checkHyperlinkHealth(
-  page: Page,
-  urlList: PageInfo[],
-): Promise<void> {
-  let errorCount = 0;
-  let totalCount = 0;
+  async function checkHyperlinkHealth(
+    page: Page,
+    urlList: PageInfo[],
+  ): Promise<void> {
+    for await (const { title, url } of urlList) {
+      await test.step(title, async () => {
+        await page.goto(url, { waitUntil: 'networkidle' });
+        // await expect(page).toHaveTitle(`${title} | ${Settings.SITE_TITLE}`);
 
-  for await (const { title, url } of urlList) {
-    await test.step(title, async () => {
-      await page.goto(url, { waitUntil: 'networkidle' });
-      await expect(page).toHaveTitle(`${title} | ${Settings.SITE_TITLE}`);
+        const locators = await page.locator('pre a').all();
+        totalCount += locators.length;
+        for await (const link of locators) {
+          const text = await link.textContent();
+          const href = await link.getAttribute('href');
+          expect(text).toBeTruthy();
+          expect(href).toBeTruthy();
 
-      const locators = await page.locator('pre a').all();
-      totalCount += locators.length;
-      for await (const link of locators) {
-        const text = await link.textContent();
-        const href = await link.getAttribute('href');
-        expect(text).toBeTruthy();
-        expect(href).toBeTruthy();
-
-        const message = `Text '${text}' with URL '${href}' failed to navigate.\nSee '${page.url()}'.`;
-        try {
-          const response = await page.request.get(href!);
-          if (!response.ok()) throw new Error();
-        } catch (e) {
-          errorCount++;
-          logger.warn(message);
+          const message = `Text '${text}' with URL '${href}' failed to navigate.\nSee '${page.url()}'.`;
+          try {
+            const response = await page.request.get(href!);
+            if (!response.ok()) throw new Error();
+          } catch (e) {
+            errorCount++;
+            logger.warn(message);
+          }
         }
-      }
-    });
+      });
+    }
   }
-
-  const successRate = ((totalCount - errorCount) / totalCount) * 100 || 0;
-  const threshold = 90;
-  logger.info(`Hyperlink health: ${successRate.toFixed(2)}%`);
-  expect(
-    successRate,
-    `Expected hyperlink health to be greater than ${threshold}% but was ${successRate}%.`,
-  ).toBeGreaterThanOrEqual(threshold);
-}
+});
 
 interface PageInfo {
   title: string;

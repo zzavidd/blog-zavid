@@ -18,6 +18,12 @@ export async function getPublicRoutes(): Promise<Route[]> {
       where: {
         status: PostStatus.PUBLISHED,
         type: { notIn: [PostType.PASSAGE] },
+        // TODO: Use flag for noindex
+        title: {
+          not: {
+            contains: 'appreciation',
+          },
+        },
       },
     }),
     PageAPI.findMany({
