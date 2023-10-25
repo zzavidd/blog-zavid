@@ -10,7 +10,7 @@ import {
   Logout as LogoutIcon,
 } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
-import type { MenuItemProps } from '@mui/material';
+import type { MenuItemProps, ToolbarProps } from '@mui/material';
 import {
   AppBar,
   Avatar,
@@ -25,6 +25,8 @@ import {
   Toolbar,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import React, { useContext, useRef, useState } from 'react';
@@ -51,14 +53,13 @@ export default function Header() {
 
   return (
     <AppBar
-      color={'default'}
       elevation={1}
       position={'sticky'}
       sx={{
-        paddingInline: (t) => t.spacing(2),
+        px: (t) => t.spacing(2),
         zIndex: (t) => t.zIndex.drawer + 1,
       }}>
-      <Toolbar>
+      <ShadowHeader>
         <Stack
           direction={'row'}
           justifyContent={'space-between'}
@@ -88,9 +89,15 @@ export default function Header() {
             <AuthButton />
           </Stack>
         </Stack>
-      </Toolbar>
+      </ShadowHeader>
     </AppBar>
   );
+}
+
+export function ShadowHeader(props: ToolbarProps) {
+  const theme = useTheme();
+  const isBelowLarge = useMediaQuery(theme.breakpoints.down('lg'));
+  return <Toolbar variant={isBelowLarge ? 'dense' : 'regular'} {...props} />;
 }
 
 function AuthButton() {

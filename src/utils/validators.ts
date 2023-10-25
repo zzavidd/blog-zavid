@@ -1,6 +1,18 @@
 import { PostType } from '@prisma/client';
 import { z } from 'zod';
 
+export const zWishlistClaimPayload = z.object({
+  id: z.number(),
+  email: z.string().email({ message: 'Provide a valid email address.' }),
+  quantity: z.number().min(1),
+  anonymous: z.boolean(),
+});
+
+export const zWishlistUnclaimPayload = z.object({
+  id: z.number(),
+  email: z.string().email(),
+});
+
 export const zSubscribeForm = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
   firstname: z.string().optional(),

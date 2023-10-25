@@ -8,15 +8,15 @@ const prisma = new PrismaClient({
   },
 });
 
-const diaryEntries = await prisma.diary.findMany({
-  where: {
-    OR: [
-      { content: { contains: '/reveries/21-appreciation-day/' } },
-      { content: { contains: '/reveries/appreciation-day-part-2/' } },
-      { content: { contains: '/reveries/appreciation-day-iii/' } },
-    ],
-  },
-});
+// const diaryEntries = await prisma.diary.findMany({
+//   where: {
+//     OR: [
+//       { content: { contains: '/reveries/21-appreciation-day/' } },
+//       { content: { contains: '/reveries/appreciation-day-part-2/' } },
+//       { content: { contains: '/reveries/appreciation-day-iii/' } },
+//     ],
+//   },
+// });
 // const queries = diaryEntries.map(({ id, content }) => {
 //   return prisma.diary.update({
 //     data: {
@@ -30,4 +30,9 @@ const diaryEntries = await prisma.diary.findMany({
 // });
 
 // await prisma.$transaction(queries);
-console.info(diaryEntries);
+const result = await prisma.wishlistCategory.findMany({
+  include: {
+    _count: true,
+  },
+});
+console.info(result);

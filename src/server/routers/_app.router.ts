@@ -26,6 +26,7 @@ import exclusiveRouter from './exclusive.router';
 import moodRouter from './mood.router';
 import postRouter from './post.router';
 import subscriberRouter from './subscriber.router';
+import { wishlistCategoryRouter, wishlistRouter } from './wishlist.router';
 
 export const appRouter = router({
   diary: router({
@@ -111,6 +112,8 @@ export const appRouter = router({
   mood: moodRouter,
   post: postRouter,
   subscriber: subscriberRouter,
+  wishlist: wishlistRouter,
+  wishlistCategory: wishlistCategoryRouter,
 });
 
 export type AppRouter = typeof appRouter;

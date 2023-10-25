@@ -4,6 +4,11 @@ import { css } from '@mui/material';
 import { darkPalette, lightPalette } from './Palette.styles';
 
 const components: Components<Theme> = {
+  MuiAppBar: {
+    defaultProps: {
+      color: 'default',
+    },
+  },
   MuiAlert: {
     styleOverrides: {
       root: ({ ownerState, theme }) => {
@@ -58,15 +63,16 @@ const components: Components<Theme> = {
       }
 
       *::-webkit-scrollbar {
-        width: 0.5em;
+        width: 0.6em;
       }
 
       *::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+        background-color: ${theme.palette.grey['900']};
       }
 
       *::-webkit-scrollbar-thumb {
-        background-color: ${theme.palette.primary.dark};
+        background-color: ${theme.palette.grey['800']};
         border-radius: ${theme.shape.borderRadius}px;
       }
 

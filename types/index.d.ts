@@ -1,5 +1,10 @@
 import type { SelectChangeEvent, TableCellProps } from '@mui/material';
-import type { Diary, DiaryCategory, Prisma } from '@prisma/client';
+import type {
+  Diary,
+  DiaryCategory,
+  Prisma,
+  WishlistCategory,
+} from '@prisma/client';
 import type { Dispatch, SetStateAction } from 'react';
 import type { z } from 'zod';
 
@@ -10,6 +15,8 @@ import type {
   zFindOptions,
   zIndexInput,
   zNotifyOptions,
+  zWishlistClaimPayload,
+  zWishlistUnclaimPayload,
 } from 'utils/validators';
 
 declare global {
@@ -26,14 +33,38 @@ declare global {
     slug: string;
   }
 
+  interface WishlistPageProps extends AppPageProps {
+    categoryParams: WishlistCategoryFindManyInput;
+  }
+
+  type WishlistClaimPayload = z.infer<typeof zWishlistClaimPayload>;
+  type WishlistUnclaimPayload = z.infer<typeof zWishlistUnclaimPayload>;
+
+  interface WishlistCategoryWithCount extends WishlistCategory {
+    _count: Prisma.WishlistCategoryCountOutputType;
+  }
+
+  interface WishlistReservees {
+    [key: string]: {
+      quantity: number;
+      anonymous: boolean;
+    };
+  }
+
   type NotifyOptions = z.infer<typeof zNotifyOptions>;
   type EmailPreviewType = z.infer<typeof zEmailPreviewType>;
   type FindOptions = z.infer<typeof zFindOptions>;
-  type PostFindInput = RouterInput['post']['find'];
+
   type DiaryFindInput = RouterInput['diary']['find'];
-  type PageFindInput = RouterInput['page']['find'];
   type MoodFindManyInput = RouterInput['mood']['findMany'];
+  type WishlistFindManyInput = RouterInput['wishlist']['findMany'];
+  type WishlistCategoryFindManyInput =
+    RouterInput['wishlistCategory']['findMany'];
+
   type ExclusiveFindInput = RouterInput['exclusive']['find'];
+  type PageFindInput = RouterInput['page']['find'];
+  type PostFindInput = RouterInput['post']['find'];
+
   type IndexInput = z.infer<typeof zIndexInput>;
 
   interface ContentNavigationProps {

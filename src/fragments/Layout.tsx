@@ -11,9 +11,7 @@ namespace Layout {
       <Stack minHeight={'100vh'}>
         <Header />
         <NavigationDrawer />
-        <Stack display={'grid'} flex={1}>
-          {page}
-        </Stack>
+        {page}
         <Footer />
       </Stack>
     );
@@ -21,3 +19,11 @@ namespace Layout {
 }
 
 export default Layout;
+
+export function Root({ children }: React.PropsWithChildren) {
+  return (
+    <Stack display={'grid'} flex={1}>
+      {children}
+    </Stack>
+  );
+}
