@@ -1,3 +1,4 @@
+import { indigo } from '@mui/material/colors';
 import type { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
@@ -40,6 +41,10 @@ export const getServerSideProps: GetServerSideProps<WishlistPageProps> = async (
         title: `Zavid's Wishlist | ${Settings.SITE_TITLE}`,
         description: 'Consider anything on here nectar to my soul.',
         url: '/wishlist',
+      },
+      theme: {
+        light: indigo[700],
+        dark: indigo[100],
       },
       trpcState: helpers.dehydrate(),
     },

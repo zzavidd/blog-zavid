@@ -1,4 +1,8 @@
-import type { SelectChangeEvent, TableCellProps } from '@mui/material';
+import type {
+  PaletteMode,
+  SelectChangeEvent,
+  TableCellProps,
+} from '@mui/material';
 import type {
   Diary,
   DiaryCategory,
@@ -23,6 +27,7 @@ declare global {
   interface AppPageProps {
     pathDefinition: PathDefinition;
     pageProps?: Record<string, unknown>;
+    theme?: Record<PaletteMode, string>;
   }
 
   interface PostSingleProps extends AppPageProps {

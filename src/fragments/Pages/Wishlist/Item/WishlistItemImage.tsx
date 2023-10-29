@@ -10,7 +10,7 @@ export function ItemImage() {
   if (!wishlistItem.image) {
     return (
       <Stack>
-        <HideImageOutlinedIcon color={'secondary'} />
+        <HideImageOutlinedIcon color={'primary'} />
       </Stack>
     );
   }

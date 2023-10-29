@@ -113,7 +113,7 @@ function FilterSortButton() {
       onClick={toggleFilterView}
       startIcon={<FilterAltIcon />}
       variant={'outlined'}
-      color={'secondary'}>
+      color={'primary'}>
       Filter / Sort
     </Button>
   );
@@ -145,7 +145,7 @@ function AddItemButton() {
     <AdminLock>
       <Button
         onClick={onAddButtonClick}
-        color={'secondary'}
+        color={'primary'}
         variant={'contained'}
         startIcon={<AddIcon />}
         disabled={isWishlistItemFormOpen}>

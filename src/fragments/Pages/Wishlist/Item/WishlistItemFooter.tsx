@@ -59,7 +59,7 @@ export default function ItemFooter() {
     <CardActions sx={{ justifySelf: 'flex-end', pt: 1, px: 4, pb: 4 }}>
       <ButtonGroup fullWidth={true}>
         {wishlistItem.href ? (
-          <Button color={'secondary'} onClick={onVisitLink}>
+          <Button color={'primary'} onClick={onVisitLink}>
             Visit link
           </Button>
         ) : null}
@@ -130,14 +130,14 @@ function ActionButton() {
 
   if (isClaimedByUser) {
     return (
-      <Button color={'secondary'} variant={'contained'} onClick={onUnclaim}>
+      <Button color={'primary'} variant={'contained'} onClick={onUnclaim}>
         Unclaim
       </Button>
     );
   }
 
   return (
-    <Button color={'secondary'} variant={'contained'} onClick={onClaim}>
+    <Button color={'primary'} variant={'contained'} onClick={onClaim}>
       Claim
     </Button>
   );

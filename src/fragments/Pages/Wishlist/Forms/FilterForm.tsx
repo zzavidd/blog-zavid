@@ -1,11 +1,7 @@
-import { ExpandMore } from '@mui/icons-material';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 import type { SelectChangeEvent } from '@mui/material';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Button,
   ButtonGroup,
   Checkbox,
@@ -21,16 +17,20 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { type Prisma } from '@prisma/client';
+import {
+  WishlistPriority,
+  WishlistVisibility,
+  type Prisma,
+  type WishlistItem,
+} from '@prisma/client';
 import immutate from 'immutability-helper';
 import React, { useContext } from 'react';
 
 import { useIsAdmin } from 'utils/hooks';
+import ZString from 'utils/lib/string';
 import { AppActions, useAppDispatch, useAppSelector } from 'utils/reducers';
 
 import { WishlistContext } from '../WishlistContext';
-
-import { useFilters } from './FilterForm.utils';
 
 const SORT_OPTIONS = [
   { label: 'Date Added', value: 'createTime' },
@@ -49,7 +49,7 @@ export default function FilterForm() {
 
   return (
     <React.Fragment>
-      <Stack spacing={4} p={5} flex={1} divider={<Divider />}>
+      <Stack spacing={4} py={5} px={6} flex={1} divider={<Divider />}>
         <Typography variant={'h3'}>Filter & Sort Items</Typography>
         <SortSection />
         <FilterSection />
@@ -61,13 +61,9 @@ export default function FilterForm() {
           position: 'sticky',
           bottom: 0,
           p: 3,
-
           top: 'auto',
         }}>
         <ButtonGroup fullWidth={true}>
-          <Button variant={'contained'} onClick={onCloseTray}>
-            Apply
-          </Button>
           <Button variant={'outlined'} onClick={onCloseTray}>
             Close
           </Button>
@@ -167,36 +163,73 @@ function FilterSection() {
       {filters.map(({ group, options, property, adminOnly }) => {
         if (adminOnly && !isAdmin) return null;
         return (
-          <Accordion defaultExpanded={true} key={property}>
-            <AccordionSummary expandIcon={<ExpandMore />}>
-              <Typography>{group}</Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ paddingInline: 5 }}>
-              <List>
-                {options.map(({ label, value }) => {
-                  const checked = getFilter(where, property).includes(value);
-                  return (
-                    <ListItem disablePadding={true} key={label}>
-                      <FormControlLabel
-                        label={label}
-                        control={
-                          <Checkbox
-                            value={value}
-                            checked={checked}
-                            onChange={() => onFilterChange(property, value)}
-                          />
-                        }
-                      />
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </AccordionDetails>
-          </Accordion>
+          <Stack key={property}>
+            <Typography
+              variant={'overline'}
+              fontSize={16}
+              lineHeight={1.7}
+              sx={{
+                backgroundColor: (t) => t.palette.grey[800],
+                borderRadius: 0.5,
+                p: 2,
+              }}>
+              {group}
+            </Typography>
+            <List sx={{ pl: 2 }}>
+              {options.map(({ label, value }) => {
+                const checked = getFilter(where, property).includes(value);
+                return (
+                  <ListItem disablePadding={true} key={label}>
+                    <FormControlLabel
+                      label={label}
+                      control={
+                        <Checkbox
+                          value={value}
+                          checked={checked}
+                          onChange={() => onFilterChange(property, value)}
+                          sx={{ mr: 1 }}
+                        />
+                      }
+                    />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Stack>
         );
       })}
     </Stack>
   );
+}
+
+function useFilters(): FilterGroup[] {
+  const [context] = useContext(WishlistContext);
+  return [
+    {
+      group: 'Filter by Category',
+      options: Object.entries(context.categories)
+        .sort((a, b) => a[1].name.localeCompare(b[1].name))
+        .map(([id, { name }]) => ({ label: name, value: Number(id) })),
+      property: 'categoryId',
+    },
+    {
+      group: 'Filter by Priority',
+      options: Object.entries(WishlistPriority).map(([id, name]) => ({
+        label: ZString.toTitleCase(name),
+        value: id,
+      })),
+      property: 'priority',
+    },
+    {
+      group: 'Filter by Visibility',
+      options: Object.values(WishlistVisibility).map((name) => ({
+        label: ZString.toTitleCase(name),
+        value: name,
+      })),
+      property: 'visibility',
+      adminOnly: true,
+    },
+  ];
 }
 
 function getFilter(
@@ -207,4 +240,11 @@ function getFilter(
   const filter = where[property] as Prisma.IntFilter | Prisma.StringFilter;
   if (!filter) return [];
   return (filter.in as string[] | number[]) || [];
+}
+
+interface FilterGroup {
+  group: string;
+  property: keyof WishlistItem;
+  options: { label: string; value: string | number }[];
+  adminOnly?: boolean;
 }

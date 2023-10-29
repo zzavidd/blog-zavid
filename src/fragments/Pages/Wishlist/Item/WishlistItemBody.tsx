@@ -32,7 +32,7 @@ export default function ItemBody() {
         <PriorityChip />
         <VisibilityIndicator />
       </Stack>
-      <Typography color={'secondary.light'} fontWeight={800}>
+      <Typography color={'primary.light'} fontWeight={800}>
         {wishlistItem.name}
       </Typography>
       <PriceAndCategory />
@@ -69,7 +69,7 @@ function VisibilityIndicator() {
   if (!isPrivate) return null;
   return (
     <Tooltip title={'Only you can see this item.'}>
-      <VisibilityOffIcon fontSize={'large'} color={'secondary'} />
+      <VisibilityOffIcon fontSize={'large'} color={'primary'} />
     </Tooltip>
   );
 }
