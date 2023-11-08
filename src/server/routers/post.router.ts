@@ -1,12 +1,10 @@
 import { PostType } from '@prisma/client';
 import { z } from 'zod';
 
-import {
-  PostCreateOneSchema,
-  PostFindFirstSchema,
-  PostFindManySchema,
-  PostUpdateOneSchema,
-} from 'schemas/schemas';
+import PostCreateArgsSchema from 'schemas/outputTypeSchemas/PostCreateArgsSchema';
+import PostFindFirstArgsSchema from 'schemas/outputTypeSchemas/PostFindFirstArgsSchema';
+import PostFindManyArgsSchema from 'schemas/outputTypeSchemas/PostFindManyArgsSchema';
+import PostUpdateArgsSchema from 'schemas/outputTypeSchemas/PostUpdateArgsSchema';
 import PostAPI from 'server/api/posts';
 import { procedure, router } from 'server/trpc';
 import { zEmailPreviewType, zFindOptions } from 'utils/validators';
@@ -15,7 +13,7 @@ const postRouter = router({
   findMany: procedure
     .input(
       z.object({
-        params: PostFindManySchema,
+        params: PostFindManyArgsSchema,
         options: zFindOptions,
       }),
     )
@@ -23,7 +21,7 @@ const postRouter = router({
   find: procedure
     .input(
       z.object({
-        params: PostFindFirstSchema,
+        params: PostFindFirstArgsSchema,
         options: zFindOptions,
       }),
     )
@@ -31,7 +29,7 @@ const postRouter = router({
   create: procedure
     .input(
       z.object({
-        post: PostCreateOneSchema,
+        post: PostCreateArgsSchema,
         isPublish: z.boolean().optional(),
       }),
     )
@@ -39,7 +37,7 @@ const postRouter = router({
   update: procedure
     .input(
       z.object({
-        post: PostUpdateOneSchema,
+        post: PostUpdateArgsSchema,
         isPublish: z.boolean().optional(),
       }),
     )

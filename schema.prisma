@@ -5,10 +5,12 @@ generator client {
 }
 
 generator zod {
-  provider          = "prisma-zod-generator"
-  output            = "./src/schemas"
-  isGenerateSelect  = "true"
-  isGenerateInclude = "true"
+  provider         = "zod-prisma-types"
+  output           = "./src/schemas"
+  useMultipleFiles = true
+  writeBarrelFiles = false
+  addIncludeType   = true
+  addSelectType    = true
 }
 
 datasource db {

@@ -1,17 +1,11 @@
-import {
-  WishlistCategoryCreateOneSchema,
-  WishlistCategoryDeleteOneSchema,
-  WishlistCategoryFindManySchema,
-  WishlistCategoryUncheckedCreateInputObjectSchema,
-  WishlistCategoryUncheckedUpdateInputObjectSchema,
-  WishlistCategoryUpdateOneSchema,
-  WishlistItemCreateOneSchema,
-  WishlistItemDeleteOneSchema,
-  WishlistItemFindManySchema,
-  WishlistItemUncheckedCreateInputObjectSchema,
-  WishlistItemUncheckedUpdateInputObjectSchema,
-  WishlistItemUpdateOneSchema,
-} from 'schemas/schemas';
+import WishlistCategoryCreateArgsSchema from 'schemas/outputTypeSchemas/WishlistCategoryCreateArgsSchema';
+import WishlistCategoryDeleteArgsSchema from 'schemas/outputTypeSchemas/WishlistCategoryDeleteArgsSchema';
+import WishlistCategoryFindManyArgsSchema from 'schemas/outputTypeSchemas/WishlistCategoryFindManyArgsSchema';
+import WishlistCategoryUpdateArgsSchema from 'schemas/outputTypeSchemas/WishlistCategoryUpdateArgsSchema';
+import WishlistItemCreateArgsSchema from 'schemas/outputTypeSchemas/WishlistItemCreateArgsSchema';
+import WishlistItemDeleteArgsSchema from 'schemas/outputTypeSchemas/WishlistItemDeleteArgsSchema';
+import WishlistItemFindManyArgsSchema from 'schemas/outputTypeSchemas/WishlistItemFindManyArgsSchema';
+import WishlistItemUpdateArgsSchema from 'schemas/outputTypeSchemas/WishlistItemUpdateArgsSchema';
 import { WishlistAPI, WishlistCategoryAPI } from 'server/api/wishlist';
 import prisma from 'server/prisma';
 import { procedure, router } from 'server/trpc';
@@ -22,24 +16,16 @@ import {
 
 export const wishlistRouter = router({
   findMany: procedure
-    .input(WishlistItemFindManySchema)
+    .input(WishlistItemFindManyArgsSchema)
     .query(({ input }) => WishlistAPI.findMany(input)),
   create: procedure
-    .input(
-      WishlistItemCreateOneSchema.extend({
-        data: WishlistItemUncheckedCreateInputObjectSchema,
-      }),
-    )
+    .input(WishlistItemCreateArgsSchema)
     .mutation(({ input }) => WishlistAPI.create(input)),
   update: procedure
-    .input(
-      WishlistItemUpdateOneSchema.extend({
-        data: WishlistItemUncheckedUpdateInputObjectSchema,
-      }),
-    )
+    .input(WishlistItemUpdateArgsSchema)
     .mutation(({ input }) => WishlistAPI.update(input)),
   delete: procedure
-    .input(WishlistItemDeleteOneSchema)
+    .input(WishlistItemDeleteArgsSchema)
     .mutation(({ input }) => WishlistAPI.delete(input)),
   claim: procedure
     .input(zWishlistClaimPayload)
@@ -51,24 +37,16 @@ export const wishlistRouter = router({
 
 export const wishlistCategoryRouter = router({
   findMany: procedure
-    .input(WishlistCategoryFindManySchema)
+    .input(WishlistCategoryFindManyArgsSchema)
     .query(({ input }) => prisma.wishlistCategory.findMany(input)),
   create: procedure
-    .input(
-      WishlistCategoryCreateOneSchema.extend({
-        data: WishlistCategoryUncheckedCreateInputObjectSchema,
-      }),
-    )
+    .input(WishlistCategoryCreateArgsSchema)
     .mutation(({ input }) => WishlistCategoryAPI.create(input)),
   update: procedure
-    .input(
-      WishlistCategoryUpdateOneSchema.extend({
-        data: WishlistCategoryUncheckedUpdateInputObjectSchema,
-      }),
-    )
+    .input(WishlistCategoryUpdateArgsSchema)
     .mutation(({ input }) => WishlistCategoryAPI.update(input)),
   delete: procedure
-    .input(WishlistCategoryDeleteOneSchema)
+    .input(WishlistCategoryDeleteArgsSchema)
     .mutation(({ input }) => WishlistCategoryAPI.delete(input)),
   count: procedure.query(() => WishlistCategoryAPI.count()),
 });

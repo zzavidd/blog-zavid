@@ -1,8 +1,6 @@
 import type { Components, Theme } from '@mui/material';
 import { css } from '@mui/material';
 
-import { darkPalette, lightPalette } from './Palette.styles';
-
 const components: Components<Theme> = {
   MuiAppBar: {
     defaultProps: {
@@ -108,10 +106,7 @@ const components: Components<Theme> = {
   MuiLink: {
     styleOverrides: {
       root: ({ theme }) => ({
-        color:
-          theme.palette.mode === 'light'
-            ? lightPalette.primary.main
-            : darkPalette.primary.main,
+        color: theme.palette.primary.main,
       }),
     },
   },
