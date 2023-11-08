@@ -4,27 +4,28 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import { useContext } from 'react';
 
-import { WishlistPageContext } from 'utils/contexts';
-import HandlerFactory from 'utils/handlers';
+import { useForm } from 'utils/hooks';
+
+import { WishlistContext } from '../../WishlistContext';
 
 export const PRICE_REGEX = new RegExp(/^\d+(\.\d{2})?$/);
 
 export default function PriceField() {
-  const [context, setContext] = React.useContext(WishlistPageContext);
-  const { wishlistItemRequest } = context;
-  const Handlers = HandlerFactory(setContext, 'wishlistItemRequest');
+  const [context] = useContext(WishlistContext);
+  const { onTextChange } = useForm(WishlistContext, 'wishlistItemRequest');
 
+  const { wishlistItemRequest } = context;
   const isPriceValid = assertPriceValid(wishlistItemRequest.price);
   return (
-    <FormControl>
+    <FormControl sx={{ flex: 1 }}>
       <TextField
         type={'text'}
         name={'price'}
         label={'Price:'}
         value={wishlistItemRequest.price}
-        onChange={Handlers.text}
+        onChange={onTextChange}
         error={!isPriceValid}
         helperText={isPriceValid ? '' : 'Invalid price'}
         InputProps={{

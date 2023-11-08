@@ -7,10 +7,11 @@ import { useContext } from 'react';
 import { ShadowHeader } from 'fragments/Shared/Header';
 
 import FilterForm from './Forms/FilterForm';
+import WishlistForm from './Forms/WishlistForm';
 import { TrayFormContent, WishlistContext } from './WishlistContext';
 
 const Forms: Record<TrayFormContent, React.ElementType> = {
-  // [TrayFormContent.WISHLIST_ITEM]: WishlistForm,
+  [TrayFormContent.WISHLIST_ITEM]: WishlistForm,
 
   // [TrayFormContent.CATEGORIES]:CategoryForm,
   [TrayFormContent.FILTERS]: FilterForm,

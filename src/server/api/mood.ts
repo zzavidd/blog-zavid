@@ -3,6 +3,10 @@ import type { Mood, Prisma } from '@prisma/client';
 import prisma from 'server/prisma';
 
 export default class MoodAPI {
+  public static find(args: Prisma.MoodFindFirstArgs): Promise<Mood | null> {
+    return prisma.mood.findFirst(args);
+  }
+
   public static findMany(args: Prisma.MoodFindManyArgs): Promise<Mood[]> {
     return prisma.mood.findMany(args);
   }

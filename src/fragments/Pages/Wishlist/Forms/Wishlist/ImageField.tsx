@@ -11,15 +11,11 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import ImmutabilityHelper from 'immutability-helper';
+import immutate from 'immutability-helper';
 import type { BaseSyntheticEvent } from 'react';
 import React, { useEffect } from 'react';
-import type { Fetcher } from 'swr';
-import useSWR from 'swr';
 
-import { WishlistPageContext } from 'utils/contexts';
-
-import * as Styles from '../WishlistForm.styles';
+import { WishlistContext } from '../../WishlistContext';
 
 const HELPER_TEXT = (
   <Typography variant={'caption'}>
@@ -28,7 +24,7 @@ const HELPER_TEXT = (
 );
 const ERROR_TEXT = 'Failed to fetch image. Is the URL valid?';
 
-const fetcher: Fetcher<string, string> = async (url) => {
+const fetcher = async (url: string) => {
   const res = await fetch(url);
   const blob = await res.blob();
   return new Promise((resolve, reject) => {
@@ -41,30 +37,13 @@ const fetcher: Fetcher<string, string> = async (url) => {
 
 export default function ImageField() {
   const [state, setState] = React.useState<ImageFieldState>({
+    image: null,
     error: undefined,
-    image: undefined,
-    shouldFetch: false,
     showHelperText: false,
   });
 
-  const [context, setContext] = React.useContext(WishlistPageContext);
+  const [context, setContext] = React.useContext(WishlistContext);
   const { wishlistItemRequest } = context;
-
-  const swrKey = state.shouldFetch ? state.image : null;
-  const { error: imageLoadError, isLoading: isImageLoading } = useSWR(
-    swrKey,
-    fetcher,
-    {
-      onSuccess: (data) => {
-        setState((current) => ({
-          ...current,
-          image: data,
-          shouldFetch: false,
-        }));
-      },
-    },
-  );
-  const isError = imageLoadError ?? state.error;
 
   useEffect(() => {
     setState((current) => ({ ...current, error: undefined }));
@@ -72,7 +51,7 @@ export default function ImageField() {
 
   function onImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     setContext((current) =>
-      ImmutabilityHelper(current, {
+      immutate(current, {
         wishlistItemRequest: {
           image: { $set: e.target.value },
         },
@@ -80,11 +59,19 @@ export default function ImageField() {
     );
   }
 
-  function loadImage() {
+  async function loadImage() {
+    const res = await fetch(wishlistItemRequest.image);
+    const blob = await res.blob();
+    const data = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img.src);
+      img.onerror = reject;
+      img.src = URL.createObjectURL(blob);
+    });
+
     setState((current) => ({
       ...current,
-      image: wishlistItemRequest.image,
-      shouldFetch: true,
+      image: data,
     }));
   }
 
@@ -95,9 +82,9 @@ export default function ImageField() {
     }));
   }
 
-  function onEnterPress(e: React.KeyboardEvent<HTMLInputElement>) {
+  async function onEnterPress(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
-      loadImage();
+      await loadImage();
     }
   }
 
@@ -129,12 +116,12 @@ export default function ImageField() {
     }
 
     return (
-      <Styles.ImagePreviewStack>
-        <Styles.RemoveImageButton onClick={removeImage}>
+      <Stack>
+        <IconButton onClick={removeImage}>
           <CloseIcon />
-        </Styles.RemoveImageButton>
-        <Styles.ImagePreview src={state.image} onError={onImageError} />
-      </Styles.ImagePreviewStack>
+        </IconButton>
+        <img src={state.image} onError={onImageError} />
+      </Stack>
     );
   }
 
@@ -183,8 +170,7 @@ export default function ImageField() {
 }
 
 interface ImageFieldState {
+  image: string | null;
   error: BaseSyntheticEvent | undefined;
-  image: string | undefined;
-  shouldFetch: boolean;
   showHelperText: boolean;
 }

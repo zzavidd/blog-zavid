@@ -22,31 +22,28 @@ import {
   Typography,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Priority, Visibility } from '@prisma/client';
+import { WishlistPriority, WishlistVisibility } from '@prisma/client';
 import dayjs from 'dayjs';
-import ImmutabilityHelper from 'immutability-helper';
-import React, { useContext, useState } from 'react';
-import * as SWR from 'swr';
-import { Route, TrayFormContent } from 'utils/constants';
-import HandlerFactory from 'utils/handlers';
-import { zWishlistItemUpsert } from 'utils/validations';
+import { default as ImmutabilityHelper } from 'immutability-helper';
+import { useSnackbar } from 'notistack';
+import React, { useContext } from 'react';
 
-import Contexts, { WishlistPageContext } from 'utils/contexts';
-import Utils from 'utils/functions';
+import { FormRow } from 'components/Form';
+import { useForm } from 'utils/hooks';
+import { trpc } from 'utils/trpc';
 
-import Styles from './Form.styles';
+import { TrayFormContent, WishlistContext } from '../WishlistContext';
+
 import CategoryField from './Wishlist/CategoryField';
-import ImageField from './Wishlist/ImageField';
 import PriceField from './Wishlist/PriceField';
-import ReferenceField from './Wishlist/ReferenceField';
 
 export default function WishlistForm() {
-  const [context, setContext] = useContext(WishlistPageContext);
-  const Handlers = HandlerFactory(setContext, 'wishlistItemRequest');
+  const [{ wishlistItemRequest }, setContext] = useContext(WishlistContext);
+  const { onTextChange, onDateChange } = useForm(
+    WishlistContext,
+    'wishlistItemRequest',
+  );
 
-  /**
-   * Switches to tray content to the category edit form.
-   */
   function switchToCategoryForm() {
     setContext((current) =>
       ImmutabilityHelper(current, {
@@ -55,197 +52,173 @@ export default function WishlistForm() {
     );
   }
 
-  const { wishlistItemRequest } = context;
   const purchaseDate = wishlistItemRequest.purchaseDate
     ? dayjs(wishlistItemRequest.purchaseDate)
     : null;
 
   return (
     <React.Fragment>
-      <Styles.Main spacing={5}>
-        <Styles.FormTitle variant={'h5'}>Add Wishlist Item</Styles.FormTitle>
-        <Styles.Fieldset>
-          <FormControl>
-            <TextField
-              name={'name'}
-              label={'Item name:'}
-              value={wishlistItemRequest.name}
-              onChange={Handlers.text}
-              placeholder={'Enter the name'}
-              required={true}
-              InputLabelProps={{ shrink: true }}
-            />
-          </FormControl>
-          <Styles.FormGroup row={true}>
-            <PriceField />
-            <FormControl>
-              <FormControl>
-                <InputLabel>Priority:</InputLabel>
-                <Select
-                  name={'priority'}
-                  label={'Priority:'}
-                  value={wishlistItemRequest.priority}
-                  onChange={Handlers.select}>
-                  {Object.values(Priority)
-                    .reverse()
-                    .map((option) => (
-                      <MenuItem value={option} key={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
-            </FormControl>
-          </Styles.FormGroup>
-          <Styles.FormGroup row={true}>
-            <FormControl>
-              <TextField
-                type={'number'}
-                name={'quantity'}
-                label={'Quantity:'}
-                value={wishlistItemRequest.quantity}
-                onChange={Handlers.number}
-                InputProps={{ inputProps: { min: 0 } }}
-              />
-            </FormControl>
-            <FormControl>
-              <InputLabel>Visibility:</InputLabel>
-              <Select
-                name={'visibility'}
-                label={'Visibility:'}
-                value={wishlistItemRequest.visibility}
-                onChange={Handlers.select}>
-                {Object.values(Visibility).map((option) => (
+      <Stack spacing={5} p={5}>
+        <Typography variant={'h3'}>Add Wishlist Item</Typography>
+        <TextField
+          name={'name'}
+          label={'Item name:'}
+          value={wishlistItemRequest.name}
+          onChange={onTextChange}
+          placeholder={'Enter the name'}
+          required={true}
+          InputLabelProps={{ shrink: true }}
+        />
+        <FormRow>
+          <PriceField />
+          <FormControl sx={{ flex: 1 }}>
+            <InputLabel>Priority:</InputLabel>
+            <Select
+              name={'priority'}
+              label={'Priority:'}
+              value={wishlistItemRequest.priority}
+              onChange={onTextChange}>
+              {Object.values(WishlistPriority)
+                .reverse()
+                .map((option) => (
                   <MenuItem value={option} key={option}>
                     {option}
                   </MenuItem>
                 ))}
-              </Select>
-            </FormControl>
-          </Styles.FormGroup>
-          <Styles.FormGroup row={true}>
-            <CategoryField />
-            <Button onClick={switchToCategoryForm}>
-              <Stack justifyContent={'center'} alignItems={'center'}>
-                <TuneIcon />
-                <Typography variant={'caption'} fontSize={10} noWrap={false}>
-                  Customise
-                  <br />
-                  categories
-                </Typography>
-              </Stack>
-            </Button>
-          </Styles.FormGroup>
-          <ReferenceField />
-          <ImageField />
-        </Styles.Fieldset>
-        <Divider />
-        <Styles.Fieldset>
-          <Stack spacing={5}>
-            <FormControlLabel
-              label={'Already purchased?'}
-              control={
-                <Checkbox
-                  checked={!!purchaseDate}
-                  onChange={() => {
-                    Handlers.date(
-                      purchaseDate ? null : dayjs(),
-                      'purchaseDate',
-                    );
-                  }}
-                />
-              }
-            />
-            {purchaseDate ? (
-              <FormControl>
-                <DatePicker
-                  label={'Date of purchase:'}
-                  value={purchaseDate}
-                  onChange={(value) => Handlers.date(value, 'purchaseDate')}
-                  disableFuture={true}
-                  format={'D MMMM YYYY'}
-                />
-              </FormControl>
-            ) : null}
-          </Stack>
-          <FormControl>
-            <TextField
-              name={'comments'}
-              label={'Comments'}
-              value={wishlistItemRequest.comments}
-              onChange={Handlers.text}
-              placeholder={'Add comments about this item...'}
-              rows={3}
-              multiline={true}
-              InputLabelProps={{ shrink: true }}
-            />
+            </Select>
           </FormControl>
-        </Styles.Fieldset>
+        </FormRow>
+        <FormRow>
+          <TextField
+            type={'number'}
+            name={'quantity'}
+            label={'Quantity:'}
+            value={wishlistItemRequest.quantity}
+            onChange={onTextChange}
+            InputProps={{ inputProps: { min: 0 } }}
+            sx={{ flex: 1 }}
+          />
+          <FormControl sx={{ flex: 1 }}>
+            <InputLabel>Visibility:</InputLabel>
+            <Select
+              name={'visibility'}
+              label={'Visibility:'}
+              value={wishlistItemRequest.visibility}
+              onChange={onTextChange}>
+              {Object.values(WishlistVisibility).map((option) => (
+                <MenuItem value={option} key={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </FormRow>
+        <FormRow>
+          <CategoryField />
+          <Button onClick={switchToCategoryForm}>
+            <Stack justifyContent={'center'} alignItems={'center'}>
+              <TuneIcon />
+              <Typography variant={'caption'} fontSize={10} noWrap={false}>
+                Customise
+                <br />
+                categories
+              </Typography>
+            </Stack>
+          </Button>
+        </FormRow>
+        {/* <ReferenceField />
+        <ImageField /> */}
+        <Divider />
+        <Stack spacing={5}>
+          <FormControlLabel
+            label={'Already purchased?'}
+            control={
+              <Checkbox
+                name={'purchaseDate'}
+                checked={!!purchaseDate}
+                onChange={() => onDateChange(purchaseDate ? null : dayjs())}
+              />
+            }
+          />
+          {purchaseDate ? (
+            <FormControl>
+              <DatePicker
+                label={'Date of purchase:'}
+                value={purchaseDate}
+                onChange={(value) => onDateChange(value)}
+                disableFuture={true}
+                format={'D MMMM YYYY'}
+              />
+            </FormControl>
+          ) : null}
+        </Stack>
+        <FormControl>
+          <TextField
+            name={'comments'}
+            label={'Comments'}
+            value={wishlistItemRequest.comments}
+            onChange={onTextChange}
+            placeholder={'Add comments about this item...'}
+            rows={3}
+            multiline={true}
+            InputLabelProps={{ shrink: true }}
+          />
+        </FormControl>
         <ReserveesList />
-      </Styles.Main>
+      </Stack>
       <FormFooter />
     </React.Fragment>
   );
 }
 
 function FormFooter() {
-  const [state, setState] = useState({ isRequestPending: false });
-  const [context, setContext] = useContext(WishlistPageContext);
-  const Snacks = useContext(Contexts.Snacks);
+  const [context, setContext] = useContext(WishlistContext);
+  const { enqueueSnackbar } = useSnackbar();
 
-  const { wishlistItemRequest } = context;
+  const trpcContext = trpc.useContext();
+  const { mutate: create, isLoading: isCreateLoading } =
+    trpc.wishlist.create.useMutation({
+      onSuccess: (wishlistItem) => {
+        void trpcContext.wishlist.findMany.refetch();
+        enqueueSnackbar(`You've successfully added "${wishlistItem.name}.".`, {
+          variant: 'success',
+        });
+        closeTray();
+      },
+      onError: (e) => {
+        enqueueSnackbar(e.message, { variant: 'error' });
+      },
+    });
+  const { mutate: update, isLoading: isUpdateLoading } =
+    trpc.wishlist.update.useMutation({
+      onSuccess: (wishlistItem) => {
+        void trpcContext.wishlist.findMany.refetch();
+        enqueueSnackbar(
+          `You've successfully updated "${wishlistItem.name}.".`,
+          {
+            variant: 'success',
+          },
+        );
+        closeTray();
+      },
+      onError: (e) => {
+        enqueueSnackbar(e.message, { variant: 'error' });
+      },
+    });
 
-  /**
-   * Submits the wishlist item.
-   */
-  async function submitWishlistItem() {
-    try {
-      setState({ isRequestPending: true });
-      const item = zWishlistItemUpsert.parse(wishlistItemRequest);
-
-      await Utils.request<ItemPayload.Create>(Route.Wishlist, {
-        method: 'POST',
-        body: { item },
-      });
-      await SWR.mutate(Route.Wishlist);
-      Snacks.success("You've successfully added a new wishlist item.");
-      closeTray();
-    } catch (e) {
-      Utils.handleError(e, Snacks);
-    } finally {
-      setState({ isRequestPending: false });
-    }
+  function createWishlistItem() {
+    create({ data: context.wishlistItemRequest });
   }
 
   /**
    * Updates the selected wishlist item.
    */
-  async function updateWishlistItem() {
-    try {
-      if (!context.selectedWishlistItem) {
-        throw new Error('No wishlist item to update.');
-      }
-
-      setState({ isRequestPending: true });
-      const item = zWishlistItemUpsert.parse(wishlistItemRequest);
-
-      await Utils.request<ItemPayload.Update>(Route.Wishlist, {
-        method: 'PUT',
-        body: {
-          id: context.selectedWishlistItem.id,
-          item,
-        },
-      });
-      await SWR.mutate(Route.Wishlist);
-      Snacks.success(
-        `You've successfully edited '${wishlistItemRequest.name}'.`,
-      );
-      closeTray();
-    } catch (e) {
-      Utils.handleError(e, Snacks);
-    } finally {
-      setState({ isRequestPending: false });
-    }
+  function updateWishlistItem() {
+    if (!context.selectedWishlistItem) return;
+    update({
+      data: context.wishlistItemRequest,
+      where: { id: context.selectedWishlistItem.id },
+    });
   }
 
   function closeTray() {
@@ -255,34 +228,32 @@ function FormFooter() {
   }
 
   return (
-    <Styles.FormFooterButtonGroup>
-      <ButtonGroup fullWidth={true}>
-        {context.selectedWishlistItem === null ? (
-          <LoadingButton
-            variant={'contained'}
-            onClick={submitWishlistItem}
-            loading={state.isRequestPending}
-            loadingIndicator={'Submitting...'}>
-            Submit
-          </LoadingButton>
-        ) : (
-          <LoadingButton
-            variant={'contained'}
-            onClick={updateWishlistItem}
-            disabled={!context.selectedWishlistItem}
-            loading={state.isRequestPending}
-            loadingIndicator={'Updating...'}>
-            Update
-          </LoadingButton>
-        )}
-        <Button onClick={closeTray}>Close</Button>
-      </ButtonGroup>
-    </Styles.FormFooterButtonGroup>
+    <ButtonGroup fullWidth={true}>
+      {context.selectedWishlistItem === null ? (
+        <LoadingButton
+          variant={'contained'}
+          onClick={createWishlistItem}
+          loading={isCreateLoading}
+          loadingIndicator={'Submitting...'}>
+          Submit
+        </LoadingButton>
+      ) : (
+        <LoadingButton
+          variant={'contained'}
+          onClick={updateWishlistItem}
+          disabled={!context.selectedWishlistItem}
+          loading={isUpdateLoading}
+          loadingIndicator={'Updating...'}>
+          Update
+        </LoadingButton>
+      )}
+      <Button onClick={closeTray}>Close</Button>
+    </ButtonGroup>
   );
 }
 
 function ReserveesList() {
-  const [{ wishlistItemRequest }, setContext] = useContext(WishlistPageContext);
+  const [{ wishlistItemRequest }, setContext] = useContext(WishlistContext);
   const reservees = wishlistItemRequest.reservees as WishlistReservees;
 
   function onDeleteClick(email: string) {

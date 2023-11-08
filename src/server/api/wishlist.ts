@@ -3,22 +3,28 @@ import type { Prisma, WishlistCategory, WishlistItem } from '@prisma/client';
 import prisma from 'server/prisma';
 
 export class WishlistAPI {
+  public static find(
+    args: Prisma.WishlistItemFindFirstArgs,
+  ): Promise<WishlistItem | null> {
+    return prisma.wishlistItem.findFirst(args);
+  }
+
   public static findMany(
     args: Prisma.WishlistItemFindManyArgs,
   ): Promise<WishlistItem[]> {
     return prisma.wishlistItem.findMany(args);
   }
 
-  public static async create(
+  public static create(
     args: Prisma.WishlistItemCreateArgs,
-  ): Promise<void> {
-    await prisma.wishlistItem.create(args);
+  ): Promise<WishlistItem> {
+    return prisma.wishlistItem.create(args);
   }
 
-  public static async update(
+  public static update(
     args: Prisma.WishlistItemUpdateArgs,
-  ): Promise<void> {
-    await prisma.wishlistItem.update(args);
+  ): Promise<WishlistItem> {
+    return prisma.wishlistItem.update(args);
   }
 
   public static async delete(

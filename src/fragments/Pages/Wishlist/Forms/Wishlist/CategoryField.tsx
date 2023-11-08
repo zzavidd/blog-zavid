@@ -1,5 +1,4 @@
 import CheckIcon from '@mui/icons-material/Check';
-import type { SelectChangeEvent } from '@mui/material';
 import {
   FormControl,
   InputLabel,
@@ -7,37 +6,37 @@ import {
   ListItemText,
   MenuItem,
   Select,
+  type SelectChangeEvent,
 } from '@mui/material';
-import ImmutabilityHelper from 'immutability-helper';
-import React from 'react';
+import immutate from 'immutability-helper';
+import { useContext } from 'react';
 
-import { WishlistPageContext } from 'utils/contexts';
+import { WishlistContext } from '../../WishlistContext';
 
 const NONE_ID = '0';
 
 export default function CategoryField() {
-  const [context, setContext] = React.useContext(WishlistPageContext);
+  const [context, setContext] = useContext(WishlistContext);
   const { categoryId } = context.wishlistItemRequest;
 
   const categories = useCategoryOptions();
-  const categoriesById = useCategoriesById();
 
   function onCategorySelect(e: SelectChangeEvent) {
     const { value } = e.target;
     const categoryId = value ? parseInt(value) : null;
     setContext((current) =>
-      ImmutabilityHelper(current, {
+      immutate(current, {
         wishlistItemRequest: { categoryId: { $set: categoryId } },
       }),
     );
   }
 
-  function renderValue(value: string) {
-    return categoriesById.get(String(value)) || 'None';
+  function renderValue(val: string) {
+    return categories.find(({ value }) => value === val)?.label;
   }
 
   return (
-    <FormControl>
+    <FormControl sx={{ flex: 1 }}>
       <InputLabel shrink={true}>Category:</InputLabel>
       <Select
         name={'categoryId'}
@@ -62,22 +61,12 @@ export default function CategoryField() {
 }
 
 function useCategoryOptions(): { label: string; value: string }[] {
-  const [context] = React.useContext(WishlistPageContext);
-  const options = Object.entries(context.categories)
-    .map(([id, { name }]) => ({
+  const [context] = useContext(WishlistContext);
+  const options = Object.values(context.categories)
+    .map(({ id, name }) => ({
       label: name,
       value: String(id),
     }))
     .sort((a, b) => a.label.localeCompare(b.label));
   return [{ label: 'None', value: NONE_ID }, ...options];
-}
-
-function useCategoriesById(): Map<string, string> {
-  const [context] = React.useContext(WishlistPageContext);
-  const categories = new Map();
-  categories.set('', 'None');
-  Object.entries(context.categories).forEach(([id, { name }]) => {
-    categories.set(id, name);
-  });
-  return categories;
 }
