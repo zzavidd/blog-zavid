@@ -1,15 +1,12 @@
-import { z } from 'zod';
-
 import {
   WishlistCategoryCreateArgsSchema,
   WishlistCategoryDeleteArgsSchema,
   WishlistCategoryFindManyArgsSchema,
   WishlistCategoryUpdateArgsSchema,
-  WishlistItemCreateInputSchema,
+  WishlistItemCreateArgsSchema,
   WishlistItemDeleteArgsSchema,
   WishlistItemFindManyArgsSchema,
-  WishlistItemUpdateInputSchema,
-  WishlistItemWhereUniqueInputSchema,
+  WishlistItemUpdateArgsSchema,
 } from 'schemas';
 import { WishlistAPI, WishlistCategoryAPI } from 'server/api/wishlist';
 import prisma from 'server/prisma';
@@ -24,19 +21,10 @@ export const wishlistRouter = router({
     .input(WishlistItemFindManyArgsSchema)
     .query(({ input }) => WishlistAPI.findMany(input)),
   create: procedure
-    .input(
-      z.object({
-        data: WishlistItemCreateInputSchema,
-      }),
-    )
+    .input(WishlistItemCreateArgsSchema)
     .mutation(({ input }) => WishlistAPI.create(input)),
   update: procedure
-    .input(
-      z.object({
-        data: WishlistItemUpdateInputSchema,
-        where: WishlistItemWhereUniqueInputSchema,
-      }),
-    )
+    .input(WishlistItemUpdateArgsSchema)
     .mutation(({ input }) => WishlistAPI.update(input)),
   delete: procedure
     .input(WishlistItemDeleteArgsSchema)

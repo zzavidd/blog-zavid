@@ -1,6 +1,6 @@
 import { WishlistVisibility, type WishlistItem } from '@prisma/client';
 import { useSession } from 'next-auth/react';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 
 export const WishlistItemContext = React.createContext<WishlistItem>(
   {} as WishlistItem,
@@ -32,21 +32,4 @@ export function useWishlistItemState() {
     isPurchased,
     allQuantityClaimed,
   };
-}
-
-/**
- * Hooks for checking if images have been loaded.
- * @param src The image source.
- * @returns True if the image has loaded.
- */
-export function useImageLoaded(src: string): boolean {
-  const [isLoaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const img = new Image();
-    img.onload = () => setLoaded(true);
-    img.src = src;
-  }, [src]);
-
-  return isLoaded;
 }

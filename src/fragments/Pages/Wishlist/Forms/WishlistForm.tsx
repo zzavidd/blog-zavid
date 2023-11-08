@@ -207,7 +207,14 @@ function FormFooter() {
     });
 
   function createWishlistItem() {
-    create({ data: context.wishlistItemRequest });
+    const { price, quantity } = context.wishlistItemRequest;
+    create({
+      data: {
+        ...context.wishlistItemRequest,
+        price: Number(price),
+        quantity: Number(quantity),
+      },
+    });
   }
 
   /**
@@ -215,8 +222,13 @@ function FormFooter() {
    */
   function updateWishlistItem() {
     if (!context.selectedWishlistItem) return;
+    const { price, quantity } = context.wishlistItemRequest;
     update({
-      data: context.wishlistItemRequest,
+      data: {
+        ...context.wishlistItemRequest,
+        price: Number(price),
+        quantity: Number(quantity),
+      },
       where: { id: context.selectedWishlistItem.id },
     });
   }

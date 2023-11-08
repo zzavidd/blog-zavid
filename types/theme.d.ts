@@ -13,11 +13,11 @@ declare module '@mui/material/styles' {
   }
 
   interface Palette {
-    card?: CardColors;
+    card: CardColors;
   }
 
   interface PaletteOptions {
-    card?: CardColors;
+    card: CardColors;
   }
 
   interface ZIndex {

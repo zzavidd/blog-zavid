@@ -12,7 +12,6 @@ import React, { useContext } from 'react';
 
 import {
   WishlistItemContext,
-  useImageLoaded,
   useWishlistItemState,
 } from './WishlistItem.utils';
 import ItemBody from './WishlistItemBody';
@@ -35,7 +34,6 @@ export default WishlistGridItem;
 function WishlistGridItemContent() {
   const wishlistItem = useContext(WishlistItemContext);
   const { allQuantityClaimed } = useWishlistItemState();
-  const imageLoaded = useImageLoaded(wishlistItem.image);
 
   const cardContentSx: SxProps<Theme> = {
     backgroundColor: (t) =>
@@ -53,10 +51,6 @@ function WishlistGridItemContent() {
     flexDirection: 'column',
     height: '100%',
   };
-
-  if (wishlistItem.image && !imageLoaded) {
-    return <PlaceholderItem />;
-  }
 
   return (
     <Card sx={cardContentSx}>

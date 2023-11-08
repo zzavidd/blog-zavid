@@ -32,7 +32,11 @@ export default function ItemBody() {
         <PriorityChip />
         <VisibilityIndicator />
       </Stack>
-      <Typography color={'primary.light'} fontWeight={800}>
+      <Typography
+        color={'primary.light'}
+        fontWeight={800}
+        lineHeight={1.4}
+        pb={1}>
         {wishlistItem.name}
       </Typography>
       <PriceAndCategory />
@@ -102,7 +106,11 @@ function PriceAndCategory() {
           <Typography fontSize={11} fontWeight={800}>
             &bull;
           </Typography>
-          <Typography variant={'overline'} fontSize={11} fontWeight={800}>
+          <Typography
+            variant={'overline'}
+            fontSize={11}
+            fontWeight={800}
+            lineHeight={1.5}>
             {context.categories[wishlistItem.categoryId].name}
           </Typography>
         </React.Fragment>
