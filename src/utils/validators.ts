@@ -1,6 +1,8 @@
 import { PostType } from '@prisma/client';
 import { z } from 'zod';
 
+import { WishlistItemSchema } from 'schemas';
+
 export const zWishlistClaimPayload = z.object({
   id: z.number(),
   email: z.string().email({ message: 'Provide a valid email address.' }),
@@ -11,6 +13,11 @@ export const zWishlistClaimPayload = z.object({
 export const zWishlistUnclaimPayload = z.object({
   id: z.number(),
   email: z.string().email(),
+});
+
+export const zWishlistForm = WishlistItemSchema.omit({ id: true }).extend({
+  name: z.string().nonempty(),
+  price: z.coerce.number(),
 });
 
 export const zSubscribeForm = z.object({

@@ -1,13 +1,15 @@
 import { DiaryStatus } from '@prisma/client';
 import { z } from 'zod';
 
-import DiaryCategoryCreateArgsSchema from 'schemas/outputTypeSchemas/DiaryCategoryCreateArgsSchema';
-import DiaryCategoryDeleteArgsSchema from 'schemas/outputTypeSchemas/DiaryCategoryDeleteArgsSchema';
-import DiaryCategoryUpdateArgsSchema from 'schemas/outputTypeSchemas/DiaryCategoryUpdateArgsSchema';
-import DiaryCreateArgsSchema from 'schemas/outputTypeSchemas/DiaryCreateArgsSchema';
-import DiaryFindFirstArgsSchema from 'schemas/outputTypeSchemas/DiaryFindFirstArgsSchema';
-import DiaryFindManyArgsSchema from 'schemas/outputTypeSchemas/DiaryFindManyArgsSchema';
-import DiaryUpdateArgsSchema from 'schemas/outputTypeSchemas/DiaryUpdateArgsSchema';
+import {
+  DiaryCategoryCreateArgsSchema,
+  DiaryCategoryDeleteArgsSchema,
+  DiaryCategoryUpdateArgsSchema,
+  DiaryCreateArgsSchema,
+  DiaryFindFirstArgsSchema,
+  DiaryFindManyArgsSchema,
+  DiaryUpdateArgsSchema,
+} from 'schemas';
 import DiaryAPI from 'server/api/diary';
 import DiaryCategoryAPI from 'server/api/diaryCategory';
 import { procedure, router } from 'server/trpc';

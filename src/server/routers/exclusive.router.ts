@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
-import ExclusiveCreateArgsSchema from 'schemas/outputTypeSchemas/ExclusiveCreateArgsSchema';
-import ExclusiveDeleteArgsSchema from 'schemas/outputTypeSchemas/ExclusiveDeleteArgsSchema';
-import ExclusiveFindFirstArgsSchema from 'schemas/outputTypeSchemas/ExclusiveFindFirstArgsSchema';
-import ExclusiveFindManyArgsSchema from 'schemas/outputTypeSchemas/ExclusiveFindManyArgsSchema';
-import ExclusiveUpdateArgsSchema from 'schemas/outputTypeSchemas/ExclusiveUpdateArgsSchema';
+import {
+  ExclusiveCreateArgsSchema,
+  ExclusiveDeleteArgsSchema,
+  ExclusiveFindFirstArgsSchema,
+  ExclusiveFindManyArgsSchema,
+  ExclusiveUpdateArgsSchema,
+} from 'schemas';
 import ExclusiveAPI from 'server/api/exclusives';
 import { procedure, router } from 'server/trpc';
 import { zNotifyOptions } from 'utils/validators';

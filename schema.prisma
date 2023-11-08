@@ -8,7 +8,7 @@ generator zod {
   provider         = "zod-prisma-types"
   output           = "./src/schemas"
   useMultipleFiles = true
-  writeBarrelFiles = false
+  writeBarrelFiles = true
   addIncludeType   = true
   addSelectType    = true
 }

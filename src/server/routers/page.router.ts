@@ -1,7 +1,9 @@
-import PageDeleteArgsSchema from 'schemas/outputTypeSchemas/PageDeleteArgsSchema';
-import PageFindFirstArgsSchema from 'schemas/outputTypeSchemas/PageFindFirstArgsSchema';
-import PageFindManyArgsSchema from 'schemas/outputTypeSchemas/PageFindManyArgsSchema';
-import PageUpdateArgsSchema from 'schemas/outputTypeSchemas/PageUpdateArgsSchema';
+import {
+  PageDeleteArgsSchema,
+  PageFindFirstArgsSchema,
+  PageFindManyArgsSchema,
+  PageUpdateArgsSchema,
+} from 'schemas';
 import PageAPI from 'server/api/pages';
 import { procedure, router } from 'server/trpc';
 

@@ -1,7 +1,9 @@
-import MoodCreateArgsSchema from 'schemas/outputTypeSchemas/MoodCreateArgsSchema';
-import MoodDeleteArgsSchema from 'schemas/outputTypeSchemas/MoodDeleteArgsSchema';
-import MoodFindManyArgsSchema from 'schemas/outputTypeSchemas/MoodFindManyArgsSchema';
-import MoodUpdateArgsSchema from 'schemas/outputTypeSchemas/MoodUpdateArgsSchema';
+import {
+  MoodCreateArgsSchema,
+  MoodDeleteArgsSchema,
+  MoodFindManyArgsSchema,
+  MoodUpdateArgsSchema,
+} from 'schemas';
 import MoodAPI from 'server/api/mood';
 import { procedure, router } from 'server/trpc';
 

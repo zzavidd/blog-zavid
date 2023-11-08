@@ -1,10 +1,12 @@
 import { PostType } from '@prisma/client';
 import { z } from 'zod';
 
-import PostCreateArgsSchema from 'schemas/outputTypeSchemas/PostCreateArgsSchema';
-import PostFindFirstArgsSchema from 'schemas/outputTypeSchemas/PostFindFirstArgsSchema';
-import PostFindManyArgsSchema from 'schemas/outputTypeSchemas/PostFindManyArgsSchema';
-import PostUpdateArgsSchema from 'schemas/outputTypeSchemas/PostUpdateArgsSchema';
+import {
+  PostCreateArgsSchema,
+  PostFindFirstArgsSchema,
+  PostFindManyArgsSchema,
+  PostUpdateArgsSchema,
+} from 'schemas';
 import PostAPI from 'server/api/posts';
 import { procedure, router } from 'server/trpc';
 import { zEmailPreviewType, zFindOptions } from 'utils/validators';

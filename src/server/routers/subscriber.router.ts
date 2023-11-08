@@ -1,8 +1,10 @@
-import SubscriberCreateArgsSchema from 'schemas/outputTypeSchemas/SubscriberCreateArgsSchema';
-import SubscriberDeleteArgsSchema from 'schemas/outputTypeSchemas/SubscriberDeleteArgsSchema';
-import SubscriberFindFirstArgsSchema from 'schemas/outputTypeSchemas/SubscriberFindFirstArgsSchema';
-import SubscriberFindManyArgsSchema from 'schemas/outputTypeSchemas/SubscriberFindManyArgsSchema';
-import SubscriberUpdateArgsSchema from 'schemas/outputTypeSchemas/SubscriberUpdateArgsSchema';
+import {
+  SubscriberCreateArgsSchema,
+  SubscriberDeleteArgsSchema,
+  SubscriberFindFirstArgsSchema,
+  SubscriberFindManyArgsSchema,
+  SubscriberUpdateArgsSchema,
+} from 'schemas';
 import SubscriberAPI from 'server/api/subscribers';
 import { procedure, router } from 'server/trpc';
 

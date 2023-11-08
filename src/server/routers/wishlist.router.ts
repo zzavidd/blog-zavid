@@ -1,11 +1,16 @@
-import WishlistCategoryCreateArgsSchema from 'schemas/outputTypeSchemas/WishlistCategoryCreateArgsSchema';
-import WishlistCategoryDeleteArgsSchema from 'schemas/outputTypeSchemas/WishlistCategoryDeleteArgsSchema';
-import WishlistCategoryFindManyArgsSchema from 'schemas/outputTypeSchemas/WishlistCategoryFindManyArgsSchema';
-import WishlistCategoryUpdateArgsSchema from 'schemas/outputTypeSchemas/WishlistCategoryUpdateArgsSchema';
-import WishlistItemCreateArgsSchema from 'schemas/outputTypeSchemas/WishlistItemCreateArgsSchema';
-import WishlistItemDeleteArgsSchema from 'schemas/outputTypeSchemas/WishlistItemDeleteArgsSchema';
-import WishlistItemFindManyArgsSchema from 'schemas/outputTypeSchemas/WishlistItemFindManyArgsSchema';
-import WishlistItemUpdateArgsSchema from 'schemas/outputTypeSchemas/WishlistItemUpdateArgsSchema';
+import { z } from 'zod';
+
+import {
+  WishlistCategoryCreateArgsSchema,
+  WishlistCategoryDeleteArgsSchema,
+  WishlistCategoryFindManyArgsSchema,
+  WishlistCategoryUpdateArgsSchema,
+  WishlistItemCreateInputSchema,
+  WishlistItemDeleteArgsSchema,
+  WishlistItemFindManyArgsSchema,
+  WishlistItemUpdateInputSchema,
+  WishlistItemWhereUniqueInputSchema,
+} from 'schemas';
 import { WishlistAPI, WishlistCategoryAPI } from 'server/api/wishlist';
 import prisma from 'server/prisma';
 import { procedure, router } from 'server/trpc';
@@ -19,10 +24,19 @@ export const wishlistRouter = router({
     .input(WishlistItemFindManyArgsSchema)
     .query(({ input }) => WishlistAPI.findMany(input)),
   create: procedure
-    .input(WishlistItemCreateArgsSchema)
+    .input(
+      z.object({
+        data: WishlistItemCreateInputSchema,
+      }),
+    )
     .mutation(({ input }) => WishlistAPI.create(input)),
   update: procedure
-    .input(WishlistItemUpdateArgsSchema)
+    .input(
+      z.object({
+        data: WishlistItemUpdateInputSchema,
+        where: WishlistItemWhereUniqueInputSchema,
+      }),
+    )
     .mutation(({ input }) => WishlistAPI.update(input)),
   delete: procedure
     .input(WishlistItemDeleteArgsSchema)
