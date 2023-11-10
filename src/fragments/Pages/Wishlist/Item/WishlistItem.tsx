@@ -18,16 +18,15 @@ import ItemBody from './WishlistItemBody';
 import ItemFooter from './WishlistItemFooter';
 import { ItemImage } from './WishlistItemImage';
 
-const WishlistGridItem = React.memo(
-  function WishlistGridItem({ wishlistItem }: WishlistGridItemProps) {
-    return (
-      <WishlistItemContext.Provider value={wishlistItem}>
-        <WishlistGridItemContent />
-      </WishlistItemContext.Provider>
-    );
-  },
-  (a, b) => a.wishlistItem.id === b.wishlistItem.id,
-);
+const WishlistGridItem = React.memo(function WishlistGridItem({
+  wishlistItem,
+}: WishlistGridItemProps) {
+  return (
+    <WishlistItemContext.Provider value={wishlistItem}>
+      <WishlistGridItemContent />
+    </WishlistItemContext.Provider>
+  );
+});
 
 export default WishlistGridItem;
 

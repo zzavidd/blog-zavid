@@ -1,8 +1,12 @@
+import { MoreVert } from '@mui/icons-material';
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {
   Box,
   CardContent,
+  IconButton,
+  Menu,
+  MenuItem,
   Stack,
   Tooltip,
   Typography,
@@ -10,9 +14,17 @@ import {
   useTheme,
   type PaletteColor,
 } from '@mui/material';
+import immutate from 'immutability-helper';
+import {
+  bindMenu,
+  bindTrigger,
+  usePopupState,
+} from 'material-ui-popup-state/hooks';
 import React, { useContext } from 'react';
 
-import { WishlistContext } from '../WishlistContext';
+import { AdminLock } from 'fragments/AdminGateway';
+
+import { TrayFormContent, WishlistContext } from '../WishlistContext';
 
 import {
   WishlistItemContext,
@@ -31,6 +43,7 @@ export default function ItemBody() {
       <Stack alignItems={'flex-end'} pl={2} sx={{ float: 'right' }}>
         <PriorityChip />
         <VisibilityIndicator />
+        <AdminMenuTrigger />
       </Stack>
       <Typography
         color={'primary.light'}
@@ -183,5 +196,57 @@ function Comments() {
       <SmsOutlinedIcon sx={{ float: 'left', fontSize: 14, mr: 1 }} />
       {wishlistItem.comments}
     </Typography>
+  );
+}
+
+function AdminMenuTrigger() {
+  const [, setContext] = useContext(WishlistContext);
+  const wishlistItem = useContext(WishlistItemContext);
+
+  const popupState = usePopupState({
+    variant: 'popover',
+    popupId: 'wishlistItemMenu',
+  });
+
+  /**
+   * Opens the form tray with wishlist form when clicked.
+   */
+  function onEditButtonClick() {
+    setContext((current) =>
+      immutate(current, {
+        trayFormContent: { $set: TrayFormContent.WISHLIST_ITEM },
+        selectedWishlistItem: { $set: wishlistItem },
+        wishlistItemRequest: {
+          $set: {
+            ...wishlistItem,
+            reservees: wishlistItem.reservees as WishlistReservees,
+          },
+        },
+      }),
+    );
+    popupState.close();
+  }
+
+  const menuItems = [
+    { label: 'Edit', onClick: onEditButtonClick },
+    { label: 'Delete', onClick: onEditButtonClick },
+  ];
+
+  return (
+    <AdminLock>
+      <IconButton {...bindTrigger(popupState)} sx={{ mt: 2 }}>
+        <MoreVert />
+      </IconButton>
+      <Menu {...bindMenu(popupState)}>
+        {menuItems.map(({ label, onClick }) => (
+          <MenuItem
+            onClick={onClick}
+            sx={{ minWidth: (t) => t.spacing(10), p: 4 }}
+            key={label}>
+            {label}
+          </MenuItem>
+        ))}
+      </Menu>
+    </AdminLock>
   );
 }

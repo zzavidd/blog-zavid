@@ -106,8 +106,8 @@ function SortSection() {
   }
 
   return (
-    <Stack>
-      <FormControl>
+    <Stack direction={'row'} columnGap={2}>
+      <FormControl sx={{ flex: 1 }}>
         <InputLabel>Sort by:</InputLabel>
         <Select
           label={'Sort by:'}
@@ -122,8 +122,9 @@ function SortSection() {
       </FormControl>
       <Button
         onClick={onSortOrderChange}
-        startIcon={sortOrder === 'asc' ? <NorthIcon /> : <SouthIcon />}>
-        {isAscending ? 'Ascending order' : 'Descending order'}
+        startIcon={sortOrder === 'asc' ? <NorthIcon /> : <SouthIcon />}
+        variant={'contained'}>
+        {isAscending ? 'ASC' : 'DESC'}
       </Button>
     </Stack>
   );

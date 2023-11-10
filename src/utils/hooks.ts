@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import type dayjs from 'dayjs';
-import immutate from 'immutability-helper';
+import immutate, { type Spec } from 'immutability-helper';
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
 
@@ -23,17 +23,21 @@ export function useForm<T>(
 
   function onTextChange(e: ChangeEvent) {
     const { name, value } = e.target;
-    setContext((c) => immutate(c, { [key]: { [name]: { $set: value } } }));
+    setContext((c) =>
+      immutate(c, { [key]: { [name]: { $set: value } } } as Spec<T>),
+    );
   }
 
   function onCheckboxChange(e: ChangeEvent, checked: boolean) {
     const { name } = e.target;
-    setContext((c) => immutate(c, { [key]: { [name]: { $set: checked } } }));
+    setContext((c) =>
+      immutate(c, { [key]: { [name]: { $set: checked } } } as Spec<T>),
+    );
   }
 
   function onDateChange(date: dayjs.Dayjs | null) {
     setContext((c) =>
-      immutate(c, { [key]: { date: { $set: date?.toDate() } } }),
+      immutate(c, { [key]: { date: { $set: date?.toDate() } } } as Spec<T>),
     );
   }
 

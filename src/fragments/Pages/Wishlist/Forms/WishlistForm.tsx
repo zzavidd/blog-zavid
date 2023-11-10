@@ -16,6 +16,7 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
+  Paper,
   Select,
   Stack,
   TextField,
@@ -38,7 +39,7 @@ import CategoryField from './Wishlist/CategoryField';
 import PriceField from './Wishlist/PriceField';
 
 export default function WishlistForm() {
-  const [{ wishlistItemRequest }, setContext] = useContext(WishlistContext);
+  const [context, setContext] = useContext(WishlistContext);
   const { onTextChange, onDateChange } = useForm(
     WishlistContext,
     'wishlistItemRequest',
@@ -52,14 +53,17 @@ export default function WishlistForm() {
     );
   }
 
+  const { selectedWishlistItem, wishlistItemRequest } = context;
   const purchaseDate = wishlistItemRequest.purchaseDate
     ? dayjs(wishlistItemRequest.purchaseDate)
     : null;
 
   return (
     <React.Fragment>
-      <Stack spacing={5} p={5}>
-        <Typography variant={'h3'}>Add Wishlist Item</Typography>
+      <Stack spacing={5} p={5} flex={1}>
+        <Typography variant={'h3'}>
+          {selectedWishlistItem ? 'Edit' : 'Add'} Wishlist Item
+        </Typography>
         <TextField
           name={'name'}
           label={'Item name:'}
@@ -217,9 +221,6 @@ function FormFooter() {
     });
   }
 
-  /**
-   * Updates the selected wishlist item.
-   */
   function updateWishlistItem() {
     if (!context.selectedWishlistItem) return;
     const { price, quantity } = context.wishlistItemRequest;
@@ -240,27 +241,37 @@ function FormFooter() {
   }
 
   return (
-    <ButtonGroup fullWidth={true}>
-      {context.selectedWishlistItem === null ? (
-        <LoadingButton
-          variant={'contained'}
-          onClick={createWishlistItem}
-          loading={isCreateLoading}
-          loadingIndicator={'Submitting...'}>
-          Submit
-        </LoadingButton>
-      ) : (
-        <LoadingButton
-          variant={'contained'}
-          onClick={updateWishlistItem}
-          disabled={!context.selectedWishlistItem}
-          loading={isUpdateLoading}
-          loadingIndicator={'Updating...'}>
-          Update
-        </LoadingButton>
-      )}
-      <Button onClick={closeTray}>Close</Button>
-    </ButtonGroup>
+    <Paper
+      elevation={7}
+      sx={{
+        borderRadius: 0,
+        position: 'sticky',
+        bottom: 0,
+        p: 3,
+        top: 'auto',
+      }}>
+      <ButtonGroup fullWidth={true}>
+        {context.selectedWishlistItem ? (
+          <LoadingButton
+            variant={'contained'}
+            onClick={updateWishlistItem}
+            disabled={!context.selectedWishlistItem}
+            loading={isUpdateLoading}
+            loadingIndicator={'Updating...'}>
+            Update
+          </LoadingButton>
+        ) : (
+          <LoadingButton
+            variant={'contained'}
+            onClick={createWishlistItem}
+            loading={isCreateLoading}
+            loadingIndicator={'Submitting...'}>
+            Submit
+          </LoadingButton>
+        )}
+        <Button onClick={closeTray}>Close</Button>
+      </ButtonGroup>
+    </Paper>
   );
 }
 

@@ -12,7 +12,6 @@ import { TrayFormContent, WishlistContext } from './WishlistContext';
 
 const Forms: Record<TrayFormContent, React.ElementType> = {
   [TrayFormContent.WISHLIST_ITEM]: WishlistForm,
-
   // [TrayFormContent.CATEGORIES]:CategoryForm,
   [TrayFormContent.FILTERS]: FilterForm,
 };

@@ -8,7 +8,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import ImmutabilityHelper from 'immutability-helper';
+import immutate from 'immutability-helper';
 import { useContext, useMemo } from 'react';
 
 import { AdminLock } from 'fragments/AdminGateway';
@@ -36,8 +36,8 @@ export default function WishlistToolbar() {
             width={'100%'}>
             <WishlistStatus />
             <Stack direction={'row'} columnGap={3}>
-              <FilterSortButton />
               <AddItemButton />
+              <FilterSortButton />
             </Stack>
           </Stack>
         </Container>
@@ -100,7 +100,7 @@ function FilterSortButton() {
         ? null
         : TrayFormContent.FILTERS;
     setContext((current) =>
-      ImmutabilityHelper(current, {
+      immutate(current, {
         trayFormContent: {
           $set: content,
         },
@@ -133,7 +133,7 @@ function AddItemButton() {
    */
   function onAddButtonClick() {
     setContext((current) =>
-      ImmutabilityHelper(current, {
+      immutate(current, {
         trayFormContent: { $set: TrayFormContent.WISHLIST_ITEM },
         selectedWishlistItem: { $set: null },
         wishlistItemRequest: { $set: InitialWishlistState.wishlistItemRequest },
