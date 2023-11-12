@@ -11,6 +11,9 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    optimizePackageImports: ['devicons-react', '@mui/lab'],
+  },
   images: {
     domains:
       process.env.NEXT_PUBLIC_APP_ENV === 'production'
@@ -19,21 +22,9 @@ const config = {
     loader: 'custom',
     loaderFile: './image-optimiser.js',
   },
-  modularizeImports: {
-    'devicons-react': {
-      transform: 'devicons-react/lib/icons/{{member}}',
-    },
-    '@mui/icons-material': {
-      transform: '@mui/icons-material/{{member}}',
-    },
-    '@mui/lab': {
-      transform: '@mui/lab/{{member}}',
-    },
-  },
   output: 'standalone',
   poweredByHeader: false,
   reactStrictMode: true,
-  swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,
   },

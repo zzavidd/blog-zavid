@@ -26,7 +26,10 @@ const initialState: AppState = {
   },
   wishlist: {
     params: {
-      where: { visibility: { in: [WishlistVisibility.PUBLIC] } },
+      where: {
+        visibility: { in: [WishlistVisibility.PUBLIC] },
+        purchaseDate: null,
+      },
       orderBy: { createTime: 'desc' },
     },
   },

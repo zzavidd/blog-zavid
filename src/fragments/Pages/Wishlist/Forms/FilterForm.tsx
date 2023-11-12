@@ -13,6 +13,7 @@ import {
   ListItem,
   MenuItem,
   Paper,
+  Radio,
   Select,
   Stack,
   Typography,
@@ -24,6 +25,7 @@ import {
   type WishlistItem,
 } from '@prisma/client';
 import immutate from 'immutability-helper';
+import { isEqual } from 'lodash';
 import React, { useContext } from 'react';
 
 import { useIsAdmin } from 'utils/hooks';
@@ -137,11 +139,11 @@ function FilterSection() {
 
   const dispatch = useAppDispatch();
 
-  function onFilterChange(
+  function onCheckboxFilterChange(
     property: keyof Prisma.WishlistItemWhereInput,
-    value: string | number,
+    value: unknown,
   ) {
-    const filter = [...getFilter(where, property)];
+    const filter = [...getCheckboxFilter(where, property)];
     if (filter.includes(value)) {
       filter.splice(filter.indexOf(value), 1);
     } else {
@@ -159,9 +161,20 @@ function FilterSection() {
     );
   }
 
+  function onRadioFilterChange(
+    property: keyof Prisma.WishlistItemWhereInput,
+    value: unknown | null | undefined,
+  ) {
+    dispatch(
+      AppActions.setWishlistParams({
+        where: { [property]: { $set: value } },
+      }),
+    );
+  }
+
   return (
     <Stack spacing={4}>
-      {filters.map(({ group, options, property, adminOnly }) => {
+      {filters.map(({ group, options, property, adminOnly, type }) => {
         if (adminOnly && !isAdmin) return null;
         return (
           <Stack key={property}>
@@ -178,7 +191,30 @@ function FilterSection() {
             </Typography>
             <List sx={{ pl: 2 }}>
               {options.map(({ label, value }) => {
-                const checked = getFilter(where, property).includes(value);
+                if (type === 'radio') {
+                  const checked = isEqual(where?.[property], value);
+                  return (
+                    <ListItem disablePadding={true} key={label}>
+                      <FormControlLabel
+                        label={label}
+                        control={
+                          <Radio
+                            value={value}
+                            checked={checked}
+                            onChange={() =>
+                              onRadioFilterChange(property, value)
+                            }
+                            sx={{ px: 1, py: 2, mr: 1 }}
+                          />
+                        }
+                      />
+                    </ListItem>
+                  );
+                }
+
+                const checked = getCheckboxFilter(where, property).includes(
+                  value,
+                );
                 return (
                   <ListItem disablePadding={true} key={label}>
                     <FormControlLabel
@@ -187,7 +223,9 @@ function FilterSection() {
                         <Checkbox
                           value={value}
                           checked={checked}
-                          onChange={() => onFilterChange(property, value)}
+                          onChange={() =>
+                            onCheckboxFilterChange(property, value)
+                          }
                           sx={{ mr: 1 }}
                         />
                       }
@@ -212,6 +250,7 @@ function useFilters(): FilterGroup[] {
         .sort((a, b) => a[1].name.localeCompare(b[1].name))
         .map(([id, { name }]) => ({ label: name, value: Number(id) })),
       property: 'categoryId',
+      type: 'checkbox',
     },
     {
       group: 'Filter by Priority',
@@ -220,6 +259,7 @@ function useFilters(): FilterGroup[] {
         value: id,
       })),
       property: 'priority',
+      type: 'checkbox',
     },
     {
       group: 'Filter by Visibility',
@@ -229,14 +269,25 @@ function useFilters(): FilterGroup[] {
       })),
       property: 'visibility',
       adminOnly: true,
+      type: 'checkbox',
+    },
+    {
+      group: 'Filter by Purchase',
+      options: [
+        { label: 'All items', value: undefined },
+        { label: 'Not yet purchased', value: null },
+        { label: 'Only purchased', value: { not: null } },
+      ],
+      property: 'purchaseDate',
+      type: 'radio',
     },
   ];
 }
 
-function getFilter(
+function getCheckboxFilter(
   where: Prisma.WishlistItemWhereInput | undefined,
   property: keyof Prisma.WishlistItemWhereInput,
-): (string | number)[] {
+): unknown[] {
   if (!where) return [];
   const filter = where[property] as Prisma.IntFilter | Prisma.StringFilter;
   if (!filter) return [];
@@ -246,6 +297,7 @@ function getFilter(
 interface FilterGroup {
   group: string;
   property: keyof WishlistItem;
-  options: { label: string; value: string | number }[];
+  options: { label: string; value: unknown }[];
   adminOnly?: boolean;
+  type: 'checkbox' | 'radio';
 }
