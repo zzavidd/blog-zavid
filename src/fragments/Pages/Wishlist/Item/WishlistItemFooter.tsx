@@ -6,7 +6,7 @@ import { useContext } from 'react';
 
 import { trpc } from 'utils/trpc';
 
-import { TrayFormContent, WishlistContext } from '../WishlistContext';
+import { WishlistContext } from '../WishlistContext';
 
 import {
   WishlistItemContext,
@@ -22,25 +22,6 @@ export default function ItemFooter() {
    */
   function onVisitLink() {
     window.open(wishlistItem.href, '_blank', 'noopener,noreferrer');
-  }
-
-  /**
-   * Opens the form and populates fields with the information of the item clicked.
-   */
-  function onEdit() {
-    setContext((current) =>
-      immutate(current, {
-        trayFormContent: { $set: TrayFormContent.WISHLIST_ITEM },
-        selectedWishlistItem: { $set: wishlistItem },
-        wishlistItemRequest: {
-          $set: {
-            ...wishlistItem,
-            price: wishlistItem.price.toFixed(2) as unknown as number,
-            reservees: wishlistItem.reservees as WishlistReservees,
-          },
-        },
-      }),
-    );
   }
 
   /**
@@ -65,16 +46,6 @@ export default function ItemFooter() {
         ) : null}
         <ActionButton />
       </ButtonGroup>
-      {/* <AdminLock>
-        <Stack direction={'row'}>
-          <Button onClick={onEdit} startIcon={<EditIcon />}>
-            Edit
-          </Button>
-          <Button onClick={onDelete} color={'error'} startIcon={<DeleteIcon />}>
-            Delete
-          </Button>
-        </Stack>
-      </AdminLock> */}
     </CardActions>
   );
 }

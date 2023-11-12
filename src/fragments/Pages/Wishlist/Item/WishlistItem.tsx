@@ -1,14 +1,15 @@
+import { MoreVert } from '@mui/icons-material';
 import type { SxProps, Theme } from '@mui/material';
-import {
-  Card,
-  CardContent,
-  Skeleton,
-  Stack,
-  alpha,
-  useTheme,
-} from '@mui/material';
+import { Card, IconButton, Menu, MenuItem, Paper, alpha } from '@mui/material';
 import type { WishlistItem } from '@prisma/client';
+import immutate from 'immutability-helper';
+import { bindMenu, bindTrigger } from 'material-ui-popup-state';
+import { usePopupState } from 'material-ui-popup-state/hooks';
 import React, { useContext } from 'react';
+
+import { AdminLock } from 'fragments/AdminGateway';
+
+import { TrayFormContent, WishlistContext } from '../WishlistContext';
 
 import {
   WishlistItemContext,
@@ -49,10 +50,12 @@ function WishlistGridItemContent() {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    position: 'relative',
   };
 
   return (
     <Card sx={cardContentSx}>
+      <AdminMenuTrigger />
       <ItemImage />
       <ItemBody />
       <ItemFooter />
@@ -60,28 +63,65 @@ function WishlistGridItemContent() {
   );
 }
 
-export function PlaceholderItem() {
-  const theme = useTheme();
+function AdminMenuTrigger() {
+  const [, setContext] = useContext(WishlistContext);
+  const wishlistItem = useContext(WishlistItemContext);
+
+  const popupState = usePopupState({
+    variant: 'popover',
+    popupId: 'wishlistItemMenu',
+  });
+
+  /**
+   * Opens the form tray with wishlist form when clicked.
+   */
+  function onEditButtonClick() {
+    setContext((current) =>
+      immutate(current, {
+        trayFormContent: { $set: TrayFormContent.WISHLIST_ITEM },
+        selectedWishlistItem: { $set: wishlistItem },
+        wishlistItemRequest: {
+          $set: {
+            ...wishlistItem,
+            price: wishlistItem.price.toFixed(2) as unknown as number,
+            reservees: wishlistItem.reservees as WishlistReservees,
+          },
+        },
+      }),
+    );
+    popupState.close();
+  }
+
+  const menuItems = [
+    { label: 'Edit', onClick: onEditButtonClick },
+    { label: 'Delete', onClick: onEditButtonClick },
+  ];
+
   return (
-    <Card sx={{ height: '100%' }}>
-      <Skeleton variant={'rectangular'} height={theme.spacing(12)} />
-      <CardContent>
-        <Stack>
-          <Skeleton
-            variant={'text'}
-            height={theme.spacing(7)}
-            width={theme.spacing(11)}
-          />
-          <Skeleton variant={'text'} width={theme.spacing(10)} />
-          <Skeleton variant={'text'} width={theme.spacing(9)} />
-        </Stack>
-        <Skeleton
-          variant={'rounded'}
-          height={theme.spacing(6)}
-          width={'100%'}
-        />
-      </CardContent>
-    </Card>
+    <AdminLock>
+      <Paper>
+        <IconButton
+          {...bindTrigger(popupState)}
+          sx={{
+            mt: 2,
+            position: 'absolute',
+            right: (t) => t.spacing(2),
+            top: 0,
+          }}>
+          <MoreVert />
+        </IconButton>
+      </Paper>
+      <Menu {...bindMenu(popupState)}>
+        {menuItems.map(({ label, onClick }) => (
+          <MenuItem
+            onClick={onClick}
+            sx={{ minWidth: (t) => t.spacing(10), p: 4 }}
+            key={label}>
+            {label}
+          </MenuItem>
+        ))}
+      </Menu>
+    </AdminLock>
   );
 }
 

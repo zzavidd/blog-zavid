@@ -4,16 +4,23 @@ import {
   type SvgIconComponent,
 } from '@mui/icons-material';
 import {
+  Card,
+  CardContent,
   Unstable_Grid2 as Grid,
+  Skeleton,
   Stack,
   Typography,
+  useTheme,
   type Grid2Props,
 } from '@mui/material';
+import { WishlistVisibility } from '@prisma/client';
+import immutate from 'immutability-helper';
 
+import { useIsAdmin } from 'utils/hooks';
 import { useAppSelector } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
-import WishlistGridItem, { PlaceholderItem } from './Item/WishlistItem';
+import WishlistGridItem from './Item/WishlistItem';
 
 const gridProps: Grid2Props = {
   columns: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 },
@@ -25,7 +32,19 @@ const gridProps: Grid2Props = {
 };
 
 export default function WishlistGrid() {
-  const params = useAppSelector((state) => state.wishlist.params);
+  const isAdmin = useIsAdmin();
+  const params = useAppSelector((state) =>
+    immutate(
+      state.wishlist.params,
+      isAdmin
+        ? {}
+        : {
+            where: {
+              visibility: { $set: { in: [WishlistVisibility.PUBLIC] } },
+            },
+          },
+    ),
+  );
   const {
     data: wishlist = [],
     error,
@@ -79,6 +98,31 @@ function ErrorMessage({ message, Icon }: ErrorMessageProps) {
         </Typography>
       </Stack>
     </Stack>
+  );
+}
+
+function PlaceholderItem() {
+  const theme = useTheme();
+  return (
+    <Card sx={{ height: '100%' }}>
+      <Skeleton variant={'rectangular'} height={theme.spacing(12)} />
+      <CardContent>
+        <Stack>
+          <Skeleton
+            variant={'text'}
+            height={theme.spacing(7)}
+            width={theme.spacing(11)}
+          />
+          <Skeleton variant={'text'} width={theme.spacing(10)} />
+          <Skeleton variant={'text'} width={theme.spacing(9)} />
+        </Stack>
+        <Skeleton
+          variant={'rounded'}
+          height={theme.spacing(6)}
+          width={'100%'}
+        />
+      </CardContent>
+    </Card>
   );
 }
 
