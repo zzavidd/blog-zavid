@@ -138,9 +138,10 @@ export default function WishlistForm() {
             label={'Already purchased?'}
             control={
               <Checkbox
-                name={'purchaseDate'}
                 checked={!!purchaseDate}
-                onChange={() => onDateChange(purchaseDate ? null : dayjs())}
+                onChange={() =>
+                  onDateChange(purchaseDate ? null : dayjs(), 'purchaseDate')
+                }
               />
             }
           />
@@ -149,7 +150,7 @@ export default function WishlistForm() {
               <DatePicker
                 label={'Date of purchase:'}
                 value={purchaseDate}
-                onChange={(value) => onDateChange(value)}
+                onChange={(value) => onDateChange(value, 'purchaseDate')}
                 disableFuture={true}
                 format={'D MMMM YYYY'}
               />

@@ -15,9 +15,9 @@ export function useDiaryCategories() {
   return trpc.diaryCategory.findMany.useQuery();
 }
 
-export function useForm<T>(
+export function useForm<T, K extends keyof T>(
   context: React.Context<ReactUseState<T>>,
-  key: keyof T,
+  key: K,
 ) {
   const [, setContext] = useContext(context);
 
@@ -35,9 +35,11 @@ export function useForm<T>(
     );
   }
 
-  function onDateChange(date: dayjs.Dayjs | null) {
+  function onDateChange(date: dayjs.Dayjs | null, property: keyof T[K]) {
     setContext((c) =>
-      immutate(c, { [key]: { date: { $set: date?.toDate() } } } as Spec<T>),
+      immutate(c, {
+        [key]: { [property]: { $set: date?.toDate() } },
+      } as Spec<T>),
     );
   }
 
