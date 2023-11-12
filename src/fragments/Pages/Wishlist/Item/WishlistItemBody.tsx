@@ -1,10 +1,8 @@
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {
   Box,
   CardContent,
   Stack,
-  Tooltip,
   Typography,
   alpha,
   useTheme,
@@ -25,13 +23,10 @@ export default function ItemBody() {
   return (
     <CardContent
       sx={{
-        borderTop: (t) => `2px solid ${alpha(t.palette.secondary.dark, 0.2)}`,
+        borderTop: (t) => `2px solid ${t.palette.divider}`,
         flex: 1,
       }}>
-      <Stack alignItems={'flex-end'} pl={4} sx={{ float: 'right' }}>
-        <PriorityChip />
-        <VisibilityIndicator />
-      </Stack>
+      <PriorityChip />
       <Typography
         color={'primary.light'}
         fontWeight={800}
@@ -55,26 +50,15 @@ function PriorityChip() {
 
   if (isPurchased) return null;
   return (
-    <Typography
-      variant={'overline'}
-      lineHeight={1.5}
-      fontWeight={'bold'}
-      fontSize={10}>
-      {wishlistItem.priority}
-    </Typography>
-  );
-}
-
-/**
- * The visibility indicator if necessary.
- */
-function VisibilityIndicator() {
-  const { isPrivate } = useWishlistItemState();
-  if (!isPrivate) return null;
-  return (
-    <Tooltip title={'Only you can see this item.'}>
-      <VisibilityOffIcon fontSize={'large'} color={'primary'} />
-    </Tooltip>
+    <Stack alignItems={'flex-end'} pl={4} sx={{ float: 'right' }}>
+      <Typography
+        variant={'overline'}
+        lineHeight={1.5}
+        fontWeight={'bold'}
+        fontSize={10}>
+        {wishlistItem.priority}
+      </Typography>
+    </Stack>
   );
 }
 
