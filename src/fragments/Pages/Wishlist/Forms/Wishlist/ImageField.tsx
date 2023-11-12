@@ -1,53 +1,28 @@
-import CloseIcon from '@mui/icons-material/Close';
+import { HideImageOutlined } from '@mui/icons-material';
 import ImageIcon from '@mui/icons-material/Image';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import {
+  Box,
   CircularProgress,
+  Fade,
   FormControl,
-  IconButton,
   InputAdornment,
   Stack,
   TextField,
-  Tooltip,
-  Typography,
 } from '@mui/material';
 import immutate from 'immutability-helper';
-import type { BaseSyntheticEvent } from 'react';
-import React, { useEffect } from 'react';
+import React from 'react';
+
+import { useImage } from 'utils/hooks';
 
 import { WishlistContext } from '../../WishlistContext';
 
-const HELPER_TEXT = (
-  <Typography variant={'caption'}>
-    Press <strong>Enter</strong> to load image.
-  </Typography>
-);
 const ERROR_TEXT = 'Failed to fetch image. Is the URL valid?';
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  const blob = await res.blob();
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img.src);
-    img.onerror = reject;
-    img.src = URL.createObjectURL(blob);
-  });
-};
-
 export default function ImageField() {
-  const [state, setState] = React.useState<ImageFieldState>({
-    image: null,
-    error: undefined,
-    showHelperText: false,
-  });
-
   const [context, setContext] = React.useContext(WishlistContext);
   const { wishlistItemRequest } = context;
 
-  useEffect(() => {
-    setState((current) => ({ ...current, error: undefined }));
-  }, [wishlistItemRequest.image]);
+  const { data: image, error, isLoading } = useImage(wishlistItemRequest.image);
 
   function onImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     setContext((current) =>
@@ -59,73 +34,49 @@ export default function ImageField() {
     );
   }
 
-  async function loadImage() {
-    const res = await fetch(wishlistItemRequest.image);
-    const blob = await res.blob();
-    const data = new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img.src);
-      img.onerror = reject;
-      img.src = URL.createObjectURL(blob);
-    });
-
-    setState((current) => ({
-      ...current,
-      image: data,
-    }));
-  }
-
-  function removeImage() {
-    setState((current) => ({
-      ...current,
-      image: undefined,
-    }));
-  }
-
-  async function onEnterPress(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter') {
-      await loadImage();
-    }
-  }
-
-  function onImageError(e: BaseSyntheticEvent) {
-    setState((current) => ({
-      ...current,
-      error: e,
-      image: undefined,
-    }));
-  }
-
-  function onFocus() {
-    setState((current) => ({
-      ...current,
-      showHelperText: true,
-    }));
-  }
-
-  function onBlur() {
-    setState((current) => ({
-      ...current,
-      showHelperText: false,
-    }));
-  }
-
   function Image() {
-    if (!state.image || imageLoadError) {
-      return null;
+    if (!wishlistItemRequest.image) return null;
+
+    if (isLoading) {
+      return (
+        <Stack
+          justifyContent={'center'}
+          alignItems={'center'}
+          sx={{ aspectRatio: 1 }}>
+          <CircularProgress size={72} />
+        </Stack>
+      );
+    }
+
+    if (!image) {
+      return (
+        <Stack
+          justifyContent={'center'}
+          alignItems={'center'}
+          sx={{ aspectRatio: 1 }}>
+          <HideImageOutlined
+            color={'primary'}
+            sx={{ height: '60%', width: '100%' }}
+          />
+        </Stack>
+      );
     }
 
     return (
-      <Stack>
-        <IconButton onClick={removeImage}>
-          <CloseIcon />
-        </IconButton>
-        <img src={state.image} onError={onImageError} />
-      </Stack>
+      <Fade in={true}>
+        <Box
+          width={'100%'}
+          borderRadius={0.5}
+          overflow={'hidden'}
+          sx={{ aspectRatio: 1 }}>
+          <img
+            src={image}
+            style={{ objectFit: 'cover', height: '100%', width: '100%' }}
+          />
+        </Box>
+      </Fade>
     );
   }
-
-  const helperText = isError ? ERROR_TEXT : HELPER_TEXT;
 
   return (
     <FormControl>
@@ -137,28 +88,12 @@ export default function ImageField() {
           placeholder={'https://example.com'}
           value={wishlistItemRequest.image}
           onChange={onImageChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          onKeyDown={onEnterPress}
-          error={isError}
-          helperText={state.showHelperText ? helperText : null}
+          error={!!error}
+          helperText={error ? ERROR_TEXT : null}
           InputProps={{
             startAdornment: (
               <InputAdornment position={'start'}>
                 <ImageIcon />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position={'end'}>
-                {isImageLoading ? (
-                  <CircularProgress size={12} />
-                ) : (
-                  <Tooltip title={'Load image'}>
-                    <IconButton onClick={loadImage} size={'small'}>
-                      <RefreshIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
               </InputAdornment>
             ),
           }}
@@ -167,10 +102,4 @@ export default function ImageField() {
       </Stack>
     </FormControl>
   );
-}
-
-interface ImageFieldState {
-  image: string | null;
-  error: BaseSyntheticEvent | undefined;
-  showHelperText: boolean;
 }

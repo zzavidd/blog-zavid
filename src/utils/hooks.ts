@@ -3,6 +3,7 @@ import type dayjs from 'dayjs';
 import immutate, { type Spec } from 'immutability-helper';
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
+import useSWR from 'swr';
 
 import { trpc } from './trpc';
 
@@ -13,6 +14,24 @@ export function useIsAdmin(): boolean {
 
 export function useDiaryCategories() {
   return trpc.diaryCategory.findMany.useQuery();
+}
+
+export function useImage(src: string) {
+  return useSWR<string, Error, string>(
+    src,
+    (url) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(url);
+        img.onerror = () => reject(url);
+        img.src = url;
+      });
+    },
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+    },
+  );
 }
 
 export function useForm<T, K extends keyof T>(

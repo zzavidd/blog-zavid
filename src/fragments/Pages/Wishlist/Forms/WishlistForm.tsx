@@ -36,7 +36,9 @@ import { trpc } from 'utils/trpc';
 import { TrayFormContent, WishlistContext } from '../WishlistContext';
 
 import CategoryField from './Wishlist/CategoryField';
+import ImageField from './Wishlist/ImageField';
 import PriceField from './Wishlist/PriceField';
+import ReferenceField from './Wishlist/ReferenceField';
 
 export default function WishlistForm() {
   const [context, setContext] = useContext(WishlistContext);
@@ -130,8 +132,8 @@ export default function WishlistForm() {
             </Stack>
           </Button>
         </FormRow>
-        {/* <ReferenceField />
-        <ImageField /> */}
+        <ReferenceField />
+        <ImageField />
         <Divider />
         <Stack spacing={5}>
           <FormControlLabel
