@@ -3,5 +3,5 @@
   "compilerOptions": {
     "skipLibCheck": true
   },
-  "exclude": ["src/schemas/**/*.ts"]
+  "exclude": ["**/schemas/**/*.ts"]
 }

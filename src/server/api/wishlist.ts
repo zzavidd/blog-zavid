@@ -59,7 +59,10 @@ export class WishlistAPI {
   public static async unclaim({
     id,
     email,
-  }: ItemPayload.Unclaim): Promise<void> {
+  }: {
+    id: number;
+    email: string;
+  }): Promise<void> {
     const item = await prisma.wishlistItem.findUniqueOrThrow({
       where: { id },
     });
