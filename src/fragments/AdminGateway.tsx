@@ -1,5 +1,5 @@
-import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { signIn, useSession } from 'next-auth/react';
 import React from 'react';
 
 import { useIsAdmin } from 'utils/hooks';

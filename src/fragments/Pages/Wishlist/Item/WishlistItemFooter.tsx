@@ -14,7 +14,7 @@ import {
 } from './WishlistItem.utils';
 
 export default function ItemFooter() {
-  const [, setContext] = useContext(WishlistContext);
+  // const [, setContext] = useContext(WishlistContext);
   const wishlistItem = useContext(WishlistItemContext);
 
   /**
@@ -27,14 +27,14 @@ export default function ItemFooter() {
   /**
    * Prompts to delete the focused wishlist item.
    */
-  function onDelete() {
-    setContext((current) =>
-      immutate(current, {
-        isDeletePromptVisible: { $set: true },
-        selectedWishlistItem: { $set: wishlistItem },
-      }),
-    );
-  }
+  // function onDelete() {
+  //   setContext((current) =>
+  //     immutate(current, {
+  //       isDeletePromptVisible: { $set: true },
+  //       selectedWishlistItem: { $set: wishlistItem },
+  //     }),
+  //   );
+  // }
 
   return (
     <CardActions sx={{ justifySelf: 'flex-end', pt: 1, px: 4, pb: 4 }}>

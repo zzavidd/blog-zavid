@@ -6,6 +6,7 @@ export const WishlistItemContext = React.createContext<WishlistItem>(
   {} as WishlistItem,
 );
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useWishlistItemState() {
   const wishlistItem = useContext(WishlistItemContext);
   const session = useSession();
