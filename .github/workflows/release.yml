@@ -1,0 +1,16 @@
+name: Release to Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: always() && github.ref_name == 'main'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: production
+      - run: git fetch origin main
+      - run: git reset --hard origin/main
+      - run: git push -f origin production
