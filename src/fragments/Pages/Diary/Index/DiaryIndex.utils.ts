@@ -6,7 +6,7 @@ import immutate from 'immutability-helper';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 
-import { DiaryFindManySchema } from 'schemas/schemas';
+import DiaryFindManyArgsSchema from 'schemas/outputTypeSchemas/DiaryFindManyArgsSchema';
 import { type AppRouter } from 'server/routers/_app.router';
 import { useAppSelector } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
@@ -33,7 +33,7 @@ export function useDiaryEntries(
   const { enqueueSnackbar } = useSnackbar();
   const { filter, sort } = useAppSelector((state) => state.diary);
 
-  let params = DiaryFindManySchema.parse({
+  let params = DiaryFindManyArgsSchema.parse({
     orderBy: sort,
     include: { categories: true },
     where: { ...filter, status: DiaryStatus.PUBLISHED },

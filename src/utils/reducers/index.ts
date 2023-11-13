@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import type { PaletteMode } from '@mui/material';
-import type { Prisma } from '@prisma/client';
+import { WishlistVisibility, type Prisma } from '@prisma/client';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import type { TypedUseSelectorHook } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +24,15 @@ const initialState: AppState = {
     sort: { entryNumber: 'desc' },
     filter: { categories: {} },
   },
+  wishlist: {
+    params: {
+      where: {
+        visibility: { in: [WishlistVisibility.PUBLIC] },
+        purchaseDate: null,
+      },
+      orderBy: { createTime: 'desc' },
+    },
+  },
   postAdmin: {
     sort: { createTime: 'desc' },
     filter: {
@@ -33,19 +42,11 @@ const initialState: AppState = {
   },
 };
 
-const slice = createSlice({
-  name: 'local',
-  initialState,
-  reducers,
-});
+const slice = createSlice({ name: 'local', initialState, reducers });
 
 export const store = configureStore({
   reducer: persistReducer(
-    {
-      key: 'local',
-      version: 1,
-      storage: localStorage,
-    },
+    { key: 'local', version: 1, storage: localStorage },
     slice.reducer,
   ),
   middleware: (getDefaultMiddleware) =>
@@ -68,10 +69,18 @@ export interface AppState {
     sort: Prisma.DiaryOrderByWithRelationAndSearchRelevanceInput;
     filter: Prisma.DiaryWhereInput;
   };
+  wishlist: {
+    params: WishlistReduxParams;
+  };
   postAdmin: {
     sort: Prisma.PostOrderByWithRelationAndSearchRelevanceInput;
     filter: Prisma.PostWhereInput;
   };
+}
+
+export interface WishlistReduxParams
+  extends Omit<WishlistFindManyInput, 'orderBy'> {
+  orderBy: Prisma.WishlistItemOrderByWithRelationAndSearchRelevanceInput;
 }
 
 type AppDispatch = typeof store.dispatch;

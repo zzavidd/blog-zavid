@@ -3,6 +3,7 @@ import {
   AccountCircleRounded,
   BookRounded,
   Email as EmailIcon,
+  RedeemRounded,
 } from '@mui/icons-material';
 import {
   Divider,
@@ -12,7 +13,6 @@ import {
   MenuItem,
   MenuList,
   Stack,
-  Toolbar,
   Typography,
 } from '@mui/material';
 import NextImage from 'next/image';
@@ -21,6 +21,8 @@ import { useContext } from 'react';
 import { Link } from 'components/Link';
 import { NavigationContext } from 'utils/contexts';
 import Settings from 'utils/settings';
+
+import { ShadowHeader } from './Header';
 
 const pathDefinitions: PathDefinition[][] = [
   [
@@ -31,9 +33,9 @@ const pathDefinitions: PathDefinition[][] = [
     // { title: 'Musings', url: '/musings' },
   ],
   [
-    { title: 'About', url: '/about', Icon: AccountCircleRounded },
+    { title: 'Wishlist', url: '/wishlist', Icon: RedeemRounded },
     { title: 'Subscribe', url: '/subscribe', Icon: EmailIcon },
-    // { title: 'Wishlist', url: '/wishlist', icon: <RedeemRounded /> },
+    { title: 'About', url: '/about', Icon: AccountCircleRounded },
   ],
 ];
 
@@ -56,7 +58,7 @@ export function NavigationDrawer() {
           width: (t) => t.spacing(12),
         },
       }}>
-      <Toolbar />
+      <ShadowHeader />
       <Link href={'/'} color={'text.primary'} onClick={closeNav}>
         <Stack direction={'row'} spacing={3} alignItems={'center'}>
           <NextImage

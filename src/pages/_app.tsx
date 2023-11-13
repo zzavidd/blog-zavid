@@ -1,6 +1,7 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import immutate from 'immutability-helper';
 import type { AppProps as NextAppProps } from 'next/app';
 import type { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
@@ -49,9 +50,14 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   // Use theme for MUI.
   const theme = useMemo(() => {
     const palette = mode === 'light' ? lightPalette : darkPalette;
-    const options = { ...themeOptions, palette };
+    const options = immutate(
+      { ...themeOptions, palette },
+      pageProps.theme
+        ? { palette: { primary: { $set: { main: pageProps.theme[mode] } } } }
+        : {},
+    );
     return createTheme(options);
-  }, [mode]);
+  }, [mode, pageProps.theme]);
 
   // Configure layouts for all child components;
   const getLayout = Component.getLayout ?? ((page) => page);

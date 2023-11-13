@@ -28,17 +28,7 @@ export default function AdminGateway({ children }: React.PropsWithChildren) {
 }
 
 export function AdminLock({ children }: React.PropsWithChildren) {
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated: () => {},
-  });
-
-  if (
-    status === 'loading' ||
-    session.user?.email !== process.env.NEXT_PUBLIC_GOOGLE_EMAIL
-  ) {
-    return null;
-  }
-
+  const isAdmin = useIsAdmin();
+  if (!isAdmin) return null;
   return <React.Fragment>{children}</React.Fragment>;
 }

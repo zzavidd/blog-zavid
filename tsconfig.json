@@ -15,6 +15,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": false,
     "strict": true,
+    "strictNullChecks": true,
     "target": "esnext",
     "types": ["bun-types"],
     "tsBuildInfoFile": ".tsbuildinfo"
@@ -27,5 +28,5 @@
     "test/**/*.ts",
     "types/**/*.d.ts"
   ],
-  "exclude": ["ops/backup/**/*.ts", "node_modules"]
+  "exclude": ["node_modules", "ops/backup/**/*.ts"]
 }

@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker/locale/en_GB';
+import { capitalize } from '@mui/material';
 import type { Prisma } from '@prisma/client';
 import {
   DiaryStatus,
@@ -9,6 +10,7 @@ import {
 import dayjs from 'dayjs';
 
 import prisma from 'server/prisma';
+import { clearDatabase } from 'utils/functions/database';
 
 import {
   createDiaryEntry,
@@ -16,15 +18,18 @@ import {
   createMood,
   createPost,
   createSubscriber,
+  createWishlistItem,
 } from './factory';
 import { createDefaultPages } from './functions';
 
+await clearDatabase(prisma);
 await ingestDiaryEntries();
 await ingestExclusives();
 await ingestMoods();
 await ingestPages();
 await ingestPosts();
 await ingestSubscribers();
+await ingestWishlist();
 
 async function ingestDiaryEntries(): Promise<void> {
   const categories: Prisma.DiaryCategoryUncheckedCreateInput[] = [];
@@ -32,10 +37,6 @@ async function ingestDiaryEntries(): Promise<void> {
   for (let i = 1; i <= 5; i++) {
     categories.push({ id: i, name: faker.lorem.word() });
   }
-
-  await prisma.diaryCategory.deleteMany({});
-  await prisma.diary.deleteMany({});
-  await prisma.diaryCategory.createMany({ data: categories });
 
   const queries = Array(50)
     .fill(null)
@@ -52,6 +53,8 @@ async function ingestDiaryEntries(): Promise<void> {
       });
       return prisma.diary.create({ data: entry });
     });
+
+  await prisma.diaryCategory.createMany({ data: categories });
   await prisma.$transaction(queries);
 }
 
@@ -62,7 +65,6 @@ async function ingestExclusives(): Promise<void> {
     exclusives.push(createExclusive());
   }
 
-  await prisma.exclusive.deleteMany({});
   await prisma.exclusive.createMany({ data: exclusives });
 }
 
@@ -85,7 +87,6 @@ async function ingestMoods(): Promise<void> {
     );
   }
 
-  await prisma.mood.deleteMany({});
   await prisma.mood.createMany({ data: moods });
 }
 
@@ -118,7 +119,6 @@ async function ingestPosts(): Promise<void> {
     );
   }
 
-  await prisma.post.deleteMany({});
   await prisma.post.createMany({ data: posts });
 }
 
@@ -129,6 +129,28 @@ async function ingestSubscribers(): Promise<void> {
     subscribers.push(createSubscriber());
   }
 
-  await prisma.subscriber.deleteMany({});
   await prisma.subscriber.createMany({ data: subscribers });
+}
+
+async function ingestWishlist(): Promise<void> {
+  const wishlist: Prisma.WishlistItemCreateManyInput[] = [];
+  const wishlistCategories: Prisma.WishlistCategoryUncheckedCreateInput[] = [];
+
+  for (let i = 1; i <= 7; i++) {
+    wishlistCategories.push({
+      id: i,
+      name: capitalize(faker.word.adjective()),
+    });
+  }
+
+  for (let i = 1; i <= 50; i++) {
+    wishlist.push(
+      createWishlistItem({
+        categoryId: faker.number.int({ min: 1, max: 7 }),
+      }),
+    );
+  }
+
+  await prisma.wishlistCategory.createMany({ data: wishlistCategories });
+  await prisma.wishlistItem.createMany({ data: wishlist });
 }

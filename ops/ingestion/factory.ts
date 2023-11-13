@@ -6,6 +6,8 @@ import {
   MoodTimeOfDay,
   PostStatus,
   PostType,
+  WishlistPriority,
+  WishlistVisibility,
 } from '@prisma/client';
 
 import { SubscriptionType } from 'utils/enum';
@@ -111,6 +113,43 @@ export function createSubscriber(
     lastname: name.lastName,
     subscriptions,
     token: faker.string.uuid(),
+    ...overrides,
+  };
+}
+
+export function createWishlistItem(
+  overrides: Partial<Prisma.WishlistItemCreateManyInput> = {},
+): Prisma.WishlistItemCreateManyInput {
+  const image = faker.image.urlLoremFlickr({ width: 512, height: 512 });
+  const quantity = faker.number.int({ min: 1, max: 5 });
+
+  let remainingQuantity = quantity;
+  const reservees: WishlistReservees = {};
+  for (let i = 0; i < faker.number.int({ max: 5 }); i++) {
+    if (remainingQuantity <= 0) break;
+
+    const quantityToClaim = faker.number.int({ max: remainingQuantity });
+    reservees[faker.internet.email()] = {
+      anonymous: faker.datatype.boolean(),
+      quantity: quantityToClaim,
+    };
+    remainingQuantity -= quantityToClaim;
+  }
+
+  return {
+    name: ZString.toTitleCase(faker.commerce.product()),
+    price: faker.number.float({ min: 0, max: 1000, precision: 0.01 }),
+    quantity,
+    visibility: faker.helpers.enumValue(WishlistVisibility),
+    priority: faker.helpers.enumValue(WishlistPriority),
+    comments: faker.datatype.boolean()
+      ? faker.commerce.productDescription()
+      : '',
+    categoryId: overrides.categoryId,
+    image,
+    href: image,
+    reservees,
+    purchaseDate: faker.datatype.boolean() ? faker.date.past() : null,
     ...overrides,
   };
 }

@@ -1,28 +1,28 @@
 import {
-  SubscriberCreateOneSchema,
-  SubscriberDeleteOneSchema,
-  SubscriberFindFirstSchema,
-  SubscriberFindManySchema,
-  SubscriberUpdateOneSchema,
-} from 'schemas/schemas';
+  SubscriberCreateArgsSchema,
+  SubscriberDeleteArgsSchema,
+  SubscriberFindFirstArgsSchema,
+  SubscriberFindManyArgsSchema,
+  SubscriberUpdateArgsSchema,
+} from 'schemas';
 import SubscriberAPI from 'server/api/subscribers';
 import { procedure, router } from 'server/trpc';
 
 const subscriberRouter = router({
   find: procedure
-    .input(SubscriberFindFirstSchema)
+    .input(SubscriberFindFirstArgsSchema)
     .query(({ input }) => SubscriberAPI.find(input)),
   findMany: procedure
-    .input(SubscriberFindManySchema)
+    .input(SubscriberFindManyArgsSchema)
     .query(({ input }) => SubscriberAPI.findMany(input)),
   create: procedure
-    .input(SubscriberCreateOneSchema)
+    .input(SubscriberCreateArgsSchema)
     .mutation(({ input }) => SubscriberAPI.create(input)),
   update: procedure
-    .input(SubscriberUpdateOneSchema)
+    .input(SubscriberUpdateArgsSchema)
     .mutation(({ input }) => SubscriberAPI.update(input)),
   delete: procedure
-    .input(SubscriberDeleteOneSchema)
+    .input(SubscriberDeleteArgsSchema)
     .mutation(({ input }) => SubscriberAPI.delete(input)),
 });
 

@@ -7,6 +7,5 @@ Disallow: /subscriptions/
 Disallow: /tributes/
 
 Disallow: /mood
-Disallow: /wishlist
 
 Sitemap: https://zavidegbue.com/sitemap.xml

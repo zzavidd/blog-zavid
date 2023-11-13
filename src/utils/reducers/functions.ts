@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Spec } from 'immutability-helper';
 import immutate from 'immutability-helper';
 
-import type { AppState } from '.';
+import type { AppState, WishlistReduxParams } from '.';
 
 export function setAppTheme(
   state: AppState,
@@ -24,4 +24,11 @@ export function setPostAdminSieve(
   action: PayloadAction<Spec<AppState['postAdmin']>>,
 ): AppState {
   return immutate(state, { postAdmin: action.payload });
+}
+
+export function setWishlistParams(
+  state: AppState,
+  action: PayloadAction<Spec<WishlistReduxParams>>,
+): AppState {
+  return immutate(state, { wishlist: { params: action.payload } });
 }

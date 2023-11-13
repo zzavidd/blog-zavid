@@ -1,5 +1,4 @@
 import { defineConfig } from '@playwright/test';
-import 'dotenv/config';
 
 import { testProjects } from './utils/projects';
 

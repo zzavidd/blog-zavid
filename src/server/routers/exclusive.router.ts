@@ -1,27 +1,27 @@
 import { z } from 'zod';
 
 import {
-  ExclusiveCreateOneSchema,
-  ExclusiveDeleteOneSchema,
-  ExclusiveFindFirstSchema,
-  ExclusiveFindManySchema,
-  ExclusiveUpdateOneSchema,
-} from 'schemas/schemas';
+  ExclusiveCreateArgsSchema,
+  ExclusiveDeleteArgsSchema,
+  ExclusiveFindFirstArgsSchema,
+  ExclusiveFindManyArgsSchema,
+  ExclusiveUpdateArgsSchema,
+} from 'schemas';
 import ExclusiveAPI from 'server/api/exclusives';
 import { procedure, router } from 'server/trpc';
 import { zNotifyOptions } from 'utils/validators';
 
 const exclusiveRouter = router({
   find: procedure
-    .input(ExclusiveFindFirstSchema)
+    .input(ExclusiveFindFirstArgsSchema)
     .query(({ input }) => ExclusiveAPI.find(input)),
   findMany: procedure
-    .input(ExclusiveFindManySchema)
+    .input(ExclusiveFindManyArgsSchema)
     .query(({ input }) => ExclusiveAPI.findMany(input)),
   create: procedure
     .input(
       z.object({
-        exclusive: ExclusiveCreateOneSchema,
+        exclusive: ExclusiveCreateArgsSchema,
         isPublish: z.boolean().optional(),
       }),
     )
@@ -31,7 +31,7 @@ const exclusiveRouter = router({
   update: procedure
     .input(
       z.object({
-        exclusive: ExclusiveUpdateOneSchema,
+        exclusive: ExclusiveUpdateArgsSchema,
         isPublish: z.boolean().optional(),
       }),
     )
@@ -39,7 +39,7 @@ const exclusiveRouter = router({
       ExclusiveAPI.update(input.exclusive, input.isPublish),
     ),
   delete: procedure
-    .input(ExclusiveDeleteOneSchema)
+    .input(ExclusiveDeleteArgsSchema)
     .mutation(({ input }) => ExclusiveAPI.delete(input)),
   index: procedure
     .input(z.number())
