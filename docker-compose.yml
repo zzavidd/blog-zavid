@@ -4,6 +4,7 @@ services:
   staging:
     image: zavid_dev
     container_name: zavid_blog_staging
+    build: .
     environment:
       PORT: 3333
     ports:
@@ -15,6 +16,7 @@ services:
   production:
     image: zavid
     container_name: zavid_blog_production
+    build: .
     environment:
       PORT: 4000
     ports:
