@@ -16,7 +16,6 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
-  Paper,
   Select,
   Stack,
   TextField,
@@ -29,7 +28,7 @@ import { default as immutate } from 'immutability-helper';
 import { useSnackbar } from 'notistack';
 import React, { useContext } from 'react';
 
-import { FormRow } from 'components/Form';
+import { DrawerFormActions, FormRow } from 'components/Form';
 import { useForm } from 'utils/hooks';
 import { trpc } from 'utils/trpc';
 
@@ -244,15 +243,7 @@ function FormFooter() {
   }
 
   return (
-    <Paper
-      elevation={7}
-      sx={{
-        borderRadius: 0,
-        position: 'sticky',
-        bottom: 0,
-        p: 3,
-        top: 'auto',
-      }}>
+    <DrawerFormActions>
       <ButtonGroup fullWidth={true}>
         {context.selectedWishlistItem ? (
           <LoadingButton
@@ -274,7 +265,7 @@ function FormFooter() {
         )}
         <Button onClick={closeTray}>Close</Button>
       </ButtonGroup>
-    </Paper>
+    </DrawerFormActions>
   );
 }
 

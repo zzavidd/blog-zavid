@@ -12,7 +12,6 @@ import {
   List,
   ListItem,
   MenuItem,
-  Paper,
   Radio,
   Select,
   Stack,
@@ -28,6 +27,7 @@ import immutate from 'immutability-helper';
 import { isEqual } from 'lodash';
 import React, { useContext } from 'react';
 
+import { DrawerFormActions } from 'components/Form';
 import { useIsAdmin } from 'utils/hooks';
 import ZString from 'utils/lib/string';
 import { AppActions, useAppDispatch, useAppSelector } from 'utils/reducers';
@@ -56,21 +56,13 @@ export default function FilterForm() {
         <SortSection />
         <FilterSection />
       </Stack>
-      <Paper
-        elevation={7}
-        sx={{
-          borderRadius: 0,
-          position: 'sticky',
-          bottom: 0,
-          p: 3,
-          top: 'auto',
-        }}>
+      <DrawerFormActions>
         <ButtonGroup fullWidth={true}>
           <Button variant={'outlined'} onClick={onCloseTray}>
             Close
           </Button>
         </ButtonGroup>
-      </Paper>
+      </DrawerFormActions>
     </React.Fragment>
   );
 }

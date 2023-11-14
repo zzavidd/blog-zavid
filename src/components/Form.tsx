@@ -103,6 +103,23 @@ export function FormRow(props: StackProps) {
   );
 }
 
+export function DrawerFormActions({ children }: React.PropsWithChildren) {
+  return (
+    <Paper
+      elevation={7}
+      sx={{
+        backgroundColor: (t) => t.palette.background.paper,
+        borderRadius: 0,
+        position: 'sticky',
+        bottom: 0,
+        p: 3,
+        top: 'auto',
+      }}>
+      {children}
+    </Paper>
+  );
+}
+
 interface FormProps extends React.PropsWithChildren {
   Content: ReactNode;
   ToolbarActions: ReactNode;
