@@ -7,11 +7,14 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import immutate from 'immutability-helper';
 import { useContext, useMemo } from 'react';
 
 import { AdminLock } from 'fragments/AdminGateway';
+import { useIsAdmin } from 'utils/hooks';
 import { useAppSelector } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
@@ -35,7 +38,7 @@ export default function WishlistToolbar() {
             alignItems={'center'}
             width={'100%'}>
             <WishlistStatus />
-            <Stack direction={'row'} columnGap={3}>
+            <Stack direction={'row'} columnGap={{ xs: 2, md: 3 }}>
               <AddItemButton />
               <FilterSortButton />
             </Stack>
@@ -91,6 +94,10 @@ function WishlistStatus() {
  */
 function FilterSortButton() {
   const [context, setContext] = useContext(WishlistContext);
+  const isAdmin = useIsAdmin();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   /**
    * Opens the form tray with filters.
    */
@@ -113,8 +120,9 @@ function FilterSortButton() {
       onClick={toggleFilterView}
       startIcon={<FilterAltIcon />}
       variant={'outlined'}
-      color={'primary'}>
-      Filter / Sort
+      color={'primary'}
+      sx={{ minWidth: 0, px: 3, py: 2 }}>
+      {isAdmin && isMobile ? 'F/S' : 'Filter / Sort'}
     </Button>
   );
 }
@@ -124,6 +132,8 @@ function FilterSortButton() {
  */
 function AddItemButton() {
   const [context, setContext] = useContext(WishlistContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const isWishlistItemFormOpen =
     context.trayFormContent === TrayFormContent.WISHLIST_ITEM;
@@ -148,8 +158,9 @@ function AddItemButton() {
         color={'primary'}
         variant={'contained'}
         startIcon={<AddIcon />}
-        disabled={isWishlistItemFormOpen}>
-        Add Item
+        disabled={isWishlistItemFormOpen}
+        sx={{ minWidth: 0, px: 3, py: 2 }}>
+        {isMobile ? 'Add' : 'Add Item'}
       </Button>
     </AdminLock>
   );
