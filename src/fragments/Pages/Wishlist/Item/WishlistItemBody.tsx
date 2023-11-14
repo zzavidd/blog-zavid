@@ -1,6 +1,5 @@
 import {
   Box,
-  CardContent,
   Stack,
   Typography,
   alpha,
@@ -16,15 +15,11 @@ import {
   useWishlistItemState,
 } from './WishlistItem.utils';
 
-export default function ItemBody() {
+export default function WishlistItemBodyContent() {
   const wishlistItem = useContext(WishlistItemContext);
 
   return (
-    <CardContent
-      sx={{
-        borderTop: (t) => `2px solid ${t.palette.divider}`,
-        flex: 1,
-      }}>
+    <React.Fragment>
       <PriorityChip />
       <Typography
         color={'primary.light'}
@@ -36,7 +31,7 @@ export default function ItemBody() {
       <PriceAndCategory />
       <PurchasedOrDetails />
       <Comments />
-    </CardContent>
+    </React.Fragment>
   );
 }
 

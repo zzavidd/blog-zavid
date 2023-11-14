@@ -129,8 +129,8 @@ function useGridProps(): Grid2Props {
   const columnOffset = context.trayFormContent && !isMobile ? 1 : 0;
   return {
     columns: {
-      xs: 2 - columnOffset,
-      sm: 3 - columnOffset,
+      xs: 1 - columnOffset,
+      sm: 2 - columnOffset,
       md: 4 - columnOffset,
       lg: 5 - columnOffset,
       xl: 6 - columnOffset,

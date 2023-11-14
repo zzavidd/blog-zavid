@@ -1,5 +1,5 @@
 import { MoreVert, VisibilityOff } from '@mui/icons-material';
-import { CardHeader, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
+import { Box, IconButton, Menu, MenuItem, Stack, Tooltip } from '@mui/material';
 import immutate from 'immutability-helper';
 import { bindMenu, bindTrigger } from 'material-ui-popup-state';
 import { usePopupState } from 'material-ui-popup-state/hooks';
@@ -14,14 +14,24 @@ import {
   useWishlistItemState,
 } from './WishlistItem.utils';
 
-export default function ItemHeader() {
+export default function WishlistItemAdminControls() {
   return (
     <AdminLock>
-      <CardHeader
-        avatar={<VisibilityIndicator />}
-        action={<AdminMenuTrigger />}
-        sx={{ borderBottom: (t) => `2px solid ${t.palette.divider}` }}
-      />
+      <Stack
+        direction={'row'}
+        justifyContent={'space-between'}
+        sx={{
+          borderBottom: { xs: 0, md: (t) => `2px solid ${t.palette.divider}` },
+          px: 3,
+          py: 2,
+        }}>
+        <Box justifySelf={'flex-start'}>
+          <VisibilityIndicator />
+        </Box>
+        <Box justifySelf={'flex-end'}>
+          <AdminMenuTrigger />
+        </Box>
+      </Stack>
     </AdminLock>
   );
 }

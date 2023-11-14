@@ -1,8 +1,8 @@
-import { Button, ButtonGroup, CardActions } from '@mui/material';
+import { Button, ButtonGroup } from '@mui/material';
 import immutate from 'immutability-helper';
 import { useSession } from 'next-auth/react';
 import { useSnackbar } from 'notistack';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { trpc } from 'utils/trpc';
 
@@ -13,11 +13,11 @@ import {
   useWishlistItemState,
 } from './WishlistItem.utils';
 
-export default function ItemFooter() {
+export default function WishlistItemFooterContent() {
   const buttons = [LinkButton, ActionButton].filter((e) => e);
 
   return (
-    <CardActions sx={{ justifySelf: 'flex-end', pt: 1, px: 4, pb: 4 }}>
+    <React.Fragment>
       {buttons.length > 1 ? (
         <ButtonGroup fullWidth={true}>
           {buttons.map((ButtonEntry) => ButtonEntry())}
@@ -25,7 +25,7 @@ export default function ItemFooter() {
       ) : (
         buttons[0]()
       )}
-    </CardActions>
+    </React.Fragment>
   );
 }
 
@@ -38,7 +38,8 @@ function LinkButton() {
       href={wishlistItem.href}
       target={'_blank'}
       rel={'noopener'}
-      key={'link'}>
+      key={'link'}
+      size={'small'}>
       Visit link
     </Button>
   );
@@ -99,7 +100,8 @@ function ActionButton() {
         color={'primary'}
         variant={'contained'}
         onClick={onUnclaim}
-        key={'unclaim'}>
+        key={'unclaim'}
+        size={'small'}>
         Unclaim
       </Button>
     );
@@ -110,7 +112,8 @@ function ActionButton() {
       color={'primary'}
       variant={'contained'}
       onClick={onClaim}
-      key={'claim'}>
+      key={'claim'}
+      size={'small'}>
       Claim
     </Button>
   );

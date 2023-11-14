@@ -1,5 +1,5 @@
 import HideImageOutlinedIcon from '@mui/icons-material/HideImageOutlined';
-import { Skeleton, Stack } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import React from 'react';
 import useSWR from 'swr';
 
@@ -19,39 +19,29 @@ export function ItemImage() {
     },
   );
 
-  function RenderedImage() {
-    if (isLoading) {
-      return (
-        <Skeleton variant={'rectangular'} width={'100%'} height={'100%'} />
-      );
-    }
+  if (isLoading) {
+    return <Skeleton variant={'rectangular'} width={'100%'} height={'100%'} />;
+  }
 
-    if (!data) {
-      return (
-        <HideImageOutlinedIcon
-          color={'primary'}
-          sx={{ height: '60%', width: '100%' }}
-        />
-      );
-    }
-
+  if (!data) {
     return (
-      <img
-        src={data}
-        alt={wishlistItem.name}
-        style={{ objectFit: 'cover', height: '100%', width: '100%' }}
+      <HideImageOutlinedIcon
+        color={'primary'}
+        sx={{ height: '60%', width: '100%' }}
       />
     );
   }
 
   return (
-    <Stack
-      width={'100%'}
-      justifyContent={'center'}
-      alignItems={'center'}
-      maxHeight={(t) => t.spacing(12)}
-      sx={{ aspectRatio: '1' }}>
-      <RenderedImage />
-    </Stack>
+    <img
+      src={data}
+      alt={wishlistItem.name}
+      style={{
+        objectFit: 'cover',
+        objectPosition: 'center',
+        height: '100%',
+        width: '100%',
+      }}
+    />
   );
 }
