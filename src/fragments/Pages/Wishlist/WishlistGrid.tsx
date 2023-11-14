@@ -10,27 +10,20 @@ import {
   Skeleton,
   Stack,
   Typography,
+  useMediaQuery,
   useTheme,
   type Grid2Props,
 } from '@mui/material';
 import { WishlistVisibility } from '@prisma/client';
 import immutate from 'immutability-helper';
+import { useContext } from 'react';
 
 import { useIsAdmin } from 'utils/hooks';
 import { useAppSelector } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
 import WishlistGridItem from './Item/WishlistItem';
-
-const gridProps: Grid2Props = {
-  columns: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 },
-  spacing: { xs: 3, lg: 4 },
-  m: 0,
-  px: 2,
-  py: 3,
-  flex: 1,
-  width: '100%',
-};
+import { WishlistContext } from './WishlistContext';
 
 export default function WishlistGrid() {
   const isAdmin = useIsAdmin();
@@ -46,6 +39,8 @@ export default function WishlistGrid() {
           },
     ),
   );
+  const gridProps = useGridProps();
+
   const {
     data: wishlist = [],
     error,
@@ -125,6 +120,28 @@ function PlaceholderItem() {
       </CardContent>
     </Card>
   );
+}
+
+function useGridProps(): Grid2Props {
+  const [context] = useContext(WishlistContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const columnOffset = context.trayFormContent && !isMobile ? 1 : 0;
+  return {
+    columns: {
+      xs: 2 - columnOffset,
+      sm: 3 - columnOffset,
+      md: 4 - columnOffset,
+      lg: 5 - columnOffset,
+      xl: 6 - columnOffset,
+    },
+    flex: 1,
+    m: 0,
+    px: 2,
+    py: 3,
+    spacing: { xs: 3, lg: 4 },
+    width: '100%',
+  };
 }
 
 interface ErrorMessageProps {
