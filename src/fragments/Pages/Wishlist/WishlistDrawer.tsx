@@ -1,6 +1,6 @@
 import type { SxProps, Theme } from '@mui/material';
 import { Drawer, useMediaQuery, useTheme } from '@mui/material';
-import ImmutabilityHelper from 'immutability-helper';
+import immutate from 'immutability-helper';
 import type React from 'react';
 import { useContext } from 'react';
 
@@ -26,15 +26,25 @@ export default function WishlistDrawer() {
 
   function onClose() {
     setContext((current) =>
-      ImmutabilityHelper(current, { trayFormContent: { $set: null } }),
+      immutate(current, { trayFormContent: { $set: null } }),
     );
   }
 
-  const paperSx: SxProps<Theme> = { width: '100%' };
+  const DRAWER_WIDTH = theme.spacing(13);
+  const drawerSx: SxProps<Theme> = {
+    flexShrink: 1,
+    transition: (t) =>
+      t.transitions.create('width', {
+        duration: t.transitions.duration.shortest,
+      }),
+    width: trayFormContent ? DRAWER_WIDTH : 0,
+  };
+  const paperSx: SxProps<Theme> = { boxSizing: 'border-box', width: '100%' };
 
   if (!isMobile) {
+    drawerSx.flexShrink = 0;
     paperSx.borderLeft = `5px groove ${theme.palette.divider}`;
-    paperSx.maxWidth = (t) => t.spacing(13);
+    paperSx.maxWidth = DRAWER_WIDTH;
   }
 
   return (
@@ -43,6 +53,7 @@ export default function WishlistDrawer() {
       variant={'persistent'}
       onClose={onClose}
       open={Boolean(trayFormContent)}
+      sx={drawerSx}
       PaperProps={{
         elevation: 8,
         sx: paperSx,

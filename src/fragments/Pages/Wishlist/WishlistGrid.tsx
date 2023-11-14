@@ -28,6 +28,7 @@ const gridProps: Grid2Props = {
   m: 0,
   px: 2,
   py: 3,
+  flex: 1,
   width: '100%',
 };
 
@@ -90,7 +91,7 @@ export default function WishlistGrid() {
 
 function ErrorMessage({ message, Icon }: ErrorMessageProps) {
   return (
-    <Stack justifyContent={'center'} alignItems={'center'}>
+    <Stack justifyContent={'center'} alignItems={'center'} flex={1}>
       <Stack alignItems={'center'} rowGap={2}>
         <Icon color={'action'} sx={{ fontSize: (t) => t.spacing(8) }} />
         <Typography variant={'h6'} component={'p'}>

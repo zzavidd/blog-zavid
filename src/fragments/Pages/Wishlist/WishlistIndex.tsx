@@ -1,6 +1,6 @@
+import { Stack } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
 
-import { Root } from 'fragments/Layout';
 import { trpc } from 'utils/trpc';
 
 import { WishlistContext } from './WishlistContext';
@@ -13,13 +13,15 @@ export default function WishlistIndex({ categoryParams }: WishlistPageProps) {
 
   return (
     <React.Fragment>
-      <Root>
-        <WishlistGrid />
-      </Root>
+      <Stack direction={'row'} flex={1}>
+        <Stack flex={1}>
+          <WishlistGrid />
+          <WishlistToolbar />
+        </Stack>
+        <WishlistDrawer />
+      </Stack>
       {/* <ClaimItemModal />
     <DeleteItemModal /> */}
-      <WishlistDrawer />
-      <WishlistToolbar />
     </React.Fragment>
   );
 }
