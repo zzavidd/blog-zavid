@@ -44,9 +44,14 @@ const SORT_OPTIONS = [
 
 export default function FilterForm() {
   const [, setContext] = useContext(WishlistContext);
+  const dispatch = useAppDispatch();
 
   function onCloseTray() {
     setContext((c) => immutate(c, { trayFormContent: { $set: null } }));
+  }
+
+  function resetFilters() {
+    dispatch(AppActions.resetWishlistParams());
   }
 
   return (
@@ -58,6 +63,9 @@ export default function FilterForm() {
       </Stack>
       <DrawerFormActions>
         <ButtonGroup fullWidth={true}>
+          <Button variant={'contained'} onClick={resetFilters}>
+            Reset
+          </Button>
           <Button variant={'outlined'} onClick={onCloseTray}>
             Close
           </Button>

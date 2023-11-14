@@ -18,7 +18,7 @@ import localStorage from 'redux-persist/lib/storage';
 
 import * as reducers from './functions';
 
-const initialState: AppState = {
+export const InitialAppState: AppState = {
   theme: 'dark',
   diary: {
     sort: { entryNumber: 'desc' },
@@ -42,7 +42,11 @@ const initialState: AppState = {
   },
 };
 
-const slice = createSlice({ name: 'local', initialState, reducers });
+const slice = createSlice({
+  name: 'local',
+  initialState: InitialAppState,
+  reducers,
+});
 
 export const store = configureStore({
   reducer: persistReducer(

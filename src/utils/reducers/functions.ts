@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Spec } from 'immutability-helper';
 import immutate from 'immutability-helper';
 
-import type { AppState, WishlistReduxParams } from '.';
+import { InitialAppState, type AppState, type WishlistReduxParams } from '.';
 
 export function setAppTheme(
   state: AppState,
@@ -31,4 +31,8 @@ export function setWishlistParams(
   action: PayloadAction<Spec<WishlistReduxParams>>,
 ): AppState {
   return immutate(state, { wishlist: { params: action.payload } });
+}
+
+export function resetWishlistParams(state: AppState): void {
+  state.wishlist.params = InitialAppState.wishlist.params;
 }
