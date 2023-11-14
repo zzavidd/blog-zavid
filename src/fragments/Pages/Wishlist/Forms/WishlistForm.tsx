@@ -186,7 +186,7 @@ function FormFooter() {
     trpc.wishlist.create.useMutation({
       onSuccess: (wishlistItem) => {
         void trpcContext.wishlist.findMany.refetch();
-        enqueueSnackbar(`You've successfully added "${wishlistItem.name}.".`, {
+        enqueueSnackbar(`You've successfully added "${wishlistItem.name}".`, {
           variant: 'success',
         });
         closeTray();
@@ -199,12 +199,9 @@ function FormFooter() {
     trpc.wishlist.update.useMutation({
       onSuccess: (wishlistItem) => {
         void trpcContext.wishlist.findMany.refetch();
-        enqueueSnackbar(
-          `You've successfully updated "${wishlistItem.name}.".`,
-          {
-            variant: 'success',
-          },
-        );
+        enqueueSnackbar(`You've successfully updated "${wishlistItem.name}".`, {
+          variant: 'success',
+        });
         closeTray();
       },
       onError: (e) => {
