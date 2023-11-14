@@ -246,9 +246,9 @@ function useFilters(): FilterGroup[] {
   return [
     {
       group: 'Filter by Category',
-      options: Object.entries(context.categories)
-        .sort((a, b) => a[1].name.localeCompare(b[1].name))
-        .map(([id, { name }]) => ({ label: name, value: Number(id) })),
+      options: Object.values(context.categories)
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(({ id, name }) => ({ label: name, value: Number(id) })),
       property: 'categoryId',
       type: 'checkbox',
     },
