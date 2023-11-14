@@ -10,7 +10,8 @@ import {
   TextField,
 } from '@mui/material';
 import immutate from 'immutability-helper';
-import React from 'react';
+import type React from 'react';
+import { useContext } from 'react';
 
 import { useImage } from 'utils/hooks';
 
@@ -19,7 +20,7 @@ import { WishlistContext } from '../../WishlistContext';
 const ERROR_TEXT = 'Failed to fetch image. Is the URL valid?';
 
 export default function ImageField() {
-  const [context, setContext] = React.useContext(WishlistContext);
+  const [context, setContext] = useContext(WishlistContext);
   const { wishlistItemRequest } = context;
 
   const { data: image, error, isLoading } = useImage(wishlistItemRequest.image);
@@ -34,7 +35,7 @@ export default function ImageField() {
     );
   }
 
-  function Image() {
+  function ImagePreview() {
     if (!wishlistItemRequest.image) return null;
 
     if (isLoading) {
@@ -98,7 +99,7 @@ export default function ImageField() {
             ),
           }}
         />
-        <Image />
+        <ImagePreview />
       </Stack>
     </FormControl>
   );

@@ -25,7 +25,7 @@ import {
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { WishlistPriority, WishlistVisibility } from '@prisma/client';
 import dayjs from 'dayjs';
-import { default as ImmutabilityHelper } from 'immutability-helper';
+import { default as immutate } from 'immutability-helper';
 import { useSnackbar } from 'notistack';
 import React, { useContext } from 'react';
 
@@ -49,7 +49,7 @@ export default function WishlistForm() {
 
   function switchToCategoryForm() {
     setContext((current) =>
-      ImmutabilityHelper(current, {
+      immutate(current, {
         trayFormContent: { $set: TrayFormContent.CATEGORIES },
       }),
     );
@@ -182,7 +182,7 @@ function FormFooter() {
   const [context, setContext] = useContext(WishlistContext);
   const { enqueueSnackbar } = useSnackbar();
 
-  const trpcContext = trpc.useContext();
+  const trpcContext = trpc.useUtils();
   const { mutate: create, isLoading: isCreateLoading } =
     trpc.wishlist.create.useMutation({
       onSuccess: (wishlistItem) => {
@@ -239,7 +239,7 @@ function FormFooter() {
 
   function closeTray() {
     setContext((current) =>
-      ImmutabilityHelper(current, { trayFormContent: { $set: null } }),
+      immutate(current, { trayFormContent: { $set: null } }),
     );
   }
 
@@ -287,7 +287,7 @@ function ReserveesList() {
     delete reserveesList[email];
 
     setContext((current) =>
-      ImmutabilityHelper(current, {
+      immutate(current, {
         wishlistItemRequest: { reservees: { $set: reserveesList } },
       }),
     );
