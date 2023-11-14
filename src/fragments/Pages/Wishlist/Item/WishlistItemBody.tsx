@@ -160,6 +160,7 @@ function Comments() {
         mt: 1,
         px: 3,
         py: 2,
+        whiteSpace: 'pre-wrap',
       }}>
       {wishlistItem.comments}
     </Typography>
