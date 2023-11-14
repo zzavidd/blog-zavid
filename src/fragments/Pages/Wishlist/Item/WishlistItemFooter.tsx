@@ -14,39 +14,33 @@ import {
 } from './WishlistItem.utils';
 
 export default function ItemFooter() {
-  // const [, setContext] = useContext(WishlistContext);
-  const wishlistItem = useContext(WishlistItemContext);
-
-  /**
-   * Opens the link in a new tab for the focused wishlist item.
-   */
-  function onVisitLink() {
-    window.open(wishlistItem.href, '_blank', 'noopener,noreferrer');
-  }
-
-  /**
-   * Prompts to delete the focused wishlist item.
-   */
-  // function onDelete() {
-  //   setContext((current) =>
-  //     immutate(current, {
-  //       isDeletePromptVisible: { $set: true },
-  //       selectedWishlistItem: { $set: wishlistItem },
-  //     }),
-  //   );
-  // }
+  const buttons = [LinkButton, ActionButton].filter((e) => e);
 
   return (
     <CardActions sx={{ justifySelf: 'flex-end', pt: 1, px: 4, pb: 4 }}>
-      <ButtonGroup fullWidth={true}>
-        {wishlistItem.href ? (
-          <Button color={'primary'} onClick={onVisitLink}>
-            Visit link
-          </Button>
-        ) : null}
-        <ActionButton />
-      </ButtonGroup>
+      {buttons.length > 1 ? (
+        <ButtonGroup fullWidth={true}>
+          {buttons.map((ButtonEntry) => ButtonEntry())}
+        </ButtonGroup>
+      ) : (
+        buttons[0]()
+      )}
     </CardActions>
+  );
+}
+
+function LinkButton() {
+  const wishlistItem = useContext(WishlistItemContext);
+  if (!wishlistItem.href) return null;
+  return (
+    <Button
+      color={'primary'}
+      href={wishlistItem.href}
+      target={'_blank'}
+      rel={'noopener'}
+      key={'link'}>
+      Visit link
+    </Button>
   );
 }
 
@@ -101,14 +95,22 @@ function ActionButton() {
 
   if (isClaimedByUser) {
     return (
-      <Button color={'primary'} variant={'contained'} onClick={onUnclaim}>
+      <Button
+        color={'primary'}
+        variant={'contained'}
+        onClick={onUnclaim}
+        key={'unclaim'}>
         Unclaim
       </Button>
     );
   }
 
   return (
-    <Button color={'primary'} variant={'contained'} onClick={onClaim}>
+    <Button
+      color={'primary'}
+      variant={'contained'}
+      onClick={onClaim}
+      key={'claim'}>
       Claim
     </Button>
   );

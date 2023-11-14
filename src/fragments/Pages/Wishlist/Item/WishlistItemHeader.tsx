@@ -91,3 +91,15 @@ function AdminMenuTrigger() {
     </React.Fragment>
   );
 }
+
+/**
+ * Prompts to delete the focused wishlist item.
+ */
+// function onDelete() {
+//   setContext((current) =>
+//     immutate(current, {
+//       isDeletePromptVisible: { $set: true },
+//       selectedWishlistItem: { $set: wishlistItem },
+//     }),
+//   );
+// }
