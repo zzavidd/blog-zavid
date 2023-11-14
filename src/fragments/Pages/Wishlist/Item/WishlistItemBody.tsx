@@ -1,4 +1,3 @@
-import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
 import {
   Box,
   CardContent,
@@ -162,7 +161,6 @@ function Comments() {
         px: 3,
         py: 2,
       }}>
-      <SmsOutlinedIcon sx={{ float: 'left', fontSize: 14, mr: 1 }} />
       {wishlistItem.comments}
     </Typography>
   );
