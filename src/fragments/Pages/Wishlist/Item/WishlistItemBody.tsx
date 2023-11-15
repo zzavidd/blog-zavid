@@ -1,6 +1,8 @@
+import { VisibilityOff } from '@mui/icons-material';
 import {
   Box,
   Stack,
+  Tooltip,
   Typography,
   alpha,
   useTheme,
@@ -20,7 +22,10 @@ export default function WishlistItemBodyContent() {
 
   return (
     <React.Fragment>
-      <PriorityChip />
+      <Stack pl={4} rowGap={1} sx={{ float: 'right' }}>
+        <PriorityChip />
+        <VisibilityIndicator />
+      </Stack>
       <Typography
         color={'primary.light'}
         fontWeight={800}
@@ -44,15 +49,26 @@ function PriorityChip() {
 
   if (isPurchased) return null;
   return (
-    <Stack alignItems={'flex-end'} pl={4} sx={{ float: 'right' }}>
-      <Typography
-        variant={'overline'}
-        lineHeight={1.5}
-        fontWeight={'bold'}
-        fontSize={10}>
-        {wishlistItem.priority}
-      </Typography>
-    </Stack>
+    <Typography
+      variant={'overline'}
+      lineHeight={1.5}
+      fontWeight={'bold'}
+      fontSize={10}>
+      {wishlistItem.priority}
+    </Typography>
+  );
+}
+
+/**
+ * The visibility indicator if necessary.
+ */
+function VisibilityIndicator() {
+  const { isPrivate } = useWishlistItemState();
+  if (!isPrivate) return null;
+  return (
+    <Tooltip title={'Only you can see this item.'}>
+      <VisibilityOff fontSize={'large'} color={'primary'} />
+    </Tooltip>
   );
 }
 

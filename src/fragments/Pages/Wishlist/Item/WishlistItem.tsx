@@ -18,7 +18,6 @@ import {
 } from './WishlistItem.utils';
 import WishlistItemBodyContent from './WishlistItemBody';
 import WishlistItemFooterContent from './WishlistItemFooter';
-import WishlistItemAdminControls from './WishlistItemHeader';
 import { ItemImage } from './WishlistItemImage';
 
 const WishlistGridItem = React.memo(function WishlistGridItem({
@@ -61,15 +60,12 @@ function WishlistGridItemContent() {
     return (
       <Card sx={cardContentSx}>
         <Stack direction={'row'}>
-          <Stack flexShrink={1}>
-            <Box
-              width={(t) => t.spacing(10)}
-              height={'100%'}
-              sx={{ aspectRatio: '1' }}>
-              <ItemImage />
-            </Box>
-            <WishlistItemAdminControls />
-          </Stack>
+          <Box
+            width={(t) => t.spacing(10)}
+            height={'100%'}
+            sx={{ aspectRatio: '1' }}>
+            <ItemImage />
+          </Box>
           <Stack flexGrow={1} p={4} rowGap={3}>
             <Box flexGrow={1}>
               <WishlistItemBodyContent />
@@ -85,7 +81,6 @@ function WishlistGridItemContent() {
 
   return (
     <Card sx={cardContentSx}>
-      <WishlistItemAdminControls />
       <Box width={'100%'} height={(t) => t.spacing(12)} sx={{ aspectRatio: 1 }}>
         <ItemImage />
       </Box>
