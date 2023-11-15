@@ -272,8 +272,10 @@ export default function PostForm({
         onCancel={closePublishModal}
         confirmText={'Publish'}
         isActionLoading={isActionLoading}>
-        By publishing this post, you&#39;ll be notifying all subscribers of this
-        new release. Confirm that you want to publish.
+        <Typography>
+          By publishing this post, you&#39;ll be notifying all subscribers of
+          this new release. Confirm that you want to publish.
+        </Typography>
       </ActionDialog>
       <Menu
         open={state.isButtonMenuVisible}

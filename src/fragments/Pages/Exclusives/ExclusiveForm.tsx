@@ -247,8 +247,10 @@ export default function ExclusiveForm({
         onCancel={closePublishModal}
         confirmText={'Send exclusive'}
         isActionLoading={isActionLoading}>
-        By sending this exclusive, you&#39;ll be notifying all subscribers.
-        Confirm that you want to send out this announcment.
+        <Typography>
+          By sending this exclusive, you&#39;ll be notifying all subscribers.
+          Confirm that you want to send out this announcment.
+        </Typography>
       </ActionDialog>
       <Menu
         open={state.isButtonMenuVisible}

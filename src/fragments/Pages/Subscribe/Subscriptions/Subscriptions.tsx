@@ -171,7 +171,7 @@ function Content() {
         confirmText={'Unsubscribe'}
         isActionDestructive={true}
         isActionLoading={isDeleteLoading}>
-        Are you sure you want this to work?
+        <Typography>Are you sure you want to unsubscribe?</Typography>
       </ActionDialog>
     </React.Fragment>
   );

@@ -1,12 +1,6 @@
 import { LoadingButton } from '@mui/lab';
 import type { DialogProps, SxProps, Theme } from '@mui/material';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Typography,
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 
 const buttonSx: SxProps<Theme> = { minWidth: (t) => t.spacing(10) };
 
@@ -23,7 +17,7 @@ export function ActionDialog({
   return (
     <Dialog {...props} maxWidth={'sm'} fullWidth={true}>
       <DialogContent sx={{ padding: (t) => t.spacing(5, 4, 5, 5) }}>
-        <Typography variant={'body1'}>{children}</Typography>
+        {children}
       </DialogContent>
       <DialogActions sx={{ padding: (t) => t.spacing(4, 5, 5, 5) }}>
         <Button variant={'outlined'} onClick={onCancel} sx={buttonSx}>

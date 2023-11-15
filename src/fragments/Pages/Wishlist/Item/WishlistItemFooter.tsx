@@ -124,14 +124,16 @@ function ActionButton() {
   }
 
   return (
-    <Button
-      color={'primary'}
-      variant={'contained'}
-      onClick={onClaim}
-      key={'claim'}
-      size={'small'}>
-      Claim
-    </Button>
+    <React.Fragment>
+      <Button
+        color={'primary'}
+        variant={'contained'}
+        onClick={onClaim}
+        key={'claim'}
+        size={'small'}>
+        Claim
+      </Button>
+    </React.Fragment>
   );
 }
 
@@ -260,9 +262,9 @@ function AdminMenuTrigger() {
         isActionLoading={isDeleteLoading}>
         <Typography>
           Are you sure you want to delete&nbsp;
-          <Typography display={'inline'} fontWeight={'bold'}>
+          <Box display={'inline'} fontWeight={'bold'}>
             &ldquo;{wishlistItem.name}&rdquo;
-          </Typography>
+          </Box>
           ?
         </Typography>
       </ActionDialog>

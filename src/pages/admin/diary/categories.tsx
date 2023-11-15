@@ -13,6 +13,7 @@ import {
   ListItemText,
   Stack,
   TextField,
+  Typography,
   alpha,
   lighten,
 } from '@mui/material';
@@ -242,8 +243,10 @@ const DiaryCategoryEdit: NextPageWithLayout = () => {
         open={state.isDeleteModalVisible}
         onConfirm={onDeleteCategory}
         onCancel={hideDeleteModal}>
-        Are you sure you want to delete category &ldquo;
-        {state.selectedCategoryToDelete?.name}&rdquo;?
+        <Typography>
+          Are you sure you want to delete category &ldquo;
+          {state.selectedCategoryToDelete?.name}&rdquo;?
+        </Typography>
       </ActionDialog>
     </Container>
   );

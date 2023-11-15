@@ -202,7 +202,7 @@ function DeleteModal() {
       confirmText={'Delete'}
       isActionDestructive={true}
       isActionLoading={context.isDeleteOpLoading}>
-      {context.deleteConfirmMessage}
+      <Typography>{context.deleteConfirmMessage}</Typography>
     </ActionDialog>
   );
 }
