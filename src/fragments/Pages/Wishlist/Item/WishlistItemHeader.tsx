@@ -8,6 +8,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { WishlistVisibility } from '@prisma/client';
 import immutate from 'immutability-helper';
 import { bindMenu, bindTrigger } from 'material-ui-popup-state';
 import { usePopupState } from 'material-ui-popup-state/hooks';
@@ -87,6 +88,17 @@ function AdminMenuTrigger() {
         enqueueSnackbar(e.message, { variant: 'error' });
       },
     });
+  const { mutate: archiveWishlistItem } = trpc.wishlist.update.useMutation({
+    onSuccess: () => {
+      void trpcContext.wishlist.findMany.refetch();
+      enqueueSnackbar(`You've successfully archived "${wishlistItem.name}".`, {
+        variant: 'success',
+      });
+    },
+    onError: (e) => {
+      enqueueSnackbar(e.message, { variant: 'error' });
+    },
+  });
 
   /**
    * Opens the form tray with wishlist form when clicked.
@@ -113,6 +125,14 @@ function AdminMenuTrigger() {
     modalState.open();
   }
 
+  function onArchiveButtonClick() {
+    menuState.close();
+    archiveWishlistItem({
+      data: { visibility: WishlistVisibility.ARCHIVED },
+      where: { id: wishlistItem.id },
+    });
+  }
+
   /**
    * Prompts to delete the focused wishlist item.
    */
@@ -123,6 +143,7 @@ function AdminMenuTrigger() {
   const menuItems = [
     { label: 'Edit', onClick: onEditButtonClick },
     { label: 'Delete', onClick: onDeleteButtonClick },
+    { label: 'Archive', onClick: onArchiveButtonClick },
   ];
 
   return (

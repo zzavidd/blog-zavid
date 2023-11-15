@@ -145,6 +145,7 @@ enum WishlistPriority {
 enum WishlistVisibility {
   PUBLIC
   PRIVATE
+  ARCHIVED
 
   @@map("Visibility")
 }

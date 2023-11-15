@@ -27,7 +27,7 @@ export function ItemImage() {
     return (
       <HideImageOutlinedIcon
         color={'primary'}
-        sx={{ height: '60%', width: '100%' }}
+        sx={{ height: '100%', width: '100%', p: 5 }}
       />
     );
   }
