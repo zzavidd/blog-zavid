@@ -1,7 +1,16 @@
-import { MoreVert, VisibilityOff } from '@mui/icons-material';
+import {
+  Archive,
+  Delete,
+  Edit,
+  MoreVert,
+  VisibilityOff,
+} from '@mui/icons-material';
 import {
   Box,
+  Divider,
   IconButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
   Stack,
@@ -141,9 +150,9 @@ function AdminMenuTrigger() {
   }
 
   const menuItems = [
-    { label: 'Edit', onClick: onEditButtonClick },
-    { label: 'Delete', onClick: onDeleteButtonClick },
-    { label: 'Archive', onClick: onArchiveButtonClick },
+    { label: 'Edit', Icon: Edit, onClick: onEditButtonClick },
+    { label: 'Delete', Icon: Delete, onClick: onDeleteButtonClick },
+    { label: 'Archive', Icon: Archive, onClick: onArchiveButtonClick },
   ];
 
   return (
@@ -151,13 +160,22 @@ function AdminMenuTrigger() {
       <IconButton {...bindTrigger(menuState)}>
         <MoreVert />
       </IconButton>
-      <Menu {...bindMenu(menuState)}>
-        {menuItems.map(({ label, onClick }) => (
-          <MenuItem
-            onClick={onClick}
-            sx={{ minWidth: (t) => t.spacing(10), p: 4 }}
-            key={label}>
-            {label}
+      <Menu {...bindMenu(menuState)} sx={{ maxWidth: (t) => t.spacing(14) }}>
+        <Typography fontSize={'90%'} m={4}>
+          Do what with&nbsp;
+          <Box display={'inline'} fontWeight={900}>
+            {wishlistItem.name}
+          </Box>
+          ?
+        </Typography>
+        <Divider />
+        {menuItems.map(({ label, onClick, Icon }) => (
+          <MenuItem onClick={onClick} key={label}>
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
+            <ListItemText>{label}</ListItemText>
+            <ListItemIcon />
           </MenuItem>
         ))}
       </Menu>
