@@ -12,6 +12,11 @@ export function useIsAdmin(): boolean {
   return session.data?.user?.email === process.env.NEXT_PUBLIC_GOOGLE_EMAIL;
 }
 
+export function useSessionEmail(): string | null | undefined {
+  const session = useSession();
+  return session.data?.user?.email;
+}
+
 export function useDiaryCategories() {
   return trpc.diaryCategory.findMany.useQuery();
 }

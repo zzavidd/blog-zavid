@@ -14,7 +14,6 @@ export const InitialWishlistState: WishlistState = {
     anonymous: false,
     quantity: 1,
   },
-  isClaimPromptVisible: false,
   selectedWishlistItem: null,
   trayFormContent: null,
   wishlistItemRequest: {
@@ -45,7 +44,6 @@ export enum TrayFormContent {
 interface WishlistState {
   categories: WishlistCategoryWithCount[];
   claimRequest: WishlistClaimPayload;
-  isClaimPromptVisible: boolean;
   selectedWishlistItem: WishlistItem | null;
   trayFormContent: TrayFormContent | null;
   wishlistItemRequest: Prisma.WishlistItemUncheckedCreateInput;

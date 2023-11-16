@@ -15,11 +15,11 @@ export function ActionDialog({
   ...props
 }: ActionDialogProps) {
   return (
-    <Dialog {...props} maxWidth={'sm'} fullWidth={true}>
-      <DialogContent sx={{ padding: (t) => t.spacing(5, 4, 5, 5) }}>
+    <Dialog maxWidth={'sm'} fullWidth={true} {...props}>
+      <DialogContent sx={{ padding: (t) => t.spacing(5, 5, 3, 5) }}>
         {children}
       </DialogContent>
-      <DialogActions sx={{ padding: (t) => t.spacing(4, 5, 5, 5) }}>
+      <DialogActions sx={{ padding: (t) => t.spacing(3, 5, 5, 5) }}>
         <Button variant={'outlined'} onClick={onCancel} sx={buttonSx}>
           {cancelText}
         </Button>
