@@ -1,5 +1,7 @@
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, useMediaQuery, useTheme } from '@mui/material';
 import React, { useContext } from 'react';
+
+import { useIsAdmin } from 'utils/hooks';
 
 import AdminMenuTrigger from './Triggers/AdminMenuTrigger';
 import ClaimTrigger from './Triggers/ClaimTrigger';
@@ -27,6 +29,10 @@ export default function WishlistItemFooterContent() {
 
 function LinkButton() {
   const wishlistItem = useContext(WishlistItemContext);
+  const isAdmin = useIsAdmin();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   if (!wishlistItem.href) return null;
   return (
     <Button
@@ -36,7 +42,7 @@ function LinkButton() {
       rel={'noopener'}
       key={'link'}
       size={'small'}>
-      Visit link
+      {isAdmin && isMobile ? 'Link' : 'Visit link'}
     </Button>
   );
 }

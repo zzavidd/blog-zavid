@@ -66,13 +66,11 @@ function WishlistGridItemContent() {
             sx={{ aspectRatio: '1' }}>
             <ItemImage />
           </Box>
-          <Stack flexGrow={1} p={4} rowGap={3}>
+          <Stack flex={1} p={4} rowGap={3}>
             <Box flexGrow={1}>
               <WishlistItemBodyContent />
             </Box>
-            <Box flexGrow={1}>
-              <WishlistItemFooterContent />
-            </Box>
+            <WishlistItemFooterContent />
           </Stack>
         </Stack>
       </Card>
