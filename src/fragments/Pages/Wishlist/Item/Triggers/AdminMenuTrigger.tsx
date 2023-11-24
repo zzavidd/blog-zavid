@@ -7,6 +7,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  MenuList,
   Typography,
 } from '@mui/material';
 import { WishlistVisibility } from '@prisma/client';
@@ -120,13 +121,12 @@ export default function AdminMenuTrigger() {
       <Button
         variant={'contained'}
         color={isClaimedByUser ? 'secondary' : 'primary'}
-        disableElevation={true}
         {...bindTrigger(menuState)}
         size={'small'}
         sx={{ flex: 0, p: 0 }}>
         <MoreVert />
       </Button>
-      <Menu {...bindMenu(menuState)} sx={{ maxWidth: (t) => t.spacing(14) }}>
+      <Menu {...bindMenu(menuState)} sx={{ maxWidth: (t) => t.spacing(15) }}>
         <Typography fontSize={'90%'} m={4}>
           Do what with&nbsp;
           <Box display={'inline'} fontWeight={900} component={'span'}>
@@ -135,15 +135,17 @@ export default function AdminMenuTrigger() {
           ?
         </Typography>
         <Divider />
-        {menuItems.map(({ label, onClick, Icon }) => (
-          <MenuItem onClick={onClick} key={label}>
-            <ListItemIcon>
-              <Icon />
-            </ListItemIcon>
-            <ListItemText>{label}</ListItemText>
-            <ListItemIcon />
-          </MenuItem>
-        ))}
+        <MenuList>
+          {menuItems.map(({ label, onClick, Icon }) => (
+            <MenuItem onClick={onClick} key={label}>
+              <ListItemIcon>
+                <Icon />
+              </ListItemIcon>
+              <ListItemText>{label}</ListItemText>
+              <ListItemIcon />
+            </MenuItem>
+          ))}
+        </MenuList>
       </Menu>
       <ActionDialog
         {...bindMenu(modalState)}

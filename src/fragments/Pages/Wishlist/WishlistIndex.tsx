@@ -1,5 +1,6 @@
-import { Stack } from '@mui/material';
-import React, { useContext, useEffect } from 'react';
+import { AttachMoneyRounded } from '@mui/icons-material';
+import { Box, Button, Stack } from '@mui/material';
+import { useContext, useEffect } from 'react';
 
 import { trpc } from 'utils/trpc';
 
@@ -12,17 +13,22 @@ export default function WishlistIndex({ categoryParams }: WishlistPageProps) {
   useCategoryPreload(categoryParams);
 
   return (
-    <React.Fragment>
-      <Stack direction={'row'} flex={1}>
-        <Stack flex={1}>
-          <WishlistGrid />
-          <WishlistToolbar />
-        </Stack>
-        <WishlistDrawer />
+    <Stack direction={'row'} flex={1}>
+      <Stack alignItems={'center'} flex={1}>
+        <Box pt={4}>
+          <Button
+            href={'https://settleup.starlingbank.com/davidegbue/pay'}
+            target={'_blank'}
+            variant={'contained'}
+            startIcon={<AttachMoneyRounded />}>
+            Send Monetary Gift
+          </Button>
+        </Box>
+        <WishlistGrid />
+        <WishlistToolbar />
       </Stack>
-      {/* <ClaimItemModal />
-    <DeleteItemModal /> */}
-    </React.Fragment>
+      <WishlistDrawer />
+    </Stack>
   );
 }
 
