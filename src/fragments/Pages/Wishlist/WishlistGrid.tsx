@@ -16,10 +16,11 @@ import {
 } from '@mui/material';
 import { WishlistVisibility } from '@prisma/client';
 import immutate from 'immutability-helper';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useIsAdmin } from 'utils/hooks';
-import { useAppSelector } from 'utils/reducers';
+import { AppActions, useAppSelector } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
 import WishlistGridItem from './Item/WishlistItem';
@@ -39,6 +40,7 @@ export default function WishlistGrid() {
           },
     ),
   );
+  const dispatch = useDispatch();
   const gridProps = useGridProps();
 
   const {
@@ -46,6 +48,12 @@ export default function WishlistGrid() {
     error,
     isLoading,
   } = trpc.wishlist.findMany.useQuery(params);
+
+  useEffect(() => {
+    if (error) {
+      dispatch(AppActions.resetWishlistParams());
+    }
+  }, [dispatch, error]);
 
   if (error) {
     return (

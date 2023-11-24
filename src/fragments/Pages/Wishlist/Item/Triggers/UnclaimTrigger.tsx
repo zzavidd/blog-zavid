@@ -8,16 +8,18 @@ import { useSnackbar } from 'notistack';
 import React, { useContext } from 'react';
 
 import { ActionDialog } from 'components/Dialog';
-import { useSessionEmail } from 'utils/hooks';
 import { trpc } from 'utils/trpc';
 
-import { WishlistItemContext } from '../WishlistItem.utils';
+import {
+  WishlistItemContext,
+  useWishlistUserEmail,
+} from '../WishlistItem.utils';
 
 export default function UnclaimTrigger() {
   const wishlistItem = useContext(WishlistItemContext);
   const { enqueueSnackbar } = useSnackbar();
 
-  const userEmail = useSessionEmail();
+  const sessionUserEmail = useWishlistUserEmail();
   const trpcContext = trpc.useUtils();
 
   const { mutate: unclaimWishlistItem, isLoading } =
@@ -35,8 +37,8 @@ export default function UnclaimTrigger() {
     });
 
   function onUnclaim() {
-    if (userEmail) {
-      unclaimWishlistItem({ id: wishlistItem.id, email: userEmail });
+    if (sessionUserEmail) {
+      unclaimWishlistItem({ id: wishlistItem.id, email: sessionUserEmail });
     } else {
       enqueueSnackbar('You are not signed in.', { variant: 'error' });
     }
@@ -50,7 +52,7 @@ export default function UnclaimTrigger() {
   return (
     <React.Fragment>
       <Button
-        color={'primary'}
+        color={'secondary'}
         variant={'contained'}
         key={'unclaim'}
         size={'small'}
@@ -67,7 +69,7 @@ export default function UnclaimTrigger() {
         isActionDestructive={true}>
         <Typography>
           Are you sure you want to remove your claim on&nbsp;
-          <Box display={'inline'} fontWeight={'bold'}>
+          <Box display={'inline'} fontWeight={'bold'} component={'span'}>
             &ldquo;{wishlistItem.name}&rdquo;
           </Box>
           ?

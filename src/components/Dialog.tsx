@@ -26,7 +26,7 @@ export function ActionDialog({
         <LoadingButton
           variant={'contained'}
           onClick={onConfirm}
-          color={isActionDestructive ? 'error' : 'primary'}
+          color={isActionDestructive ? 'secondary' : 'primary'}
           loading={isActionLoading}
           sx={buttonSx}>
           {confirmText}

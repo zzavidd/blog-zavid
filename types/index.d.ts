@@ -1,5 +1,6 @@
 import type {
   PaletteMode,
+  PaletteOptions,
   SelectChangeEvent,
   TableCellProps,
 } from '@mui/material';
@@ -27,7 +28,7 @@ declare global {
   interface AppPageProps {
     pathDefinition: PathDefinition;
     pageProps?: Record<string, unknown>;
-    theme?: Record<PaletteMode, string>;
+    theme?: Record<PaletteMode, PaletteOptions>;
   }
 
   interface PostSingleProps extends AppPageProps {

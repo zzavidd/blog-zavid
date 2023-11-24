@@ -45,7 +45,7 @@ function WishlistGridItemContent() {
         : allQuantityClaimed
           ? t.palette.card.claimed
           : t.palette.card.default,
-    border: (t) => `4px solid ${alpha(t.palette.secondary.dark, 0.2)}`,
+    border: (t) => `4px solid ${alpha(t.palette.primary.dark, 0.2)}`,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',

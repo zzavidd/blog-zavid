@@ -162,10 +162,10 @@ function Comments() {
       sx={{
         backgroundColor: (t) =>
           alpha(
-            t.palette.secondary.main,
+            t.palette.primary.main,
             t.palette.mode === 'light' ? 0.05 : 0.125,
           ),
-        borderLeft: (t) => `4px solid ${t.palette.secondary.dark}`,
+        borderLeft: (t) => `4px solid ${t.palette.primary.dark}`,
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
         mt: 1,

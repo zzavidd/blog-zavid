@@ -1,6 +1,8 @@
 import { WishlistVisibility, type WishlistItem } from '@prisma/client';
-import { useSession } from 'next-auth/react';
 import React, { useContext } from 'react';
+
+import { useSessionEmail } from 'utils/hooks';
+import { useAppSelector } from 'utils/reducers';
 
 export const WishlistItemContext = React.createContext<WishlistItem>(
   {} as WishlistItem,
@@ -9,9 +11,10 @@ export const WishlistItemContext = React.createContext<WishlistItem>(
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useWishlistItemState() {
   const wishlistItem = useContext(WishlistItemContext);
-  const session = useSession();
-  const email = session.data?.user?.email;
+  const sessionUserEmail = useSessionEmail();
+  const wishlistUserEmail = useAppSelector((state) => state.wishlist.email);
 
+  const email = wishlistUserEmail || sessionUserEmail;
   const reservees = wishlistItem.reservees || ({} as WishlistReservees);
 
   const isClaimedByUser = email
@@ -33,4 +36,10 @@ export function useWishlistItemState() {
     isPurchased,
     allQuantityClaimed,
   };
+}
+
+export function useWishlistUserEmail(): string {
+  const wishlistUserEmail = useAppSelector((state) => state.wishlist.email);
+  const sessionUserEmail = useSessionEmail();
+  return wishlistUserEmail || sessionUserEmail || '';
 }

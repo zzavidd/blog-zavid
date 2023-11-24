@@ -123,7 +123,7 @@ export default function AdminMenuTrigger() {
       <Menu {...bindMenu(menuState)} sx={{ maxWidth: (t) => t.spacing(14) }}>
         <Typography fontSize={'90%'} m={4}>
           Do what with&nbsp;
-          <Box display={'inline'} fontWeight={900}>
+          <Box display={'inline'} fontWeight={900} component={'span'}>
             {wishlistItem.name}
           </Box>
           ?
@@ -148,7 +148,7 @@ export default function AdminMenuTrigger() {
         isActionLoading={isDeleteLoading}>
         <Typography>
           Are you sure you want to delete&nbsp;
-          <Box display={'inline'} fontWeight={'bold'}>
+          <Box display={'inline'} fontWeight={'bold'} component={'span'}>
             &ldquo;{wishlistItem.name}&rdquo;
           </Box>
           ?

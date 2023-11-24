@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import React, { useContext } from 'react';
 
 import { ActionDialog } from 'components/Dialog';
+import { AppActions, useAppDispatch } from 'utils/reducers';
 import { trpc } from 'utils/trpc';
 
 import ClaimForm from '../../Forms/ClaimForm';
@@ -15,13 +16,16 @@ export default function ClaimTrigger() {
   const wishlistItem = useContext(WishlistItemContext);
   const [context] = useContext(WishlistContext);
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useAppDispatch();
 
   const trpcContext = trpc.useUtils();
 
   const { mutate: claimWishlistItem, isLoading: isClaimLoading } =
     trpc.wishlist.claim.useMutation({
       onSuccess: () => {
+        dispatch(AppActions.setWishlistEmail(context.claimRequest.email));
         void trpcContext.wishlist.findMany.refetch();
+        modalState.close();
         enqueueSnackbar(
           `You have successfully claimed "${wishlistItem.name}".`,
           { variant: 'success' },
@@ -40,6 +44,7 @@ export default function ClaimTrigger() {
   function onClaim() {
     claimWishlistItem({
       ...context.claimRequest,
+      id: wishlistItem.id,
       quantity: Number(context.claimRequest.quantity),
     });
   }

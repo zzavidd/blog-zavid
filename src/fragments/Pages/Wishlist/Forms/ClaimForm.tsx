@@ -8,42 +8,42 @@ import {
   Typography,
 } from '@mui/material';
 import immutate from 'immutability-helper';
-import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useMemo } from 'react';
 
 import { FormRow } from 'components/Form';
-import { useForm, useSessionEmail } from 'utils/hooks';
+import { useForm } from 'utils/hooks';
 
-import { WishlistItemContext } from '../Item/WishlistItem.utils';
+import {
+  WishlistItemContext,
+  useWishlistUserEmail,
+} from '../Item/WishlistItem.utils';
 import { WishlistContext } from '../WishlistContext';
 
 export default function ClaimForm() {
   const [context, setContext] = useContext(WishlistContext);
   const wishlistItem = useContext(WishlistItemContext);
-  const session = useSession();
   const maxClaimQuantity = useMaxClaimQuantity();
   const { onTextChange, onCheckboxChange } = useForm(
     WishlistContext,
     'claimRequest',
   );
 
-  const userEmail = session.data?.user?.email;
+  const sessionUserEmail = useWishlistUserEmail();
 
   useEffect(() => {
-    // if (!userEmail && !appLocalState.userEmail) return;
-    if (!userEmail) return;
+    if (!sessionUserEmail) return;
 
     setContext((current) =>
       immutate(current, {
         claimRequest: {
           id: { $set: wishlistItem.id },
-          email: { $set: userEmail },
+          email: { $set: sessionUserEmail },
         },
       }),
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userEmail]);
+  }, [sessionUserEmail]);
 
   const price = wishlistItem.price * context.claimRequest.quantity;
   const shownPrice = price.toLocaleString('en-GB', {
@@ -57,7 +57,7 @@ export default function ClaimForm() {
     <Stack rowGap={3}>
       <Typography>
         You are about to claim&nbsp;
-        <Box display={'inline'} fontWeight={'bold'}>
+        <Box display={'inline'} fontWeight={'bold'} component={'span'}>
           {wishlistItem.name}
         </Box>
         .
@@ -122,18 +122,16 @@ export default function ClaimForm() {
 
 function useMaxClaimQuantity() {
   const wishlistItem = useContext(WishlistItemContext);
-  const userEmail = useSessionEmail();
+  const userEmail = useWishlistUserEmail();
 
   return useMemo(() => {
     const { reservees, quantity: maxQuantity } = wishlistItem;
     const numberOfClaimed = Object.entries(
       reservees as WishlistReservees,
     ).reduce((acc, [claimant, { quantity }]) => {
-      // if (claimant === userEmail || claimant === appLocalState.userEmail)
       if (claimant === userEmail) return acc;
       return acc + quantity;
     }, 0);
     return maxQuantity - numberOfClaimed;
-    // }, [context.selectedWishlistItem, userEmail, appLocalState.userEmail]);
   }, [wishlistItem, userEmail]);
 }

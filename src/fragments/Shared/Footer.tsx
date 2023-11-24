@@ -122,7 +122,7 @@ function QuickSubscribe() {
           enqueueSnackbar(
             <Typography variant={'body2'}>
               Thank you for subscribing! I&apos;ve added&nbsp;
-              <Box fontWeight={'bold'} display={'inline'}>
+              <Box fontWeight={'bold'} display={'inline'} component={'span'}>
                 &ldquo;{state.email}&rdquo;
               </Box>
               &nbsp;to my mailing list.

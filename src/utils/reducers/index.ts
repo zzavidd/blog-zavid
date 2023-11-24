@@ -25,12 +25,13 @@ export const InitialAppState: AppState = {
     filter: { categories: {} },
   },
   wishlist: {
+    email: '',
     params: {
-      where: {
-        visibility: { in: [WishlistVisibility.PUBLIC] },
-        purchaseDate: null,
-      },
       orderBy: { createTime: 'desc' },
+      where: {
+        purchaseDate: null,
+        visibility: { in: [WishlistVisibility.PUBLIC] },
+      },
     },
   },
   postAdmin: {
@@ -74,6 +75,7 @@ export interface AppState {
     filter: Prisma.DiaryWhereInput;
   };
   wishlist: {
+    email: string;
     params: WishlistReduxParams;
   };
   postAdmin: {

@@ -26,6 +26,13 @@ export function setPostAdminSieve(
   return immutate(state, { postAdmin: action.payload });
 }
 
+export function setWishlistEmail(
+  state: AppState,
+  action: PayloadAction<string>,
+): void {
+  state.wishlist.email = action.payload;
+}
+
 export function setWishlistParams(
   state: AppState,
   action: PayloadAction<Spec<WishlistReduxParams>>,

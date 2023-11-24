@@ -59,8 +59,8 @@ function ActionButton() {
   }
 
   if (isClaimedByUser) {
-    return <UnclaimTrigger />;
+    return <UnclaimTrigger key={'unclaim'} />;
   }
 
-  return <ClaimTrigger />;
+  return <ClaimTrigger key={'claim'} />;
 }

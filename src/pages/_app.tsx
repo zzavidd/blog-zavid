@@ -53,7 +53,13 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
     const options = immutate(
       { ...themeOptions, palette },
       pageProps.theme
-        ? { palette: { primary: { $set: { main: pageProps.theme[mode] } } } }
+        ? {
+            palette: (theme) => ({
+              ...theme,
+              primary: pageProps.theme?.[mode].primary,
+              secondary: pageProps.theme?.[mode].secondary,
+            }),
+          }
         : {},
     );
     return createTheme(options);

@@ -1,4 +1,4 @@
-import { indigo } from '@mui/material/colors';
+import { indigo, pink } from '@mui/material/colors';
 import type { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
@@ -43,8 +43,22 @@ export const getServerSideProps: GetServerSideProps<WishlistPageProps> = async (
         url: '/wishlist',
       },
       theme: {
-        light: indigo[700],
-        dark: indigo[100],
+        light: {
+          primary: {
+            main: indigo[700],
+          },
+          secondary: {
+            main: pink[700],
+          },
+        },
+        dark: {
+          primary: {
+            main: indigo[100],
+          },
+          secondary: {
+            main: pink[200],
+          },
+        },
       },
       trpcState: helpers.dehydrate(),
     },
