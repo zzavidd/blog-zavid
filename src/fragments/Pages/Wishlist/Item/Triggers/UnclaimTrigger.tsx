@@ -56,6 +56,7 @@ export default function UnclaimTrigger() {
         variant={'contained'}
         key={'unclaim'}
         size={'small'}
+        disableElevation={true}
         {...bindTrigger(modalState)}>
         Unclaim
       </Button>

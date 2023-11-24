@@ -27,7 +27,7 @@ export const InitialAppState: AppState = {
   wishlist: {
     email: '',
     params: {
-      orderBy: { createTime: 'desc' },
+      orderBy: { priority: 'asc' },
       where: {
         purchaseDate: null,
         visibility: { in: [WishlistVisibility.PUBLIC] },

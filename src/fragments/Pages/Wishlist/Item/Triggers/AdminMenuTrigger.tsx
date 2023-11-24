@@ -21,7 +21,10 @@ import { useIsAdmin } from 'utils/hooks';
 import { trpc } from 'utils/trpc';
 
 import { TrayFormContent, WishlistContext } from '../../WishlistContext';
-import { WishlistItemContext } from '../WishlistItem.utils';
+import {
+  WishlistItemContext,
+  useWishlistItemState,
+} from '../WishlistItem.utils';
 
 export default function AdminMenuTrigger() {
   const [, setContext] = useContext(WishlistContext);
@@ -62,6 +65,7 @@ export default function AdminMenuTrigger() {
       enqueueSnackbar(e.message, { variant: 'error' });
     },
   });
+  const { isClaimedByUser } = useWishlistItemState();
 
   /**
    * Opens the form tray with wishlist form when clicked.
@@ -115,6 +119,8 @@ export default function AdminMenuTrigger() {
     <React.Fragment key={'admin'}>
       <Button
         variant={'contained'}
+        color={isClaimedByUser ? 'secondary' : 'primary'}
+        disableElevation={true}
         {...bindTrigger(menuState)}
         size={'small'}
         sx={{ flex: 0, p: 0 }}>

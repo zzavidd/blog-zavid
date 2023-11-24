@@ -36,10 +36,10 @@ import { WishlistContext } from '../WishlistContext';
 
 const SORT_OPTIONS = [
   { label: 'Date Added', value: 'createTime' },
+  { label: 'Name', value: 'name' },
   { label: 'Price', value: 'price' },
   { label: 'Priority', value: 'priority' },
   { label: 'Quantity', value: 'quantity' },
-  { label: 'Title', value: 'name' },
 ] as const;
 
 export default function FilterForm() {

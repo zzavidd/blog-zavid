@@ -56,6 +56,7 @@ export default function ClaimTrigger() {
         variant={'contained'}
         key={'claim'}
         size={'small'}
+        disableElevation={true}
         {...bindTrigger(modalState)}>
         Claim
       </Button>
