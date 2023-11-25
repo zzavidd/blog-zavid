@@ -25,7 +25,7 @@ import { Anchor } from './Components';
 
 const FOOTER_LINKS = [
   { title: 'Diary', url: '/diary' },
-  // { title: 'Wishlist', url: '/wishlist' },
+  { title: 'Wishlist', url: '/wishlist' },
   { title: 'About', url: '/about' },
   { title: 'Privacy Policy', url: '/privacy' },
 ];
@@ -96,24 +96,20 @@ export function Main({ children }: IMjmlSectionProps) {
   );
 }
 
-export function EmailFooter({
-  contentType,
-  showUnsubscribe,
-  unsubscribeToken,
-}: EmailFooterProps) {
+export function EmailFooter(props: EmailFooterProps) {
   return (
     <MjmlSection
       backgroundColor={EmailTheme.Color.Dark.Secondary}
       padding={24}
       textAlign={'center'}>
       <MjmlColumn width={'70%'}>
-        {showUnsubscribe ? (
+        {props.showUnsubscribe ? (
           <React.Fragment>
             <EmailFooterText>
               You are receiving this email because you are subscribed to
-              my&nbsp;{contentType}. You can manage your&nbsp;
+              my&nbsp;{props.contentType}. You can manage your&nbsp;
               <Anchor
-                href={`${Settings.DOMAIN}/subscriptions?token=${unsubscribeToken}`}>
+                href={`${Settings.DOMAIN}/subscriptions?token=${props.unsubscribeToken}`}>
                 subscription preferences
               </Anchor>
               &nbsp;to change or unsubscribe.
@@ -254,8 +250,12 @@ interface EmailHeadProps {
   preview: string;
 }
 
-interface EmailFooterProps extends IMjmlSectionProps {
-  contentType: SubscriptionType;
-  showUnsubscribe: boolean;
-  unsubscribeToken?: string;
-}
+type EmailFooterProps =
+  | (IMjmlSectionProps & {
+      showUnsubscribe: false;
+    })
+  | {
+      showUnsubscribe: true;
+      contentType: SubscriptionType;
+      unsubscribeToken?: string;
+    };

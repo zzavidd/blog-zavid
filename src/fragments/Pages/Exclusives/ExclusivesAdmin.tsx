@@ -215,13 +215,13 @@ function SendModal({ open, onClose }: SendModalProps) {
   function sendToSubscribers() {
     if (!context.selectedEntity?.id) return;
 
-    const recipients = Object.entries(state.selectedSubscribers)
+    const subscribedRecipients = Object.entries(state.selectedSubscribers)
       .filter(([, value]) => value === true)
       .map(([id]) => Number(id));
 
     sendExclusive({
       id: context.selectedEntity.id,
-      options: { isPreview: false, recipients },
+      options: { isPreview: false, subscribedRecipients },
     });
   }
 

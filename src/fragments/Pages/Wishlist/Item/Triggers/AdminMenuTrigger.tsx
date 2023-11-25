@@ -1,4 +1,11 @@
-import { Archive, Delete, Edit, MoreVert } from '@mui/icons-material';
+import {
+  Archive,
+  AttachEmail,
+  Delete,
+  Edit,
+  Email,
+  MoreVert,
+} from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -66,6 +73,7 @@ export default function AdminMenuTrigger() {
       enqueueSnackbar(e.message, { variant: 'error' });
     },
   });
+  const { mutate: notifyWishlistItem } = trpc.wishlist.notify.useMutation();
   const { isClaimedByUser } = useWishlistItemState();
 
   /**
@@ -108,10 +116,42 @@ export default function AdminMenuTrigger() {
     deleteWishlistItem({ where: { id: wishlistItem.id } });
   }
 
+  function onPreviewEtherealClick() {
+    notifyWishlistItem(
+      { id: wishlistItem.id, type: 'Ethereal' },
+      { onSuccess: (url) => window.open(url, '_blank') },
+    );
+  }
+
+  function onPreviewGmailClick() {
+    notifyWishlistItem(
+      { id: wishlistItem.id, type: 'Gmail' },
+      {
+        onSuccess: () => {
+          enqueueSnackbar(
+            `Successfully sent "${wishlistItem.name}" to administrator email.`,
+            { variant: 'success' },
+          );
+          modalState.close();
+        },
+      },
+    );
+  }
+
   const menuItems = [
     { label: 'Edit', Icon: Edit, onClick: onEditButtonClick },
     { label: 'Delete', Icon: Delete, onClick: onDeleteButtonClick },
     { label: 'Archive', Icon: Archive, onClick: onArchiveButtonClick },
+    {
+      label: 'Preview Ethereal',
+      Icon: Email,
+      onClick: onPreviewEtherealClick,
+    },
+    {
+      label: 'Preview Gmail',
+      Icon: AttachEmail,
+      onClick: onPreviewGmailClick,
+    },
   ];
 
   if (!isAdmin) return null;
@@ -135,9 +175,9 @@ export default function AdminMenuTrigger() {
           ?
         </Typography>
         <Divider />
-        <MenuList>
+        <MenuList disablePadding={true}>
           {menuItems.map(({ label, onClick, Icon }) => (
-            <MenuItem onClick={onClick} key={label}>
+            <MenuItem onClick={onClick} key={label} sx={{ px: 4, py: 3 }}>
               <ListItemIcon>
                 <Icon />
               </ListItemIcon>

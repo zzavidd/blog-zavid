@@ -7,10 +7,21 @@ import type { FormatTextOptions } from '../..';
 import { Section } from '../../regex';
 import { applyEmphasisFormatting } from '../Emphasis';
 
+const IMAGE_DIM_KEYS: DimensionKeyMap = {
+  h: 'height',
+  w: 'width',
+  mh: 'maxHeight',
+  mw: 'maxWidth',
+};
+
 const FormatEmail: Record<Section, RenderValue> = {
   [Section.PARAGRAPH]: ([, text], key, options) => (
     <p
-      style={{ lineHeight: 1.9, marginBottom: 28, whiteSpace: 'pre-wrap' }}
+      style={{
+        lineHeight: 1.9,
+        marginBottom: 28,
+        whiteSpace: 'pre-wrap',
+      }}
       key={key}>
       {applyEmphasisFormatting(text, options)}
     </p>
@@ -25,18 +36,34 @@ const FormatEmail: Record<Section, RenderValue> = {
       {text}
     </h3>
   ),
-  [Section.IMAGE]: ([, alt, src], key) => (
-    <img
-      src={src}
-      alt={alt}
-      style={{
-        borderRadius: 8,
-        objectFit: 'contain',
-        width: '100%',
-      }}
-      key={key}
-    />
-  ),
+  [Section.IMAGE]: ([, alt, src, dimensions], key) => {
+    const styles: React.CSSProperties = {};
+
+    if (dimensions) {
+      const params = new URLSearchParams(dimensions);
+      params.forEach((value, key) => {
+        const property = IMAGE_DIM_KEYS[key];
+        styles[property] = value;
+      });
+    } else {
+      styles.width = '100%';
+    }
+
+    return (
+      <img
+        src={src}
+        alt={alt}
+        style={{
+          borderRadius: 8,
+          objectFit: 'contain',
+          marginTop: -13,
+          ...styles,
+        }}
+        key={key}
+      />
+    );
+  },
+
   [Section.BLOCKQUOTE]: ([, text], key) => (
     <blockquote
       key={key}
@@ -49,6 +76,7 @@ const FormatEmail: Record<Section, RenderValue> = {
         lineHeight: '28px',
         margin: '16px 0',
         padding: '16px 20px 18px',
+        whiteSpace: 'pre-wrap',
       }}>
       {applyEmphasisFormatting(text)}
     </blockquote>
@@ -113,3 +141,8 @@ type RenderValue = (
   index: number,
   options: FormatTextOptions,
 ) => React.ReactNode;
+
+type DimensionKeyMap = Record<
+  string,
+  'height' | 'width' | 'maxHeight' | 'maxWidth'
+>;

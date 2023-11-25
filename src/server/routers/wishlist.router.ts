@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 import {
   WishlistCategoryCreateArgsSchema,
   WishlistCategoryDeleteArgsSchema,
@@ -12,6 +14,7 @@ import { WishlistAPI, WishlistCategoryAPI } from 'server/api/wishlist';
 import prisma from 'server/prisma';
 import { procedure, router } from 'server/trpc';
 import {
+  zEmailPreviewType,
   zWishlistClaimPayload,
   zWishlistUnclaimPayload,
 } from 'utils/validators';
@@ -35,6 +38,9 @@ export const wishlistRouter = router({
   unclaim: procedure
     .input(zWishlistUnclaimPayload)
     .mutation(({ input }) => WishlistAPI.unclaim(input)),
+  notify: procedure
+    .input(z.object({ id: z.number(), type: zEmailPreviewType }))
+    .mutation(({ input }) => WishlistAPI.notify(input.id, input.type)),
 });
 
 export const wishlistCategoryRouter = router({

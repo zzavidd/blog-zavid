@@ -1,5 +1,8 @@
 import type { Prisma, WishlistCategory, WishlistItem } from '@prisma/client';
+import nodemailer from 'nodemailer';
+import invariant from 'tiny-invariant';
 
+import * as Emailer from 'server/emails';
 import prisma from 'server/prisma';
 
 export class WishlistAPI {
@@ -39,7 +42,7 @@ export class WishlistAPI {
 
   public static async claim(payload: WishlistClaimPayload): Promise<void> {
     const { id, email, quantity, anonymous } = payload;
-    await prisma.wishlistItem.update({
+    const wishlistItem = await prisma.wishlistItem.update({
       where: { id },
       data: {
         reservees: {
@@ -51,9 +54,9 @@ export class WishlistAPI {
       },
     });
 
-    // if (this.claimEmail) {
-    //   await Emailer.notifyWishlistItemClaimant(item, email, this.claimEmail);
-    // }
+    await Emailer.notifyWishlistItemClaimant(wishlistItem, {
+      directRecipients: [email],
+    });
   }
 
   public static async unclaim({
@@ -73,6 +76,19 @@ export class WishlistAPI {
       where: { id },
       data: { ...item, reservees },
     });
+  }
+
+  public static async notify(
+    id: number,
+    previewType: EmailPreviewType,
+  ): Promise<string> {
+    const wishlistItem = await this.find({ where: { id } });
+    invariant(wishlistItem, 'No wishlist item with ID found.');
+    const [info] = await Emailer.notifyWishlistItemClaimant(wishlistItem, {
+      isPreview: true,
+      previewType,
+    });
+    return nodemailer.getTestMessageUrl(info) || '';
   }
 }
 

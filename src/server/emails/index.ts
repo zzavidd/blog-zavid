@@ -1,6 +1,12 @@
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml';
 import { capitalize } from '@mui/material';
-import type { Diary, Exclusive, Post, Subscriber } from '@prisma/client';
+import type {
+  Diary,
+  Exclusive,
+  Post,
+  Subscriber,
+  WishlistItem,
+} from '@prisma/client';
 import { convert } from 'html-to-text';
 import mjml2html from 'mjml';
 import nodemailer from 'nodemailer';
@@ -26,95 +32,105 @@ import {
   TRANSPORTER,
 } from './constants';
 import DiaryEmail from './templates/DiaryEmail';
-import AnnounceEmail from './templates/ExclusiveEmail';
+import ExclusiveEmail from './templates/ExclusiveEmail';
 import PostEmail from './templates/PostEmail';
+import WishlistEmail from './templates/WishlistEmail';
 
-const adminRecipient: TestRecipient = {
+const adminRecipient: Recipient = {
   firstname: 'Zavid',
   lastname: 'Egbue',
   email: process.env.NEXT_PUBLIC_GOOGLE_EMAIL!,
   token: UUIDv4(),
 };
-const testRecipient: TestRecipient = {
+const testRecipient: Recipient = {
   firstname: 'Ozioma',
   lastname: 'Zuluchi',
   email: process.env.ETHEREAL_EMAIL!,
   token: UUIDv4(),
 };
 
-namespace Emailer {
-  /**
-   * Send an email to all subscribers of new diary entry.
-   * @param diaryEntry The subject diary entry for the email.
-   * @param options The notification options.
-   */
-  export async function notifyNewDiaryEntry(
-    diaryEntry: Diary,
-    options: NotifyOptions = {},
-  ): Promise<SMTPTransport.SentMessageInfo[]> {
-    const subject = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
+/**
+ * Send an email to all subscribers of new diary entry.
+ * @param diaryEntry The subject diary entry for the email.
+ * @param options The notification options.
+ */
+export async function notifyNewDiaryEntry(
+  diaryEntry: Diary,
+  options: NotifyOptions = {},
+): Promise<SMTPTransport.SentMessageInfo[]> {
+  const subject = `Diary Entry #${diaryEntry.entryNumber}: ${diaryEntry.title}`;
 
-    const getDiaryNavigation = (number: number): Promise<Diary | null> =>
-      DiaryAPI.find(createDiaryNavigatorParams(number).params);
-    const previous = await getDiaryNavigation(diaryEntry.entryNumber - 1);
-    const next = await getDiaryNavigation(diaryEntry.entryNumber + 1);
+  const getDiaryNavigation = (number: number): Promise<Diary | null> =>
+    DiaryAPI.find(createDiaryNavigatorParams(number).params);
+  const previous = await getDiaryNavigation(diaryEntry.entryNumber - 1);
+  const next = await getDiaryNavigation(diaryEntry.entryNumber + 1);
 
-    return sendEmail(
-      DiaryEmail,
-      { diaryEntry, previous, next },
-      subject,
-      SubscriptionType.DIARY,
-      options,
-    );
-  }
-
-  /**
-   * Send an email to all subscribers of new post.
-   * @param post The post for the email.
-   * @param options The notification options.
-   */
-  export async function notifyNewPost(
-    post: Post,
-    options: NotifyOptions = {},
-  ): Promise<SMTPTransport.SentMessageInfo[]> {
-    const { singular: type } = DOMAINS[post.type];
-    const index = await PostAPI.index(post.id, post.type);
-    const subject = `${capitalize(type)} #${index}: ${post.title}`;
-
-    const getPostNavigation = (op: DateOp): Promise<Post | null> =>
-      PostAPI.find(createPostNavigatorParams(post, op).params);
-    const previous = await getPostNavigation('lt');
-    const next = await getPostNavigation('gt');
-
-    return sendEmail(
-      PostEmail,
-      { post, previous, next, index },
-      subject,
-      SubscriptionType[post.type as keyof typeof SubscriptionType],
-      options,
-    );
-  }
-
-  /**
-   * Send an email to all subscribers of new announcement.
-   * @param exclusive The annoucement for the email.
-   * @param options The notification options.
-   */
-  export function notifyExclusive(
-    exclusive: Exclusive,
-    options: NotifyOptions = {},
-  ): Promise<SMTPTransport.SentMessageInfo[]> {
-    return sendEmail(
-      AnnounceEmail,
-      { exclusive },
-      exclusive.subject,
-      SubscriptionType.EXCLUSIVE,
-      options,
-    );
-  }
+  return sendEmail(
+    DiaryEmail,
+    { diaryEntry, previous, next },
+    subject,
+    SubscriptionType.DIARY,
+    options,
+  );
 }
 
-export default Emailer;
+/**
+ * Send an email to all subscribers of new post.
+ * @param post The post for the email.
+ * @param options The notification options.
+ */
+export async function notifyNewPost(
+  post: Post,
+  options: NotifyOptions = {},
+): Promise<SMTPTransport.SentMessageInfo[]> {
+  const { singular: type } = DOMAINS[post.type];
+  const index = await PostAPI.index(post.id, post.type);
+  const subject = `${capitalize(type)} #${index}: ${post.title}`;
+
+  const getPostNavigation = (op: DateOp): Promise<Post | null> =>
+    PostAPI.find(createPostNavigatorParams(post, op).params);
+  const previous = await getPostNavigation('lt');
+  const next = await getPostNavigation('gt');
+
+  return sendEmail(
+    PostEmail,
+    { post, previous, next, index },
+    subject,
+    SubscriptionType[post.type as keyof typeof SubscriptionType],
+    options,
+  );
+}
+
+/**
+ * Send an email to all subscribers of new announcement.
+ * @param exclusive The announcement for the email.
+ * @param options The notification options.
+ */
+export function notifyExclusive(
+  exclusive: Exclusive,
+  options: NotifyOptions = {},
+): Promise<SMTPTransport.SentMessageInfo[]> {
+  return sendEmail(
+    ExclusiveEmail,
+    { exclusive },
+    exclusive.subject,
+    SubscriptionType.EXCLUSIVE,
+    options,
+  );
+}
+
+/**
+ * Send an email to a claimant who claimed an item.
+ * @param wishlistItem The wishlist item to notify about.
+ * @param options The notification options.
+ */
+export function notifyWishlistItemClaimant(
+  wishlistItem: WishlistItem,
+  options: NotifyOptions = {},
+): Promise<SMTPTransport.SentMessageInfo[]> {
+  const subject = `You've claimed the ${wishlistItem.name}.`;
+  return sendEmail(WishlistEmail, { wishlistItem }, subject, null, options);
+}
 
 /**
  * Prepare and process email content.
@@ -128,33 +144,10 @@ async function sendEmail<T extends Record<string, unknown>>(
   template: React.FunctionComponent<any>,
   props: T,
   subject: string,
-  type: SubscriptionType,
+  type: SubscriptionType | null,
   options: NotifyOptions,
 ): Promise<SMTPTransport.SentMessageInfo[]> {
-  const subscribers = await SubscriberAPI.findMany(
-    options.recipients ? { where: { id: { in: options.recipients } } } : {},
-  );
-
-  let mailList: Subscriber[] | [TestRecipient] = [];
-
-  if (options.isPreview) {
-    const recipient =
-      options.previewType === 'Gmail' ? adminRecipient : testRecipient;
-    mailList = [recipient];
-  } else {
-    if (isProduction) {
-      mailList = subscribers.filter((subscriber) => {
-        const subscriptions = subscriber.subscriptions as Record<
-          SubscriptionType,
-          boolean
-        >;
-        return subscriptions[type];
-      });
-    } else {
-      mailList = [testRecipient];
-    }
-  }
-
+  const mailList = await constructMailingList(type, options);
   const promises = mailList.map((recipient) => {
     const element = React.createElement(template, {
       ...props,
@@ -185,7 +178,39 @@ async function sendEmail<T extends Record<string, unknown>>(
   return responses;
 }
 
-type TestRecipient = Pick<
-  Subscriber,
-  'firstname' | 'lastname' | 'email' | 'token'
->;
+async function constructMailingList(
+  type: SubscriptionType | null,
+  options: NotifyOptions,
+): Promise<(Recipient | Subscriber)[]> {
+  if (options.isPreview) {
+    const recipient =
+      options.previewType === 'Gmail' ? adminRecipient : testRecipient;
+    return [recipient];
+  }
+
+  if (options.directRecipients) {
+    return options.directRecipients.map((email) => ({ email }));
+  }
+
+  if (!isProduction) {
+    return [testRecipient];
+  }
+
+  if (!type) {
+    return [];
+  }
+
+  const subscribers = await SubscriberAPI.findMany({
+    where: { id: { in: options.subscribedRecipients || [] } },
+  });
+  return subscribers.filter((subscriber) => {
+    const subscriptions = subscriber.subscriptions as Record<
+      SubscriptionType,
+      boolean
+    >;
+    return subscriptions[type];
+  });
+}
+
+type Recipient = Pick<Subscriber, 'email'> &
+  Partial<Pick<Subscriber, 'firstname' | 'lastname' | 'token'>>;
