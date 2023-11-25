@@ -7,7 +7,7 @@ import {
 import nodemailer from 'nodemailer';
 import invariant from 'tiny-invariant';
 
-import Emailer from 'server/emails';
+import * as Emailer from 'server/emails';
 import prisma from 'server/prisma';
 import { truncateText } from 'utils/lib/text';
 

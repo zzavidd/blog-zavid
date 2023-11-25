@@ -2,7 +2,7 @@ import { ExclusiveStatus, type Exclusive, type Prisma } from '@prisma/client';
 import nodemailer from 'nodemailer';
 import invariant from 'tiny-invariant';
 
-import Emailer from 'server/emails';
+import * as Emailer from 'server/emails';
 import prisma from 'server/prisma';
 
 export default class ExclusiveAPI {
