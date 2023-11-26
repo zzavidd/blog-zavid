@@ -37,7 +37,7 @@ function generateText(wishlistItem: WishlistItem) {
   const text = [
     'Hey pal,',
     `You've claimed the [${wishlistItem.name}](${wishlistItem.href}) worth on my wishlist.`,
-    `![${wishlistItem.name}](${wishlistItem.image}){?mh=200}`,
+    `![${wishlistItem.name}](${wishlistItem.image}){mh=200px}`,
     wishlistItem.comments
       ? `> ***Note from Zavid:***\r\r${wishlistItem.comments}`
       : null,
