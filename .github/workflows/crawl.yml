@@ -13,10 +13,10 @@ jobs:
   crawl:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@master@v4
+      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
-      - uses: actions/cache@v3
+      - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache
           key: bun-cache-${{ hashFiles('bun.lockb') }}
