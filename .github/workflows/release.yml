@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref_name == 'main'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
         with:
           ref: production
       - run: git fetch origin main
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [release]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
       - uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST}}

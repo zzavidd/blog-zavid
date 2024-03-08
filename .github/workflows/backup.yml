@@ -23,7 +23,7 @@ jobs:
       run:
         working-directory: ./ops/backup
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
         with:
           sparse-checkout: ops/backup
           sparse-checkout-cone-mode: false

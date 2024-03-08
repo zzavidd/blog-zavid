@@ -17,7 +17,7 @@ jobs:
       test-e2e: ${{ steps.filter.outputs.test-e2e }}
       deploy: ${{ steps.filter.outputs.deploy }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -48,7 +48,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.inspect == 'true'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
       - uses: actions/cache@v3
@@ -76,7 +76,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.build == 'true'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
       - uses: actions/cache@v3
@@ -100,7 +100,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.test-unit == 'true'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
       - uses: actions/cache@v3
@@ -120,7 +120,7 @@ jobs:
       matrix:
         shard: [1/4, 2/4, 3/4, 4/4]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
       - uses: actions/setup-node@v3
       - uses: oven-sh/setup-bun@v1
       - uses: actions/cache@v3
@@ -138,7 +138,7 @@ jobs:
     needs: [changes, inspect, build, test-unit, test-e2e]
     if: always() && github.ref_name == 'main' && needs.changes.outputs.deploy == 'true' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout
       - uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST}}
