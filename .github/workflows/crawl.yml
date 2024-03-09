@@ -13,7 +13,7 @@ jobs:
   crawl:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master@v4
+      - uses: actions/checkout@master
       - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
       - uses: actions/cache@master
