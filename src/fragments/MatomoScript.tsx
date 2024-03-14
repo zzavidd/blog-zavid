@@ -1,35 +1,22 @@
-import Script from 'next/script';
-import { useCookies } from 'react-cookie';
+import * as Matomo from '@socialgouv/matomo-next';
+import { useEffect } from 'react';
 
-import Settings from 'utils/settings';
+import { useIsAdmin, useSessionEmail } from 'utils/hooks';
 
-export default function MatomoScript() {
-  const [cookies] = useCookies([Settings.COOKIES.CONSENT]);
+export default function MatomoProvider({ children }: React.PropsWithChildren) {
+  const email = useSessionEmail();
+  const isAdmin = useIsAdmin();
 
-  // Only track on production.
-  if (process.env.NEXT_PUBLIC_APP_ENV !== 'production') return null;
+  useEffect(() => {
+    const siteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
+    if (!siteId || isAdmin) return;
 
-  // Don't track if user is admin.
-  const enableTracking = cookies[Settings.COOKIES.CONSENT];
-  if (!enableTracking) {
-    return null;
-  }
+    Matomo.push(['setUserId', email]);
+    Matomo.push(['trackPageView']);
+    Matomo.push(['enableLinkTracking']);
+    Matomo.init({ url: 'https://analytics.zavidegbue.com', siteId });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email]);
 
-  return (
-    <Script id={'matomo'}>
-      {`
-        var _paq = window._paq = window._paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function() {
-          var u="//analytics.zavidegbue.com/";
-          _paq.push(['setTrackerUrl', u+'matomo.php']);
-          _paq.push(['setSiteId', '1']);
-          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-          g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-        })();
-      `}
-    </Script>
-  );
+  return children;
 }

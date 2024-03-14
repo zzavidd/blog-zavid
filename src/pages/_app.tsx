@@ -9,9 +9,8 @@ import React, { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import MatomoScript from 'fragments/MatomoScript';
+import MatomoProvider from 'fragments/MatomoScript';
 import PageMetadata from 'fragments/PageMetadata';
-import CookiePrompt from 'fragments/Shared/CookiePrompt';
 import SnackbarManager from 'fragments/SnackbarManager';
 import { darkPalette, lightPalette } from 'styles/Palette.styles';
 import { themeOptions } from 'styles/Theme.styles';
@@ -70,8 +69,7 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
   const ComponentWithLayout = getLayout(<Component {...pageProps} />);
 
   return (
-    <React.Fragment>
-      <MatomoScript />
+    <MatomoProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <SnackbarManager>
@@ -80,10 +78,10 @@ function ZAVIDApp({ Component, pageProps }: AppPropsWithLayout) {
               {ComponentWithLayout}
             </NavigationContext.Provider>
           </LocalizationProvider>
-          <CookiePrompt />
+          {/* <CookiePrompt /> */}
         </SnackbarManager>
       </ThemeProvider>
-    </React.Fragment>
+    </MatomoProvider>
   );
 }
 
