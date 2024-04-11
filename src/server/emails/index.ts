@@ -4,6 +4,7 @@ import type {
   Diary,
   Exclusive,
   Post,
+  Prisma,
   Subscriber,
   WishlistItem,
 } from '@prisma/client';
@@ -200,9 +201,14 @@ async function constructMailingList(
     return [];
   }
 
-  const subscribers = await SubscriberAPI.findMany({
-    where: { id: { in: options.subscribedRecipients || [] } },
-  });
+  let args: Prisma.SubscriberFindManyArgs = {};
+  if (options.subscribedRecipients) {
+    args = {
+      where: { id: { in: options.subscribedRecipients } },
+    };
+  }
+
+  const subscribers = await SubscriberAPI.findMany(args);
   return subscribers.filter((subscriber) => {
     const subscriptions = subscriber.subscriptions as Record<
       SubscriptionType,

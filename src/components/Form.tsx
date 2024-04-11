@@ -68,6 +68,7 @@ export default function Form({
           height: 'fit-content',
           position: 'sticky',
           top: 'auto',
+          width: '100%',
         }}>
         <Container maxWidth={'xl'}>
           <Stack

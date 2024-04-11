@@ -17,7 +17,7 @@ jobs:
       test-e2e: ${{ steps.filter.outputs.test-e2e }}
       deploy: ${{ steps.filter.outputs.deploy }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@master
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -48,23 +48,23 @@ jobs:
     needs: changes
     if: needs.changes.outputs.inspect == 'true'
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
-      - uses: actions/cache@v3
+      - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache
           key: bun-cache-${{ hashFiles('bun.lockb') }}
           restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
       - run: bun prisma generate
-      - uses: actions/cache@v3
+      - uses: actions/cache@master
         with:
           path: .tsbuildinfo
           key: tscache-${{ hashFiles('tsconfig.json') }}-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
           restore-keys: tscache-${{ hashFiles('tsconfig.json') }}-
       - run: bun run tsc:ci
-      - uses: actions/cache@v3
+      - uses: actions/cache@master
         with:
           path: .eslintcache
           key: eslintcache-${{ hashFiles('.eslintrc.js') }}-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx') }}
@@ -76,17 +76,17 @@ jobs:
     needs: changes
     if: needs.changes.outputs.build == 'true'
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
-      - uses: actions/cache@v3
+      - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache
           key: bun-cache-${{ hashFiles('bun.lockb') }}
           restore-keys: bun-cache-
       - run: bun install --frozen-lockfile
       - run: bun prisma generate
-      - uses: actions/cache@v3
+      - uses: actions/cache@master
         id: next-cache
         with:
           path: .next/cache
@@ -100,10 +100,10 @@ jobs:
     needs: changes
     if: needs.changes.outputs.test-unit == 'true'
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
-      - uses: actions/cache@v3
+      - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache
           key: bun-cache-${{ hashFiles('bun.lockb') }}
@@ -120,10 +120,10 @@ jobs:
       matrix:
         shard: [1/4, 2/4, 3/4, 4/4]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
-      - uses: actions/cache@v3
+      - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache
           key: bun-cache-${{ hashFiles('bun.lockb') }}
@@ -138,7 +138,7 @@ jobs:
     needs: [changes, inspect, build, test-unit, test-e2e]
     if: always() && github.ref_name == 'main' && needs.changes.outputs.deploy == 'true' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@master
       - uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST}}

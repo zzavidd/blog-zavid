@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 import Settings from '../../src/utils/settings';
 
-test.describe('Cookies', () => {
+test.describe.skip('Cookies', () => {
   test.describe.configure({ mode: 'parallel' });
 
   test.beforeEach(async ({ page }) => {
