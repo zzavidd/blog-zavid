@@ -3,7 +3,13 @@
  */
 module.exports = {
   extends: ['@zzavidd/eslint-config/react-ts'],
-  ignorePatterns: ['ops/backup/**/*.ts', '**/schemas/**/*.ts', 'next-env.d.ts'],
+  ignorePatterns: [
+    'ops/backup/**/*.ts',
+    '**/schemas/**/*.ts',
+    'next-env.d.ts',
+    '**/bun.lockb',
+    '**/package.json',
+  ],
   plugins: ['no-only-tests'],
   parserOptions: {
     tsconfigRootDir: __dirname,

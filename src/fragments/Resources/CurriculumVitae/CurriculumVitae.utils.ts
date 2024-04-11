@@ -1,29 +1,29 @@
 import { Email, LinkedIn, Phone } from '@mui/icons-material';
 import {
   AmazonwebservicesPlainWordmark,
-  CircleciPlain,
-  DenojsOriginal,
+  BunPlain,
   DockerPlain,
   EslintOriginal,
+  FirebasePlain,
   GithubOriginal,
   GithubactionsPlain,
   GitlabPlain,
   JestPlain,
+  KubernetesPlain,
   MaterialuiPlain,
   MongodbPlain,
-  MysqlPlain,
-  NextjsLine,
+  MysqlOriginal,
+  NextjsPlain,
   NodejsPlain,
   PlaywrightPlain,
   PnpmPlain,
   PrismaOriginal,
-  PuppeteerPlain,
+  PulumiPlain,
   ReactOriginal,
   ReduxOriginal,
   TrpcPlain,
   TypescriptPlain,
   WebpackPlain,
-  YarnOriginal,
 } from 'devicons-react';
 
 export const CV_HEIGHT = 3508 / 3;
@@ -38,14 +38,21 @@ export const CONTACT_DETAILS = <const>[
 
 export const EXPERIENCE: Experience[] = [
   {
-    role: 'Software Developer',
+    role: 'Software & Platform Engineer',
     company: 'Cambridge Intelligence',
     location: 'Cambridge, Cambridgeshire',
     duration: 'Sep 2021 - [present]',
     employment: 'Full-time',
     description:
-      'Worked extensively on the ReGraph, KeyLines, Platform and Prototyping teams as well as the DevSecOps tiger team. Highlights include:',
+      'Worked in the ReGraph, KeyLines, Prototyping and DevSecOps teams but most prominently in the Platform Team. Highlights include:',
     highlights: [
+      {
+        label: 'Innovation Centre',
+        role: 'Platform',
+        span: 2,
+        description:
+          'Singlehandedly built and deployed an internal SaaS product which hosts a collection of static apps built by developers and accessible by product managers to drive innovation. The Innovation Centre also allows developers manage their GitLab branches and review apps, access the logs for the pods running review apps which are stored on Kubernetes / AWS CloudWatch, and contribute to a growing collection of playgrounds which demonstrate product capabilities in order to support external customers.',
+      },
       {
         label: 'Graph Designer',
         role: 'Prototyping',
@@ -56,13 +63,7 @@ export const EXPERIENCE: Experience[] = [
         label: 'SVG Service',
         role: 'Prototyping',
         description:
-          'Built a service which produces semi-interactive SVG chart using Puppeteer and ReGraph on a network of microservices, inspiring a new customer base seeking lower-priced accessible charts.',
-      },
-      {
-        label: 'Node Customisation Showcases',
-        role: 'Prototyping',
-        description:
-          'Within a sprint, produced a series of 6 visually-appealing demonstrable ReGraph visualisations for the Marketing team to showcase unreleased features to a conference of 68 customers, driving significant interest for pending releases.',
+          'Built a service which produces semi-interactive SVG charts using Puppeteer and ReGraph on a network of microservices, inspiring a new customer base seeking lower-priced accessible charts.',
       },
       {
         label: 'Automated Secrets Rotation',
@@ -71,17 +72,23 @@ export const EXPERIENCE: Experience[] = [
           'Automated the rotation of SSH keys and access tokens stored on 1Password used as CI/CD pipeline variables for all company GitHub and GitLab projects, cutting the average time of the weekly process from 6 hours to 3 minutes.',
       },
       {
-        label: 'Security Audit',
-        role: 'DevSecOps',
+        label: 'Core Infrastructure Refactor',
+        role: 'Platform',
         description:
-          'Addressed 100+ site and SDK security vulnerabilities in response to pen testing including the examination of vulnerable dependencies across all products, patching username enumeration and instating relevant HTTP security headers, improving the security benchmark by 14%.',
+          'Modularised our Infrastructure-as-Code repository by breaking down the stack and separating all Pulumi resources into appropriate projects and sub-stacks, significantly increasing the performance of previews and updates.',
       },
-      {
-        label: 'WebDriver Overhaul',
-        role: 'KeyLines',
-        description:
-          'Refactored the suite of 98 KeyLines WebDriver tests to use TypeScript and asynchronous WebDriver operations in order to unblock the necessary upgrade to greater versions of Node.js for security purposes. (@wdio/sync breaks for all versions of Node greater than 16).',
-      },
+      // {
+      //   label: 'Security Audit',
+      //   role: 'DevSecOps',
+      //   description:
+      //     'Addressed 100+ site and SDK security vulnerabilities in response to pen testing including the examination of vulnerable dependencies across all products, patching username enumeration and instating relevant HTTP security headers, improving the security benchmark by 14%.',
+      // },
+      // {
+      //   label: 'Node Customisation Showcases',
+      //   role: 'Prototyping',
+      //   description:
+      //     'Within a sprint, produced a series of 6 visually-appealing demonstrable ReGraph visualisations for the Marketing team to showcase unreleased features to a conference of 68 customers, driving significant interest for pending releases.',
+      // },
     ],
   },
   {
@@ -112,12 +119,12 @@ export const EXPERIENCE: Experience[] = [
     employment: 'Self-employed',
     location: null,
     description:
-      'Leading a team of 29 volunteers to facilitate 100+ discussions and debates on topics centred around and beyond the Black community at university campuses, secondary schools and with external organisations. Highlights include:',
+      'Led a team of 29 volunteers and developed software to facilitate 100+ discussions and debates on various sociopolitical topics at university campuses, secondary schools and with external organisations. Highlights include:',
     highlights: [
       {
         label: 'Web Application',
         description:
-          'Designed and built the web application used for adding, updating and deleting session reviews, candidate tributes, team member profiles and the exhaustive bank of 215+ categorised debate topics.',
+          'Designed and built the web application used for adding, updating and deleting session reviews, candidate tributes, team member profiles and the exhaustive bank of over 200 categorised debate topics.',
       },
       {
         label: 'Mobile Application',
@@ -142,40 +149,40 @@ export const TECH_POOL = <const>{
     preamble: 'Primarily work with...',
     stack: [
       { label: 'TypeScript', Icon: TypescriptPlain },
-      { label: 'Node.js', Icon: NodejsPlain },
+      { label: 'Next.js', Icon: NextjsPlain },
       { label: 'React', Icon: ReactOriginal },
+      { label: 'Node.js', Icon: NodejsPlain },
       { label: 'Material UI', Icon: MaterialuiPlain },
-      { label: 'Next.js', Icon: NextjsLine },
       { label: 'Redux', Icon: ReduxOriginal },
-      { label: 'Prisma', Icon: PrismaOriginal },
       { label: 'tRPC', Icon: TrpcPlain },
-      { label: 'MySQL', Icon: MysqlPlain },
       { label: 'Playwright', Icon: PlaywrightPlain },
+      { label: 'Prisma', Icon: PrismaOriginal },
       { label: 'Docker', Icon: DockerPlain },
-      { label: 'CircleCI', Icon: CircleciPlain },
-      { label: 'pnpm', Icon: PnpmPlain },
+      { label: 'Pulumi', Icon: PulumiPlain },
+      { label: 'AWS', Icon: AmazonwebservicesPlainWordmark },
+      { label: 'Bun', Icon: BunPlain },
       { label: 'ESLint', Icon: EslintOriginal },
     ],
   },
   Side: {
     preamble: 'Also worked with...',
     stack: [
+      { label: 'Kubernetes', Icon: KubernetesPlain },
       { label: 'MongoDB', Icon: MongodbPlain },
-      { label: 'AWS', Icon: AmazonwebservicesPlainWordmark },
-      { label: 'Puppeteer', Icon: PuppeteerPlain },
-      { label: 'Deno', Icon: DenojsOriginal },
+      { label: 'MySQL', Icon: MysqlOriginal },
       { label: 'Webpack', Icon: WebpackPlain },
       { label: 'Jest', Icon: JestPlain },
-      { label: 'Yarn', Icon: YarnOriginal },
+      { label: 'pnpm', Icon: PnpmPlain },
       { label: 'GitLab CI', Icon: GitlabPlain },
-      { label: 'React Native', Icon: ReactOriginal },
       { label: 'GitHub Actions', Icon: GithubactionsPlain },
+      { label: 'React Native', Icon: ReactOriginal },
+      { label: 'Firebase', Icon: FirebasePlain },
     ],
   },
 };
 
 export const PROFILE_SUMMARY =
-  'A diligent developer whose experience with client, server, database and platform technologies alongside his affinity for all things web development and automation drives his creative ability. Joining these traits are his consistent knack for grasping new tools and concepts, perseverance at solving problems, attention to detail, and a chronic cheerful smile.';
+  'A diligent developer whose experience with client, server and cloud technologies alongside his affinity for all things web development and automation drives his creative ability. Joining these traits are his consistent knack for grasping new tools and concepts, perseverance at solving problems, attention to detail, and a chronic cheerful smile.';
 
 interface Experience {
   role: string;
@@ -188,5 +195,6 @@ interface Experience {
     label: string;
     description: string;
     role?: string;
+    span?: 1 | 2;
   }>;
 }

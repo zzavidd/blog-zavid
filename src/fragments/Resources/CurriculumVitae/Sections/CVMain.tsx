@@ -52,12 +52,14 @@ export default function CVMain() {
                   </Typography>
                 ) : null}
               </Box>
-              <Typography variant={'body2'} fontWeight={400}>
-                {e.description}
-              </Typography>
+              {e.description ? (
+                <Typography variant={'body2'} fontWeight={400}>
+                  {e.description}
+                </Typography>
+              ) : null}
               <Grid container={true} columns={2} spacing={2}>
-                {e.highlights.map(({ label, description }, i) => (
-                  <Grid xs={1} py={0} key={i}>
+                {e.highlights.map(({ label, description, span = 1 }, i) => (
+                  <Grid xs={span} py={0} key={i}>
                     <ListItem
                       sx={{
                         color: (t) => t.palette.text.primary,
