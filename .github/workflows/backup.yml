@@ -27,8 +27,9 @@ jobs:
         with:
           sparse-checkout: ops/backup
           sparse-checkout-cone-mode: false
-      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.0.21
       - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache

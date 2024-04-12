@@ -49,8 +49,9 @@ jobs:
     if: needs.changes.outputs.inspect == 'true'
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.0.21
       - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache
@@ -77,8 +78,9 @@ jobs:
     if: needs.changes.outputs.build == 'true'
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.0.21
       - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache
@@ -101,8 +103,9 @@ jobs:
     if: needs.changes.outputs.test-unit == 'true'
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.0.21
       - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache
@@ -121,8 +124,9 @@ jobs:
         shard: [1/4, 2/4, 3/4, 4/4]
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.0.21
       - uses: actions/cache@master
         with:
           path: ~/.bun/install/cache
